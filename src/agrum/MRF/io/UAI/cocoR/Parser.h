@@ -52,7 +52,7 @@ namespace gum {
 namespace UAIMRF {
 
 
-class GUM_PUBLIC_MRF Parser {
+class GUM_COCOR_PUBLIC Parser {
   private:
     	enum {
 		_EOF=0,

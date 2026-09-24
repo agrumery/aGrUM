@@ -56,7 +56,14 @@
 #include <agrum/PRM/inference/groundedInference.h>
 #include <agrum/PRM/inference/SVE.h>
 #include <agrum/PRM/inference/SVED.h>
+// GUM_COCOR_PUBLIC is locally forced to this module's own export macro so
+// the grammar is tagged correctly even in a translation unit that does not
+// define AGRUM_PRM_EXPORTING.
+#pragma push_macro("GUM_COCOR_PUBLIC")
+#undef GUM_COCOR_PUBLIC
+#define GUM_COCOR_PUBLIC GUM_PUBLIC_PRM
 #include <agrum/PRM/o3prmr/cocoR/Parser.h>
+#pragma pop_macro("GUM_COCOR_PUBLIC")
 #include <agrum/PRM/o3prmr/O3prmrInterpreter.h>
 
 namespace gum {

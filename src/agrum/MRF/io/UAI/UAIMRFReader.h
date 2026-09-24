@@ -61,10 +61,17 @@
 #include <string_view>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// including coco-generated PARSER and SCANNER
+// including coco-generated PARSER and SCANNER; GUM_COCOR_PUBLIC is locally
+// forced to this module's own export macro so the grammar is tagged
+// correctly even in a translation unit (e.g. gumTest) that does not define
+// AGRUM_MRF_EXPORTING.
 #  undef _COCO_PARSER_H_
 #  undef _COCO_SCANNER_H_
+#  pragma push_macro("GUM_COCOR_PUBLIC")
+#  undef GUM_COCOR_PUBLIC
+#  define GUM_COCOR_PUBLIC GUM_PUBLIC_MRF
 #  include <agrum/MRF/io/UAI/cocoR/Parser.h>
+#  pragma pop_macro("GUM_COCOR_PUBLIC")
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

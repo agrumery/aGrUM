@@ -59,8 +59,15 @@
 
 #include <agrum/agrum.h>
 
+// GUM_COCOR_PUBLIC is locally forced to this module's own export macro so
+// the grammar is tagged correctly even in a translation unit (e.g. gumTest)
+// that does not define AGRUM_PRM_EXPORTING.
+#pragma push_macro("GUM_COCOR_PUBLIC")
+#undef GUM_COCOR_PUBLIC
+#define GUM_COCOR_PUBLIC GUM_PUBLIC_PRM
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
+#pragma pop_macro("GUM_COCOR_PUBLIC")
 #include <agrum/PRM/o3prm/O3ClassFactory.h>
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>

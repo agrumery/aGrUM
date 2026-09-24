@@ -95,8 +95,9 @@ endif ()
 # AGRUM_BUILD_SHARED_LIBS tells config.h.in whether GUM_SHARED_PUBLIC/GUM_PUBLIC_<MODULE>
 # (the pure-aGrUM per-module visibility macros) are actually crossing a real DLL boundary.
 # On Windows, __declspec(dllexport)/dllimport is applied purely from what a translation
-# unit has #define'd -- unlike -fvisibility=hidden above, it does NOT become a no-op when
-# BUILD_SHARED_LIBS=OFF. That mismatch broke every consumer of a tagged symbol that isn't
+# unit has #define'd -- unlike GCC/Clang's __attribute__((visibility("default"))), it does
+# NOT become a no-op when BUILD_SHARED_LIBS=OFF. That mismatch broke every consumer of a
+# tagged symbol that isn't
 # itself a producer of the same module (gumTest, apps/o3prm/*, a user's own program linking
 # aGrUM statically, ...): with BUILD_SHARED_LIBS=OFF (aGrUM is always static on Windows,
 # enforced by act -- see ActBuilderAgrum.check_consistency -- and every pyAgrum build is

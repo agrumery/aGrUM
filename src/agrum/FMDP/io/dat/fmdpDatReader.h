@@ -92,8 +92,15 @@
 // ======================================================================================================
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// including coco-generated PARSER and SCANNER
+// including coco-generated PARSER and SCANNER; GUM_COCOR_PUBLIC is locally
+// forced to this module's own export macro so the grammar is tagged
+// correctly even in a translation unit (e.g. gumTest) that does not define
+// AGRUM_FMDP_EXPORTING.
+#  pragma push_macro("GUM_COCOR_PUBLIC")
+#  undef GUM_COCOR_PUBLIC
+#  define GUM_COCOR_PUBLIC GUM_PUBLIC_FMDP
 #  include <agrum/FMDP/io/dat/cocoR/Parser.h>
+#  pragma pop_macro("GUM_COCOR_PUBLIC")
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {

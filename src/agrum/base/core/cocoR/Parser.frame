@@ -49,7 +49,7 @@ Parser.h Specification
 
 -->namespace_open
 
-class Parser {
+class GUM_COCOR_PUBLIC Parser {
   private:
     -->constantsheader
     Token* dummyToken;

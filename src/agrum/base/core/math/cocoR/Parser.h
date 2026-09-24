@@ -56,7 +56,7 @@ namespace gum {
 namespace formula {
 
 
-class Parser {
+class GUM_COCOR_PUBLIC Parser {
   private:
     	enum {
 		_EOF=0,

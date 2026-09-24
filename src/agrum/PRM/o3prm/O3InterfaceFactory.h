@@ -70,7 +70,7 @@ namespace gum {
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
       template < GUM_Numeric GUM_SCALAR >
-      class O3InterfaceFactory {
+      class GUM_PUBLIC_PRM O3InterfaceFactory {
         public:
         O3InterfaceFactory(PRM< GUM_SCALAR >&          prm,
                            O3PRM&                      o3_prm,

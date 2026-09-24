@@ -72,7 +72,7 @@ namespace gum {
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
       template < GUM_Numeric GUM_SCALAR >
-      class O3NameSolver {
+      class GUM_PUBLIC_PRM O3NameSolver {
         public:
         O3NameSolver(PRM< GUM_SCALAR >& prm, O3PRM& o3_prm, ErrorsContainer& errors);
 

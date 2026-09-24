@@ -282,8 +282,16 @@ macro(gum_add_python_module MODULENAME)
   # against -- the exact LNK2001/ImportError-at-dlopen failure mode already
   # documented above for plain GUM_PUBLIC. BASE keeps GUM_SHARED_PUBLIC, never
   # blanked anywhere (Modules.agrum.cmake), same reasoning applies here.
-  foreach(_gum_public_blank_module BN PRM MRF CN FMDP ID CM KTBN)
-    target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC_${_gum_public_blank_module}=)
+  # LIST_OF_MODULES (src/cmake/Modules.agrum.cmake) is the single source of
+  # truth for aGrUM's module list -- includes BASE (excluded below: it uses
+  # GUM_SHARED_PUBLIC, not this GUM_PUBLIC_<MODULE> family) and FMDP (kept:
+  # FMDP has no pyAgrum leaf module of its own -- see pymodules.txt -- but
+  # its umbrella header could still be transitively reached the same way
+  # PRM's is from agrum/bn.h, so its macro needs blanking here too).
+  foreach(_gum_public_blank_module ${LIST_OF_MODULES})
+    if(NOT _gum_public_blank_module STREQUAL "BASE")
+      target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC_${_gum_public_blank_module}=)
+    endif()
   endforeach()
   if(SWIG_FOUND)
     add_dependencies(${_PYAGRUMLIB} ${MODULENAME_LOWER}_swig_generated)
@@ -599,12 +607,6 @@ macro(gum_add_python_module MODULENAME)
 
 endmacro()
 
-#foreach(MODULE ${LIST_OF_MODULES})
-#  if(MODULE MATCHES "FMDP")
-#    continue()
-#
-#  gum_add_python_module(${MODULE})
-#endforeach()
 gum_add_python_module(pyagrum SWIGMOD pyagrumcpp)
 
 

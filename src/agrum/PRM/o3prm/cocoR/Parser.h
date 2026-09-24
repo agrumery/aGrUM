@@ -51,7 +51,7 @@ namespace prm {
 namespace o3prm {
 
 
-class Parser {
+class GUM_COCOR_PUBLIC Parser {
   private:
     	enum {
 		_EOF=0,

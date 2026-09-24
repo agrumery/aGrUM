@@ -52,7 +52,7 @@ namespace gum {
 namespace UAIBN {
 
 
-class PYGUM_SHARED_PUBLIC Parser {
+class GUM_COCOR_PUBLIC Parser {
   private:
     	enum {
 		_EOF=0,

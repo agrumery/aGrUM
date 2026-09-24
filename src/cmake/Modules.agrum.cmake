@@ -146,13 +146,14 @@ macro(buildFileListsWithModules)
             endif ()
 
             # GUM_PUBLIC blanking applies to every module under BUILD_PYTHON, not just
-            # BASE/BN: -fvisibility=hidden is already active project-wide for pyAgrum
-            # builds (CompilOptions.agrum.cmake), so a class tagged GUM_PUBLIC only
-            # (public C++ API, not needed by pyAgrum -- as opposed to PYGUM_PUBLIC/
-            # PYGUM_SHARED_PUBLIC) would otherwise still get re-exposed by that macro
-            # in *any* module's .so/.pyd, not just the core's. Every module has since
-            # been migrated to its own GUM_PUBLIC_<MODULE> name, so no header uses
-            # plain GUM_PUBLIC anymore; this blanking is kept as a safety net so a
+            # BASE/BN: default visibility is "visible" for pyAgrum builds (no
+            # -fvisibility=hidden project-wide anymore, see CompilOptions.agrum.cmake
+            # and the note below at the LIST_OF_MODULES loop), so a class tagged
+            # GUM_PUBLIC only (public C++ API, not needed by pyAgrum -- as opposed to
+            # PYGUM_PUBLIC/PYGUM_SHARED_PUBLIC) would otherwise still get re-exposed by
+            # that macro in *any* module's .so/.pyd, not just the core's. Every module
+            # has since been migrated to its own GUM_PUBLIC_<MODULE> name, so no header
+            # uses plain GUM_PUBLIC anymore; this blanking is kept as a safety net so a
             # future GUM_PUBLIC use (before it gets its own per-module name) can never
             # leak a symbol into pyAgrum by accident, regardless of which module adds it.
             if (BUILD_PYTHON)
@@ -177,7 +178,34 @@ macro(buildFileListsWithModules)
                 # BUILD_SHARED_LIBS=OFF (pyAgrum's normal static build): there it's
                 # a harmless safety net (config.h.in's plain-undecorated fallback
                 # applies anyway, no real DLL boundary between agrum<MODULE> and
-                # its own leaf .pyd). Skipped under BUILD_SHARED_LIBS=ON, where
+                # its own leaf .pyd) -- EXCEPT for BN, which -- like BASE -- is
+                # whole-archived into core _pyagrumcpp.pyd rather than linked
+                # normally into its own leaf .pyd, so it crosses that same real
+                # DLL boundary to every OTHER leaf module even under
+                # BUILD_SHARED_LIBS=OFF. The loop below used to blank
+                # GUM_PUBLIC_BN= on agrumBN's own target too (it only excluded
+                # "BASE", not the module currently being configured), silently
+                # short-circuiting config.h.in's #ifndef guard before
+                # AGRUM_BN_EXPORTING ever got a chance to apply dllexport --
+                # every GUM_PUBLIC_BN-tagged class (BarrenNodesFinder,
+                # IBNLearner, GreedyHillClimbing, DAG2BNLearner, Score*,
+                # StructuralConstraint*...) compiled as a plain, unexported
+                # symbol, invisible to every leaf .pyd's dllimport reference
+                # (LNK2019, confirmed on CI 2026-09-26 -- see
+                # md_docs/backShared.md). Harmless on GNU/Linux/macOS, where the
+                # compiler's own default visibility is "visible" now that
+                # -fvisibility=hidden is gone project-wide for static pyAgrum
+                # builds (CompilOptions.agrum.cmake, commit 65d695b8b, same
+                # night): that flag turned out fundamentally incompatible with
+                # this project's _tpl.h convention -- it hid vague-linkage
+                # symbols (typeinfo/vtable) of template classes even under an
+                # explicit GUM_PUBLIC_<MODULE> tag, confirmed via readelf -sW,
+                # with #pragma GCC visibility push(default) around the explicit
+                # instantiation confirmed as a dead end (still WEAK HIDDEN) --
+                # see md_docs/backShared.md for the full investigation. Do not
+                # reintroduce it without solving that first. Catastrophic on
+                # MSVC, which never exports anything without an
+                # explicit dllexport. Skipped under BUILD_SHARED_LIBS=ON, where
                 # each agrum<MODULE> is now a genuine separate DLL/.so and needs
                 # its own GUM_PUBLIC_<MODULE>-tagged symbols actually exported --
                 # blanking would define the macro empty on the command line,
@@ -189,7 +217,7 @@ macro(buildFileListsWithModules)
                 # LIST_OF_MODULES (computed above, exported to parent scope) lists all 8.
                 if (NOT BUILD_SHARED_LIBS)
                     foreach (BLANK_MODULE ${LIST_OF_MODULES})
-                        if (NOT BLANK_MODULE STREQUAL "BASE")
+                        if (NOT BLANK_MODULE STREQUAL "BASE" AND NOT BLANK_MODULE STREQUAL "BN")
                             target_compile_definitions (agrum${OPTION} PRIVATE GUM_PUBLIC_${BLANK_MODULE}=)
                         endif ()
                     endforeach ()
@@ -206,8 +234,24 @@ macro(buildFileListsWithModules)
             # currently has a module-specific macro retagged and rolled out -- see
             # config.h.in's GUM_SHARED_PUBLIC comment for why the other 7 modules need
             # their own distinct name (not this one) once their turn comes.
+            #
+            # AGRUM_BASE_EXPORTING (separate from GUM_SHARED_EXPORTING above) exists
+            # solely so GUM_COCOR_PUBLIC (config.h.in) has a flag that is genuinely
+            # exclusive to compiling agrumBASE's own object files. GUM_SHARED_EXPORTING
+            # is NOT exclusive to BASE: wrappers/pyagrum/CMakeLists.txt deliberately
+            # also defines it on core's own SWIG wrap TU, because that TU whole-
+            # archives agrumBASE and is a legitimate second "owner" of every
+            # GUM_SHARED_PUBLIC symbol. Using GUM_SHARED_EXPORTING as GUM_COCOR_PUBLIC's
+            # BASE-detection flag (tried 2026-09-26) made core's wrap TU match that
+            # branch too whenever it locally reinstantiates a DIFFERENT module's
+            # CoCo/R grammar (e.g. PRM's o3prm Parser, via GUM_NO_EXTERN_TEMPLATE_CLASS)
+            # -- wrongly tagging it GUM_SHARED_PUBLIC/dllexport instead of falling
+            # through to the GUM_PUBLIC_BN fallback, leaving 47 PRM AST symbols
+            # (O3Type, O3Label, O3Position, ...) unresolved: LNK2019 on
+            # windows_pyagrum_2022_{py310,py314} and windows_conda_forge (see
+            # md_docs/backShared.md). AGRUM_BASE_EXPORTING has no such second owner.
             if (OPTION STREQUAL "BASE")
-                target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_EXPORTING)
+                target_compile_definitions (agrum${OPTION} PRIVATE GUM_SHARED_EXPORTING AGRUM_BASE_EXPORTING)
             else ()
                 # Producer flag for GUM_PUBLIC_<MODULE> (config.h.in), wired for real
                 # dllexport/dllimport on Windows under BUILD_SHARED_LIBS=ON -- see the
@@ -296,3 +340,61 @@ macro(buildFileListsWithModules)
         endif ()
     endforeach ()
 endmacro(buildFileListsWithModules)
+
+# ==========================================================================
+# GUM_PUBLIC_<MODULE> dllexport/dllimport macros (config.h.in): identical
+# for every non-BASE module, differing only in the module name -- generated
+# once from this template instead of hand-copied per module. Adding a 9th
+# module used to mean copy-pasting a ~30-line block and wiring its
+# AGRUM_<MODULE>_EXPORTING flag by hand; any typo or skipped branch
+# (dllexport vs dllimport, the WIN32 static-vs-shared split) reproduces the
+# exact class of LNK1181/LNK2019 bug this project spent many commits
+# chasing module by module (see md_docs/backShared.md). GUM_SHARED_PUBLIC
+# (BASE's own macro) is structurally different and stays hand-written in
+# config.h.in.
+#
+# Must run before src/CMakeLists.txt's configure_file(config.h.in ...), so
+# it only needs MODULES (set by modules.txt, included earlier), not
+# LIST_OF_MODULES (only ready once buildFileListsWithModules() runs, later).
+# ==========================================================================
+set(_GUM_PUBLIC_MODULE_TEMPLATE [[
+#ifndef GUM_PUBLIC_@@MOD@@
+#  if defined(_WIN32) && defined(AGRUM_BUILD_SHARED_LIBS)
+#    if defined(AGRUM_@@MOD@@_EXPORTING)
+#      define GUM_PUBLIC_@@MOD@@ __declspec(dllexport)
+#    else
+#      define GUM_PUBLIC_@@MOD@@ __declspec(dllimport)
+#    endif
+#  elif defined(_WIN32)
+     // No real DLL boundary to cross (BUILD_SHARED_LIBS=OFF, see
+     // CompilOptions.agrum.cmake): plain, undecorated symbol for every TU that
+     // sees this class/function, producer and consumer alike -- exactly how it
+     // already behaves on non-Windows platforms when not hidden. Using
+     // dllexport here instead (tried first, reverted) forces MSVC to eagerly
+     // instantiate and emit a full, non-weak copy of every implicit special
+     // member (default ctor/dtor/copy/assign) of a tagged class in *every*
+     // static library that merely includes its header, not just the one
+     // library that actually owns it -- multiple such libraries linked into
+     // the same final binary (e.g. a pyAgrum leaf .pyd linking both its own
+     // agrum<MODULE>.lib and core's import library) then collide as
+     // LNK2005 duplicate definitions. Plain (no decoration at all) keeps
+     // ordinary lazy, COMDAT/weak instantiation -- safe to duplicate and let
+     // the linker fold, exactly like any normal template or inline method.
+#    define GUM_PUBLIC_@@MOD@@
+#  elif defined(__GNUC__) || defined(__clang__)
+#    define GUM_PUBLIC_@@MOD@@ __attribute__((visibility("default")))
+#  else
+#    define GUM_PUBLIC_@@MOD@@
+#  endif
+#endif
+]])
+
+macro(generateGumPublicModuleMacros)
+    set(GUM_PUBLIC_MODULE_MACROS "")
+    foreach (_gum_module ${MODULES})
+        if (NOT _gum_module STREQUAL "BASE")
+            string(REPLACE "@@MOD@@" "${_gum_module}" _gum_module_block "${_GUM_PUBLIC_MODULE_TEMPLATE}")
+            string(APPEND GUM_PUBLIC_MODULE_MACROS "${_gum_module_block}\n")
+        endif ()
+    endforeach ()
+endmacro(generateGumPublicModuleMacros)

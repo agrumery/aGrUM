@@ -115,7 +115,7 @@ namespace gum {
      * @brief Returns the next value of an unique counter for PRM's node id.
      * @return Returns the next value of an unique counter for PRM's node id.
      */
-    NodeId nextNodeId();
+    GUM_PUBLIC_PRM NodeId nextNodeId();
 
   } /* namespace prm */
 } /* namespace gum */

@@ -41,9 +41,15 @@
 
 #include <agrum/base/core/math/formula.h>
 
-// Keep this here because of cyclic dependencies
+// Keep this here because of cyclic dependencies; GUM_COCOR_PUBLIC is locally
+// forced to BASE's own export macro so the grammar is tagged correctly
+// regardless of which translation unit includes it.
+#pragma push_macro("GUM_COCOR_PUBLIC")
+#undef GUM_COCOR_PUBLIC
+#define GUM_COCOR_PUBLIC GUM_SHARED_PUBLIC
 #include <agrum/base/core/math/cocoR/Parser.h>
 #include <agrum/base/core/math/cocoR/Scanner.h>
+#pragma pop_macro("GUM_COCOR_PUBLIC")
 
 namespace gum {
 
