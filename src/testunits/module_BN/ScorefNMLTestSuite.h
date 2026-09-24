@@ -46,7 +46,7 @@
 #include <agrum/base/core/math/gammaLog2.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scorefNML.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>

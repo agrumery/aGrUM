@@ -38,73 +38,105 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
-
 
 /** @file
- * @brief the no a priorclass: corresponds to 0 weight-sample
+ * @brief the internal prior for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/BN/learning/priors/noPrior.h>   // to ease IDE parser
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef GUM_LEARNING_PRIOR_K2_H
+#define GUM_LEARNING_PRIOR_K2_H
 
-#  include <agrum/BN/learning/priors/noPrior.h>
+#include <vector>
+
+#include <agrum/agrum.h>
+
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE
-    NoPrior::NoPrior(const DatabaseTable&                    database,
-                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Prior(database, nodeId2columns) {
-      Prior::setWeight(0.0);
-      GUM_CONSTRUCTOR(NoPrior);
-    }
+    /** @class K2Prior
+     * @brief the internal prior for the K2 score = Laplace Prior
+     * @headerfile K2Prior.h <agrum/base/database/K2Prior.h>
+     * @ingroup learning_priors
+     *
+     * K2 is a BD score with a Laplace prior (i.e., a smoothing of 1).
+     *
+     * It is important to note that, to be meaningful a structure + parameter
+     * learning requires that the same priors are taken into account during
+     * structure learning and parameter learning.
+     */
+    class PYGUM_SHARED_PUBLIC K2Prior: public SmoothingPrior {
+      public:
+      // ##########################################################################
+      /// @name Constructors / Destructors
+      // ##########################################################################
+      /// @{
 
-    /// copy constructor
-    INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) { GUM_CONS_CPY(NoPrior); }
+      /// default constructor
+      /** @param database the database from which learning is performed. This is
+       * useful to get access to the random variables
+       * @param nodeId2Columns a mapping from the ids of the nodes in the
+       * graphical model to the corresponding column in the DatabaseTable.
+       * This enables estimating from a database in which variable A corresponds
+       * to the 2nd column the parameters of a BN in which variable A has a
+       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
+       * is an identity, i.e., the value of a NodeId is equal to the index of
+       * the column in the DatabaseTable.
+       */
+      explicit K2Prior(const DatabaseTable&                    database,
+                       const Bijection< NodeId, std::size_t >& nodeId2columns
+                       = Bijection< NodeId, std::size_t >());
 
-    /// move constructor
-    INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) { GUM_CONS_MOV(NoPrior); }
+      /// copy constructor
+      K2Prior(const K2Prior& from);
 
-    /// virtual copy constructor
-    INLINE NoPrior* NoPrior::clone() const { return new NoPrior(*this); }
+      /// move constructor
+      K2Prior(K2Prior&& from);
 
-    /// destructor
-    INLINE NoPrior::~NoPrior() { GUM_DESTRUCTOR(NoPrior); }
+      /// virtual copy constructor
+      [[nodiscard]] K2Prior* clone() const override;
 
-    /// copy operator
-    INLINE NoPrior& NoPrior::operator=(const NoPrior& from) = default;
+      /// destructor
+      ~K2Prior() override;
 
-    /// move operator
-    INLINE NoPrior& NoPrior::operator=(NoPrior&& from) {
-      Prior::operator=(std::move(from));
-      return *this;
-    }
+      /// @}
 
-    /// sets the weight of the a priori
-    INLINE void NoPrior::setWeight(const double) {}
 
-    /// returns the type of the prior
-    INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
+      // ##########################################################################
+      /// @name Operators
+      // ##########################################################################
+      /// @{
 
-    /// indicates whether the prior is potentially informative
-    INLINE bool NoPrior::isInformative() const { return false; }
+      /// copy operator
+      K2Prior& operator=(const K2Prior& from);
 
-    /// returns the prior vector all the variables in the idset
-    INLINE void NoPrior::addJointPseudoCount(const IdCondSet&       idset,
-                                             std::vector< double >& counts) {}
+      /// move operator
+      K2Prior& operator=(K2Prior&& from);
 
-    /// returns the prior vector over only the conditioning set of an idset
-    INLINE void NoPrior::addConditioningPseudoCount(const IdCondSet&       idset,
-                                                    std::vector< double >& counts) {}
+      /// @}
 
+
+      // ##########################################################################
+      /// @name Accessors / Modifiers
+      // ##########################################################################
+      /// @{
+
+      /// dummy set weight function: in K2, weights are always equal to 1
+      void setWeight(const double weight) final;
+
+      /// @}
+    };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+// include the inlined functions if necessary
+#ifndef GUM_NO_INLINE
+#  include <agrum/base/stattests/priors/K2Prior_inl.h>
+#endif /* GUM_NO_INLINE */
+
+#endif /* GUM_LEARNING_PRIOR_K2_H */

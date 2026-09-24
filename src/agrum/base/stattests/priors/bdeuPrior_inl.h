@@ -41,57 +41,76 @@
 #pragma once
 
 
+#include <agrum/base/stattests/priors/bdeuPrior.h>
 /** @file
- * @brief the internal prior for the K2 score = Laplace Prior
+ * @brief the internal prior for the BDeu score (N' / (r_i * q_i)
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/BN/learning/priors/K2Prior.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#  include <agrum/BN/learning/priors/K2Prior.h>
+namespace gum::learning {
 
-namespace gum {
+  /// default constructor
+  INLINE BDeuPrior::BDeuPrior(const DatabaseTable&                    database,
+                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
+      Prior(database, nodeId2columns) {
+    GUM_CONSTRUCTOR(BDeuPrior)
+  }
 
-  namespace learning {
+  /// copy constructor
+  INLINE BDeuPrior::BDeuPrior(const BDeuPrior& from) : Prior(from) { GUM_CONS_CPY(BDeuPrior) }
 
+  /// move constructor
+  INLINE BDeuPrior::BDeuPrior(BDeuPrior&& from) noexcept : Prior(std::move(from)) {
+    GUM_CONS_MOV(BDeuPrior)
+  }
 
-    /// default constructors
-    INLINE K2Prior::K2Prior(const DatabaseTable&                    database,
-                            const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        SmoothingPrior(database, nodeId2columns) {
-      GUM_CONSTRUCTOR(K2Prior);
+  /// virtual copy constructor
+  INLINE BDeuPrior* BDeuPrior::clone() const { return new BDeuPrior(*this); }
+
+  /// destructor
+  INLINE BDeuPrior::~BDeuPrior() { GUM_DESTRUCTOR(BDeuPrior) }
+
+  /// copy operator
+  INLINE BDeuPrior& BDeuPrior::operator=(const BDeuPrior& from) = default;
+
+  /// move operator
+  INLINE BDeuPrior& BDeuPrior::operator=(BDeuPrior&& from) noexcept {
+    Prior::operator=(std::move(from));
+    return *this;
+  }
+
+  /// sets the effective sample size N' (alias of setEffectiveSampleSize ())
+  INLINE void BDeuPrior::setWeight(const double weight) {
+    if (weight < 0.0) {
+      GUM_ERROR(OutOfBounds, "A negative weight (" << weight << ") is forbidden for the BDeu prior")
     }
+    this->weight_ = weight;
+  }
 
-    /// copy constructor
-    INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) { GUM_CONS_CPY(K2Prior); }
+  /// sets the effective sample size N'
+  INLINE void BDeuPrior::setEffectiveSampleSize(const double weight) { setWeight(weight); }
 
-    /// move constructor
-    INLINE K2Prior::K2Prior(K2Prior&& from) : SmoothingPrior(std::move(from)) {
-      GUM_CONS_MOV(K2Prior);
-    }
+  /// returns the type of the prior
+  INLINE PriorType BDeuPrior::getType() const { return PriorType::BDeuPriorType; }
 
-    /// virtual copy constructor
-    INLINE K2Prior* K2Prior::clone() const { return new K2Prior(*this); }
+  /// indicates whether the prior is potentially informative
+  INLINE bool BDeuPrior::isInformative() const { return this->weight_ != 0.0; }
 
-    /// destructor
-    INLINE K2Prior::~K2Prior() { GUM_DESTRUCTOR(K2Prior); }
+  /// returns the prior vector all the variables in the idset
+  INLINE void BDeuPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                             std::vector< double >& counts) {
+    // if the idset is empty or the weight is zero, the prior is also empty
+    if (idset.empty() || (this->weight_ == 0.0)) return;
 
-    /// copy operator
-    INLINE K2Prior& K2Prior::operator=(const K2Prior& from) = default;
-
-    /// move operator
-    INLINE K2Prior& K2Prior::operator=(K2Prior&& from) {
-      SmoothingPrior::operator=(std::move(from));
-      return *this;
-    }
-
-    /// dummy set weight function: in K2, weights are always equal to 1
-    INLINE void K2Prior::setWeight(const double weight) {}
+    // otherwise, add the weight to all the cells in the counting vector
+    const double weight = this->weight_ / double(counts.size());
+    for (auto& count: counts)
+      count += weight;
+  }
 
 
-  } /* namespace learning */
-
-} /* namespace gum */
+}   // namespace gum::learning
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -38,21 +38,73 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
 
-/**
- * @file
- * @brief the no a priorclass: corresponds to 0 weight-sample
+
+/** @file
+ * @brief the smooth a priori: adds a weight w to all the counts
  *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-
-#include <agrum/BN/learning/priors/noPrior.h>
-
+#include <agrum/base/stattests/priors/smoothingPrior.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-/// include the inlined functions if necessary
-#  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/noPrior_inl.h>
-#  endif /* GUM_NO_INLINE */
+namespace gum {
 
-#endif   /* DOXYGEN_SHOULD_SKIP_THIS */
+  namespace learning {
+
+    /// default constructor
+    INLINE
+    SmoothingPrior::SmoothingPrior(const DatabaseTable&                    database,
+                                   const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Prior(database, nodeId2columns) {
+      GUM_CONSTRUCTOR(SmoothingPrior);
+    }
+
+    /// copy constructor
+    INLINE SmoothingPrior::SmoothingPrior(const SmoothingPrior& from) : Prior(from) {
+      GUM_CONS_CPY(SmoothingPrior);
+    }
+
+    /// move constructor
+    INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from)) {
+      GUM_CONS_MOV(SmoothingPrior);
+    }
+
+    /// virtual copy constructor
+    INLINE SmoothingPrior* SmoothingPrior::clone() const { return new SmoothingPrior(*this); }
+
+    /// destructor
+    INLINE SmoothingPrior::~SmoothingPrior() { GUM_DESTRUCTOR(SmoothingPrior); }
+
+    /// copy operator
+    INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) = default;
+
+    /// move operator
+    INLINE SmoothingPrior& SmoothingPrior::operator=(SmoothingPrior&& from) {
+      Prior::operator=(std::move(from));
+      return *this;
+    }
+
+    /// returns the type of the prior
+    INLINE PriorType SmoothingPrior::getType() const { return PriorType::SmoothingPriorType; }
+
+    /// indicates whether the prior is potentially informative
+    INLINE bool SmoothingPrior::isInformative() const { return this->weight_ != 0.0; }
+
+    /// returns the prior vector all the variables in the idset
+    INLINE void SmoothingPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                                    std::vector< double >& counts) {
+      // if the idset is empty or the weight is zero, the prior is also empty
+      if (idset.empty() || (this->weight_ == 0.0)) return;
+
+      // otherwise, add the weight to all the cells in the counting vector
+      for (auto& count: counts)
+        count += this->weight_;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

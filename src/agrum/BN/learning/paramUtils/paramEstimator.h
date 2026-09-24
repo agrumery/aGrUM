@@ -50,7 +50,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/stattests/recordCounter.h>
-#include <agrum/BN/learning/priors/prior.h>
+#include <agrum/base/stattests/priors/prior.h>
 
 #include <type_traits>
 

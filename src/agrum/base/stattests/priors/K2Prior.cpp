@@ -41,46 +41,18 @@
 
 /**
  * @file
- * @brief the base class for all a priori
+ * @brief the internal prior for the K2 score: Laplace Prior
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/priors/prior.h>
+#include <agrum/base/stattests/priors/K2Prior.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/prior_inl.h>
+#    include <agrum/base/stattests/priors/K2Prior_inl.h>
 #  endif /* GUM_NO_INLINE */
 
-namespace gum {
-
-  namespace learning {
-
-    /// copy operator
-    Prior& Prior::operator=(const Prior& from) {
-      if (this != &from) {
-        nodeId2columns_ = from.nodeId2columns_;
-        weight_         = from.weight_;
-        database_       = from.database_;
-      }
-      return *this;
-    }
-
-    /// move operator
-    Prior& Prior::operator=(Prior&& from) noexcept {
-      if (this != &from) {
-        nodeId2columns_ = std::move(from.nodeId2columns_);
-        weight_         = from.weight_;
-        database_       = from.database_;
-      }
-      return *this;
-    }
-
-  } /* namespace learning */
-
-} /* namespace gum */
-
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+#endif   /* DOXYGEN_SHOULD_SKIP_THIS */

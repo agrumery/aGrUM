@@ -59,7 +59,7 @@
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>

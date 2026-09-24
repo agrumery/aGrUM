@@ -56,7 +56,7 @@
 
 #include <agrum/base/database/CSVParser.h>
 #include <agrum/base/multidim/instantiation.h>
-#include <agrum/BN/learning/priors/prior.h>
+#include <agrum/base/stattests/priors/prior.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
 #include <agrum/BN/learning/scores/scoreBD.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>

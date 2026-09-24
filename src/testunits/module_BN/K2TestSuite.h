@@ -58,7 +58,7 @@
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>

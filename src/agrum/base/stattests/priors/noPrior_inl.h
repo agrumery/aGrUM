@@ -38,51 +38,73 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
 
-/**
- * @file
- * @brief the smooth a priori: adds a weight w to all the counting
+
+/** @file
+ * @brief the no a priorclass: corresponds to 0 weight-sample
  *
- * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-
-#include <agrum/BN/learning/priors/smoothingPrior.h>
-
+#include <agrum/base/stattests/priors/noPrior.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-/// include the inlined functions if necessary
-#  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/smoothingPrior_inl.h>
-#  endif /* GUM_NO_INLINE */
+#  include <agrum/base/stattests/priors/noPrior.h>
 
-namespace gum::learning {
+namespace gum {
 
-  /// returns the prior vector over only the conditioning set of an idset
-  void SmoothingPrior::addConditioningPseudoCount(const IdCondSet&       idset,
-                                                  std::vector< double >& counts) {
-    // if the conditioning set is empty or the weight is equal to zero,
-    // the prior is also empty
-    if ((idset.size() == idset.nbLHSIds()) || (this->weight_ == 0.0)
-        || (idset.nbLHSIds() == std::size_t(0)))
-      return;
+  namespace learning {
 
-    // compute the weight of the conditioning set
-    double weight = this->weight_;
-    if (this->nodeId2columns_.empty()) {
-      for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-        weight *= double(this->database_->domainSize(idset[i]));
-      }
-    } else {
-      for (auto i = std::size_t(0); i < idset.nbLHSIds(); ++i) {
-        weight *= double(this->database_->domainSize(this->nodeId2columns_.second(idset[i])));
-      }
+    /// default constructor
+    INLINE
+    NoPrior::NoPrior(const DatabaseTable&                    database,
+                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Prior(database, nodeId2columns) {
+      Prior::setWeight(0.0);
+      GUM_CONSTRUCTOR(NoPrior);
     }
 
-    // add the weight to the counting vector
-    for (auto& count: counts)
-      count += weight;
-  }
+    /// copy constructor
+    INLINE NoPrior::NoPrior(const NoPrior& from) : Prior(from) { GUM_CONS_CPY(NoPrior); }
 
-}   // namespace gum::learning
+    /// move constructor
+    INLINE NoPrior::NoPrior(NoPrior&& from) : Prior(std::move(from)) { GUM_CONS_MOV(NoPrior); }
+
+    /// virtual copy constructor
+    INLINE NoPrior* NoPrior::clone() const { return new NoPrior(*this); }
+
+    /// destructor
+    INLINE NoPrior::~NoPrior() { GUM_DESTRUCTOR(NoPrior); }
+
+    /// copy operator
+    INLINE NoPrior& NoPrior::operator=(const NoPrior& from) = default;
+
+    /// move operator
+    INLINE NoPrior& NoPrior::operator=(NoPrior&& from) {
+      Prior::operator=(std::move(from));
+      return *this;
+    }
+
+    /// sets the weight of the a priori
+    INLINE void NoPrior::setWeight(const double) {}
+
+    /// returns the type of the prior
+    INLINE PriorType NoPrior::getType() const { return PriorType::NoPriorType; }
+
+    /// indicates whether the prior is potentially informative
+    INLINE bool NoPrior::isInformative() const { return false; }
+
+    /// returns the prior vector all the variables in the idset
+    INLINE void NoPrior::addJointPseudoCount(const IdCondSet&       idset,
+                                             std::vector< double >& counts) {}
+
+    /// returns the prior vector over only the conditioning set of an idset
+    INLINE void NoPrior::addConditioningPseudoCount(const IdCondSet&       idset,
+                                                    std::vector< double >& counts) {}
+
+
+  } /* namespace learning */
+
+} /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

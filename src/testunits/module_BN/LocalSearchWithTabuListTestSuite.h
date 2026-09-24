@@ -57,7 +57,7 @@
 #include <agrum/BN/learning/constraints/structuralConstraintTabuList.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>

@@ -40,29 +40,29 @@
 
 
 /** @file
- * @brief the smooth a priori: adds a weight w to all the counts
+ * @brief the no a priorclass: corresponds to 0 weight-sample
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_PRIOR_SMOOTHING_H
-#define GUM_LEARNING_PRIOR_SMOOTHING_H
+#ifndef GUM_LEARNING_PRIOR_NO_prior_H
+#define GUM_LEARNING_PRIOR_NO_prior_H
 
 #include <vector>
 
 #include <agrum/agrum.h>
 
-#include <agrum/BN/learning/priors/prior.h>
+#include <agrum/base/stattests/priors/prior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class SmoothingPrior
-     * @brief the smooth a priori: adds a weight w to all the counts
-     * @headerfile smoothingPrior.h <agrum/base/database/smoothingPrior.h>
+    /** @class NoPrior
+     * @brief the no a priorclass: corresponds to 0 weight-sample
+     * @headerfile noPrior.h <agrum/base/stattests/priors/noPrior.h>
      * @ingroup learning_priors
      */
-    class PYGUM_SHARED_PUBLIC SmoothingPrior: public Prior {
+    class PYGUM_SHARED_PUBLIC NoPrior: public Prior {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -80,21 +80,21 @@ namespace gum {
        * is an identity, i.e., the value of a NodeId is equal to the index of
        * the column in the DatabaseTable.
        */
-      explicit SmoothingPrior(const DatabaseTable&                    database,
-                              const Bijection< NodeId, std::size_t >& nodeId2columns
-                              = Bijection< NodeId, std::size_t >());
+      NoPrior(const DatabaseTable&                    database,
+              const Bijection< NodeId, std::size_t >& nodeId2columns
+              = Bijection< NodeId, std::size_t >());
 
       /// copy constructor
-      SmoothingPrior(const SmoothingPrior& from);
+      NoPrior(const NoPrior& from);
 
       /// move constructor
-      SmoothingPrior(SmoothingPrior&& from) noexcept;
+      NoPrior(NoPrior&& from);
 
       /// virtual copy constructor
-      [[nodiscard]] SmoothingPrior* clone() const override;
+      [[nodiscard]] NoPrior* clone() const override;
 
       /// destructor
-      ~SmoothingPrior() override;
+      ~NoPrior() override;
 
       /// @}
 
@@ -105,10 +105,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      SmoothingPrior& operator=(const SmoothingPrior& from);
+      NoPrior& operator=(const NoPrior& from);
 
       /// move operator
-      SmoothingPrior& operator=(SmoothingPrior&& from);
+      NoPrior& operator=(NoPrior&& from);
 
       /// @}
 
@@ -117,6 +117,9 @@ namespace gum {
       /// @name Accessors / Modifiers
       // ##########################################################################
       /// @{
+
+      /// sets the weight of the a prior(kind of effective sample size)
+      void setWeight(const double weight) final;
 
       /// returns the type of the prior
       PriorType getType() const final;
@@ -155,7 +158,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/smoothingPrior_inl.h>
+#  include <agrum/base/stattests/priors/noPrior_inl.h>
 #endif /* GUM_NO_INLINE */
 
-#endif /* GUM_LEARNING_PRIOR_SMOOTHING_H */
+#endif /* GUM_LEARNING_PRIOR_NO_prior_H */

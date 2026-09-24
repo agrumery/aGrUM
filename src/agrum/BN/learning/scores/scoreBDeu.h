@@ -53,7 +53,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/math/gammaLog2.h>
-#include <agrum/BN/learning/priors/bdeuPrior.h>
+#include <agrum/base/stattests/priors/bdeuPrior.h>
 #include <agrum/BN/learning/scores/score.h>
 
 namespace gum {

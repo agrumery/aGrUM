@@ -54,7 +54,6 @@
 #include <agrum/base/multidim/implementations/multiDimFunctionGraphManager.h>
 #include <agrum/base/multidim/implementations/multiDimImplementation.h>
 #include <agrum/base/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
-#include <agrum/FMDP/learning/core/templateStrategy.h>
 
 namespace gum {
 

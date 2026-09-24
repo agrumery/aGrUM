@@ -38,105 +38,60 @@
  *                                                                          *
  ****************************************************************************/
 
+#pragma once
+
 
 /** @file
  * @brief the internal prior for the K2 score = Laplace Prior
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#ifndef GUM_LEARNING_PRIOR_K2_H
-#define GUM_LEARNING_PRIOR_K2_H
+#include <agrum/base/stattests/priors/K2Prior.h>   // to ease IDE parser
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <vector>
-
-#include <agrum/agrum.h>
-
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#  include <agrum/base/stattests/priors/K2Prior.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class K2Prior
-     * @brief the internal prior for the K2 score = Laplace Prior
-     * @headerfile K2Prior.h <agrum/base/database/K2Prior.h>
-     * @ingroup learning_priors
-     *
-     * K2 is a BD score with a Laplace prior (i.e., a smoothing of 1).
-     *
-     * It is important to note that, to be meaningful a structure + parameter
-     * learning requires that the same priors are taken into account during
-     * structure learning and parameter learning.
-     */
-    class PYGUM_SHARED_PUBLIC K2Prior: public SmoothingPrior {
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
 
-      /// default constructor
-      /** @param database the database from which learning is performed. This is
-       * useful to get access to the random variables
-       * @param nodeId2Columns a mapping from the ids of the nodes in the
-       * graphical model to the corresponding column in the DatabaseTable.
-       * This enables estimating from a database in which variable A corresponds
-       * to the 2nd column the parameters of a BN in which variable A has a
-       * NodeId of 5. An empty nodeId2Columns bijection means that the mapping
-       * is an identity, i.e., the value of a NodeId is equal to the index of
-       * the column in the DatabaseTable.
-       */
-      explicit K2Prior(const DatabaseTable&                    database,
-                       const Bijection< NodeId, std::size_t >& nodeId2columns
-                       = Bijection< NodeId, std::size_t >());
+    /// default constructors
+    INLINE K2Prior::K2Prior(const DatabaseTable&                    database,
+                            const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        SmoothingPrior(database, nodeId2columns) {
+      GUM_CONSTRUCTOR(K2Prior);
+    }
 
-      /// copy constructor
-      K2Prior(const K2Prior& from);
+    /// copy constructor
+    INLINE K2Prior::K2Prior(const K2Prior& from) : SmoothingPrior(from) { GUM_CONS_CPY(K2Prior); }
 
-      /// move constructor
-      K2Prior(K2Prior&& from);
+    /// move constructor
+    INLINE K2Prior::K2Prior(K2Prior&& from) : SmoothingPrior(std::move(from)) {
+      GUM_CONS_MOV(K2Prior);
+    }
 
-      /// virtual copy constructor
-      [[nodiscard]] K2Prior* clone() const override;
+    /// virtual copy constructor
+    INLINE K2Prior* K2Prior::clone() const { return new K2Prior(*this); }
 
-      /// destructor
-      ~K2Prior() override;
+    /// destructor
+    INLINE K2Prior::~K2Prior() { GUM_DESTRUCTOR(K2Prior); }
 
-      /// @}
+    /// copy operator
+    INLINE K2Prior& K2Prior::operator=(const K2Prior& from) = default;
 
+    /// move operator
+    INLINE K2Prior& K2Prior::operator=(K2Prior&& from) {
+      SmoothingPrior::operator=(std::move(from));
+      return *this;
+    }
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
+    /// dummy set weight function: in K2, weights are always equal to 1
+    INLINE void K2Prior::setWeight(const double weight) {}
 
-      /// copy operator
-      K2Prior& operator=(const K2Prior& from);
-
-      /// move operator
-      K2Prior& operator=(K2Prior&& from);
-
-      /// @}
-
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-      /// @{
-
-      /// dummy set weight function: in K2, weights are always equal to 1
-      void setWeight(const double weight) final;
-
-      /// @}
-    };
 
   } /* namespace learning */
 
 } /* namespace gum */
 
-// include the inlined functions if necessary
-#ifndef GUM_NO_INLINE
-#  include <agrum/BN/learning/priors/K2Prior_inl.h>
-#endif /* GUM_NO_INLINE */
-
-#endif /* GUM_LEARNING_PRIOR_K2_H */
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

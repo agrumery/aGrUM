@@ -45,14 +45,14 @@
 
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/priors/bdeuPrior.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
 
-  struct BDeuPriorTestSuite {
+  struct SmoothingPriorTestSuite {
     public:
     // namespace gum_tests
   };
@@ -83,12 +83,12 @@ namespace gum_tests {
     gum::learning::DatabaseTable database(trans_set);
 
 
-    gum::learning::BDeuPrior prior(database);
+    gum::learning::SmoothingPrior prior(database);
     CHECK_EQ(prior.weight(), 1.0);
     prior.setWeight(4.0);
     CHECK_EQ(prior.weight(), 4.0);
 
-    CHECK_EQ(prior.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     gum::NodeId                node0 = 0;
     gum::NodeId                node1 = 1;
@@ -107,7 +107,7 @@ namespace gum_tests {
     std::vector< double > vect(3, 1.0);
     prior.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 3));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior.addConditioningPseudoCount(idset1, vect);
@@ -116,7 +116,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 12));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior.addConditioningPseudoCount(idset2, vect);
@@ -125,29 +125,29 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 576));
+      CHECK_EQ(val, 5.0);
     }
 
     vect.clear();
     vect.resize(48, 1.0);
     prior.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 48));
+      CHECK_EQ(val, 49.0);
     }
 
 
-    gum::learning::BDeuPrior prior2(prior);
+    gum::learning::SmoothingPrior prior2(prior);
     CHECK_EQ(prior2.weight(), 4.0);
     prior2.setWeight(2.0);
     CHECK_EQ(prior2.weight(), 2.0);
 
-    CHECK_EQ(prior2.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior2.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(3, 1.0);
     prior2.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 3));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior2.addConditioningPseudoCount(idset1, vect);
@@ -156,7 +156,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior2.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 12));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior2.addConditioningPseudoCount(idset2, vect);
@@ -165,28 +165,28 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior2.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(48, 1.0);
     prior2.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 48));
+      CHECK_EQ(val, 25.0);
     }
 
 
-    gum::learning::BDeuPrior prior3(std::move(prior2));
+    gum::learning::SmoothingPrior prior3(std::move(prior2));
     CHECK_EQ(prior3.weight(), 2.0);
     prior3.setWeight(4.0);
     CHECK_EQ(prior3.weight(), 4.0);
 
-    CHECK_EQ(prior3.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior3.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(3, 1.0);
     prior3.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 3));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior3.addConditioningPseudoCount(idset1, vect);
@@ -195,7 +195,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior3.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 12));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior3.addConditioningPseudoCount(idset2, vect);
@@ -204,28 +204,28 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior3.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 576));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     vect.resize(48, 1.0);
     prior3.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 48));
+      CHECK_EQ(val, 49.0);
     }
 
 
-    gum::learning::BDeuPrior* prior4 = prior.clone();
+    gum::learning::SmoothingPrior* prior4 = prior.clone();
     CHECK_EQ(prior4->weight(), 4.0);
     prior4->setWeight(2.0);
     CHECK_EQ(prior4->weight(), 2.0);
 
-    CHECK_EQ(prior4->getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(3, 1.0);
     prior4->addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 3));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior4->addConditioningPseudoCount(idset1, vect);
@@ -234,7 +234,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior4->addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 12));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior4->addConditioningPseudoCount(idset2, vect);
@@ -243,32 +243,32 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior4->addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(48, 1.0);
     prior4->addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 48));
+      CHECK_EQ(val, 25.0);
     }
 
     delete prior4;
 
 
-    gum::learning::DatabaseTable database2;
-    gum::learning::BDeuPrior     prior5(database2);
+    gum::learning::DatabaseTable  database2;
+    gum::learning::SmoothingPrior prior5(database2);
     prior5 = prior;
     CHECK_EQ(prior5.weight(), 4.0);
     prior5.setWeight(2.0);
     CHECK_EQ(prior5.weight(), 2.0);
 
-    CHECK_EQ(prior5.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior5.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(3, 1.0);
     prior5.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 3));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset1, vect);
@@ -277,7 +277,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior5.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 12));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset2, vect);
@@ -286,13 +286,13 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior5.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(48, 1.0);
     prior5.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 48));
+      CHECK_EQ(val, 25.0);
     }
 
     prior5 = std::move(prior);
@@ -300,13 +300,13 @@ namespace gum_tests {
     prior5.setWeight(1.0);
     CHECK_EQ(prior5.weight(), 1.0);
 
-    CHECK_EQ(prior5.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior5.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(3, 1.0);
     prior5.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 3));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset1, vect);
@@ -315,7 +315,7 @@ namespace gum_tests {
     vect.resize(12, 1.0);
     prior5.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 12));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset2, vect);
@@ -324,13 +324,13 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior5.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 576));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     vect.resize(48, 1.0);
     prior5.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 48));
+      CHECK_EQ(val, 13.0);
     }
   }
 
@@ -354,7 +354,8 @@ namespace gum_tests {
       gum::learning::DBTranslator4LabelizedVariable translator2(var2, miss);
       std::vector< std::string >                    names{"A", "B", "C", "D", "E", "F"};
 
-      for (auto i = std::size_t(0); i < names.size(); ++i) {
+      for (std::size_t i = std::size_t(0); i < names.size(); ++i) {
+        // translator.setName ( name );
         if (i % 2 == 0) {
           trans_set.insertTranslator(translator1, i);
         } else {
@@ -380,12 +381,12 @@ namespace gum_tests {
     nodeId2columns.insert(node5, std::size_t(5));
 
 
-    gum::learning::BDeuPrior prior(database, nodeId2columns);
+    gum::learning::SmoothingPrior prior(database, nodeId2columns);
     CHECK_EQ(prior.weight(), 1.0);
     prior.setWeight(4.0);
     CHECK_EQ(prior.weight(), 4.0);
 
-    CHECK_EQ(prior.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     std::vector< gum::NodeId > cond_empty;
     std::vector< gum::NodeId > cond1{node3, node5, node4};
@@ -399,7 +400,7 @@ namespace gum_tests {
     std::vector< double > vect(4, 1.0);
     prior.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 4));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior.addConditioningPseudoCount(idset1, vect);
@@ -408,7 +409,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 16));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior.addConditioningPseudoCount(idset2, vect);
@@ -417,28 +418,28 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 576));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 36));
+      CHECK_EQ(val, 65.0);
     }
 
 
-    gum::learning::BDeuPrior prior2(prior);
+    gum::learning::SmoothingPrior prior2(prior);
     CHECK_EQ(prior2.weight(), 4.0);
     prior2.setWeight(2.0);
     CHECK_EQ(prior2.weight(), 2.0);
 
-    CHECK_EQ(prior2.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior2.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(4, 1.0);
     prior2.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 4));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior2.addConditioningPseudoCount(idset1, vect);
@@ -447,7 +448,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior2.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 16));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior2.addConditioningPseudoCount(idset2, vect);
@@ -456,27 +457,27 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior2.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior2.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 36));
+      CHECK_EQ(val, 33.0);
     }
 
-    gum::learning::BDeuPrior prior3(std::move(prior2));
+    gum::learning::SmoothingPrior prior3(std::move(prior2));
     CHECK_EQ(prior3.weight(), 2.0);
     prior3.setWeight(4.0);
     CHECK_EQ(prior3.weight(), 4.0);
 
-    CHECK_EQ(prior3.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior3.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(4, 1.0);
     prior3.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 4));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior3.addConditioningPseudoCount(idset1, vect);
@@ -485,7 +486,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior3.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 16));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     prior3.addConditioningPseudoCount(idset2, vect);
@@ -494,28 +495,28 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior3.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 576));
+      CHECK_EQ(val, 5.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior3.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 4.0 / 36));
+      CHECK_EQ(val, 65.0);
     }
 
 
-    gum::learning::BDeuPrior* prior4 = prior.clone();
+    gum::learning::SmoothingPrior* prior4 = prior.clone();
     CHECK_EQ(prior4->weight(), 4.0);
     prior4->setWeight(2.0);
     CHECK_EQ(prior4->weight(), 2.0);
 
-    CHECK_EQ(prior4->getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior4->getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(4, 1.0);
     prior4->addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 4));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior4->addConditioningPseudoCount(idset1, vect);
@@ -524,7 +525,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior4->addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 16));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior4->addConditioningPseudoCount(idset2, vect);
@@ -533,31 +534,31 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior4->addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior4->addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 36));
+      CHECK_EQ(val, 33.0);
     }
 
     delete prior4;
 
-    gum::learning::DatabaseTable database2;
-    gum::learning::BDeuPrior     prior5(database2);
+    gum::learning::DatabaseTable  database2;
+    gum::learning::SmoothingPrior prior5(database2);
     prior5 = prior;
     CHECK_EQ(prior5.weight(), 4.0);
     prior5.setWeight(2.0);
     CHECK_EQ(prior5.weight(), 2.0);
 
-    CHECK_EQ(prior5.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior5.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(4, 1.0);
     prior5.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 4));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset1, vect);
@@ -566,7 +567,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior5.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 16));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset2, vect);
@@ -575,13 +576,13 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior5.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 576));
+      CHECK_EQ(val, 3.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior5.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 2.0 / 36));
+      CHECK_EQ(val, 33.0);
     }
 
 
@@ -590,13 +591,13 @@ namespace gum_tests {
     prior5.setWeight(1.0);
     CHECK_EQ(prior5.weight(), 1.0);
 
-    CHECK_EQ(prior5.getType(), gum::learning::PriorType::BDeuPriorType);
+    CHECK_EQ(prior5.getType(), gum::learning::PriorType::SmoothingPriorType);
 
     vect.clear();
     vect.resize(4, 1.0);
     prior5.addJointPseudoCount(idset1, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 4));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset1, vect);
@@ -605,7 +606,7 @@ namespace gum_tests {
     vect.resize(16, 1.0);
     prior5.addJointPseudoCount(idset2, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 16));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     prior5.addConditioningPseudoCount(idset2, vect);
@@ -614,13 +615,13 @@ namespace gum_tests {
     vect.resize(576, 1.0);
     prior5.addJointPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 576));
+      CHECK_EQ(val, 2.0);
     }
     vect.clear();
     vect.resize(36, 1.0);
     prior5.addConditioningPseudoCount(idset3, vect);
     for (const auto val: vect) {
-      CHECK_EQ(val, (1.0 + 1.0 / 36));
+      CHECK_EQ(val, 17.0);
     }
   }
 

@@ -48,7 +48,7 @@
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDiGraph.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>

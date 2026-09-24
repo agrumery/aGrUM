@@ -41,18 +41,18 @@
 
 /**
  * @file
- * @brief the internal prior for the K2 score: Laplace Prior
+ * @brief the no a priorclass: corresponds to 0 weight-sample
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
-#include <agrum/BN/learning/priors/K2Prior.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #  ifdef GUM_NO_INLINE
-#    include <agrum/BN/learning/priors/K2Prior_inl.h>
+#    include <agrum/base/stattests/priors/noPrior_inl.h>
 #  endif /* GUM_NO_INLINE */
 
 #endif   /* DOXYGEN_SHOULD_SKIP_THIS */

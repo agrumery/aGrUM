@@ -62,8 +62,8 @@
 #include <agrum/BN/learning/constraints/structuralConstraintTotalOrder.h>
 #include <agrum/BN/learning/greedyHillClimbing.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
-#include <agrum/BN/learning/priors/smoothingPrior.h>
+#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scoreBIC.h>
 #include <agrum/BN/learning/scores/scoreK2.h>

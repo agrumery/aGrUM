@@ -38,69 +38,49 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
 
+/**
+ * @file
+ * @brief the base class for all a priori
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ */
 
-#include <iostream>
+#include <agrum/base/stattests/priors/prior.h>
 
-#include <agrum/base/database/databaseTable.h>
-#include <agrum/base/database/DBInitializerFromCSV.h>
-#include <agrum/base/database/DBRowGeneratorParser.h>
-#include <agrum/base/database/DBTranslator4LabelizedVariable.h>
-#include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/base/stattests/kNML.h>
-#include <agrum/base/stattests/priors/noPrior.h>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <testunits/gumtest/AgrumTestSuite.h>
-#include <testunits/gumtest/utils.h>
+/// include the inlined functions if necessary
+#  ifdef GUM_NO_INLINE
+#    include <agrum/base/stattests/priors/prior_inl.h>
+#  endif /* GUM_NO_INLINE */
 
-namespace gum_tests {
+namespace gum {
 
-  struct KNMLTestSuite {
-    public:
-    // namespace gum_tests
-  };
+  namespace learning {
 
-  GUM_TEST(1) {
-    gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
-    const auto&                         var_names = initializer.variableNames();
-    const std::size_t                   nb_vars   = var_names.size();
-
-    gum::learning::DBTranslatorSet                translator_set;
-    gum::learning::DBTranslator4LabelizedVariable translator;
-    for (std::size_t i = 0; i < nb_vars; ++i) {
-      translator_set.insertTranslator(translator, i);
+    /// copy operator
+    Prior& Prior::operator=(const Prior& from) {
+      if (this != &from) {
+        nodeId2columns_ = from.nodeId2columns_;
+        weight_         = from.weight_;
+        database_       = from.database_;
+      }
+      return *this;
     }
 
-    gum::learning::DatabaseTable database(translator_set);
-    database.setVariableNames(initializer.variableNames());
-    initializer.fillDatabase(database);
+    /// move operator
+    Prior& Prior::operator=(Prior&& from) noexcept {
+      if (this != &from) {
+        nodeId2columns_ = std::move(from.nodeId2columns_);
+        weight_         = from.weight_;
+        database_       = from.database_;
+      }
+      return *this;
+    }
 
-    gum::learning::DBRowGeneratorSet    genset;
-    gum::learning::DBRowGeneratorParser parser(database.handler(), genset);
+  } /* namespace learning */
 
-    // std::vector< gum::Size > modalities(nb_vars, 2);
-    gum::learning::NoPrior prior(database);
+} /* namespace gum */
 
-    gum::learning::KNML score(parser, prior);
-    /* 3-4 K 2.6844818514806183
-     * 2-6 K 4.1414644088786756
-     * 4-7|5 K 3.763846399915938
-     */
-    // gum::Idx id1 = score.addNodeSet(3, 4);
-    // gum::Idx id2 = score.addNodeSet(2, 6);
-    // gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
-    CHECK((score.score(3, 4)) == doctest::Approx(3.87288).epsilon(1e-2));
-    CHECK((score.score(2, 6)) == doctest::Approx(5.97477).epsilon(1e-2));
-    CHECK((score.score(4, 7, std::vector< gum::NodeId >{5}))
-          == doctest::Approx(5.43007).epsilon(1e-2));
-
-    score.clear();
-    // id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
-    // id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
-    CHECK((score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
-           - score.score(6, 7, std::vector< gum::NodeId >{1, 4}))
-          == doctest::Approx(0.0).epsilon(1e-2));
-  }
-
-} /* namespace gum_tests */
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

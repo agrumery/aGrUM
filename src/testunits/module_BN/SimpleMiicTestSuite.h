@@ -56,7 +56,7 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 #include <agrum/BN/learning/SimpleMiic.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>

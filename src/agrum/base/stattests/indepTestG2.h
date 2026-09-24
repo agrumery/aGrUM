@@ -49,7 +49,7 @@
 #define GUM_LEARNING_INDEP_TEST_G2_H
 
 #include <agrum/base/stattests/independenceTest.h>
-#include <agrum/BN/learning/priors/noPrior.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 
 namespace gum {
 

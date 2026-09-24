@@ -80,7 +80,7 @@
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/PC.h>
-#include <agrum/BN/learning/priors/DirichletPriorFromDatabase.h>
+#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
 #include <agrum/BN/learning/scores/scoreBD.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>

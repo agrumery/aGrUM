@@ -41,67 +41,118 @@
 #pragma once
 
 
+#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
 /** @file
- * @brief the smooth a priori: adds a weight w to all the counts
+ * @brief A dirichlet priori: computes its N'_ijk from a database
  *
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
-#include <agrum/BN/learning/priors/smoothingPrior.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE
-    SmoothingPrior::SmoothingPrior(const DatabaseTable&                    database,
-                                   const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Prior(database, nodeId2columns) {
-      GUM_CONSTRUCTOR(SmoothingPrior);
-    }
-
     /// copy constructor
-    INLINE SmoothingPrior::SmoothingPrior(const SmoothingPrior& from) : Prior(from) {
-      GUM_CONS_CPY(SmoothingPrior);
+    INLINE DirichletPriorFromDatabase::DirichletPriorFromDatabase(
+        const DirichletPriorFromDatabase& from) :
+        Prior(from), _counter_(from._counter_), _internal_weight_(from._internal_weight_) {
+      GUM_CONS_CPY(DirichletPriorFromDatabase);
     }
 
     /// move constructor
-    INLINE SmoothingPrior::SmoothingPrior(SmoothingPrior&& from) noexcept : Prior(std::move(from)) {
-      GUM_CONS_MOV(SmoothingPrior);
+    INLINE
+    DirichletPriorFromDatabase::DirichletPriorFromDatabase(
+        DirichletPriorFromDatabase&& from) noexcept :
+        Prior(std::move(from)), _counter_(std::move(from._counter_)),
+        _internal_weight_(from._internal_weight_) {
+      GUM_CONS_MOV(DirichletPriorFromDatabase);
     }
 
     /// virtual copy constructor
-    INLINE SmoothingPrior* SmoothingPrior::clone() const { return new SmoothingPrior(*this); }
+    INLINE DirichletPriorFromDatabase* DirichletPriorFromDatabase::clone() const {
+      return new DirichletPriorFromDatabase(*this);
+    }
 
     /// destructor
-    INLINE SmoothingPrior::~SmoothingPrior() { GUM_DESTRUCTOR(SmoothingPrior); }
+    INLINE DirichletPriorFromDatabase::~DirichletPriorFromDatabase() {
+      GUM_DESTRUCTOR(DirichletPriorFromDatabase);
+    }
 
     /// copy operator
-    INLINE SmoothingPrior& SmoothingPrior::operator=(const SmoothingPrior& from) = default;
+    INLINE DirichletPriorFromDatabase&
+        DirichletPriorFromDatabase::operator=(const DirichletPriorFromDatabase& from) {
+      if (this != &from) {
+        Prior::operator=(from);
+        _counter_         = from._counter_;
+        _internal_weight_ = from._internal_weight_;
+      }
+      return *this;
+    }
 
     /// move operator
-    INLINE SmoothingPrior& SmoothingPrior::operator=(SmoothingPrior&& from) {
-      Prior::operator=(std::move(from));
+    INLINE DirichletPriorFromDatabase&
+        DirichletPriorFromDatabase::operator=(DirichletPriorFromDatabase&& from) {
+      if (this != &from) {
+        Prior::operator=(std::move(from));
+        _counter_         = std::move(from._counter_);
+        _internal_weight_ = from._internal_weight_;
+      }
       return *this;
     }
 
     /// returns the type of the prior
-    INLINE PriorType SmoothingPrior::getType() const { return PriorType::SmoothingPriorType; }
+    INLINE PriorType DirichletPriorFromDatabase::getType() const {
+      return PriorType::DirichletPriorType;
+    }
 
     /// indicates whether the prior is potentially informative
-    INLINE bool SmoothingPrior::isInformative() const { return this->weight_ != 0.0; }
+    INLINE bool DirichletPriorFromDatabase::isInformative() const { return (this->weight_ != 0.0); }
+
+    /// sets the weight of the a prior(kind of effective sample size)
+    INLINE void DirichletPriorFromDatabase::setWeight(const double weight) {
+      Prior::setWeight(weight);
+      if (_counter_.database().nbRows() == 0) _internal_weight_ = 0.0;
+      else _internal_weight_ = this->weight_ / double(_counter_.database().nbRows());
+    }
 
     /// returns the prior vector all the variables in the idset
-    INLINE void SmoothingPrior::addJointPseudoCount(const IdCondSet&       idset,
-                                                    std::vector< double >& counts) {
-      // if the idset is empty or the weight is zero, the prior is also empty
-      if (idset.empty() || (this->weight_ == 0.0)) return;
+    INLINE void DirichletPriorFromDatabase::addJointPseudoCount(const IdCondSet&       idset,
+                                                                std::vector< double >& counts) {
+      if (this->weight_ == 0.0) return;
 
-      // otherwise, add the weight to all the cells in the counting vector
-      for (auto& count: counts)
-        count += this->weight_;
+      const auto&       prior = _counter_.counts(idset);
+      const std::size_t size  = prior.size();
+      if (_internal_weight_ != 1.0) {
+        for (auto i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i] * _internal_weight_;
+        }
+      } else {
+        for (auto i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i];
+        }
+      }
     }
+
+    /// returns the prior vector over only the conditioning set of an idset
+    INLINE void
+        DirichletPriorFromDatabase::addConditioningPseudoCount(const IdCondSet&       idset,
+                                                               std::vector< double >& counts) {
+      if (_internal_weight_ == 0.0) return;
+
+      const auto&       prior = _counter_.counts(idset.conditionalIdCondSet());
+      const std::size_t size  = prior.size();
+      if (_internal_weight_ != 1.0) {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i] * _internal_weight_;
+        }
+      } else {
+        for (std::size_t i = std::size_t(0); i < size; ++i) {
+          counts[i] += prior[i];
+        }
+      }
+    }
+
 
   } /* namespace learning */
 
