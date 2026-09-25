@@ -92,7 +92,7 @@ namespace gum {
    * @c std::string) would be ambiguous for every braced argument, a braced list
    * having no type to resolve on — hence this wrapper.
    */
-  struct KTBNModality {
+  struct GUM_PUBLIC_KTBN KTBNModality {
     /// @brief From a modality index.
     template < std::integral T >
     KTBNModality(T modality);
