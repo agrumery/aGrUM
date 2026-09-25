@@ -48,7 +48,7 @@ import os
 import subprocess
 
 from base64 import urlsafe_b64encode
-from shutil import move, rmtree
+from shutil import copy2, move, rmtree
 from tempfile import mkdtemp, mkstemp
 from datetime import datetime
 from os.path import join, relpath
@@ -92,6 +92,35 @@ def install_pyAgrum(current: dict[str, str | bool], tmp):
     sys.exit(1)
 
 
+def vendor_module_libs(tmp, install_dir):
+  """Copy aGrUM's own shared libraries (libagrumBASE/libagrumBN/libagrum<MODULE>,
+  or agrum<MODULE>.dll under MSVC) next to pyagrum/ in the wheel.
+
+  Install.agrum.cmake's install(TARGETS ...) puts them in tmp/lib (Linux/macOS)
+  or tmp/bin (Windows RUNTIME DESTINATION) -- a sibling of site-packages/ that
+  the wheel never includes otherwise. The wrap targets' $ORIGIN/@loader_path
+  RPATH (wrappers/pyagrum/CMakeLists.txt) already expects them right there; on
+  Windows this only covers pyagrum/_pyagrumcpp.pyd itself (its own-directory
+  DLL search), not submodule .pyd's in subpackages -- see gumTest.py's
+  os.add_dll_directory() walk for that half of the story.
+
+  A no-op under a static build (BUILD_SHARED_LIBS=OFF): no such files exist.
+  """
+  system = platform.system()
+  src_dir = join(tmp, "bin" if system == "Windows" else "lib")
+  if not os.path.isdir(src_dir):
+    return
+  exts = (".dll",) if system == "Windows" else (".dylib",) if system == "Darwin" else (".so",)
+  pyagrum_dir = join(install_dir, "pyagrum")
+  for f in listdir(src_dir):
+    fl = f.lower()
+    if "agrum" not in fl:
+      continue
+    if not (fl.endswith(exts) or ".so." in fl):
+      continue
+    copy2(join(src_dir, f), join(pyagrum_dir, f))
+
+
 def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
   """Update the WHEEL file with the proper Python version, remove unnecessary
   files and generated the RECORD file. Returns the root of the wheel's
@@ -113,6 +142,7 @@ def build_wheel(tmp, stable_abi_off, minimal_python_api, nightly=False):
   dist_info = join(install_dir, dist_info_dir)
   update_wheel_file(dist_info, stable_abi_off, minimal_python_api)
   clean_up(install_dir)
+  vendor_module_libs(tmp, install_dir)
   strip_so_files(install_dir)
 
   if nightly:

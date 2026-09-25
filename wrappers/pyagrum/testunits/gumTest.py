@@ -120,10 +120,26 @@ def go():
 
   if mod != "standAlone" and islocal:
     if mod == "debug":
-      libagrum = os.path.abspath("../../../build/pyAgrum/debug/wrappers")
+      build_dir = os.path.abspath("../../../build/pyAgrum/debug")
     else:
-      libagrum = os.path.abspath("../../../build/pyAgrum/release/wrappers")
+      build_dir = os.path.abspath("../../../build/pyAgrum/release")
+    libagrum = os.path.join(build_dir, "wrappers")
     sys.path.insert(0, libagrum)  # to force using local pyAgrum for the tests (and not installed one)
+
+    if os_platform == "win32":
+      # Since Python 3.8, the Windows loader no longer searches PATH for a .pyd's
+      # dependent DLLs -- only os.add_dll_directory() and the .pyd's own directory.
+      # Under BUILD_SHARED_LIBS=ON, agrumBASE/agrumBN/agrum<MODULE>.dll (MinGW:
+      # libagrumBASE/libagrumBN/... -- "lib" prefix is CMake's MinGW default) do
+      # not land next to the wrap targets' .pyd in the build tree (MSVC: shared
+      # Release/ dir; MinGW: per-module CMake binary dir). A submodule .pyd in a
+      # subpackage (e.g. credal_net/_cncpp.pyd) also can't see the MinGW runtime
+      # DLLs (libgomp-1/libstdc++-6/...) copied next to the top-level .pyd, one
+      # directory up -- only its own directory is searched by default. Register
+      # every directory under the build tree that holds any .dll.
+      for dirpath, _, filenames in os.walk(build_dir):
+        if any(f.lower().endswith(".dll") for f in filenames):
+          os.add_dll_directory(dirpath)
 
   import pyagrum as gum
 
