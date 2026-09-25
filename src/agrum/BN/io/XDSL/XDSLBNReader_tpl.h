@@ -82,10 +82,10 @@ namespace gum {
       std::string status = "Loading File ...";
       GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc(_filePath_);
-      xmlDoc.LoadFile();
+      XmlDocument xmlDoc(_filePath_);
+      xmlDoc.loadFile();
 
-      if (xmlDoc.NoChildren()) {
+      if (xmlDoc.noChildren()) {
         GUM_ERROR(IOError, ": Loading fail, please check the file for any syntax error.")
       }
 
@@ -93,16 +93,16 @@ namespace gum {
       status = "File loaded. Now looking for DSL element ...";
       GUM_EMIT2(onProceed, 4, status);
 
-      ticpp::Element* bifElement = xmlDoc.FirstChildElement("smile");
-      std::string     netName    = "unnamedBN";
-      bifElement->GetAttribute("id", &netName, false);
+      XmlElement  bifElement = xmlDoc.firstChildElement("smile");
+      std::string netName    = "unnamedBN";
+      bifElement.attribute("id", &netName, false);
       _bn_->setProperty("name", netName);
 
       // Finding network element
       status = "smile Element reached. Now searching network ...";
       GUM_EMIT2(onProceed, 7, status);
 
-      ticpp::Element* nodesElement = bifElement->FirstChildElement("nodes");
+      XmlElement nodesElement = bifElement.firstChildElement("nodes");
 
       // Finding id variables
       status = "Network found. Now proceeding variables instantiation...";
@@ -114,8 +114,8 @@ namespace gum {
       status = "All variables have been instantiated. Now filling up diagram...";
       GUM_EMIT2(onProceed, 55, status);
 
-      ticpp::Element* extensionsElement
-          = bifElement->FirstChildElement("extensions")->FirstChildElement("genie");
+      XmlElement extensionsElement
+          = bifElement.firstChildElement("extensions").firstChildElement("genie");
 
       // Filling diagram
       _parsingExtension_(extensionsElement);
@@ -127,16 +127,14 @@ namespace gum {
       GUM_EMIT2(onProceed, 100, status);
 
       return 0;
-    } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
+    } catch (XmlException& xmlException) { GUM_ERROR(IOError, xmlException.what()) }
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Size XDSLBNReader< GUM_SCALAR >::_parsingCpts_(ticpp::Element* cptsNetwork) {
+  Size XDSLBNReader< GUM_SCALAR >::_parsingCpts_(XmlElement cptsNetwork) {
     // Counting the number of variable for the signal
-    Size                              nbVar = Size(0);
-    ticpp::Iterator< ticpp::Element > varIte("cpt");
-
-    for (varIte = varIte.begin(cptsNetwork); varIte != varIte.end(); ++varIte)
+    Size nbVar = Size(0);
+    for (const auto& _: cptsNetwork.children("cpt"))
       nbVar++;
     nbVar              = 3 * nbVar;   // 3 loops on vars
     std::string status = "Network found. Now proceeding variables instantiation...";
@@ -145,23 +143,17 @@ namespace gum {
     int nbIte = 0;
 
     // definition of the variables
-    for (varIte = varIte.begin(cptsNetwork); varIte != varIte.end(); ++varIte) {
-      ticpp::Element* currentVar = varIte.Get();
-
+    for (const auto& currentVar: cptsNetwork.children("cpt")) {
       // Getting variable name
-      std::string varName        = currentVar->GetAttribute("id");
+      std::string varName        = currentVar.attribute("id");
       std::string varDescription = varName;
 
       // Instanciation de la variable
       auto newVar = new LabelizedVariable(varName, varDescription, 0);
 
       // Getting variable outcomes
-      ticpp::Iterator< ticpp::Element > varOutComesIte("state");
-
-      for (varOutComesIte = varOutComesIte.begin(currentVar);
-           varOutComesIte != varOutComesIte.end();
-           ++varOutComesIte)
-        newVar->addLabel(varOutComesIte->GetAttribute("id"));
+      for (const auto& state: currentVar.children("state"))
+        newVar->addLabel(state.attribute("id"));
 
       // Add the variable to the bn and then delete newVar (add makes a copy)
       _bn_->add(*newVar);
@@ -174,20 +166,19 @@ namespace gum {
     }
 
     // ADDING ARCS and then CPTS
-    for (varIte = varIte.begin(cptsNetwork); varIte != varIte.end(); ++varIte) {
-      ticpp::Element* currentVar = varIte.Get();
-      std::string     varName    = currentVar->GetAttribute("id");
+    for (const auto& currentVar: cptsNetwork.children("cpt")) {
+      std::string varName = currentVar.attribute("id");
 
-      auto elt = currentVar->FirstChildElement("parents", false);
-      if (elt != nullptr) {
+      auto parentsElt = currentVar.firstChildElement("parents", false);
+      if (!parentsElt.isNull()) {
         // iteration in the list of parents in reverse order
-        const auto& strvec = split(elt->GetTextOrDefault(""), " ");
+        const auto& strvec = split(parentsElt.textOrDefault(""), " ");
         for (auto rit = strvec.begin(); rit != strvec.end(); ++rit)
           _bn_->addArc(*rit, varName);
       }
 
       std::istringstream issTableString(
-          currentVar->FirstChildElement("probabilities")->GetTextOrDefault(""));
+          currentVar.firstChildElement("probabilities").textOrDefault(""));
       std::vector< GUM_SCALAR > tablevector;
       GUM_SCALAR                value;
 
@@ -205,12 +196,10 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void XDSLBNReader< GUM_SCALAR >::_parsingExtension_(ticpp::Element* nodesNetwork) {
-    ticpp::Iterator< ticpp::Element > varIte("node");
-    for (varIte = varIte.begin(nodesNetwork); varIte != varIte.end(); ++varIte) {
-      ticpp::Element* currentVar = varIte.Get();
-      std::string     varName    = currentVar->GetAttribute("id");
-      std::string     descName   = currentVar->FirstChildElement("name")->GetTextOrDefault("");
+  void XDSLBNReader< GUM_SCALAR >::_parsingExtension_(XmlElement nodesNetwork) {
+    for (const auto& currentVar: nodesNetwork.children("node")) {
+      std::string varName  = currentVar.attribute("id");
+      std::string descName = currentVar.firstChildElement("name").textOrDefault("");
       if (descName != varName) _bn_->changeVariableName(varName, descName);
     }
   }

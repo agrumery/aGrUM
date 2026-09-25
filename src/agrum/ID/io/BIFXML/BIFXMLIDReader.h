@@ -93,16 +93,14 @@ GONZALES(_at_AMU)
 #ifndef GUM_BIF_XML_ID_READER_H
 #define GUM_BIF_XML_ID_READER_H
 
-#define TIXML_USE_TICPP
-
 #include <list>
 #include <sstream>
 #include <string>
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/BN/io/xml/XmlDocument.h>
 #include <agrum/ID/io/IDReader.h>
 
 #include <string_view>
@@ -153,12 +151,12 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void _parsingVariables_(ticpp::Element* parentNetwork);
+    void _parsingVariables_(XmlElement parentNetwork);
 
     /**
      * fill the diagram
      */
-    void _fillingDiagram_(ticpp::Element* parentNetwork);
+    void _fillingDiagram_(XmlElement parentNetwork);
 
     /**
      * An handle to the influence diagram in which will be load the content of

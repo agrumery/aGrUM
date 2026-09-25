@@ -91,17 +91,15 @@ GONZALES(_at_AMU)
 #ifndef GUM_XDSL_BN_READER_H
 #define GUM_XDSL_BN_READER_H
 
-#define TIXML_USE_TICPP
-
 #include <list>
 #include <sstream>
 #include <string>
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/io/BNReader.h>
+#include <agrum/BN/io/xml/XmlDocument.h>
 
 #include <string_view>
 
@@ -153,12 +151,12 @@ namespace gum {
      *
      * @return the number of variables found in the file
      */
-    Size _parsingCpts_(ticpp::Element* cptsNetwork);
+    Size _parsingCpts_(XmlElement cptsNetwork);
 
     /**
      * Parsing xml element containing extentions on variables
      */
-    void _parsingExtension_(ticpp::Element* nodesNetwork);
+    void _parsingExtension_(XmlElement nodesNetwork);
 
     /**
      * An handle to the bayes net in which will be load the content of the xml

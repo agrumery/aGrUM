@@ -91,8 +91,6 @@ GONZALES(_at_AMU)
 #ifndef GUM_BIF_XML_BN_READER_H
 #define GUM_BIF_XML_BN_READER_H
 
-#define TIXML_USE_TICPP
-
 #include <istream>
 #include <iterator>
 #include <list>
@@ -101,9 +99,9 @@ GONZALES(_at_AMU)
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/external/tinyxml/ticpp/ticpp.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/io/BNReader.h>
+#include <agrum/BN/io/xml/XmlDocument.h>
 
 namespace gum {
 
@@ -161,12 +159,12 @@ namespace gum {
     /**
      * Parsing xml element containing data on variables
      */
-    void _parsingVariables_(ticpp::Element* parentNetwork);
+    void _parsingVariables_(XmlElement parentNetwork);
 
     /**
      * fill the diagram
      */
-    void _fillingBN_(ticpp::Element* parentNetwork);
+    void _fillingBN_(XmlElement parentNetwork);
 
     /**
      * An handle to the bayes net in which will be load the content of the xml

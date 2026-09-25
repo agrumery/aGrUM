@@ -92,7 +92,12 @@ if (BUILD_CN OR BUILD_ALL)
 endif ()
 
 # ticpp is an internal dependency used only by BN readers: exclude from BASE,
-# compile directly into BN so its symbols stay hidden and unexported.
+# compile directly into BN, not BASE (BIFXMLBNReader/XDSLBNReader, and core's
+# own SWIG wrap TU which also needs these classes, are its real consumers --
+# under BUILD_SHARED_LIBS=ON its classes are tagged GUM_PUBLIC_BN like any
+# other BN-owned symbol, exported once from agrumBN and dllimport'd by every
+# consumer; giving it its own private per-consumer copy instead would
+# reintroduce the RTTI/double-instance risk this chantier eliminates).
 file(GLOB TICPP_SOURCES "${AGRUM_SOURCE_DIR}/agrum/base/external/tinyxml/ticpp/*.cpp")
 list(REMOVE_ITEM AGRUM_BASE_SOURCES ${TICPP_SOURCES})
 if (BUILD_BN OR BUILD_ALL)

@@ -88,10 +88,10 @@ namespace gum {
       std::string status = "Loading File ...";
       GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc(_filePath_);
-      xmlDoc.LoadFile();
+      XmlDocument xmlDoc(_filePath_);
+      xmlDoc.loadFile();
 
-      if (xmlDoc.NoChildren()) {
+      if (xmlDoc.noChildren()) {
         GUM_ERROR(IOError, ": Loading fail, please check the file for any syntax error.")
       }
 
@@ -99,13 +99,13 @@ namespace gum {
       status = "File loaded. Now looking for BIF element ...";
       GUM_EMIT2(onProceed, 4, status);
 
-      ticpp::Element* bifElement = xmlDoc.FirstChildElement("BIF");
+      XmlElement bifElement = xmlDoc.firstChildElement("BIF");
 
       // Finding network element
       status = "BIF Element reached. Now searching network ...";
       GUM_EMIT2(onProceed, 7, status);
 
-      ticpp::Element* networkElement = bifElement->FirstChildElement("NETWORK");
+      XmlElement networkElement = bifElement.firstChildElement("NETWORK");
 
       // Finding id variables
       status = "Network found. Now proceeding variables instanciation...";
@@ -121,64 +121,54 @@ namespace gum {
 
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
-    } catch (ticpp::Exception& tinyexception) { GUM_ERROR(IOError, tinyexception.what()) }
+    } catch (XmlException& xmlException) { GUM_ERROR(IOError, xmlException.what()) }
     return 0;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BIFXMLIDReader< GUM_SCALAR >::_parsingVariables_(ticpp::Element* parentNetwork) {
+  void BIFXMLIDReader< GUM_SCALAR >::_parsingVariables_(XmlElement parentNetwork) {
     // Counting the number of variable for the signal
-    int                               nbVar = 0;
-    ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
-
-    for (varIte = varIte.begin(parentNetwork); varIte != varIte.end(); ++varIte)
+    int nbVar = 0;
+    for (const auto& _: parentNetwork.children("VARIABLE")) {
       nbVar++;
+    }
 
     // Iterating on variable element
     int nbIte = 0;
 
-    for (varIte = varIte.begin(parentNetwork); varIte != varIte.end(); ++varIte) {
-      ticpp::Element* currentVar = varIte.Get();
-
+    for (const auto& currentVar: parentNetwork.children("VARIABLE")) {
       // Getting variable name
-      ticpp::Element* varNameElement = currentVar->FirstChildElement("NAME");
-      std::string     varName        = varNameElement->GetTextOrDefault("");
+      XmlElement  varNameElement = currentVar.firstChildElement("NAME");
+      std::string varName        = varNameElement.textOrDefault("");
 
       std::string description = "";
       std::string fast        = "";
 
       // Getting variable description and/or fast syntax
-      ticpp::Iterator< ticpp::Element > varPropertiesIte("PROPERTY");
-      for (varPropertiesIte = varPropertiesIte.begin(currentVar);
-           varPropertiesIte != varPropertiesIte.end();
-           ++varPropertiesIte) {
-        const auto pair = gum::split(varPropertiesIte->GetTextOrDefault(""), "=");
+      for (const auto& property: currentVar.children("PROPERTY")) {
+        const auto pair = gum::split(property.textOrDefault(""), "=");
         if (pair.size() == 2) {
-          const auto property = gum::toLower(gum::trim_copy(pair[0]));
-          const auto value    = gum::trim_copy(pair[1]);
+          const auto propertyName = gum::toLower(gum::trim_copy(pair[0]));
+          const auto value        = gum::trim_copy(pair[1]);
           // check for descritpion and fast
-          if (property == "description") {
+          if (propertyName == "description") {
             description = value;
-          } else if (property == "fast") {
+          } else if (propertyName == "fast") {
             fast = value;
           }
         }
       }
       // Getting variable type
-      const auto nodeType = currentVar->GetAttribute< std::string >("TYPE");
+      const auto nodeType = currentVar.attribute("TYPE");
       if (fast == "") {
         // if no fast syntax, we create a variable with the default}
         // Instanciation de la variable
         auto newVar = new LabelizedVariable(varName, description, 0);
 
         // Getting variable outcomes
-        ticpp::Iterator< ticpp::Element > varOutComesIte("OUTCOME");
-
-        for (varOutComesIte = varOutComesIte.begin(currentVar);
-             varOutComesIte != varOutComesIte.end();
-             ++varOutComesIte)
-          newVar->addLabel(varOutComesIte->GetTextOrDefault(""));
-
+        for (const auto& outcome: currentVar.children("OUTCOME")) {
+          newVar->addLabel(outcome.textOrDefault(""));
+        }
 
         // Add the variable to the id
         if (nodeType == "decision") _infdiag_->addDecisionNode(*newVar);
@@ -211,32 +201,26 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BIFXMLIDReader< GUM_SCALAR >::_fillingDiagram_(ticpp::Element* parentNetwork) {
+  void BIFXMLIDReader< GUM_SCALAR >::_fillingDiagram_(XmlElement parentNetwork) {
     // Counting the number of variable for the signal
-    int                               nbDef = 0;
-    ticpp::Iterator< ticpp::Element > definitionIte("DEFINITION");
-
-    for (definitionIte = definitionIte.begin(parentNetwork); definitionIte != definitionIte.end();
-         ++definitionIte)
+    int nbDef = 0;
+    for (const auto& _: parentNetwork.children("DEFINITION")) {
       nbDef++;
+    }
 
     // Iterating on definition nodes
     int nbIte = 0;
 
-    for (definitionIte = definitionIte.begin(parentNetwork); definitionIte != definitionIte.end();
-         ++definitionIte) {
-      ticpp::Element* currentVar = definitionIte.Get();
-
+    for (const auto& currentVar: parentNetwork.children("DEFINITION")) {
       // Considered Node
-      std::string currentVarName = currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
+      std::string currentVarName = currentVar.firstChildElement("FOR").textOrDefault("");
       NodeId      currentVarId   = _infdiag_->idFromName(currentVarName);
 
       // Get Node's parents
-      ticpp::Iterator< ticpp::Element > givenIte("GIVEN");
-      List< NodeId >                    parentList;
+      List< NodeId > parentList;
 
-      for (givenIte = givenIte.begin(currentVar); givenIte != givenIte.end(); ++givenIte) {
-        std::string parentNode = givenIte->GetTextOrDefault("");
+      for (const auto& given: currentVar.children("GIVEN")) {
+        std::string parentNode = given.textOrDefault("");
         NodeId      parentId   = _infdiag_->idFromName(parentNode);
         parentList.pushBack(parentId);
       }
@@ -248,10 +232,10 @@ namespace gum {
 
       // Recuperating tables values
       if (!_infdiag_->isDecisionNode(currentVarId)) {
-        ticpp::Element*         tableElement = currentVar->FirstChildElement("TABLE");
-        std::istringstream      issTableString(tableElement->GetTextOrDefault(""));
-        std::list< GUM_SCALAR > tablelist;
-        GUM_SCALAR              value;
+        XmlElement               tableElement = currentVar.firstChildElement("TABLE");
+        std::istringstream       issTableString(tableElement.textOrDefault(""));
+        std::list< GUM_SCALAR >  tablelist;
+        GUM_SCALAR               value;
 
         while (!issTableString.eof()) {
           issTableString >> value;

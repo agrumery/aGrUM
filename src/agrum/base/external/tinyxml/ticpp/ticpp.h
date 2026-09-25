@@ -71,7 +71,7 @@ namespace ticpp {
   /**
   This is a ticpp exception class
   */
-  class GUM_SHARED_PUBLIC Exception : public std::exception {
+  class Exception : public std::exception {
     public:
     /**
     Construct an exception with a message
@@ -457,7 +457,7 @@ It will take care of the conversion and throwing the exception.
   /**
   Wrapper around TiXmlNode
   */
-  class GUM_SHARED_PUBLIC Node : public Base {
+  class Node : public Base {
     public:
     /**
     Get the value of this node
@@ -1406,7 +1406,7 @@ It will take care of the conversion and throwing the exception.
   };
 
   /** Wrapper around TiXmlDocument */
-  class GUM_SHARED_PUBLIC Document : public NodeImp< TiXmlDocument > {
+  class Document : public NodeImp< TiXmlDocument > {
     private:   // best attempt to get rid of overloaded virtual warnings
     using  NodeImp< TiXmlDocument >::operator=;
     public:
@@ -1497,7 +1497,7 @@ It will take care of the conversion and throwing the exception.
   };
 
   /** Wrapper around TiXmlElement */
-  class GUM_SHARED_PUBLIC Element : public NodeImp< TiXmlElement > {
+  class Element : public NodeImp< TiXmlElement > {
     private:   // best attempt to get rid of overloaded virtual warnings
     using  NodeImp< TiXmlElement >::operator=;
 
