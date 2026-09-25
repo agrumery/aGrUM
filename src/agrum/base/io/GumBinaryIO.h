@@ -52,6 +52,7 @@
 #ifndef GUM_BINARY_IO_H
 #define GUM_BINARY_IO_H
 
+#include <agrum/config.h>
 #include <cstdint>
 #include <istream>
 #include <ostream>
@@ -69,7 +70,7 @@ namespace gum {
    * @param is The input binary stream.
    * @return   The payload bytes.
    */
-  std::vector< uint8_t > _readVector_(std::istream& is);
+  GUM_SHARED_PUBLIC std::vector< uint8_t > _readVector_(std::istream& is);
 
   /**
    * Writes a length-prefixed byte vector to a binary stream (bgum format).
@@ -77,7 +78,7 @@ namespace gum {
    * @param os  The output binary stream.
    * @param vec The payload bytes to write.
    */
-  void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+  GUM_SHARED_PUBLIC void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
 
 } /* namespace gum */
 

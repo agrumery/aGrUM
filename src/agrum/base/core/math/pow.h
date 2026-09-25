@@ -67,7 +67,7 @@ namespace gum {
    * @param exponent The unsigned long integer exponent used which will hold the
    * result afterward.
    */
-  unsigned long intPow(unsigned long base, unsigned long exponent);
+  GUM_SHARED_PUBLIC unsigned long intPow(unsigned long base, unsigned long exponent);
 
   /**
    * @brief Specialized base 2 pow function with integer.
@@ -76,7 +76,7 @@ namespace gum {
    * @param exponent The unsigned long integer exponent used to compute \f$
    * 2^{exponent} \f$ which will hold the result of afterward.
    */
-  uint64_t int2Pow(uint64_t exponent);
+  GUM_SHARED_PUBLIC uint64_t int2Pow(uint64_t exponent);
 
   /**
    * @brief Compute the superior and closest power of two of an integer.
@@ -93,7 +93,7 @@ namespace gum {
    * @param new_card The unsigned long integer used as a "return" value to get
    * the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  void superiorPow(unsigned long card, unsigned long& num_bits, unsigned long& new_card);
+  GUM_SHARED_PUBLIC void superiorPow(unsigned long card, unsigned long& num_bits, unsigned long& new_card);
 
   /// @}
 

@@ -288,14 +288,32 @@ macro(buildFileListsWithModules)
             # dllimport split: only these two targets' own object files -- whole-archived
             # into core _pyagrumcpp (and core's own SWIG wrap TU, see
             # wrappers/pyagrum/CMakeLists.txt) -- may dllexport them. Every other consumer
-            # (leaf modules PRM/CN/ID/MRF/CM/KTBN, and FMDP -- redirected to agrumBN in the
-            # dependency loop below instead of getting its own copy) sees dllimport instead,
-            # so it references core's/BN's exported copy instead of emitting its own
-            # duplicate definition (LNK2005 on MSVC). Unlike GUM_PUBLIC above, this stays
-            # BASE/BN-only: it is specifically the whole-archive producer/consumer split,
-            # which only BASE/BN need -- a leaf module's own symbols use PYGUM_PUBLIC
-            # (unconditional dllexport, no split) instead of PYGUM_SHARED_PUBLIC.
-            if (BUILD_PYTHON AND _IS_BASE_OR_BN)
+            # (leaf modules PRM/CN/ID/MRF/CM/KTBN) sees dllimport instead, so it references
+            # core's/BN's exported copy instead of emitting its own duplicate definition
+            # (LNK2005 on MSVC). Unlike GUM_PUBLIC above, this stays BASE/BN-only: it is
+            # specifically the whole-archive producer/consumer split, which only BASE/BN
+            # need -- a leaf module's own symbols use PYGUM_PUBLIC (unconditional dllexport,
+            # no split) instead.
+            #
+            # NOT BUILD_SHARED_LIBS is deliberate here: this flag also feeds GUM_SHARED_PUBLIC
+            # (config.h.in's `defined(GUM_FOR_SWIG) && defined(PYGUM_SHARED_EXPORTING)` half of
+            # its dllexport condition), BASE's own real macro now that BASE is fully retagged
+            # (no more PYGUM_SHARED_PUBLIC sites left). Under BUILD_SHARED_LIBS=OFF, BASE+BN
+            # truly are one link unit (whole-archived into core), so BN claiming dllexport for
+            # BASE-owned GUM_SHARED_PUBLIC symbols is correct and necessary (same reasoning as
+            # PYGUM_SHARED_PUBLIC always was). Under BUILD_SHARED_LIBS=ON, BASE and BN are two
+            # real, separate DLLs/.so's (Modules.agrum.cmake's per-module add_library() above,
+            # normal target_link_libraries() in the dependency loop below) -- BN must see
+            # dllimport for BASE's GUM_SHARED_PUBLIC symbols like any other consumer, not
+            # dllexport. Leaving this flag posed on BN there made every BASE-owned
+            # GUM_SHARED_PUBLIC symbol BN's own .obj files call into (e.g. GammaLog2::
+            # _small_values_, the _static_*_end_* sentinels) resolve to a local dllexport
+            # declaration with no matching definition in agrumBN itself -- LNK2019/LNK2001,
+            # confirmed on CI (pipeline 2882904035) once BASE/BN actually became separate
+            # libraries. BASE itself does not need this flag under BUILD_SHARED_LIBS=ON either
+            # (GUM_SHARED_EXPORTING, unconditional below, already covers it) -- so this whole
+            # block is now scoped to the one case where BASE+BN genuinely share a link unit.
+            if (BUILD_PYTHON AND _IS_BASE_OR_BN AND NOT BUILD_SHARED_LIBS)
                 target_compile_definitions (agrum${OPTION} PRIVATE PYGUM_SHARED_EXPORTING)
             endif ()
 

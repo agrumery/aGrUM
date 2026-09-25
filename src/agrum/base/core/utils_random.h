@@ -107,7 +107,7 @@ namespace gum {
   /**
    * define a random_engine with correct seed
    */
-  std::mt19937& randomGenerator();
+  GUM_SHARED_PUBLIC std::mt19937& randomGenerator();
 
   /// @}
 } /* namespace gum */

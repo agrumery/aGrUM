@@ -141,19 +141,19 @@ namespace gum {
    * @brief trim from start (in place)
    * @param s A string
    */
-  void ltrim(std::string& s);
+  GUM_SHARED_PUBLIC void ltrim(std::string& s);
 
   /**
    * @brief trim from end (in place)
    * @param s A string
    */
-  void rtrim(std::string& s);
+  GUM_SHARED_PUBLIC void rtrim(std::string& s);
 
   /**
    * @brief trim from both ends (in place)
    * @param s A string
    */
-  void trim(std::string& s);
+  GUM_SHARED_PUBLIC void trim(std::string& s);
 
   /**
    * @brief trim from both ends (copying)
