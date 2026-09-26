@@ -232,10 +232,10 @@ namespace gum {
 
       // Recuperating tables values
       if (!_infdiag_->isDecisionNode(currentVarId)) {
-        XmlElement               tableElement = currentVar.firstChildElement("TABLE");
-        std::istringstream       issTableString(tableElement.textOrDefault(""));
-        std::list< GUM_SCALAR >  tablelist;
-        GUM_SCALAR               value;
+        XmlElement              tableElement = currentVar.firstChildElement("TABLE");
+        std::istringstream      issTableString(tableElement.textOrDefault(""));
+        std::list< GUM_SCALAR > tablelist;
+        GUM_SCALAR              value;
 
         while (!issTableString.eof()) {
           issTableString >> value;

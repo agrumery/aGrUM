@@ -51,8 +51,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/base/stattests/priors/prior.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 
 namespace gum::learning {
 

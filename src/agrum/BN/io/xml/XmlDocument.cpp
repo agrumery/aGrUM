@@ -41,7 +41,6 @@
 // The only TU in aGrUM (besides ticpp's own sources) allowed to include the
 // vendored parser -- see XmlDocument.h's file comment.
 #include <agrum/base/external/tinyxml/ticpp/ticpp.h>
-
 #include <agrum/BN/io/xml/XmlDocument.h>
 
 namespace gum {
@@ -87,7 +86,8 @@ namespace gum {
     } catch (ticpp::Exception& e) { throw XmlException(e.what()); }
   }
 
-  bool XmlElement::attribute(const std::string& name, std::string* out, bool throwIfNotFound) const {
+  bool
+      XmlElement::attribute(const std::string& name, std::string* out, bool throwIfNotFound) const {
     auto* self = static_cast< ticpp::Element* >(_handle_);
     // ticpp's GetAttribute(name, out, false) returns silently (no exception,
     // *out untouched) when the attribute is missing, so the try/catch below
@@ -112,9 +112,9 @@ namespace gum {
   XmlDocument::XmlDocument(const std::string& filePath) :
       _pimpl_(std::make_unique< Impl >(filePath)) {}
 
-  XmlDocument::~XmlDocument()                                       = default;
-  XmlDocument::XmlDocument(XmlDocument&&) noexcept                  = default;
-  XmlDocument& XmlDocument::operator=(XmlDocument&&) noexcept       = default;
+  XmlDocument::~XmlDocument()                                 = default;
+  XmlDocument::XmlDocument(XmlDocument&&) noexcept            = default;
+  XmlDocument& XmlDocument::operator=(XmlDocument&&) noexcept = default;
 
   void XmlDocument::parse(const std::string& content) {
     try {

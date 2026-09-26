@@ -74,9 +74,9 @@ namespace gum {
   // their type). Here, we use the constinit keyword rather than constexpr because,
   // in debugging mode, the iterators' destructors cannot be declared as constepxr.
   extern constinit GUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug >
-                                             _static_list_end_safe_(StaticInitializer::CONSTINIT);
+                                           _static_list_end_safe_(StaticInitializer::CONSTINIT);
   extern constinit GUM_SHARED_PUBLIC const ListConstIterator< Debug >
-                                             _static_list_end_(StaticInitializer::CONSTINIT);
+                                           _static_list_end_(StaticInitializer::CONSTINIT);
 
 } /* namespace gum */
 

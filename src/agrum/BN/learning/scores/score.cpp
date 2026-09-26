@@ -71,7 +71,7 @@ namespace gum {
     Score::Score(const DBRowGeneratorParser&                                 parser,
                  const Prior&                                                prior,
                  const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                 const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(Score);
     }

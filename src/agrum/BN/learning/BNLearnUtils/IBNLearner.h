@@ -62,6 +62,7 @@
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/base/stattests/indepTestG2.h>
+#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
 #include <agrum/BN/learning/constraints/structuralConstraintForbiddenArcs.h>
@@ -80,7 +81,6 @@
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/PC.h>
-#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
 #include <agrum/BN/learning/scores/scoreAIC.h>
 #include <agrum/BN/learning/scores/scoreBD.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>

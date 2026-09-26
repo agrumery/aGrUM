@@ -66,7 +66,7 @@ namespace gum {
     ScoreBD::ScoreBD(const DBRowGeneratorParser&                                 parser,
                      const Prior&                                                prior,
                      const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
+                     const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         Score(parser, prior, ranges, nodeId2columns),
         _internal_prior_(parser.database(), nodeId2columns) {
       GUM_CONSTRUCTOR(ScoreBD);

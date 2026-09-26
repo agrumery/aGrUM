@@ -1145,7 +1145,6 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::_timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
                                                     bool highlightReplicated) const {
-
     // Group (full name, base label) by timeslice. std::map keeps keys sorted, and
     // ATEMPORAL == -1 so atemporal variables naturally sort first, followed by
     // increasing slice indices — mirroring pyAgrum's noTimeCluster-then-slices order.
@@ -1221,7 +1220,7 @@ namespace gum {
     std::set< std::string > baseNames(_temporal_.begin(), _temporal_.end());
     baseNames.insert(_atemporal_.begin(), _atemporal_.end());
 
-    const int lastSlice = static_cast< int >(_k_) - 1;
+    const int                                               lastSlice = static_cast< int >(_k_) - 1;
     std::set< std::tuple< std::string, std::string, int > > edges;
     for (const auto& arc: _bn_.arcs()) {
       const auto [tailBase, tailSlice] = _decodeName_(_bn_.variable(arc.tail()).name());

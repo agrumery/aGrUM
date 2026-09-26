@@ -103,7 +103,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
-#include <agrum/base/graphs/undiGraph.h>
 #include <agrum/base/variables/discreteVariable.h>
 #include <agrum/KTBN/KTBN.h>
 

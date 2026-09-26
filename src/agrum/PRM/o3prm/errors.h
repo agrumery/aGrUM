@@ -69,18 +69,20 @@ namespace gum {
       void GUM_PUBLIC_PRM O3PRM_TYPE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_TYPE_AMBIGUOUS(const O3Label&                    val,
-                                const std::vector< std::string >& matches,
-                                ErrorsContainer&                  errors);
+                                               const std::vector< std::string >& matches,
+                                               ErrorsContainer&                  errors);
 
       void GUM_PUBLIC_PRM O3PRM_TYPE_RESERVED(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_TYPE_DUPPLICATE(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_TYPE_CYCLIC_INHERITANCE(const O3Label&   sub_type,
-                                         const O3Label&   super_type,
-                                         ErrorsContainer& errors);
+                                                        const O3Label&   super_type,
+                                                        ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_TYPE_UNKNOWN_LABEL(const O3Label& type, const O3Label& l, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_TYPE_UNKNOWN_LABEL(const O3Label&   type,
+                                                   const O3Label&   l,
+                                                   ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_TYPE_INVALID_RANGE(const O3IntType& val, ErrorsContainer& errors);
 
@@ -89,164 +91,176 @@ namespace gum {
       void GUM_PUBLIC_PRM O3PRM_CLASS_NOT_FOUND(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_AMBIGUOUS(const O3Label&                    val,
-                                 const std::vector< std::string >& matches,
-                                 ErrorsContainer&                  errors);
+                                                const std::vector< std::string >& matches,
+                                                ErrorsContainer&                  errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_DUPLICATE(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_CYLIC_INHERITANCE(const O3Label&   sub,
-                                         const O3Label&   super,
-                                         ErrorsContainer& errors);
+                                                        const O3Label&   super,
+                                                        ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ATTR_IMPLEMENTATION(const O3Label&   c,
-                                           const O3Label&   i,
-                                           const O3Label&   attr,
-                                           ErrorsContainer& errors);
+                                                          const O3Label&   i,
+                                                          const O3Label&   attr,
+                                                          ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_AGG_IMPLEMENTATION(const O3Label&   c,
-                                          const O3Label&   i,
-                                          const O3Label&   attr,
-                                          ErrorsContainer& errors);
+                                                         const O3Label&   i,
+                                                         const O3Label&   attr,
+                                                         ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_REF_IMPLEMENTATION(const O3Label&   c,
-                                          const O3Label&   i,
-                                          const O3Label&   ref,
-                                          ErrorsContainer& errors);
+                                                         const O3Label&   i,
+                                                         const O3Label&   ref,
+                                                         ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_MISSING_ATTRIBUTES(const O3Label&   c,
-                                          const O3Label&   i,
-                                          ErrorsContainer& errors);
+                                                         const O3Label&   i,
+                                                         ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_CLASS_DUPLICATE_REFERENCE(const O3Label& ref, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_CLASS_DUPLICATE_REFERENCE(const O3Label&   ref,
+                                                          ErrorsContainer& errors);
 
-      void
-          GUM_PUBLIC_PRM O3PRM_CLASS_SELF_REFERENCE(const O3Label& c, const O3Label& ref, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_CLASS_SELF_REFERENCE(const O3Label&   c,
+                                                     const O3Label&   ref,
+                                                     ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_SUB_REFERENCE(const O3Label&   c,
-                                             const O3Label&   sub,
-                                             ErrorsContainer& errors);
+                                                            const O3Label&   sub,
+                                                            ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_CLASS_PARENT_NOT_FOUND(const O3Label& parent, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_CLASS_PARENT_NOT_FOUND(const O3Label&   parent,
+                                                       ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_PARENT(const O3Label& parent, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_PARENT(const O3Label&   parent,
+                                                     ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_LINK_NOT_FOUND(const O3Label&   chain,
-                                      std::string_view s,
-                                      ErrorsContainer& errors);
+                                                     std::string_view s,
+                                                     ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_CPT_SIZE(std::string_view c,
-                                        const O3Label&   attr,
-                                        Size             found,
-                                        Size             expected,
-                                        ErrorsContainer& errors);
+                                                       const O3Label&   attr,
+                                                       Size             found,
+                                                       Size             expected,
+                                                       ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_CPT_VALUE(std::string_view c,
-                                         const O3Label&   attr,
-                                         const O3Formula& f,
-                                         ErrorsContainer& errors);
+                                                        const O3Label&   attr,
+                                                        const O3Formula& f,
+                                                        ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(std::string_view c,
-                                             const O3Label&   attr,
-                                             float            f,
-                                             ErrorsContainer& errors);
+                                                            const O3Label&   attr,
+                                                            float            f,
+                                                            ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(std::string_view c,
-                                                     const O3Label&   attr,
-                                                     float            f,
-                                                     ErrorsContainer& errors);
+                                                                    const O3Label&   attr,
+                                                                    float            f,
+                                                                    ErrorsContainer& errors);
 
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_RULE_SIZE(const O3RuleCPT::O3Rule& rule,
-                                         size_t                   found,
-                                         size_t                   expected,
-                                         ErrorsContainer&         errors);
+                                                        size_t                   found,
+                                                        size_t                   expected,
+                                                        ErrorsContainer&         errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_RULE_LABEL(const O3RuleCPT::O3Rule& rule,
-                                          const O3Label&           label,
-                                          const O3Label&           parent,
-                                          ErrorsContainer&         errors);
+                                                         const O3Label&           label,
+                                                         const O3Label&           parent,
+                                                         ErrorsContainer&         errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_WRONG_PARENT(const O3Label& prnt, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&   prnt,
-                                         std::string_view expected,
-                                         std::string_view found,
-                                         ErrorsContainer& errors);
+                                                        std::string_view expected,
+                                                        std::string_view found,
+                                                        ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_ILLEGAL_OVERLOAD(const O3Label&   elt,
-                                        const O3Label&   super,
-                                        ErrorsContainer& errors);
+                                                       const O3Label&   super,
+                                                       ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_AGG_PARAMETERS(const O3Label&   agg,
-                                      Size             expected,
-                                      Size             found,
-                                      ErrorsContainer& errors);
+                                                     Size             expected,
+                                                     Size             found,
+                                                     ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_CLASS_AGG_PARAMETER_NOT_FOUND(const O3Label&   agg,
-                                               const O3Label&   param,
-                                               ErrorsContainer& errors);
+                                                              const O3Label&   param,
+                                                              ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_INTERFACE_ILLEGAL_ARRAY(const O3Label& val, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_INTERFACE_ILLEGAL_ARRAY(const O3Label&   val,
+                                                        ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_AMBIGUOUS(const O3Label&                    val,
-                                     const std::vector< std::string >& matches,
-                                     ErrorsContainer&                  errors);
+                                                    const std::vector< std::string >& matches,
+                                                    ErrorsContainer&                  errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_DUPLICATE(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_DUPLICATE_ELEMENT(const O3InterfaceElement& elt,
-                                             ErrorsContainer&          errors);
+                                                            ErrorsContainer&          errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_CYCLIC_INHERITANCE(const O3Label&   sub,
-                                              const O3Label&   super,
-                                              ErrorsContainer& errors);
+                                                             const O3Label&   super,
+                                                             ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_SELF_REFERENCE(const O3Interface&        i,
-                                          const O3InterfaceElement& r,
-                                          ErrorsContainer&          errors);
+                                                         const O3InterfaceElement& r,
+                                                         ErrorsContainer&          errors);
 
       void GUM_PUBLIC_PRM O3PRM_INTERFACE_ILLEGAL_SUB_REFERENCE(const O3Interface&        i,
-                                                 const O3InterfaceElement& ref,
-                                                 ErrorsContainer&          errors);
+                                                                const O3InterfaceElement& ref,
+                                                                ErrorsContainer&          errors);
 
-      void GUM_PUBLIC_PRM O3PRM_INTERFACE_ILLEGAL_OVERLOAD(const O3InterfaceElement& elt, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_INTERFACE_ILLEGAL_OVERLOAD(const O3InterfaceElement& elt,
+                                                           ErrorsContainer&          errors);
 
       void GUM_PUBLIC_PRM O3PRM_REFERENCE_NOT_FOUND(const O3Label& val, ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_REFERENCE_AMBIGUOUS(const O3Label&                    val,
-                                     const std::vector< std::string >& matches,
-                                     ErrorsContainer&                  errors);
+                                                    const std::vector< std::string >& matches,
+                                                    ErrorsContainer&                  errors);
 
-      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System& sys, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System&  sys,
+                                                            ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_NOT_A_CLASS(const O3Instance& i, ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_SYSTEM_DUPLICATE_INSTANCE(const O3Instance& i, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_SYSTEM_DUPLICATE_INSTANCE(const O3Instance& i,
+                                                          ErrorsContainer&  errors);
 
-      void GUM_PUBLIC_PRM O3PRM_SYSTEM_NOT_A_PARAMETER(const O3InstanceParameter& param, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_SYSTEM_NOT_A_PARAMETER(const O3InstanceParameter& param,
+                                                       ErrorsContainer&           errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_PARAMETER_NOT_FOUND(const O3InstanceParameter& param,
-                                            ErrorsContainer&           errors);
+                                                           ErrorsContainer&           errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_PARAMETER_NOT_INT(const O3InstanceParameter& param,
-                                          ErrorsContainer&           errors);
+                                                         ErrorsContainer&           errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_PARAMETER_NOT_FLOAT(const O3InstanceParameter& param,
-                                            ErrorsContainer&           errors);
+                                                           ErrorsContainer&           errors);
 
-      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INVALID_LEFT_VALUE(const O3Label& val, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INVALID_LEFT_VALUE(const O3Label&   val,
+                                                          ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INSTANCE_NOT_FOUND(const O3Label& i, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_SYSTEM_INSTANCE_NOT_FOUND(const O3Label&   i,
+                                                          ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_REFERENCE_NOT_FOUND(const O3Label&   ref,
-                                            std::string_view type,
-                                            ErrorsContainer& errors);
+                                                           std::string_view type,
+                                                           ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_NOT_AN_ARRAY(const O3Label& val, ErrorsContainer& errors);
 
-      void GUM_PUBLIC_PRM O3PRM_DEPRECATED_TYPE_WARNING(const O3Label& type, ErrorsContainer& errors);
+      void GUM_PUBLIC_PRM O3PRM_DEPRECATED_TYPE_WARNING(const O3Label&   type,
+                                                        ErrorsContainer& errors);
 
     }   // namespace o3prm
   }   // namespace prm

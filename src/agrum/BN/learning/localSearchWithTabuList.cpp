@@ -84,13 +84,11 @@ namespace gum {
     }
 
     /// destructor
-    LocalSearchWithTabuList::~LocalSearchWithTabuList() {
-      GUM_DESTRUCTOR(LocalSearchWithTabuList);
-    }
+    LocalSearchWithTabuList::~LocalSearchWithTabuList() { GUM_DESTRUCTOR(LocalSearchWithTabuList); }
 
     /// copy operator
-    LocalSearchWithTabuList&
-        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) = default;
+    LocalSearchWithTabuList& LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from)
+        = default;
 
     /// move operator
     LocalSearchWithTabuList& LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {

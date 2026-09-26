@@ -93,7 +93,7 @@
 
 #ifdef GUM_FOR_SWIG
 #  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                          \
       public:                                                                  \
       explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
           SUPERCLASS(aMsg, aType) {}                                           \
@@ -102,7 +102,7 @@
     };
 #else   // GUM_FOR_SWIG
 #  define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)                                \
-    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                        \
+    class GUM_SHARED_PUBLIC TYPE: public SUPERCLASS {                          \
       public:                                                                  \
       explicit TYPE(const std::string& aMsg, const std::string& aType = MSG) : \
           SUPERCLASS(aMsg, aType) {}                                           \
@@ -553,9 +553,9 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   GUM_SHARED_PUBLIC std::string _createMsg_(std::string_view filename,
-                                              std::string_view function,
-                                              int              line,
-                                              std::string_view msg);
+                                            std::string_view function,
+                                            int              line,
+                                            std::string_view msg);
 
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
 

@@ -49,6 +49,7 @@
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/learning/constraints/structuralConstraintDAG.h>
@@ -58,7 +59,6 @@
 #include <agrum/BN/learning/constraints/structuralConstraintSliceOrder.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/base/stattests/priors/smoothingPrior.h>
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scoreK2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>

@@ -69,9 +69,9 @@ namespace gum {
 
     /// default constructor
     GraphChange::GraphChange(GraphChangeType type,
-                              NodeId          node1,
-                              NodeId          node2,
-                              NodeId          node3) noexcept : type_{type} {
+                             NodeId          node1,
+                             NodeId          node2,
+                             NodeId          node3) noexcept : type_{type} {
       nodes_[0] = LearnNodeId(node1);
       nodes_[1] = LearnNodeId(node2);
       nodes_[2] = LearnNodeId(node3);
@@ -187,8 +187,8 @@ namespace gum {
     ArcTriangleDeletion1::~ArcTriangleDeletion1() noexcept {}
 
     /// copy operator
-    ArcTriangleDeletion1&
-        ArcTriangleDeletion1::operator=(const ArcTriangleDeletion1& from) noexcept = default;
+    ArcTriangleDeletion1& ArcTriangleDeletion1::operator=(const ArcTriangleDeletion1& from) noexcept
+        = default;
 
     /// move operator
     ArcTriangleDeletion1& ArcTriangleDeletion1::operator=(ArcTriangleDeletion1&& from) noexcept {
@@ -212,8 +212,8 @@ namespace gum {
     ArcTriangleDeletion2::~ArcTriangleDeletion2() noexcept {}
 
     /// copy operator
-    ArcTriangleDeletion2&
-        ArcTriangleDeletion2::operator=(const ArcTriangleDeletion2& from) noexcept = default;
+    ArcTriangleDeletion2& ArcTriangleDeletion2::operator=(const ArcTriangleDeletion2& from) noexcept
+        = default;
 
     /// move operator
     ArcTriangleDeletion2& ArcTriangleDeletion2::operator=(ArcTriangleDeletion2&& from) noexcept {

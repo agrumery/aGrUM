@@ -1902,10 +1902,9 @@ else:
   pyagrum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
   pyagrum.KTBN._repr_html_ = lambda self: getDot(self.toDot())
-  
+
   pyagrum.CausalImpact._repr_html_ = lambda self: f"$${self.toLatex()}$$"
   pyagrum.CausalModel._repr_html_ = lambda self: getCausalModel(self)
-  
 
   pyagrum.Tensor._repr_html_ = lambda self: getTensor(self)
   dot.Dot._repr_html_ = lambda self: getGraph(self)

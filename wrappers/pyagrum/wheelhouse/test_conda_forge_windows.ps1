@@ -172,7 +172,14 @@ try {
     # -----------------------------------------------------------------------
     # Configure
     #
-    # Keep this intentionally close to conda-forge's recipe/build.bat.
+    # Keep this intentionally close to conda-forge's recipe/build.bat: every
+    # -D flag below, including -DBUILD_SHARED_LIBS=OFF, matches it
+    # flag-for-flag, in the same order (conda-forge/pyagrum-feedstock,
+    # recipe/build.bat).
+    # Unlike recipe/build.sh (Linux/macOS), which never sets
+    # BUILD_SHARED_LIBS at all (relies on aGrUM's own CMakeLists.txt
+    # default, ON), build.bat really does force static on Windows -- see
+    # agrum-conda-test's README ("feedstock" mode) for the Linux/macOS side.
     # -----------------------------------------------------------------------
 
     Write-Host ""

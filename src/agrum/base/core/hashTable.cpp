@@ -57,9 +57,9 @@ namespace gum {
   // constinit keyword rather than constexpr because, in debugging mode, the
   // iterators' destructors cannot be declared as constepxr.
   extern constinit GUM_SHARED_PUBLIC const HashTableIterator< int, int >
-                                             _static_HashTable_end_(StaticInitializer::CONSTINIT);
+                                           _static_HashTable_end_(StaticInitializer::CONSTINIT);
   extern constinit GUM_SHARED_PUBLIC const HashTableConstIterator< int, int >
-                                             _static_HashTable_cend_(StaticInitializer::CONSTINIT);
+                                           _static_HashTable_cend_(StaticInitializer::CONSTINIT);
   extern constinit GUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int >
       _static_HashTable_end_safe_(StaticInitializer::CONSTINIT);
   extern constinit GUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >

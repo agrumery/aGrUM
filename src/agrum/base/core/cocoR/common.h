@@ -133,8 +133,7 @@ namespace gum {
   GUM_SHARED_PUBLIC wchar_t* coco_string_create_lower(const wchar_t* data);
   GUM_SHARED_PUBLIC wchar_t*
       coco_string_create_lower(const wchar_t* data, int startIndex, int dataLen);
-  GUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data1,
-                                                         const wchar_t* data2);
+  GUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data1, const wchar_t* data2);
   GUM_SHARED_PUBLIC wchar_t* coco_string_create_append(const wchar_t* data, const wchar_t value);
   GUM_SHARED_PUBLIC void     coco_string_delete(wchar_t*& data);
   GUM_SHARED_PUBLIC int      coco_string_length(const wchar_t* data);

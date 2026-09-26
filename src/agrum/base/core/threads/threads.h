@@ -127,7 +127,7 @@ namespace gum {
    * work on
    */
   GUM_SHARED_PUBLIC std::vector< std::pair< Idx, Idx > >
-                      dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
+                    dispatchRangeToThreads(Idx beg, Idx end, unsigned int nb_threads);
 
 } /* namespace gum */
 

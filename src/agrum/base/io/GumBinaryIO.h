@@ -52,12 +52,13 @@
 #ifndef GUM_BINARY_IO_H
 #define GUM_BINARY_IO_H
 
-#include <agrum/config.h>
 #include <cstdint>
 #include <istream>
 #include <ostream>
 #include <stdexcept>
 #include <vector>
+
+#include <agrum/config.h>
 
 namespace gum {
 

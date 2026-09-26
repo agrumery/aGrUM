@@ -96,7 +96,7 @@ namespace gum {
    * @return Vector of splitted strings
    */
   GUM_SHARED_PUBLIC std::vector< std::string > split(std::string_view orig,
-                                                       std::string_view delimiter);
+                                                     std::string_view delimiter);
 
   /**
    * @brief Replace val by new_val in s.
@@ -106,7 +106,7 @@ namespace gum {
    * @return A new string with val replaced by new_val.
    */
   GUM_SHARED_PUBLIC std::string
-                      replace(std::string_view s, std::string_view val, std::string_view new_val);
+                    replace(std::string_view s, std::string_view val, std::string_view new_val);
 
   /**
    * @brief return true is a string contains an integer value

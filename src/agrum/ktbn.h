@@ -47,6 +47,5 @@
 #include <agrum/KTBN/generator/KTBNGenerator.h>
 #include <agrum/KTBN/inference/KTBNInference.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
-#include <agrum/KTBN/learning/KTBNLearner.h>
 
 #endif   // GUM_KTBN_MODULE_H

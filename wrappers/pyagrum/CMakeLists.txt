@@ -156,10 +156,10 @@ macro(gum_add_python_module MODULENAME)
     set(_PYAGRUM_SWIGMOD ${_PYAGRUM_ARG_SWIGMOD})
   endif()
 
-  # Not every module has a generic wrappers/swig/aGrUM_wrap_<MODULENAME>.i
-  # layer (PRM's whole API is PRMexplorer.h, included directly) -- only add
-  # it to DEPENDS when it actually exists, otherwise Make/Ninja errors with
-  # "no rule to make target" for a prerequisite nothing produces.
+  # Not every module has a generic wrappers/swig/aGrUM_wrap_<MODULENAME>.i layer
+  # (PRM's whole API is PRMexplorer.h, included directly) -- only add it to
+  # DEPENDS when it actually exists, else Make/Ninja errors with "no rule to
+  # make target".
   set(_PYAGRUM_WRAP_FILE ${SWIG_SOURCE_DIR}/aGrUM_wrap_${MODULENAME}.i)
   if(NOT EXISTS ${_PYAGRUM_WRAP_FILE})
     set(_PYAGRUM_WRAP_FILE "")
@@ -180,12 +180,11 @@ macro(gum_add_python_module MODULENAME)
       COMMENT "SWIG: generating ${MODULENAME} Python bindings (module ${_PYAGRUM_SWIGMOD})"
     )
 
-    # passForPyType post-processes raw/ → generated-files/.
-    # OUTPUT is a stamp file (build tree, always touched) so Ninja uses it — not the
-    # generated-files/ timestamps — to decide whether to re-run this command.
-    # generated-files/ are BYPRODUCTS: Ninja knows they may be written here, but their
-    # timestamps do not trigger re-runs. passForPyType only writes them when content
-    # changes, so pyagrumPYTHON_wrap.cxx.o is recompiled only when truly necessary.
+    # passForPyType post-processes raw/ -> generated-files/. OUTPUT is a stamp
+    # file (always touched) so Ninja uses it -- not the generated-files/
+    # timestamps -- to decide whether to re-run; generated-files/ are
+    # BYPRODUCTS, only rewritten on real content change, so
+    # pyagrumPYTHON_wrap.cxx.o recompiles only when truly necessary.
     set(_PASSFORPYTYPE_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_passForPyType.stamp)
     add_custom_command(OUTPUT ${_PASSFORPYTYPE_STAMP}
       BYPRODUCTS
@@ -214,10 +213,10 @@ macro(gum_add_python_module MODULENAME)
   endif()
 
   set(_PYAGRUMLIB _${MODULENAME_LOWER})
-  # Core "pyagrum" is SHARED, not MODULE: every split submodule (_mrf.so, _id.so,
-  # ...) links against it directly to reach BASE/BN (see target_link_libraries
-  # below), so it must be a real linkable shared library, not a Python-only
-  # loadable bundle. Submodules stay MODULE -- nothing links against them.
+  # Core "pyagrum" is SHARED, not MODULE: every split submodule (_mrf.so,
+  # _id.so, ...) links against it directly to reach BASE/BN, so it must be a
+  # real linkable shared library, not a Python-only loadable bundle. Submodules
+  # stay MODULE -- nothing links against them.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
     add_library(${_PYAGRUMLIB} SHARED ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx)
   else()
@@ -229,11 +228,10 @@ macro(gum_add_python_module MODULENAME)
     # partially between CI runs: MSBuild/VS's own up-to-date check for a
     # generated source only looks at that source file's own mtime, and can
     # decide the .obj is current even though the SWIG/passForPyType custom
-    # commands were supposed to (re)write it -- e.g. if copy_if_different
-    # skips a write because content is unchanged while raw/ or the stamp
-    # advanced, or the tree was only partially cleaned. Depending explicitly
-    # on the stamp and the raw SWIG outputs forces MSBuild/Ninja to recheck
-    # the compile whenever those actually change, closing that skip window.
+    # commands were supposed to (re)write it -- e.g. if copy_if_different skips
+    # a write because content is unchanged while raw/ or the stamp advanced.
+    # Depending explicitly on the stamp and the raw SWIG outputs forces
+    # MSBuild/Ninja to recheck the compile whenever those actually change.
     set_source_files_properties(${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx PROPERTIES
       GENERATED TRUE
       OBJECT_DEPENDS "${_PASSFORPYTYPE_STAMP};${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx;${CMAKE_SWIG_OUTDIR}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.h"
@@ -242,52 +240,42 @@ macro(gum_add_python_module MODULENAME)
     set_source_files_properties(${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx PROPERTIES GENERATED TRUE)
   endif()
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE SWIG_TYPE_TABLE=pyproba)
-  # This target (core _pyagrumcpp.so, or a leaf _mrfcpp/_idcpp/_cncpp/_cmcpp/_prmcpp.pyd) is a real
-  # shared object regardless of the global BUILD_SHARED_LIBS (CompilOptions.agrum.cmake),
-  # which pyAgrum forces OFF only to control how agrum${OPTION} module libraries are
-  # built (static, whole-archived or plainly linked here) -- it says nothing about
-  # this SWIG target itself, always declared SHARED/MODULE regardless. Define the flag
-  # here too so GUM_SHARED_PUBLIC (config.h.in) keeps applying its real dllexport/
-  # dllimport split across this genuine DLL boundary: core sees dllexport (its own
-  # GUM_SHARED_EXPORTING, set below), every leaf sees dllimport (it never defines that
-  # flag), exactly as before this global gate was introduced.
+  # This target (core _pyagrumcpp.so, or a leaf
+  # _mrfcpp/_idcpp/_cncpp/_cmcpp/_prmcpp.pyd) is a real shared object regardless
+  # of the global BUILD_SHARED_LIBS (which pyAgrum forces OFF only to control
+  # how agrum${OPTION} module libraries are built) -- it says nothing about this
+  # SWIG target itself. Define the flag here too so GUM_SHARED_PUBLIC
+  # (config.h.in) keeps applying its real dllexport/dllimport split across this
+  # genuine DLL boundary: core sees dllexport (its own GUM_SHARED_EXPORTING, set
+  # below), every leaf sees dllimport.
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE AGRUM_BUILD_SHARED_LIBS)
-  # GUM_PUBLIC is blanked to nothing on every agrum${OPTION} module library under
-  # BUILD_PYTHON (Modules.agrum.cmake) so a plain-GUM_PUBLIC-tagged class never gets
-  # re-exposed by -fvisibility=hidden/dllexport in pyAgrum builds -- but that blanking
-  # was never applied to the SWIG wrap targets themselves (this macro, one call per
-  # module: pyagrum/id/mrf/cn/cm/prm). Each wrap TU pulls in its module's umbrella
-  # header (e.g. core's #include <agrum/bn.h>), and umbrella headers freely reach
-  # across module boundaries for convenience (agrum/bn.h itself #includes PRM's
-  # O3prmBNReader.h/O3prmBNWriter.h for O3PRM-format BN I/O) -- so a wrap TU can end up
-  # compiling a class it never actually wraps or calls. On MSVC specifically, merely
-  # having a __declspec(dllexport)-tagged class's full definition visible is enough:
-  # unlike GCC/Clang (which only emit an inline member if it's actually ODR-used),
-  # MSVC eagerly instantiates and emits EVERY inline member of a dllexport'd class,
-  # since the DLL's ABI must be complete regardless of what this TU itself calls.
-  # Without this blanking, a class reached only transitively through an umbrella
-  # header -- never wrapped or called by this TU at all -- can still have its
-  # out-of-line members pulled into the wrap object file and linked against a
-  # sibling module's .lib that this target never links, producing an unresolved
-  # external. Blanking GUM_PUBLIC here, uniformly for every module (not just core),
-  # closes that gap for any leaf's own umbrella-header reach.
+  # GUM_PUBLIC is blanked to nothing on every agrum${OPTION} module library
+  # under BUILD_PYTHON (Modules.agrum.cmake) so a plain-GUM_PUBLIC-tagged class
+  # never gets re-exposed in pyAgrum builds -- but that blanking was never
+  # applied to the SWIG wrap targets themselves. Each wrap TU pulls in its
+  # module's umbrella header, and umbrella headers freely reach across module
+  # boundaries (e.g. agrum/bn.h includes PRM's O3prmBNReader.h/Writer.h), so a
+  # wrap TU can end up compiling a class it never actually wraps or calls. On
+  # MSVC specifically, merely having a __declspec(dllexport)-tagged class's full
+  # definition visible is enough: unlike GCC/Clang (which only emit an inline
+  # member if ODR-used), MSVC eagerly instantiates and emits EVERY inline member
+  # of a dllexport'd class. Without this blanking, a class reached only
+  # transitively through an umbrella header can still have its out-of-line
+  # members pulled into the wrap object file and linked against a sibling
+  # module's .lib this target never links, producing an unresolved external.
+  # Blanking GUM_PUBLIC here, uniformly for every module, closes that gap.
   target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC=)
-  # Same umbrella-header transitive-reach gap as GUM_PUBLIC above (comment right
-  # above), now one macro name per module (GUM_PUBLIC.md §16) instead of a single
-  # shared one -- each needs its own blanking here too, or a wrap TU that merely
-  # includes another module's header through an umbrella (e.g. agrum/bn.h pulling
-  # in PRM's O3prmBNReader.h/Writer.h) sees that module's macro resolve to
-  # dllimport (config.h.in's AGRUM_<MODULE>_EXPORTING branch, since this TU never
-  # defines that module's own EXPORTING flag) on a class it never actually links
-  # against -- the exact LNK2001/ImportError-at-dlopen failure mode already
-  # documented above for plain GUM_PUBLIC. BASE keeps GUM_SHARED_PUBLIC, never
-  # blanked anywhere (Modules.agrum.cmake), same reasoning applies here.
-  # LIST_OF_MODULES (src/cmake/Modules.agrum.cmake) is the single source of
-  # truth for aGrUM's module list -- includes BASE (excluded below: it uses
-  # GUM_SHARED_PUBLIC, not this GUM_PUBLIC_<MODULE> family) and FMDP (kept:
-  # FMDP has no pyAgrum leaf module of its own -- see pymodules.txt -- but
-  # its umbrella header could still be transitively reached the same way
-  # PRM's is from agrum/bn.h, so its macro needs blanking here too).
+  # Same umbrella-header transitive-reach gap as GUM_PUBLIC above, now one macro
+  # name per module (GUM_PUBLIC.md §16) instead of a single shared one -- each
+  # needs its own blanking here too, or a wrap TU that merely includes another
+  # module's header through an umbrella sees that module's macro resolve to
+  # dllimport on a class it never actually links against, the same
+  # LNK2001/ImportError-at-dlopen failure mode already described for plain
+  # GUM_PUBLIC. BASE keeps GUM_SHARED_PUBLIC, never blanked anywhere.
+  # LIST_OF_MODULES (src/cmake/Modules.agrum.cmake) is the source of truth for
+  # aGrUM's module list, including FMDP: it has no pyAgrum leaf module of its
+  # own, but its umbrella header can still be transitively reached the same way
+  # PRM's is from agrum/bn.h, so its macro needs blanking here too.
   foreach(_gum_public_blank_module ${LIST_OF_MODULES})
     if(NOT _gum_public_blank_module STREQUAL "BASE")
       target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_PUBLIC_${_gum_public_blank_module}=)
@@ -298,12 +286,10 @@ macro(gum_add_python_module MODULENAME)
   endif()
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
-  # OUTPUT_NAME decoupled from the target name (${_PYAGRUMLIB}, still
-  # "_pyagrum"/"_ktbn"/... -- used for target_link_libraries cross-references
-  # like the literal "_pyagrum" at the core-link branch below): the actual
-  # produced binary must be "_<swigmod>.so"/".pyd" to match the SWIG-generated
-  # proxy's own "from . import _<swigmod>" statement (module token in the
-  # .i file's %module directive).
+  # OUTPUT_NAME kept as "_<swigmod>" ("_pyagrum"/"_ktbn"/...), decoupled from
+  # the target name ${_PYAGRUMLIB} used for cross-references: the produced
+  # binary must match the SWIG-generated proxy's own "from . import _<swigmod>"
+  # statement (the .i file's %module directive).
   set_target_properties(${_PYAGRUMLIB} PROPERTIES OUTPUT_NAME "_${_PYAGRUM_SWIGMOD}")
 
   if(WIN32)
@@ -314,68 +300,56 @@ macro(gum_add_python_module MODULENAME)
 
   set_target_properties(${_PYAGRUMLIB} PROPERTIES NO_SONAME ON)
 
-  # BASE/BN are embedded once into core pyagrum (SHARED, see add_library above);
-  # every submodule links against that single instance instead of re-embedding
-  # its own copy -- this is what keeps process-global state (e.g.
+  # BASE/BN are embedded once into core pyagrum (SHARED) so every submodule
+  # links against that single instance instead of re-embedding its own copy --
+  # this is what keeps process-global state (e.g.
   # CompleteProjectionRegister4MultiDim, used by Tensor::min/max/sum/product) a
-  # single shared instance across every pyAgrum SWIG extension.
-  #
-  # "Embedded once" has to mean the WHOLE compiled surface of BASE/BN, not just
-  # whatever core's own SWIG wrap file happens to reference: a plain
-  # target_link_libraries() on a STATIC archive only pulls in the .o members
-  # needed to resolve symbols already seen by the linker (classic archive
-  # semantics) -- so a symbol used only by a leaf module (e.g. gum::Formula,
-  # used solely by PRM's o3prm parser; gum::BayesNetFactory<double>;
-  # gum::Rational<double>) would silently never make it into _pyagrumcpp.so at
-  # all, no matter how it's tagged. PYGUM_PUBLIC only controls whether an
-  # *included* symbol is exported -- not whether it gets included in the first
-  # place -- so both are needed together: whole-archive for inclusion,
-  # PYGUM_PUBLIC for visibility. Force the whole archive in with the
-  # platform-specific linker flag.
+  # single shared instance across every pyAgrum SWIG extension. "Embedded once"
+  # has to mean the WHOLE compiled surface of BASE/BN, not just whatever core's
+  # own SWIG wrap file happens to reference: a plain target_link_libraries() on
+  # a STATIC archive only pulls in the .o members needed to resolve symbols
+  # already seen by the linker, so a symbol used only by a leaf module (e.g.
+  # gum::Formula, used solely by PRM's o3prm parser) would silently never make
+  # it into _pyagrumcpp.so at all, however it's tagged. Whole-archive forces the
+  # full surface in; PYGUM_PUBLIC then controls visibility of what's included.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
    if(NOT BUILD_SHARED_LIBS)
     # Whole-archive is the ONLY link mechanism used for BASE/BN into core: do
-    # NOT also add a plain target_link_libraries(... agrumBASE agrumBN) here.
-    # Doing so lists the same .a three times in the final link line -- once
-    # forced, once plain, once more transitively (agrumBN PUBLIC-links
-    # agrumBASE) -- and ld64 does not cleanly coalesce weak/template symbols
-    # pulled in through both a forced and a plain reference to the same
-    # archive: the same mangled symbol (e.g.
-    # gum::BayesNetFactory<double>::BayesNetFactory(gum::BayesNet<double>*))
-    # can end up duplicated, each copy demoted to local linkage instead of
-    # being merged into one exported definition. Pull just the include dirs
-    # we actually need instead of a full target dependency.
+    # not also add a plain target_link_libraries(... agrumBASE agrumBN) here.
+    # Doing so lists the same .a multiple times in the final link line (once
+    # forced, once plain, once more transitively via agrumBN) -- ld64 does not
+    # cleanly coalesce weak/template symbols pulled in through both a forced and
+    # a plain reference to the same archive, and the same mangled symbol can end
+    # up duplicated, each copy demoted to local linkage instead of merged into
+    # one exported definition. Pull just the include dirs actually needed
+    # instead of a full target dependency.
     target_include_directories(${_PYAGRUMLIB} PRIVATE ${AGRUM_SOURCE_DIR} ${AGRUM_BINARY_DIR})
-    # This TU (core's own SWIG wrap file) whole-archives agrumBASE/agrumBN's compiled
-    # object code directly into itself (see the platform branches below), so it is
-    # really a third "owner" of every PYGUM_SHARED_PUBLIC symbol alongside agrumBASE/
-    # agrumBN -- without this define, PYGUM_SHARED_PUBLIC resolves to dllimport here
-    # (config.h.in: GUM_FOR_SWIG defined, PYGUM_SHARED_EXPORTING not) even though the
-    # symbol's actual definition ends up in this very binary. MSVC's linker tolerates
-    # that mismatch with an LNK4217 warning (locally-defined symbol imported), but GNU
-    # ld (MinGW) rejects it outright: unlike link.exe, it never resolves an __imp_*
-    # thunk against a same-binary definition, only against a real import library --
-    # so leaving this TU on dllimport turned every whole-archived symbol it touches
-    # into a hard "undefined reference to `__imp_...'" on MinGW.
+    # This TU (core's own SWIG wrap file) whole-archives agrumBASE/agrumBN's
+    # compiled object code directly into itself (see the platform branches
+    # below), making it a third "owner" of every PYGUM_SHARED_PUBLIC symbol
+    # alongside agrumBASE/agrumBN -- without this define, PYGUM_SHARED_PUBLIC
+    # resolves to dllimport here even though the symbol's actual definition ends
+    # up in this very binary. MSVC's linker tolerates that mismatch with an
+    # LNK4217 warning, but GNU ld (MinGW) rejects it outright: it never resolves
+    # an __imp_* thunk against a same-binary definition, only against a real
+    # import library, turning every whole-archived symbol this TU touches into a
+    # hard "undefined reference to `__imp_...'".
     target_compile_definitions(${_PYAGRUMLIB} PRIVATE PYGUM_SHARED_EXPORTING)
     # Same gap, same mechanism, for GUM_SHARED_PUBLIC (BASE-only so far,
     # config.h.in): Modules.agrum.cmake defines GUM_SHARED_EXPORTING on
     # agrumBASE's own target and blanks GUM_SHARED_PUBLIC to nothing on every
-    # agrum<MODULE> static-lib target for pyAgrum builds, but neither of those
-    # scopes covers this TU -- core's own wrap file is a third owner of every
-    # GUM_SHARED_PUBLIC symbol exactly like it is for PYGUM_SHARED_PUBLIC above,
-    # via the same whole-archive embedding below. Without this, GUM_SHARED_PUBLIC
-    # resolves to plain dllimport here (config.h.in: GUM_SHARED_EXPORTING not
-    # defined) while the symbol's actual definition (Timer, IdCondSet,
+    # agrum<MODULE> static-lib target for pyAgrum builds, but neither scope
+    # covers this TU -- core's own wrap file is a third owner of every
+    # GUM_SHARED_PUBLIC symbol here too, via the same whole-archive embedding
+    # below. Without this define, GUM_SHARED_PUBLIC resolves to plain dllimport
+    # here while the symbol's actual definition (Timer, IdCondSet,
     # RecordCounter, ScoringCache, GammaLog2, FormulaPart, ...) is blanked to no
-    # attribute at all in agrumBASE's own compilation -- link.exe then can't
-    # resolve the __imp_* thunk this TU emits against agrumBASE.lib's plain
-    # (non-decorated) symbol, an unresolved external on every GUM_SHARED_PUBLIC-
-    # tagged BASE class this wrap file touches. This is a distinct gap from the
-    # umbrella-header GUM_PUBLIC one handled by the
-    # target_compile_definitions(... GUM_PUBLIC=) call earlier in this macro:
-    # that one covers plain-GUM_PUBLIC classes reached transitively through an
-    # umbrella header, this one covers GUM_SHARED_PUBLIC's own producer/consumer
+    # attribute in agrumBASE's own compilation -- link.exe then can't resolve
+    # the __imp_* thunk this TU emits against agrumBASE.lib's plain symbol, an
+    # unresolved external on every GUM_SHARED_PUBLIC-tagged BASE class this wrap
+    # file touches. Distinct from the umbrella-header GUM_PUBLIC gap handled
+    # earlier in this macro: that one covers plain-GUM_PUBLIC classes reached
+    # transitively, this one covers GUM_SHARED_PUBLIC's own producer/consumer
     # split.
     target_compile_definitions(${_PYAGRUMLIB} PRIVATE GUM_SHARED_EXPORTING)
     # $<TARGET_FILE:...> in target_link_options is not always enough to
@@ -388,36 +362,26 @@ macro(gum_add_python_module MODULENAME)
         -Wl,-force_load,$<TARGET_FILE:agrumBN>)
     elseif(MSVC)
       # MSVC has no force-load-only mechanism: /WHOLEARCHIVE requires the
-      # archive to also be a normal link input. Link only agrumBN here, NOT
-      # agrumBASE too -- agrumBN already PUBLIC-links agrumBASE (see
-      # Modules.agrum.cmake), so listing agrumBASE explicitly here would be a
-      # redundant duplicate in the final link line (once via this call, once
-      # transitively via agrumBN, plus /WHOLEARCHIVE referencing it by name).
+      # archive to also be a normal link input. Link only agrumBN here, not
+      # agrumBASE too -- agrumBN already PUBLIC-links agrumBASE
+      # (Modules.agrum.cmake), so listing it again would duplicate it in the
+      # final link line.
       target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBN)
       target_link_options(${_PYAGRUMLIB} PRIVATE
         /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBASE>
         /WHOLEARCHIVE:$<TARGET_FILE_NAME:agrumBN>)
     else()
-      # GNU ld (Linux and MinGW alike): whole-archive is enough on its own on Linux,
-      # where -fvisibility=hidden + the PYGUM_PUBLIC/PYGUM_SHARED_PUBLIC tagging
-      # (config.h.in) already controls exactly what's exported. MinGW needs one more
-      # flag on top of that: ld's default PE behavior is to auto-export every global
-      # symbol from a DLL as long as NO object being linked carries an explicit
-      # dllexport attribute, and consumers auto-import plain (undecorated) references
-      # back out of it -- this is what let MinGW builds work even though the vast
-      # majority of agrumBASE/agrumBN's public surface (HashFunc<*>, _hashTableLog2_,
-      # trim, isInteger, isNumerical, remove_newline, ...) was never tagged
-      # PYGUM_SHARED_PUBLIC, only ever needing it on MSVC's own producer/consumer
-      # split. The _WIN32 fix in config.h.in made PYGUM_SHARED_PUBLIC/PYGUM_PUBLIC
-      # emit real dllexport on MinGW too (correctly, for MSVC-parity on the symbols
-      # that ARE tagged) -- but the moment ld sees ANY explicit dllexport in the link,
-      # it silently switches the whole DLL from "export everything" to "export only
-      # what's tagged", so every one of those untagged-but-needed symbols vanished
-      # from the leaf modules' undefined-reference resolution in one shot.
-      # --export-all-symbols forces ld back to exporting everything regardless of
-      # that switch; the explicit dllexport/dllimport pairs added above/in
-      # config.h.in stay in effect for the symbols that do carry them, so nothing
-      # is lost there.
+      # GNU ld (Linux and MinGW alike): whole-archive is enough on its own on
+      # Linux, where -fvisibility=hidden + PYGUM_PUBLIC/PYGUM_SHARED_PUBLIC
+      # tagging already controls exactly what's exported. MinGW needs
+      # --export-all-symbols on top: ld's default PE behavior auto-exports every
+      # global symbol as long as no object in the link carries an explicit
+      # dllexport, and most of BASE/BN's public surface was never tagged (only
+      # ever needed on MSVC's own producer/consumer split) -- the moment ld sees
+      # ANY explicit dllexport, it silently switches the whole DLL to "export
+      # only what's tagged", dropping every untagged-but-needed symbol from leaf
+      # modules' resolution in one shot. --export-all-symbols forces ld back to
+      # exporting everything regardless.
       target_link_options(${_PYAGRUMLIB} PRIVATE
         -Wl,--whole-archive $<TARGET_FILE:agrumBASE> $<TARGET_FILE:agrumBN> -Wl,--no-whole-archive)
       if(MINGW)
@@ -426,71 +390,57 @@ macro(gum_add_python_module MODULENAME)
     endif()
    else()
     # BUILD_SHARED_LIBS=ON: agrumBASE/agrumBN are genuine shared libraries here
-    # (conda-forge's default -- also what an external C++ consumer like otagrum
-    # links against via find_package(aGrUM CONFIG)). Link against them normally
-    # instead of whole-archiving, so the process has exactly ONE loaded copy of
-    # BASE/BN's code: correct RTTI (typeid/dynamic_cast/catch) and a single
-    # instance of process-global state (e.g. CompleteProjectionRegister4MultiDim,
-    # see comment above) whether the object came from pyagrum or from another
-    # extension sharing the same libagrumBASE/libagrumBN in the same process.
-    # A plain target_link_libraries() also gets CMake's normal RPATH
+    # (conda-forge's default, also what an external C++ consumer like otagrum
+    # links against via find_package(aGrUM CONFIG)) -- link against them
+    # normally instead of whole-archiving, so the process has exactly one loaded
+    # copy (correct RTTI, single instance of process-global state like
+    # CompleteProjectionRegister4MultiDim) and gets CMake's normal RPATH
     # propagation, unlike the raw -Wl,-force_load/--whole-archive route this
-    # replaces, which bypasses it entirely (verified locally: that route left
-    # macOS failing "Library not loaded: @rpath/libagrumBASE.3.dylib", no RPATH
-    # ever added).
+    # replaces (verified locally: that route left macOS failing "Library not
+    # loaded: @rpath/libagrumBASE.3.dylib", no RPATH ever added).
     #
-    # On Linux, a plain target_link_libraries() alone is not enough: conda-forge's
-    # LDFLAGS carry -Wl,--as-needed globally, and GNU ld's --as-needed drops a
-    # shared library from DT_NEEDED whenever it decides nothing on the command
-    # line so far needs it -- verified locally that it does so here even though
-    # libagrumBASE.so genuinely defines every one of these symbols (e.g.
-    # gum::Listener's ctor/dtor/typeinfo), leaving _pyagrumcpp.so with zero
-    # libagrum* dependency and "undefined symbol" at import time.
-    # -Wl,--no-as-needed forces the dependency through regardless. Not
-    # restored afterward on purpose: CMake emits every target_link_options()
-    # call as one grouped block ahead of target_link_libraries(), in call
-    # order, not interleaved by call sequence -- a trailing
-    # target_link_options(... -Wl,--as-needed) here would land right next to
-    # this -Wl,--no-as-needed, both still before the actual library names,
-    # silently undoing this fix (verified locally: exactly this happened).
-    # Nothing links after agrumBASE/agrumBN on this target that needs
-    # --as-needed restored.
+    # On Linux, conda-forge's LDFLAGS carry -Wl,--as-needed globally, and GNU ld
+    # drops a shared library from DT_NEEDED whenever nothing on the command line
+    # so far needs it -- verified locally that it does so here even though
+    # libagrumBASE.so genuinely defines every symbol used (e.g. gum::Listener's
+    # ctor/dtor/typeinfo), leaving _pyagrumcpp.so with zero libagrum* dependency
+    # and "undefined symbol" at import time. -Wl,--no-as-needed forces the
+    # dependency through; not restored afterward since CMake emits
+    # target_link_options() calls as one grouped block ahead of
+    # target_link_libraries() in call order (verified locally: a trailing
+    # --as-needed here silently undid the fix), and nothing links after
+    # agrumBASE/agrumBN on this target that needs it back.
     if(UNIX AND NOT APPLE)
       target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--no-as-needed)
     endif()
     # agrumBASE is a genuine separate shared library too, PUBLIC-linked into
     # agrumBN (Modules.agrum.cmake): linking agrumBN here is enough, CMake
-    # propagates agrumBASE transitively through that PUBLIC dependency --
-    # no need to name it again on this link line.
+    # propagates agrumBASE transitively.
     target_link_libraries(${_PYAGRUMLIB} PRIVATE agrumBN)
-    # Belt and suspenders under parallel make (matches the whole-archive branch's
-    # own add_dependencies above): target_link_libraries() on a target normally
-    # implies the build-order dependency too, but make it explicit here as well.
+    # Explicit build-order dependency, belt and suspenders with the
+    # whole-archive branch's own add_dependencies above --
+    # target_link_libraries() normally implies it too.
     add_dependencies(${_PYAGRUMLIB} agrumBN)
    endif()
   else()
-    # Leaf module wrap target (_cncpp, _prmcpp, ...). Under BUILD_SHARED_LIBS=OFF
-    # (pyAgrum's normal static build), _pyagrum alone is enough: it whole-archives
-    # and re-exports all of BASE/BN (see the "pyagrum" branch above). Under
-    # BUILD_SHARED_LIBS=ON, _pyagrum no longer whole-archives BASE/BN -- it links
-    # agrumBN normally (see this same branch above), and a normally-linked DLL
-    # dependency is not re-exported to _pyagrum's own consumers. Every leaf module's
-    # own agrum${MODULENAME} already PUBLIC-links agrumBN for this same reason
-    # (Modules.agrum.cmake, BUILD_SHARED_LIBS=ON leaf branch) -- link agrumBN
-    # explicitly here too instead of relying solely on that transitive propagation,
-    # symmetric with how the "pyagrum" branch above always links it explicitly.
+    # Leaf module wrap target (_cncpp, _prmcpp, ...). Under
+    # BUILD_SHARED_LIBS=OFF (pyAgrum's normal static build), _pyagrum alone is
+    # enough: it whole-archives and re-exports all of BASE/BN. Under
+    # BUILD_SHARED_LIBS=ON, _pyagrum no longer whole-archives them and a
+    # normally-linked DLL dependency isn't re-exported to its own consumers, so
+    # link agrumBN explicitly here too, symmetric with how the "pyagrum" branch
+    # above always does and how each leaf's own agrum${MODULENAME} already
+    # PUBLIC-links agrumBN.
     if(BUILD_SHARED_LIBS)
       if(UNIX AND NOT APPLE)
         target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,--no-as-needed)
       endif()
       target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} agrumBN _pyagrum)
-      # Belt and suspenders, same reasoning as the "pyagrum" branch above: this
-      # target_link_libraries() call implies the build-order dependency on both
-      # agrum${MODULENAME} and agrumBN, but make it explicit for both -- the
-      # agrumBN-only guard above was not enough to keep MSVC's parallel build
-      # from occasionally racing agrum${MODULENAME}'s own .lib (observed on CI:
-      # LNK1181 "cannot open input file 'agrumKTBN.lib'", agrumKTBN.vcxproj
-      # timestamped as already finished in the same log).
+      # Explicit build-order dependency: this target_link_libraries() call
+      # implies it already, but the agrumBN-only guard above wasn't enough to
+      # stop MSVC's parallel build occasionally racing agrum${MODULENAME}'s own
+      # .lib (observed on CI: LNK1181 "cannot open input file", with that
+      # .vcxproj timestamped as already finished in the same log).
       add_dependencies(${_PYAGRUMLIB} agrum${MODULENAME} agrumBN)
     else()
       target_link_libraries(${_PYAGRUMLIB} PRIVATE agrum${MODULENAME} _pyagrum)
@@ -507,17 +457,13 @@ macro(gum_add_python_module MODULENAME)
   get_filename_component(PY_LIB_DIR "${Python_LIBRARIES}" DIRECTORY)
   target_link_directories(${_PYAGRUMLIB} PRIVATE ${PY_LIB_DIR})
 
-  # Relative RPATH, not absolute: an absolute ${CMAKE_INSTALL_PREFIX}-based RPATH
+  # Relative RPATH, not absolute: an absolute CMAKE_INSTALL_PREFIX-based RPATH
   # works for `act install`'s stable prefix but dangles for a wheel build, whose
-  # temp CMAKE_INSTALL_PREFIX is deleted right after zipping -- dlopen would then
-  # look for libagrumBASE under a temp directory that no longer exists. Core
-  # pyagrum/_pyagrumcpp.so is itself the shared dependency
-  # submodules link against (see target_link_libraries above), installed straight
-  # into pyagrum/ -- so core pyagrum/_pyagrumcpp.so needs same-dir RPATH (it depends
-  # on nothing outside its own directory), submodules (pyagrum/<mod>/_<mod>.so)
-  # need one level up to reach it -- this also transparently covers the build tree
-  # (CMake's default auto-computed BUILD_RPATH already finds co-located build
-  # outputs; INSTALL_RPATH only takes effect once `cmake --install` actually runs).
+  # temp install prefix is deleted right after zipping. Core
+  # pyagrum/_pyagrumcpp.so needs same-dir RPATH (depends on nothing outside its
+  # own directory); submodules need one level up to reach it -- this also
+  # transparently covers the build tree, since CMake's auto-computed BUILD_RPATH
+  # already finds co-located build outputs.
   if(_PYAGRUM_ARG_SUBDIR)
     set(_PYAGRUM_RPATH_UP "/..")
   else()
@@ -539,37 +485,25 @@ macro(gum_add_python_module MODULENAME)
   endif()
   set_target_properties(${_PYAGRUMLIB} PROPERTIES UNITY_BUILD OFF)
 
-  # LTO: eliminates dead code across translation units at link time -- but
-  # every pyAgrum SWIG module (core AND leaf) now crosses a real DLL boundary
-  # to resolve BASE/BN symbols: core embeds the whole BASE/BN archive on
-  # purpose (see the whole-archive force-load above) so symbols only
-  # referenced from a *submodule* stay available, and every leaf module
-  # resolves those same symbols back out of core's exported surface. LTO's
-  # cross-TU view does not extend cleanly across that boundary on any
-  # toolchain tested so far:
-  #   - core, ld64 (macOS): LTO silently demotes/duplicates
-  #     whole-archive-only symbols to internal linkage despite PYGUM_PUBLIC
-  #     (observed: gum::BayesNetFactory<double>, gum::HashFunc<Set<unsigned
-  #     long>> -- used only by pyagrum.prm/.cn, never by core's own SWIG wrap
-  #     code).
-  #   - leaf, MinGW/GCC: LTRANS fails with "undefined reference" for symbols
-  #     genuinely exported by core's .pyd, because GCC's LTO pipeline doesn't
-  #     see core's import library as satisfying them (observed building
-  #     _idcpp.pyd against ticpp/TiXml symbols exported by _pyagrumcpp.pyd).
-  # Disable LTO for all of them rather than chase this per-toolchain.
+  # LTO disabled for every pyAgrum SWIG module (core and leaf): core embeds
+  # BASE/BN via whole-archive so submodule-only symbols stay available, and
+  # every leaf resolves those same symbols back out of core's exported surface
+  # -- LTO's cross-TU view doesn't extend cleanly across that DLL boundary on
+  # any toolchain tested: ld64 (macOS) silently demotes/duplicates
+  # whole-archive-only symbols to internal linkage despite PYGUM_PUBLIC, and
+  # MinGW/GCC's LTRANS fails with "undefined reference" for symbols genuinely
+  # exported by core's .pyd.
   if(_AGRUM_IPO_SUPPORTED)
     message(STATUS "pyAgrum: LTO disabled for ${_PYAGRUMLIB} (crosses a DLL boundary to reach BASE/BN symbols; LTO does not resolve cleanly across it on ld64 or MinGW/GCC)")
   endif()
   
-  # Dead-strip: drop unreachable functions/data at link time. Only safe for leaf
-  # modules (nothing links against them): core pyagrum is now a real SHARED
-  # library that submodules link against (see add_library above), so dead-strip
-  # would drop symbols (e.g. typeinfo for classes only referenced from a
-  # submodule, like gum::ASTjointProba<double> from pyagrum.causal_model) that this
-  # translation unit never itself references but external consumers still need.
-  #   macOS: -dead_strip works natively on Mach-O without per-section flags
-  #   Linux: requires -ffunction-sections/-fdata-sections on all TUs (set in CompilOptions)
-  #   MSVC:  /OPT:REF removes unreferenced COMDATs; /OPT:ICF folds identical ones
+  # Dead-strip (drop unreachable functions/data at link time) is only safe for
+  # leaf modules: core pyagrum is a real SHARED library that submodules link
+  # against, so stripping it would drop symbols (e.g. typeinfo for a class only
+  # referenced from a submodule) this TU never itself references but external
+  # consumers still need. macOS: -dead_strip works natively on Mach-O. Linux:
+  # needs -ffunction-sections/-fdata-sections (set in CompilOptions). MSVC:
+  # /OPT:REF removes unreferenced COMDATs, /OPT:ICF folds identical ones.
   if(NOT MODULENAME_LOWER STREQUAL "pyagrum")
     if(APPLE)
       target_link_options(${_PYAGRUMLIB} PRIVATE -Wl,-dead_strip)
@@ -583,16 +517,13 @@ macro(gum_add_python_module MODULENAME)
   install(FILES ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
   install(TARGETS ${_PYAGRUMLIB} DESTINATION ${_PYAGRUM_INSTALL_DIR})
 
-  # Copy the Python proxy into the build tree (needed for `act test`, which
-  # runs pyAgrum straight out of the build tree, not the installed wheel).
-  # A plain `add_custom_command(TARGET ... POST_BUILD ...)` (the previous
-  # approach) only fires when ${_PYAGRUMLIB} itself gets rebuilt/relinked --
-  # a .i change confined to a %pythoncode block updates
-  # ${GENERATED_PYTHON}/${MODULENAME_LOWER}.py (via passForPyType) without
-  # touching the generated .cxx, so the .so has no reason to relink and the
-  # POST_BUILD copy silently never runs, leaving a stale .py in the build
-  # tree. An OUTPUT-based command instead depends on the .py file itself,
-  # regardless of whether the .so needed rebuilding.
+  # Copy the Python proxy into the build tree (needed for `act test`, which runs
+  # pyAgrum straight out of the build tree): an OUTPUT-based command depends on
+  # the .py file itself, unlike the previous POST_BUILD approach, which only
+  # fired when ${_PYAGRUMLIB} itself relinked -- a .i change confined to a
+  # %pythoncode block updates the .py via passForPyType without touching the
+  # .cxx, so the .so never relinks and POST_BUILD silently never ran, leaving a
+  # stale .py in the build tree.
   set(_PY_PROXY_COPY_STAMP ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME_LOWER}_py_proxy_copy.stamp)
   add_custom_command(OUTPUT ${_PY_PROXY_COPY_STAMP}
     DEPENDS ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py
@@ -611,31 +542,27 @@ gum_add_python_module(pyagrum SWIGMOD pyagrumcpp)
 
 
 # List of pyAgrum leaf modules (independent SWIG extensions on top of the
-# BASE+BN core): wrappers/pyagrum/pymodules.txt, not hardcoded here -- see
-# that file to add a new one.
+# BASE+BN core): wrappers/pyagrum/pymodules.txt, not hardcoded here.
 include("pymodules.txt")
 
-# Public Python package name for each leaf module -- distinct from the
-# lowercased tag (_pysubmod below, still used for the SWIG extension's own
-# basename, e.g. "mrfcpp", and for the on-disk <tag>.i lookup) to avoid
-# short, collision-prone names: "id" used to shadow the builtin id() once
-# pyagrum.id had been imported (it becomes an attribute of the pyagrum
-# package). PRM and KTBN keep their short tag as-is: already unambiguous.
+# Public Python package name per leaf module, distinct from the lowercased tag
+# (still used for the extension's own basename and the on-disk <tag>.i lookup):
+# avoids short, collision-prone names -- "id" used to shadow the builtin id()
+# once pyagrum.id had been imported. PRM and KTBN keep their short tag as-is,
+# already unambiguous.
 set(_PYAGRUM_PYNAME_MRF markov_random_field)
 set(_PYAGRUM_PYNAME_ID influence_diagram)
 set(_PYAGRUM_PYNAME_CN credal_net)
 set(_PYAGRUM_PYNAME_CM causal_model)
 
-# Static subpackage __init__.py: just re-exports the compiled extension.
-# Written directly (no source template needed) and installed from the same path.
+# Static subpackage __init__.py: just re-exports the compiled extension, written
+# directly (no template) and installed from the same path.
 #
-# gum_add_python_module's 1st arg (MODULENAME) must match the *actual*
-# on-disk case of wrappers/swig/aGrUM_wrap_<MODULENAME>.i (BASE, BN, MRF,
-# ID, CN, CM, PRM, KTBN -- all uppercase, matching src/modules.txt) -- NOT the lowercase
-# Python package name. Passing lowercase here worked by accident on macOS
-# (APFS is case-insensitive by default) but breaks the CMake dependency
-# tracking on a case-sensitive filesystem (Linux): Make/Ninja would look for
-# a literal aGrUM_wrap_mrf.i, find nothing able to produce it, and fail.
+# gum_add_python_module's 1st arg (MODULENAME) must match the *actual* on-disk
+# case of wrappers/swig/aGrUM_wrap_<MODULENAME>.i (uppercase, per
+# src/modules.txt), not the lowercase Python package name -- lowercase worked by
+# accident on case-insensitive APFS (macOS) but breaks CMake's dependency
+# tracking on a case-sensitive filesystem like Linux.
 foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
   string(TOLOWER ${_pysubmod_upper} _pysubmod)
   if(DEFINED _PYAGRUM_PYNAME_${_pysubmod_upper})
@@ -647,71 +574,41 @@ foreach(_pysubmod_upper ${PYAGRUM_LEAF_MODULES})
 
   if(PYAGRUM_WITH_${_pysubmod_upper} AND (BUILD_${_pysubmod_upper} OR BUILD_ALL))
     # 3rd arg ("${_pysubmod}cpp"): the compiled SWIG extension's own basename,
-    # distinct from the package dir name ${_pysubdir} -- so the module ends up
-    # importable as pyagrum.ktbn.ktbncpp (package pyagrum.ktbn, module
-    # ktbncpp) instead of pyagrum.ktbn.ktbn, whose repeated name reads like a
-    # typo/bug even though it is not one. ${_pysubdir} can also differ from
-    # ${_pysubmod} itself (see _PYAGRUM_PYNAME_* above, e.g. pyagrum.id ->
-    # pyagrum.influence_diagram) while ${_pysubmod}cpp -- an internal-only
-    # name, never typed by users -- stays the short tag.
+    # kept distinct from the package dir name ${_pysubdir} so the module isn't
+    # importable as e.g. pyagrum.ktbn.ktbn (reads like a typo) and can differ
+    # from ${_pysubmod} itself (see _PYAGRUM_PYNAME_* above).
     gum_add_python_module(${_pysubmod_upper} SUBDIR ${_pysubdir} SWIGMOD ${_pysubmod}cpp)
-    # from .<mod>cpp (the SWIG-generated Python proxy, e.g. mrfcpp.py, which
-    # itself does `from . import _mrfcpp`), NOT from ._<mod>cpp (the raw C
-    # extension) -- mirrors how pyagrum/__init__.py itself does
-    # `from .pyagrumcpp import X`.
-    #
-    # "from .. import *" first: re-exports the core (BASE+BN) namespace so
-    # `import pyagrum.markov_random_field as gum` is a drop-in superset of
-    # `import pyagrum as gum` -- code that mixes core classes (Tensor,
-    # Instantiation, fastBN...) with module-specific ones needs only the one
-    # scoped import.
-    # __getattr__ fallback: delegate names not covered by "from .. import *"
-    # (e.g. getPosterior, only reachable through pyagrum's own lazy
-    # __getattr__ shim, see cmake/__init__.in.py) to the parent package,
-    # so e.g. `import pyagrum.causal_model as gum; gum.getPosterior(...)` works
-    # without duplicating the lazy-submodule-loading logic here.
+    # __init__.py imports from .<mod>cpp (the SWIG-generated proxy, not the raw
+    # ._<mod>cpp extension), re-exports "from .. import *" so e.g. `import
+    # pyagrum.markov_random_field as gum` is a drop-in superset of `import
+    # pyagrum as gum`, and falls back to the parent package's __getattr__ for
+    # lazy-loaded names (e.g. getPosterior) not covered by that re-export.
     file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${_pysubdir}/__init__.py "from .. import *\nfrom .${_pysubmod}cpp import *\n\ndef __getattr__(name):\n  import pyagrum as _pyagrum\n  return getattr(_pyagrum, name)\n")
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_pysubdir}/__init__.py DESTINATION ${INSTALL_PYTHONDIR}/pyagrum/${_pysubdir})
   endif()
 endforeach()
 
-# ==========================================================================
-# Experimental: shrink the core to the symbols the built leaf modules
-# actually use. See md_docs/reportModularizedPyAgrum.md (§4/§8/§9) and
-# cmake/trim_core_exports.py for the rationale: the PYGUM_SHARED_PUBLIC
-# source annotations control what CAN be exported, not what a
-# whole-archived core keeps once dead-code removal runs -- this derives the
-# real, currently-needed subset from the actually-built leaf binaries
-# (undefined-symbol scan), then relinks the core in place restricted to
-# that subset plus its own Python entry point, with dead code removal
-# finally turned on for the core too (see the dead-strip comment on
-# gum_add_python_module above for why it stays off on core's *primary*
-# link -- that link still has to keep everything, since it happens before
-# any leaf module exists to be scanned).
-#
-# Runs strictly after core and every enabled leaf module have already
-# linked normally against the untouched, fully-exported core, so the leaf
-# modules' own build is entirely unaffected -- only the core's output file
-# gets overwritten afterward. Symbol resolution for the already-built leaf
-# modules happens by name at load time on every platform covered here, so
-# relinking core afterward does not require rebuilding them.
-#
-# Not attempted for MinGW: it already falls back to --export-all-symbols
-# (see the whole-archive branch above) precisely because most of
-# BASE/BN's surface was never individually tagged, for MSVC-parity reasons
-# alone -- restricting exports there needs that fallback removed first, a
-# separate, riskier change left for later.
+# Experimental: shrink core to the symbols the built leaf modules actually use
+# (see cmake/trim_core_exports.py, md_docs/reportModularizedPyAgrum.md
+# §4/§8/§9): PYGUM_SHARED_PUBLIC source annotations only control what CAN be
+# exported, not what a whole-archived core keeps once dead-code removal runs --
+# and that removal can't happen on core's first link, since no leaf module
+# exists yet to scan for actually-used symbols. Runs strictly after core and
+# every leaf have already linked normally; only core's output file gets
+# overwritten afterward, so already-built leaves (resolved by name at load time)
+# never need rebuilding. Not attempted for MinGW: it already falls back to
+# --export-all-symbols since most of BASE/BN's surface was never individually
+# tagged, and removing that fallback first is a separate, riskier change.
 # ==========================================================================
 option(PYAGRUM_TRIM_CORE_EXPORTS "Shrink core's kept symbol set to what the built leaf modules actually use (experimental)" ON)
 
-# BUILD_SHARED_LIBS=ON: core already links agrumBASE/agrumBN normally (see the
-# gum_add_python_module() core branch above) -- there is no whole-archived
-# static surface here to shrink, and this trim's own relink step still
-# whole-archives/force-loads them unconditionally, exactly like the pre-fix
-# core link it was modeled on. Left enabled, it silently overwrites core's
-# correctly-linked .so with a broken one that never references the now-shared
-# agrumBASE/agrumBN at all (observed: "undefined symbol: typeinfo for
-# gum::Listener" at import time, despite the first, unpatched link succeeding).
+# BUILD_SHARED_LIBS=ON: core already links agrumBASE/agrumBN normally (see
+# gum_add_python_module's core branch above) -- there is no whole-archived
+# static surface to shrink, and this trim's relink step still force-loads them
+# unconditionally, so left enabled it would silently overwrite core's
+# correctly-linked .so with a broken one missing the now-shared
+# agrumBASE/agrumBN dependency (observed: undefined symbol for gum::Listener's
+# typeinfo at import time).
 if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
   set(_PYAGRUM_LEAF_FILES "")
   set(_PYAGRUM_LEAF_TARGETS "")
@@ -727,22 +624,10 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
     set(_PYAGRUM_EXPORTS_FILE ${CMAKE_CURRENT_BINARY_DIR}/core_exports_trimmed.txt)
     set(_PYAGRUM_SCAN_STAMP ${CMAKE_CURRENT_BINARY_DIR}/core_trim_scan.stamp)
 
-    # CMAKE_CXX_FLAGS & co are plain space-separated strings, not CMake
-    # ;-separated lists -- used unquoted in a VERBATIM custom_command
-    # COMMAND, each stays ONE argument instead of splitting into per-flag
-    # arguments, so e.g. "-fopenmp=libomp -Wall ..." gets handed to the
-    # compiler as the single (bogus) value of "-fopenmp=". separate_arguments
-    # turns them into real lists first. _PYAGRUM_CXX_FLAGS_LIST is only read
-    # by the APPLE/Linux *link* commands below (they invoke the compiler as a
-    # Unix-style linker driver) -- MSVC links via a plain /link step, and
-    # compiling the wrap source itself goes through a real OBJECT library
-    # target (see _pyagrum_core_trim_obj below), which gets every compile
-    # flag/definition _pyagrum itself gets the normal CMake way (CXX_STANDARD,
-    # MSVC's /bigobj and NOMINMAX, -fvisibility=hidden, ...) instead of a
-    # hand-copied list -- a hand-copied list is exactly what silently missed
-    # the C++ standard flag once already (CMAKE_CXX_STANDARD is applied by
-    # CMake as a per-target /std:c++NN flag, never folded into
-    # CMAKE_CXX_FLAGS).
+    # CMAKE_CXX_FLAGS is a plain space-separated string, not a CMake list --
+    # separate_arguments splits it into real list items so each flag survives
+    # VERBATIM as its own argv entry in the custom_command below instead of
+    # being handed to the compiler as one bogus concatenated argument.
     separate_arguments(_PYAGRUM_CXX_FLAGS_LIST UNIX_COMMAND "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE}")
     if(WIN32)
       separate_arguments(_PYAGRUM_SHARED_LINKER_FLAGS_LIST WINDOWS_COMMAND "${CMAKE_SHARED_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS_RELEASE}")
@@ -758,48 +643,30 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
       set(_PYAGRUM_TRIM_FORMAT gnu)
     endif()
 
-    # Computed once, reused both by _pyagrum_core_trim_obj's target_link_libraries
-    # below and by the MSVC relink command's $<TARGET_LINKER_FILE:...> further down
-    # -- gum_add_python_module(pyagrum) above makes this same choice a third time
-    # for _pyagrum itself; that copy can't be deduped away without touching that
-    # pre-existing, shared-across-every-module macro.
+    # Same Python target choice gum_add_python_module makes for _pyagrum itself,
+    # reused here since it feeds both this OBJECT lib's link and the MSVC relink
+    # command further down.
     if(AGRUM_PYTHON_SABI AND TARGET Python::SABIModule)
       set(_PYAGRUM_CORE_PYTHON_TARGET Python::SABIModule)
     else()
       set(_PYAGRUM_CORE_PYTHON_TARGET Python::Module)
     endif()
 
-    # Recompile core's one wrap source through a real OBJECT library target.
-    # Compile definitions/include directories/options are read straight back
-    # off _pyagrum itself via $<TARGET_PROPERTY:...> instead of a hand-copied
-    # second list, so this automatically stays in sync with whatever
-    # gum_add_python_module(pyagrum) above sets on _pyagrum (SWIG_TYPE_TABLE,
-    # PYGUM_SHARED_EXPORTING, AGRUM_SOURCE_DIR/AGRUM_BINARY_DIR,
-    # Python_NumPy_INCLUDE_DIRS, SWIG_COMPILE_FLAGS) -- a hand-copied list would
-    # silently drift out of sync with that set instead. TARGET_PROPERTY only
-    # reads what was set directly on a target, not requirements inherited
-    # through its own PRIVATE links, so the Python include dir (which
-    # _pyagrum picks up transitively by linking Python::Module/SABIModule)
-    # still needs linking in directly below.
-    #
-    # CMake also generates the actual compile command itself, so this also
-    # carries every directory-scoped flag applied to every target (CXX_STANDARD
-    # 20, MSVC's /bigobj and NOMINMAX, -fvisibility=hidden, ...) with no
-    # hand-copying at all.
-    #
-    # $<TARGET_OBJECTS:...> reliably expands for an OBJECT library target on
-    # every generator (unlike for _pyagrum itself, a SHARED target). A
-    # hardcoded, Make/Ninja-shaped path straight to _pyagrum's own compiled
-    # .o (e.g. CMakeFiles/_pyagrum.dir/...) would work on APPLE/Linux but not
-    # under the Visual Studio generator's differently shaped, per-configuration
-    # object layout -- this OBJECT-library recompile is the one mechanism that
-    # works identically on all three platforms.
+    # Recompile core's one wrap source via a real OBJECT library target: compile
+    # definitions/include directories/options are read straight back off
+    # _pyagrum itself via $<TARGET_PROPERTY:...> instead of a hand-copied list,
+    # so this stays in sync automatically (a hand-copied list already missed the
+    # C++ standard flag once, silently). TARGET_PROPERTY only reads what's set
+    # directly on a target, not requirements inherited through its own PRIVATE
+    # links, so the Python include dir still needs linking in directly below.
+    # $<TARGET_OBJECTS:...> is also the one mechanism that reliably expands on
+    # every generator, including Visual Studio's per-configuration object
+    # layout, unlike a hardcoded path to _pyagrum's own compiled .o.
     add_library(_pyagrum_core_trim_obj OBJECT EXCLUDE_FROM_ALL ${GENERATED_PYTHON}/pyagrumcppPYTHON_wrap.cxx)
-    # CMake auto-enables -fPIC for SHARED/MODULE targets (that's how _pyagrum itself gets
-    # it) but NOT for a plain OBJECT library -- it has no way to know its objects will end
-    # up in a shared object. Without this, GCC/ld on Linux reject the relink with
-    # "relocation R_X86_64_32S ... can not be used when making a shared object" (harmless
-    # on macOS/MSVC, where code is PIC-by-default/PIC-irrelevant respectively).
+    # OBJECT libraries don't get -fPIC automatically (unlike SHARED/MODULE,
+    # which _pyagrum itself gets it from) -- without it, GCC/ld reject the
+    # relink on Linux with an R_X86_64_32S relocation error (harmless on
+    # macOS/MSVC).
     set_target_properties(_pyagrum_core_trim_obj PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_compile_definitions(_pyagrum_core_trim_obj PRIVATE $<TARGET_PROPERTY:_pyagrum,COMPILE_DEFINITIONS>)
     target_include_directories(_pyagrum_core_trim_obj PRIVATE $<TARGET_PROPERTY:_pyagrum,INCLUDE_DIRECTORIES>)
@@ -862,13 +729,12 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
         COMMENT "pyAgrum: relinking core restricted to the symbols actually used (MSVC -- links the already-compiled _pyagrum_core_trim_obj object, generator-agnostic)"
         VERBATIM)
     else()
-      # Resolved into plain variables (not left as raw $<TARGET_PROPERTY:...>
-      # tokens in COMMAND below): on glibc >= 2.34 (pthread folded into libc),
-      # both properties are genuinely empty, and an empty generator-expression
-      # result still lands as a real empty argv entry in a raw custom_command
-      # COMMAND -- gcc forwards that to ld as a bogus input filename ("ld:
-      # cannot find : No such file or directory"). A plain empty CMake
-      # variable, by contrast, vanishes entirely when substituted unquoted.
+      # Resolved into plain variables, not left as raw $<TARGET_PROPERTY:...>
+      # tokens in COMMAND: on glibc >= 2.34 (pthread folded into libc) both
+      # properties are genuinely empty, and an empty generator-expression result
+      # still lands as a real empty argv entry in a raw custom_command COMMAND
+      # -- gcc forwards that to ld as a bogus filename. A plain empty CMake
+      # variable vanishes entirely when substituted unquoted.
       get_target_property(_PYAGRUM_THREADS_LINK_LIBS Threads::Threads INTERFACE_LINK_LIBRARIES)
       get_target_property(_PYAGRUM_THREADS_LINK_OPTS Threads::Threads INTERFACE_LINK_OPTIONS)
       if(NOT _PYAGRUM_THREADS_LINK_LIBS)
@@ -897,9 +763,9 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
   endif()
 endif()
 
-# copy pyLibs at execution time so they are available without a build step.
-# Done once, outside gum_add_python_module, so calling the macro for several
-# modules later (Phase 2) won't re-copy the same tree once per module.
+# pyLibs copied once outside gum_add_python_module, at execution time, so it's
+# available without a build step and calling the macro per module doesn't
+# re-copy the same tree.
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/pyLibs" "${CMAKE_CURRENT_BINARY_DIR}")
 foreach(_pylib causal causalEffectEstimation skbn qBNSampling clg ctbn explain)
   execute_process(COMMAND ${CMAKE_COMMAND} -E copy_directory

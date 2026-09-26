@@ -46,10 +46,10 @@
 #include <agrum/base/database/DBRowGeneratorEM.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/base/stattests/priors/noPrior.h>
 #include <agrum/base/stattests/priors/smoothingPrior.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>

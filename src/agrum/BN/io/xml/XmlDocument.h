@@ -59,8 +59,8 @@
 #ifndef GUM_XML_DOCUMENT_H
 #define GUM_XML_DOCUMENT_H
 
-#include <memory>
 #include <exception>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -112,6 +112,7 @@ namespace gum {
 
     private:
     friend class XmlDocument;
+
     explicit XmlElement(void* ticppElement) noexcept : _handle_(ticppElement) {}
 
     void* _handle_ = nullptr;   ///< opaque ticpp::Element*, never exposed

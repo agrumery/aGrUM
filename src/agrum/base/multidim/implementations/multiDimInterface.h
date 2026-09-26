@@ -222,8 +222,7 @@ namespace gum {
    * sequence of variables.
    * @throw OperationNotAllowed Raised if *this is non mutable.
    */
-  GUM_SHARED_PUBLIC MultiDimInterface& operator<<(MultiDimInterface&      c,
-                                                    const DiscreteVariable& v);
+  GUM_SHARED_PUBLIC MultiDimInterface& operator<<(MultiDimInterface& c, const DiscreteVariable& v);
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -232,8 +231,7 @@ namespace gum {
    * @throw OperationNotAllowed Raised if this object is non mutable.
    * @throw NotFound Raised if v does not belong to this
    */
-  GUM_SHARED_PUBLIC MultiDimInterface& operator>>(MultiDimInterface&      c,
-                                                    const DiscreteVariable& v);
+  GUM_SHARED_PUBLIC MultiDimInterface& operator>>(MultiDimInterface& c, const DiscreteVariable& v);
 
 } /* namespace gum */
 

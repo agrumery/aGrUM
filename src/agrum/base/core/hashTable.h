@@ -2661,7 +2661,7 @@ namespace gum {
   extern GUM_SHARED_PUBLIC const HashTableConstIterator< int, int > _static_HashTable_cend_;
   extern GUM_SHARED_PUBLIC const HashTableIteratorSafe< int, int > _static_HashTable_end_safe_;
   extern GUM_SHARED_PUBLIC const HashTableConstIteratorSafe< int, int >
-                                   _static_HashTable_cend_safe_;
+                                 _static_HashTable_cend_safe_;
 
   inline const void* const _HashTable_end_       = (void* const)&_static_HashTable_end_;
   inline const void* const _HashTable_cend_      = (void* const)&_static_HashTable_cend_;

@@ -63,14 +63,10 @@ namespace gum {
     // template that uses this class (GUM_NO_EXTERN_TEMPLATE_CLASS).
 
     /// default constructor
-    K2::K2() {
-      GUM_CONSTRUCTOR(K2);
-    }
+    K2::K2() { GUM_CONSTRUCTOR(K2); }
 
     /// copy constructor
-    K2::K2(const K2& from) : GreedyHillClimbing(from), _order_(from._order_) {
-      GUM_CONS_CPY(K2);
-    }
+    K2::K2(const K2& from) : GreedyHillClimbing(from), _order_(from._order_) { GUM_CONS_CPY(K2); }
 
     /// move constructor
     K2::K2(K2&& from) : GreedyHillClimbing(std::move(from)), _order_(std::move(from._order_)) {
@@ -78,9 +74,7 @@ namespace gum {
     }
 
     /// destructor
-    K2::~K2() {
-      GUM_DESTRUCTOR(K2);
-    }
+    K2::~K2() { GUM_DESTRUCTOR(K2); }
 
     /// copy operator
     K2& K2::operator=(const K2& from) {

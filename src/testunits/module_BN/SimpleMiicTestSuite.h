@@ -51,12 +51,12 @@
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/mixedGraph.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/base/stattests/priors/noPrior.h>
 #include <agrum/BN/learning/SimpleMiic.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>

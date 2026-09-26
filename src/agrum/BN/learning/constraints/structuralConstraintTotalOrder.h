@@ -64,8 +64,7 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    class GUM_PUBLIC_BN StructuralConstraintTotalOrder:
-        public virtual StructuralConstraintEmpty {
+    class GUM_PUBLIC_BN StructuralConstraintTotalOrder: public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

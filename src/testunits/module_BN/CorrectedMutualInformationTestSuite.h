@@ -48,8 +48,8 @@
 #include <agrum/base/database/DBRowGeneratorParser.h>
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
-#include <agrum/BN/learning/correctedMutualInformation.h>
 #include <agrum/base/stattests/priors/noPrior.h>
+#include <agrum/BN/learning/correctedMutualInformation.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>

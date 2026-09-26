@@ -78,8 +78,7 @@ namespace gum {
   dSeparationAlgorithm::~dSeparationAlgorithm() { GUM_DESTRUCTOR(dSeparationAlgorithm); }
 
   // copy operator
-  dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from)
-      = default;
+  dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from) = default;
 
   // move operator
   dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) {

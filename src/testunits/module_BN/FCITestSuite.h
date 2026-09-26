@@ -52,9 +52,9 @@
 #include <agrum/base/graphs/mixedGraph.h>
 #include <agrum/base/graphs/PAG.h>
 #include <agrum/base/stattests/indepTestChi2.h>
+#include <agrum/base/stattests/priors/noPrior.h>
 #include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/PC.h>
-#include <agrum/base/stattests/priors/noPrior.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>

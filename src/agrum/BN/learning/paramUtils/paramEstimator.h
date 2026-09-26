@@ -49,8 +49,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/stattests/recordCounter.h>
 #include <agrum/base/stattests/priors/prior.h>
+#include <agrum/base/stattests/recordCounter.h>
 
 #include <type_traits>
 
