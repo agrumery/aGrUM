@@ -55,6 +55,37 @@
 
 namespace gum {
 
+  // -------------------------------------------------------------------------
+  // Constructors, destructor and assignment operators are defined
+  // out-of-line (not INLINE) on purpose: see the comment in score.cpp for
+  // the MSVC LNK2005 rationale.
+  // -------------------------------------------------------------------------
+
+  // default constructor
+  dSeparationAlgorithm::dSeparationAlgorithm() { GUM_CONSTRUCTOR(dSeparationAlgorithm); }
+
+  // copy constructor
+  dSeparationAlgorithm::dSeparationAlgorithm(const dSeparationAlgorithm& from) {
+    GUM_CONS_CPY(dSeparationAlgorithm);
+  }
+
+  // move constructor
+  dSeparationAlgorithm::dSeparationAlgorithm(dSeparationAlgorithm&& from) {
+    GUM_CONS_MOV(dSeparationAlgorithm);
+  }
+
+  // destructor
+  dSeparationAlgorithm::~dSeparationAlgorithm() { GUM_DESTRUCTOR(dSeparationAlgorithm); }
+
+  // copy operator
+  dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from)
+      = default;
+
+  // move operator
+  dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) {
+    return *this;
+  }
+
   // Fill 'requisite' with the requisite nodes in dag given a query and
   // evidence.
   void dSeparationAlgorithm::requisiteNodes(const DAG&     dag,

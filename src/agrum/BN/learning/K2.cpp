@@ -51,3 +51,55 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/learning/K2_inl.h>
 #endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    // Out-of-line on purpose (not INLINE, see K2_inl.h): under MSVC,
+    // dllexport on a class forces eager, non-weak emission of every
+    // inline-defined special member in *every* TU that includes the header --
+    // colliding (LNK2005) with a leaf .pyd's own local reinstantiation of a
+    // template that uses this class (GUM_NO_EXTERN_TEMPLATE_CLASS).
+
+    /// default constructor
+    K2::K2() {
+      GUM_CONSTRUCTOR(K2);
+    }
+
+    /// copy constructor
+    K2::K2(const K2& from) : GreedyHillClimbing(from), _order_(from._order_) {
+      GUM_CONS_CPY(K2);
+    }
+
+    /// move constructor
+    K2::K2(K2&& from) : GreedyHillClimbing(std::move(from)), _order_(std::move(from._order_)) {
+      GUM_CONS_MOV(K2);
+    }
+
+    /// destructor
+    K2::~K2() {
+      GUM_DESTRUCTOR(K2);
+    }
+
+    /// copy operator
+    K2& K2::operator=(const K2& from) {
+      if (this != &from) {
+        GreedyHillClimbing::operator=(from);
+        _order_ = from._order_;
+      }
+      return *this;
+    }
+
+    /// move operator
+    K2& K2::operator=(K2&& from) {
+      if (this != &from) {
+        GreedyHillClimbing::operator=(std::move(from));
+        _order_ = std::move(from._order_);
+      }
+      return *this;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */

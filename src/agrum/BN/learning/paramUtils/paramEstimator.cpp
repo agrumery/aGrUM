@@ -97,6 +97,25 @@ namespace gum {
       GUM_CONSTRUCTOR(ParamEstimator);
     }
 
+    // Copy and move constructors are defined out-of-line (not INLINE) on
+    // purpose: see the comment in score.cpp for the MSVC LNK2005 rationale.
+
+    /// copy constructor
+    ParamEstimator::ParamEstimator(const ParamEstimator& from) :
+        external_prior_(from.external_prior_->clone()),
+        score_internal_prior_(from.score_internal_prior_->clone()), counter_(from.counter_) {
+      GUM_CONS_CPY(ParamEstimator);
+    }
+
+    /// move constructor
+    ParamEstimator::ParamEstimator(ParamEstimator&& from) noexcept :
+        external_prior_(from.external_prior_), score_internal_prior_(from.score_internal_prior_),
+        counter_(std::move(from.counter_)) {
+      from.external_prior_       = nullptr;
+      from.score_internal_prior_ = nullptr;
+      GUM_CONS_MOV(ParamEstimator);
+    }
+
     /// destructor
     ParamEstimator::~ParamEstimator() {
       if (external_prior_ != nullptr) delete external_prior_;

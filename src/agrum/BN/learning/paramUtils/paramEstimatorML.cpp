@@ -59,6 +59,39 @@ namespace gum {
 
   namespace learning {
 
+    // Constructors are defined out-of-line (not INLINE) on purpose: see
+    // the comment in score.cpp for the MSVC LNK2005 rationale.
+
+    /// default constructor
+    ParamEstimatorML::ParamEstimatorML(
+        const DBRowGeneratorParser&                                 parser,
+        const Prior&                                                external_prior,
+        const Prior&                                                score_internal_prior,
+        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
+        ParamEstimator(parser, external_prior, score_internal_prior, ranges, nodeId2columns) {
+      GUM_CONSTRUCTOR(ParamEstimatorML);
+    }
+
+    /// default constructor
+    ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser&             parser,
+                                       const Prior&                            external_prior,
+                                       const Prior&                            score_internal_prior,
+                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        ParamEstimator(parser, external_prior, score_internal_prior, nodeId2columns) {
+      GUM_CONSTRUCTOR(ParamEstimatorML);
+    }
+
+    /// copy constructor
+    ParamEstimatorML::ParamEstimatorML(const ParamEstimatorML& from) : ParamEstimator(from) {
+      GUM_CONS_CPY(ParamEstimatorML);
+    }
+
+    /// move constructor
+    ParamEstimatorML::ParamEstimatorML(ParamEstimatorML&& from) : ParamEstimator(std::move(from)) {
+      GUM_CONS_MOV(ParamEstimatorML);
+    }
+
     /// destructor
     ParamEstimatorML::~ParamEstimatorML() { GUM_DESTRUCTOR(ParamEstimatorML); }
 

@@ -51,3 +51,54 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/learning/localSearchWithTabuList_inl.h>
 #endif /* GUM_NO_INLINE */
+
+namespace gum {
+
+  namespace learning {
+
+    // -------------------------------------------------------------------------
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line (not INLINE) on purpose: see the comment in score.cpp for
+    // the MSVC LNK2005 rationale.
+    // -------------------------------------------------------------------------
+
+    /// default constructor
+    LocalSearchWithTabuList::LocalSearchWithTabuList() {
+      disableEpsilon();
+      disableMinEpsilonRate();
+      disableMaxIter();
+      disableMaxTime();
+      GUM_CONSTRUCTOR(LocalSearchWithTabuList);
+    }
+
+    /// copy constructor
+    LocalSearchWithTabuList::LocalSearchWithTabuList(const LocalSearchWithTabuList& from) :
+        ApproximationScheme(from), _MaxNbDecreasing_(from._MaxNbDecreasing_) {
+      GUM_CONS_CPY(LocalSearchWithTabuList);
+    }
+
+    /// move constructor
+    LocalSearchWithTabuList::LocalSearchWithTabuList(LocalSearchWithTabuList&& from) :
+        ApproximationScheme(std::move(from)), _MaxNbDecreasing_(std::move(from._MaxNbDecreasing_)) {
+      GUM_CONS_MOV(LocalSearchWithTabuList);
+    }
+
+    /// destructor
+    LocalSearchWithTabuList::~LocalSearchWithTabuList() {
+      GUM_DESTRUCTOR(LocalSearchWithTabuList);
+    }
+
+    /// copy operator
+    LocalSearchWithTabuList&
+        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) = default;
+
+    /// move operator
+    LocalSearchWithTabuList& LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
+      ApproximationScheme::operator=(std::move(from));
+      _MaxNbDecreasing_ = std::move(from._MaxNbDecreasing_);
+      return *this;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */

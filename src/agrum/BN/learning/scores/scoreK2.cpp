@@ -59,6 +59,43 @@ namespace gum {
 
   namespace learning {
 
+    // Constructors and destructor are defined out-of-line (not INLINE) on
+    // purpose: see the comment in score.cpp for the MSVC LNK2005 rationale.
+
+    /// default constructor
+    ScoreK2::ScoreK2(const DBRowGeneratorParser&                                 parser,
+                     const Prior&                                                prior,
+                     const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, prior, ranges, nodeId2columns),
+        _internal_prior_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreK2);
+    }
+
+    /// default constructor
+    ScoreK2::ScoreK2(const DBRowGeneratorParser&             parser,
+                     const Prior&                            prior,
+                     const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScoreK2);
+    }
+
+    /// copy constructor
+    ScoreK2::ScoreK2(const ScoreK2& from) :
+        Score(from), _internal_prior_(from._internal_prior_), _gammalog2_(from._gammalog2_) {
+      GUM_CONS_CPY(ScoreK2);
+    }
+
+    /// move constructor
+    ScoreK2::ScoreK2(ScoreK2&& from) :
+        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)),
+        _gammalog2_(std::move(from._gammalog2_)) {
+      GUM_CONS_MOV(ScoreK2);
+    }
+
+    /// destructor
+    ScoreK2::~ScoreK2() { GUM_DESTRUCTOR(ScoreK2); }
+
     /// copy operator
     ScoreK2& ScoreK2::operator=(const ScoreK2& from) {
       if (this != &from) {

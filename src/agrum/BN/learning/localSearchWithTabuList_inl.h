@@ -53,43 +53,9 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList() {
-      disableEpsilon();
-      disableMinEpsilonRate();
-      disableMaxIter();
-      disableMaxTime();
-      GUM_CONSTRUCTOR(LocalSearchWithTabuList);
-    }
-
-    /// copy constructor
-    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(const LocalSearchWithTabuList& from) :
-        ApproximationScheme(from), _MaxNbDecreasing_(from._MaxNbDecreasing_) {
-      GUM_CONS_CPY(LocalSearchWithTabuList);
-    }
-
-    /// move constructor
-    INLINE LocalSearchWithTabuList::LocalSearchWithTabuList(LocalSearchWithTabuList&& from) :
-        ApproximationScheme(std::move(from)), _MaxNbDecreasing_(std::move(from._MaxNbDecreasing_)) {
-      GUM_CONS_MOV(LocalSearchWithTabuList);
-    }
-
-    /// destructor
-    INLINE LocalSearchWithTabuList::~LocalSearchWithTabuList() {
-      GUM_DESTRUCTOR(LocalSearchWithTabuList);
-    }
-
-    /// copy operator
-    INLINE LocalSearchWithTabuList&
-        LocalSearchWithTabuList::operator=(const LocalSearchWithTabuList& from) = default;
-
-    /// move operator
-    INLINE LocalSearchWithTabuList&
-        LocalSearchWithTabuList::operator=(LocalSearchWithTabuList&& from) {
-      ApproximationScheme::operator=(std::move(from));
-      _MaxNbDecreasing_ = std::move(from._MaxNbDecreasing_);
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in localSearchWithTabuList.cpp on purpose -- see the
+    // comment there.
 
     /// set the max number of changes decreasing the score that we allow to
     /// apply

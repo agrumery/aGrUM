@@ -56,21 +56,8 @@ namespace gum {
 
   namespace learning {
 
-    /// copy constructor
-    INLINE ParamEstimator::ParamEstimator(const ParamEstimator& from) :
-        external_prior_(from.external_prior_->clone()),
-        score_internal_prior_(from.score_internal_prior_->clone()), counter_(from.counter_) {
-      GUM_CONS_CPY(ParamEstimator);
-    }
-
-    /// move constructor
-    INLINE ParamEstimator::ParamEstimator(ParamEstimator&& from) noexcept :
-        external_prior_(from.external_prior_), score_internal_prior_(from.score_internal_prior_),
-        counter_(std::move(from.counter_)) {
-      from.external_prior_       = nullptr;
-      from.score_internal_prior_ = nullptr;
-      GUM_CONS_MOV(ParamEstimator);
-    }
+    // Copy and move constructors are defined out-of-line in
+    // paramEstimator.cpp on purpose -- see the comment there.
 
     /// clears all the data structures from memory
     INLINE void ParamEstimator::clear() { counter_.clear(); }

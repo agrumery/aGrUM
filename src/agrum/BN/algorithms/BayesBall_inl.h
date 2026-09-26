@@ -51,9 +51,7 @@
 
 namespace gum {
 
-  INLINE
-  BayesBall::BayesBall() { GUM_CONSTRUCTOR(BayesBall) }
-
-  INLINE BayesBall::~BayesBall() { GUM_DESTRUCTOR(BayesBall) }
+  // Constructor and destructor are defined out-of-line in BayesBall.cpp
+  // on purpose -- see the comment there.
 
 } /* namespace gum */

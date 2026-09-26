@@ -58,45 +58,13 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
-        const DBRowGeneratorParser&                                 parser,
-        const Prior&                                                prior,
-        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        Score(parser, prior, ranges, nodeId2columns),
-        _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood);
-    }
-
-    /// default constructor
-    INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(
-        const DBRowGeneratorParser&             parser,
-        const Prior&                            prior,
-        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreLog2Likelihood);
-    }
-
-    /// copy constructor
-    INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(const ScoreLog2Likelihood& from) :
-        Score(from), _internal_prior_(from._internal_prior_) {
-      GUM_CONS_CPY(ScoreLog2Likelihood);
-    }
-
-    /// move constructor
-    INLINE ScoreLog2Likelihood::ScoreLog2Likelihood(ScoreLog2Likelihood&& from) :
-        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)) {
-      GUM_CONS_MOV(ScoreLog2Likelihood);
-    }
+    // Constructors and destructor are defined out-of-line in
+    // scoreLog2Likelihood.cpp on purpose -- see the comment there.
 
     /// virtual copy constructor
     INLINE ScoreLog2Likelihood* ScoreLog2Likelihood::clone() const {
       return new ScoreLog2Likelihood(*this);
     }
-
-    /// destructor
-    INLINE ScoreLog2Likelihood::~ScoreLog2Likelihood() { GUM_DESTRUCTOR(ScoreLog2Likelihood); }
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreLog2Likelihood::isPriorCompatible(const Prior& prior) {

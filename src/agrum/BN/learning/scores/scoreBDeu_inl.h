@@ -58,42 +58,11 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&                                 parser,
-                                const Prior&                                                prior,
-                                const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, ranges, nodeId2columns),
-        _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBDeu);
-    }
-
-    /// default constructor
-    INLINE ScoreBDeu::ScoreBDeu(const DBRowGeneratorParser&             parser,
-                                const Prior&                            prior,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBDeu);
-    }
-
-    /// copy constructor
-    INLINE ScoreBDeu::ScoreBDeu(const ScoreBDeu& from) :
-        Score(from), _internal_prior_(from._internal_prior_), _gammalog2_(from._gammalog2_) {
-      GUM_CONS_CPY(ScoreBDeu);
-    }
-
-    /// move constructor
-    INLINE ScoreBDeu::ScoreBDeu(ScoreBDeu&& from) :
-        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)),
-        _gammalog2_(std::move(from._gammalog2_)) {
-      GUM_CONS_MOV(ScoreBDeu);
-    }
+    // Constructors and destructor are defined out-of-line in scoreBDeu.cpp
+    // on purpose -- see the comment there.
 
     /// virtual copy constructor
     INLINE ScoreBDeu* ScoreBDeu::clone() const { return new ScoreBDeu(*this); }
-
-    /// destructor
-    INLINE ScoreBDeu::~ScoreBDeu() { GUM_DESTRUCTOR(ScoreBDeu); }
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBDeu::isPriorCompatible(const Prior& prior) {

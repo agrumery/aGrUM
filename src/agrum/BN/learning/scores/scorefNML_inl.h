@@ -56,41 +56,11 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE ScorefNML::ScorefNML(const DBRowGeneratorParser&                                 parser,
-                                const Prior&                                                prior,
-                                const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, ranges, nodeId2columns),
-        _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScorefNML);
-    }
-
-    /// default constructor
-    INLINE ScorefNML::ScorefNML(const DBRowGeneratorParser&             parser,
-                                const Prior&                            prior,
-                                const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScorefNML);
-    }
-
-    /// copy constructor
-    INLINE ScorefNML::ScorefNML(const ScorefNML& from) :
-        Score(from), _internal_prior_(from._internal_prior_) {
-      GUM_CONS_CPY(ScorefNML);
-    }
-
-    /// move constructor
-    INLINE ScorefNML::ScorefNML(ScorefNML&& from) :
-        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)) {
-      GUM_CONS_MOV(ScorefNML);
-    }
+    // Constructors and destructor are defined out-of-line in scorefNML.cpp
+    // on purpose -- see the comment there.
 
     /// virtual copy constructor
     INLINE ScorefNML* ScorefNML::clone() const { return new ScorefNML(*this); }
-
-    /// destructor
-    INLINE ScorefNML::~ScorefNML() { GUM_DESTRUCTOR(ScorefNML); }
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScorefNML::isPriorCompatible(const Prior& prior) {

@@ -56,67 +56,8 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE GraphChange::GraphChange(GraphChangeType type,
-                                    NodeId          node1,
-                                    NodeId          node2,
-                                    NodeId          node3) noexcept : type_{type} {
-      nodes_[0] = LearnNodeId(node1);
-      nodes_[1] = LearnNodeId(node2);
-      nodes_[2] = LearnNodeId(node3);
-      GUM_CONSTRUCTOR(GraphChange);
-    }
-
-    /// copy constructor
-    INLINE GraphChange::GraphChange(const GraphChange& from) noexcept {
-      // Here, we know that nodes_ and type_ are of the same type, which
-      // is 32bit long (and aligned accordingly). In addition, type_ is
-      // defined just after nodes_ in Class GraphChange. Hence, memcpying 4
-      // elements starting from pointer nodes_ will copy both the 3 elements
-      // of nodes_ and type_
-      std::memcpy(nodes_, from.nodes_, 4 * sizeof(LearnNodeId));
-      GUM_CONS_CPY(GraphChange);
-    }
-
-    /// move constructor
-    INLINE GraphChange::GraphChange(GraphChange&& from) noexcept {
-      // Here, we know that nodes_ and type_ are of the same type, which
-      // is 32bit long (and aligned accordingly). In addition, type_ is
-      // defined just after nodes_ in Class GraphChange. Hence, memcpying 4
-      // elements starting from pointer nodes_ will copy both the 3 elements
-      // of nodes_ and type_
-      std::memcpy(nodes_, from.nodes_, 4 * sizeof(LearnNodeId));
-      GUM_CONS_MOV(GraphChange);
-    }
-
-    /// destructor
-    INLINE GraphChange::~GraphChange() noexcept { GUM_DESTRUCTOR(GraphChange); }
-
-    /// copy constructor
-    INLINE GraphChange& GraphChange::operator=(const GraphChange& from) noexcept {
-      if (this != &from) {
-        // Here, we know that nodes_ and type_ are of the same type, which
-        // is 32bit long (and aligned accordingly). In addition, type_ is
-        // defined just after nodes_ in Class GraphChange. Hence, memcpying 4
-        // elements starting from pointer nodes_ will copy both the 3 elements
-        // of nodes_ and type_
-        std::memcpy(nodes_, from.nodes_, 4 * sizeof(LearnNodeId));
-      }
-      return *this;
-    }
-
-    /// move operator
-    INLINE GraphChange& GraphChange::operator=(GraphChange&& from) noexcept {
-      if (this != &from) {
-        // Here, we know that nodes_ and type_ are of the same type, which
-        // is 32bit long (and aligned accordingly). In addition, type_ is
-        // defined just after nodes_ in Class GraphChange. Hence, memcpying 4
-        // elements starting from pointer nodes_ will copy both the 3 elements
-        // of nodes_ and type_
-        std::memcpy(nodes_, from.nodes_, 4 * sizeof(LearnNodeId));
-      }
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns the type of the operation
     INLINE GraphChangeType GraphChange::type() const noexcept { return type_; }
@@ -153,39 +94,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE ArcAddition::ArcAddition(NodeId node1, NodeId node2) noexcept :
-        GraphChange(GraphChangeType::ARC_ADDITION, node1, node2) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcAddition::ArcAddition(const ArcAddition& from) noexcept : GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE ArcAddition::ArcAddition(ArcAddition&& from) noexcept : GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE ArcAddition::~ArcAddition() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcAddition& ArcAddition::operator=(const ArcAddition& from) noexcept = default;
-
-    /// move operator
-    INLINE ArcAddition& ArcAddition::operator=(ArcAddition&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two graph changes are identical or not
     INLINE bool ArcAddition::operator==(const ArcAddition& from) const noexcept {
@@ -200,39 +110,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE ArcDeletion::ArcDeletion(NodeId node1, NodeId node2) noexcept :
-        GraphChange(GraphChangeType::ARC_DELETION, node1, node2) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcDeletion::ArcDeletion(const ArcDeletion& from) noexcept : GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE ArcDeletion::ArcDeletion(ArcDeletion&& from) noexcept : GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE ArcDeletion::~ArcDeletion() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcDeletion& ArcDeletion::operator=(const ArcDeletion& from) noexcept = default;
-
-    /// move operator
-    INLINE ArcDeletion& ArcDeletion::operator=(ArcDeletion&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two graph changes are identical or not
     INLINE bool ArcDeletion::operator==(const ArcDeletion& from) const noexcept {
@@ -247,39 +126,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE ArcReversal::ArcReversal(NodeId node1, NodeId node2) noexcept :
-        GraphChange(GraphChangeType::ARC_REVERSAL, node1, node2) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcReversal::ArcReversal(const ArcReversal& from) noexcept : GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE ArcReversal::ArcReversal(ArcReversal&& from) noexcept : GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE ArcReversal::~ArcReversal() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcReversal& ArcReversal::operator=(const ArcReversal& from) noexcept = default;
-
-    /// move operator
-    INLINE ArcReversal& ArcReversal::operator=(ArcReversal&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two arc reversals are identical or not
     INLINE bool ArcReversal::operator==(const ArcReversal& from) const noexcept {
@@ -294,44 +142,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE
-    ArcTriangleDeletion1::ArcTriangleDeletion1(NodeId node1, NodeId node2, NodeId node3) noexcept :
-        GraphChange(GraphChangeType::ARC_TRIANGLE_DELETION1, node1, node2, node3) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcTriangleDeletion1::ArcTriangleDeletion1(const ArcTriangleDeletion1& from) noexcept :
-        GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE ArcTriangleDeletion1::ArcTriangleDeletion1(ArcTriangleDeletion1&& from) noexcept :
-        GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE ArcTriangleDeletion1::~ArcTriangleDeletion1() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcTriangleDeletion1&
-        ArcTriangleDeletion1::operator=(const ArcTriangleDeletion1& from) noexcept = default;
-
-    /// move operator
-    INLINE ArcTriangleDeletion1&
-        ArcTriangleDeletion1::operator=(ArcTriangleDeletion1&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two arc reversals are identical or not
     INLINE bool ArcTriangleDeletion1::operator==(const ArcTriangleDeletion1& from) const noexcept {
@@ -349,44 +161,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE
-    ArcTriangleDeletion2::ArcTriangleDeletion2(NodeId node1, NodeId node2, NodeId node3) noexcept :
-        GraphChange(GraphChangeType::ARC_TRIANGLE_DELETION2, node1, node2, node3) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcTriangleDeletion2::ArcTriangleDeletion2(const ArcTriangleDeletion2& from) noexcept :
-        GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE ArcTriangleDeletion2::ArcTriangleDeletion2(ArcTriangleDeletion2&& from) noexcept :
-        GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE ArcTriangleDeletion2::~ArcTriangleDeletion2() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE ArcTriangleDeletion2&
-        ArcTriangleDeletion2::operator=(const ArcTriangleDeletion2& from) noexcept = default;
-
-    /// move operator
-    INLINE ArcTriangleDeletion2&
-        ArcTriangleDeletion2::operator=(ArcTriangleDeletion2&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two arc reversals are identical or not
     INLINE bool ArcTriangleDeletion2::operator==(const ArcTriangleDeletion2& from) const noexcept {
@@ -404,41 +180,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE EdgeAddition::EdgeAddition(NodeId node1, NodeId node2) noexcept :
-        GraphChange(GraphChangeType::EDGE_ADDITION,
-                    std::min(node1, node2),
-                    std::max(node1, node2)) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE EdgeAddition::EdgeAddition(const EdgeAddition& from) noexcept : GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE EdgeAddition::EdgeAddition(EdgeAddition&& from) noexcept : GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE EdgeAddition::~EdgeAddition() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE EdgeAddition& EdgeAddition::operator=(const EdgeAddition& from) noexcept = default;
-
-    /// move operator
-    INLINE EdgeAddition& EdgeAddition::operator=(EdgeAddition&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two graph changes are identical or not
     INLINE bool EdgeAddition::operator==(const EdgeAddition& from) const noexcept {
@@ -453,41 +196,8 @@ namespace gum {
 
     // ===========================================================================
 
-    /// default constructor
-    INLINE EdgeDeletion::EdgeDeletion(NodeId node1, NodeId node2) noexcept :
-        GraphChange(GraphChangeType::EDGE_DELETION,
-                    std::min(node1, node2),
-                    std::max(node1, node2)) {
-      // do not use GUM_CONSTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE EdgeDeletion::EdgeDeletion(const EdgeDeletion& from) noexcept : GraphChange(from) {
-      // do not use GUM_CONS_CPY here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// move constructor
-    INLINE EdgeDeletion::EdgeDeletion(EdgeDeletion&& from) noexcept : GraphChange(std::move(from)) {
-      // do not use GUM_CONS_MOV here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// destructor
-    INLINE EdgeDeletion::~EdgeDeletion() noexcept {
-      // do not use GUM_DESTRUCTOR here because, to speed up GraphChange's
-      // destructor, we did not make the latter's destructor virtual.
-    }
-
-    /// copy constructor
-    INLINE EdgeDeletion& EdgeDeletion::operator=(const EdgeDeletion& from) noexcept = default;
-
-    /// move operator
-    INLINE EdgeDeletion& EdgeDeletion::operator=(EdgeDeletion&& from) noexcept {
-      GraphChange::operator=(std::move(from));
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in graphChange.cpp on purpose -- see the comment there.
 
     /// returns whether two graph changes are identical or not
     INLINE bool EdgeDeletion::operator==(const EdgeDeletion& from) const noexcept {

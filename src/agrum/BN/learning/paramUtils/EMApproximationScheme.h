@@ -73,7 +73,8 @@ namespace gum {
        */
       explicit EMApproximationScheme(bool verbosity = false);
 
-      ~EMApproximationScheme() override = default;
+      // out-of-line, see EMApproximationScheme.cpp
+      ~EMApproximationScheme() override;
 
       /**
        * @brief sets the stopping criterion of EM as being the minimal difference between two

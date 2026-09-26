@@ -53,43 +53,8 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE Score::Score(const DBRowGeneratorParser&                                 parser,
-                        const Prior&                                                prior,
-                        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
-      GUM_CONSTRUCTOR(Score);
-    }
-
-    /// default constructor
-    INLINE Score::Score(const DBRowGeneratorParser&             parser,
-                        const Prior&                            prior,
-                        const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        prior_(prior.clone()), counter_(parser, nodeId2columns) {
-      GUM_CONSTRUCTOR(Score);
-    }
-
-    /// copy constructor
-    INLINE Score::Score(const Score& from) :
-        prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
-        use_cache_(from.use_cache_) {
-      GUM_CONS_CPY(Score);
-    }
-
-    /// move constructor
-    INLINE Score::Score(Score&& from) :
-        prior_(from.prior_), counter_(std::move(from.counter_)), cache_(std::move(from.cache_)),
-        use_cache_(from.use_cache_) {
-      from.prior_ = nullptr;
-      GUM_CONS_MOV(Score);
-    }
-
-    /// destructor
-    INLINE Score::~Score() {
-      if (prior_ != nullptr) delete prior_;
-      GUM_DESTRUCTOR(Score);
-    }
+    // Constructors and destructor are defined out-of-line in score.cpp
+    // on purpose -- see the comment there.
 
     /// changes the max number of threads used to parse the database
     INLINE void Score::setNumberOfThreads(Size nb) { counter_.setNumberOfThreads(nb); }

@@ -54,46 +54,8 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE K2::K2() {
-      GUM_CONSTRUCTOR(K2);
-      ;
-    }
-
-    /// copy constructor
-    INLINE K2::K2(const K2& from) : GreedyHillClimbing(from), _order_(from._order_) {
-      GUM_CONS_CPY(K2);
-    }
-
-    /// move constructor
-    INLINE K2::K2(K2&& from) :
-        GreedyHillClimbing(std::move(from)), _order_(std::move(from._order_)) {
-      GUM_CONS_MOV(K2);
-    }
-
-    /// destructor
-    INLINE K2::~K2() {
-      GUM_DESTRUCTOR(K2);
-      ;
-    }
-
-    /// copy operator
-    INLINE K2& K2::operator=(const K2& from) {
-      if (this != &from) {
-        GreedyHillClimbing::operator=(from);
-        _order_ = from._order_;
-      }
-      return *this;
-    }
-
-    /// move operator
-    INLINE K2& K2::operator=(K2&& from) {
-      if (this != &from) {
-        GreedyHillClimbing::operator=(std::move(from));
-        _order_ = std::move(from._order_);
-      }
-      return *this;
-    }
+    // Constructors, destructor and assignment operators are defined
+    // out-of-line in K2.cpp on purpose -- see the comment there.
 
     /// sets the order on the variables
     INLINE void K2::setOrder(const Sequence< NodeId >& order) { _order_ = order; }

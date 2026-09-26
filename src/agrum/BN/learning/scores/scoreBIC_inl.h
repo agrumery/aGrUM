@@ -58,41 +58,11 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&                                 parser,
-                              const Prior&                                                prior,
-                              const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, ranges, nodeId2columns),
-        _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBIC);
-    }
-
-    /// default constructor
-    INLINE ScoreBIC::ScoreBIC(const DBRowGeneratorParser&             parser,
-                              const Prior&                            prior,
-                              const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
-      GUM_CONSTRUCTOR(ScoreBIC);
-    }
-
-    /// copy constructor
-    INLINE ScoreBIC::ScoreBIC(const ScoreBIC& from) :
-        Score(from), _internal_prior_(from._internal_prior_) {
-      GUM_CONS_CPY(ScoreBIC);
-    }
-
-    /// move constructor
-    INLINE ScoreBIC::ScoreBIC(ScoreBIC&& from) :
-        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)) {
-      GUM_CONS_MOV(ScoreBIC);
-    }
+    // Constructors and destructor are defined out-of-line in scoreBIC.cpp
+    // on purpose -- see the comment there.
 
     /// virtual copy constructor
     INLINE ScoreBIC* ScoreBIC::clone() const { return new ScoreBIC(*this); }
-
-    /// destructor
-    INLINE ScoreBIC::~ScoreBIC() { GUM_DESTRUCTOR(ScoreBIC); }
 
     /// indicates whether the prior is compatible (meaningful) with the score
     INLINE std::string ScoreBIC::isPriorCompatible(const Prior& prior) {

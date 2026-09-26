@@ -53,3 +53,17 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/IBayesNetFactory_inl.h>
 #endif   // GUM_NO_INLINE
+
+namespace gum {
+
+  // Out-of-line on purpose (not INLINE / "=default" in the header): under
+  // MSVC, dllexport on a class forces eager, non-weak emission of every
+  // inline-defined special member in *every* TU that includes the header --
+  // colliding (LNK2005) with a leaf .pyd's own local reinstantiation of a
+  // template that uses this class (GUM_NO_EXTERN_TEMPLATE_CLASS).
+
+  IBayesNetFactory::IBayesNetFactory() : _verbose_(false) {}
+
+  IBayesNetFactory::~IBayesNetFactory() = default;
+
+}   // namespace gum

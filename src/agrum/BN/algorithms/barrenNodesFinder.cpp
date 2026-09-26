@@ -53,6 +53,58 @@
 
 namespace gum {
 
+  // Out-of-line on purpose (not INLINE, see barrenNodesFinder_inl.h): under
+  // MSVC, dllexport on a class forces eager, non-weak emission of every
+  // inline-defined special member in *every* TU that includes the header --
+  // colliding (LNK2005) with the leaf .pyd's own local reinstantiation of
+  // LazyPropagation<double> (GUM_NO_EXTERN_TEMPLATE_CLASS), which calls
+  // straight into these.
+
+  /// default constructor
+  BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) : _dag_(dag) {   // for debugging purposes
+    GUM_CONSTRUCTOR(BarrenNodesFinder);
+  }
+
+  /// copy constructor
+  BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
+      _dag_(from._dag_), _observed_nodes_(from._observed_nodes_),
+      _target_nodes_(from._target_nodes_) {   // for debugging purposes
+    GUM_CONS_CPY(BarrenNodesFinder);
+  }
+
+  /// move constructor
+  BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept :
+      _dag_(from._dag_), _observed_nodes_(from._observed_nodes_),
+      _target_nodes_(from._target_nodes_) {
+    // for debugging purposes
+    GUM_CONS_MOV(BarrenNodesFinder);
+  }
+
+  /// destructor
+  BarrenNodesFinder::~BarrenNodesFinder() {   // for debugging purposes
+    GUM_DESTRUCTOR(BarrenNodesFinder);
+  }
+
+  /// copy operator
+  BarrenNodesFinder& BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
+    if (this != &from) {
+      _dag_            = from._dag_;
+      _observed_nodes_ = from._observed_nodes_;
+      _target_nodes_   = from._target_nodes_;
+    }
+    return *this;
+  }
+
+  /// move operator
+  BarrenNodesFinder& BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
+    if (this != &from) {
+      _dag_            = from._dag_;
+      _observed_nodes_ = from._observed_nodes_;
+      _target_nodes_   = from._target_nodes_;
+    }
+    return *this;
+  }
+
   /// returns the set of barren nodes in the messages sent in a junction tree
   ArcProperty< NodeSet > BarrenNodesFinder::barrenNodes(const CliqueGraph& junction_tree) {
     // assign a mark to all the nodes

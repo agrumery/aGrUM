@@ -44,3 +44,21 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/learning/paramUtils/EMApproximationScheme_inl.h>
 #endif   // GUM_NO_INLINE
+
+namespace gum {
+
+  namespace learning {
+
+    // Constructor and destructor are defined out-of-line (not INLINE) on
+    // purpose: see the comment in score.cpp for the MSVC LNK2005 rationale.
+
+    EMApproximationScheme::EMApproximationScheme(bool verbosity) : ApproximationScheme(verbosity) {
+      ApproximationScheme::enableMinEpsilonRate();
+      ApproximationScheme::disableEpsilon();
+    }
+
+    EMApproximationScheme::~EMApproximationScheme() = default;
+
+  }   // namespace learning
+
+}   // namespace gum

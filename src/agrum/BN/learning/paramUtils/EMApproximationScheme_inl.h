@@ -47,11 +47,8 @@ namespace gum {
   namespace learning {
 
 
-    INLINE EMApproximationScheme::EMApproximationScheme(bool verbosity) :
-        ApproximationScheme(verbosity) {
-      ApproximationScheme::enableMinEpsilonRate();
-      ApproximationScheme::disableEpsilon();
-    }
+    // Constructor and destructor are defined out-of-line in
+    // EMApproximationScheme.cpp on purpose -- see the comment there.
 
     INLINE void EMApproximationScheme::setEpsilon(double eps) {
       if (eps <= 0) GUM_ERROR(OutOfBounds, "EM's min diff epsilon value must be strictly positive")

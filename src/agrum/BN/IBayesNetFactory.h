@@ -91,7 +91,7 @@ namespace gum {
     IBayesNetFactory();
 
     // just to make some compilers happy
-    virtual ~IBayesNetFactory() = default;
+    virtual ~IBayesNetFactory();   // out-of-line, see IBayesNetFactory.cpp
 
     /**
      * @name verbosity control

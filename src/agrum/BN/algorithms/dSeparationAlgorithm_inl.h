@@ -51,37 +51,8 @@
 
 namespace gum {
 
-
-  // default constructor
-  INLINE dSeparationAlgorithm::dSeparationAlgorithm() {
-    GUM_CONSTRUCTOR(dSeparationAlgorithm);
-    ;
-  }
-
-  // copy constructor
-  INLINE dSeparationAlgorithm::dSeparationAlgorithm(const dSeparationAlgorithm& from) {
-    GUM_CONS_CPY(dSeparationAlgorithm);
-  }
-
-  // move constructor
-  INLINE dSeparationAlgorithm::dSeparationAlgorithm(dSeparationAlgorithm&& from) {
-    GUM_CONS_MOV(dSeparationAlgorithm);
-  }
-
-  // destructor
-  INLINE dSeparationAlgorithm::~dSeparationAlgorithm() {
-    GUM_DESTRUCTOR(dSeparationAlgorithm);
-    ;
-  }
-
-  // copy operator
-  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(const dSeparationAlgorithm& from)
-      = default;
-
-  // move operator
-  INLINE dSeparationAlgorithm& dSeparationAlgorithm::operator=(dSeparationAlgorithm&& from) {
-    return *this;
-  }
-
+  // Constructors, destructor and assignment operators are defined
+  // out-of-line in dSeparationAlgorithm.cpp on purpose -- see the comment
+  // there.
 
 } /* namespace gum */

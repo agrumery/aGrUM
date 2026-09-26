@@ -53,37 +53,8 @@ namespace gum {
 
   namespace learning {
 
-    /// default constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(
-        const DBRowGeneratorParser&                                 parser,
-        const Prior&                                                external_prior,
-        const Prior&                                                score_internal_prior,
-        const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
-        const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
-        ParamEstimator(parser, external_prior, score_internal_prior, ranges, nodeId2columns) {
-      GUM_CONSTRUCTOR(ParamEstimatorML);
-    }
-
-    /// default constructor
-    INLINE
-    ParamEstimatorML::ParamEstimatorML(const DBRowGeneratorParser&             parser,
-                                       const Prior&                            external_prior,
-                                       const Prior&                            score_internal_prior,
-                                       const Bijection< NodeId, std::size_t >& nodeId2columns) :
-        ParamEstimator(parser, external_prior, score_internal_prior, nodeId2columns) {
-      GUM_CONSTRUCTOR(ParamEstimatorML);
-    }
-
-    /// copy constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(const ParamEstimatorML& from) : ParamEstimator(from) {
-      GUM_CONS_CPY(ParamEstimatorML);
-    }
-
-    /// move constructor
-    INLINE ParamEstimatorML::ParamEstimatorML(ParamEstimatorML&& from) :
-        ParamEstimator(std::move(from)) {
-      GUM_CONS_MOV(ParamEstimatorML);
-    }
+    // Constructors are defined out-of-line in paramEstimatorML.cpp on
+    // purpose -- see the comment there.
 
     /// virtual copy constructor
     INLINE ParamEstimatorML* ParamEstimatorML::clone() const { return new ParamEstimatorML(*this); }

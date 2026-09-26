@@ -59,6 +59,42 @@ namespace gum {
 
   namespace learning {
 
+    // Constructors and destructor are defined out-of-line (not INLINE) on
+    // purpose: see the comment in score.cpp for the MSVC LNK2005 rationale.
+
+    /// default constructor
+    ScorefNML::ScorefNML(const DBRowGeneratorParser&                                 parser,
+                         const Prior&                                                prior,
+                         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                         const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, prior, ranges, nodeId2columns),
+        _internal_prior_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScorefNML);
+    }
+
+    /// default constructor
+    ScorefNML::ScorefNML(const DBRowGeneratorParser&             parser,
+                         const Prior&                            prior,
+                         const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        Score(parser, prior, nodeId2columns), _internal_prior_(parser.database(), nodeId2columns) {
+      GUM_CONSTRUCTOR(ScorefNML);
+    }
+
+    /// copy constructor
+    ScorefNML::ScorefNML(const ScorefNML& from) :
+        Score(from), _internal_prior_(from._internal_prior_) {
+      GUM_CONS_CPY(ScorefNML);
+    }
+
+    /// move constructor
+    ScorefNML::ScorefNML(ScorefNML&& from) :
+        Score(std::move(from)), _internal_prior_(std::move(from._internal_prior_)) {
+      GUM_CONS_MOV(ScorefNML);
+    }
+
+    /// destructor
+    ScorefNML::~ScorefNML() { GUM_DESTRUCTOR(ScorefNML); }
+
     /// copy operator
     ScorefNML& ScorefNML::operator=(const ScorefNML& from) {
       if (this != &from) {

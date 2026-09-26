@@ -59,6 +59,52 @@ namespace gum {
 
   namespace learning {
 
+    // -------------------------------------------------------------------------
+    // Constructors and destructor are defined out-of-line (not INLINE) on
+    // purpose: under MSVC, a non-template dllexport'ed class has its
+    // inline-defined special members promoted to strong/eager symbol
+    // emission (instead of COMDAT), which causes LNK2005 duplicate-definition
+    // errors once several translation units include the inline body.
+    // -------------------------------------------------------------------------
+
+    /// default constructor
+    Score::Score(const DBRowGeneratorParser&                                 parser,
+                 const Prior&                                                prior,
+                 const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
+                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        prior_(prior.clone()), counter_(parser, ranges, nodeId2columns) {
+      GUM_CONSTRUCTOR(Score);
+    }
+
+    /// default constructor
+    Score::Score(const DBRowGeneratorParser&             parser,
+                 const Prior&                            prior,
+                 const Bijection< NodeId, std::size_t >& nodeId2columns) :
+        prior_(prior.clone()), counter_(parser, nodeId2columns) {
+      GUM_CONSTRUCTOR(Score);
+    }
+
+    /// copy constructor
+    Score::Score(const Score& from) :
+        prior_(from.prior_->clone()), counter_(from.counter_), cache_(from.cache_),
+        use_cache_(from.use_cache_) {
+      GUM_CONS_CPY(Score);
+    }
+
+    /// move constructor
+    Score::Score(Score&& from) :
+        prior_(from.prior_), counter_(std::move(from.counter_)), cache_(std::move(from.cache_)),
+        use_cache_(from.use_cache_) {
+      from.prior_ = nullptr;
+      GUM_CONS_MOV(Score);
+    }
+
+    /// destructor
+    Score::~Score() {
+      if (prior_ != nullptr) delete prior_;
+      GUM_DESTRUCTOR(Score);
+    }
+
     /// copy operator
     Score& Score::operator=(const Score& from) {
       if (this != &from) {

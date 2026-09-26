@@ -53,6 +53,13 @@
 
 namespace gum {
 
+  // Constructor and destructor are defined out-of-line (not INLINE) on
+  // purpose: see the comment in score.cpp for the MSVC LNK2005 rationale.
+
+  BayesBall::BayesBall() { GUM_CONSTRUCTOR(BayesBall) }
+
+  BayesBall::~BayesBall() { GUM_DESTRUCTOR(BayesBall) }
+
   void BayesBall::requisiteNodes(const DAG&     dag,
                                  const NodeSet& query,
                                  const NodeSet& hardEvidence,

@@ -45,7 +45,8 @@
 namespace gum {
 
 
-  INLINE IBayesNetFactory::IBayesNetFactory() : _verbose_(false) {}
+  // Constructor and destructor are defined out-of-line in
+  // IBayesNetFactory.cpp on purpose -- see the comment there.
 
   INLINE void IBayesNetFactory::setVerbose() { _verbose_ = true; }
 

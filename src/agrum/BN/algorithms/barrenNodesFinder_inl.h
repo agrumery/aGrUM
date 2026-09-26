@@ -44,52 +44,8 @@
 
 namespace gum {
 
-
-  /// default constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const DAG* dag) :
-      _dag_(dag) {   // for debugging purposes
-    GUM_CONSTRUCTOR(BarrenNodesFinder);
-  }
-
-  /// copy constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(const BarrenNodesFinder& from) :
-      _dag_(from._dag_), _observed_nodes_(from._observed_nodes_),
-      _target_nodes_(from._target_nodes_) {   // for debugging purposes
-    GUM_CONS_CPY(BarrenNodesFinder);
-  }
-
-  /// move constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept :
-      _dag_(from._dag_), _observed_nodes_(from._observed_nodes_),
-      _target_nodes_(from._target_nodes_) {
-    // for debugging purposes
-    GUM_CONS_MOV(BarrenNodesFinder);
-  }
-
-  /// destructor
-  INLINE BarrenNodesFinder::~BarrenNodesFinder() {   // for debugging purposes
-    GUM_DESTRUCTOR(BarrenNodesFinder)
-  }
-
-  /// copy operator
-  INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(const BarrenNodesFinder& from) {
-    if (this != &from) {
-      _dag_            = from._dag_;
-      _observed_nodes_ = from._observed_nodes_;
-      _target_nodes_   = from._target_nodes_;
-    }
-    return *this;
-  }
-
-  /// move operator
-  INLINE BarrenNodesFinder& BarrenNodesFinder::operator=(BarrenNodesFinder&& from) {
-    if (this != &from) {
-      _dag_            = from._dag_;
-      _observed_nodes_ = from._observed_nodes_;
-      _target_nodes_   = from._target_nodes_;
-    }
-    return *this;
-  }
+  // Constructors, destructor and assignment operators are defined
+  // out-of-line in barrenNodesFinder.cpp on purpose -- see the comment there.
 
   /// sets a new DAG
   INLINE void BarrenNodesFinder::setDAG(const DAG* new_dag) { _dag_ = new_dag; }
