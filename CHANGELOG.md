@@ -27,6 +27,9 @@
     - **CausalModel decoupled from BayesNet**: new DAG-only constructor; `observationalBN()` now optional
       (`hasObservationalBN()` guard); fixes `inducedCausalSubModel` silently building a BN with
       uninitialized CPTs. `connectedComponents()` now returns `NodeProperty<NodeId>`, like `DAGmodel`/`DiGraph`.
+    - **BUILD_SHARED_LIBS=ON support**: per-module shared libraries for pyAgrum on conda-forge, with
+      `GUM_PUBLIC_<MODULE>` visibility tagging across all modules and numerous accompanying Windows
+      link/build fixes.
     - Documentation improvements and typo fixes.
 
 ## Changelog for 3.1.0
