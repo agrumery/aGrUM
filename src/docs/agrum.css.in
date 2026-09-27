@@ -1,5 +1,5 @@
 
-div.fragment, pre.fragment {
+html.dark-mode div.fragment, html.dark-mode pre.fragment {
 	margin: 0;
 	padding: 4px;
 }
@@ -7,7 +7,7 @@ div.fragment, pre.fragment {
 /*********************************************/
 /**               Main content              **/
 /*********************************************/
-.contents {
+html.dark-mode .contents {
 	margin: 10px auto !important;
 	padding: 0 10px;
 	max-width: 1200px;
@@ -16,10 +16,10 @@ div.fragment, pre.fragment {
 /*********************************************/
 /**               Inline code               **/
 /*********************************************/
-p code,
-li code,
-td code,
-dd code {
+html.dark-mode p code,
+html.dark-mode li code,
+html.dark-mode td code,
+html.dark-mode dd code {
 	display: inline;
 	padding: 0px 6px;
 	-webkit-border-radius: 4px;
@@ -35,12 +35,12 @@ dd code {
 /*********************************************/
 /**         Table of Contents (ToC)         **/
 /*********************************************/
-div.toc {
+html.dark-mode div.toc {
 	margin: 0 !important;
 	border-radius: 4px !important;
 }
 
-div.toc h3 {
+html.dark-mode div.toc h3 {
 	font-size: 150%;
 	color: inherit;
 }
@@ -48,14 +48,14 @@ div.toc h3 {
 /*********************************************/
 /**              Content table              **/
 /*********************************************/
-.contents table.doxtable {
+html.dark-mode .contents table.doxtable {
 	margin: 0 auto;
 }
 
 /*********************************************/
 /**               Field table               **/
 /*********************************************/
-.fieldtable {
+html.dark-mode .fieldtable {
 	box-shadow: none !important;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -64,9 +64,9 @@ div.toc h3 {
 /*********************************************/
 /**           Memitem and memtitle          **/
 /*********************************************/
-.memitem,
-.memproto,
-.memdoc {
+html.dark-mode .memitem,
+html.dark-mode .memproto,
+html.dark-mode .memdoc {
 	box-shadow: none;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -76,8 +76,8 @@ div.toc h3 {
 /*********************************************/
 /**             TOP navigation              **/
 /*********************************************/
-.tablist a:hover,
-.tablist li.current a {
+html.dark-mode .tablist a:hover,
+html.dark-mode .tablist li.current a {
 	text-shadow: none;
 	-moz-text-shadow: none;
 	-webkit-text-shadow: none;
@@ -86,7 +86,7 @@ div.toc h3 {
 /*********************************************/
 /**              H1 in textblocks           **/
 /*********************************************/
-.textblock h1 {
+html.dark-mode .textblock h1 {
     border-bottom: 1px solid #32363d;
     border-left: 3px solid #32363d;
     margin: 40px 0px 10px 0px;
@@ -95,29 +95,29 @@ div.toc h3 {
     padding-left: 5px;
 }
 
-.textblock h1:first-child {
+html.dark-mode .textblock h1:first-child {
 	margin-top: 10px;
 }
 
 /*********************************************/
 /**               Note, warning             **/
 /*********************************************/
-dl.note,
-dl.warning,
-dl.todo,
-dl.deprecated,
-dl.reflist {
+html.dark-mode dl.note,
+html.dark-mode dl.warning,
+html.dark-mode dl.todo,
+html.dark-mode dl.deprecated,
+html.dark-mode dl.reflist {
 	border: 0;
 	padding: 0px;
 	margin: 4px 0px 4px 0px;
 	border-radius: 4px;
 }
 
-dl.note dt,
-dl.warning dt,
-dl.todo dt,
-dl.deprecated dt,
-dl.reflist dt {
+html.dark-mode dl.note dt,
+html.dark-mode dl.warning dt,
+html.dark-mode dl.todo dt,
+html.dark-mode dl.deprecated dt,
+html.dark-mode dl.reflist dt {
 	margin: 0;
 	font-size: 14px;
 	padding: 2px 4px;
@@ -136,11 +136,11 @@ dl.reflist dt {
 	text-shadow: none;
 }
 
-dl.note dd,
-dl.warning dd,
-dl.todo dd,
-dl.deprecated dd,
-dl.reflist dd {
+html.dark-mode dl.note dd,
+html.dark-mode dl.warning dd,
+html.dark-mode dl.todo dd,
+html.dark-mode dl.deprecated dd,
+html.dark-mode dl.reflist dd {
 	margin: 0;
 	padding: 4px;
 	background: none;
@@ -158,117 +158,102 @@ dl.reflist dd {
 	text-shadow: none;
 }
 
-dl.reflist dd {
+html.dark-mode dl.reflist dd {
 	margin-bottom: 15px;
 }
 
-/* Background colors */
-dl.note {}
-dl.warning {}
-dl.todo {}
-dl.deprecated {}
-dl.reflist {}
-
 /* Header */
-dl.note dt {
+html.dark-mode dl.note dt {
 	background-color: #cbc693;
 }
 
-dl.warning dt {
+html.dark-mode dl.warning dt {
 	background-color: #bf5f82;
 }
 
-dl.todo dt {
+html.dark-mode dl.todo dt {
 	background-color: #82b3c9;
 }
 
-dl.deprecated dt {
+html.dark-mode dl.deprecated dt {
 	background-color: #af8eb5;
 }
 
-dl.reflist dt {
+html.dark-mode dl.reflist dt {
 	background-color: #cbae82;
 }
 
 /* Content */
-dl.note dd {
+html.dark-mode dl.note dd {
 	background-color: #fff9c4;
 	border-color: #cbc693;
 }
 
-dl.warning dd {
+html.dark-mode dl.warning dd {
 	background-color: #f48fb1;
 	border-color: #bf5f82;
 }
 
-dl.todo dd {
+html.dark-mode dl.todo dd {
 	background-color: #b3e5fc;
 	border-color: #82b3c9;
 }
 
-dl.deprecated dd {
+html.dark-mode dl.deprecated dd {
 	background-color: #e1bee7;
 	border-color: #af8eb5;
 }
 
-dl.reflist dd {
+html.dark-mode dl.reflist dd {
 	background-color: #ffe0b2;
 	border-color: #cbae82;
 }
 
 /*********************************************/
-/**               Reference list            **/
-/**Similar to warning/note/todo/... messages**/
-/*********************************************/
-dl.reflist {
-
-}
-
-/*********************************************/
 /**               Note, warning             **/
 /*********************************************/
-#docs_list {
+html.dark-mode #docs_list {
 	padding: 0 10px;
 }
 
-#docs_list ul {
+html.dark-mode #docs_list ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-#docs_list ul li {
+html.dark-mode #docs_list ul li {
 	display: inline-block;
 	border-right: 1px solid #BFBFBF;
 }
 
-#docs_list ul li:last-child {
+html.dark-mode #docs_list ul li:last-child {
 	border-right: none;
 }
 
-#docs_list ul li a {
+html.dark-mode #docs_list ul li a {
 	display: block;
 	padding: 8px 13px;
 	font-weight: bold;
 	font-size: 15px;
 }
 
-#docs_list ul li a:hover,
-#docs_list ul li a.docs_current {
+html.dark-mode #docs_list ul li a:hover,
+html.dark-mode #docs_list ul li a.docs_current {
 	text-decoration: underline;
 }
 
 /*********************************************/
 /**               Resizable UI              **/
 /*********************************************/
-.ui-resizable-e {
+html.dark-mode .ui-resizable-e {
 	width: 3px;
 }
 
 /*********************************************/
 /**               Download url              **/
 /*********************************************/
-.download_url {
+html.dark-mode .download_url {
 	font-weight: bold;
 	font-size: 150%;
 	line-height: 150%;
@@ -277,160 +262,163 @@ dl.reflist {
 /*********************************************/
 /**               Syntax folor              **/
 /*********************************************/
-div.line a {
+html.dark-mode div.line a {
 	text-decoration: underline;
 }
 
-span.lineno a {
+html.dark-mode span.lineno a {
 	text-decoration: none;
 }
 
 /*********************************************/
 /**          Modules/Directory table        **/
 /*********************************************/
-.directory .arrow {
+html.dark-mode .directory .arrow {
 	height: initial;
 }
 
-.directory td.entry {
+html.dark-mode .directory td.entry {
 	padding: 3px 6px;
 }
 
 /*********************************************/
 /**                 Mem items               **/
 /*********************************************/
-.memproto table td {
+html.dark-mode .memproto table td {
 	font-family: monospace, fixed !important;
 }
 
-td.memItemLeft, td.memItemRight {
+html.dark-mode td.memItemLeft, html.dark-mode td.memItemRight {
 	font-family: monospace, fixed;
 }
 
-.paramname, .paramname em {
+html.dark-mode .paramname, html.dark-mode .paramname em {
 	font-style: italic;
 }
 
-.memdoc {
+html.dark-mode .memdoc {
 	text-shadow: none;
 }
 
-.memItem {
+html.dark-mode .memItem {
 	font-family: monospace, fixed;
 }
 
-.memItem table {
+html.dark-mode .memItem table {
 	font-family: inherit;
 }
 
 /*********************************************/
 /**                 Footer                  **/
 /*********************************************/
-img.footer {
+html.dark-mode img.footer {
 	height: 22px;
 }
 
-.footer {
-  
-}
 /*********************************************/
 /**             Custom scrollbar            **/
 /*********************************************/
-
-/*********************************************/
-/**             Custom scrollbar            **/
-/*********************************************/
-
 
 /* Light background: #3 5 3 6 2 9; */
 /* New light dark background #3 2 3 6 3 d */
 /* Dark background: #d f e 5 f 2; */
 
-/* TOP MENU */
-.sm-dox {
-	background: #dfe5f2 !important;
-}
 
-.sm-dox a {
+html.dark-mode .sm-dox a {
 	background: none;
 }
 
-body {
+html.dark-mode body {
 	background: #282923;
 	background-image: none;
 	color: #D8D8D8;
 }
 
-div.fragment, pre.fragment {
+html.dark-mode div.fragment, html.dark-mode pre.fragment {
 	border: 1px solid #000000;
 	background: #32363d;
 }
 
-a, a:link, a:visited {
+html.dark-mode a, html.dark-mode a:link, html.dark-mode a:visited {
 	color: #67d8ef !important;
 }
 
-.highlighted {
+html.dark-mode .highlighted {
 	background: none !important;
 }
 
-a.highlighted {
+html.dark-mode a.highlighted {
 	background: none !important;
 }
 
 /*********************************************/
 /**              Top main menu              **/
 /*********************************************/
-#main-nav {
+html.dark-mode #main-nav {
 	/* display: none; */
 	border-bottom: 1px solid #32363d;
 }
 
-#main-nav .sm-dox {
-	background: transparent !important;
+html.dark-mode #main-nav .sm-dox {
+	background: #32363d !important;
 }
 
-.sm-dox a {
+html.dark-mode .sm-dox a {
 	text-shadow: none !important;
 	background: transparent !important;
 }
 
-.sm-dox a:hover {
+html.dark-mode .sm-dox a:hover {
 	background: #282923 !important;
 }
 
-.sm-dox {
+html.dark-mode .sm-dox {
 	text-shadow: none !important;
 	box-shadow: none !important;
 }
 
-.sm-dox ul {
+html.dark-mode .sm-dox ul {
 	border: 1px solid #000000;
 	background: #32363d;
 }
 
-.directory tr.even {
+html.dark-mode .directory tr.even {
 	background: #32363d;
+}
+
+/*********************************************/
+/**         Top main menu (light mode)      **/
+/*********************************************/
+html.light-mode #titlearea {
+	background: #eef1f7;
+}
+
+html.light-mode #main-nav .sm-dox {
+	background: #dfe5f2;
+}
+
+html.light-mode .sm-dox ul {
+	background: #dfe5f2;
 }
 
 
 /*********************************************/
 /**               Top search                **/
 /*********************************************/
-#MSearchSelectWindow {
+html.dark-mode #MSearchSelectWindow {
 	border: 1px solid #000000;
 	background: #32363d;
 }
 
-a.selectItem {
+html.dark-mode a.selectItem {
 	padding: 3px;
 }
 
-a.SelectItem:hover {
+html.dark-mode a.SelectItem:hover {
 	background: #282923 !important;
 }
 
-#MSearchResultsWindow {
+html.dark-mode #MSearchResultsWindow {
 	border: 1px solid #000000;
 	background: #32363d;
 	color: #67d8ef !important;;
@@ -439,11 +427,11 @@ a.SelectItem:hover {
 /*********************************************/
 /**                Main menu                **/
 /*********************************************/
-#nav-tree {
+html.dark-mode #nav-tree {
 	background: transparent;
 }
 
-#nav-tree .selected {
+html.dark-mode #nav-tree .selected {
 	background-image: none;
 	background: #32363d;
 }
@@ -455,10 +443,10 @@ a.SelectItem:hover {
 /*********************************************/
 /**               Inline code               **/
 /*********************************************/
-p code,
-li code,
-td code,
-dd code {
+html.dark-mode p code,
+html.dark-mode li code,
+html.dark-mode td code,
+html.dark-mode dd code {
 	background-color: #000000;
 	border: 1px solid #A8B8D9;
 
@@ -468,12 +456,12 @@ dd code {
 /*********************************************/
 /**         Table of Contents (ToC)         **/
 /*********************************************/
-div.toc {
+html.dark-mode div.toc {
 	background: #32363d;
 	border: 1px solid #000000;
 }
 
-div.toc h3 {
+html.dark-mode div.toc h3 {
 	font-size: 150%;
 	color: inherit;
 }
@@ -481,11 +469,11 @@ div.toc h3 {
 /*********************************************/
 /**              Content table              **/
 /*********************************************/
-table.doxtable tr:nth-child(even) td {
+html.dark-mode table.doxtable tr:nth-child(even) td {
 	background: #32363d;
 }
 
-div.header {
+html.dark-mode div.header {
 	background: transparent;
 	border-bottom: 1px solid #32363d;
 }
@@ -493,7 +481,7 @@ div.header {
 /*********************************************/
 /**               Field table               **/
 /*********************************************/
-.fieldtable th {
+html.dark-mode .fieldtable th {
 	background: #282923;
 	color: inherit;
 }
@@ -501,30 +489,30 @@ div.header {
 /*********************************************/
 /**           Memitem and memtitle          **/
 /*********************************************/
-.memdoc {
+html.dark-mode .memdoc {
 	border: 1px solid #A8B8D9;
 }
 
 /*********************************************/
 /**             TOP navigation              **/
 /*********************************************/
-.tabs, .tabs2, .tabs3 {
+html.dark-mode .tabs, html.dark-mode .tabs2, html.dark-mode .tabs3 {
 	background: #DDDDDD;
 }
 
-.tablist li {
+html.dark-mode .tablist li {
 	background: transparent !important;
 }
 
-.tablist a {
+html.dark-mode .tablist a {
 	background-image: none;
 	border-right: 1px solid #999999;
 
 	color: #32363d;
 }
 
-.tablist a:hover,
-.tablist li.current a {
+html.dark-mode .tablist a:hover,
+html.dark-mode .tablist li.current a {
 	text-decoration: none;
 	color: #000000;
 	background: #CCCCCC;
@@ -532,176 +520,155 @@ div.header {
 }
 
 /*********************************************/
-/**              H1 in textblocks           **/
-/*********************************************/
-
-/*********************************************/
 /**               Note, warning             **/
 /*********************************************/
-
-/*********************************************/
-/**               Reference list            **/
-/**Similar to warning/note/todo/... messages**/
-/*********************************************/
-dl.reflist {
-
-}
-
-
-/*********************************************/
-/**               Note, warning             **/
-/*********************************************/
-#docs_list {
+html.dark-mode #docs_list {
 	background: #32363d;
 }
 
-#docs_list ul li {
+html.dark-mode #docs_list ul li {
 	border-right: 1px solid #BFBFBF;
 }
 
-#docs_list ul li a {
+html.dark-mode #docs_list ul li a {
 	color: #1b1e21;
 }
 
-#docs_list ul li a:hover,
-#docs_list ul li a.docs_current {
+html.dark-mode #docs_list ul li a:hover,
+html.dark-mode #docs_list ul li a.docs_current {
 	background: #282923;
 }
 
 /*********************************************/
 /**               Resizable UI              **/
 /*********************************************/
-.ui-resizable-e {
+html.dark-mode .ui-resizable-e {
 	background: #32363d;
 }
 
 /*********************************************/
-/**               Download url              **/
-/*********************************************/
-
-/*********************************************/
 /**               Syntax folor              **/
 /*********************************************/
-div.line {
+html.dark-mode div.line {
 	background: transparent;
 	color: #d7d7d7;
 }
 
-div.line a {
+html.dark-mode div.line a {
 	color: inherit;
 }
 
-span.keyword {
+html.dark-mode span.keyword {
 	color: #f92472;
 	font-style: italic;
 }
 
-span.keywordtype {
+html.dark-mode span.keywordtype {
 	color: #67cfc1;
 	font-style: italic;
 }
 
-span.keywordflow {
+html.dark-mode span.keywordflow {
 	color: #f92472;
 	font-style: italic;
 }
 
-span.comment {
+html.dark-mode span.comment {
 	color: #74705a;
 }
 
-span.preprocessor {
+html.dark-mode span.preprocessor {
 	color: #a6e22b;
 }
 
-span.stringliteral {
+html.dark-mode span.stringliteral {
 	color: #e7db74;
 }
 
-span.charliteral {
+html.dark-mode span.charliteral {
 	color: #e7db74;
 }
 
-span.vhdldigit { 
+html.dark-mode span.vhdldigit { 
 	color: #ff00ff;
 }
 
-span.vhdlchar { 
+html.dark-mode span.vhdlchar { 
 	color: #000000;
 }
 
-span.vhdlkeyword { 
+html.dark-mode span.vhdlkeyword { 
 	color: #700070;
 }
 
-span.vhdllogic { 
+html.dark-mode span.vhdllogic { 
 	color: #ff0000;
 }
 
-span.lineno {
+html.dark-mode span.lineno {
 	background: transparent;
 }
 
-span.lineno a {
+html.dark-mode span.lineno a {
 	background: transparent;
 }
 
 /*********************************************/
 /**          Modules/Directory table        **/
 /*********************************************/
-.mdescLeft, .mdescRight, .memItemLeft, .memItemRight,
-.memTemplItemLeft, .memTemplItemRight, .memTemplParams {
+html.dark-mode .mdescLeft, html.dark-mode .mdescRight, html.dark-mode .memItemLeft, html.dark-mode .memItemRight,
+html.dark-mode .memTemplItemLeft, html.dark-mode .memTemplItemRight, html.dark-mode .memTemplParams {
 	background: #32363d;
 	color: inherit;
 }
 
-.memtemplate {
+html.dark-mode .memtemplate {
 	color: #B4CCF9;
 }
 
-.memSeparator {
+html.dark-mode .memSeparator {
 	border: none;
 	background: transparent;
 }
 
-h2.groupheader {
+html.dark-mode h2.groupheader {
 	color: #67d8ef;
 }
 
 /*********************************************/
 /**                 Mem items               **/
 /*********************************************/
-.memtitle {
+html.dark-mode .memtitle {
 	background: #32363d !important;
 	border-color: #000000;
 }
 
-.memitem {
+html.dark-mode .memitem {
 	background: #32363d !important;
 	color: inherit;
 	text-shadow: none;
 }
 
-.memproto {
+html.dark-mode .memproto {
 	background: inherit;
 	border-color: #000000;
 	color: inherit;
 	text-shadow: none;
 }
 
-.memproto table td {
+html.dark-mode .memproto table td {
 	font-family: monospace, fixed !important;
 }
 
-td.memItemLeft, td.memItemRight {
+html.dark-mode td.memItemLeft, html.dark-mode td.memItemRight {
 	font-family: monospace, fixed;
 }
 
-.paramname, .paramname em {
+html.dark-mode .paramname, html.dark-mode .paramname em {
 	color: #bf5f82;
 }
 
-.memdoc {
+html.dark-mode .memdoc {
 	background: inherit;
 	border-color: #000000;
 }
@@ -710,60 +677,57 @@ td.memItemLeft, td.memItemRight {
 /*********************************************/
 /**                 Footer                  **/
 /*********************************************/
-.titlearea {
+html.dark-mode .titlearea {
 	border-bottom: 1px solid #32363d;
 }
 
-/*********************************************/
-/**                 Footer                  **/
-/*********************************************/
-#nav-path {
+html.dark-mode #nav-path {
 	background: transparent;
 }
 
-#nav-path ul {
+html.dark-mode #nav-path ul {
 	background: transparent;
 	color: inherit;
 	border: none;
 	border-top: 1px solid #32363d;
 }
 
-.navpath li.footer {
+html.dark-mode .navpath li.footer {
 	color: inherit;
 }
 
-.navpath li.navelem a {
+html.dark-mode .navpath li.navelem a {
 	text-shadow: none;
 }
 
 /*********************************************/
 /**             Custom scrollbar            **/
 /*********************************************/
-::-webkit-scrollbar {
+html.dark-mode ::-webkit-scrollbar {
 	width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+html.dark-mode ::-webkit-scrollbar-track {
 	border-radius: 10px;
 }
  
 /* Handle */
-::-webkit-scrollbar-thumb {
+html.dark-mode ::-webkit-scrollbar-thumb {
 	background: #234567;
 	border: none;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+html.dark-mode ::-webkit-scrollbar-thumb:hover {
 	background: #32363d; 
 }
 
 /*********************************************/
-/**             Custom scrollbar            **/
+/**             Glow effect                 **/
 /*********************************************/
-h1.glow, h2.glow, h3.glow,
-h4.glow, h5.glow, h6.glow {
+html.dark-mode h1.glow, html.dark-mode h2.glow, html.dark-mode h3.glow,
+html.dark-mode h4.glow, html.dark-mode h5.glow, html.dark-mode h6.glow {
 	text-shadow: 0 0 15px #67d8ef;
 }
 
@@ -771,7 +735,7 @@ h4.glow, h5.glow, h6.glow {
 /**   Transparent background for dot/graphviz **/
 /**   diagrams (inheritance, collaboration)   **/
 /*********************************************/
-.dyncontent iframe,
-.zoom iframe {
+html.dark-mode .dyncontent iframe,
+html.dark-mode .zoom iframe {
 	background: transparent;
 }
