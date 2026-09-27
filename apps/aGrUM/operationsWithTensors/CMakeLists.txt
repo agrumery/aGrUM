@@ -38,8 +38,8 @@
 #                                                                          #
 ############################################################################
 
-project(EXAMPLE)
 cmake_minimum_required(VERSION 3.13)
+project(EXAMPLE)
 set (CMAKE_CXX_STANDARD 20)
 
 find_package(OpenMP)
@@ -54,13 +54,7 @@ if (NOT DEFINED aGrUM_DIR)
   set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 endif ()
 
-find_package(aGrUM)
-
-if (aGrUM_FOUND)
-  include(${AGRUM_USE_FILE})
-else ()
-  message(FATAL_ERROR "Please install aGrUM")
-endif ()
+find_package(aGrUM CONFIG REQUIRED)
 
 file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
 file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)

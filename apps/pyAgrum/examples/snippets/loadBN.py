@@ -27,14 +27,11 @@ import sys,os
 
 import pyagrum as gum
 
-from gumLib.pyAgrum_header import pyagrum_header
-from gumLib.progress_bar import ProgressBar
-
 def module_help(exit_value=1):
     """
     defines help viewed if args are not OK on command line, and exit with exit_value
     """
-    print os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}"
+    print(os.path.basename(sys.argv[0]),"src.{"+gum.availableBNExts()+"}")
     sys.exit(exit_value)
 
 def doLoadBN(s):
@@ -42,19 +39,17 @@ def doLoadBN(s):
     # bn=gum.loadBN("test")
     # but listeners are fun !!
 
-    title=os.path.basename(s)+" ("+'{0:,d}'.format(os.path.getsize(s)/1024).replace(',',' ')+" Ko)"
-    progressbar=ProgressBar(title,0,100,mode='dynamic', char='-')
+    title=os.path.basename(s)+" ("+'{0:,d}'.format(os.path.getsize(s)//1024).replace(',',' ')+" Ko)"
+    print(title)
 
     def local_update(pourcent):
-        progressbar.update_amount(pourcent)
-        progressbar.display()
-        if pourcent==100: print
+        print(f"\r{pourcent}%", end="")
+        if pourcent==100: print()
 
     return gum.loadBN(s,local_update)
 
 
 if __name__=="__main__":
-    pyAgrum_header(2012)
 
     if len(sys.argv)<2:
             module_help()

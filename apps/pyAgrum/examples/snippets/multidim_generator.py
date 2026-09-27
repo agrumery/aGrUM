@@ -21,7 +21,6 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 
 import pyagrum as gum
-from gumLib.pyAgrum_header import pyagrum_header
 
 def multidim_generator(bornes,sauf={}):
     """
@@ -33,7 +32,7 @@ def multidim_generator(bornes,sauf={}):
     """
     valeurs={}
     for k in bornes:
-        if (sauf.has_key(k)):
+        if (k in sauf):
             valeurs[k]=sauf[k]
         else:
             valeurs[k]=0
@@ -43,7 +42,7 @@ def multidim_generator(bornes,sauf={}):
         yield valeurs
         done=True
         for k in valeurs:
-            if (sauf.has_key(k)):
+            if (k in sauf):
                 continue
             if (valeurs[k]<bornes[k]-1):
                 valeurs[k]+=1
@@ -54,20 +53,19 @@ def multidim_generator(bornes,sauf={}):
 
 
 if __name__=="__main__":
-    pyAgrum_header(2011)
 
-    print "#### ITERATION ON 3 VARIABLES #####"
+    print("#### ITERATION ON 3 VARIABLES #####")
     for i in multidim_generator(dict(x=4,y=3,z=2)):
-        print i
+        print(i)
 
-    print "#### ITERATION ON Y AND Z (X=3) #####"
+    print("#### ITERATION ON Y AND Z (X=3) #####")
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(x=3)):
-        print i
+        print(i)
 
-    print "#### ITERATION ON X AND Y (Z=1) #####"
+    print("#### ITERATION ON X AND Y (Z=1) #####")
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(z=1)):
-        print i
+        print(i)
 
-    print "#### ITERATION ON Y (X=1 and Z=0) #####"
+    print("#### ITERATION ON Y (X=1 and Z=0) #####")
     for i in multidim_generator(dict(x=4,y=3,z=2),dict(x=1,z=0)):
-        print i
+        print(i)

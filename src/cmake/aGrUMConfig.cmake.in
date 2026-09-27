@@ -6,7 +6,6 @@
 # AGRUM_LIBRARIES - list of qualified libraries to link against
 # AGRUM_LIBRARY_DIRS - list of libraries dirs
 # AGRUM_VERSION_STRING - versioni
-# AGRUM_USE_FILE - include to use agrum
 # AGRUM_FOUND - set to 1 if found
 #
 #

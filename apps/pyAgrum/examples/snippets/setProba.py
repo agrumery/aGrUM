@@ -21,22 +21,19 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 
 import pyagrum as gum
-from gumLib.pyAgrum_header import pyagrum_header
 
-pyAgrum_header(2011)
+bn=gum.loadBN("../../resources/bn.bif")
 
-bn=gum.loadBN("bn.bif")
-
-print bn.variable(0).name()
+print(bn.variable(0).name())
 # a
 
-print bn.cpt(0)[{'e':0,'f':1}]
+print(bn.cpt(0)[{'e':0,'f':1}])
 # [ 0.0250064  0.974994 ]
 
 bn.cpt(0)[{'e':0,'f':1}]=[1,0]
-print bn.cpt(0)[{'e':0,'f':1}]
+print(bn.cpt(0)[{'e':0,'f':1}])
 # [ 1. 0. ]
 
 bn.cpt(0)[{'a':0, 'e':0,'f':1}]=12
-print bn.cpt(0)[{'e':0,'f':1}]
+print(bn.cpt(0)[{'e':0,'f':1}])
 # [ 12. 0. ]

@@ -23,17 +23,14 @@
 import sys
 
 import pyagrum as gum
-from gumLib.pyAgrum_header import pyagrum_header
-
-pyAgrum_header(2011)
 
 bn=gum.BayesNet('exo1')
 
 # sexe = 0(H)/1(F)
 # daltonisme = 0(D) / 1 (nonD)
 
-sexe,daltonisme=[bn.add(gum.LabelizedVar(nom,'',2)) for nom in 'sexe daltonisme'.split()]
-bn.insertArc(sexe,daltonisme)
+sexe,daltonisme=[bn.add(gum.LabelizedVariable(nom,'',2)) for nom in 'sexe daltonisme'.split()]
+bn.addArc(sexe,daltonisme)
 
 bn.cpt(sexe)[:]=[0.5, 0.5]
 
@@ -42,9 +39,9 @@ bn.cpt(daltonisme)[1,:]=[0.005,0.995]
 
 bn.saveBIF("exo1.bif")
 for line in open("exo1.bif"):
-    print line,
+    print(line,end='')
 
 print("for gum.loadBN or gum.saveBN, possible files ext are ="+gum.availableBNExts())
 gum.saveBN(bn,"exo1.dsl")
 for line in open("exo1.dsl"):
-    print line,
+    print(line,end='')

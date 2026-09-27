@@ -26,14 +26,14 @@ How to use Instantiation to iterate in a cpt
 import pyagrum as gum
 
 bn=gum.BayesNet()
-bn.loadBIF("../resources/bn.bif")
+bn.loadBIF("../../resources/bn.bif")
 
 p_a=bn.cpt(0)
 i=gum.Instantiation(p_a)
 i.setFirst()
 s=0.0;
 while (not i.end()):
-    print i
+    print(i)
     s+=p_a.get(i)
     i.inc()
-print s
+print(s)

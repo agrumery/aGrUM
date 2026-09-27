@@ -106,6 +106,19 @@ endif ()
 #this macro has to be executed when recolt of module file lists is finished (after CocoR targets for instance)
 macro(buildFileListsWithModules)
     message(STATUS "** aGrUM Notification: Generating files lists")
+
+    # BASE headers get listed as sources of every OTHER module's target too,
+    # purely so IDEs group them there for browsing. CocoR-generated headers
+    # (Parser.h/Scanner.h) must be excluded from that cross-module list: CMake
+    # ties a custom command to any target that lists one of its OUTPUT files
+    # as a source, so leaving them in duplicates the SyntaxFormula.atg
+    # generation rule into every dependent module's own build.make; under a
+    # parallel build (`make -jN`, e.g. `act pipinstall`) several targets then
+    # run cococpp concurrently on the same output files, segfaulting it.
+    set(AGRUM_BASE_INCLUDES_FOR_OTHER_MODULES ${AGRUM_BASE_INCLUDES})
+    list(REMOVE_ITEM AGRUM_BASE_INCLUDES_FOR_OTHER_MODULES
+            ${AGRUM_SOURCE_DIR}/agrum/base/core/math/cocoR/Parser.h
+            ${AGRUM_SOURCE_DIR}/agrum/base/core/math/cocoR/Scanner.h)
     foreach (OPTION ${MODULES})
         if (BUILD_${OPTION} OR BUILD_ALL)
             message(STATUS "** aGrUM Notification:      (+) adding target for ${OPTION}")
@@ -123,7 +136,11 @@ macro(buildFileListsWithModules)
             # BUILD_SHARED_LIBS=ON + BUILD_PYTHON=ON only happens for the
             # conda-forge recipe; PyPI/wheelhouse always builds pyAgrum static,
             # so this branch's split-per-module behavior only ever runs there.
-            add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES})
+            if (OPTION STREQUAL "BASE")
+                add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES})
+            else ()
+                add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES_FOR_OTHER_MODULES})
+            endif ()
 
             # lrslib (base/external/lrslib) is vendored third-party C code with
             # no export attributes; attach the generated .def only when agrumCN

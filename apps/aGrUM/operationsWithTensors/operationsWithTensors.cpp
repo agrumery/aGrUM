@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <agrum/tools/variables/labelizedVariable.h>
-#include <agrum/tools/multidim/tensor.h>
+#include <agrum/base/variables/labelizedVariable.h>
+#include <agrum/base/multidim/tensor.h>
 
 void simpleTensors() {
   auto a=gum::LabelizedVariable("a","afoo");

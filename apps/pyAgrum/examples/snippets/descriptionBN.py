@@ -32,13 +32,13 @@ def showBN(bn):
     print(bn)
     print('---------------------------------')
 
-    l=[len(bn.variable(i)) for i in bn.ids()]
+    l=[bn.variable(i).domainSize() for i in bn.nodes()]
     print('variables domainSize : min={0} max={1}'.format(min(l),max(l)))
 
-    print('parents : max={0}'.format(max([len(bn.parents(i)) for i in bn.ids()])))
+    print('parents : max={0}'.format(max([len(bn.parents(i)) for i in bn.nodes()])))
     print('---------------------------------')
 
-    for i in bn.ids():
+    for i in bn.nodes():
         print('{0} : {1}'.format(i,str(bn.variable(i))))
     print('---------------------------------')
 
@@ -47,7 +47,7 @@ def showBN(bn):
     print('---------------------------------')
 
 
-#load the file alarm.dsl
-bn=gum.loadBN("../resources/alarm.dsl")
+#load the file bn.bif
+bn=gum.loadBN("../../resources/bn.bif")
 
 showBN(bn)

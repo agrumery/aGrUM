@@ -38,19 +38,14 @@
 #                                                                          #
 ############################################################################
 
-project(PRMBNREADER)
 cmake_minimum_required(VERSION 3.13)
+project(PRMBNREADER)
 set(AGRUM_INSTALLATION_DIRECTORY "~/usr")
 message(STATUS "aGrUM installation path : ${AGRUM_INSTALLATION_DIRECTORY} ")
 if (NOT DEFINED aGrUM_DIR)
   set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 endif ()
-find_package(aGrUM NO_MODULE)
-if (aGrUM_FOUND)
-  include(${AGRUM_USE_FILE})
-else ()
-  message(FATAL_ERROR "Please install aGrUM")
-endif ()
+find_package(aGrUM CONFIG REQUIRED)
 if( CMAKE_BUILD_TYPE )
   message(STATUS  "version : '${CMAKE_BUILD_TYPE}'")
 else ()
@@ -62,5 +57,5 @@ file(GLOB PRMBNREADER_SOURCE ${PRMBNREADER_SOURCE_DIR}/src/*.cpp)
 file(GLOB PRMBNREADER_INCLUDE ${PRMBNREADER_SOURCE_DIR}/src/*.h)
 
 add_executable (prmBnReader ${PRMBNREADER_SOURCE})
-target_link_libraries(prmBnReader ${AGRUM_LIBRARIES})
+target_link_libraries(prmBnReader agrum)
 install (TARGETS prmBnReader DESTINATION bin)

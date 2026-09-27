@@ -28,9 +28,9 @@ import pyagrum as gum
 
 bn=gum.BayesNet()
 
-x,y,z=([bn.add(gum.LabelizedVar(nom,"",2)) for nom in "x y z".split()])
-bn.insertArc(x,y)
-bn.insertArc(y,z)
+x,y,z=([bn.add(gum.LabelizedVariable(nom,"",2)) for nom in "x y z".split()])
+bn.addArc(x,y)
+bn.addArc(y,z)
 
 #this should create an impossible arc (since a bn is a DAG)
-#bn.insertArc(z,x)
+#bn.addArc(z,x)

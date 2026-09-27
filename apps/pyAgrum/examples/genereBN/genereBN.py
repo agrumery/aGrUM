@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 import pyagrum as gum
-import pyagrum.lib.bn2csv as bn2csv
 
 NBRNOEUDS=15
 NBRARCS=20
@@ -26,7 +25,7 @@ while (len(bn.parents(CLASSE))<NBRPARENTSMIN):
   nvparent=int(gum.randomProba()*bn.size())
   try:
     bn.addArc(nvparent,CLASSE)
-  except gum.Exception:
+  except gum.GumException:
     print(f"  Failed in {bn.parents(0)} with {nvparent}")
 
 print("(*) re-generating CPTs")
@@ -38,12 +37,14 @@ print("(*) saving bif file {0}".format(fileid))
 gum.saveBN(bn,"BN{0}.bif".format(fileid))
 
 print("(*) saving learning csv file {0}".format(fileid))
-print
-LLlearn=bn2csv.generateCSV(bn,"BN{0}-{1}.csv".format(fileid,NBCASELEARN),NBCASELEARN,True)
+learnGenerator=gum.BNDatabaseGenerator(bn)
+LLlearn=learnGenerator.drawSamples(NBCASELEARN)
+learnGenerator.toCSV("BN{0}-{1}.csv".format(fileid,NBCASELEARN))
 
 print("(*) saving test csv file {0}".format(fileid))
-print
-LLtest=bn2csv.generateCSV(bn,"BN{0}-{1}.csv".format(fileid,NBCASETEST),NBCASETEST,True)
+testGenerator=gum.BNDatabaseGenerator(bn)
+LLtest=testGenerator.drawSamples(NBCASETEST)
+testGenerator.toCSV("BN{0}-{1}.csv".format(fileid,NBCASETEST))
 
 print("classe : {0}".format(CLASSE))
 print("Modalités : {0}".format(bn.variable(CLASSE)))

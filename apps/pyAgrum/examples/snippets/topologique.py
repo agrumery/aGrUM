@@ -21,16 +21,13 @@
 #OR PERFORMANCE OF THIS SOFTWARE!
 
 import pyagrum as gum
-from gumLib.pyAgrum_header import pyagrum_header
 
-pyAgrum_header(2011)
-
-bn=gum.loadBN("../resources/bn.bif")
+bn=gum.loadBN("../../resources/bn.bif")
 
 seq=bn.topologicalOrder()
 print("order : "+str(seq))
-print
+print()
 
 print("enumeration :")
 for nod in bn.topologicalOrder():
-    print "    %d (%s)"%(nod,bn.variable(nod).name())
+    print("    %d (%s)"%(nod,bn.variable(nod).name()))

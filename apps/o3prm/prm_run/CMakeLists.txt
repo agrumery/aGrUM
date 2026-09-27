@@ -38,23 +38,21 @@
 #                                                                          #
 ############################################################################
 
-PROJECT( PRM_RUN )
+CMAKE_MINIMUM_REQUIRED( VERSION 3.13 )
 
-CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
+PROJECT( PRM_RUN )
 
 SET( PRM_RUN_VERSION_MAJOR "3" )
 SET( PRM_RUN_VERSION_MINOR "0" )
 SET( PRM_RUN_VERSION_PATCH "0" )
 
 # Configuring cmake
-set( CMAKE_CXX_STANDARD 14 )
+set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED on )
 
 # Listing source files
 SET( PRM_RUN_MAIN "${CMAKE_SOURCE_DIR}/src/main.cpp" )
 
-# Using C++ 14
-SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
 
 # Use this if
 #set(AGRUM_INSTALLATION_DIRECTORY "/usr/local/")
@@ -63,13 +61,7 @@ SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14" )
 #  set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 #endif ()
 
-find_package(aGrUM NO_MODULE)
-
-if (aGrUM_FOUND)
-  include(${AGRUM_USE_FILE})
-else (aGrUM_FOUND)
-  message(FATAL_ERROR "Please install aGrUM")
-endif (aGrUM_FOUND)
+find_package(aGrUM CONFIG REQUIRED)
 
 # cmake -DCMAKE_BUILD_TYPE=DEBUG
 # or
@@ -93,7 +85,7 @@ INCLUDE_DIRECTORIES( ${aGrUM_INCLUDES} ${Boost_INCLUDE_DIRS})
 
 ## Building the executable
 ADD_EXECUTABLE( prm_run ${PRM_RUN_MAIN} )
-TARGET_LINK_LIBRARIES( prm_run ${AGRUM_LIBRARIES_${CMAKE_BUILD_TYPE}} ${Boost_PROGRAM_OPTIONS_LIBRARY})
+TARGET_LINK_LIBRARIES( prm_run agrum ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 INSTALL(TARGETS prm_run
         RUNTIME DESTINATION bin)

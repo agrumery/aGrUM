@@ -1,8 +1,8 @@
 #ifndef GUM_FUNCTION_GRAPH_BINARIZER_H
 #define GUM_FUNCTION_GRAPH_BINARIZER_H
 
-#include <agrum/tools/multidim/implementations/multiDimFunctionGraph.h>
-#include <agrum/tools/variables/labelizedVariable.h>
+#include <agrum/base/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/base/variables/labelizedVariable.h>
 
 namespace gum {
   class FunctionGraphBinarizer {

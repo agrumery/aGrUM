@@ -1,4 +1,4 @@
-#include <run/functionGraphBinarizer.h>
+#include "functionGraphBinarizer.h"
 
 namespace gum {
 

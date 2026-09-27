@@ -59,8 +59,8 @@ def create_qmr(nD,nF,density):
     return bn
 
 if __name__=="__main__":
-    from gumLib.bn2graph import pdfize
+    import pyagrum.lib.image as image
     print("building qmr")
     bn=create_qmr(60,60,0.1)
     print("generating pdf")
-    pdfize(bn,bn.property('name'))
+    image.export(bn,bn.property('name')+".pdf")

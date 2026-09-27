@@ -51,11 +51,12 @@ int main(int argc, char* argv[]) {
     gum::learning::SmoothingPrior     prior(database);
 
     gum::learning::StructuralConstraintSetStatic<
-      gum::learning::StructuralConstraintDAG >
-      struct_constraint;
+      gum::learning::StructuralConstraintForbiddenArcs >
+      invariable_constraint;
 
-    gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
-      op_set(struct_constraint);
+    gum::learning::StructuralConstraintSetStatic<
+      gum::learning::StructuralConstraintDAG >
+      variable_constraint;
 
     gum::learning::GreedyHillClimbing search;
 
@@ -91,9 +92,8 @@ int main(int argc, char* argv[]) {
       // LEARNING
       score.setRanges(ranges);
       estimator.setRanges(ranges);
-      gum::learning::GraphChangesSelector4DiGraph< decltype(struct_constraint),
-                                                   decltype(op_set) >
-                              selector(score, struct_constraint, op_set);
+      gum::learning::GraphChangesSelector4DiGraph
+                              selector(score, invariable_constraint, variable_constraint);
       gum::Timer              timer;
       gum::BayesNet< double > bn = search.learnBN<double>(selector, estimator);
       std::cout << timer.step() << "s ";
