@@ -333,11 +333,6 @@ windows_agrum_mingw:
   script:
     - *windows_build_script
 
-# NOTE (feature/backShared, 2026-09-26): this job is missing dev's `rules:`
-# block (schedule/merge_request_event/master/web/tag only), so on this branch
-# it currently runs on every push instead. Intentionally left as-is for the
-# lifetime of this branch -- do not restore the rules: block here, this file
-# disappears with the branch; recover dev's version of this job when merging.
 windows_conda_forge:
   stage: windows-pyagrum-priority
   needs: []
@@ -345,6 +340,12 @@ windows_conda_forge:
   retry: 1
   variables:
     PATH: $PATH_MVSC22_GUMWIN
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_TAG'
   script:
     - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR
 
