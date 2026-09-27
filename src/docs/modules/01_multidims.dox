@@ -41,12 +41,24 @@
 
 /**
  * @file
- * @brief Credal networks documentation.
+ * @brief MultiDims module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup cn_group Credal Networks
+ * \defgroup multidim_group multidimensional tables
+ * \ingroup theoretic_topics_group
+ * @{
+ *
+ * \defgroup multidim_op_group Operators on multidimensional tables
+ *
+ * \defgroup multidim_agg_group Aggregators
+ *
+ * \defgroup multidim_funcgrap_group Function Graphs
+ *
+ * \defgroup multidim_pattern_group Patterns for multidimensional tables
+ *
+ * @}
  */

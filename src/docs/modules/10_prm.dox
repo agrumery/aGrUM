@@ -41,12 +41,13 @@
 
 /**
  * @file
- * @brief FMDP module documentation.
+ * @brief PRM module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup fmdp_group Factored Markov Decision Process
+ * \defgroup prm_group Probabilistic Relational Models
+ * \ingroup theoretic_topics_group
  */

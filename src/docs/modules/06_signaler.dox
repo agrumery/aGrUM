@@ -41,12 +41,13 @@
 
 /**
  * @file
- * @brief PRM module documentation.
+ * @brief Learning module main page.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup prm_group Probabilistic Relational Models
+ * \defgroup signal_group Signaler and Listener
+ * \ingroup technical_topics_group
  */

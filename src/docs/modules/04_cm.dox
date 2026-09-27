@@ -41,19 +41,16 @@
 
 /**
  * @file
- * @brief Bayesian network module documentation.
+ * @brief Causal models documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Lionel TORTI
  */
 
-
 /**
- * \defgroup bn_group Bayesian networks
- * @{
- * \defgroup bn_inference Inference Algorithms for Bayesian networks
- * \defgroup bn_io Serialization of Bayesian networks
- * \defgroup bn_generator Generators
- * \defgroup bn_particles Particles Algorithms
- * @}
+ * \defgroup cm_group Causal Model
+ * \ingroup theoretic_topics_group
+ *
+ * Causal graphs and causal inference on top of Bayesian networks: do-calculus
+ * criteria (front-door/back-door), causal impact estimation and
+ * counterfactual reasoning (module `CM`, depends on `BN`).
  */

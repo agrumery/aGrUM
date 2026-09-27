@@ -41,25 +41,16 @@
 
 /**
  * @file
- * @brief The Algorithm module documentation.
+ * @brief Influence diagrams documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Lionel TORTI
  */
 
 /**
+ * \defgroup id_group Influence Diagram
+ * \ingroup theoretic_topics_group
  *
- * \defgroup algorithms_group Generic algorithms
- * @{
- *
- * \defgroup approximationscheme_group Approximation Scheme algorithms
- * @{
- * About aGrUM approximation schemes.
- * @}
- * \defgroup approximationpolicy_group Approximation algorithms
- * @{
- * About aGrUM approximation policies.
- * @}
- *
- * @}
+ * Influence diagrams extend Bayesian networks with decision nodes and
+ * utility nodes, for decision-theoretic planning under uncertainty
+ * (module `ID`, depends on `BN`).
  */

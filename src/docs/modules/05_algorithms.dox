@@ -41,12 +41,71 @@
 
 /**
  * @file
- * @brief Graphs module documentation.
+ * @brief The Algorithm module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup graph_group Graph representation
+ *
+ * \defgroup algorithms_group Generic algorithms
+ * \ingroup technical_topics_group
+ * @{
+ *
+ * Generic algorithms come in two flavors: approximation schemes/policies
+ * (see the Topics below) and a family of graph algorithms genericized via
+ * C++20 concepts, detailed in \ref algorithms_graphable "the section below".
+ *
+ * \section algorithms_graphable Generic graph algorithms via GUM_*Graphable concepts
+ *
+ * A family of free functions in `gum::graph` (`src/agrum/base/graphs/algorithms/generic/`)
+ * is written once and generalized across concrete graph types through four
+ * C++20 concepts defined in `graphConcepts.h`: \c GUM_NodeGraphable (base),
+ * \c GUM_DiGraphable and \c GUM_UndiGraphable (both refine it), and
+ * \c GUM_MixedGraphable (refines both). DiGraph/DAG satisfy GUM_DiGraphable,
+ * UndiGraph satisfies GUM_UndiGraphable, MixedGraph/PDAG satisfy
+ * GUM_MixedGraphable -- each checked by a compile-time `static_assert`.
+ *
+ * - <b>Path finding</b> (`pathFinding.h`): directedPath(), hasDirectedPath(),
+ *   directedUnorientedPath() on GUM_DiGraphable; undirectedPath(),
+ *   hasUndirectedPath() on GUM_UndiGraphable; mixedOrientedPath(),
+ *   mixedUnorientedPath() on GUM_MixedGraphable.
+ * - <b>Reachability &amp; connectivity</b> (`reachability.h`): ancestors(),
+ *   descendants(), family() on GUM_DiGraphable; chainComponents(),
+ *   areConnected() on GUM_UndiGraphable; connectedComponents() on the base
+ *   GUM_NodeGraphable (dispatches internally via `if constexpr`);
+ *   chainComponent(), boundary() on GUM_MixedGraphable.
+ * - <b>Topological structure</b> (`cycleDetection.h`): topologicalOrder()
+ *   (Kahn's algorithm) on GUM_DiGraphable; hasUndirectedCycle() on
+ *   GUM_UndiGraphable.
+ * - <b>Causal/probabilistic separation</b> (`separation.h`, `bayesBall.h`,
+ *   `moralization.h`): dSeparated() (Bayes Ball) and cSeparated()
+ *   (moralization-based, Pearl 1988) on GUM_DiGraphable /
+ *   GUM_MixedGraphable, built on requisiteNodes(), dConnected(),
+ *   moralGraph() and moralizedAncestralGraph().
+ * - <b>Markov blanket</b> (`markovBlanket.h`): markovBlanket() on
+ *   GUM_DiGraphable.
+ * - <b>Minimal conditioning set</b> (`minimalConditioningSet.h`):
+ *   minimalCondSet() on GUM_DiGraphable.
+ * - <b>Textual graph construction</b> (`fastGraph.h`): fastGraph() parses a
+ *   DOT-like description ("A->B->C; B-E") into any GUM_NodeGraphable graph
+ *   type, using GUM_DiGraphable / GUM_UndiGraphable internally to decide
+ *   which edge tokens are legal for the requested type.
+ *
+ * This generalization is currently confined to `src/agrum/base/graphs/`:
+ * higher-level modules (BN, MRF, CN, PRM, ...) call these free functions
+ * directly rather than constraining their own templates by these concepts.
+ *
+ *
+ * \defgroup approximationscheme_group Approximation Scheme algorithms
+ * @{
+ * About aGrUM approximation schemes.
+ * @}
+ * \defgroup approximationpolicy_group Approximation algorithms
+ * @{
+ * About aGrUM approximation policies.
+ * @}
+ *
+ * @}
  */

@@ -49,6 +49,7 @@
 
 /**
  * \defgroup basicstruct_group Basic data structures
+ * \ingroup technical_topics_group
  * @{
  *
  * \defgroup hashtable_group Hash Tables

@@ -41,12 +41,16 @@
 
 /**
  * @file
- * @brief Learning module main page.
+ * @brief The User Manual topics umbrella groups (Technical / Theoretical).
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup signal_group Signaler and Listener
+ * \defgroup technical_topics_group Technical topics
+ */
+
+/**
+ * \defgroup theoretic_topics_group Theoretical topics
  */

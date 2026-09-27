@@ -41,42 +41,69 @@
 
 /**
  * @file
- * @brief The documentation main page.
+ * @brief The Build System module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
- * @author Lionel TORTI
  */
 
-/*!
- * \mainpage aGrUM a GRaphical Universal Model
+/**
+ * \defgroup build_system_group Build System
+ * \ingroup technical_topics_group
  *
- * \section mainpage_presentation Presentation
+ * aGrUM/pyAgrum are built with CMake, driven through a thin Python wrapper
+ * called `act` (`acttools/`). This page lists the build flavors `act` can
+ * produce; for how modules map to shared/static binaries, see
+ * \ref modularization_group.
  *
- * aGrUM is a C++ library designed for easily building applications
- * using
- * graphical models such as Bayesian networks, influence diagrams, decision
- * trees,
- * GAI networks or Markov decision processes. It is written to provide the basic
- * building blocks to perform the following tasks :
- *   - graphical model learning / elicitation,
- *   - inference within the graphical model,
- *   - planification.
+ * \section build_system_act The `act` command
  *
- * \section mainpage_usermanual User Manual
+ * Canonical form: `act <action> <mode> <target> [flags...]`
+ * - action: `lib`, `install`, `pipinstall`, `test`, `doc`, `wheel`,
+ *   `nightly_wheel`, `package`, `guideline`, `clean`, `purge`, `show`
+ * - mode: `debug` or `release`
+ * - target: `aGrUM` or `pyAgrum` (case-insensitive)
  *
- * Technical topics (\ref technical_topics_group, including
- * \ref build_system_group) and theoretical topics (\ref theoretic_topics_group)
- * document the library module by module; the \ref howtos "Howtos" walk
- * through concrete tasks step by step.
+ * Examples: `act lib release aGrUM`, `act test debug pyAgrum`,
+ * `act install release aGrUM --static_lib`.
  *
- * \section mainpage_refmanual Reference Manual
+ * `act --dry-run` prints the resulting `cmake` invocation without running
+ * it -- the fastest way to see exactly which flags a given combination of
+ * options produces.
  *
- * The full API reference: namespaces (starting at \ref gum), concepts and
- * classes, browsable from the Reference Manual tab above.
+ * \section build_system_flavors Build flavors
  *
- * \section mainpage_appendices Appendices
+ * <table>
+ * <tr><th>Flavor</th><th>CMake option</th><th>`act` flag</th><th>Notes</th></tr>
+ * <tr><td>Shared vs static</td><td>`BUILD_SHARED_LIBS` (default `ON`)</td>
+ *     <td>`--static_lib`</td>
+ *     <td>aGrUM on Windows is always static (enforced by `act`); pyAgrum is
+ *     always forced static regardless of this flag.</td></tr>
+ * <tr><td>Threading</td><td>`GUM_THREADS=omp|stl` (CMake default `stl`)</td>
+ *     <td>`-tt`/`--threads {omp,stl}` (`act` default `omp`)</td>
+ *     <td>pyAgrum always forces `GUM_THREADS=stl`.</td></tr>
+ * <tr><td>Module selection</td><td>`BUILD_ALL`, `BUILD_<MODULE>`</td>
+ *     <td>`-m`/`--modules {show|all|mod1+mod2+...}`</td>
+ *     <td>Modules: `BASE`, `BN`, `PRM`, `MRF`, `CN`, `FMDP`, `ID`, `CM`,
+ *     `KTBN` (see `src/modules.txt`). pyAgrum additionally toggles each
+ *     SWIG-wrapped leaf module independently via
+ *     `PYAGRUM_WITH_<MODULE>` (`MRF`, `ID`, `CN`, `CM`, `PRM`, `KTBN`,
+ *     default `ON` each); `FMDP` has no Python binding.</td></tr>
+ * <tr><td>Database support</td><td>`USE_NANODBC` (default `ON`)</td>
+ *     <td>`--withSQL` / `--withoutSQL`</td>
+ *     <td>ODBC connectivity via the vendored nanodbc library.</td></tr>
+ * <tr><td>Python stable ABI</td><td>`AGRUM_PYTHON_SABI` (default `ON`)</td>
+ *     <td>`--stable_abi_off`</td>
+ *     <td>Mutually exclusive with the free-threaded build below.</td></tr>
+ * <tr><td>Python free-threading</td><td>`AGRUM_PYTHON_NOGIL` (default `OFF`)</td>
+ *     <td>`--no_gil`</td>
+ *     <td>Experimental GIL-disabled pyAgrum build.</td></tr>
+ * <tr><td>Compiler</td><td>n/a</td>
+ *     <td>`--compiler {gcc|clang|mvsc22|mvsc19|mvsc17|mvsc15|mingw64|...}`</td>
+ *     <td>Default `gcc` on Linux/macOS, `mvsc22` on Windows; only the MSVC
+ *     variants and `mingw64` are allowed on Windows.</td></tr>
+ * </table>
  *
- * The Appendices tab above lists every source file. The deprecated API
- * elements and the open todo items are listed alongside the Howtos, in the
- * User Manual's left-hand tree.
+ * Platforms exercised by the build system: Linux, macOS and Windows, with
+ * GCC, Clang and MSVC/MinGW as the supported compiler families (see the
+ * top-level `CLAUDE.md` for the minimum supported versions).
  */

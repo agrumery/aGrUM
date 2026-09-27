@@ -41,20 +41,13 @@
 
 /**
  * @file
- * @brief Learning module documentation.
+ * @brief FMDP module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
-
 /**
- * \defgroup learning_group Tools for learning
- * @{
- * \defgroup learning_database Database Manipulations
- * \defgroup learning_scores Scores and Independence Tests
- * \defgroup learning_prior Scores A Priori
- * \defgroup learning_constraints Structural Constraints
- * \defgroup learning_param_utils Parameters utilities
- * @}
+ * \defgroup fmdp_group Factored Markov Decision Process
+ * \ingroup theoretic_topics_group
  */

@@ -48,6 +48,7 @@
 
 /*!
  * \defgroup modularization_group Code modularization (aGrUM and pyAgrum)
+ * \ingroup technical_topics_group
  *
  * aGrUM's C++ sources are split into 9 modules (`BASE`, `BN`, `PRM`, `MRF`,
  * `CN`, `FMDP`, `ID`, `CM`, `KTBN`, declared in `src/modules.txt` with their

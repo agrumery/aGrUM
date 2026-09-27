@@ -41,42 +41,20 @@
 
 /**
  * @file
- * @brief The documentation main page.
+ * @brief Bayesian network module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
-/*!
- * \mainpage aGrUM a GRaphical Universal Model
- *
- * \section mainpage_presentation Presentation
- *
- * aGrUM is a C++ library designed for easily building applications
- * using
- * graphical models such as Bayesian networks, influence diagrams, decision
- * trees,
- * GAI networks or Markov decision processes. It is written to provide the basic
- * building blocks to perform the following tasks :
- *   - graphical model learning / elicitation,
- *   - inference within the graphical model,
- *   - planification.
- *
- * \section mainpage_usermanual User Manual
- *
- * Technical topics (\ref technical_topics_group, including
- * \ref build_system_group) and theoretical topics (\ref theoretic_topics_group)
- * document the library module by module; the \ref howtos "Howtos" walk
- * through concrete tasks step by step.
- *
- * \section mainpage_refmanual Reference Manual
- *
- * The full API reference: namespaces (starting at \ref gum), concepts and
- * classes, browsable from the Reference Manual tab above.
- *
- * \section mainpage_appendices Appendices
- *
- * The Appendices tab above lists every source file. The deprecated API
- * elements and the open todo items are listed alongside the Howtos, in the
- * User Manual's left-hand tree.
+
+/**
+ * \defgroup bn_group Bayesian networks
+ * \ingroup theoretic_topics_group
+ * @{
+ * \defgroup bn_inference Inference Algorithms for Bayesian networks
+ * \defgroup bn_io Serialization of Bayesian networks
+ * \defgroup bn_generator Generators
+ * \defgroup bn_particles Particles Algorithms
+ * @}
  */

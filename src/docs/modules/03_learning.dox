@@ -41,18 +41,21 @@
 
 /**
  * @file
- * @brief k-order dynamic Bayesian network (k-TBN) module documentation.
+ * @brief Learning module documentation.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
+ * @author Lionel TORTI
  */
 
 
 /**
- * \defgroup ktbn_group k-order Dynamic Bayesian Networks
+ * \defgroup learning_group Tools for learning
+ * \ingroup theoretic_topics_group
  * @{
- * \defgroup ktbn_generator Generators
- * \defgroup ktbn_inference Inference Algorithms for k-TBN
- * \defgroup ktbn_learning Learning Algorithms for k-TBN
- * \defgroup ktbn_database Database Generation for k-TBN
+ * \defgroup learning_database Database Manipulations
+ * \defgroup learning_scores Scores and Independence Tests
+ * \defgroup learning_prior Scores A Priori
+ * \defgroup learning_constraints Structural Constraints
+ * \defgroup learning_param_utils Parameters utilities
  * @}
  */

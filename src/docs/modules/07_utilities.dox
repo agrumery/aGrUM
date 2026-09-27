@@ -41,23 +41,67 @@
 
 /**
  * @file
- * @brief MultiDims module documentation.
+ * @brief The utility documentation page.
  *
  * @author Pierre-Henri WUILLEMIN(@LIP6) & Christophe GONZALES(@AMU)
  * @author Lionel TORTI
  */
 
 /**
- * \defgroup multidim_group multidimensional tables
+ * \defgroup utilities_group Utilities
+ * \ingroup technical_topics_group
  * @{
+ * About aGrUM utilities.
  *
- * \defgroup multidim_op_group Operators on multidimensional tables
+ * \defgroup math_group Math
+ * @{
+ * All the maths you'll need.
+ * @}
  *
- * \defgroup multidim_agg_group Aggregators
+ * \defgroup configuration_group Configuration
+ * @{
+ * About aGrUM configuration.
+ * @}
  *
- * \defgroup multidim_funcgrap_group Function Graphs
+ * \defgroup refptr_group Smart Pointers
+ * @{
+ * RefPtr are a replacement for the usual pointers: they keep track of the
+ * number of "smart" pointers pointing to a given element. When an element is
+ * no more referenced by any smart pointer, it is deleted. Hence using RefPtr,
+ * developers do not have to worry anymore about memory leaks. The correct way
+ * to use RefPtr is by creating unnamed temporaries like: @code RefPtr ( new
+ * myObject ) @endcode In any case, if you decide to pass a named pointer as
+ * argument to a RefPtr, make sure you will do it only once, that it is
+ * allocated on the heap and that you never try to deallocate it yourself, else
+ * your program will crash.
  *
- * \defgroup multidim_pattern_group Patterns for multidimensional tables
+ * @par Usage example:
+ * @code
+ * // creation of smart pointer
+ * RefPtr<int> ptr1 (new int (4));
+ *
+ * // copying (and sharing) this pointer into new smart pointers
+ * RefPtr<int> ptr2 = ptr1, ptr3;
+ * ptr3 = ptr1;
+ *
+ * // make ptr2 point toward nothing (this does not deallocate int (4) as it is
+ * // pointed to by ptr1 and ptr3)
+ * ptr2.clear ();
+ *
+ * // modifying the value pointed to by the dumb pointer contained in ptr1
+ * *ptr1 = 5;
+ *
+ * // print the content of ptr3
+ * cerr << *ptr3 << " = 5" << endl;
+ *
+ * // check whether ptr1 and ptr3 reference the same dumb pointer
+ * if (ptr1 == ptr2) cerr << "reference the same dumb pointer" << endl;
+ *
+ * // check whether ptr1 and ptr2 contain a dumb pointer
+ * if (ptr1 && !ptr2) cerr << "check containers" << endl;
+ * @endcode
+ *
+ * @}
  *
  * @}
  */
