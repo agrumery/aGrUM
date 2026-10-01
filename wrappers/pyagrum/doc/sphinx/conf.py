@@ -579,8 +579,11 @@ nbsphinx_input_prompt = "In [%s]:"
 nbsphinx_output_prompt = "Out[%s]:"
 
 nbsphinx_thumbnails = {
-    "notebooks/01-Tutorial": "_images/waterprinkler.png",
     "notebooks/25-Models_o3prm": "_images/o3prm.png",
+    # exceptional: nbsphinx-thumbnail cell tags only work on code cells and only for
+    # png/jpeg/svg outputs (nbsphinx limitation); this notebook's thumbnail is an animated
+    # gif referenced from a markdown cell, so it must be set here instead of via a tag
+    "notebooks/80-Applications_ipywidgets": "_images/mutInfThreshold.gif",
     "notebooks/*": "_static/noLogo.png",
 }
 
