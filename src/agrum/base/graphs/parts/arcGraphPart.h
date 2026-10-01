@@ -300,7 +300,7 @@ namespace gum {
   /// for friendly displaying the content of arc set
   /** @param s the stream to which we display the content of a
    * @param a the ArcGraphPart to be displayed */
-  std::ostream& operator<<(std::ostream& s, const ArcGraphPart& a);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream& s, const ArcGraphPart& a);
 
 } /* namespace gum */
 

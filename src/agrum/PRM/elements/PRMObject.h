@@ -196,7 +196,7 @@ namespace gum {
     };
 
     /// For printing PRMType easily.
-    std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type);
+    GUM_PUBLIC_PRM std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type);
 
     // list of declarations of PRMObjects
     class GUM_PUBLIC_PRM PRMType;

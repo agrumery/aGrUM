@@ -249,7 +249,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of an edge set
-  std::ostream& operator<<(std::ostream&, const EdgeGraphPart&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const EdgeGraphPart&);
 
 } /* namespace gum */
 

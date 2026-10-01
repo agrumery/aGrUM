@@ -90,7 +90,7 @@ namespace gum {
        * @param data The data printed.
        * @return Returns out.
        */
-      std::ostream& operator<<(std::ostream& out, const LabelData& data);
+      GUM_PUBLIC_PRM std::ostream& operator<<(std::ostream& out, const LabelData& data);
 
       /**
        * @struct NodeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>

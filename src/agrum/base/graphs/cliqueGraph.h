@@ -338,7 +338,7 @@ namespace gum {
 
   /// for friendly displaying the content of clique graphs
 
-  std::ostream& operator<<(std::ostream&, const CliqueGraph&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const CliqueGraph&);
 
 } /* namespace gum */
 

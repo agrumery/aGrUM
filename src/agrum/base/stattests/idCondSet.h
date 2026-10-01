@@ -419,7 +419,7 @@ namespace gum {
     };
 
     /// the display operator
-    std::ostream& operator<<(std::ostream& stream, const IdCondSet& idset);
+    GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream& stream, const IdCondSet& idset);
 
   } /* namespace learning */
 

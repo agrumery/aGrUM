@@ -213,7 +213,7 @@ namespace gum {
         std::string _label_;
       };
 
-      std::ostream& operator<<(std::ostream& o, const O3Label& src);
+      GUM_PUBLIC_PRM std::ostream& operator<<(std::ostream& o, const O3Label& src);
 
       /**
        * @class O3Type

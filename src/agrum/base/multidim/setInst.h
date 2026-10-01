@@ -947,7 +947,7 @@ namespace gum {
   };
 
   /// Print information of the SetInst in the stream.
-  std::ostream& operator<<(std::ostream&, const SetInst&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const SetInst&);
 
   /**
    * @brief Adds a variable to inst.
@@ -956,7 +956,7 @@ namespace gum {
    * @return Returns a reference over inst.
    * @throw DuplicateElement If i is already in the SetInst.
    */
-  gum::SetInst& operator<<(gum::SetInst& inst, const gum::DiscreteVariable& i);
+  GUM_SHARED_PUBLIC gum::SetInst& operator<<(gum::SetInst& inst, const gum::DiscreteVariable& i);
 
   /**
    * @brief Removes a variable to inst.
@@ -965,7 +965,7 @@ namespace gum {
    * @return Returns a reference over inst.
    * @throw NotFound Raised if i is not found in inst.
    */
-  gum::SetInst& operator>>(gum::SetInst& inst, const gum::DiscreteVariable& i);
+  GUM_SHARED_PUBLIC gum::SetInst& operator>>(gum::SetInst& inst, const gum::DiscreteVariable& i);
 
 } /* namespace gum */
 

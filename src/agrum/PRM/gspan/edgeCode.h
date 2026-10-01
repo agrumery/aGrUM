@@ -158,7 +158,7 @@ namespace gum {
        * @param code The printed EdgeCode.
        * @return Returns out after printing code in it.
        */
-      std::ostream& operator<<(std::ostream& out, const EdgeCode& code);
+      GUM_PUBLIC_PRM std::ostream& operator<<(std::ostream& out, const EdgeCode& code);
 
     } /* namespace gspan */
   } /* namespace prm */

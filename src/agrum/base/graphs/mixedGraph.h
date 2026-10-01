@@ -265,7 +265,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of directed graphs
-  std::ostream& operator<<(std::ostream&, const MixedGraph&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const MixedGraph&);
 
 } /* namespace gum */
 

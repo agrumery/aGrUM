@@ -610,7 +610,7 @@ namespace gum {
     };
 
     /// a \c << operator for GraphChanges
-    std::ostream& operator<<(std::ostream& stream, const GraphChange& change);
+    GUM_PUBLIC_BN std::ostream& operator<<(std::ostream& stream, const GraphChange& change);
 
   } /* namespace learning */
 

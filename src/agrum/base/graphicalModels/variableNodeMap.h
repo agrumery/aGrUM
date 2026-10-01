@@ -201,7 +201,7 @@ namespace gum {
 
   /// for friendly displaying the content of clique graphs
 
-  std::ostream& operator<<(std::ostream&, const VariableNodeMap&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const VariableNodeMap&);
 
 } /* namespace gum */
 

@@ -156,7 +156,7 @@ namespace gum {
        * @param code The printed DFSCode.
        * @return Returns out after printing code in it.
        */
-      std::ostream& operator<<(std::ostream& out, const DFSCode& code);
+      GUM_PUBLIC_PRM std::ostream& operator<<(std::ostream& out, const DFSCode& code);
 
 
     } /* namespace gspan */

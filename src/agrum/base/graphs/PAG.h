@@ -197,7 +197,7 @@ namespace gum {
     ArcProperty< EdgeMark > marks_;
   };
 
-  std::ostream& operator<<(std::ostream&, const PAG&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const PAG&);
 
 } /* namespace gum */
 

@@ -543,7 +543,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of node set
-  std::ostream& operator<<(std::ostream&, const NodeGraphPart&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const NodeGraphPart&);
 
 } /* namespace gum */
 

@@ -240,7 +240,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of undirected graphs
-  std::ostream& operator<<(std::ostream&, const UndiGraph&);
+  GUM_SHARED_PUBLIC std::ostream& operator<<(std::ostream&, const UndiGraph&);
 
 } /* namespace gum */
 

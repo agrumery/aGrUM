@@ -77,7 +77,7 @@ namespace gum {
    * number of modifications checked should be higher than at least 3 for this
    * class to be competitive.
    */
-  class DAGCycleDetector {
+  class GUM_SHARED_PUBLIC DAGCycleDetector {
     public:
     // the type of modification that can be applied to the graph
     enum class ChangeType { ARC_ADDITION, ARC_DELETION, ARC_REVERSAL };
