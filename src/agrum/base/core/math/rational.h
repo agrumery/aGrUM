@@ -54,6 +54,7 @@
 #include <stdlib.h>
 #include <vector>
 
+#include <agrum/agrum.h>
 #include <agrum/base/core/math/math_utils.h>
 
 // 64 bits for windows (long is 32 bits)
@@ -160,14 +161,8 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class GUM_SHARED_PUBLIC gum::Rational< double >;
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 extern template class GUM_SHARED_PUBLIC gum::Rational< long double >;
-#  endif
 #endif
 
 
