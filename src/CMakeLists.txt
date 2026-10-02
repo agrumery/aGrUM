@@ -83,7 +83,7 @@ if (ODBC_LINK_FLAGS)
 endif ()
 target_link_libraries(agrumBASE PRIVATE ${ODBC_LIBRARIES} ${GUM_COVERAGE_LINK_LIBRARY})
 
-# Toolchain-wide compile requirements (threading, GUM_FOR_SWIG, MSVC defines, GUM_NO_EXTERN_TEMPLATE_CLASS,
+# Toolchain-wide compile requirements (threading, GUM_FOR_SWIG, MSVC defines,
 # GUM_NO_INLINE, -fno-assume-unique-vtables) live in the root CMakeLists.txt, applied via directory scope
 # so they reach wrappers/pyagrum too -- see the comment there.
 # precompile most often used headers (grep -nrI '#include <agrum' src/|cut -d " " -f 2| sort|uniq -c| sort -n)

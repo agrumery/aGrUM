@@ -1210,7 +1210,7 @@ _PYGUM_MAKE_ERROR_RE = re.compile(r"\bGUM_MAKE_ERROR\(\s*([A-Za-z_]\w*)")
 # class template ever gets: its generic "template <...> class Foo {" declaration is
 # deliberately left untagged (MSVC C4910: dllexport/PYGUM_SHARED_PUBLIC is incompatible
 # with "extern template class" on a still-generic declaration, see
-# GUM_NO_EXTERN_TEMPLATE_CLASS in CMakeLists.txt) -- so this pattern must count as
+# GUM_NO_EXTERN_TEMPLATE_CLASS in config.h.in) -- so this pattern must count as
 # tagging evidence on its own, independently of (and overriding) the plain class
 # declaration scan below.
 _PYGUM_EXPLICIT_INST_RE = re.compile(

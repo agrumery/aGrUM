@@ -59,7 +59,7 @@
  *    HashFunc<std::string>` (a full specialization, effectively a concrete
  *    class) can be tagged; `template <typename T> class Foo` cannot -- MSVC
  *    rejects `dllexport`/`dllimport` combined with `extern template`
- *    (`C2491`), and `GUM_NO_EXTERN_TEMPLATE_CLASS` (`CMakeLists.txt`)
+ *    (`C2491`), and `GUM_NO_EXTERN_TEMPLATE_CLASS` (`config.h.in`)
  *    disables that mechanism outright on MSVC/MinGW anyway.
  * -# **Place the macro right after `class`/`struct`, before the name** --
  *    not before `class`/`struct` (GCC/Clang silently ignore the attribute

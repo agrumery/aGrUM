@@ -118,12 +118,6 @@ if (MSVC)
     add_compile_options(/bigobj)
 endif ()
 
-if (MINGW OR MSVC)
-    # MSVC: "extern template class" combined with PYGUM_PUBLIC/GUM_PUBLIC (__declspec(dllexport))
-    # triggers C4910 ("dllexport and extern are incompatible on an explicit instantiation").
-    add_compile_definitions(GUM_NO_EXTERN_TEMPLATE_CLASS)
-endif ()
-
 if (NOT AGRUM_INLINE)
     add_compile_definitions(GUM_NO_INLINE)
 endif ()

@@ -149,11 +149,6 @@
 // there is no context where a module fails to see its own exporting flag -- no
 // GUM_FOR_SWIG guard is needed here.
 //
-// Scope: non-template classes/functions only. On MSVC/MinGW, GUM_NO_EXTERN_TEMPLATE_CLASS
-// (CMakeLists.txt) already disables the extern-template-pair mechanism entirely
-// (C4910: dllexport + extern template are incompatible), so these macros must never
-// be applied to a template still generic in its declaration -- see GUM_PUBLIC.md
-// §11-12 for the C2491 failure mode this would otherwise reproduce.
 // GUM_SHARED_PUBLIC (not GUM_PUBLIC_BASE): BASE is the root of the module
 // dependency graph (BASE_DEPS is empty, src/modules.txt) -- it never consumes
 // another module's GUM_PUBLIC_<MODULE>-tagged symbols, only produces its own, so
@@ -209,6 +204,14 @@
 #    define GUM_SHARED_PUBLIC __attribute__((visibility("default")))
 #  else
 #    define GUM_SHARED_PUBLIC
+#  endif
+#endif
+
+// MSVC: "extern template class" combined with PYGUM_PUBLIC/GUM_PUBLIC (__declspec(dllexport))
+// triggers C4910 ("dllexport and extern are incompatible on an explicit instantiation").
+#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+#  if defined(_WIN32)
+#    define GUM_NO_EXTERN_TEMPLATE_CLASS
 #  endif
 #endif
 
