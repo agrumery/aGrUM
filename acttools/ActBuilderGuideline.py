@@ -710,7 +710,9 @@ def _check_clang_format(details: bool, correction: bool, dry_run: bool = False, 
     tool_name="clang-format",
     check_cmd_fn=lambda t, s: f"{t} {s} | cmp {s} -",
     fix_cmd_fn=lambda t, s: f"{t} -i {s}",
-    exceptions={f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest"},
+    # .dox files are Doxygen comments holding Markdown (tables, lists, code blocks): clang-format
+    # would reflow them as C++ comments and break that Markdown (and the generated ones).
+    exceptions={f"{os.sep}external{os.sep}", "Parser", "Scanner", "doctest", ".dox"},
     details=details,
     correction=correction,
     dry_run=dry_run,

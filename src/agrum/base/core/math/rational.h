@@ -55,6 +55,7 @@
 #include <vector>
 
 #include <agrum/agrum.h>
+
 #include <agrum/base/core/math/math_utils.h>
 
 // 64 bits for windows (long is 32 bits)

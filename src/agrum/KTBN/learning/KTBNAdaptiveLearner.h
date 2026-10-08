@@ -80,7 +80,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/KTBN/KTBN.h>
 #include <agrum/KTBN/learning/KTBNLearner.h>
 
 #include <string_view>
