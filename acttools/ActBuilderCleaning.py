@@ -84,13 +84,14 @@ class ActBuilderCleaning(ActBuilder):
   def build(self) -> bool:
     ops = 0
     self.run_start()
-    # for all files beginning with cmake-build
-    for fichier in glob.glob(os.path.join(".", "cmake-build-*")):
-      if os.path.isdir(fichier):
-        notif(f"Removing {fichier}")
-        if not self.current["dry_run"]:
-          shutil.rmtree(fichier)
-        ops += 1
+    # for all files beginning with cmake-build or build-conda
+    for pattern in ("cmake-build-*", "build-conda*"):
+      for fichier in glob.glob(os.path.join(".", pattern)):
+        if os.path.isdir(fichier):
+          notif(f"Removing {fichier}")
+          if not self.current["dry_run"]:
+            self._rmtree_or_empty(fichier)
+          ops += 1
     if os.path.isdir("build"):
       notif("Removing build")
       if not self.current["dry_run"]:

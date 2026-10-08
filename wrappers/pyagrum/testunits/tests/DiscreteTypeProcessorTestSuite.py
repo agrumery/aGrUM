@@ -40,6 +40,7 @@
 
 import copy
 import unittest
+import warnings
 
 import pandas as pd
 from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
@@ -126,10 +127,14 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
       str(discretizer._createVariable("var4", X["var4"])),
       "var4:Discretized(<(1.11;2.213[,[2.213;3.33[,[3.33;5.42[,[5.42;6.6[,[6.6;8.2[,[8.2;9.19[,[9.19;10.11[,[10.11;12.21[,[12.21;13.3[,[13.3;14.5)>)",
     )
-    self.assertEqual(
-      str(discretizer._createVariable("var5", X["var5"])),
-      "var5:Discretized(<(1;2[,[2;4[,[4;5[,[5;6.5[,[6.5;8[,[8;9[,[9;11[,[11;12[,[12;13)>)",
-    )
+    # var5 holds a duplicated value (1): the quantile strategy yields a zero-width bin that sklearn removes
+    # (hence fewer bins than requested, as expected below) and warns about. The warning is expected here.
+    with warnings.catch_warnings():
+      warnings.filterwarnings("ignore", message="Bins whose width are too small", category=UserWarning)
+      self.assertEqual(
+        str(discretizer._createVariable("var5", X["var5"])),
+        "var5:Discretized(<(1;2[,[2;4[,[4;5[,[5;6.5[,[6.5;8[,[8;9[,[9;11[,[11;12[,[12;13)>)",
+      )
 
   def testBooleanCSVLeBiannic(self):
     X = pd.DataFrame.from_dict(

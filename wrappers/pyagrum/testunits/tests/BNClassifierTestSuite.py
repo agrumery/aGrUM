@@ -40,7 +40,9 @@
 
 import pickle
 import unittest
+import warnings
 
+from sklearn.exceptions import SkipTestWarning
 from sklearn.utils.estimator_checks import check_estimator
 
 import numpy as np
@@ -135,9 +137,16 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     self.assertTrue(all(bnc.predict(dftest_X) == bnc2.predict(dftest_X)))
 
   def testSklearnCompliance(self):
-    check_estimator(
-      skbn.createBNClassifier(),
-    )
+    # check_array_api_input skips itself when SCIPY_ARRAY_API is not set. BNClassifier does not
+    # target the array API (GPU/torch/cupy inputs): learning runs in the C++ core on discrete
+    # data, so there is no array computation to offload. The skip is expected, hence silenced.
+    with warnings.catch_warnings():
+      warnings.filterwarnings(
+        "ignore", message="Skipping check check_array_api_input", category=SkipTestWarning
+      )
+      check_estimator(
+        skbn.createBNClassifier(),
+      )
 
 
 ts = unittest.TestSuite()
