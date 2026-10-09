@@ -47,6 +47,8 @@
  */
 #include <agrum/agrum.h>
 
+#include <atomic>
+
 #include <agrum/base/core/threads/threadsOMP.h>
 
 // include the inlined functions if necessary
@@ -59,20 +61,26 @@ namespace gum {
   namespace threadsOMP {
 
     namespace {
-      // the number of threads used the next time we enter into a parallel region
-      unsigned int _nb_threads_{getMaxNumberOfThreads()};
+      // the number of threads used the next time we enter into a parallel region.
+      // Function-local static: the configuration may set it while the library is being loaded,
+      // whatever the order of initialization of the static variables. Atomic: it may be changed
+      // while it is read by other threads.
+      std::atomic< unsigned int >& _nb_threads_() {
+        static std::atomic< unsigned int > nb{getMaxNumberOfThreads()};
+        return nb;
+      }
     }   // namespace
 
     // returns the max number of threads used by default when entering the
     // next parallel region
-    unsigned int getNumberOfThreads() { return _nb_threads_; }
+    unsigned int getNumberOfThreads() { return _nb_threads_(); }
 
     // Set the max number of threads to be used.
     void setNumberOfThreads(unsigned int number) {
       if (number == 0) number = 1;
 #ifdef _OPENMP
       omp_set_num_threads(number);
-      _nb_threads_ = number;
+      _nb_threads_() = number;
 #else
       if (number != 1) {
         GUM_ERROR(OperationNotAllowed,
