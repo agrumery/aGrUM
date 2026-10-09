@@ -1,5 +1,18 @@
 # aGrUM Changelog
 
+## Changelog for 3.2.1
+
+- pyAgrum
+
+    - Fixed broken notebook thumbnails (notebooks 22, 67, 80) and added an I/O summary table image to notebook 91.
+    - Expected scikit-learn warnings are now silenced in the pyAgrum tests.
+
+- aGrUM
+
+    - Fixed missing exported symbols (`GUM_PUBLIC` tagging) in several `BASE`, `BN` and `PRM` classes.
+    - `GUM_NO_EXTERN_TEMPLATE_CLASS` is now a public configuration macro.
+    - Removed nested duplicate visibility macros.
+
 ## Changelog for 3.2.0
 
 - pyAgrum
