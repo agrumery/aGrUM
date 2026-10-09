@@ -49,5 +49,6 @@
  *   - \subpage using_signals
  *   - \subpage using_prm
  *   - \subpage using_bn
+ *   - \subpage using_configuration
  *   - \subpage using_visibility_macros
  */

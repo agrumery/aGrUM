@@ -1,0 +1,240 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2026 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
+
+/*!
+ * \page using_configuration How to use the configuration singleton (gum::Configuration)
+ *
+ * gum::Configuration is a thread-safe, typed and documented key/value store organised in
+ * <em>sections</em>. A single global instance, gum::Configuration::instance(), is shared by aGrUM and
+ * pyAgrum (<tt>pyagrum.config</tt> is a thin layer above it). It is meant for parameters that a user may
+ * want to change <em>without recompiling</em>, by editing a small text file (<tt>agrum.ini</tt>), and that
+ * the library, or the user's code, can read or react to.
+ *
+ * # Where the values come from #
+ *
+ * -# <b>The defaults</b> are in <tt>src/agrum/base/core/configuration/defaults.ini</tt>. This file is
+ *    embedded in the library at build time (it is not read from the disk at run time).
+ *    It is the single source of truth: it declares every section and key, its default value, its type
+ *    and its documentation.
+ * -# <b>The user file</b>, if it exists in the <em>current directory</em>, overrides some of these values.
+ *    Its name is <tt>agrum.ini</tt> for aGrUM, <tt>pyagrum.ini</tt> for pyAgrum
+ *    (see gum::Configuration::userFileName()). It only needs to contain the keys to change:
+ * \code{.ini}
+ * [core]
+ * default_maxNumberOfThreads = 4
+ * default_jgumIndent = 2
+ * \endcode
+ *
+ * The first call to gum::Configuration::instance() builds the configuration from the defaults, then loads
+ * the user file. This call is also made when the library is loaded, so the configuration is applied
+ * at start-up, before any user code runs.
+ *
+ * # The syntax of defaults.ini #
+ *
+ * The file is a classical <tt>.ini</tt> file (<tt>[section]</tt>, <tt>key = value</tt>, comments
+ * starting with <tt>#</tt> or <tt>;</tt>). Every key is documented by a <em>metadata line</em> placed
+ * immediately above it:
+ * \code{.ini}
+ * [core]
+ * ### int :: default maximum number of threads used by aGrUM
+ * default_maxNumberOfThreads = 24
+ * ### bool :: allow to fix syntax errors in a model instead of raising when exporting
+ * allow_modification_when_saving = False
+ * \endcode
+ *
+ * where <tt>type</tt> is one of
+ * - <tt>int</tt>, <tt>float</tt>, <tt>bool</tt>, <tt>str</tt>,
+ * - an enumeration <tt>v1|v2|...</tt>,
+ * - a deprecation <tt>deprecated -> section.key</tt>: the key is kept for compatibility, every access to
+ *   it is redirected to <tt>section.key</tt> (and a notice is queued, see below).
+ *
+ * A line starting with exactly three <tt>#</tt> is a metadata line; <tt>####</tt> and a plain <tt>#</tt> are
+ * ordinary comments. A malformed metadata line, a metadata line which is not immediately followed by its
+ * key, a duplicated section or key, a default value which does not respect its own type... all raise a
+ * gum::SyntaxError (or a gum::InvalidArgument) as soon as the library is loaded: <tt>defaults.ini</tt> is a
+ * file maintained by the developers, so it fails fast.
+ *
+ * A key without metadata line is accepted and treated as an undocumented <tt>str</tt>.
+ *
+ * Section names are case-sensitive, key names are not.
+ *
+ * # Reading and writing values #
+ *
+ * \code{.cpp}
+ * #include <agrum/base/core/configuration/configuration.h>
+ *
+ * auto& conf = gum::Configuration::instance();
+ *
+ * std::string s  = conf.get("core", "default_jgumIndent");                         // "-1"
+ * auto        n  = conf.getTyped< std::int64_t >("core", "default_maxNumberOfThreads");
+ * bool        ok = conf.getTyped< bool >("core", "allow_modification_when_saving");
+ *
+ * conf.set("core", "default_jgumIndent", "2");    // checked against the declared type
+ * \endcode
+ *
+ * - Values are stored as strings and are <em>canonicalized</em> when set: any accepted spelling of a boolean
+ *   (<tt>true/1/on/yes</tt>, <tt>false/0/off/no</tt>, whatever the case) is stored as <tt>True</tt> or
+ *   <tt>False</tt>; an enumerated value is stored with the casing declared in <tt>defaults.ini</tt>.
+ * - gum::Configuration::getTyped() accepts <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> (also valid for an
+ *   <tt>int</tt> key) and <tt>std::string</tt> (valid for any key). Another type is a
+ *   gum::InvalidArgument.
+ * - An unknown section or key raises a gum::SyntaxError; a value which does not respect the declared type
+ *   raises a gum::InvalidArgument and nothing is changed.
+ * - gum::Configuration::get() returns a copy: the result stays valid whatever other threads do.
+ *
+ * A configuration can also be saved (gum::Configuration::save(): only the differences with the defaults are
+ * written), restored (gum::Configuration::reset()), or stacked
+ * (gum::Configuration::push() / gum::Configuration::pop()), which is handy in a test:
+ * \code{.cpp}
+ * auto& conf = gum::Configuration::instance();
+ * conf.push();
+ * conf.set("core", "default_jgumIndent", "2");
+ * // ... code relying on this indentation ...
+ * conf.pop();                                      // back to the previous values
+ * \endcode
+ *
+ * # Hooks #
+ *
+ * A <em>hook</em> is a function registered with gum::Configuration::addHook() and called every time the
+ * configuration changes. It is the way to make a value <em>act</em> on the library: the configuration
+ * only stores values, a hook applies them.
+ *
+ * ## Registering a hook ##
+ *
+ * \code{.cpp}
+ * gum::Configuration::instance().addHook([](const gum::Configuration& conf) {
+ *   gum::setNumberOfThreads(static_cast< unsigned int >(
+ *       conf.getTyped< std::int64_t >("core", "default_maxNumberOfThreads")));
+ * });
+ * \endcode
+ *
+ * The hook receives the configuration as a <tt>const</tt> reference. This is exactly what the library does
+ * itself for <tt>core.default_maxNumberOfThreads</tt> (see gum::Configuration::instance()).
+ *
+ * ## When are hooks run ? ##
+ *
+ * Hooks are run, in the order of their registration,
+ * - at the end of gum::Configuration::set() (unless its last argument <tt>noHook</tt> is <tt>true</tt>),
+ * - at the end of gum::Configuration::reset(), gum::Configuration::pop() and
+ *   gum::Configuration::load(),
+ * - when gum::Configuration::runHooks() is called explicitly.
+ *
+ * <b>A hook is not called when it is registered</b>: if it must apply the current values immediately, call
+ * gum::Configuration::runHooks() just after gum::Configuration::addHook() (hooks must be idempotent, as they
+ * are called after <em>any</em> change, not only the one they are interested in). The library runs the hooks
+ * once at start-up, after having loaded the user file.
+ *
+ * gum::Configuration::push() does not run the hooks (nothing changes).
+ *
+ * ## What a hook may (not) do ##
+ *
+ * - Hooks are run <em>outside</em> of any internal lock: a hook may freely read the configuration
+ *   (<tt>get</tt>, <tt>getTyped</tt>...).
+ * - A hook <b>must not change the configuration with a call that runs the hooks</b> (<tt>set</tt> without
+ *   <tt>noHook = true</tt>, <tt>reset</tt>, <tt>pop</tt>, <tt>load</tt>): it would call itself endlessly. Use
+ *   <tt>set(section, key, value, true)</tt> if it really has to correct a value.
+ * - When a hook throws, the exception goes out of the call which triggered it (<tt>set</tt>,
+ *   <tt>reset</tt>...); the new value <em>is</em> already stored and the hooks registered after the failing
+ *   one are not run. A hook should therefore only throw for a real error.
+ * - There is no way to unregister a hook: a hook captures only what is still alive for the whole life of
+ *   the program (no reference to a local variable or to an object which can be destroyed).
+ * - Hooks are shared by all the users of the singleton. In a test, prefer a local
+ *   <tt>gum::Configuration conf(defaults_text)</tt> (its own, independent instance) to a hook on
+ *   <tt>instance()</tt>.
+ *
+ * ## Hooks and threads ##
+ *
+ * Hooks may be called from any thread (the one which changed the configuration). A hook which touches shared
+ * state must protect it (the number of threads of aGrUM, for instance, is an atomic).
+ *
+ * ## Hooks in pyAgrum ##
+ *
+ * <tt>pyagrum.config.add_hook(fn)</tt> registers a Python function (without argument), called after each
+ * change made through <tt>pyagrum.config</tt>, in addition to the C++ hooks. They behave as described above.
+ *
+ * # Notices #
+ *
+ * Some events are not errors, but should not be silent: using a deprecated key, or finding an unknown key
+ * or an invalid value in the user file (the valid part of the file is loaded anyway and the file is
+ * rewritten without the faulty lines). The library never prints anything: these events are queued, and
+ * gum::Configuration::takeNotices() returns and empties the queue.
+ * \code{.cpp}
+ * for (const auto& notice: gum::Configuration::instance().takeNotices())
+ *   std::cerr << notice.message << std::endl;
+ * \endcode
+ * pyAgrum turns them into Python warnings (<tt>DeprecationWarning</tt> for the deprecated keys).
+ * As the user file is loaded when the library is loaded, the notices raised by this first loading are
+ * waiting in the queue for the first call to gum::Configuration::takeNotices().
+ *
+ * # Using the configuration in a class of aGrUM #
+ *
+ * The usual idiom is a constructor with an explicit parameter, and a constructor (or a default argument)
+ * which falls back on the configuration. For instance, the writers of the jgum format:
+ * \code{.cpp}
+ * gum::GumBNWriter< double > w1(false);      // indentation = core.default_jgumIndent
+ * gum::GumBNWriter< double > w2(false, 2);   // indentation = 2, whatever the configuration
+ * \endcode
+ * The configuration is read <em>when the object is built</em>, not when it is used: changing the
+ * configuration later does not change an existing object.
+ *
+ * To add a new key, add it to <tt>defaults.ini</tt> (with its metadata line, in the section of its module),
+ * then read it where it is needed. No other change is required: sections and keys are not declared in C++.
+ * A key which has to act on the library at start-up needs a hook (see above).
+ *
+ * # Several independent configurations #
+ *
+ * gum::Configuration can also be instantiated from any defaults text (its constructor takes the text, not a
+ * file name). Such an instance is independent from the singleton, does not load any user file and has no
+ * hook: this is what the unit tests use.
+ * \code{.cpp}
+ * gum::Configuration conf("[s]\n### int :: a number\nk = 1\n");
+ * conf.set("s", "k", "5");
+ * \endcode
+ *
+ * # Thread-safety #
+ *
+ * Every public method is thread-safe: reads (<tt>get</tt>, <tt>getTyped</tt>, <tt>diff</tt>...) run
+ * concurrently, writes (<tt>set</tt>, <tt>load</tt>, <tt>push</tt>...) are exclusive.
+ *
+ * # See also #
+ * - gum::Configuration for the complete API,
+ * - <tt>pyagrum.config</tt> (and <tt>defaults.ini</tt>, which documents every key) on the pyAgrum side.
+ */
