@@ -191,9 +191,9 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
 IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
 IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
-// Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can default indent to
-// None and fall back to pyagrum.config["core","default_jgumIndent"] -- a plain C++ int argument
-// can't have a None default, so the config lookup has to happen on the Python side.
+// Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can keep named arguments
+// and default indent to None: the library then uses pyagrum.config["core","default_jgumIndent"]
+// (see gum::defaultJgumIndent()), while an explicit indent is always used as is.
 %rename(_saveGUM) gum::BayesNet::saveGUM;
 %rename(_saveGUMstring) gum::BayesNet::saveGUMstring;
 
@@ -214,12 +214,12 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       }
   }
 
-  void saveGUM(std::string name, bool binary=false,int indent=2) {
+  void saveGUM(std::string name, bool binary=false,int indent=gum::defaultJgumIndent()) {
     gum::GumBNWriter<GUM_SCALAR> writer(binary,indent);
     writer.write( name, *self );
   }
 
-  std::string saveGUMstring(int indent=2) {
+  std::string saveGUMstring(int indent=gum::defaultJgumIndent()) {
     gum::GumBNWriter<GUM_SCALAR> writer(false,indent);
     self->updateMetaData();
     return writer.toString(*self);
@@ -264,7 +264,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveBIF(std::string name,bool allowModificationWhenSaving=false) {
+  void saveBIF(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
       gum::BIFWriter<GUM_SCALAR> writer;
       writer.setAllowModification(allowModificationWhenSaving);
       writer.write( name, *self );
@@ -313,13 +313,13 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveDSL(std::string name,bool allowModificationWhenSaving=false) {
+  void saveDSL(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
     gum::DSLWriter<GUM_SCALAR> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
   };
 
-  void saveXDSL(std::string name,bool allowModificationWhenSaving=false) {
+  void saveXDSL(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
     gum::XDSLBNWriter<GUM_SCALAR> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -351,7 +351,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveNET(std::string name,bool allowModificationWhenSaving=false) {
+  void saveNET(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
     gum::NetWriter<GUM_SCALAR> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -377,7 +377,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveBIFXML(std::string name,bool allowModificationWhenSaving=false) {
+  void saveBIFXML(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
     gum::BIFXMLBNWriter<GUM_SCALAR> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -409,7 +409,7 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       return "";
   };
 
-  void saveUAI(std::string name,bool allowModificationWhenSaving=false) {
+  void saveUAI(std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()) {
     gum::UAIBNWriter<GUM_SCALAR> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -452,8 +452,9 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
     ``pyagrum.config["core","default_jgumIndent"]``.
   """
   if indent is None:
-    indent = pyagrum.config.typed["core", "default_jgumIndent"]
-  self._saveGUM(name, binary, indent)
+    self._saveGUM(name, binary)
+  else:
+    self._saveGUM(name, binary, indent)
 
 def saveGUMstring(self, indent: int = None) -> str:
   """
@@ -471,7 +472,7 @@ def saveGUMstring(self, indent: int = None) -> str:
     the jgum string
   """
   if indent is None:
-    indent = pyagrum.config.typed["core", "default_jgumIndent"]
+    return self._saveGUMstring()
   return self._saveGUMstring(indent)
 
 def toFast(self, filename: str = None) -> str:

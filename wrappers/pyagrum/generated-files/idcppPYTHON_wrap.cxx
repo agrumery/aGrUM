@@ -4458,11 +4458,11 @@ SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__loadGUM__SWIG_0(gum::Influenc
       }
     } catch (gum::IOError& e) { throw(e); }
   }
-SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__saveGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,bool binary=false,int indent=2){
+SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__saveGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,bool binary=false,int indent=gum::defaultJgumIndent()){
     gum::GumIDWriter<double> writer(binary,indent);
     writer.write(name,*self);
   }
-SWIGINTERN std::string gum_InfluenceDiagram_Sl_double_Sg__saveGUMstring__SWIG_0(gum::InfluenceDiagram< double > *self,int indent=2){
+SWIGINTERN std::string gum_InfluenceDiagram_Sl_double_Sg__saveGUMstring__SWIG_0(gum::InfluenceDiagram< double > *self,int indent=gum::defaultJgumIndent()){
     gum::GumIDWriter<double> writer(false,indent);
     self->updateMetaData();
     return writer.toString(*self);
@@ -13257,7 +13257,7 @@ static PyMethodDef SwigMethods[] = {
 		"binary : bool\n"
 		"    if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)\n"
 		"indent : int\n"
-		"    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)\n"
+		"    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -13273,7 +13273,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"indent : int\n"
-		"    indentation level; -1 for compact, 2 for pretty-printed (default: 2)\n"
+		"    indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

@@ -51,21 +51,10 @@ import warnings
 # seed is chosen randomly :)
 initRandom(0)
 
-def _update_config_core():
-  # hook to control some parameters for core params
-  setNumberOfThreads(config.typed['core', 'default_maxNumberOfThreads'])
-
-# configuration object
+# configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
+# current directory (if any), and applied the parameters that act on the library (number of threads, ...)
 from .config import PyAgrumConfiguration
 config = PyAgrumConfiguration()
-config.add_hook(_update_config_core)
-config.run_hooks()
-
-try:
-  # load custom configuration if any
-  config.load()
-except FileNotFoundError:
-  pass
 
 
 def log2(p):

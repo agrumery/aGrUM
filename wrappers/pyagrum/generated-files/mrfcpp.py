@@ -937,7 +937,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrfcpp.MarkovRandomField_loadGUM(self, name, binary)
 
-    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+    def _saveGUM(self, *args) -> None:
         r"""
 
         Save the MarkovRandomField in a jgum (JSON) or bgum (binary/msgpack) file.
@@ -951,16 +951,16 @@ class MarkovRandomField(IMarkovRandomField):
         binary : bool
             if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
         indent : int
-            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
 
         See Also
         --------
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrfcpp.MarkovRandomField__saveGUM(self, name, binary, indent)
+        return _mrfcpp.MarkovRandomField__saveGUM(self, *args)
 
-    def _saveGUMstring(self, indent: int=2) -> str:
+    def _saveGUMstring(self, *args) -> str:
         r"""
 
         Serialize the MarkovRandomField to a jgum JSON string.
@@ -970,7 +970,7 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         indent : int
-            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+            indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
 
         Returns
         -------
@@ -982,7 +982,7 @@ class MarkovRandomField(IMarkovRandomField):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _mrfcpp.MarkovRandomField__saveGUMstring(self, indent)
+        return _mrfcpp.MarkovRandomField__saveGUMstring(self, *args)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -1065,8 +1065,9 @@ class MarkovRandomField(IMarkovRandomField):
         ``pyagrum.config["core","default_jgumIndent"]``.
       """
       if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      self._saveGUM(name, binary, indent)
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
 
     def saveGUMstring(self, indent: int = None) -> str:
       """
@@ -1084,7 +1085,7 @@ class MarkovRandomField(IMarkovRandomField):
         the jgum string
       """
       if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+        return self._saveGUMstring()
       return self._saveGUMstring(indent)
 
     def toFast(self, filename: str = None) -> str:

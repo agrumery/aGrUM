@@ -3747,158 +3747,159 @@ namespace Swig {
 #define SWIGTYPE_p_gum__CPTError swig_types[29]
 #define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[30]
 #define SWIGTYPE_p_gum__CliqueGraph swig_types[31]
-#define SWIGTYPE_p_gum__DAG swig_types[32]
-#define SWIGTYPE_p_gum__DAGmodel swig_types[33]
-#define SWIGTYPE_p_gum__DatabaseError swig_types[34]
-#define SWIGTYPE_p_gum__DefaultInLabel swig_types[35]
-#define SWIGTYPE_p_gum__DiGraph swig_types[36]
-#define SWIGTYPE_p_gum__DiGraphListener swig_types[37]
-#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[38]
-#define SWIGTYPE_p_gum__DiscreteVariable swig_types[39]
-#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[40]
-#define SWIGTYPE_p_gum__DuplicateElement swig_types[41]
-#define SWIGTYPE_p_gum__DuplicateLabel swig_types[42]
-#define SWIGTYPE_p_gum__DuplicateScheduleMultiDim swig_types[43]
-#define SWIGTYPE_p_gum__Edge swig_types[44]
-#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[45]
-#define SWIGTYPE_p_gum__EssentialGraph swig_types[46]
-#define SWIGTYPE_p_gum__ExactBNdistanceT_double_t swig_types[47]
-#define SWIGTYPE_p_gum__Exception swig_types[48]
-#define SWIGTYPE_p_gum__FactoryError swig_types[49]
-#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[50]
-#define SWIGTYPE_p_gum__FatalError swig_types[51]
-#define SWIGTYPE_p_gum__FormatNotFound swig_types[52]
-#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[53]
-#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[54]
-#define SWIGTYPE_p_gum__GraphError swig_types[55]
-#define SWIGTYPE_p_gum__GraphicalModel swig_types[56]
-#define SWIGTYPE_p_gum__HedgeException swig_types[57]
-#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[58]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[59]
-#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[60]
-#define SWIGTYPE_p_gum__IOError swig_types[61]
-#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[62]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[63]
-#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[64]
-#define SWIGTYPE_p_gum__Instantiation swig_types[65]
-#define SWIGTYPE_p_gum__IntegerVariable swig_types[66]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[67]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[68]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[69]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[70]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[71]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[72]
-#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[73]
-#define SWIGTYPE_p_gum__IteratorError swig_types[74]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[75]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[76]
-#define SWIGTYPE_p_gum__LearningError swig_types[77]
-#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[78]
-#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[79]
-#define SWIGTYPE_p_gum__Listener swig_types[80]
-#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[81]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[82]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[83]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[84]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[85]
-#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[86]
-#define SWIGTYPE_p_gum__MarkovBlanket swig_types[87]
-#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[88]
-#define SWIGTYPE_p_gum__MeekRules swig_types[89]
-#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[90]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[91]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[92]
-#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[93]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[94]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[95]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[96]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[97]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[98]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[99]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[100]
-#define SWIGTYPE_p_gum__NoChild swig_types[101]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[102]
-#define SWIGTYPE_p_gum__NoParent swig_types[103]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[104]
-#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[105]
-#define SWIGTYPE_p_gum__NotFound swig_types[106]
-#define SWIGTYPE_p_gum__NotImplementedYet swig_types[107]
-#define SWIGTYPE_p_gum__NullElement swig_types[108]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[109]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[110]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[111]
-#define SWIGTYPE_p_gum__PAG swig_types[112]
-#define SWIGTYPE_p_gum__PDAG swig_types[113]
-#define SWIGTYPE_p_gum__PRMTypeError swig_types[114]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[115]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[116]
-#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[117]
-#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[118]
-#define SWIGTYPE_p_gum__ScheduledInference swig_types[119]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[120]
-#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[121]
-#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[122]
-#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[123]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[124]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[125]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[126]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[127]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[128]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[129]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[130]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[131]
-#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[132]
-#define SWIGTYPE_p_gum__SizeError swig_types[133]
-#define SWIGTYPE_p_gum__StructuralMetrics swig_types[134]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[135]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[136]
-#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[137]
-#define SWIGTYPE_p_gum__Triangulation swig_types[138]
-#define SWIGTYPE_p_gum__TypeError swig_types[139]
-#define SWIGTYPE_p_gum__UGmodel swig_types[140]
-#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[141]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[142]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[143]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[144]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[145]
-#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[146]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[147]
-#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[148]
-#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[149]
-#define SWIGTYPE_p_gum__Variable swig_types[150]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[151]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[152]
-#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[153]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[154]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[155]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[156]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[157]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[158]
-#define SWIGTYPE_p_iterator swig_types[159]
-#define SWIGTYPE_p_iterator_category swig_types[160]
-#define SWIGTYPE_p_iterator_safe swig_types[161]
-#define SWIGTYPE_p_node_const_iterator swig_types[162]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[163]
-#define SWIGTYPE_p_node_iterator swig_types[164]
-#define SWIGTYPE_p_node_iterator_safe swig_types[165]
-#define SWIGTYPE_p_second_type swig_types[166]
-#define SWIGTYPE_p_size_type swig_types[167]
-#define SWIGTYPE_p_std__exception swig_types[168]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[169]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[170]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[171]
-#define SWIGTYPE_p_std__invalid_argument swig_types[172]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[173]
-#define SWIGTYPE_p_std__size_t swig_types[174]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[175]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[176]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[177]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[178]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[179]
-#define SWIGTYPE_p_value_type swig_types[180]
-#define SWIGTYPE_p_void swig_types[181]
-static swig_type_info *swig_types[183];
-static swig_module_info swig_module = {swig_types, 182, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__Configuration swig_types[32]
+#define SWIGTYPE_p_gum__DAG swig_types[33]
+#define SWIGTYPE_p_gum__DAGmodel swig_types[34]
+#define SWIGTYPE_p_gum__DatabaseError swig_types[35]
+#define SWIGTYPE_p_gum__DefaultInLabel swig_types[36]
+#define SWIGTYPE_p_gum__DiGraph swig_types[37]
+#define SWIGTYPE_p_gum__DiGraphListener swig_types[38]
+#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[39]
+#define SWIGTYPE_p_gum__DiscreteVariable swig_types[40]
+#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[41]
+#define SWIGTYPE_p_gum__DuplicateElement swig_types[42]
+#define SWIGTYPE_p_gum__DuplicateLabel swig_types[43]
+#define SWIGTYPE_p_gum__DuplicateScheduleMultiDim swig_types[44]
+#define SWIGTYPE_p_gum__Edge swig_types[45]
+#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[46]
+#define SWIGTYPE_p_gum__EssentialGraph swig_types[47]
+#define SWIGTYPE_p_gum__ExactBNdistanceT_double_t swig_types[48]
+#define SWIGTYPE_p_gum__Exception swig_types[49]
+#define SWIGTYPE_p_gum__FactoryError swig_types[50]
+#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[51]
+#define SWIGTYPE_p_gum__FatalError swig_types[52]
+#define SWIGTYPE_p_gum__FormatNotFound swig_types[53]
+#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[54]
+#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[55]
+#define SWIGTYPE_p_gum__GraphError swig_types[56]
+#define SWIGTYPE_p_gum__GraphicalModel swig_types[57]
+#define SWIGTYPE_p_gum__HedgeException swig_types[58]
+#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[59]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[60]
+#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[61]
+#define SWIGTYPE_p_gum__IOError swig_types[62]
+#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[63]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[64]
+#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[65]
+#define SWIGTYPE_p_gum__Instantiation swig_types[66]
+#define SWIGTYPE_p_gum__IntegerVariable swig_types[67]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[68]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[69]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[70]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[71]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[72]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[73]
+#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[74]
+#define SWIGTYPE_p_gum__IteratorError swig_types[75]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[76]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[77]
+#define SWIGTYPE_p_gum__LearningError swig_types[78]
+#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[79]
+#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[80]
+#define SWIGTYPE_p_gum__Listener swig_types[81]
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[82]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[83]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[84]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[85]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[86]
+#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[87]
+#define SWIGTYPE_p_gum__MarkovBlanket swig_types[88]
+#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[89]
+#define SWIGTYPE_p_gum__MeekRules swig_types[90]
+#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[91]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[92]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[93]
+#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[94]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[95]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[96]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[97]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[98]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[99]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[100]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[101]
+#define SWIGTYPE_p_gum__NoChild swig_types[102]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[103]
+#define SWIGTYPE_p_gum__NoParent swig_types[104]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[105]
+#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[106]
+#define SWIGTYPE_p_gum__NotFound swig_types[107]
+#define SWIGTYPE_p_gum__NotImplementedYet swig_types[108]
+#define SWIGTYPE_p_gum__NullElement swig_types[109]
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[110]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[111]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[112]
+#define SWIGTYPE_p_gum__PAG swig_types[113]
+#define SWIGTYPE_p_gum__PDAG swig_types[114]
+#define SWIGTYPE_p_gum__PRMTypeError swig_types[115]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[116]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[117]
+#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[118]
+#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[119]
+#define SWIGTYPE_p_gum__ScheduledInference swig_types[120]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[121]
+#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[122]
+#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[123]
+#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[124]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[125]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[126]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[127]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[128]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[129]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[130]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[131]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[132]
+#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[133]
+#define SWIGTYPE_p_gum__SizeError swig_types[134]
+#define SWIGTYPE_p_gum__StructuralMetrics swig_types[135]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[136]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[137]
+#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[138]
+#define SWIGTYPE_p_gum__Triangulation swig_types[139]
+#define SWIGTYPE_p_gum__TypeError swig_types[140]
+#define SWIGTYPE_p_gum__UGmodel swig_types[141]
+#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[142]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[143]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[144]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[145]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[146]
+#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[147]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[148]
+#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[149]
+#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[150]
+#define SWIGTYPE_p_gum__Variable swig_types[151]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[152]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[153]
+#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[154]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[155]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[156]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[157]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[158]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[159]
+#define SWIGTYPE_p_iterator swig_types[160]
+#define SWIGTYPE_p_iterator_category swig_types[161]
+#define SWIGTYPE_p_iterator_safe swig_types[162]
+#define SWIGTYPE_p_node_const_iterator swig_types[163]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[164]
+#define SWIGTYPE_p_node_iterator swig_types[165]
+#define SWIGTYPE_p_node_iterator_safe swig_types[166]
+#define SWIGTYPE_p_second_type swig_types[167]
+#define SWIGTYPE_p_size_type swig_types[168]
+#define SWIGTYPE_p_std__exception swig_types[169]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[170]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[171]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[172]
+#define SWIGTYPE_p_std__invalid_argument swig_types[173]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[174]
+#define SWIGTYPE_p_std__size_t swig_types[175]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[176]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[177]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[178]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[179]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[180]
+#define SWIGTYPE_p_value_type swig_types[181]
+#define SWIGTYPE_p_void swig_types[182]
+static swig_type_info *swig_types[184];
+static swig_module_info swig_module = {swig_types, 183, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4790,6 +4791,76 @@ SWIGINTERNINLINE PyObject*
 }
 
 
+#include <agrum/base/core/configuration/configuration.h>
+
+// default of the argument allowModificationWhenSaving of the save* methods: the configuration
+inline bool gumConfigAllowModificationWhenSaving() {
+  return gum::Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving");
+}
+
+namespace {
+  std::string _gumConfigurationKindName(gum::Configuration::Kind kind) {
+    switch (kind) {
+      case gum::Configuration::Kind::INT       : return "int";
+      case gum::Configuration::Kind::FLOAT     : return "float";
+      case gum::Configuration::Kind::BOOL      : return "bool";
+      case gum::Configuration::Kind::ENUM      : return "enum";
+      case gum::Configuration::Kind::DEPRECATED: return "deprecated";
+      default                                  : return "str";
+    }
+  }
+}   // namespace
+
+
+SWIGINTERN int
+SWIG_AsVal_bool (PyObject *obj, bool *val)
+{
+  int r;
+  if (!PyBool_Check(obj))
+    return SWIG_ERROR;
+  r = PyObject_IsTrue(obj);
+  if (r == -1)
+    return SWIG_ERROR;
+  if (val) *val = r ? true : false;
+  return SWIG_OK;
+}
+
+SWIGINTERN std::string gum_Configuration_resolvedKind(gum::Configuration const *self,std::string_view section,std::string_view key){
+    auto meta = self->meta(section, key);
+    if (meta.kind == gum::Configuration::Kind::DEPRECATED) {
+      meta = self->meta(meta.targetSection, meta.targetKey);
+    }
+    return _gumConfigurationKindName(meta.kind);
+  }
+SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_schemaRows(gum::Configuration const *self){
+    std::vector< std::string > rows;
+    for (const auto& entry: self->schema()) {
+      std::string values;
+      for (const auto& v: entry.meta.values) {
+        if (!values.empty()) values += '|';
+        values += v;
+      }
+      rows.push_back(entry.section);
+      rows.push_back(entry.key);
+      rows.push_back(_gumConfigurationKindName(entry.meta.kind));
+      rows.push_back(values);
+      rows.push_back(entry.meta.doc);
+      rows.push_back(entry.meta.targetSection);
+      rows.push_back(entry.meta.targetKey);
+      rows.push_back(entry.defaultValue);
+    }
+    return rows;
+  }
+SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_takeNoticeRows(gum::Configuration *self){
+    std::vector< std::string > rows;
+    for (const auto& notice: self->takeNotices()) {
+      rows.push_back(notice.kind == gum::Configuration::Notice::Kind::DEPRECATION ? "deprecation"
+                                                                                   : "file");
+      rows.push_back(notice.message);
+    }
+    return rows;
+  }
+
 SWIGINTERNINLINE PyObject*
   SWIG_From_int  (int value)
 {
@@ -4858,20 +4929,6 @@ SWIGINTERN std::string gum_NumericalDiscreteVariable___repr__(gum::NumericalDisc
    return s.str();
   }
 SWIGINTERN std::string gum_NumericalDiscreteVariable___str__(gum::NumericalDiscreteVariable const *self){ return self->toString();}
-
-SWIGINTERN int
-SWIG_AsVal_bool (PyObject *obj, bool *val)
-{
-  int r;
-  if (!PyBool_Check(obj))
-    return SWIG_ERROR;
-  r = PyObject_IsTrue(obj);
-  if (r == -1)
-    return SWIG_ERROR;
-  if (val) *val = r ? true : false;
-  return SWIG_OK;
-}
-
 SWIGINTERN std::string gum_UndiGraph___repr__(gum::UndiGraph const *self){
    std::stringstream s;
    s<<"(pyagrum.UndiGraph@"<<std::hex<<self<<") "<<self->toString();
@@ -6216,11 +6273,11 @@ SWIGINTERN void gum_BayesNet_Sl_double_Sg__loadGUM__SWIG_0(gum::BayesNet< double
         throw(e);
       }
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveGUM__SWIG_0(gum::BayesNet< double > *self,std::string name,bool binary=false,int indent=2){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveGUM__SWIG_0(gum::BayesNet< double > *self,std::string name,bool binary=false,int indent=gum::defaultJgumIndent()){
     gum::GumBNWriter<double> writer(binary,indent);
     writer.write( name, *self );
   }
-SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__saveGUMstring__SWIG_0(gum::BayesNet< double > *self,int indent=2){
+SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__saveGUMstring__SWIG_0(gum::BayesNet< double > *self,int indent=gum::defaultJgumIndent()){
     gum::GumBNWriter<double> writer(false,indent);
     self->updateMetaData();
     return writer.toString(*self);
@@ -6261,7 +6318,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIF__SWIG_0(gum::BayesNet<
       }
       return "";
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveBIF__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveBIF__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
       gum::BIFWriter<double> writer;
       writer.setAllowModification(allowModificationWhenSaving);
       writer.write( name, *self );
@@ -6305,12 +6362,12 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadXDSL__SWIG_0(gum::BayesNet
       }
       return "";
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveDSL__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveDSL__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
     gum::DSLWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveXDSL__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveXDSL__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
     gum::XDSLBNWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -6339,7 +6396,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadNET__SWIG_0(gum::BayesNet<
       }
       return "";
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveNET__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveNET__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
     gum::NetWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -6362,7 +6419,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIFXML__SWIG_0(gum::BayesN
       }
       return "";
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveBIFXML__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveBIFXML__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
     gum::BIFXMLBNWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -6391,7 +6448,7 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadUAI__SWIG_0(gum::BayesNet<
       }
       return "";
   }
-SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveUAI__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=false){
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveUAI__SWIG_0(gum::BayesNet< double > *self,std::string name,bool allowModificationWhenSaving=gumConfigAllowModificationWhenSaving()){
     gum::UAIBNWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
     writer.write( name, *self );
@@ -22075,6 +22132,1268 @@ fail:
   return 0;
 }
 
+
+SWIGINTERN PyObject *_wrap_new__Configuration__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  std::string_view arg2 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *bytes2 = NULL ;
+  gum::Configuration *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (gum::Configuration *)new gum::Configuration(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__Configuration, SWIG_POINTER_NEW |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new__Configuration__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  PyObject *bytes1 = NULL ;
+  gum::Configuration *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (gum::Configuration *)new gum::Configuration(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__Configuration, SWIG_POINTER_NEW |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new__Configuration(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new__Configuration", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_new__Configuration__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_new__Configuration__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new__Configuration'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::Configuration::Configuration(std::string_view,std::string_view)\n"
+    "    gum::Configuration::Configuration(std::string_view)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_instance(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_instance", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (gum::Configuration *) &gum::Configuration::instance();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_userFileName(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_userFileName", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = gum::Configuration::userFileName();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_get", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_get" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->get(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_has(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  bool result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_has", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_has" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (bool)((gum::Configuration const *)arg1)->has(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_doc(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_doc", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_doc" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->doc(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_sections(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_sections" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->sections();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    std::vector<std::string> _v = std::move(result);
+    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+    resultobj = PyTuple_New(_n);
+    for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  std::string_view arg4 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *bytes4 = NULL ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[3]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[3]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[3])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[3], &len, &bytes4);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[3]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[3]);
+    }
+#endif
+    arg4 = std::string_view(p, len);
+  }
+  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "_Configuration_set" "', argument " "5"" of type '" "bool""'");
+  } 
+  arg5 = static_cast< bool >(val5);
+  {
+    try {
+      (arg1)->set(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),arg5);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  
+  SWIG_Py_XDECREF(bytes4);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  
+  SWIG_Py_XDECREF(bytes4);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  std::string_view arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *bytes4 = NULL ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[3]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[3]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[3])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[3], &len, &bytes4);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[3]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[3]);
+    }
+#endif
+    arg4 = std::string_view(p, len);
+  }
+  {
+    try {
+      (arg1)->set(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  
+  SWIG_Py_XDECREF(bytes4);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  
+  SWIG_Py_XDECREF(bytes4);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_set(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_Configuration_set", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    PyObject *retobj = _wrap__Configuration_set__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 5) {
+    PyObject *retobj = _wrap__Configuration_set__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_Configuration_set'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::Configuration::set(std::string_view,std::string_view,std::string_view,bool)\n"
+    "    gum::Configuration::set(std::string_view,std::string_view,std::string_view)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_reset(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_reset" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      (arg1)->reset();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_push(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_push" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      (arg1)->push();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_pop(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_pop" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      (arg1)->pop();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_load(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_load", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_load" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration_load" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration_load" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->load((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_save(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_save", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_save" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((gum::Configuration const *)arg1)->save((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_grep(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *swig_obj[2] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_grep", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_grep" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->grep(SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_diff(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_diff" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->diff();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_toString(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_toString" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->toString();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_runHooks(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_runHooks" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      ((gum::Configuration const *)arg1)->runHooks();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_resolvedKind(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_resolvedKind", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_resolvedKind" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum_Configuration_resolvedKind((gum::Configuration const *)arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_schemaRows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_schemaRows" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration_schemaRows((gum::Configuration const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    std::vector<std::string> _v = std::move(result);
+    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+    resultobj = PyTuple_New(_n);
+    for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_takeNoticeRows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_takeNoticeRows" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration_takeNoticeRows(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    std::vector<std::string> _v = std::move(result);
+    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+    resultobj = PyTuple_New(_n);
+    for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete__Configuration(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete__Configuration" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_Configuration_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__Configuration, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_Configuration_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
 
 SWIGINTERN PyObject *_wrap_delete_Variable(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
@@ -128937,6 +130256,29 @@ static PyMethodDef SwigMethods[] = {
 		"  the seed used to initialize the random generator (0 if using time)\n"
 		"\n"
 		""},
+	 { "new__Configuration", _wrap_new__Configuration, METH_VARARGS, NULL},
+	 { "_Configuration_instance", _wrap__Configuration_instance, METH_NOARGS, NULL},
+	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, NULL},
+	 { "_Configuration_get", _wrap__Configuration_get, METH_VARARGS, NULL},
+	 { "_Configuration_has", _wrap__Configuration_has, METH_VARARGS, NULL},
+	 { "_Configuration_doc", _wrap__Configuration_doc, METH_VARARGS, NULL},
+	 { "_Configuration_sections", _wrap__Configuration_sections, METH_O, NULL},
+	 { "_Configuration_set", _wrap__Configuration_set, METH_VARARGS, NULL},
+	 { "_Configuration_reset", _wrap__Configuration_reset, METH_O, NULL},
+	 { "_Configuration_push", _wrap__Configuration_push, METH_O, NULL},
+	 { "_Configuration_pop", _wrap__Configuration_pop, METH_O, NULL},
+	 { "_Configuration_load", _wrap__Configuration_load, METH_VARARGS, NULL},
+	 { "_Configuration_save", _wrap__Configuration_save, METH_VARARGS, NULL},
+	 { "_Configuration_grep", _wrap__Configuration_grep, METH_VARARGS, NULL},
+	 { "_Configuration_diff", _wrap__Configuration_diff, METH_O, NULL},
+	 { "_Configuration_toString", _wrap__Configuration_toString, METH_O, NULL},
+	 { "_Configuration_runHooks", _wrap__Configuration_runHooks, METH_O, NULL},
+	 { "_Configuration_resolvedKind", _wrap__Configuration_resolvedKind, METH_VARARGS, NULL},
+	 { "_Configuration_schemaRows", _wrap__Configuration_schemaRows, METH_O, NULL},
+	 { "_Configuration_takeNoticeRows", _wrap__Configuration_takeNoticeRows, METH_O, NULL},
+	 { "delete__Configuration", _wrap_delete__Configuration, METH_O, NULL},
+	 { "_Configuration_swigregister", _Configuration_swigregister, METH_O, NULL},
+	 { "_Configuration_swiginit", _Configuration_swiginit, METH_VARARGS, NULL},
 	 { "delete_Variable", _wrap_delete_Variable, METH_O, NULL},
 	 { "Variable_clone", _wrap_Variable_clone, METH_O, "\n"
 		"\n"
@@ -137950,7 +139292,7 @@ static PyMethodDef SwigMethods[] = {
 		"binary : bool\n"
 		"    if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)\n"
 		"indent : int\n"
-		"    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)\n"
+		"    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -137966,7 +139308,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"indent : int\n"
-		"    indentation level; -1 for compact, 2 for pretty-printed (default: 2)\n"
+		"    indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -138025,7 +139367,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        False by default.\n"
+		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -138076,7 +139418,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        False by default.\n"
+		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -138121,7 +139463,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        False by default.\n"
+		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -138153,7 +139495,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        False by default.\n"
+		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -138185,7 +139527,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        False by default.\n"
+		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -148827,6 +150169,7 @@ static swig_type_info _swigt__p_gum__BayesNetT_double_t = {"_p_gum__BayesNetT_do
 static swig_type_info _swigt__p_gum__CPTError = {"_p_gum__CPTError", "gum::CPTError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__CausalImpactT_double_t = {"_p_gum__CausalImpactT_double_t", "gum::CausalImpact< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__CliqueGraph = {"_p_gum__CliqueGraph", "gum::JoinTree *|gum::JunctionTree *|gum::CliqueGraph *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__Configuration = {"_p_gum__Configuration", "gum::Configuration *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__DAG = {"_p_gum__DAG", "gum::DAG *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__DAGmodel = {"_p_gum__DAGmodel", "gum::DAGmodel *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__DatabaseError = {"_p_gum__DatabaseError", "gum::DatabaseError *", 0, 0, (void*)0, 0};
@@ -149011,6 +150354,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__CPTError,
   &_swigt__p_gum__CausalImpactT_double_t,
   &_swigt__p_gum__CliqueGraph,
+  &_swigt__p_gum__Configuration,
   &_swigt__p_gum__DAG,
   &_swigt__p_gum__DAGmodel,
   &_swigt__p_gum__DatabaseError,
@@ -149195,6 +150539,7 @@ static swig_cast_info _swigc__p_gum__BayesNetT_double_t[] = {  {&_swigt__p_gum__
 static swig_cast_info _swigc__p_gum__CPTError[] = {  {&_swigt__p_gum__CPTError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__CausalImpactT_double_t[] = {  {&_swigt__p_gum__CausalImpactT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__CliqueGraph[] = {  {&_swigt__p_gum__CliqueGraph, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__Configuration[] = {  {&_swigt__p_gum__Configuration, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__DAG[] = {  {&_swigt__p_gum__DAG, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__DAGmodel[] = {  {&_swigt__p_gum__DAGmodel, 0, 0, 0},  {&_swigt__p_gum__BayesNetFragmentT_double_t, _p_gum__BayesNetFragmentT_double_tTo_p_gum__DAGmodel, 0, 0},  {&_swigt__p_gum__BayesNetT_double_t, _p_gum__BayesNetT_double_tTo_p_gum__DAGmodel, 0, 0},  {&_swigt__p_gum__IBayesNetT_double_t, _p_gum__IBayesNetT_double_tTo_p_gum__DAGmodel, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__DatabaseError[] = {  {&_swigt__p_gum__DatabaseError, 0, 0, 0},{0, 0, 0, 0}};
@@ -149379,6 +150724,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__CPTError,
   _swigc__p_gum__CausalImpactT_double_t,
   _swigc__p_gum__CliqueGraph,
+  _swigc__p_gum__Configuration,
   _swigc__p_gum__DAG,
   _swigc__p_gum__DAGmodel,
   _swigc__p_gum__DatabaseError,

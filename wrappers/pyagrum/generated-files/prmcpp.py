@@ -634,13 +634,15 @@ _prmcpp.PRMexplorer_swigregister(PRMexplorer)
 def _o3prm_loadBN(bn: "pyagrum.BayesNet", name: str, system: str, classpath: str, l: object) -> str:
     return _prmcpp._o3prm_loadBN(bn, name, system, classpath, l)
 
-def _o3prm_saveBN(bn: "pyagrum.BayesNet", name: str, allowModificationWhenSaving: bool) -> None:
-    return _prmcpp._o3prm_saveBN(bn, name, allowModificationWhenSaving)
+def _o3prm_saveBN(*args) -> None:
+    return _prmcpp._o3prm_saveBN(*args)
 
 def _bn_loadO3PRM(self, name, system="", classpath="", listeners=None):
   return _o3prm_loadBN(self, name, system, classpath, listeners)
 
-def _bn_saveO3PRM(self, name, allowModificationWhenSaving=False):
+def _bn_saveO3PRM(self, name, allowModificationWhenSaving=None):
+  if allowModificationWhenSaving is None:
+    return _o3prm_saveBN(self, name)
   return _o3prm_saveBN(self, name, allowModificationWhenSaving)
 
 # Monkeypatch onto the real core class, not the one SWIG would have generated

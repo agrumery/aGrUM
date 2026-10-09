@@ -916,6 +916,75 @@ def initRandom(seed: int=0) -> None:
 
     """
     return _pyagrumcpp.initRandom(seed)
+class _Configuration(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _pyagrumcpp._Configuration_swiginit(self, _pyagrumcpp.new__Configuration(*args))
+
+    @staticmethod
+    def instance() -> "pyagrum.Configuration &":
+        return _pyagrumcpp._Configuration_instance()
+
+    @staticmethod
+    def userFileName() -> str:
+        return _pyagrumcpp._Configuration_userFileName()
+
+    def get(self, section: str, key: str) -> str:
+        return _pyagrumcpp._Configuration_get(self, section, key)
+
+    def has(self, section: str, key: str) -> bool:
+        return _pyagrumcpp._Configuration_has(self, section, key)
+
+    def doc(self, section: str, key: str) -> str:
+        return _pyagrumcpp._Configuration_doc(self, section, key)
+
+    def sections(self) -> tuple[str, ...]:
+        return _pyagrumcpp._Configuration_sections(self)
+
+    def set(self, section: str, key: str, value: str, noHook: bool=False) -> None:
+        return _pyagrumcpp._Configuration_set(self, section, key, value, noHook)
+
+    def reset(self) -> None:
+        return _pyagrumcpp._Configuration_reset(self)
+
+    def push(self) -> None:
+        return _pyagrumcpp._Configuration_push(self)
+
+    def pop(self) -> None:
+        return _pyagrumcpp._Configuration_pop(self)
+
+    def load(self, filename: str) -> None:
+        return _pyagrumcpp._Configuration_load(self, filename)
+
+    def save(self, filename: str) -> None:
+        return _pyagrumcpp._Configuration_save(self, filename)
+
+    def grep(self, search: str) -> str:
+        return _pyagrumcpp._Configuration_grep(self, search)
+
+    def diff(self) -> str:
+        return _pyagrumcpp._Configuration_diff(self)
+
+    def toString(self) -> str:
+        return _pyagrumcpp._Configuration_toString(self)
+
+    def runHooks(self) -> None:
+        return _pyagrumcpp._Configuration_runHooks(self)
+
+    def resolvedKind(self, section: str, key: str) -> str:
+        return _pyagrumcpp._Configuration_resolvedKind(self, section, key)
+
+    def schemaRows(self) -> tuple[str, ...]:
+        return _pyagrumcpp._Configuration_schemaRows(self)
+
+    def takeNoticeRows(self) -> tuple[str, ...]:
+        return _pyagrumcpp._Configuration_takeNoticeRows(self)
+    __swig_destroy__ = _pyagrumcpp.delete__Configuration
+
+# Register _Configuration in _pyagrumcpp:
+_pyagrumcpp._Configuration_swigregister(_Configuration)
 VarType_DISCRETIZED = _pyagrumcpp.VarType_DISCRETIZED
 VarType_LABELIZED = _pyagrumcpp.VarType_LABELIZED
 VarType_INTEGER = _pyagrumcpp.VarType_INTEGER
@@ -11452,21 +11521,10 @@ import warnings
 # seed is chosen randomly :)
 initRandom(0)
 
-def _update_config_core():
-# hook to control some parameters for core params
-  setNumberOfThreads(config.typed['core', 'default_maxNumberOfThreads'])
-
-# configuration object
+# configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
+# current directory (if any), and applied the parameters that act on the library (number of threads, ...)
 from .config import PyAgrumConfiguration
 config = PyAgrumConfiguration()
-config.add_hook(_update_config_core)
-config.run_hooks()
-
-try:
-# load custom configuration if any
-  config.load()
-except FileNotFoundError:
-  pass
 
 
 def log2(p):
@@ -14981,7 +15039,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadGUM(self, name, l, binary)
 
-    def _saveGUM(self, name: str, binary: bool=False, indent: int=2) -> None:
+    def _saveGUM(self, *args) -> None:
         r"""
 
         Save the BayesNet in a jgum (JSON) or bgum (binary/msgpack) file.
@@ -14995,16 +15053,16 @@ class BayesNet(IBayesNet):
         binary : bool
             if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
         indent : int
-            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: 2)
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
 
         See Also
         --------
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrumcpp.BayesNet__saveGUM(self, name, binary, indent)
+        return _pyagrumcpp.BayesNet__saveGUM(self, *args)
 
-    def _saveGUMstring(self, indent: int=2) -> str:
+    def _saveGUMstring(self, *args) -> str:
         r"""
 
         Serialize the BayesNet to a jgum JSON string.
@@ -15014,7 +15072,7 @@ class BayesNet(IBayesNet):
         Parameters
         ----------
         indent : int
-            indentation level; -1 for compact, 2 for pretty-printed (default: 2)
+            indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
 
         Returns
         -------
@@ -15026,7 +15084,7 @@ class BayesNet(IBayesNet):
         :ref:`jgum-bgum-format` : complete format reference
 
         """
-        return _pyagrumcpp.BayesNet__saveGUMstring(self, indent)
+        return _pyagrumcpp.BayesNet__saveGUMstring(self, *args)
 
     def loadGUMstring(self, content: str) -> None:
         r"""
@@ -15072,7 +15130,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadBIF(self, name, l)
 
-    def saveBIF(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveBIF(self, *args) -> None:
         r"""
 
         Save the BayesNet in a BIF file.
@@ -15082,11 +15140,11 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                False by default.
+                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveBIF(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveBIF(self, *args)
 
     def loadDSL(self, name: str, l: object=None) -> str:
         r"""
@@ -15132,7 +15190,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadXDSL(self, name, l)
 
-    def saveDSL(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveDSL(self, *args) -> None:
         r"""
 
         Save the BayesNet in a DSL file.
@@ -15142,13 +15200,13 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                False by default.
+                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveDSL(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveDSL(self, *args)
 
-    def saveXDSL(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveXDSL(self, *args) -> None:
         r"""
 
         Save the BayesNet in a XDSL file.
@@ -15162,7 +15220,7 @@ class BayesNet(IBayesNet):
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveXDSL(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveXDSL(self, *args)
 
     def loadNET(self, name: str, l: object=None) -> str:
         r"""
@@ -15186,7 +15244,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadNET(self, name, l)
 
-    def saveNET(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveNET(self, *args) -> None:
         r"""
 
         Save the BayesNet in a NET file.
@@ -15196,11 +15254,11 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                False by default.
+                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveNET(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveNET(self, *args)
 
     def loadBIFXML(self, name: str, l: object=None) -> str:
         r"""
@@ -15224,7 +15282,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadBIFXML(self, name, l)
 
-    def saveBIFXML(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveBIFXML(self, *args) -> None:
         r"""
 
         Save the BayesNet in a BIFXML file.
@@ -15234,11 +15292,11 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                False by default.
+                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveBIFXML(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveBIFXML(self, *args)
 
     def loadUAI(self, name: str, l: object=None) -> str:
         r"""
@@ -15262,7 +15320,7 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_loadUAI(self, name, l)
 
-    def saveUAI(self, name: str, allowModificationWhenSaving: bool=False) -> None:
+    def saveUAI(self, *args) -> None:
         r"""
 
         Save the BayesNet in an UAI file.
@@ -15272,11 +15330,11 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                False by default.
+                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
-        return _pyagrumcpp.BayesNet_saveUAI(self, name, allowModificationWhenSaving)
+        return _pyagrumcpp.BayesNet_saveUAI(self, *args)
 
     def contextualize(self, *args) -> "pyagrum.BayesNet":
         r"""
@@ -15327,8 +15385,9 @@ class BayesNet(IBayesNet):
         ``pyagrum.config["core","default_jgumIndent"]``.
       """
       if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
-      self._saveGUM(name, binary, indent)
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
 
     def saveGUMstring(self, indent: int = None) -> str:
       """
@@ -15346,7 +15405,7 @@ class BayesNet(IBayesNet):
         the jgum string
       """
       if indent is None:
-        indent = pyagrum.config.typed["core", "default_jgumIndent"]
+        return self._saveGUMstring()
       return self._saveGUMstring(indent)
 
     def toFast(self, filename: str = None) -> str:
@@ -29475,7 +29534,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. Also controlled by `pyagrum.config["BN","allow_modification_when_saving"]`.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allow_modification_when_saving"]` is used.
 
   Notes
   ----
@@ -29483,27 +29542,27 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
-  if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.config.typed["core", "allow_modification_when_saving"]
+# None: the writers use pyagrum.config["core","allow_modification_when_saving"]
+  allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
 
   extension = filename.split('.')[-1].upper()
 
   if extension == "BIF":
-    bn.saveBIF(filename, allowModificationWhenSaving)
+    bn.saveBIF(filename, *allow)
   elif extension == "BIFXML":
-    bn.saveBIFXML(filename, allowModificationWhenSaving)
+    bn.saveBIFXML(filename, *allow)
   elif extension == "DSL":
-    bn.saveDSL(filename, allowModificationWhenSaving)
+    bn.saveDSL(filename, *allow)
   elif extension == "XDSL":
-    bn.saveXDSL(filename, allowModificationWhenSaving)
+    bn.saveXDSL(filename, *allow)
   elif extension == "NET":
-    bn.saveNET(filename, allowModificationWhenSaving)
+    bn.saveNET(filename, *allow)
   elif extension == "UAI":
-    bn.saveUAI(filename, allowModificationWhenSaving)
+    bn.saveUAI(filename, *allow)
   elif extension == "O3PRM":
     if not hasattr(bn, "saveO3PRM"):
       raise InvalidArgument("saving a .o3prm file requires 'import pyagrum.prm' first")
-    bn.saveO3PRM(filename, allowModificationWhenSaving)
+    bn.saveO3PRM(filename, *allow)
   elif extension == "JGUM":
     bn.saveGUM(filename)
   elif extension == "BGUM":

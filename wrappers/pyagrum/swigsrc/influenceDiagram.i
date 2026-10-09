@@ -59,9 +59,9 @@
 
 IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);
 
-// Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can default indent to
-// None and fall back to pyagrum.config["core","default_jgumIndent"] -- a plain C++ int argument
-// can't have a None default, so the config lookup has to happen on the Python side.
+// Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can keep named arguments
+// and default indent to None: the library then uses pyagrum.config["core","default_jgumIndent"]
+// (see gum::defaultJgumIndent()), while an explicit indent is always used as is.
 %rename(_saveGUM) gum::InfluenceDiagram::saveGUM;
 %rename(_saveGUMstring) gum::InfluenceDiagram::saveGUMstring;
 
@@ -79,12 +79,12 @@ IMPROVE_DIRECTED_GRAPHICAL_MODEL_API(gum::InfluenceDiagram);
     } catch (gum::IOError& e) { throw(e); }
   }
 
-  void saveGUM(std::string name, bool binary=false, int indent=2) {
+  void saveGUM(std::string name, bool binary=false, int indent=gum::defaultJgumIndent()) {
     gum::GumIDWriter<GUM_SCALAR> writer(binary,indent);
     writer.write(name,*self);
   }
 
-  std::string saveGUMstring(int indent=2) {
+  std::string saveGUMstring(int indent=gum::defaultJgumIndent()) {
     gum::GumIDWriter<GUM_SCALAR> writer(false,indent);
     self->updateMetaData();
     return writer.toString(*self);
@@ -212,8 +212,9 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
     ``pyagrum.config["core","default_jgumIndent"]``.
   """
   if indent is None:
-    indent = pyagrum.config.typed["core", "default_jgumIndent"]
-  self._saveGUM(name, binary, indent)
+    self._saveGUM(name, binary)
+  else:
+    self._saveGUM(name, binary, indent)
 
 
 def saveGUMstring(self, indent: int = None) -> str:
@@ -232,7 +233,7 @@ def saveGUMstring(self, indent: int = None) -> str:
     the jgum string
   """
   if indent is None:
-    indent = pyagrum.config.typed["core", "default_jgumIndent"]
+    return self._saveGUMstring()
   return self._saveGUMstring(indent)
 
 

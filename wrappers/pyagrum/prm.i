@@ -95,6 +95,12 @@ namespace gum {
       return "";
   }
 
+  // the configuration (core.allow_modification_when_saving) tells whether the BN can be modified
+  void _o3prm_saveBN(gum::BayesNet<double>* bn, std::string name) {
+    gum::O3prmBNWriter<double> writer;
+    writer.write( name, *bn );
+  }
+
   void _o3prm_saveBN(gum::BayesNet<double>* bn, std::string name, bool allowModificationWhenSaving) {
     gum::O3prmBNWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
@@ -107,7 +113,9 @@ namespace gum {
 def _bn_loadO3PRM(self, name, system="", classpath="", listeners=None):
   return _o3prm_loadBN(self, name, system, classpath, listeners)
 
-def _bn_saveO3PRM(self, name, allowModificationWhenSaving=False):
+def _bn_saveO3PRM(self, name, allowModificationWhenSaving=None):
+  if allowModificationWhenSaving is None:
+    return _o3prm_saveBN(self, name)
   return _o3prm_saveBN(self, name, allowModificationWhenSaving)
 
 # Monkeypatch onto the real core class, not the one SWIG would have generated

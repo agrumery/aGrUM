@@ -161,7 +161,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. Also controlled by `pyagrum.config["BN","allow_modification_when_saving"]`.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allow_modification_when_saving"]` is used.
 
   Notes
   ----
@@ -169,27 +169,27 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
-  if allowModificationWhenSaving is None:
-    allowModificationWhenSaving = pyagrum.config.typed["core", "allow_modification_when_saving"]
+  # None: the writers use pyagrum.config["core","allow_modification_when_saving"]
+  allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
 
   extension = filename.split('.')[-1].upper()
 
   if extension == "BIF":
-    bn.saveBIF(filename, allowModificationWhenSaving)
+    bn.saveBIF(filename, *allow)
   elif extension == "BIFXML":
-    bn.saveBIFXML(filename, allowModificationWhenSaving)
+    bn.saveBIFXML(filename, *allow)
   elif extension == "DSL":
-    bn.saveDSL(filename, allowModificationWhenSaving)
+    bn.saveDSL(filename, *allow)
   elif extension == "XDSL":
-    bn.saveXDSL(filename, allowModificationWhenSaving)
+    bn.saveXDSL(filename, *allow)
   elif extension == "NET":
-    bn.saveNET(filename, allowModificationWhenSaving)
+    bn.saveNET(filename, *allow)
   elif extension == "UAI":
-    bn.saveUAI(filename, allowModificationWhenSaving)
+    bn.saveUAI(filename, *allow)
   elif extension == "O3PRM":
     if not hasattr(bn, "saveO3PRM"):
       raise InvalidArgument("saving a .o3prm file requires 'import pyagrum.prm' first")
-    bn.saveO3PRM(filename, allowModificationWhenSaving)
+    bn.saveO3PRM(filename, *allow)
   elif extension == "JGUM":
     bn.saveGUM(filename)
   elif extension == "BGUM":

@@ -147,23 +147,25 @@ class TestConfig(pyAgrumTestCase):
       gum.config.doc("gogo", "gaga")
 
   def testSchemaParser(self):
-    schema = gumconfig._parseSchema("[s]\n### int :: a doc\nk = 1\n### a|b :: values\nl = a\n")
+    cfg = self._freshConfig("[s]\n### int :: a doc\nk = 1\n### a|b :: values\nl = a\n")
+    schema = {(section, option): meta for section, option, meta, _ in cfg.schema()}
     self.assertEqual(schema[("s", "k")].kind, "int")
     self.assertEqual(schema[("s", "k")].doc, "a doc")
     self.assertEqual(schema[("s", "l")].kind, "enum")
     self.assertEqual(schema[("s", "l")].values, ("a", "b"))
 
     # decorative lines with 4+ '#' are not metadata
-    self.assertEqual(gumconfig._parseSchema("[s]\n#### decorative\nk = 1\n"), {})
+    cfg = self._freshConfig("[s]\n#### decorative\nk = 1\n")
+    self.assertEqual([meta.doc for _, _, meta, _ in cfg.schema()], ["(undocumented)"])
 
     with self.assertRaises(SyntaxError):  # missing '::'
-      gumconfig._parseSchema("[s]\n### int doc\nk = 1\n")
+      self._freshConfig("[s]\n### int doc\nk = 1\n")
     with self.assertRaises(SyntaxError):  # unknown type
-      gumconfig._parseSchema("[s]\n### uint :: doc\nk = 1\n")
+      self._freshConfig("[s]\n### uint :: doc\nk = 1\n")
     with self.assertRaises(SyntaxError):  # metadata not immediately followed by a key
-      gumconfig._parseSchema("[s]\n### int :: doc\n\nk = 1\n")
-    with self.assertRaises(SyntaxError):  # metadata at end of file
-      gumconfig._parseSchema("[s]\nk = 1\n### int :: doc\n")
+      self._freshConfig("[s]\n### int :: doc\n\nk = 1\n")
+    with self.assertRaises(SyntaxError):  # metadata at the end of file
+      self._freshConfig("[s]\nk = 1\n### int :: doc\n")
 
   @staticmethod
   def _freshConfig(content):
@@ -197,6 +199,40 @@ class TestConfig(pyAgrumTestCase):
     self.assertTrue(cfg.doc("sec", "oldkey").startswith("deprecated -> sec.newkey"))
     with self.assertRaises(ValueError):
       cfg["sec", "oldkey"] = "abc"
+
+  def testJgumIndentComesFromConfiguration(self):
+    bn = gum.fastBN("A->B")
+    gum.config.push()
+    try:
+      gum.config["core", "default_jgumIndent"] = -1
+      self.assertNotIn("\n", bn.saveGUMstring())
+      gum.config["core", "default_jgumIndent"] = 2
+      self.assertIn("\n", bn.saveGUMstring())
+      # an explicit indentation never uses the configuration
+      self.assertNotIn("\n", bn.saveGUMstring(indent=-1))
+      self.assertNotIn("\n", bn.saveGUMstring(-1))
+      gum.config["core", "default_jgumIndent"] = -1
+      self.assertIn("\n", bn.saveGUMstring(indent=2))
+    finally:
+      gum.config.pop()
+
+  def testHooks(self):
+    cfg = self._freshConfig("[s]\n### int :: x\nk = 1\n")
+    calls = []
+    cfg.add_hook(lambda: calls.append(1))
+    cfg["s", "k"] = 2
+    self.assertEqual(len(calls), 1)
+    cfg.set("s", "k", 3, no_hook=True)
+    self.assertEqual(len(calls), 1)
+    cfg.push()
+    cfg["s", "k"] = 4
+    cfg.pop()
+    self.assertEqual(cfg["s", "k"], "3")
+    cfg.reset()
+    self.assertEqual(cfg["s", "k"], "1")
+    self.assertEqual(len(calls), 4)  # set, set, pop, reset (not the no_hook set, nor push)
+    with self.assertRaises(IndexError):
+      cfg.pop()
 
   def testInvalidDefaultsFailFast(self):
     with self.assertRaises(SyntaxError):  # deprecated -> unknown target

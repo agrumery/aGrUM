@@ -4185,6 +4185,12 @@ namespace gum {
       return "";
   }
 
+  // the configuration (core.allow_modification_when_saving) tells whether the BN can be modified
+  void _o3prm_saveBN(gum::BayesNet<double>* bn, std::string name) {
+    gum::O3prmBNWriter<double> writer;
+    writer.write( name, *bn );
+  }
+
   void _o3prm_saveBN(gum::BayesNet<double>* bn, std::string name, bool allowModificationWhenSaving) {
     gum::O3prmBNWriter<double> writer;
     writer.setAllowModification(allowModificationWhenSaving);
@@ -5760,7 +5766,45 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__o3prm_saveBN(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__o3prm_saveBN__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_o3prm_saveBN" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "_o3prm_saveBN" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      gum::_o3prm_saveBN(arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__o3prm_saveBN__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   std::string arg2 ;
@@ -5769,10 +5813,9 @@ SWIGINTERN PyObject *_wrap__o3prm_saveBN(PyObject *self, PyObject *args) {
   int res1 = 0 ;
   bool val3 ;
   int ecode3 = 0 ;
-  PyObject *swig_obj[3] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_o3prm_saveBN", 3, 3, swig_obj)) SWIG_fail;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_o3prm_saveBN" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
@@ -5804,6 +5847,34 @@ SWIGINTERN PyObject *_wrap__o3prm_saveBN(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__o3prm_saveBN(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_o3prm_saveBN", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    PyObject *retobj = _wrap__o3prm_saveBN__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 3) {
+    PyObject *retobj = _wrap__o3prm_saveBN__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_o3prm_saveBN'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::_o3prm_saveBN(gum::BayesNet< double > *,std::string)\n"
+    "    gum::_o3prm_saveBN(gum::BayesNet< double > *,std::string,bool)\n");
+  return 0;
 }
 
 
