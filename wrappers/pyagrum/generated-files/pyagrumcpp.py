@@ -29807,7 +29807,11 @@ def getPosterior(model, *, target, evs=None):
   inf.addTarget(target)
   inf.makeInference()
 # creating a new Tensor from posterior(will disappear with ie)
-  return pyagrum.Tensor(inf.posterior(target))
+  posterior = pyagrum.Tensor(inf.posterior(target))
+# the Tensor holds raw pointers to the variables owned by the model: keep the model alive as long as the
+# Tensor is (otherwise pyagrum.getPosterior(pyagrum.fastBN(...), target=...) returns a dangling Tensor)
+  posterior._model = model
+  return posterior
 
 
 

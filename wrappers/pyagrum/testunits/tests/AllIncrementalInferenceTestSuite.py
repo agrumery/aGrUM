@@ -155,6 +155,13 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
       gum.getPosterior(self.bn, evs={"B": 2, 3: [0.2, 0.6, 0.6]}, target="F"), posterior_joint.sumIn(["F"]).normalize()
     )
 
+  def testGetPosteriorOfTemporaryModel(self):
+    # the returned Tensor must keep its (temporary) model alive: no dangling variable pointers
+    p = gum.getPosterior(gum.fastBN("A->B"), target="B")
+    self.assertEqual(p.names, ("B",))
+    self.assertAlmostEqual(p.sum(), 1.0)
+    self.assertIn("B", str(p))
+
   def testPrior(self):
     self.assertEqual(self.ie.posterior("A"), self.joint.sumIn(["A"]))
     self.assertEqual(self.ie.posterior("C"), self.joint.sumIn(["C"]))
