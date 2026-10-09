@@ -111,7 +111,7 @@ namespace gum {
     }
 
     /// move constructor
-    RecordCounter::RecordCounter(RecordCounter&& from) :
+    RecordCounter::RecordCounter(RecordCounter&& from) noexcept :
         ThreadNumberManager(std::move(from)), _parsers_(std::move(from._parsers_)),
         _ranges_(std::move(from._ranges_)), _thread_ranges_(std::move(from._thread_ranges_)),
         _nodeId2columns_(std::move(from._nodeId2columns_)),
@@ -147,7 +147,7 @@ namespace gum {
     }
 
     /// move operator
-    RecordCounter& RecordCounter::operator=(RecordCounter&& from) {
+    RecordCounter& RecordCounter::operator=(RecordCounter&& from) noexcept {
       if (this != &from) {
         ThreadNumberManager::operator=(std::move(from));
         _parsers_                = std::move(from._parsers_);

@@ -180,13 +180,13 @@ namespace gum {
       CachedContingencyCounter(const CachedContingencyCounter& from);
 
       /// move constructor
-      CachedContingencyCounter(CachedContingencyCounter&& from);
+      CachedContingencyCounter(CachedContingencyCounter&& from) noexcept;
 
       /// copy operator
       CachedContingencyCounter& operator=(const CachedContingencyCounter& from);
 
       /// move operator
-      CachedContingencyCounter& operator=(CachedContingencyCounter&& from);
+      CachedContingencyCounter& operator=(CachedContingencyCounter&& from) noexcept;
     };
 
   } /* namespace learning */

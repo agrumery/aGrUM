@@ -136,13 +136,13 @@ namespace gum {
       IndependenceTest(const IndependenceTest& from);
 
       /// move constructor
-      IndependenceTest(IndependenceTest&& from);
+      IndependenceTest(IndependenceTest&& from) noexcept;
 
       /// copy operator
       IndependenceTest& operator=(const IndependenceTest& from);
 
       /// move operator
-      IndependenceTest& operator=(IndependenceTest&& from);
+      IndependenceTest& operator=(IndependenceTest&& from) noexcept;
 
       /// the domain sizes of the variables (indexed by column id in the database)
       std::vector< std::size_t > _domain_sizes_;

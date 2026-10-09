@@ -179,7 +179,7 @@ namespace gum {
      * @return Returns the moved gum::Bijection in which the move was made.
      */
     BijectionImplementation< T1, T2, Gen >&
-        operator=(BijectionImplementation< T1, T2, Gen >&& toCopy);
+        operator=(BijectionImplementation< T1, T2, Gen >&& toCopy) noexcept;
 
     public:
     // ============================================================================
@@ -752,7 +752,7 @@ namespace gum {
      * @return Returns the moved gum::Bijection in which the move was made.
      */
     BijectionImplementation< T1, T2, true >&
-        operator=(BijectionImplementation< T1, T2, true >&& from);
+        operator=(BijectionImplementation< T1, T2, true >&& from) noexcept;
 
     public:
     // ============================================================================
@@ -1720,7 +1720,7 @@ namespace gum {
      * @brief Move operator.
      * @param bij The gum::Bijection to move from.
      */
-    Bijection< T1, T2 >& operator=(Bijection< T1, T2 >&& bij);
+    Bijection< T1, T2 >& operator=(Bijection< T1, T2 >&& bij) noexcept;
 
     /// @}
   };

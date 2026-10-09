@@ -90,7 +90,7 @@ namespace gum {
       ScoringCache(const ScoringCache& from);
 
       /// move constructor
-      ScoringCache(ScoringCache&& from);
+      ScoringCache(ScoringCache&& from) noexcept;
 
       /// virtual copy constructor
       [[nodiscard]] virtual ScoringCache* clone() const;
@@ -110,7 +110,7 @@ namespace gum {
       ScoringCache& operator=(const ScoringCache& from);
 
       /// move operator
-      ScoringCache& operator=(ScoringCache&& from);
+      ScoringCache& operator=(ScoringCache&& from) noexcept;
 
       /// @}
 

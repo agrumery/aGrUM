@@ -42,6 +42,7 @@
 
 
 #include <iostream>
+#include <type_traits>
 
 #include <agrum/base/core/math/chi2.h>
 #include <agrum/base/database/databaseTable.h>
@@ -51,6 +52,8 @@
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/stattests/indepTestG2.h>
 #include <agrum/base/stattests/priors/noPrior.h>
+#include <agrum/base/stattests/recordCounter.h>
+#include <agrum/base/stattests/scoringCache.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -406,6 +409,16 @@ namespace gum_tests {
 
     // verify the correction tightens the test: corrected p < uncorrected p
     CHECK(stat.second < gum::Chi2::probaChi2(stat.first, 4));
+  }
+
+  GUM_TEST(_move_is_noexcept) {
+    // a throwing link anywhere in the move chain would std::terminate() instead of reporting
+    static_assert(std::is_nothrow_move_constructible_v< gum::learning::IndepTestG2 >);
+    static_assert(std::is_nothrow_move_assignable_v< gum::learning::IndepTestG2 >);
+    static_assert(std::is_nothrow_move_constructible_v< gum::learning::RecordCounter >);
+    static_assert(std::is_nothrow_move_assignable_v< gum::learning::RecordCounter >);
+    static_assert(std::is_nothrow_move_constructible_v< gum::learning::ScoringCache >);
+    static_assert(std::is_nothrow_move_assignable_v< gum::learning::ScoringCache >);
   }
 
 } /* namespace gum_tests */

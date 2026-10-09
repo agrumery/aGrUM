@@ -81,7 +81,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE IndependenceTest::IndependenceTest(IndependenceTest&& from) :
+    INLINE IndependenceTest::IndependenceTest(IndependenceTest&& from) noexcept :
         CachedContingencyCounter(std::move(from)), _domain_sizes_(std::move(from._domain_sizes_)) {
       GUM_CONS_MOV(IndependenceTest);
     }

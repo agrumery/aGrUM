@@ -174,7 +174,7 @@ namespace gum {
       RecordCounter(const RecordCounter& from);
 
       /// move constructor
-      RecordCounter(RecordCounter&& from);
+      RecordCounter(RecordCounter&& from) noexcept;
 
       /// virtual copy constructor
       [[nodiscard]] virtual RecordCounter* clone() const;
@@ -195,7 +195,7 @@ namespace gum {
       RecordCounter& operator=(const RecordCounter& from);
 
       /// move operator
-      RecordCounter& operator=(RecordCounter&& from);
+      RecordCounter& operator=(RecordCounter&& from) noexcept;
 
       /// @}
 

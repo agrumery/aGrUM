@@ -64,7 +64,8 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE ScoringCache::ScoringCache(ScoringCache&& from) : _scores_(std::move(from._scores_)) {
+    INLINE ScoringCache::ScoringCache(ScoringCache&& from) noexcept :
+        _scores_(std::move(from._scores_)) {
       GUM_CONS_MOV(ScoringCache);
     }
 
@@ -81,7 +82,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE ScoringCache& ScoringCache::operator=(ScoringCache&& from) {
+    INLINE ScoringCache& ScoringCache::operator=(ScoringCache&& from) noexcept {
       if (&from != this) { _scores_ = std::move(from._scores_); }
       return *this;
     }

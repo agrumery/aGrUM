@@ -161,7 +161,7 @@ namespace gum {
   // move operator
   template < typename T1, typename T2, bool Gen >
   BijectionImplementation< T1, T2, Gen >& BijectionImplementation< T1, T2, Gen >::operator=(
-      BijectionImplementation< T1, T2, Gen >&& from) {
+      BijectionImplementation< T1, T2, Gen >&& from) noexcept {
     // avoid self assignment
     if (this != &from) {
       clear();
@@ -628,7 +628,7 @@ namespace gum {
   // move operator
   template < typename T1, typename T2 >
   BijectionImplementation< T1, T2, true >& BijectionImplementation< T1, T2, true >::operator=(
-      BijectionImplementation< T1, T2, true >&& toCopy) {
+      BijectionImplementation< T1, T2, true >&& toCopy) noexcept {
     // avoid self assignment
     if (this != &toCopy) {
       clear();
@@ -1073,7 +1073,7 @@ namespace gum {
 
   // move operator
   template < typename T1, typename T2 >
-  Bijection< T1, T2 >& Bijection< T1, T2 >::operator=(Bijection< T1, T2 >&& bij) {
+  Bijection< T1, T2 >& Bijection< T1, T2 >::operator=(Bijection< T1, T2 >&& bij) noexcept {
     Implementation::operator=(std::move(bij));
     return *this;
   }

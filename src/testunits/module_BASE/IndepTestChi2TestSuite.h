@@ -42,6 +42,7 @@
 
 
 #include <iostream>
+#include <type_traits>
 
 #include <agrum/base/core/math/chi2.h>
 #include <agrum/base/database/databaseTable.h>
@@ -405,6 +406,12 @@ namespace gum_tests {
 
     // verify the correction tightens the test: corrected p < uncorrected p
     CHECK(stat.second < gum::Chi2::probaChi2(6.0, 4));
+  }
+
+  GUM_TEST(_move_is_noexcept) {
+    // a throwing link anywhere in the move chain would std::terminate() instead of reporting
+    static_assert(std::is_nothrow_move_constructible_v< gum::learning::IndepTestChi2 >);
+    static_assert(std::is_nothrow_move_assignable_v< gum::learning::IndepTestChi2 >);
   }
 
 } /* namespace gum_tests */

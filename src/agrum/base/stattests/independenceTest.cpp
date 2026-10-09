@@ -71,7 +71,7 @@ namespace gum {
     }
 
     /// move operator
-    IndependenceTest& IndependenceTest::operator=(IndependenceTest&& from) {
+    IndependenceTest& IndependenceTest::operator=(IndependenceTest&& from) noexcept {
       if (this != &from) {
         CachedContingencyCounter::operator=(std::move(from));
         _domain_sizes_ = std::move(from._domain_sizes_);

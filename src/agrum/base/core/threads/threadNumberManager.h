@@ -74,7 +74,7 @@ namespace gum {
     ThreadNumberManager(const ThreadNumberManager& from);
 
     /// move constructor
-    ThreadNumberManager(ThreadNumberManager&& from);
+    ThreadNumberManager(ThreadNumberManager&& from) noexcept;
 
     /// destructor
     virtual ~ThreadNumberManager();
@@ -91,7 +91,7 @@ namespace gum {
     ThreadNumberManager& operator=(const ThreadNumberManager& from);
 
     /// move operator
-    ThreadNumberManager& operator=(ThreadNumberManager&& from);
+    ThreadNumberManager& operator=(ThreadNumberManager&& from) noexcept;
 
     /// @}
 

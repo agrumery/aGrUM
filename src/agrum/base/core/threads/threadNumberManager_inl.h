@@ -61,7 +61,7 @@ namespace gum {
   }
 
   // move constructor
-  INLINE ThreadNumberManager::ThreadNumberManager(ThreadNumberManager&& from) :
+  INLINE ThreadNumberManager::ThreadNumberManager(ThreadNumberManager&& from) noexcept :
       _nb_threads_(from._nb_threads_) {
     GUM_CONS_MOV(ThreadNumberManager);
   }
@@ -76,7 +76,7 @@ namespace gum {
   }
 
   // move operator
-  INLINE ThreadNumberManager& ThreadNumberManager::operator=(ThreadNumberManager&& from) {
+  INLINE ThreadNumberManager& ThreadNumberManager::operator=(ThreadNumberManager&& from) noexcept {
     _nb_threads_ = from._nb_threads_;
     return *this;
   }
