@@ -64,7 +64,4 @@
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_ID.i"
 
-/* Many functions added for pyAgrum                             */
-%pythoncode "common.py"
-
 %include "gum_functions_ID.i"
