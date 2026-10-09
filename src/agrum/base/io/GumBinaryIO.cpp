@@ -41,6 +41,20 @@
 
 #include "agrum/base/io/GumBinaryIO.h"
 
+#include <algorithm>
+#include <climits>
+
+#include <agrum/base/core/configuration/configuration.h>
+
+namespace gum {
+
+  int defaultJgumIndent() {
+    const auto indent = Configuration::instance().getTyped< std::int64_t >("core", "default_jgumIndent");
+    return static_cast< int >(std::clamp< std::int64_t >(indent, -1, INT_MAX));
+  }
+
+}   // namespace gum
+
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/io/GumBinaryIO_inl.h>
 #endif   // GUM_NO_INLINE

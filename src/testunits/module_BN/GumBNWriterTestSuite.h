@@ -44,6 +44,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/timer.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
 #include <agrum/base/multidim/aggregators/and.h>
@@ -371,5 +372,42 @@ namespace gum_tests {
     auto                    reader = gum::GumBNReader< double >(&bn2, tempFileName, false);
     CHECK_EQ(reader.proceed(), 0u);
     CHECK_EQ(bn2, bn);
+  }
+
+  GUM_TEST(DefaultIndentComesFromConfiguration) {
+    auto  bn   = gum::BayesNet< double >::fastPrototype("A->B");
+    auto& conf = gum::Configuration::instance();
+
+    conf.push();
+    conf.set("core", "default_jgumIndent", "-1");
+    const std::string compact = gum::GumBNWriter< double >(false).toString(bn);
+
+    conf.set("core", "default_jgumIndent", "2");
+    const std::string indented = gum::GumBNWriter< double >(false).toString(bn);
+    CHECK_LT(compact.size(), indented.size());
+
+    // an explicit indentation never uses the configuration
+    CHECK_EQ(gum::GumBNWriter< double >(false, -1).toString(bn), compact);
+    CHECK_EQ(gum::GumBNWriter< double >(false, 2).toString(bn), indented);
+    conf.set("core", "default_jgumIndent", "-1");
+    CHECK_EQ(gum::GumBNWriter< double >(false, 2).toString(bn), indented);
+    CHECK_EQ(gum::GumBNWriter< double >(false).toString(bn), compact);
+    conf.pop();
+  }
+
+  GUM_TEST(AllowModificationComesFromConfiguration) {
+    auto& conf = gum::Configuration::instance();
+
+    conf.push();
+    conf.set("core", "allow_modification_when_saving", "False");
+    CHECK(!gum::GumBNWriter< double >().isModificationAllowed());
+    conf.set("core", "allow_modification_when_saving", "True");
+    CHECK(gum::GumBNWriter< double >().isModificationAllowed());
+
+    // explicitly set, the value no longer depends on the configuration
+    gum::GumBNWriter< double > writer;
+    writer.setAllowModification(false);
+    CHECK(!writer.isModificationAllowed());
+    conf.pop();
   }
 }   // namespace gum_tests

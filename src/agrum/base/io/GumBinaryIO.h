@@ -43,7 +43,8 @@
  * @brief Shared binary I/O helpers for GUM (jgum/bgum) serialization.
  *
  * Provides inline helpers to read/write a length-prefixed byte vector used by
- * the msgpack binary format (.bgum).  Defined here once to avoid duplication
+ * the msgpack binary format (.bgum) and the default indentation of the text format
+ * (.jgum).  Defined here once to avoid duplication
  * across GumBNReader/Writer, GumIDReader/Writer and GumMRFReader/Writer.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -80,6 +81,14 @@ namespace gum {
    * @param vec The payload bytes to write.
    */
   GUM_SHARED_PUBLIC void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+
+  /**
+   * The indentation used by the GUM writers (jgum text format) when none is given:
+   * the value of the key `default_jgumIndent` of section `core` in gum::Configuration.
+   *
+   * @return The indentation (-1 is the most compact output).
+   */
+  GUM_SHARED_PUBLIC int defaultJgumIndent();
 
 } /* namespace gum */
 

@@ -57,6 +57,10 @@ using ordered_json = nlohmann::ordered_json;
 namespace gum {
   // Default constructor.
   template < GUM_Numeric GUM_SCALAR >
+  GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary) :
+      GumBNWriter(binary, defaultJgumIndent()) {}
+
+  template < GUM_Numeric GUM_SCALAR >
   GumBNWriter< GUM_SCALAR >::GumBNWriter(bool binary, int indent) : BNWriter< GUM_SCALAR >() {
     _binary_ = binary;
     _indent_ = (indent < -1) ? -1 : indent;

@@ -77,12 +77,20 @@ namespace gum {
     /// @{
 
     /**
-     * Default constructor.
+     * Default constructor. The indentation is the one of the configuration
+     * (key `default_jgumIndent` of section `core`, see gum::Configuration).
+     *
+     * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
+     */
+    GumIDWriter(bool binary = false);
+
+    /**
+     * Constructor with an explicit indentation (the configuration is not used).
      *
      * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
      * @param indent Indentation level for text output. -1 produces compact output.
      */
-    GumIDWriter(bool binary = false, int indent = -1);
+    GumIDWriter(bool binary, int indent);
 
     ~GumIDWriter() override;
 

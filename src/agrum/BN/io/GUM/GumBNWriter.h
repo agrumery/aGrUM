@@ -85,7 +85,17 @@ namespace gum {
     /// @{
 
     /**
-     * Default constructor.
+     * Default constructor. The indentation is the one of the configuration
+     * (key `default_jgumIndent` of section `core`, see gum::Configuration).
+     *
+     * JGUM format is a json format. In binary mode, the output use the BJData format.
+     *
+     * @param binary If true, the output will be in binary format, otherwise in text format.
+     */
+    GumBNWriter(bool binary = false);
+
+    /**
+     * Constructor with an explicit indentation (the configuration is not used).
      *
      * JGUM format is a json format. In binary mode, the output use the BJData format.
      *
@@ -93,7 +103,7 @@ namespace gum {
      * @param indent The indentation level for the output in text format. If -1, the format is as
      * compact as possible.
      */
-    GumBNWriter(bool binary = false, int indent = -1);
+    GumBNWriter(bool binary, int indent);
 
     /**
      * Destructor.

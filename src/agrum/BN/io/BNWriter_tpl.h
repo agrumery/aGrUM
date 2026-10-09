@@ -51,12 +51,16 @@
 
 #  include <regex>
 
+#  include <agrum/base/core/configuration/configuration.h>
+
 namespace gum {
   /* =========================================================================*/
   /* ===                           GUM_BN_WRITER === */
   /* =========================================================================*/
   template < GUM_Numeric GUM_SCALAR >
-  BNWriter< GUM_SCALAR >::BNWriter() {
+  BNWriter< GUM_SCALAR >::BNWriter() :
+      _allowModification_(
+          Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving")) {
     GUM_CONSTRUCTOR(BNWriter);
   }
 

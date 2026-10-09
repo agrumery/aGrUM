@@ -164,7 +164,8 @@ namespace gum {
     ///}
 
     private:
-    bool _allowModification_ = false;
+    // initialized with the key `allow_modification_when_saving` of section `core` (gum::Configuration)
+    bool _allowModification_;
   };
 
 
