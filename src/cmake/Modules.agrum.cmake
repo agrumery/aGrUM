@@ -82,6 +82,41 @@ foreach (MODULE ${LIST_OF_MODULES})
     endforeach ()
 endforeach ()
 
+# The defaults of gum::Configuration (defaults.ini) are embedded in agrumBASE as a
+# byte array (not as a string literal: MSVC limits the size of a literal) in a generated
+# source, so that no file has to be found at run time (wheels, relocated installs, static builds).
+set(AGRUM_CONFIGURATION_DEFAULTS_INI "${AGRUM_SOURCE_DIR}/agrum/base/core/configuration/defaults.ini")
+set(AGRUM_CONFIGURATION_DEFAULTS_CPP "${AGRUM_BINARY_DIR}/agrum/base/core/configuration/configuration_defaults.cpp")
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${AGRUM_CONFIGURATION_DEFAULTS_INI}")
+file(READ "${AGRUM_CONFIGURATION_DEFAULTS_INI}" _defaults_hex HEX)
+string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," _defaults_bytes "${_defaults_hex}")
+string(REGEX REPLACE "((0x[0-9a-f][0-9a-f],){16})" "\\1\n" _defaults_bytes "${_defaults_bytes}")
+set(_defaults_cpp
+"// generated from defaults.ini by Modules.agrum.cmake, do not edit
+#include <string_view>
+
+namespace gum {
+  namespace {
+    constexpr unsigned char _defaults_[] = {
+${_defaults_bytes}
+    };
+  }   // namespace
+
+  std::string_view configurationEmbeddedDefaults() {
+    return std::string_view(reinterpret_cast< const char* >(_defaults_), sizeof(_defaults_));
+  }
+}   // namespace gum
+")
+# do not touch the generated file (and thus do not trigger a rebuild) if nothing changed
+set(_defaults_cpp_old "")
+if (EXISTS "${AGRUM_CONFIGURATION_DEFAULTS_CPP}")
+    file(READ "${AGRUM_CONFIGURATION_DEFAULTS_CPP}" _defaults_cpp_old)
+endif ()
+if (NOT "${_defaults_cpp_old}" STREQUAL "${_defaults_cpp}")
+    file(WRITE "${AGRUM_CONFIGURATION_DEFAULTS_CPP}" "${_defaults_cpp}")
+endif ()
+list(APPEND AGRUM_BASE_SOURCES "${AGRUM_CONFIGURATION_DEFAULTS_CPP}")
+
 #credal networks has a special case for C files
 if (BUILD_CN OR BUILD_ALL)
     file(GLOB_RECURSE AGRUM_CN_C_SOURCES ${AGRUM_SOURCE_DIR} ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/base/external/lrslib/lrsmp.c)
