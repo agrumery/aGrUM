@@ -402,18 +402,6 @@ namespace gum {
 
     friend class MultiDimFunctionGraphManager< GUM_ELEMENT, TerminalNodePolicy >;
   };
-
-
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  // extern template class MultiDimFunctionGraph<float>;
-#  endif
-#endif
-#ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-#  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  // extern template class MultiDimFunctionGraph<double>;
-#  endif
-#endif
 }   // namespace gum
 
 #include <agrum/base/multidim/implementations/multiDimFunctionGraph_tpl.h>
