@@ -1,7 +1,7 @@
 pyagrum.lib.dynamicBN
 =====================
 
-dynamic Bayesian Network are a special class of BNs where variables can be subscripted by a (discrete) time. See `this notebook <notebooks/22-Models_dynamicBn.ipynb>`_.
+dynamic Bayesian Network are a special class of BNs where variables can be subscripted by a (discrete) time. See `this notebook <notebooks/22-Models-dynamicBN.ipynb>`_.
 
 .. image:: _static/dBN.png
 

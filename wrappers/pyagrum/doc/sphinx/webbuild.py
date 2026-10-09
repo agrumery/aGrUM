@@ -95,6 +95,33 @@ def retrieveNotebooksSections(rst_path: str, json_path: str):
   notif(f"Sections saved to {json_path}")
 
 
+def retrieveCiteTitles(rst_path: str, bib_path: str, json_path: str):
+  """Save the short title (before the first colon) of every work cited by :cite:t: in the section titles of rst_path.
+
+  The website needs it since :cite:t: roles are not resolved in notebooks_sections.json.
+  """
+  keys = set()
+  with open(rst_path, "r") as f:
+    for line in f:
+      keys.update(re.findall(r":cite:t:`([^`]+)`", line))
+
+  with open(bib_path, "r") as f:
+    bib = f.read()
+
+  titles: dict[str, str] = {}
+  for key in sorted(keys):
+    entry = re.search(r"@\w+\{" + re.escape(key) + r",(.*?)\n\}", bib, re.DOTALL)
+    title = re.search(r"title\s*=\s*\{(.*)\}\s*,", entry.group(1)) if entry else None
+    if title is None:
+      notif(f"Warning: no title found in {bib_path} for citation '{key}'")
+      continue
+    titles[key] = title.group(1).replace("{", "").replace("}", "").split(":")[0].strip()
+
+  with open(json_path, "w") as fp:
+    json.dump(titles, fp, indent=2)
+  notif(f"Found {len(titles)} cited titles, saved to {json_path}")
+
+
 def retrieveThumbnails(RTD_path: str, json_path=str):
   res = parse_thumbnails_html(RTD_path)
   notif(f"Found {len(res)} thumbnails.")
@@ -296,6 +323,7 @@ if __name__ == "__main__":
 
   goRTD(site_dir)
   retrieveNotebooksSections(rst_path="notebooks.rst", json_path=f"{site_dir}/data/notebooks_sections.json")
+  retrieveCiteTitles(rst_path="notebooks.rst", bib_path="refs.bib", json_path=f"{site_dir}/data/cite_titles.json")
   retrieveThumbnails(
     RTD_path=os.path.join(site_dir, "RTD/html/notebooks.html"),
     json_path=f"{site_dir}/data/thumbnails.json",

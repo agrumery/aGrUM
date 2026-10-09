@@ -54,7 +54,7 @@ variable.
 
 **Tutorial**
 
-* `Tutorial on k-order dynamic Bayesian networks <notebooks/75-PyModels_KTBN.ipynb>`_
+* `Tutorial on k-order dynamic Bayesian networks <notebooks/26-Models_KTBN.ipynb>`_
 
 **Input / Output**
 
