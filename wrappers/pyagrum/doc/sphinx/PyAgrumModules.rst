@@ -97,8 +97,8 @@ is a plain attribute lookup, no import overhead. If the submodule was
 excluded from the build (see :ref:`optional-submodules` below), the same
 call raises an ``AttributeError`` instead of silently doing nothing.
 
-**2. Scope the import explicitly.** Each submodule can also be imported on
-its own, as a drop-in superset of the core namespace:
+**2. Scope the import explicitly (recommended).** Each submodule can also be
+imported on its own, as a drop-in superset of the core namespace:
 
 .. code-block:: python
 
@@ -111,6 +111,14 @@ This is exactly the pattern used throughout pyAgrum's own test suite for
 single-model scripts: it documents at the top of the file which model
 family is in use, and avoids the (negligible but nonzero) first-access
 import cost.
+
+The two ways can be mixed freely. Importing one submodule explicitly does
+**not** switch lazy loading off for the others: the policy is the same
+whatever has been imported before, so a script behaves identically
+regardless of import order or of what third-party code imports behind the
+scenes. Lazy loading is a convenience and backward-compatibility layer;
+the explicit form is the one to prefer in new code, because it states the
+dependencies at the top of the file.
 
 The lazy-loading mechanism
 ---------------------------
