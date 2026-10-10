@@ -45,11 +45,16 @@ import unittest
 import warnings
 
 import pyagrum as gum
+from pyagrum.pyagrumcpp import _Configuration
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 # the attribute pyagrum.config is the configuration singleton: the module itself
-# (which holds PyAgrumConfiguration and the schema parser) needs an explicit import
+# (which holds the wrapper PyAgrumConfiguration) needs an explicit import
 gumconfig = importlib.import_module("pyagrum.config")
+
+# The logic (parsing of the schema, validation, deprecations, ...) is the one of gum::Configuration and is
+# tested in C++ (ConfigurationTestSuite.h): this suite only tests the wrapper (conversions of types,
+# exceptions, warnings and Python hooks).
 
 
 class TestConfig(pyAgrumTestCase):
@@ -146,37 +151,22 @@ class TestConfig(pyAgrumTestCase):
     with self.assertRaises(SyntaxError):
       gum.config.doc("gogo", "gaga")
 
-  def testSchemaParser(self):
+  def testSchemaOfACustomConfiguration(self):
     cfg = self._freshConfig("[s]\n### int :: a doc\nk = 1\n### a|b :: values\nl = a\n")
-    schema = {(section, option): meta for section, option, meta, _ in cfg.schema()}
-    self.assertEqual(schema[("s", "k")].kind, "int")
-    self.assertEqual(schema[("s", "k")].doc, "a doc")
-    self.assertEqual(schema[("s", "l")].kind, "enum")
-    self.assertEqual(schema[("s", "l")].values, ("a", "b"))
+    schema = {(section, option): (meta, default) for section, option, meta, default in cfg.schema()}
+    self.assertEqual(schema[("s", "k")][0].kind, "int")
+    self.assertEqual(schema[("s", "k")][0].doc, "a doc")
+    self.assertEqual(schema[("s", "k")][1], "1")
+    self.assertEqual(schema[("s", "l")][0].kind, "enum")
+    self.assertEqual(schema[("s", "l")][0].values, ("a", "b"))
 
-    # decorative lines with 4+ '#' are not metadata
-    cfg = self._freshConfig("[s]\n#### decorative\nk = 1\n")
-    self.assertEqual([meta.doc for _, _, meta, _ in cfg.schema()], ["(undocumented)"])
-
-    with self.assertRaises(SyntaxError):  # missing '::'
+    with self.assertRaises(SyntaxError):  # a malformed schema is refused by the C++ configuration
       self._freshConfig("[s]\n### int doc\nk = 1\n")
-    with self.assertRaises(SyntaxError):  # unknown type
-      self._freshConfig("[s]\n### uint :: doc\nk = 1\n")
-    with self.assertRaises(SyntaxError):  # metadata not immediately followed by a key
-      self._freshConfig("[s]\n### int :: doc\n\nk = 1\n")
-    with self.assertRaises(SyntaxError):  # metadata at the end of file
-      self._freshConfig("[s]\nk = 1\n### int :: doc\n")
 
   @staticmethod
   def _freshConfig(content):
-    fn = os.path.join(tempfile.mkdtemp(), "defaults.ini")
-    with open(fn, "w") as f:
-      f.write(content)
-
-    class FreshConfig(gumconfig.PyAgrumConfiguration):
-      pass  # new class => new singleton, independent from gum.config
-
-    return FreshConfig(defaultsfn=fn)
+    # a configuration independent from gum.config, around a C++ configuration built from a text
+    return gumconfig.PyAgrumConfiguration(_Configuration(content))
 
   def testDeprecatedKey(self):
     cfg = self._freshConfig(
@@ -234,13 +224,58 @@ class TestConfig(pyAgrumTestCase):
     with self.assertRaises(IndexError):
       cfg.pop()
 
-  def testInvalidDefaultsFailFast(self):
-    with self.assertRaises(SyntaxError):  # deprecated -> unknown target
-      self._freshConfig("[sec]\nnewkey = 1\n### deprecated -> sec.nokey :: gone\noldkey = 0\n")
-    with self.assertRaises(SyntaxError):  # deprecated -> deprecated chain
-      self._freshConfig("[sec]\nk = 1\n### deprecated -> sec.b :: x\na = 0\n### deprecated -> sec.a :: y\nb = 0\n")
-    with self.assertRaises(ValueError):  # default value violating its own declared type
-      self._freshConfig("[sec]\n### int :: doc\nk = notanint\n")
+  def testHookIsCalledWithPythonErrors(self):
+    cfg = self._freshConfig("[s]\n### int :: x\nk = 1\n")
+
+    with self.assertRaises(TypeError):  # a hook must be callable
+      cfg.add_hook(3)
+
+    def failing():
+      raise RuntimeError("boom in a hook")
+
+    cfg.add_hook(failing)
+    with self.assertRaises(RuntimeError) as cm:  # the Python exception is the one received
+      cfg["s", "k"] = 2
+    self.assertIn("boom in a hook", str(cm.exception))
+
+  def testLoadAndSave(self):
+    cwd = os.getcwd()
+    gum.config.push()
+    try:
+      with tempfile.TemporaryDirectory() as tmp:
+        os.chdir(tmp)
+        try:
+          with self.assertRaises(FileNotFoundError):
+            gum.config.load()
+
+          with open(gum.pyagrumcpp._Configuration.userFileName(), "w") as f:
+            f.write("[notebook]\ntensor_visible_digits = 7\nnotakey = 1\n")
+          with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            gum.config.load()
+          self.assertEqual(gum.config["notebook", "tensor_visible_digits"], "7")
+          self.assertEqual(len(w), 1)  # the unknown key is reported as a warning
+
+          # a malformed file changes nothing
+          with open(gum.pyagrumcpp._Configuration.userFileName(), "w") as f:
+            f.write("[notebook]\ntensor_visible_digits = 3\nmalformed line\n")
+          with self.assertRaises(SyntaxError):
+            gum.config.load()
+          self.assertEqual(gum.config["notebook", "tensor_visible_digits"], "7")
+
+          gum.config.save()
+          with open(gum.pyagrumcpp._Configuration.userFileName()) as f:
+            self.assertIn("tensor_visible_digits = 7", f.read())
+        finally:
+          os.chdir(cwd)
+    finally:
+      gum.config.pop()
+
+  def testRepr(self):
+    cfg = self._freshConfig("[s]\n### int :: x\nk = 1\n")
+    self.assertTrue(repr(cfg).startswith("# no customized property"))
+    cfg["s", "k"] = 2
+    self.assertEqual(repr(cfg), "[s]\n  k = 2")
 
 
 ts = unittest.TestSuite()

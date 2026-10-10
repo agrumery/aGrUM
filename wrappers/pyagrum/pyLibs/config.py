@@ -42,20 +42,10 @@
 configuration tool for pyAgrum
 """
 
-import os
 import warnings
-from typing import Any, NamedTuple
+from typing import NamedTuple
 
-from .pyagrumcpp import InvalidArgument, OperationNotAllowed, _Configuration
-
-
-class GumSingleton(type):
-  _instances: dict[type, Any] = {}
-
-  def __call__(cls, *args, **kwargs):
-    if cls not in cls._instances:
-      cls._instances[cls] = super().__call__(*args, **kwargs)
-    return cls._instances[cls]
+from .pyagrumcpp import InvalidArgument, IOError as _GumIOError, OperationNotAllowed, _Configuration
 
 
 class ConfigMetadata(NamedTuple):
@@ -67,12 +57,9 @@ class ConfigMetadata(NamedTuple):
   target: tuple[str, str] | None  # replacement (section, option) when kind == "deprecated"
 
 
-_TRUE_VALUES = frozenset({"TRUE", "1", "ON", "YES"})
-
-
-class PyAgrumConfiguration(metaclass=GumSingleton):
-  """PyAgrumConfiguration is a the pyAgrum configuration singleton. The configuration is a read-only structure of
-  sections and keys, managed by the aGrUM C++ library (``gum::Configuration``): a value is adressable using
+class PyAgrumConfiguration:
+  """PyAgrumConfiguration is a thin wrapper of the pyAgrum configuration singleton. The configuration is a read-only
+  structure of sections and keys, entirely managed by the aGrUM C++ library (``gum::Configuration``): a value is adressable using
   a double key: ``[section,key]``. Section names are case-sensitive, key names are not.
 
   Each key is described in ``defaults.ini`` by a metadata line ``### type :: documentation`` where type is
@@ -94,10 +81,6 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     >>> pyagrum.config["dynamicBN", "default_graph_size"]
     "10"
   """
-
-  @staticmethod
-  def _check_bool_true(s):
-    return s.upper() in _TRUE_VALUES
 
   class _CastAsTyped:
     def __init__(self, container):
@@ -131,17 +114,9 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       self._warn()
       super().__setitem__(x, v)
 
-  def __init__(self, defaultsfn=None):
-    self.__hooks = []
-    try:
-      if defaultsfn is None:
-        # the global configuration of the library (its defaults are embedded in the library)
-        self.__engine = _Configuration.instance()
-      else:
-        with open(defaultsfn, encoding="utf-8") as f:
-          self.__engine = _Configuration(f.read(), os.path.basename(defaultsfn))
-    except InvalidArgument as e:
-      raise ValueError(str(e)) from None
+  def __init__(self, engine=None):
+    # by default, the global configuration of the library (its defaults are embedded in the library)
+    self.__engine = _Configuration.instance() if engine is None else engine
 
     self.asInt = self._DeprecatedCast(self, "asInt")
     self.asFloat = self._DeprecatedCast(self, "asFloat")
@@ -173,15 +148,13 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
       self.__emitNotices()
 
   def add_hook(self, fn):
-    self.__hooks.append(fn)
-
-  def __run_python_hooks(self):
-    for fn in self.__hooks:
-      fn()
+    """Register a function (without argument) called after each change of the configuration (see ``set``,
+    ``reset``, ``pop`` and ``load``), after the hooks of the aGrUM library itself."""
+    self.__run("addPythonHook", fn)
 
   def run_hooks(self):
-    self.__engine.runHooks()
-    self.__run_python_hooks()
+    """Run the hooks."""
+    self.__run("runHooks")
 
   def set(self, section, option, value, no_hook=False):
     """set a property in a section. Preferably use ``__getitem__`` and ``__setitem__``.
@@ -211,8 +184,6 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
         If the value does not respect the type declared for this key in defaults.
     """
     self.__run("set", section, option, str(value), no_hook)
-    if not no_hook:
-      self.__run_python_hooks()
 
   def get(self, section, option):
     """Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
@@ -289,15 +260,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     int | float | bool | str
         The value, converted according to the declared type.
     """
-    value = self.get(section, option)
-    kind = self.__run("resolvedKind", section, option)
-    if kind == "int":
-      return int(value)
-    if kind == "float":
-      return float(value)
-    if kind == "bool":
-      return self._check_bool_true(value)
-    return value
+    return self.__run("getValue", section, option)
 
   def schema(self):
     """Iterate over the whole configuration schema (in the order of the defaults).
@@ -331,7 +294,6 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
   def reset(self):
     """back to defaults"""
     self.__run("reset")
-    self.__run_python_hooks()
 
   def load(self):
     """load pyagrum.ini in the current directory, and change the properties if needed.
@@ -342,13 +304,14 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     Raises
     ------
     FileNotFoundError
-        If there is no pyagrum.ini in the current directory.
+        If there is no readable pyagrum.ini in the current directory.
+    SyntaxError
+        If pyagrum.ini contains a malformed line (in this case, nothing is changed).
     """
-    filename = _Configuration.userFileName()
-    if not os.path.isfile(filename):
-      raise FileNotFoundError(f"No file '{filename}' in current directory.")
-    self.__run("load", filename)
-    self.__run_python_hooks()
+    try:
+      self.__run("load", _Configuration.userFileName())
+    except _GumIOError as e:
+      raise FileNotFoundError(str(e)) from None
 
   def grep(self, search):
     """grep in the configuration any section or property matching the argument. If a section matches
@@ -369,10 +332,7 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     return self.__run("toString")
 
   def __repr__(self):
-    res = self.__run("diff")
-    if res:
-      return res
-    return "# no customized property\n" + str(self)
+    return self.__run("describe")
 
   def __getitem__(self, key):
     return self.get(key[0], key[1])
@@ -388,7 +348,6 @@ class PyAgrumConfiguration(metaclass=GumSingleton):
     Pop the last config from the stack and set it as the current configuration
     """
     self.__run("pop")
-    self.__run_python_hooks()
 
   def push(self):
     """

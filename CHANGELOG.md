@@ -7,14 +7,17 @@
     - `pyagrum.config` is now a thin layer over the new C++ `gum::Configuration`: same API, same `defaults.ini`
       (embedded in the library) and same `pyagrum.ini` file, which is now read when the library is loaded.
       `saveGUM(name)` / `saveBN(...)` use `core.default_jgumIndent` / `core.allow_modification_when_saving` through
-      the C++ writers.
+      the C++ writers. The Python class only converts types, exceptions and notices (as warnings): Python hooks are
+      registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
+      The (hidden) class `PyAgrumConfiguration` no longer reads a defaults file: it wraps a C++ configuration.
 
 - aGrUM
 
     - **New: `gum::Configuration`**, a thread-safe, typed and documented configuration singleton (sections, keys,
       defaults with `### type :: doc` metadata, `push`/`pop`, hooks, diff/save/load). Its defaults (`defaults.ini`)
       are embedded in the library; `agrum.ini` of the current directory (`pyagrum.ini` for pyAgrum) is read at
-      start-up. `core.default_maxNumberOfThreads` is applied at start-up.
+      start-up. `core.default_maxNumberOfThreads` is applied at start-up. `load` is atomic: a malformed line
+      changes nothing.
     - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.default_jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
       from `core.allow_modification_when_saving`.

@@ -52,19 +52,6 @@
 inline bool gumConfigAllowModificationWhenSaving() {
   return gum::Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving");
 }
-
-namespace {
-  std::string _gumConfigurationKindName(gum::Configuration::Kind kind) {
-    switch (kind) {
-      case gum::Configuration::Kind::INT       : return "int";
-      case gum::Configuration::Kind::FLOAT     : return "float";
-      case gum::Configuration::Kind::BOOL      : return "bool";
-      case gum::Configuration::Kind::ENUM      : return "enum";
-      case gum::Configuration::Kind::DEPRECATED: return "deprecated";
-      default                                  : return "str";
-    }
-  }
-}   // namespace
 %}
 
 %rename(_Configuration) gum::Configuration;
@@ -96,37 +83,23 @@ namespace gum {
     std::string grep(std::string_view search) const;
     std::string diff() const;
     std::string toString() const;
+    std::string describe() const;
 
     void runHooks() const;
   };
 }   // namespace gum
 
 %extend gum::Configuration {
-  // declared type of section.key, following a deprecation to the key that carries the value:
-  // "int", "float", "bool", "str" or "enum"
-  std::string resolvedKind(std::string_view section, std::string_view key) const {
-    auto meta = self->meta(section, key);
-    if (meta.kind == gum::Configuration::Kind::DEPRECATED) {
-      meta = self->meta(meta.targetSection, meta.targetKey);
-    }
-    return _gumConfigurationKindName(meta.kind);
-  }
-
   // the whole schema, flattened: 8 strings per key, in the order of the defaults
   //   section, key, kind (int|float|bool|str|enum|deprecated), allowed values joined by '|' (enum),
   //   documentation, replacement section and key (deprecated), default value
   std::vector< std::string > schemaRows() const {
     std::vector< std::string > rows;
     for (const auto& entry: self->schema()) {
-      std::string values;
-      for (const auto& v: entry.meta.values) {
-        if (!values.empty()) values += '|';
-        values += v;
-      }
       rows.push_back(entry.section);
       rows.push_back(entry.key);
-      rows.push_back(_gumConfigurationKindName(entry.meta.kind));
-      rows.push_back(values);
+      rows.push_back(gum::Configuration::kindName(entry.meta.kind));
+      rows.push_back(entry.meta.joinedValues());
       rows.push_back(entry.meta.doc);
       rows.push_back(entry.meta.targetSection);
       rows.push_back(entry.meta.targetKey);

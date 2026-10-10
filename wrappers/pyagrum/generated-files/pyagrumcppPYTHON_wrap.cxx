@@ -4798,19 +4798,6 @@ inline bool gumConfigAllowModificationWhenSaving() {
   return gum::Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving");
 }
 
-namespace {
-  std::string _gumConfigurationKindName(gum::Configuration::Kind kind) {
-    switch (kind) {
-      case gum::Configuration::Kind::INT       : return "int";
-      case gum::Configuration::Kind::FLOAT     : return "float";
-      case gum::Configuration::Kind::BOOL      : return "bool";
-      case gum::Configuration::Kind::ENUM      : return "enum";
-      case gum::Configuration::Kind::DEPRECATED: return "deprecated";
-      default                                  : return "str";
-    }
-  }
-}   // namespace
-
 
 SWIGINTERN int
 SWIG_AsVal_bool (PyObject *obj, bool *val)
@@ -4825,25 +4812,13 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
   return SWIG_OK;
 }
 
-SWIGINTERN std::string gum_Configuration_resolvedKind(gum::Configuration const *self,std::string_view section,std::string_view key){
-    auto meta = self->meta(section, key);
-    if (meta.kind == gum::Configuration::Kind::DEPRECATED) {
-      meta = self->meta(meta.targetSection, meta.targetKey);
-    }
-    return _gumConfigurationKindName(meta.kind);
-  }
 SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_schemaRows(gum::Configuration const *self){
     std::vector< std::string > rows;
     for (const auto& entry: self->schema()) {
-      std::string values;
-      for (const auto& v: entry.meta.values) {
-        if (!values.empty()) values += '|';
-        values += v;
-      }
       rows.push_back(entry.section);
       rows.push_back(entry.key);
-      rows.push_back(_gumConfigurationKindName(entry.meta.kind));
-      rows.push_back(values);
+      rows.push_back(gum::Configuration::kindName(entry.meta.kind));
+      rows.push_back(entry.meta.joinedValues());
       rows.push_back(entry.meta.doc);
       rows.push_back(entry.meta.targetSection);
       rows.push_back(entry.meta.targetKey);
@@ -4859,6 +4834,32 @@ SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configur
       rows.push_back(notice.message);
     }
     return rows;
+  }
+SWIGINTERN PyObject *gum_Configuration_getValue(gum::Configuration const *self,std::string_view section,std::string_view key){
+    return std::visit(
+        [](const auto& value) -> PyObject* {
+          using T = std::decay_t< decltype(value) >;
+          if constexpr (std::is_same_v< T, bool >) return PyBool_FromLong(value ? 1 : 0);
+          else if constexpr (std::is_same_v< T, std::int64_t >) return PyLong_FromLongLong(value);
+          else if constexpr (std::is_same_v< T, double >) return PyFloat_FromDouble(value);
+          else return PyUnicode_FromString(value.c_str());
+        },
+        self->getValue(section, key));
+  }
+SWIGINTERN void gum_Configuration_addPythonHook(gum::Configuration *self,PyObject *callable){
+    if (!PyCallable_Check(callable)) {
+      PyErr_SetString(PyExc_TypeError, "Need a callable object!");
+      throw PythonErrorAlreadySet();
+    }
+    Py_INCREF(callable);
+    self->addHook([callable](const gum::Configuration&) {
+      const PyGILState_STATE gil    = PyGILState_Ensure();
+      PyObject*              result = PyObject_CallNoArgs(callable);
+      const bool             failed = (result == nullptr);
+      Py_XDECREF(result);
+      PyGILState_Release(gil);
+      if (failed) throw PythonErrorAlreadySet();
+    });
   }
 
 SWIGINTERNINLINE PyObject*
@@ -6050,6 +6051,10 @@ namespace gum {
     }
   }
 }
+
+
+#include <type_traits>
+#include <variant>
 
 
 #include "extensions/PythonBNListener.h"
@@ -23166,6 +23171,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap__Configuration_describe(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_describe" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = ((gum::Configuration const *)arg1)->describe();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap__Configuration_runHooks(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
@@ -23192,90 +23228,6 @@ SWIGINTERN PyObject *_wrap__Configuration_runHooks(PyObject *self, PyObject *arg
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__Configuration_resolvedKind(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Configuration *arg1 = 0 ;
-  std::string_view arg2 ;
-  std::string_view arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *bytes2 = NULL ;
-  PyObject *bytes3 = NULL ;
-  PyObject *swig_obj[3] ;
-  std::string result;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_resolvedKind", 3, 3, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_resolvedKind" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
-  {
-    Py_ssize_t len;
-#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
-    const char *p = PyBytes_AsString(swig_obj[1]);
-    if (!p) SWIG_fail;
-    len = PyBytes_Size(swig_obj[1]);
-#else
-    const char *p;
-    if (PyUnicode_Check(swig_obj[1])) {
-      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
-      if (!p) SWIG_fail;
-    } else {
-      p = PyBytes_AsString(swig_obj[1]);
-      if (!p) SWIG_fail;
-      len = PyBytes_Size(swig_obj[1]);
-    }
-#endif
-    arg2 = std::string_view(p, len);
-  }
-  {
-    Py_ssize_t len;
-#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
-    const char *p = PyBytes_AsString(swig_obj[2]);
-    if (!p) SWIG_fail;
-    len = PyBytes_Size(swig_obj[2]);
-#else
-    const char *p;
-    if (PyUnicode_Check(swig_obj[2])) {
-      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
-      if (!p) SWIG_fail;
-    } else {
-      p = PyBytes_AsString(swig_obj[2]);
-      if (!p) SWIG_fail;
-      len = PyBytes_Size(swig_obj[2]);
-    }
-#endif
-    arg3 = std::string_view(p, len);
-  }
-  {
-    try {
-      result = gum_Configuration_resolvedKind((gum::Configuration const *)arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  
-  SWIG_Py_XDECREF(bytes2);
-  
-  
-  SWIG_Py_XDECREF(bytes3);
-  
-  return resultobj;
-fail:
-  
-  SWIG_Py_XDECREF(bytes2);
-  
-  
-  SWIG_Py_XDECREF(bytes3);
-  
   return NULL;
 }
 
@@ -23348,6 +23300,122 @@ SWIGINTERN PyObject *_wrap__Configuration_takeNoticeRows(PyObject *self, PyObjec
     for (Py_ssize_t _i = 0; _i < _n; ++_i)
     PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_getValue(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_getValue", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_getValue" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (PyObject *)gum_Configuration_getValue((gum::Configuration const *)arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration_addPythonHook(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration_addPythonHook", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_addPythonHook" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      gum_Configuration_addPythonHook(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -130272,10 +130340,12 @@ static PyMethodDef SwigMethods[] = {
 	 { "_Configuration_grep", _wrap__Configuration_grep, METH_VARARGS, NULL},
 	 { "_Configuration_diff", _wrap__Configuration_diff, METH_O, NULL},
 	 { "_Configuration_toString", _wrap__Configuration_toString, METH_O, NULL},
+	 { "_Configuration_describe", _wrap__Configuration_describe, METH_O, NULL},
 	 { "_Configuration_runHooks", _wrap__Configuration_runHooks, METH_O, NULL},
-	 { "_Configuration_resolvedKind", _wrap__Configuration_resolvedKind, METH_VARARGS, NULL},
 	 { "_Configuration_schemaRows", _wrap__Configuration_schemaRows, METH_O, NULL},
 	 { "_Configuration_takeNoticeRows", _wrap__Configuration_takeNoticeRows, METH_O, NULL},
+	 { "_Configuration_getValue", _wrap__Configuration_getValue, METH_VARARGS, NULL},
+	 { "_Configuration_addPythonHook", _wrap__Configuration_addPythonHook, METH_VARARGS, NULL},
 	 { "delete__Configuration", _wrap_delete__Configuration, METH_O, NULL},
 	 { "_Configuration_swigregister", _Configuration_swigregister, METH_O, NULL},
 	 { "_Configuration_swiginit", _Configuration_swiginit, METH_VARARGS, NULL},

@@ -117,6 +117,7 @@ static int _pyagrum_import_numpy(void) {
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BASE.i"
 
+%include "configurationPython.i"
 %include "gum_functions_BASE.i"
 
 /////////////////////////////////

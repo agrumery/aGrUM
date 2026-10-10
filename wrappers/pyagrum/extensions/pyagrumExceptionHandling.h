@@ -62,9 +62,15 @@
 
 #include <agrum/agrum.h>
 
+// Thrown by C++ code which called Python and failed: the Python exception is already set, it must
+// not be replaced by SetPythonizeAgrumException().
+struct PythonErrorAlreadySet {};
+
 static void SetPythonizeAgrumException() {
   try {
     throw;
+  } catch (PythonErrorAlreadySet&) {
+    // nothing to do: the Python exception is already set
   } catch (std::bad_cast&) {
     PyErr_SetString(PyExc_RuntimeError, "C++ Bad Cast");
   } catch (gum::SyntaxError& e) {

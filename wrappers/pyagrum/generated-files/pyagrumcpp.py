@@ -970,17 +970,23 @@ class _Configuration(object):
     def toString(self) -> str:
         return _pyagrumcpp._Configuration_toString(self)
 
+    def describe(self) -> str:
+        return _pyagrumcpp._Configuration_describe(self)
+
     def runHooks(self) -> None:
         return _pyagrumcpp._Configuration_runHooks(self)
-
-    def resolvedKind(self, section: str, key: str) -> str:
-        return _pyagrumcpp._Configuration_resolvedKind(self, section, key)
 
     def schemaRows(self) -> tuple[str, ...]:
         return _pyagrumcpp._Configuration_schemaRows(self)
 
     def takeNoticeRows(self) -> tuple[str, ...]:
         return _pyagrumcpp._Configuration_takeNoticeRows(self)
+
+    def getValue(self, section: str, key: str) -> object:
+        return _pyagrumcpp._Configuration_getValue(self, section, key)
+
+    def addPythonHook(self, callable: object) -> None:
+        return _pyagrumcpp._Configuration_addPythonHook(self, callable)
     __swig_destroy__ = _pyagrumcpp.delete__Configuration
 
 # Register _Configuration in _pyagrumcpp:
