@@ -16,8 +16,11 @@
     - **New: `gum::Configuration`**, a thread-safe, typed and documented configuration singleton (sections, keys,
       defaults with `### type :: doc` metadata, `push`/`pop`, hooks, diff/save/load). Its defaults (`defaults.ini`)
       are embedded in the library; `agrum.ini` of the current directory (`pyagrum.ini` for pyAgrum) is read at
-      start-up. `core.default_maxNumberOfThreads` is applied at start-up. `load` is atomic: a malformed line
-      changes nothing.
+      start-up. `core.default_maxNumberOfThreads` is applied at start-up (the default, -1, keeps the number of threads
+      provided by the machine). `load` is atomic: a malformed line changes nothing. `load` never rewrites
+      the file (`save` writes the new names of the deprecated keys). `set` restores the previous value if a hook throws.
+      A notice already waiting is not queued twice. Floats are parsed independently of the locale of the program
+      (new `gum::parseDecimal` in `utils_string.h`).
     - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.default_jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
       from `core.allow_modification_when_saving`.

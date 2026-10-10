@@ -74,8 +74,8 @@
  * immediately above it:
  * \code{.ini}
  * [core]
- * ### int :: default maximum number of threads used by aGrUM
- * default_maxNumberOfThreads = 24
+ * ### int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)
+ * default_maxNumberOfThreads = -1
  * ### bool :: allow to fix syntax errors in a model instead of raising when exporting
  * allow_modification_when_saving = False
  * \endcode
@@ -124,6 +124,8 @@
  *   configuration. This is what <tt>repr(pyagrum.config)</tt> shows.
  * - An unknown section or key raises a gum::SyntaxError; a value which does not respect the declared type
  *   raises a gum::InvalidArgument and nothing is changed.
+ * - A <tt>float</tt> is written in decimal or scientific notation with a <tt>.</tt> (<tt>0.25</tt>,
+ *   <tt>1e-6</tt>), whatever the locale of the program.
  * - gum::Configuration::get() returns a copy: the result stays valid whatever other threads do.
  *
  * A configuration can also be saved (gum::Configuration::save(): only the differences with the defaults are
@@ -152,8 +154,9 @@
  * });
  * \endcode
  *
- * The hook receives the configuration as a <tt>const</tt> reference. This is exactly what the library does
- * itself for <tt>core.default_maxNumberOfThreads</tt> (see gum::Configuration::instance()).
+ * The hook receives the configuration as a <tt>const</tt> reference. This is what the library does
+ * itself for <tt>core.default_maxNumberOfThreads</tt> (see gum::Configuration::instance()), except that a
+ * negative value (the default, -1) gives back the number of threads provided by the machine.
  *
  * ## When are hooks run ? ##
  *
@@ -201,11 +204,13 @@
  * # Notices #
  *
  * Some events are not errors, but should not be silent: using a deprecated key, or finding an unknown key
- * or an invalid value in the user file (the valid part of the file is loaded anyway and the file is
- * rewritten without the faulty lines). Only a malformed line stops gum::Configuration::load() with a
- * gum::SyntaxError: the whole file is read before anything is applied, so nothing at all is changed in
- * this case. The library never prints anything: these events are queued, and
- * gum::Configuration::takeNotices() returns and empties the queue.
+ * or an invalid value in the user file (the valid part of the file is loaded anyway, the file itself is
+ * never modified by gum::Configuration::load()). A deprecated key found in the user file is applied to its
+ * replacement, so gum::Configuration::save() writes the file with the new key names. Only a malformed line
+ * stops gum::Configuration::load() with a gum::SyntaxError: the whole file is read before anything is
+ * applied, so nothing at all is changed in this case. The library never prints anything: these events are
+ * queued (a notice already waiting is not queued twice), and gum::Configuration::takeNotices() returns and
+ * empties the queue.
  * \code{.cpp}
  * for (const auto& notice: gum::Configuration::instance().takeNotices())
  *   std::cerr << notice.message << std::endl;

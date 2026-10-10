@@ -42,11 +42,13 @@
 
 
 #include <atomic>
+#include <clocale>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <thread>
+#include <variant>
 #include <vector>
 
 #include <agrum/base/core/configuration/configuration.h>
@@ -187,6 +189,51 @@ Color = #FF7F64
     CHECK_THROWS_AS(c.getTyped< bool >("main", "nokey"), const gum::SyntaxError&);
   }
 
+  GUM_TEST(ConfigurationFloatsDoNotDependOnTheLocale) {
+    gum::Configuration c(ConfigurationTestSuite::defaults());
+
+    // only a decimal or scientific notation with a '.' is accepted
+    for (const auto* ok: {"0.5", "-2.25", ".5", "1e-3", "+1.5E2", "3"}) {
+      CHECK_NOTHROW(c.set("main", "real", ok));
+    }
+    for (const auto* ko: {"0,5", "1.5x", "0x10", "nan", "inf", "1e999", ""}) {
+      CHECK_THROWS_AS(c.set("main", "real", ko), const gum::InvalidArgument&);
+    }
+
+    // the decimal separator of the locale of the program is ignored (see gum::parseDecimal)
+    const std::string previous = std::setlocale(LC_NUMERIC, nullptr);
+    if (std::setlocale(LC_NUMERIC, "fr_FR.UTF-8") != nullptr
+        || std::setlocale(LC_NUMERIC, "de_DE.UTF-8") != nullptr) {
+      c.set("main", "real", "0.25");
+      CHECK_EQ(c.getTyped< double >("main", "real"), 0.25);
+      CHECK_EQ(std::get< double >(c.getValue("main", "real")), 0.25);
+    }
+    std::setlocale(LC_NUMERIC, previous.c_str());
+  }
+
+  GUM_TEST(ConfigurationSetIsCancelledWhenAHookThrows) {
+    gum::Configuration c(ConfigurationTestSuite::defaults());
+
+    int nbCalls = 0;
+    c.addHook([&nbCalls](const gum::Configuration& conf) {
+      ++nbCalls;
+      if (conf.get("main", "number") == "13") GUM_ERROR(gum::OperationNotAllowed, "unlucky")
+    });
+
+    c.set("main", "number", "5");
+    CHECK_EQ(nbCalls, 1);
+
+    // the exception of the hook is the one received, the previous value is back and the hooks have
+    // been run again with it
+    CHECK_THROWS_AS(c.set("main", "number", "13"), const gum::OperationNotAllowed&);
+    CHECK_EQ(c.get("main", "number"), "5");
+    CHECK_EQ(nbCalls, 3);
+
+    // without hook, nothing can fail
+    CHECK_NOTHROW(c.set("main", "number", "13", true));
+    CHECK_EQ(c.get("main", "number"), "13");
+  }
+
   GUM_TEST(ConfigurationDefaultsMustBeValid) {
     const std::string h = "[s]\n";
 
@@ -242,7 +289,7 @@ Color = #FF7F64
 
     CHECK_EQ(c.get("s", "old"), "5");
     CHECK_EQ(c.getTyped< std::int64_t >("s", "old"), 5);
-    CHECK_EQ(c.takeNotices().size(), std::size_t(2));
+    CHECK_EQ(c.takeNotices().size(), std::size_t(1));   // the same notice is queued once
 
     CHECK_EQ(c.doc("s", "old"), "deprecated -> s.new :: replaced");
     CHECK_THROWS_AS(c.set("s", "old", "abc"), const gum::InvalidArgument&);
@@ -355,8 +402,9 @@ Color = #FF7F64
     for (const auto& n: notices)
       CHECK(n.kind == gum::Configuration::Notice::Kind::FILE);
 
-    // ... and the file is cleaned
-    CHECK_EQ(ConfigurationTestSuite::readFile(filename), "[main]\n  number = 12\n  flag = True\n");
+    // ... and the file is left as it was
+    CHECK_EQ(ConfigurationTestSuite::readFile(filename),
+             "[nosection]\nk = 1\n[main]\nNUMBER = 12\nnokey = 1\nreal = abc\nflag = on\n");
 
     {
       std::ofstream f(filename);
@@ -365,6 +413,41 @@ Color = #FF7F64
     CHECK_THROWS_AS(c.load(filename), const gum::SyntaxError&);   // key outside of any section
 
     std::filesystem::remove(filename);
+  }
+
+  GUM_TEST(ConfigurationSaveMigratesDeprecatedKeys) {
+    const auto filename = ConfigurationTestSuite::tempFile();
+    const auto defaults = std::string("[s]\n### int :: the answer\nnewkey = 1\n"
+                                      "### deprecated -> s.newkey :: renamed\noldkey = 0\n");
+    {
+      std::ofstream f(filename);
+      f << "[s]\noldkey = 42\n";
+    }
+
+    gum::Configuration c(defaults);
+    c.load(filename);
+    CHECK_EQ(c.get("s", "newkey"), "42");
+    CHECK_EQ(c.takeNotices().size(), std::size_t(1));
+    CHECK_EQ(ConfigurationTestSuite::readFile(filename),
+             "[s]\noldkey = 42\n");   // load never writes
+
+    c.save(filename);                 // the deprecated key is replaced by its replacement
+    CHECK_EQ(ConfigurationTestSuite::readFile(filename), "[s]\n  newkey = 42\n");
+
+    std::filesystem::remove(filename);
+  }
+
+  GUM_TEST(ConfigurationSameNoticeIsQueuedOnce) {
+    gum::Configuration c("[s]\n### int :: the answer\nnewkey = 1\n"
+                         "### deprecated -> s.newkey :: renamed\noldkey = 0\n");
+
+    for (int i = 0; i < 100; ++i)
+      c.get("s", "oldkey");
+    CHECK_EQ(c.takeNotices().size(), std::size_t(1));
+    CHECK(c.takeNotices().empty());
+
+    c.get("s", "oldkey");   // once taken, the notice can be raised again
+    CHECK_EQ(c.takeNotices().size(), std::size_t(1));
   }
 
   GUM_TEST(ConfigurationLoadIsAtomic) {
@@ -475,8 +558,9 @@ Color = #FF7F64
     CHECK(c.has("core", "default_maxNumberOfThreads"));
     CHECK(c.has("core", "default_jgumIndent"));
     CHECK(c.has("core", "allow_modification_when_saving"));
-    CHECK_EQ(c.doc("core", "default_maxNumberOfThreads"),
-             "int :: default maximum number of threads used by aGrUM");
+    CHECK_EQ(
+        c.doc("core", "default_maxNumberOfThreads"),
+        "int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)");
 
     CHECK(!gum::Configuration::userFileName().empty());
   }
@@ -496,6 +580,10 @@ Color = #FF7F64
     CHECK_EQ(gum::getNumberOfThreads(), 2u);
     conf.runHooks();
     CHECK_EQ(gum::getNumberOfThreads(), 5u);
+
+    // a negative value gives back the number of threads provided by the machine
+    conf.set("core", "default_maxNumberOfThreads", "-1");
+    CHECK_GE(gum::getNumberOfThreads(), 1u);
 
     conf.pop();
     gum::setNumberOfThreads(before);

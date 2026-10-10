@@ -373,7 +373,11 @@ namespace gum {
 
   void Configuration::_queue_(Notice::Kind kind, std::string message) const {
     std::lock_guard< std::mutex > lock(_noticeMutex_);
-    _notices_.push_back(Notice{kind, std::move(message)});
+    // a notice already waiting is not queued twice (e.g. a deprecated key read in a loop)
+    const auto same = [&](const Notice& n) { return n.kind == kind && n.message == message; };
+    if (std::none_of(_notices_.begin(), _notices_.end(), same)) {
+      _notices_.push_back(Notice{kind, std::move(message)});
+    }
   }
 
   std::size_t Configuration::_resolve_(std::size_t pos, std::vector< Notice >* sink) const {
@@ -416,12 +420,14 @@ namespace gum {
         }
         return true;
       }
-      case Kind::FLOAT :
-        if (!isNumerical(s)) {
+      case Kind::FLOAT : {
+        double res = 0;
+        if (!parseDecimal(s, res)) {
           error = "'" + s + "' must be a float for '" + name + "'.";
           return false;
         }
         return true;
+      }
       case Kind::BOOL : {
         const auto low = toLower(s);
         if (low == "true" || low == "1" || low == "on" || low == "yes") {
@@ -466,7 +472,11 @@ namespace gum {
     switch (kind) {
       case Kind::BOOL : return value == "True";
       case Kind::INT : return static_cast< std::int64_t >(std::strtoll(value.c_str(), nullptr, 10));
-      case Kind::FLOAT : return std::strtod(value.c_str(), nullptr);
+      case Kind::FLOAT : {
+        double res = 0;
+        parseDecimal(value, res);
+        return res;
+      }
       default : return value;
     }
   }
@@ -521,11 +531,29 @@ namespace gum {
                           std::string_view key,
                           std::string_view value,
                           bool             noHook) {
+    std::size_t pos = 0;
+    std::string previous;
     {
       std::unique_lock lock(_mutex_);
-      _setAt_(_resolve_(_find_(section, key)), value);
+      pos      = _resolve_(_find_(section, key));
+      previous = _items_[pos].value;
+      _setAt_(pos, value);
     }
-    if (!noHook) runHooks();
+    if (noHook) return;
+
+    try {
+      runHooks();
+    } catch (...) {
+      {
+        std::unique_lock lock(_mutex_);
+        _items_[pos].value = std::move(previous);
+      }
+      // bring back the state driven by the hooks; the original exception is the one to report
+      try {
+        runHooks();
+      } catch (...) {}
+      throw;
+    }
   }
 
   Configuration::Snapshot Configuration::_snapshot_() const {
@@ -576,8 +604,7 @@ namespace gum {
     // thus the state driven by the hooks) untouched.
     std::vector< std::pair< std::size_t, std::string > > changes;   // (position, canonical value)
     std::vector< Notice >                                notices;
-    bool                                                 rewrite = false;
-    auto                                                 note    = [&](std::string message) {
+    auto                                                 note = [&](std::string message) {
       notices.push_back(Notice{Notice::Kind::FILE, "[" + filename + "] " + std::move(message)});
     };
     {
@@ -595,10 +622,7 @@ namespace gum {
         if (_isSectionLine_(trimmed, name)) {
           section      = name;
           knownSection = _hasSection_(section);
-          if (!knownSection) {
-            rewrite = true;
-            note("Section '" + section + "' does not exist.");
-          }
+          if (!knownSection) { note("Section '" + section + "' does not exist."); }
           continue;
         }
 
@@ -609,18 +633,15 @@ namespace gum {
 
         const auto pos = _tryFind_(section, key);
         if (pos == _npos_) {
-          rewrite = true;
           note("Option '" + section + "." + toLower(key) + "' does not exist.");
           continue;
         }
-        if (_items_[pos].meta.kind == Kind::DEPRECATED) rewrite = true;
         const auto target = _resolve_(pos, &notices);
 
         std::string canonical, error;
         if (_validate_(_items_[target], value, canonical, error)) {
           changes.emplace_back(target, std::move(canonical));
         } else {
-          rewrite = true;
           note("Invalid value for '" + section + "." + toLower(key) + "': " + error);
         }
       }
@@ -634,7 +655,6 @@ namespace gum {
     for (auto& notice: notices)
       _queue_(notice.kind, std::move(notice.message));
     runHooks();
-    if (rewrite) save(filename);
   }
 
   void Configuration::save(const std::string& filename) const {
@@ -725,10 +745,11 @@ namespace gum {
     // built, completed by the user file and applied once (thread-safe), the first time it is needed
     static Configuration& config = []() -> Configuration& {
       static Configuration global(configurationEmbeddedDefaults());
-      // the number of threads is the only [core] key acting directly on the library
-      global.addHook([](const Configuration& c) {
-        gum::setNumberOfThreads(static_cast< unsigned int >(
-            c.getTyped< std::int64_t >("core", "default_maxNumberOfThreads")));
+      // the number of threads is the only [core] key acting directly on the library; a negative
+      // value gives back what the machine (or OMP_NUM_THREADS) provides, read before any change
+      global.addHook([machine = gum::getMaxNumberOfThreads()](const Configuration& c) {
+        const auto n = c.getTyped< std::int64_t >("core", "default_maxNumberOfThreads");
+        gum::setNumberOfThreads(n < 0 ? machine : static_cast< unsigned int >(n));
       });
       global._loadUserFile_();
       try {

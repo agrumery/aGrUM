@@ -136,14 +136,10 @@ class TestLazySubmodules(pyAgrumTestCase):
     for submodule in self._submodules():
       with self.subTest(submodule=submodule):
         owner = self._importSubmodule(submodule)
-        owned = {
-          n for n in dir(owner) if not n.startswith("_") and not inspect.ismodule(getattr(owner, n))
-        } - core
+        owned = {n for n in dir(owner) if not n.startswith("_") and not inspect.ismodule(getattr(owner, n))} - core
         listed = {n for n, s in gum._LAZY_SUBMODULE_ATTRS.items() if s == submodule}
         missing = owned - listed - self.UNLISTED_ON_PURPOSE.get(submodule, set())
-        self.assertEqual(
-          missing, set(), f"public names of pyagrum.{submodule} missing from _LAZY_SUBMODULE_ATTRS"
-        )
+        self.assertEqual(missing, set(), f"public names of pyagrum.{submodule} missing from _LAZY_SUBMODULE_ATTRS")
 
 
 ts = unittest.TestSuite()

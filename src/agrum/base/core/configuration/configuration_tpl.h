@@ -53,6 +53,7 @@
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
 
+#include <agrum/base/core/utils_string.h>
 #include <type_traits>
 
 namespace gum {
@@ -81,7 +82,9 @@ namespace gum {
       if (kind != Kind::FLOAT && kind != Kind::INT) {
         GUM_ERROR(InvalidArgument, "'" << section << "." << key << "' is not a float")
       }
-      return std::strtod(value.c_str(), nullptr);
+      double res = 0;
+      parseDecimal(value, res);
+      return res;
     }
   }
 

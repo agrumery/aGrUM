@@ -46,9 +46,9 @@
  */
 
 // to ease automatic parsers
-#include <agrum/agrum.h>
-
 #include <atomic>
+
+#include <agrum/agrum.h>
 
 #include <agrum/base/core/threads/threadsSTL.h>
 

@@ -78,8 +78,7 @@ namespace gum {
     }
 
     INLINE
-        CachedContingencyCounter::CachedContingencyCounter(CachedContingencyCounter&& from) noexcept
-        :
+    CachedContingencyCounter::CachedContingencyCounter(CachedContingencyCounter&& from) noexcept :
         prior_(from.prior_), counter_(std::move(from.counter_)), cache_(std::move(from.cache_)),
         use_cache_(from.use_cache_) {
       from.prior_ = nullptr;

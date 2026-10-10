@@ -222,6 +222,8 @@ namespace gum {
      * @brief Sets section.key.
      *
      * Setting a deprecated key sets its replacement and queues a deprecation notice.
+     * If a hook throws, the previous value is restored (the hooks are run again, their exceptions
+     * being ignored) and the exception is propagated.
      * @param noHook if true, the hooks are not run.
      * @throws SyntaxError if the section or the key does not exist.
      * @throws InvalidArgument if the value does not respect the declared type of the key.
@@ -252,9 +254,11 @@ namespace gum {
      * @brief Loads a user file and changes the values it contains. Runs the hooks.
      *
      * Unknown sections, unknown keys, invalid values and deprecated keys do not stop the loading:
-     * they are queued as notices and the file is rewritten (deprecated keys migrated, other
-     * problems removed).
+     * they are queued as notices and the file is never modified (a deprecated key is applied to its
+     * replacement; save() writes the replacement, not the deprecated key). Only a malformed line
+     * stops the loading, and nothing is changed in this case.
      * @throws IOError if the file cannot be read.
+     * @throws SyntaxError if the file contains a malformed line.
      */
     void load(const std::string& filename);
 

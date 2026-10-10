@@ -297,9 +297,9 @@ class PyAgrumConfiguration:
 
   def load(self):
     """load pyagrum.ini in the current directory, and change the properties if needed.
-    If pyagrum.ini contains deprecated keys or invalid values, a warning is emitted and
-    pyagrum.ini is rewritten (deprecated keys migrated to their replacement, invalid
-    values removed).
+    If pyagrum.ini contains deprecated keys or invalid values, a warning is emitted.
+    pyagrum.ini is never modified by ``load()``: a deprecated key is applied to its
+    replacement, and ``save()`` writes pyagrum.ini with the new key names.
 
     Raises
     ------

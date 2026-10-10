@@ -45,9 +45,9 @@
  *
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
-#include <agrum/agrum.h>
-
 #include <atomic>
+
+#include <agrum/agrum.h>
 
 #include <agrum/base/core/threads/threadsOMP.h>
 

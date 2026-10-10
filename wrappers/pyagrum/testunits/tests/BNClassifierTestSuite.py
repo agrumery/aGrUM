@@ -141,9 +141,7 @@ class BNCLassifierTestCase(pyAgrumTestCase):
     # target the array API (GPU/torch/cupy inputs): learning runs in the C++ core on discrete
     # data, so there is no array computation to offload. The skip is expected, hence silenced.
     with warnings.catch_warnings():
-      warnings.filterwarnings(
-        "ignore", message="Skipping check check_array_api_input", category=SkipTestWarning
-      )
+      warnings.filterwarnings("ignore", message="Skipping check check_array_api_input", category=SkipTestWarning)
       check_estimator(
         skbn.createBNClassifier(),
       )
