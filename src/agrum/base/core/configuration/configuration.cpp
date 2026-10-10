@@ -47,17 +47,19 @@
  */
 
 // to ease automatic parsers
-#include <agrum/agrum.h>
-
 #include <algorithm>
 #include <charconv>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
 
+#include <agrum/agrum.h>
+
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/threads/threads.h>
+
 #include <agrum/base/core/utils_string.h>
 
 // the whole of aGrUM is compiled with GUM_FOR_SWIG for a pyAgrum build
@@ -76,9 +78,8 @@ namespace gum {
 
     constexpr std::string_view _undocumented_ = "(undocumented)";
 
-    [[noreturn]] void _syntaxError_(const std::string& msg,
-                                    std::string_view   origin,
-                                    std::size_t        line) {
+    [[noreturn]] void
+        _syntaxError_(const std::string& msg, std::string_view origin, std::size_t line) {
       GUM_SYNTAX_ERROR(msg, std::string(origin), line, 0)
     }
 
@@ -146,20 +147,9 @@ namespace gum {
       return ec == std::errc() && ptr == s.data() + s.size();
     }
 
-    std::string _kindName_(Configuration::Kind kind) {
-      switch (kind) {
-        case Configuration::Kind::INT      : return "int";
-        case Configuration::Kind::FLOAT    : return "float";
-        case Configuration::Kind::BOOL     : return "bool";
-        case Configuration::Kind::ENUM     : return "enum";
-        case Configuration::Kind::DEPRECATED: return "deprecated";
-        default                            : return "str";
-      }
-    }
-
     // parses the `type` part of a metadata line; on failure, gives the reason in error
-    bool _parseMetaSpec_(const std::string& spec,
-                         const std::string& doc,
+    bool _parseMetaSpec_(const std::string&   spec,
+                         const std::string&   doc,
                          Configuration::Meta& meta,
                          std::string&         error) {
       meta     = Configuration::Meta();
@@ -179,10 +169,10 @@ namespace gum {
           }
         }
       } else if (spec == "int" || spec == "float" || spec == "bool" || spec == "str") {
-        meta.kind = spec == "int"     ? Configuration::Kind::INT
-                  : spec == "float"   ? Configuration::Kind::FLOAT
-                  : spec == "bool"    ? Configuration::Kind::BOOL
-                                      : Configuration::Kind::STR;
+        meta.kind = spec == "int"   ? Configuration::Kind::INT
+                  : spec == "float" ? Configuration::Kind::FLOAT
+                  : spec == "bool"  ? Configuration::Kind::BOOL
+                                    : Configuration::Kind::STR;
         return true;
       } else if (spec.find('|') != std::string::npos) {
         std::size_t prev = 0;
@@ -206,15 +196,6 @@ namespace gum {
       return false;
     }
 
-    std::string _joinEnum_(const std::vector< std::string >& values) {
-      std::string res;
-      for (const auto& v: values) {
-        if (!res.empty()) res += '|';
-        res += v;
-      }
-      return res;
-    }
-
     std::string _readFile_(const std::string& filename) {
       std::ifstream f(filename, std::ios::binary);
       if (!f) { GUM_ERROR(IOError, "Cannot read file '" << filename << "'.") }
@@ -224,6 +205,26 @@ namespace gum {
     }
 
   }   // namespace
+
+  std::string Configuration::Meta::joinedValues() const {
+    std::string res;
+    for (const auto& v: values) {
+      if (!res.empty()) res += '|';
+      res += v;
+    }
+    return res;
+  }
+
+  std::string Configuration::kindName(Kind kind) {
+    switch (kind) {
+      case Kind::INT : return "int";
+      case Kind::FLOAT : return "float";
+      case Kind::BOOL : return "bool";
+      case Kind::ENUM : return "enum";
+      case Kind::DEPRECATED : return "deprecated";
+      default : return "str";
+    }
+  }
 
   // ==========================================================================
   // construction / parsing
@@ -237,11 +238,11 @@ namespace gum {
   void Configuration::_parse_(std::string_view text, std::string_view origin) {
     const auto lines = _lines_(text);
 
-    bool                 inSection = false;
-    std::string          section;
-    bool                 pending = false;
-    Meta                 pendingMeta;
-    std::size_t          numline = 0;
+    bool        inSection = false;
+    std::string section;
+    bool        pending = false;
+    Meta        pendingMeta;
+    std::size_t numline = 0;
 
     auto err = [&](const std::string& msg) { _syntaxError_(msg, origin, numline); };
 
@@ -250,8 +251,8 @@ namespace gum {
       const auto  trimmed = trim_copy(rawLine);
       std::string key, value, name;
 
-      const bool isKeyLine
-          = !_isCommentOrBlank_(trimmed) && _splitKeyValue_(trimmed, key, value) && _isIdentifier_(key);
+      const bool hasKeyValue = !_isCommentOrBlank_(trimmed) && _splitKeyValue_(trimmed, key, value);
+      const bool isKeyLine   = hasKeyValue && _isIdentifier_(key);
 
       if (pending && !isKeyLine) {
         err("metadata line must be immediately followed by a 'key = value' line");
@@ -285,7 +286,7 @@ namespace gum {
       }
 
       if (!inSection) err("key outside of any section");
-      if (!_splitKeyValue_(trimmed, key, value)) err("malformed line '" + trimmed + "'");
+      if (!hasKeyValue) err("malformed line '" + trimmed + "'");
 
       key = toLower(key);
       if (_index_.count(_indexKey_(section, key)) != 0) {
@@ -314,10 +315,9 @@ namespace gum {
       if (item.meta.kind == Kind::DEPRECATED) {
         const auto pos = _tryFind_(item.meta.targetSection, item.meta.targetKey);
         if (pos == _npos_) {
-          GUM_SYNTAX_ERROR("deprecated key '" << item.section << "." << item.key
-                                              << "' redirects to unknown key '"
-                                              << item.meta.targetSection << "."
-                                              << item.meta.targetKey << "'",
+          GUM_SYNTAX_ERROR("deprecated key '"
+                               << item.section << "." << item.key << "' redirects to unknown key '"
+                               << item.meta.targetSection << "." << item.meta.targetKey << "'",
                            std::string(origin),
                            0,
                            0)
@@ -368,7 +368,7 @@ namespace gum {
     if (!_hasSection_(section)) {
       GUM_SYNTAX_ERROR("Section '" << section << "' unknown in configuration.", "", 0, 0)
     }
-    GUM_SYNTAX_ERROR("Key '" << section << "," << key << "' unknown in configuration.", "", 0, 0)
+    GUM_SYNTAX_ERROR("Key '" << section << "." << key << "' unknown in configuration.", "", 0, 0)
   }
 
   void Configuration::_queue_(Notice::Kind kind, std::string message) const {
@@ -376,12 +376,15 @@ namespace gum {
     _notices_.push_back(Notice{kind, std::move(message)});
   }
 
-  std::size_t Configuration::_resolve_(std::size_t pos) const {
+  std::size_t Configuration::_resolve_(std::size_t pos, std::vector< Notice >* sink) const {
     const auto& item = _items_[pos];
     if (item.meta.kind != Kind::DEPRECATED) return pos;
-    _queue_(Notice::Kind::DEPRECATION,
-            "'" + item.section + "." + item.key + "' is deprecated (" + item.meta.doc + "), use '"
-                + item.meta.targetSection + "." + item.meta.targetKey + "' instead.");
+    Notice notice{Notice::Kind::DEPRECATION,
+                  "'" + item.section + "." + item.key + "' is deprecated (" + item.meta.doc
+                      + "), use '" + item.meta.targetSection + "." + item.meta.targetKey
+                      + "' instead."};
+    if (sink != nullptr) sink->push_back(std::move(notice));
+    else _queue_(notice.kind, std::move(notice.message));
     return _tryFind_(item.meta.targetSection, item.meta.targetKey);   // checked by _checkSchema_
   }
 
@@ -429,7 +432,8 @@ namespace gum {
           canonical = "False";
           return true;
         }
-        error = "'" + s + "' must be a boolean (False/True, 0/1, Off/On, No/Yes) for '" + name + "'.";
+        error
+            = "'" + s + "' must be a boolean (False/True, 0/1, Off/On, No/Yes) for '" + name + "'.";
         return false;
       }
       case Kind::ENUM : {
@@ -440,7 +444,7 @@ namespace gum {
             return true;
           }
         }
-        error = "'" + s + "' must be one of " + _joinEnum_(item.meta.values) + " for '" + name + "'.";
+        error = "'" + s + "' must be one of " + item.meta.joinedValues() + " for '" + name + "'.";
         return false;
       }
       default : canonical = std::string(value); return true;
@@ -454,6 +458,17 @@ namespace gum {
   std::string Configuration::get(std::string_view section, std::string_view key) const {
     std::shared_lock lock(_mutex_);
     return _items_[_resolve_(_find_(section, key))].value;
+  }
+
+  Configuration::Value Configuration::getValue(std::string_view section,
+                                               std::string_view key) const {
+    const auto [value, kind] = _typedRaw_(section, key);
+    switch (kind) {
+      case Kind::BOOL : return value == "True";
+      case Kind::INT : return static_cast< std::int64_t >(std::strtoll(value.c_str(), nullptr, 10));
+      case Kind::FLOAT : return std::strtod(value.c_str(), nullptr);
+      default : return value;
+    }
   }
 
   bool Configuration::has(std::string_view section, std::string_view key) const {
@@ -472,8 +487,8 @@ namespace gum {
     switch (m.kind) {
       case Kind::DEPRECATED :
         return "deprecated -> " + m.targetSection + "." + m.targetKey + " :: " + m.doc;
-      case Kind::ENUM : return _joinEnum_(m.values) + " :: " + m.doc;
-      default         : return _kindName_(m.kind) + " :: " + m.doc;
+      case Kind::ENUM : return m.joinedValues() + " :: " + m.doc;
+      default : return kindName(m.kind) + " :: " + m.doc;
     }
   }
 
@@ -498,9 +513,7 @@ namespace gum {
 
   void Configuration::_setAt_(std::size_t pos, std::string_view value) {
     std::string canonical, error;
-    if (!_validate_(_items_[pos], value, canonical, error)) {
-      GUM_ERROR(InvalidArgument, error)
-    }
+    if (!_validate_(_items_[pos], value, canonical, error)) { GUM_ERROR(InvalidArgument, error) }
     _items_[pos].value = std::move(canonical);
   }
 
@@ -559,9 +572,16 @@ namespace gum {
   void Configuration::load(const std::string& filename) {
     const auto lines = _lines_(_readFile_(filename));
 
-    bool rewrite = false;
+    // The whole file is read before anything is changed: a malformed line leaves the values (and
+    // thus the state driven by the hooks) untouched.
+    std::vector< std::pair< std::size_t, std::string > > changes;   // (position, canonical value)
+    std::vector< Notice >                                notices;
+    bool                                                 rewrite = false;
+    auto                                                 note    = [&](std::string message) {
+      notices.push_back(Notice{Notice::Kind::FILE, "[" + filename + "] " + std::move(message)});
+    };
     {
-      std::unique_lock lock(_mutex_);
+      std::shared_lock lock(_mutex_);
       std::string      section;
       bool             knownSection = false;
       std::size_t      numline      = 0;
@@ -577,7 +597,7 @@ namespace gum {
           knownSection = _hasSection_(section);
           if (!knownSection) {
             rewrite = true;
-            _queue_(Notice::Kind::FILE, "[" + filename + "] Section '" + section + "' does not exist.");
+            note("Section '" + section + "' does not exist.");
           }
           continue;
         }
@@ -590,30 +610,35 @@ namespace gum {
         const auto pos = _tryFind_(section, key);
         if (pos == _npos_) {
           rewrite = true;
-          _queue_(Notice::Kind::FILE,
-                  "[" + filename + "] Option '" + section + "." + toLower(key) + "' does not exist.");
+          note("Option '" + section + "." + toLower(key) + "' does not exist.");
           continue;
         }
         if (_items_[pos].meta.kind == Kind::DEPRECATED) rewrite = true;
-        const auto target = _resolve_(pos);   // queues the deprecation notice
+        const auto target = _resolve_(pos, &notices);
 
         std::string canonical, error;
         if (_validate_(_items_[target], value, canonical, error)) {
-          _items_[target].value = std::move(canonical);
+          changes.emplace_back(target, std::move(canonical));
         } else {
           rewrite = true;
-          _queue_(Notice::Kind::FILE,
-                  "[" + filename + "] Invalid value for '" + section + "." + toLower(key) + "': "
-                      + error);
+          note("Invalid value for '" + section + "." + toLower(key) + "': " + error);
         }
       }
     }
+
+    {
+      std::unique_lock lock(_mutex_);
+      for (auto& [pos, value]: changes)
+        _items_[pos].value = std::move(value);
+    }
+    for (auto& notice: notices)
+      _queue_(notice.kind, std::move(notice.message));
     runHooks();
     if (rewrite) save(filename);
   }
 
   void Configuration::save(const std::string& filename) const {
-    const auto content = diff();
+    const auto    content = diff();
     std::ofstream f(filename, std::ios::binary | std::ios::trunc);
     if (!f) { GUM_ERROR(IOError, "Cannot write file '" << filename << "'.") }
     f << content << '\n';
@@ -623,15 +648,16 @@ namespace gum {
   std::string Configuration::_render_(const std::function< bool(const Item&) >& keep) const {
     std::shared_lock lock(_mutex_);
     std::string      res;
-    for (const auto& section: _sections_) {
-      std::string block;
-      for (const auto& item: _items_) {
-        if (item.section != section || item.meta.kind == Kind::DEPRECATED || !keep(item)) continue;
-        block += "\n  " + item.key + " = " + item.value;
+    // the keys of a section are contiguous in _items_ (a duplicate section is refused by _parse_)
+    const std::string* current = nullptr;   // section of the last rendered key
+    for (const auto& item: _items_) {
+      if (item.meta.kind == Kind::DEPRECATED || !keep(item)) continue;
+      if (current == nullptr || *current != item.section) {
+        if (current != nullptr) res += '\n';
+        res += "[" + item.section + "]";
+        current = &item.section;
       }
-      if (block.empty()) continue;
-      if (!res.empty()) res += '\n';
-      res += "[" + section + "]" + block;
+      res += "\n  " + item.key + " = " + item.value;
     }
     return res;
   }
@@ -649,6 +675,11 @@ namespace gum {
 
   std::string Configuration::toString() const {
     return _render_([](const Item&) { return true; });
+  }
+
+  std::string Configuration::describe() const {
+    const auto changes = diff();
+    return changes.empty() ? "# no customized property\n" + toString() : changes;
   }
 
   // ==========================================================================
@@ -691,28 +722,30 @@ namespace gum {
   }
 
   Configuration& Configuration::instance() {
-    static Configuration config(configurationEmbeddedDefaults());
-    static const bool    initialized = [] {
+    // built, completed by the user file and applied once (thread-safe), the first time it is needed
+    static Configuration& config = []() -> Configuration& {
+      static Configuration global(configurationEmbeddedDefaults());
       // the number of threads is the only [core] key acting directly on the library
-      config.addHook([](const Configuration& c) {
-        gum::setNumberOfThreads(
-            static_cast< unsigned int >(c.getTyped< std::int64_t >("core", "default_maxNumberOfThreads")));
+      global.addHook([](const Configuration& c) {
+        gum::setNumberOfThreads(static_cast< unsigned int >(
+            c.getTyped< std::int64_t >("core", "default_maxNumberOfThreads")));
       });
-      config._loadUserFile_();
+      global._loadUserFile_();
       try {
-        config.runHooks();
+        global.runHooks();
       } catch (const std::exception& e) {
         // e.g. a number of threads that cannot be honoured: the library must stay usable
-        config._queue_(Notice::Kind::FILE, std::string("hook failed: ") + e.what());
+        global._queue_(Notice::Kind::FILE, std::string("hook failed: ") + e.what());
       }
-      return true;
+      return global;
     }();
-    (void)initialized;
     return config;
   }
 
   namespace {
-    // loads the configuration (and applies its hooks) as soon as the library is loaded
+    // loads the configuration (and applies its hooks) as soon as the library is loaded, so that the
+    // user file acts even on a program which never reads the configuration. Beware: with a static
+    // library, this object is only kept if something else references this translation unit.
     const struct ConfigurationInitializer {
       ConfigurationInitializer() {
         try {

@@ -48,12 +48,12 @@
  */
 
 // to ease automatic parsers
-#include <agrum/base/core/configuration/configuration.h>
-
 #include <cstdlib>
-#include <type_traits>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
+
+#include <type_traits>
 
 namespace gum {
 

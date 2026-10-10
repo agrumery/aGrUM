@@ -116,6 +116,12 @@
  * - gum::Configuration::getTyped() accepts <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> (also valid for an
  *   <tt>int</tt> key) and <tt>std::string</tt> (valid for any key). Another type is a
  *   gum::InvalidArgument.
+ * - gum::Configuration::getValue() gives the value converted according to the declared type of its key
+ *   (a gum::Configuration::Value: <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> or <tt>std::string</tt>),
+ *   when the type is not known at compile time. This is what pyAgrum uses for <tt>config.typed</tt>.
+ * - gum::Configuration::describe() gives a human-readable summary: the differences with the defaults
+ *   (see gum::Configuration::diff()) or, if there are none, a note saying so followed by the whole
+ *   configuration. This is what <tt>repr(pyagrum.config)</tt> shows.
  * - An unknown section or key raises a gum::SyntaxError; a value which does not respect the declared type
  *   raises a gum::InvalidArgument and nothing is changed.
  * - gum::Configuration::get() returns a copy: the result stays valid whatever other threads do.
@@ -187,14 +193,18 @@
  *
  * ## Hooks in pyAgrum ##
  *
- * <tt>pyagrum.config.add_hook(fn)</tt> registers a Python function (without argument), called after each
- * change made through <tt>pyagrum.config</tt>, in addition to the C++ hooks. They behave as described above.
+ * <tt>pyagrum.config.add_hook(fn)</tt> registers a Python function (without argument) in the C++
+ * configuration itself: it is called after each change, from Python or from C++, after the C++ hooks
+ * registered before it. An exception raised by the function is propagated to whoever changed the
+ * configuration.
  *
  * # Notices #
  *
  * Some events are not errors, but should not be silent: using a deprecated key, or finding an unknown key
  * or an invalid value in the user file (the valid part of the file is loaded anyway and the file is
- * rewritten without the faulty lines). The library never prints anything: these events are queued, and
+ * rewritten without the faulty lines). Only a malformed line stops gum::Configuration::load() with a
+ * gum::SyntaxError: the whole file is read before anything is applied, so nothing at all is changed in
+ * this case. The library never prints anything: these events are queued, and
  * gum::Configuration::takeNotices() returns and empties the queue.
  * \code{.cpp}
  * for (const auto& notice: gum::Configuration::instance().takeNotices())

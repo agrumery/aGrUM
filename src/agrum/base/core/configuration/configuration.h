@@ -62,14 +62,16 @@
 #include <cstdint>
 #include <functional>
 #include <mutex>
-#include <shared_mutex>
 #include <string>
-#include <string_view>
-#include <unordered_map>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <agrum/agrum.h>
+
+#include <shared_mutex>
+#include <string_view>
+#include <unordered_map>
 
 namespace gum {
 
@@ -104,12 +106,21 @@ namespace gum {
 
     /// metadata attached to a key by a `###` line
     struct Meta {
-      Kind                     kind{Kind::STR};
+      Kind                       kind{Kind::STR};
       std::vector< std::string > values;          ///< allowed values (kind == ENUM)
-      std::string              doc;               ///< one-line documentation
-      std::string              targetSection;     ///< replacement key (kind == DEPRECATED)
-      std::string              targetKey;         ///< replacement key (kind == DEPRECATED)
+      std::string                doc;             ///< one-line documentation
+      std::string                targetSection;   ///< replacement key (kind == DEPRECATED)
+      std::string                targetKey;       ///< replacement key (kind == DEPRECATED)
+
+      /// @return the allowed values joined by '|' (kind == ENUM), empty otherwise.
+      std::string joinedValues() const;
     };
+
+    /// a value converted according to the declared type of its key (see getValue())
+    using Value = std::variant< bool, std::int64_t, double, std::string >;
+
+    /// @return the name of a kind: `int`, `float`, `bool`, `str`, `enum` or `deprecated`.
+    static std::string kindName(Kind kind);
 
     /// one line of the schema (see schema())
     struct SchemaEntry {
@@ -178,6 +189,15 @@ namespace gum {
     template < typename T >
     T getTyped(std::string_view section, std::string_view key) const;
 
+    /**
+     * @brief Value of section.key converted according to its declared type (following a
+     * deprecation).
+     * @return a bool (bool key), an int64_t (int key), a double (float key) or a std::string (str
+     * and enum keys).
+     * @throws SyntaxError if the section or the key does not exist.
+     */
+    Value getValue(std::string_view section, std::string_view key) const;
+
     /// @return true if section.key exists.
     bool has(std::string_view section, std::string_view key) const;
 
@@ -244,8 +264,8 @@ namespace gum {
      */
     void save(const std::string& filename) const;
 
-    /// @return the visible keys (all but the deprecated ones) containing @p search, with their section; a
-    /// matching section name selects the whole section.
+    /// @return the visible keys (all but the deprecated ones) containing @p search, with their
+    /// section; a matching section name selects the whole section.
     std::string grep(std::string_view search) const;
 
     /// @return the visible keys whose value differs from the default.
@@ -253,6 +273,10 @@ namespace gum {
 
     /// @return all the visible keys.
     std::string toString() const;
+
+    /// @return diff() if the configuration differs from the defaults, otherwise a comment
+    /// saying so followed by toString().
+    std::string describe() const;
 
     /// @}
 
@@ -265,7 +289,8 @@ namespace gum {
     /// Runs the hooks (outside of any lock).
     void runHooks() const;
 
-    /// @return the queued notices (deprecations, problems found when loading a file) and empties the queue.
+    /// @return the queued notices (deprecations, problems found when loading a file) and empties
+    /// the queue.
     std::vector< Notice > takeNotices();
 
     /// @}
@@ -281,15 +306,16 @@ namespace gum {
 
     using Snapshot = std::vector< std::string >;   // values, in the order of items_
 
-    mutable std::shared_mutex                      _mutex_;
-    std::vector< Item >                            _items_;
-    std::vector< std::string >                     _sections_;
-    std::unordered_map< std::string, std::size_t > _index_;   // "section\0key" -> position in _items_
-    std::vector< Snapshot >                        _stack_;
-    std::vector< Hook >                            _hooks_;
+    mutable std::shared_mutex  _mutex_;
+    std::vector< Item >        _items_;
+    std::vector< std::string > _sections_;
+    std::unordered_map< std::string, std::size_t >
+                            _index_;   // "section\0key" -> position in _items_
+    std::vector< Snapshot > _stack_;
+    std::vector< Hook >     _hooks_;
 
-    mutable std::mutex             _noticeMutex_;
-    mutable std::vector< Notice >  _notices_;
+    mutable std::mutex            _noticeMutex_;
+    mutable std::vector< Notice > _notices_;
 
     void _parse_(std::string_view text, std::string_view origin);
     // checks the consistency of the schema and canonicalizes the default values
@@ -303,18 +329,20 @@ namespace gum {
     // position of section.key; throws SyntaxError if unknown
     std::size_t _find_(std::string_view section, std::string_view key) const;
     bool        _hasSection_(std::string_view section) const;
-    // position of the item that actually carries the value (follows a deprecation and queues a notice)
-    std::size_t _resolve_(std::size_t pos) const;
+    // position of the item that actually carries the value (follows a deprecation and gives a
+    // notice: queued, or appended to sink if not null)
+    std::size_t _resolve_(std::size_t pos, std::vector< Notice >* sink = nullptr) const;
     // value and declared kind of the item that actually carries the value of section.key
     std::pair< std::string, Kind > _typedRaw_(std::string_view section, std::string_view key) const;
     // checks value against the declared type of item; on success gives its canonical form,
     // otherwise gives the reason in error
-    static bool _validate_(const Item&       item,
-                           std::string_view  value,
-                           std::string&      canonical,
-                           std::string&      error);
-    // sets the value of _items_[pos]; throws InvalidArgument if it does not respect the declared type
-    void        _setAt_(std::size_t pos, std::string_view value);
+    static bool _validate_(const Item&      item,
+                           std::string_view value,
+                           std::string&     canonical,
+                           std::string&     error);
+    // sets the value of _items_[pos]; throws InvalidArgument if it does not respect the declared
+    // type
+    void _setAt_(std::size_t pos, std::string_view value);
     // loads the user file of instance(), never throws
     void        _loadUserFile_();
     std::string _render_(const std::function< bool(const Item&) >& keep) const;

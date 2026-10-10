@@ -51,6 +51,7 @@
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/threads/threads.h>
+
 #include <agrum/base/core/utils_string.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -190,34 +191,35 @@ Color = #FF7F64
     const std::string h = "[s]\n";
 
     CHECK_THROWS_AS(gum::Configuration("[s]\n### int :: x\nk = 1\n### int\nl = 2\n"),
-                    const gum::SyntaxError&);   // missing '::'
+                    const gum::SyntaxError&);       // missing '::'
     CHECK_THROWS_AS(gum::Configuration(h + "### integer :: x\nk = 1\n"),
-                    const gum::SyntaxError&);   // unknown type
+                    const gum::SyntaxError&);       // unknown type
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: \nk = 1\n"),
-                    const gum::SyntaxError&);   // empty documentation
+                    const gum::SyntaxError&);       // empty documentation
     CHECK_THROWS_AS(gum::Configuration(h + "### a||b :: x\nk = a\n"),
-                    const gum::SyntaxError&);   // empty item in an enumeration
+                    const gum::SyntaxError&);       // empty item in an enumeration
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\n# comment\nk = 1\n"),
-                    const gum::SyntaxError&);   // metadata not immediately followed by a key
+                    const gum::SyntaxError&);       // metadata not immediately followed by a key
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\n\nk = 1\n"),
-                    const gum::SyntaxError&);   // idem, blank line
+                    const gum::SyntaxError&);       // idem, blank line
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\n"),
-                    const gum::SyntaxError&);   // metadata at the end of file
+                    const gum::SyntaxError&);       // metadata at the end of file
     CHECK_THROWS_AS(gum::Configuration("### int :: x\nk = 1\n"),
-                    const gum::SyntaxError&);   // key outside of any section
+                    const gum::SyntaxError&);       // key outside of any section
     CHECK_THROWS_AS(gum::Configuration(h + "k = 1\nk = 2\n"),
-                    const gum::SyntaxError&);   // duplicate key
+                    const gum::SyntaxError&);       // duplicate key
     CHECK_THROWS_AS(gum::Configuration(h + "k = 1\n[s]\n"),
-                    const gum::SyntaxError&);   // duplicate section
+                    const gum::SyntaxError&);       // duplicate section
     CHECK_THROWS_AS(gum::Configuration(h + "just a line\n"),
-                    const gum::SyntaxError&);   // not a key
+                    const gum::SyntaxError&);       // not a key
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\nk = abc\n"),
                     const gum::InvalidArgument&);   // default violating its own type
     CHECK_THROWS_AS(gum::Configuration(h + "### deprecated -> s.nokey :: x\nold = 1\n"),
-                    const gum::SyntaxError&);   // deprecated -> unknown target
-    CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\nnew = 1\n"
-                                           "### deprecated -> s.new :: x\nmid = 1\n"
-                                           "### deprecated -> s.mid :: x\nold = 1\n"),
+                    const gum::SyntaxError&);       // deprecated -> unknown target
+    CHECK_THROWS_AS(gum::Configuration(h
+                                       + "### int :: x\nnew = 1\n"
+                                         "### deprecated -> s.new :: x\nmid = 1\n"
+                                         "### deprecated -> s.mid :: x\nold = 1\n"),
                     const gum::SyntaxError&);   // deprecated -> deprecated
 
     // four '#' is a free comment, not a metadata line
@@ -365,12 +367,79 @@ Color = #FF7F64
     std::filesystem::remove(filename);
   }
 
+  GUM_TEST(ConfigurationLoadIsAtomic) {
+    const auto filename = ConfigurationTestSuite::tempFile();
+    {
+      std::ofstream f(filename);
+      f << "[main]\nnumber = 12\nthis line is malformed\nflag = on\n";
+    }
+
+    gum::Configuration c(ConfigurationTestSuite::defaults());
+    int                nbHooks = 0;
+    c.addHook([&nbHooks](const gum::Configuration&) { ++nbHooks; });
+
+    CHECK_THROWS_AS(c.load(filename), const gum::SyntaxError&);
+    // nothing has been applied (not even the lines before the malformed one), nor reported
+    CHECK_EQ(c.diff(), "");
+    CHECK_EQ(nbHooks, 0);
+    CHECK(c.takeNotices().empty());
+    CHECK_EQ(ConfigurationTestSuite::readFile(filename),
+             "[main]\nnumber = 12\nthis line is malformed\nflag = on\n");   // not rewritten
+
+    std::filesystem::remove(filename);
+  }
+
+  GUM_TEST(ConfigurationGetValue) {
+    gum::Configuration c("[s]\n### int :: an int\nn = 4\n### float :: a float\nx = 1e-6\n"
+                         "### bool :: a bool\nb = no\n### a|B :: an enum\ne = b\n"
+                         "### str :: a str\nt = text\n"
+                         "### deprecated -> s.n :: renamed\nold = 0\n");
+
+    CHECK_EQ(std::get< std::int64_t >(c.getValue("s", "n")), 4);
+    CHECK_EQ(std::get< double >(c.getValue("s", "x")), 1e-6);
+    CHECK_EQ(std::get< bool >(c.getValue("s", "b")), false);
+    CHECK_EQ(std::get< std::string >(c.getValue("s", "e")), "B");
+    CHECK_EQ(std::get< std::string >(c.getValue("s", "t")), "text");
+
+    c.set("s", "b", "ON");
+    CHECK_EQ(std::get< bool >(c.getValue("s", "b")), true);
+
+    // a deprecated key gives the value of its replacement
+    CHECK_EQ(std::get< std::int64_t >(c.getValue("s", "old")), 4);
+    CHECK_EQ(c.takeNotices().size(), std::size_t(1));
+
+    CHECK_THROWS_AS(c.getValue("s", "nokey"), const gum::SyntaxError&);
+    CHECK_THROWS_AS(c.getValue("nosection", "n"), const gum::SyntaxError&);
+  }
+
+  GUM_TEST(ConfigurationMetaAndDescribe) {
+    using Kind = gum::Configuration::Kind;
+    gum::Configuration c(ConfigurationTestSuite::defaults());
+
+    CHECK_EQ(gum::Configuration::kindName(Kind::INT), "int");
+    CHECK_EQ(gum::Configuration::kindName(Kind::FLOAT), "float");
+    CHECK_EQ(gum::Configuration::kindName(Kind::BOOL), "bool");
+    CHECK_EQ(gum::Configuration::kindName(Kind::STR), "str");
+    CHECK_EQ(gum::Configuration::kindName(Kind::ENUM), "enum");
+    CHECK_EQ(gum::Configuration::kindName(Kind::DEPRECATED), "deprecated");
+
+    const auto mode = c.meta("main", "mode");
+    CHECK(mode.kind == Kind::ENUM);
+    CHECK_EQ(mode.joinedValues(), "on|off|auto");
+    CHECK_EQ(c.meta("main", "number").joinedValues(), "");
+
+    // nothing customized: the whole configuration is displayed, after a comment
+    CHECK_EQ(c.describe(), "# no customized property\n" + c.toString());
+    c.set("main", "number", "9");
+    CHECK_EQ(c.describe(), c.diff());
+  }
+
   GUM_TEST(ConfigurationConcurrentAccess) {
     gum::Configuration c(ConfigurationTestSuite::defaults());
 
-    std::atomic< bool >           ok{true};
-    std::atomic< int >            nbHooks{0};
-    std::vector< std::thread >    threads;
+    std::atomic< bool >        ok{true};
+    std::atomic< int >         nbHooks{0};
+    std::vector< std::thread > threads;
     c.addHook([&nbHooks](const gum::Configuration& conf) {
       ++nbHooks;
       (void)conf.get("main", "number");
