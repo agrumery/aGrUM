@@ -252,7 +252,7 @@ def showTimeSlices(dbn: pyagrum.BayesNet, size: str | None = None) -> None:
   from pyagrum.lib.notebook import showGraph
 
   if size is None:
-    size = pyagrum.config["dynamicBN", "default_graph_size"]
+    size = pyagrum.config["dynamicBN", "graph_size"]
 
   showGraph(_TimeSlicesToDot(dbn), size)
 
@@ -273,7 +273,7 @@ def getTimeSlices(dbn: pyagrum.BayesNet, size: str | None = None) -> str:
   from pyagrum.lib.notebook import getGraph
 
   if size is None:
-    size = pyagrum.config["dynamicBN", "default_graph_size"]
+    size = pyagrum.config["dynamicBN", "graph_size"]
 
   return getGraph(_TimeSlicesToDot(dbn), size)
 

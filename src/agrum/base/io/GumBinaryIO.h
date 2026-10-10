@@ -84,7 +84,7 @@ namespace gum {
 
   /**
    * The indentation used by the GUM writers (jgum text format) when none is given:
-   * the value of the key `default_jgumIndent` of section `core` in gum::Configuration.
+   * the value of the key `jgumIndent` of section `core` in gum::Configuration.
    *
    * @return The indentation (-1 is the most compact output).
    */

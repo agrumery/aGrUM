@@ -75,8 +75,8 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
 
   # chance node
   res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "default_chance_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "default_chance_fgcolor"]}",
+    node [fillcolor="{pyagrum.config["influenceDiagram", "chance_bgcolor"]}",
+          fontcolor="{pyagrum.config["influenceDiagram", "chance_fgcolor"]}",
           style=filled,shape={pyagrum.config["influenceDiagram", "chance_shape"]}, 
           height=0,margin=0.1];
 '''
@@ -86,8 +86,8 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
 
   # decision node
   res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "default_decision_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "default_decision_fgcolor"]}",
+    node [fillcolor="{pyagrum.config["influenceDiagram", "decision_bgcolor"]}",
+          fontcolor="{pyagrum.config["influenceDiagram", "decision_fgcolor"]}",
           style=filled,shape={pyagrum.config["influenceDiagram", "decision_shape"]}, 
           height=0,margin=0.1];
 '''
@@ -97,8 +97,8 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
 
   # utility node
   res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "default_utility_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "default_utility_fgcolor"]}",
+    node [fillcolor="{pyagrum.config["influenceDiagram", "utility_bgcolor"]}",
+          fontcolor="{pyagrum.config["influenceDiagram", "utility_fgcolor"]}",
           style=filled,shape={pyagrum.config["influenceDiagram", "utility_shape"]}, height=0,margin=0.1];
 '''
   for node in diag.nodes():
@@ -129,7 +129,7 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
   g.del_node('"\\n"')
 
   if size is None:
-    size = pyagrum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "id_size"]
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
   g.set_size(size)
@@ -200,16 +200,16 @@ def LIMIDinference2dot(
 
     # defaults
     if diag.isChanceNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "default_chance_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "default_chance_fgcolor"]
+      bgcolor = pyagrum.config["influenceDiagram", "chance_bgcolor"]
+      fgcolor = pyagrum.config["influenceDiagram", "chance_fgcolor"]
       shape = pyagrum.config["influenceDiagram", "chance_shape"]
     elif diag.isDecisionNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "default_decision_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "default_decision_fgcolor"]
+      bgcolor = pyagrum.config["influenceDiagram", "decision_bgcolor"]
+      fgcolor = pyagrum.config["influenceDiagram", "decision_fgcolor"]
       shape = pyagrum.config["influenceDiagram", "decision_shape"]
     else:  # diag.isUtilityNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "default_utility_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "default_utility_fgcolor"]
+      bgcolor = pyagrum.config["influenceDiagram", "utility_bgcolor"]
+      fgcolor = pyagrum.config["influenceDiagram", "utility_fgcolor"]
       shape = pyagrum.config["influenceDiagram", "utility_shape"]
 
     # 'hard' colour for evidence (?)
@@ -265,7 +265,7 @@ def LIMIDinference2dot(
   g = _graphs[0]
 
   if size is None:
-    size = pyagrum.config["influenceDiagram", "default_id_inference_size"]
+    size = pyagrum.config["influenceDiagram", "id_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
 

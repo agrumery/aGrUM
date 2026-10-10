@@ -99,10 +99,10 @@ def CN2dot(
   """
   bn = cn.current_bn()
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # default
   minarcs = 0.0
@@ -116,8 +116,8 @@ def CN2dot(
 
   for n in bn.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["credalnet", "default_node_bgcolor"]
-      fgcol = pyagrum.config["credalnet", "default_node_fgcolor"]
+      bgcol = pyagrum.config["credalnet", "node_bgcolor"]
+      fgcol = pyagrum.config["credalnet", "node_fgcolor"]
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -166,7 +166,7 @@ def CN2dot(
     graph.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -225,10 +225,10 @@ def CNinference2dot(
     targets = set()
   bn = cn.current_bn()
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # by default
   minarcs = 0.0
@@ -256,7 +256,7 @@ def CNinference2dot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
@@ -264,8 +264,8 @@ def CNinference2dot(
     name = bn.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -309,7 +309,7 @@ def CNinference2dot(
   g = _graphs[0]
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(str(size))
   g.temp_dir = temp_dir
 

@@ -81,7 +81,7 @@ namespace gum {
 
     /**
      * Default constructor. The indentation is the one of the configuration
-     * (key `default_jgumIndent` of section `core`, see gum::Configuration).
+     * (key `jgumIndent` of section `core`, see gum::Configuration).
      *
      * @param binary If true, output uses the msgpack binary format; otherwise JSON text.
      */

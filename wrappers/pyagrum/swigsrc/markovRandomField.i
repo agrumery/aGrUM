@@ -92,7 +92,7 @@ IMPROVE_MARKOVNET_API(gum::IMarkovRandomField);
 IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
 
 // Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can keep named arguments
-// and default indent to None: the library then uses pyagrum.config["core","default_jgumIndent"]
+// and default indent to None: the library then uses pyagrum.config["core","jgumIndent"]
 // (see gum::defaultJgumIndent()), while an explicit indent is always used as is.
 %rename(_saveGUM) gum::MarkovRandomField::saveGUM;
 %rename(_saveGUMstring) gum::MarkovRandomField::saveGUMstring;
@@ -188,7 +188,7 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
   indent : int, optional
     JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
     compact output, N>=0 to pretty-print with N spaces. Defaults to
-    ``pyagrum.config["core","default_jgumIndent"]``.
+    ``pyagrum.config["core","jgumIndent"]``.
   """
   if indent is None:
     self._saveGUM(name, binary)
@@ -203,7 +203,7 @@ def saveGUMstring(self, indent: int = None) -> str:
   ----------
   indent : int, optional
     JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
-    Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+    Defaults to ``pyagrum.config["core","jgumIndent"]``.
 
   Returns
   -------

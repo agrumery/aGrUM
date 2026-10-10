@@ -75,7 +75,7 @@ def getCtbnGraph(ctbn: CTBN, size=None):
       The dot representation.
   """
   if size is None:
-    size = pyagrum.config["ctbn", "default_graph_size"]
+    size = pyagrum.config["ctbn", "graph_size"]
   return gnb.getDot(ctbn.toDot(), size)
 
 
@@ -92,7 +92,7 @@ def showCtbnGraph(ctbn: CTBN, size=None):
   """
 
   if size is None:
-    size = pyagrum.config["ctbn", "default_graph_size"]
+    size = pyagrum.config["ctbn", "graph_size"]
   gnb.showDot(ctbn.toDot(), size)
 
 
@@ -160,10 +160,10 @@ def CTBNinference2dot(
   if targets is None:
     targets = {}
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # defaukt
   maxarcs = 100
@@ -190,7 +190,7 @@ def CTBNinference2dot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = ctbn._graph
@@ -199,8 +199,8 @@ def CTBNinference2dot(
     name = ctbn.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -243,7 +243,7 @@ def CTBNinference2dot(
   g = dot.graph_from_dot_data(dotstr)[0]
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
 
@@ -252,7 +252,7 @@ def CTBNinference2dot(
 
 def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
   if size is None:
-    size = pyagrum.config["ctbn", "default_graph_size"]
+    size = pyagrum.config["ctbn", "graph_size"]
 
   return gnb.getGraph(CTBNinference2dot(ctbn, engine, targets=targets, size=size))
 

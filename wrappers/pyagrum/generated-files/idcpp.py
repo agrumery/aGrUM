@@ -945,7 +945,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         binary : bool
             if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
         indent : int
-            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
+            indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','jgumIndent']``)
 
         See Also
         --------
@@ -964,7 +964,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         Parameters
         ----------
         indent : int
-            indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
+            indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','jgumIndent']``)
 
         Returns
         -------
@@ -1121,7 +1121,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       indent : int, optional
         JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
         compact output, N>=0 to pretty-print with N spaces. Defaults to
-        ``pyagrum.config["core","default_jgumIndent"]``.
+        ``pyagrum.config["core","jgumIndent"]``.
       """
       if indent is None:
         self._saveGUM(name, binary)
@@ -1137,7 +1137,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       ----------
       indent : int, optional
         JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
-        Defaults to ``pyagrum.config["core","default_jgumIndent"]``.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
 
       Returns
       -------

@@ -122,8 +122,8 @@ def showShapValues(
   gnb.showGraph(g)
 
   if show_legend:
-    default_bg = pyagrum.config["notebook", "default_node_bgcolor"]
-    default_fg = pyagrum.config["notebook", "default_node_fgcolor"]
+    default_bg = pyagrum.config["notebook", "node_bgcolor"]
+    default_fg = pyagrum.config["notebook", "node_fgcolor"]
 
     fig = plt.figure(figsize=(5, 1.0))
     fig.patch.set_alpha(0)

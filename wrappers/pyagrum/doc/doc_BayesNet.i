@@ -1031,7 +1031,7 @@ name : str
 binary : bool
     if True, write as bgum (msgpack); otherwise write as jgum (JSON) (default: False)
 indent : int
-    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
+    indentation level for JSON output; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','jgumIndent']``)
 
 See Also
 --------
@@ -1047,7 +1047,7 @@ Metadata properties (``software``, ``creation``, ``lastModification``) are updat
 Parameters
 ----------
 indent : int
-    indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','default_jgumIndent']``)
+    indentation level; -1 for compact, 2 for pretty-printed (default: ``pyagrum.config['core','jgumIndent']``)
 
 Returns
 -------

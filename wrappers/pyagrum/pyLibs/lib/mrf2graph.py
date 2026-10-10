@@ -97,10 +97,10 @@ def MRF2UGdot(
     the desired representation of the MRF as a dot graph
   """
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapEdge is None:
-    cmapEdge = plt.get_cmap(pyagrum.config["notebook", "default_edge_cmap"])
+    cmapEdge = plt.get_cmap(pyagrum.config["notebook", "edge_cmap"])
 
   # default
   maxedges = 100.0
@@ -114,8 +114,8 @@ def MRF2UGdot(
 
   for n in mrf.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-      fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+      bgcol = pyagrum.config["notebook", "node_bgcolor"]
+      fgcol = pyagrum.config["notebook", "node_fgcolor"]
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -157,7 +157,7 @@ def MRF2UGdot(
     graph.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
   graph.set_size(str(size))
   return graph
 
@@ -194,14 +194,14 @@ def MRF2FactorGraphdot(
     the desired representation of the MRF as a dot graph
   """
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   graph = dot.Dot(graph_type="graph", bgcolor="transparent", layout=pyagrum.config["factorgraph", "graph_layout"])
 
   for n in mrf.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["factorgraph", "default_node_bgcolor"]
-      fgcol = pyagrum.config["factorgraph", "default_node_fgcolor"]
+      bgcol = pyagrum.config["factorgraph", "node_bgcolor"]
+      fgcol = pyagrum.config["factorgraph", "node_fgcolor"]
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -226,7 +226,7 @@ def MRF2FactorGraphdot(
 
   for f in mrf.factors():
     if factorColor is None:
-      bgcol = pyagrum.config["factorgraph", "default_factor_bgcolor"]
+      bgcol = pyagrum.config["factorgraph", "factor_bgcolor"]
     else:
       bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
     node = dot.Node(factorname(f), style="filled", fillcolor=bgcol, shape="point", width=0.1, height=0.1)
@@ -243,7 +243,7 @@ def MRF2FactorGraphdot(
       graph.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
   graph.set_size(str(size))
   return graph
 
@@ -299,10 +299,10 @@ def MRFinference2UGdot(
     targets = set()
 
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # default
   minarcs = 0
@@ -331,15 +331,15 @@ def MRFinference2UGdot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -383,7 +383,7 @@ def MRFinference2UGdot(
   g = _graphs[0]
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
@@ -430,7 +430,7 @@ def MRFinference2FactorGraphdot(
   if targets is None:
     targets = set()
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   startTime = time.time()
   if engine is None:
@@ -455,9 +455,9 @@ def MRFinference2FactorGraphdot(
 
   dotstr += (
     '  node [fillcolor="'
-    + pyagrum.config["notebook", "default_node_bgcolor"]
+    + pyagrum.config["notebook", "node_bgcolor"]
     + '", style=filled,color="'
-    + pyagrum.config["notebook", "default_node_fgcolor"]
+    + pyagrum.config["notebook", "node_fgcolor"]
     + '"];'
     + "\n"
   )
@@ -467,8 +467,8 @@ def MRFinference2FactorGraphdot(
     name = mrf.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -494,7 +494,7 @@ def MRFinference2FactorGraphdot(
 
   for f in mrf.factors():
     if factorColor is None:
-      bgcol = pyagrum.config["factorgraph", "default_factor_bgcolor"]
+      bgcol = pyagrum.config["factorgraph", "factor_bgcolor"]
     else:
       bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
     dotstr += f"  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n"
@@ -510,7 +510,7 @@ def MRFinference2FactorGraphdot(
   g = _graphs[0]
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(str(size))
   g.temp_dir = temp_dir
 

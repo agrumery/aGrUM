@@ -379,17 +379,17 @@ namespace gum_tests {
     auto& conf = gum::Configuration::instance();
 
     conf.push();
-    conf.set("core", "default_jgumIndent", "-1");
+    conf.set("core", "jgumIndent", "-1");
     const std::string compact = gum::GumBNWriter< double >(false).toString(bn);
 
-    conf.set("core", "default_jgumIndent", "2");
+    conf.set("core", "jgumIndent", "2");
     const std::string indented = gum::GumBNWriter< double >(false).toString(bn);
     CHECK_LT(compact.size(), indented.size());
 
     // an explicit indentation never uses the configuration
     CHECK_EQ(gum::GumBNWriter< double >(false, -1).toString(bn), compact);
     CHECK_EQ(gum::GumBNWriter< double >(false, 2).toString(bn), indented);
-    conf.set("core", "default_jgumIndent", "-1");
+    conf.set("core", "jgumIndent", "-1");
     CHECK_EQ(gum::GumBNWriter< double >(false, 2).toString(bn), indented);
     CHECK_EQ(gum::GumBNWriter< double >(false).toString(bn), compact);
     conf.pop();

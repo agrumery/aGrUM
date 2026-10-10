@@ -56,17 +56,17 @@ from collections import namedtuple
 
 def setDarkTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in dark theme"""
-  pyagrum.config["notebook", "default_arc_color"] = "#AAAAAA"
+  pyagrum.config["notebook", "arc_color"] = "#AAAAAA"
 
 
 def setLightTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in light theme"""
-  pyagrum.config["notebook", "default_arc_color"] = "#4A4A4A"
+  pyagrum.config["notebook", "arc_color"] = "#4A4A4A"
 
 
 def getBlackInTheme() -> str:
   """return the color used for arc and text in graphs"""
-  return pyagrum.config["notebook", "default_arc_color"]
+  return pyagrum.config["notebook", "arc_color"]
 
 
 def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:

@@ -413,9 +413,9 @@ namespace gum {
                                                const char* NODE_FG,
                                                const char* EDGE_COL) const {
     //   SHOW_LATENT_NAMES => causal.show_latent_names
-    //   NODE_BG           => causal.default_node_bgcolor
-    //   NODE_FG           => causal.default_node_fgcolor
-    //   EDGE_COL          => notebook.default_arc_color
+    //   NODE_BG           => causal.node_bgcolor
+    //   NODE_FG           => causal.node_fgcolor
+    //   EDGE_COL          => notebook.arc_color
 
     std::stringstream out;
     out << "digraph {\n";

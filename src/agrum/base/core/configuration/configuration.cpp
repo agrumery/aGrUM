@@ -62,7 +62,9 @@
 
 #include <agrum/base/core/utils_string.h>
 
-// the whole of aGrUM is compiled with GUM_FOR_SWIG for a pyAgrum build
+// the whole of aGrUM is compiled with GUM_FOR_SWIG for a pyAgrum build: the embedded defaults are
+// then those of aGrUM followed by those of pyAgrum (concatenated by cmake), and the user file is
+// pyagrum.ini. Both files only change existing keys: they never create a section or a key.
 #ifdef GUM_FOR_SWIG
 #  define GUM_CONFIGURATION_USER_FILE "pyagrum.ini"
 #else
@@ -748,7 +750,7 @@ namespace gum {
       // the number of threads is the only [core] key acting directly on the library; a negative
       // value gives back what the machine (or OMP_NUM_THREADS) provides, read before any change
       global.addHook([machine = gum::getMaxNumberOfThreads()](const Configuration& c) {
-        const auto n = c.getTyped< std::int64_t >("core", "default_maxNumberOfThreads");
+        const auto n = c.getTyped< std::int64_t >("core", "maxNumberOfThreads");
         gum::setNumberOfThreads(n < 0 ? machine : static_cast< unsigned int >(n));
       });
       global._loadUserFile_();

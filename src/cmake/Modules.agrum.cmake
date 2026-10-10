@@ -82,13 +82,25 @@ foreach (MODULE ${LIST_OF_MODULES})
     endforeach ()
 endforeach ()
 
-# The defaults of gum::Configuration (defaults.ini) are embedded in agrumBASE as a
+# The defaults of gum::Configuration (defaults.ini, followed by the defaults.ini of pyAgrum when
+# BUILD_PYTHON is set) are embedded in agrumBASE as a
 # byte array (not as a string literal: MSVC limits the size of a literal) in a generated
 # source, so that no file has to be found at run time (wheels, relocated installs, static builds).
 set(AGRUM_CONFIGURATION_DEFAULTS_INI "${AGRUM_SOURCE_DIR}/agrum/base/core/configuration/defaults.ini")
 set(AGRUM_CONFIGURATION_DEFAULTS_CPP "${AGRUM_BINARY_DIR}/agrum/base/core/configuration/configuration_defaults.cpp")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${AGRUM_CONFIGURATION_DEFAULTS_INI}")
 file(READ "${AGRUM_CONFIGURATION_DEFAULTS_INI}" _defaults_hex HEX)
+# pyAgrum adds its own sections to the defaults of aGrUM: the two files are concatenated
+if (BUILD_PYTHON)
+    set(AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI "${AGRUM_SOURCE_DIR}/../wrappers/pyagrum/pyLibs/defaults.ini")
+    if (NOT EXISTS "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}")
+        message(FATAL_ERROR "Missing ${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI} (defaults of pyAgrum)")
+    endif ()
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}")
+    file(READ "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}" _pyagrum_defaults_hex HEX)
+    # 0a: a line break, in case the first file does not end with one
+    set(_defaults_hex "${_defaults_hex}0a${_pyagrum_defaults_hex}")
+endif ()
 string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," _defaults_bytes "${_defaults_hex}")
 string(REGEX REPLACE "((0x[0-9a-f][0-9a-f],){16})" "\\1\n" _defaults_bytes "${_defaults_bytes}")
 set(_defaults_cpp

@@ -39,7 +39,11 @@
 ############################################################################
 
 import importlib
+import json
 import os
+import re
+import subprocess
+import sys
 import tempfile
 import unittest
 import warnings
@@ -194,15 +198,99 @@ class TestConfig(pyAgrumTestCase):
     bn = gum.fastBN("A->B")
     gum.config.push()
     try:
-      gum.config["core", "default_jgumIndent"] = -1
+      gum.config["core", "jgumIndent"] = -1
       self.assertNotIn("\n", bn.saveGUMstring())
-      gum.config["core", "default_jgumIndent"] = 2
+      gum.config["core", "jgumIndent"] = 2
       self.assertIn("\n", bn.saveGUMstring())
       # an explicit indentation never uses the configuration
       self.assertNotIn("\n", bn.saveGUMstring(indent=-1))
       self.assertNotIn("\n", bn.saveGUMstring(-1))
-      gum.config["core", "default_jgumIndent"] = -1
+      gum.config["core", "jgumIndent"] = -1
       self.assertIn("\n", bn.saveGUMstring(indent=2))
+    finally:
+      gum.config.pop()
+
+  def testDefaultsOfAgrumThenOfPyAgrum(self):
+    sections = []
+    for section, _, _, _ in gum.config.schema():
+      if section not in sections:
+        sections.append(section)
+    # [core] comes from the defaults of aGrUM, the other sections from the defaults of pyAgrum
+    self.assertEqual(sections[0], "core")
+    self.assertIn("notebook", sections)
+    self.assertEqual(gum.config.getTyped("core", "allow_modification_when_saving"), False)
+    self.assertEqual(gum.config.getTyped("notebook", "tensor_visible_digits"), 4)
+
+  def testUserFileChangesButNeverCreates(self):
+    # a new process: pyagrum.ini is read when the library is loaded, after the defaults of pyAgrum
+    code = (
+      "import json, warnings\n"
+      "with warnings.catch_warnings(record=True) as w:\n"
+      "  warnings.simplefilter('always')\n"
+      "  import pyagrum as gum\n"
+      "keys = {(s, o) for s, o, _, _ in gum.config.schema()}\n"
+      "print(json.dumps({'digits': gum.config['notebook', 'tensor_visible_digits'],\n"
+      "  'indent': gum.config['core', 'jgumIndent'],\n"
+      "  'created': sorted(s + '.' + o for s, o in keys if s == 'newsection' or o == 'notakey'),\n"
+      "  'warnings': [str(x.message) for x in w if 'pyagrum.ini' in str(x.message)]}))\n"
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+      with open(os.path.join(tmp, "pyagrum.ini"), "w") as f:
+        f.write("[notebook]\ntensor_visible_digits = 7\nnotakey = 1\n[newsection]\nk = 1\n[core]\njgumIndent = 3\n")
+      with open(os.path.join(tmp, "agrum.ini"), "w") as f:  # the file of aGrUM is not read by pyAgrum
+        f.write("[notebook]\ntensor_visible_digits = 9\n")
+      out = subprocess.run([sys.executable, "-c", code], cwd=tmp, capture_output=True, text=True, check=True)
+    res = json.loads(out.stdout.strip().splitlines()[-1])
+    self.assertEqual(res["digits"], "7")  # a key created by the defaults of pyAgrum is modified ...
+    self.assertEqual(res["indent"], "3")  # ... as well as a key of aGrUM
+    self.assertEqual(res["created"], [])  # ... but nothing is created
+    self.assertEqual(len(res["warnings"]), 2)  # unknown key, unknown section
+
+  def testNoVisibleKeyStartsWithDefault(self):
+    for section, option, meta, _ in gum.config.schema():
+      if meta.kind != "deprecated":
+        self.assertFalse(option.startswith("default_"), f"{section}.{option}: 'default' is implied in defaults.ini")
+
+  def testLibraryDoesNotReadDeprecatedKeys(self):
+    # a deprecated key read by the library itself would emit a warning each time it is used
+    deprecated = {(section, option.lower()) for section, option, meta, _ in gum.config.schema() if meta.kind == "deprecated"}
+    pattern = re.compile(r"""config\[\s*["'](\w+)["']\s*,\s*["'](\w+)["']""")
+    root = os.path.dirname(gum.__file__)
+    for dirpath, _, filenames in os.walk(root):
+      for filename in filenames:
+        if not filename.endswith(".py"):
+          continue
+        path = os.path.join(dirpath, filename)
+        with open(path, encoding="utf-8") as f:
+          for numline, line in enumerate(f, 1):
+            for section, option in pattern.findall(line):
+              self.assertNotIn(
+                (section, option.lower()), deprecated, f"{path}:{numline} uses the deprecated key {section}.{option}"
+              )
+
+  # keys renamed after aGrUM 3.2.1 (section, old name, new name, value)
+  RENAMED_AFTER_3_2_1 = (
+    ("core", "default_jgumIndent", "jgumIndent", "2"),
+    ("notebook", "default_node_bgcolor", "node_bgcolor", "red"),
+  )
+
+  def testRenamedKeysAfter321StillWork(self):
+    # transitory: to be removed together with these deprecated keys in defaults.ini
+    # the schema gives the names of the keys in lower case
+    deprecated = {(section, option) for section, option, meta, _ in gum.config.schema() if meta.kind == "deprecated"}
+    if any((section, old.lower()) not in deprecated for section, old, _, _ in self.RENAMED_AFTER_3_2_1):
+      self.skipTest("the keys renamed after aGrUM 3.2.1 are no more deprecated keys")
+
+    gum.config.push()
+    try:
+      for section, old, new, value in self.RENAMED_AFTER_3_2_1:
+        with warnings.catch_warnings(record=True) as w:
+          warnings.simplefilter("always")
+          gum.config[section, old] = value
+        self.assertEqual(len(w), 1)
+        self.assertTrue(issubclass(w[0].category, DeprecationWarning))
+        self.assertIn("3.2.1", str(w[0].message))
+        self.assertEqual(gum.config[section, new], value)
     finally:
       gum.config.pop()
 

@@ -25,7 +25,7 @@ JGUM and BGUM formats are JSON-based formats that ensure complete preservation o
     import pyagrum as gum
 
     # Save to JGUM/BGUM
-    gum.config["core","default_jgumIndent"]=2  # Optional: set indentation for better readability (-1 = max compacity)
+    gum.config["core","jgumIndent"]=2  # Optional: set indentation for better readability (-1 = max compacity)
     gum.saveBN(bn, "model.jgum")
     gum.saveBN(bn, "binary_model.bgum")
 

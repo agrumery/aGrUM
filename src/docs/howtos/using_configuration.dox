@@ -50,17 +50,22 @@
  *
  * # Where the values come from #
  *
- * -# <b>The defaults</b> are in <tt>src/agrum/base/core/configuration/defaults.ini</tt>. This file is
+ * -# <b>The defaults of aGrUM</b> are in <tt>src/agrum/base/core/configuration/defaults.ini</tt>. This file is
  *    embedded in the library at build time (it is not read from the disk at run time).
- *    It is the single source of truth: it declares every section and key, its default value, its type
- *    and its documentation.
+ *    It declares every section and key of aGrUM, its default value, its type and its documentation.
+ * -# <b>The defaults of pyAgrum</b> (pyAgrum only) are in <tt>wrappers/pyagrum/pyLibs/defaults.ini</tt>. When
+ *    pyAgrum is compiled, cmake concatenates this file after the one of aGrUM before embedding them: pyAgrum
+ *    thus creates its own sections and keys. As the result is a single file, the one of pyAgrum must not
+ *    reopen a section of the one of aGrUM (this is a gum::SyntaxError when the library is loaded).
  * -# <b>The user file</b>, if it exists in the <em>current directory</em>, overrides some of these values.
- *    Its name is <tt>agrum.ini</tt> for aGrUM, <tt>pyagrum.ini</tt> for pyAgrum
- *    (see gum::Configuration::userFileName()). It only needs to contain the keys to change:
+ *    Its name is <tt>agrum.ini</tt> for aGrUM, <tt>pyagrum.ini</tt> for pyAgrum (which does not read
+ *    <tt>agrum.ini</tt>), see gum::Configuration::userFileName(). It can only change the value of existing
+ *    keys: an unknown section or key is reported by a notice and not created. It only needs to contain the
+ *    keys to change:
  * \code{.ini}
  * [core]
- * default_maxNumberOfThreads = 4
- * default_jgumIndent = 2
+ * maxNumberOfThreads = 4
+ * jgumIndent = 2
  * \endcode
  *
  * The first call to gum::Configuration::instance() builds the configuration from the defaults, then loads
@@ -75,7 +80,7 @@
  * \code{.ini}
  * [core]
  * ### int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)
- * default_maxNumberOfThreads = -1
+ * maxNumberOfThreads = -1
  * ### bool :: allow to fix syntax errors in a model instead of raising when exporting
  * allow_modification_when_saving = False
  * \endcode
@@ -103,11 +108,11 @@
  *
  * auto& conf = gum::Configuration::instance();
  *
- * std::string s  = conf.get("core", "default_jgumIndent");                         // "-1"
- * auto        n  = conf.getTyped< std::int64_t >("core", "default_maxNumberOfThreads");
+ * std::string s  = conf.get("core", "jgumIndent");                         // "-1"
+ * auto        n  = conf.getTyped< std::int64_t >("core", "maxNumberOfThreads");
  * bool        ok = conf.getTyped< bool >("core", "allow_modification_when_saving");
  *
- * conf.set("core", "default_jgumIndent", "2");    // checked against the declared type
+ * conf.set("core", "jgumIndent", "2");    // checked against the declared type
  * \endcode
  *
  * - Values are stored as strings and are <em>canonicalized</em> when set: any accepted spelling of a boolean
@@ -134,7 +139,7 @@
  * \code{.cpp}
  * auto& conf = gum::Configuration::instance();
  * conf.push();
- * conf.set("core", "default_jgumIndent", "2");
+ * conf.set("core", "jgumIndent", "2");
  * // ... code relying on this indentation ...
  * conf.pop();                                      // back to the previous values
  * \endcode
@@ -150,12 +155,12 @@
  * \code{.cpp}
  * gum::Configuration::instance().addHook([](const gum::Configuration& conf) {
  *   gum::setNumberOfThreads(static_cast< unsigned int >(
- *       conf.getTyped< std::int64_t >("core", "default_maxNumberOfThreads")));
+ *       conf.getTyped< std::int64_t >("core", "maxNumberOfThreads")));
  * });
  * \endcode
  *
  * The hook receives the configuration as a <tt>const</tt> reference. This is what the library does
- * itself for <tt>core.default_maxNumberOfThreads</tt> (see gum::Configuration::instance()), except that a
+ * itself for <tt>core.maxNumberOfThreads</tt> (see gum::Configuration::instance()), except that a
  * negative value (the default, -1) gives back the number of threads provided by the machine.
  *
  * ## When are hooks run ? ##
@@ -224,7 +229,7 @@
  * The usual idiom is a constructor with an explicit parameter, and a constructor (or a default argument)
  * which falls back on the configuration. For instance, the writers of the jgum format:
  * \code{.cpp}
- * gum::GumBNWriter< double > w1(false);      // indentation = core.default_jgumIndent
+ * gum::GumBNWriter< double > w1(false);      // indentation = core.jgumIndent
  * gum::GumBNWriter< double > w2(false, 2);   // indentation = 2, whatever the configuration
  * \endcode
  * The configuration is read <em>when the object is built</em>, not when it is used: changing the

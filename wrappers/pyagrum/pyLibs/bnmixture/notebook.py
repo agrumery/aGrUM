@@ -105,8 +105,8 @@ def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
       dot.Node(
         f'"{bncmp.variable(i1).name()}"',
         style="filled",
-        fillcolor=pyagrum.config["bnmixture", "default_node_bgcolor"],
-        fontcolor=pyagrum.config["bnmixture", "default_node_fgcolor"],
+        fillcolor=pyagrum.config["bnmixture", "node_bgcolor"],
+        fontcolor=pyagrum.config["bnmixture", "node_fgcolor"],
         pos=positions[bncmp.variable(i1).name()],
       )
     )
@@ -119,8 +119,8 @@ def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
       dot.Edge(
         f'"{n1}"',
         f'"{n2}"',
-        style=pyagrum.config["bnmixture", "default_arc_style"],
-        color=pyagrum.config["bnmixture", "default_arc_color"],
+        style=pyagrum.config["bnmixture", "arc_style"],
+        color=pyagrum.config["bnmixture", "arc_color"],
         constraint="false",
       )
     )
@@ -181,7 +181,7 @@ def getMixtureGraph(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, ref=Fa
   """
   gnb.flow.clear()
   if size is None:
-    size = pyagrum.config["bnmixture", "default_graph_size"]
+    size = pyagrum.config["bnmixture", "graph_size"]
 
   dotref = gnb.BN2dot(bnm.refBN, size=size)
   if ref:
@@ -258,10 +258,10 @@ def BNMixtureInference2dot(
   if targets is None:
     targets = {}
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # default
   maxarcs = 100
@@ -290,7 +290,7 @@ def BNMixtureInference2dot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = bnm.refBN.dag() if dag is None else dag
@@ -299,8 +299,8 @@ def BNMixtureInference2dot(
     name = bnm.refBN.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -317,7 +317,7 @@ def BNMixtureInference2dot(
     if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graph_format"]
       # proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=float(pyagrum.config["bnmixture", "default_histo_scale"]))
+      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=float(pyagrum.config["bnmixture", "histo_scale"]))
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -346,7 +346,7 @@ def BNMixtureInference2dot(
   g.del_node('"\\n"')
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
   g._td = _td
@@ -408,10 +408,10 @@ def BootstrapInference2dot(
   if targets is None:
     targets = {}
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # defaukt
   maxarcs = 100
@@ -447,7 +447,7 @@ def BootstrapInference2dot(
   dotstr += f'  label="{lab}";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "default_node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "default_node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = bnm.refBN.dag() if dag is None else dag
@@ -456,8 +456,8 @@ def BootstrapInference2dot(
     name = bnm.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "node_bgcolor"]
+    fgcol = pyagrum.config["notebook", "node_fgcolor"]
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -479,7 +479,7 @@ def BootstrapInference2dot(
         filename,
         bgcolor=bgcol,
         quantiles=quantiles,
-        scale=float(pyagrum.config["bnmixture", "default_boot_histo_scale"]),
+        scale=float(pyagrum.config["bnmixture", "boot_histo_scale"]),
         show_mu_sigma=show_mu_sigma,
       )
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
@@ -510,7 +510,7 @@ def BootstrapInference2dot(
   g.del_node('"\\n"')
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
   g._td = _td
@@ -572,7 +572,7 @@ def showBNMixtureInference(
     cmapArc=cmapArc,
   )
   refdot = gnb.BN2dot(bnm.refBN)
-  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_histo_scale"]))
+  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "histo_scale"]))
   IPython.display.display(html)
   html._td.cleanup()
 
@@ -637,7 +637,7 @@ def showBootstrapMixtureInference(
     show_mu_sigma=show_mu_sigma,
   )
   refdot = gnb.BN2dot(bnm.refBN)
-  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "default_boot_histo_scale"]))
+  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "boot_histo_scale"]))
   IPython.display.display(html)
   html._td.cleanup()
 
@@ -689,15 +689,15 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
 
   if refStruct:
     res = dot.Dot(
-      graph_type="digraph", bgcolor="transparent", layout=pyagrum.config["bnmixture", "default_layout"], splines=True
+      graph_type="digraph", bgcolor="transparent", layout=pyagrum.config["bnmixture", "layout"], splines=True
     )
   else:
     res = dot.Dot(
       graph_type="digraph",
       bgcolor="transparent",
-      layout=pyagrum.config["bnmixture", "default_layout"],
+      layout=pyagrum.config["bnmixture", "layout"],
       splines=True,
-      overlap_scaling=pyagrum.config["bnmixture", "default_overlap"],
+      overlap_scaling=pyagrum.config["bnmixture", "overlap"],
       sep=3,
     )
 
@@ -710,8 +710,8 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
       dot.Node(
         f'"{vname}"',
         style="filled",
-        fillcolor=pyagrum.config["bnmixture", "default_node_bgcolor"],
-        fontcolor=pyagrum.config["bnmixture", "default_node_fgcolor"],
+        fillcolor=pyagrum.config["bnmixture", "node_bgcolor"],
+        fontcolor=pyagrum.config["bnmixture", "node_fgcolor"],
         pos=pos,
       )
     )
@@ -734,8 +734,8 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
           style=style,
           color=col,
           penwidth=ceil(countArcs[n1][n2] * 6),
-          arrowhead=pyagrum.config["bnmixture", "default_arrow_type"],
-          arrowsize=pyagrum.config["bnmixture", "default_head_size"] * ceil(countArcs[n1][n2] * 6),
+          arrowhead=pyagrum.config["bnmixture", "arrow_type"],
+          arrowsize=pyagrum.config["bnmixture", "head_size"] * ceil(countArcs[n1][n2] * 6),
           constraint="false",
         )
       )
@@ -927,10 +927,10 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
       ra,
       vmean,
       align="center",
-      height=float(pyagrum.config["bnmixture", "default_bar_height"]),
+      height=float(pyagrum.config["bnmixture", "bar_height"]),
       color=pyagrum.config["notebook", "histogram_color"],
       xerr=error,
-      capsize=float(pyagrum.config["bnmixture", "default_bar_capsize"]) * scale,
+      capsize=float(pyagrum.config["bnmixture", "bar_capsize"]) * scale,
     )
 
     for b in barmean:
@@ -950,7 +950,7 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
       ra,
       vmean,
       align="center",
-      height=float(pyagrum.config["bnmixture", "default_bar_height"]),
+      height=float(pyagrum.config["bnmixture", "bar_height"]),
       color=pyagrum.config["notebook", "histogram_color"],
     )
 

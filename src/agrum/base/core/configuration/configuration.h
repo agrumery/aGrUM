@@ -159,9 +159,10 @@ namespace gum {
     /**
      * @brief The global configuration.
      *
-     * Built at first call from the defaults embedded in the library. If the user file (see
-     * userFileName()) exists in the current directory, it is loaded (problems are queued in the
-     * notices, see takeNotices()).
+     * Built at first call from the defaults embedded in the library (those of aGrUM and, for a
+     * pyAgrum build, those of pyAgrum). If the user file (see userFileName()) exists in the current
+     * directory, it is loaded: it can change the value of a key but never creates one (problems are
+     * queued in the notices, see takeNotices()).
      */
     static Configuration& instance();
 

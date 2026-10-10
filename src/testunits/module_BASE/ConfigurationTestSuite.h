@@ -555,14 +555,51 @@ Color = #FF7F64
     CHECK_EQ(&c, &gum::Configuration::instance());
 
     // the embedded defaults are the ones of defaults.ini
-    CHECK(c.has("core", "default_maxNumberOfThreads"));
-    CHECK(c.has("core", "default_jgumIndent"));
+    CHECK(c.has("core", "maxNumberOfThreads"));
+    CHECK(c.has("core", "jgumIndent"));
     CHECK(c.has("core", "allow_modification_when_saving"));
     CHECK_EQ(
-        c.doc("core", "default_maxNumberOfThreads"),
+        c.doc("core", "maxNumberOfThreads"),
         "int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)");
 
     CHECK(!gum::Configuration::userFileName().empty());
+  }
+
+#ifndef GUM_FOR_SWIG
+  GUM_TEST(ConfigurationOfAgrumDoesNotContainTheKeysOfPyAgrum) {
+    // the sections of pyAgrum are added to the defaults of aGrUM only when pyAgrum is compiled
+    auto& conf = gum::Configuration::instance();
+    CHECK(conf.has("core", "maxNumberOfThreads"));
+    CHECK(!conf.has("notebook", "node_bgcolor"));
+    CHECK_EQ(gum::Configuration::userFileName(), "agrum.ini");
+  }
+#endif
+
+  GUM_TEST(ConfigurationNoVisibleKeyStartsWithDefault) {
+    for (const auto& entry: gum::Configuration::instance().schema()) {
+      if (entry.meta.kind == gum::Configuration::Kind::DEPRECATED) continue;
+      CHECK_MESSAGE(entry.key.rfind("default_", 0) != 0,
+                    entry.section << "." << entry.key << ": 'default' is implied in defaults.ini");
+    }
+  }
+
+  GUM_TEST(ConfigurationDeprecatedKeysOfTheDefaultsAreWellFormed) {
+    // nothing to check once the deprecated keys are removed from defaults.ini
+    auto& conf = gum::Configuration::instance();
+    for (const auto& entry: conf.schema()) {
+      if (entry.meta.kind != gum::Configuration::Kind::DEPRECATED) continue;
+      const auto name = entry.section + "." + entry.key;
+
+      CHECK_MESSAGE(!entry.meta.doc.empty(), name << " has no message");
+      REQUIRE_MESSAGE(conf.has(entry.meta.targetSection, entry.meta.targetKey),
+                      name << " targets an unknown key");
+      CHECK_MESSAGE(conf.meta(entry.meta.targetSection, entry.meta.targetKey).kind
+                        != gum::Configuration::Kind::DEPRECATED,
+                    name << " targets a deprecated key");
+      CHECK_EQ(conf.get(entry.section, entry.key),
+               conf.get(entry.meta.targetSection, entry.meta.targetKey));
+    }
+    conf.takeNotices();   // the accesses above have queued deprecation notices
   }
 
   GUM_TEST(ConfigurationSingletonAppliesTheNumberOfThreads) {
@@ -570,19 +607,19 @@ Color = #FF7F64
     const unsigned int before = gum::getNumberOfThreads();
 
     conf.push();
-    conf.set("core", "default_maxNumberOfThreads", "3");
+    conf.set("core", "maxNumberOfThreads", "3");
     CHECK_EQ(gum::getNumberOfThreads(), 3u);
-    conf.set("core", "default_maxNumberOfThreads", "2");
+    conf.set("core", "maxNumberOfThreads", "2");
     CHECK_EQ(gum::getNumberOfThreads(), 2u);
 
     // no hook: the configuration changes, not the library
-    conf.set("core", "default_maxNumberOfThreads", "5", true);
+    conf.set("core", "maxNumberOfThreads", "5", true);
     CHECK_EQ(gum::getNumberOfThreads(), 2u);
     conf.runHooks();
     CHECK_EQ(gum::getNumberOfThreads(), 5u);
 
     // a negative value gives back the number of threads provided by the machine
-    conf.set("core", "default_maxNumberOfThreads", "-1");
+    conf.set("core", "maxNumberOfThreads", "-1");
     CHECK_GE(gum::getNumberOfThreads(), 1u);
 
     conf.pop();
@@ -601,7 +638,7 @@ Color = #FF7F64
     CHECK_EQ(ConfigurationTestSuite::seenThreads.load(), 0u);
 
     conf.push();
-    conf.set("core", "default_maxNumberOfThreads", "4");
+    conf.set("core", "maxNumberOfThreads", "4");
     CHECK_EQ(ConfigurationTestSuite::seenThreads.load(), 4u);   // the built-in hook has already run
     conf.pop();
   }

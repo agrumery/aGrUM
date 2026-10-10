@@ -86,7 +86,7 @@ namespace gum {
 
     /**
      * Default constructor. The indentation is the one of the configuration
-     * (key `default_jgumIndent` of section `core`, see gum::Configuration).
+     * (key `jgumIndent` of section `core`, see gum::Configuration).
      *
      * JGUM format is a json format. In binary mode, the output use the BJData format.
      *

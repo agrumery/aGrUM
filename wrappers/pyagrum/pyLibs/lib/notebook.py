@@ -309,7 +309,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
     the size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   _reprGraph(gr, size, asString=False)
 
@@ -331,7 +331,7 @@ def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
     the HTML representation of the graph (as a string)
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   result = _reprGraph(gr, size, asString=True)
   assert result is not None
@@ -356,7 +356,7 @@ def showDot(dotstring: str, size: float | str | None = None) -> None:
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
   showGraph(_from_dotstring(dotstring), size)
 
 
@@ -376,7 +376,7 @@ def getDot(dotstring: str, size: float | str | None = None) -> str:
     the HTML representation of the dot string
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   return getGraph(_from_dotstring(dotstring), size)
 
@@ -410,7 +410,7 @@ def getBNDiff(
     the HTML representation of the comparison
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -439,7 +439,7 @@ def showBNDiff(
     with style or not.
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -522,7 +522,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
   showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -716,10 +716,10 @@ def showMRF(
    the graph
   """
   if view is None:
-    view = pyagrum.config["notebook", "default_markovrandomfield_view"]
+    view = pyagrum.config["notebook", "markovrandomfield_view"]
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
@@ -750,7 +750,7 @@ def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | Non
     the representation of the influence diagram
   """
   if size is None:
-    size = pyagrum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "id_size"]
 
   return showGraph(ID2dot(diag), size)
 
@@ -772,7 +772,7 @@ def getInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None
     the HTML representation of the influence diagram
   """
   if size is None:
-    size = pyagrum.config["influenceDiagram", "default_id_size"]
+    size = pyagrum.config["influenceDiagram", "id_size"]
 
   return getGraph(ID2dot(diag), size)
 
@@ -812,7 +812,7 @@ def showBN(
     a nodeMap of values to be shown as tooltip
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -871,7 +871,7 @@ def showCN(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -931,13 +931,13 @@ def getMRF(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
 
   if view is None:
-    view = pyagrum.config["notebook", "default_markovrandomfield_view"]
+    view = pyagrum.config["notebook", "markovrandomfield_view"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth, edgeColor, cmapNode, cmapEdge)
@@ -987,7 +987,7 @@ def getBN(
     the desired representation of the Bayesian network
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1047,7 +1047,7 @@ def getCN(
     the desired representation of the Credal Network
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1107,7 +1107,7 @@ def showInference(model: pyagrum.PGM, **kwargs) -> None:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
 
   showGraph(prepareShowInference(model, **kwargs), size)
 
@@ -1152,7 +1152,7 @@ def getInference(model: pyagrum.PGM, **kwargs) -> str:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
 
   grinf = prepareShowInference(model, **kwargs)
   return getGraph(grinf, size)
@@ -1725,7 +1725,7 @@ def getCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) -> 
     the dot representation
   """
   if size is None:
-    size = pyagrum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "graph_size"]
   return getDot(cm.toDot(), size)
 
 
@@ -1741,7 +1741,7 @@ def showCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) ->
     the size of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["causal", "default_graph_size"]
+    size = pyagrum.config["causal", "graph_size"]
   showDot(cm.toDot(), size=size)
 
 

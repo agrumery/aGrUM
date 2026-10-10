@@ -5,8 +5,10 @@
 - pyAgrum
 
     - `pyagrum.config` is now a thin layer over the new C++ `gum::Configuration`: same API, same `defaults.ini`
-      (embedded in the library) and same `pyagrum.ini` file, which is now read when the library is loaded.
-      `saveGUM(name)` / `saveBN(...)` use `core.default_jgumIndent` / `core.allow_modification_when_saving` through
+      (`pyLibs/defaults.ini` now holds the sections specific to pyAgrum: cmake concatenates it to the defaults of aGrUM
+      and embeds both in the library) and same `pyagrum.ini` file, read when the library is loaded, which changes
+      values but never creates a section or a key.
+      `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allow_modification_when_saving` through
       the C++ writers. The Python class only converts types, exceptions and notices (as warnings): Python hooks are
       registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
       The (hidden) class `PyAgrumConfiguration` no longer reads a defaults file: it wraps a C++ configuration.
@@ -16,15 +18,18 @@
     - **New: `gum::Configuration`**, a thread-safe, typed and documented configuration singleton (sections, keys,
       defaults with `### type :: doc` metadata, `push`/`pop`, hooks, diff/save/load). Its defaults (`defaults.ini`)
       are embedded in the library; `agrum.ini` of the current directory (`pyagrum.ini` for pyAgrum) is read at
-      start-up. `core.default_maxNumberOfThreads` is applied at start-up (the default, -1, keeps the number of threads
+      start-up. `core.maxNumberOfThreads` is applied at start-up (the default, -1, keeps the number of threads
       provided by the machine). `load` is atomic: a malformed line changes nothing. `load` never rewrites
       the file (`save` writes the new names of the deprecated keys). `set` restores the previous value if a hook throws.
       A notice already waiting is not queued twice. Floats are parsed independently of the locale of the program
       (new `gum::parseDecimal` in `utils_string.h`).
-    - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.default_jgumIndent`,
+    - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
       from `core.allow_modification_when_saving`.
     - The number of threads is now stored in an atomic, initialized on first use.
+    - The keys of `defaults.ini` no longer start with `default_` (`core.maxNumberOfThreads`, `core.jgumIndent`,
+      `notebook.node_bgcolor`, ...). The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
+      and redirected to the new ones, with a deprecation notice (`DeprecationWarning` in pyAgrum).
 
 ## Changelog for 3.2.1
 

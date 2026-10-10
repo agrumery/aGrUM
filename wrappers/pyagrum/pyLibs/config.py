@@ -62,6 +62,10 @@ class PyAgrumConfiguration:
   structure of sections and keys, entirely managed by the aGrUM C++ library (``gum::Configuration``): a value is adressable using
   a double key: ``[section,key]``. Section names are case-sensitive, key names are not.
 
+  The sections and keys are created by the defaults, in this order: ``defaults.ini`` of aGrUM, then ``defaults.ini`` of pyAgrum
+  (both embedded in the library when pyAgrum is compiled). The file ``pyagrum.ini`` of the current directory then
+  changes the value of some of these keys, but never creates a section or a key.
+
   Each key is described in ``defaults.ini`` by a metadata line ``### type :: documentation`` where type is
   ``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation ``deprecated -> section.key``.
   Setting a value that does not respect the declared type raises a ``ValueError``. Accessing a deprecated key
@@ -77,8 +81,8 @@ class PyAgrumConfiguration:
   Examples
   --------
     >>> import pyagrum
-    >>> pyagrum.config["dynamicBN", "default_graph_size"] = 10
-    >>> pyagrum.config["dynamicBN", "default_graph_size"]
+    >>> pyagrum.config["dynamicBN", "graph_size"] = 10
+    >>> pyagrum.config["dynamicBN", "graph_size"]
     "10"
   """
 
@@ -161,8 +165,8 @@ class PyAgrumConfiguration:
 
     Examples
     --------
-      >>> pyagrum.config["dynamicBN", "default_graph_size"] = 10
-      >>> pyagrum.config["dynamicBN", "default_graph_size"]
+      >>> pyagrum.config["dynamicBN", "graph_size"] = 10
+      >>> pyagrum.config["dynamicBN", "graph_size"]
       "10"
 
     Parameters
@@ -190,8 +194,8 @@ class PyAgrumConfiguration:
 
     Examples
     --------
-      >>> pyagrum.config["dynamicBN", "default_graph_size"] = 10
-      >>> pyagrum.config["dynamicBN", "default_graph_size"]
+      >>> pyagrum.config["dynamicBN", "graph_size"] = 10
+      >>> pyagrum.config["dynamicBN", "graph_size"]
       "10"
 
     Parameters

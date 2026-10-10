@@ -162,7 +162,7 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   if isinstance(model, pyagrum.BayesNet):
     fig = BN2dot(model, **kwargs)
   elif isinstance(model, pyagrum.MarkovRandomField):
-    if pyagrum.config["notebook", "default_markovrandomfield_view"] == "graph":
+    if pyagrum.config["notebook", "markovrandomfield_view"] == "graph":
       fig = MRF2UGdot(model, **kwargs)
     else:
       fig = MRF2FactorGraphdot(model, **kwargs)
@@ -250,7 +250,7 @@ def prepareShowInference(
       the obtained graph as a string
   """
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
 
   if evs is None:
     evs = {}
@@ -275,7 +275,7 @@ def prepareShowInference(
     )
   if isinstance(model, pyagrum.MarkovRandomField):
     if view is None:
-      view = pyagrum.config["notebook", "default_markovrandomfield_view"]
+      view = pyagrum.config["notebook", "markovrandomfield_view"]
     if engine is None:
       engine = pyagrum.ShaferShenoyMRFInference(model)
 
@@ -452,7 +452,7 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "default_graph_inference_size"]
+    size = pyagrum.config["notebook", "graph_inference_size"]
 
   svgtxt = dot_as_svg_string(gumcols.prepareDot(prepareShowInference(model, **kwargs), **kwargs), size=size)
 

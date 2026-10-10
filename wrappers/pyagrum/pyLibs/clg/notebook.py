@@ -86,10 +86,10 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   arcLabel = {arc: clg.coefArc(*arc) for arc in clg.arcs()}
 
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # default
   maxarcs = 100
@@ -103,8 +103,8 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
 
   for n in clg.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "default_node_bgcolor"]
-      fgcol = pyagrum.config["notebook", "default_node_fgcolor"]
+      bgcol = pyagrum.config["notebook", "node_bgcolor"]
+      fgcol = pyagrum.config["notebook", "node_fgcolor"]
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -164,7 +164,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -209,10 +209,10 @@ def CLGInference2dot(
   ie.updateEvidence(evs)
 
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "default_node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "default_arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
   # default
   maxarcs = 100
@@ -282,7 +282,7 @@ def CLGInference2dot(
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "default_graph_size"]
+    size = pyagrum.config["notebook", "graph_size"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
