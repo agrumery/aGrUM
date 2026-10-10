@@ -42,7 +42,7 @@
  * gum::Configuration is wrapped by hand (its header is not %include-d): its nested types,
  * its hooks (std::function) and its mutexes have no meaning in a target language, which only
  * needs the plain-string subset below. Hooks of the target language are handled by the
- * language layer (see pyLibs/config.py for pyAgrum).
+ * language layer (see swigsrc/configurationPython.i for pyAgrum).
  */
 
 %{

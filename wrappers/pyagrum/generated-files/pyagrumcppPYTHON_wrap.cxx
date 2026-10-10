@@ -4565,6 +4565,10 @@ static int _pyagrum_import_numpy(void) {
 #include "extensions/JunctionTreeGenerator.h"
 
 
+#include <type_traits>
+#include <variant>
+
+
 #include <agrum/base.h>
 #include <agrum/base/graphs/PAG.h>
 
@@ -4812,29 +4816,6 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
   return SWIG_OK;
 }
 
-SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_schemaRows(gum::Configuration const *self){
-    std::vector< std::string > rows;
-    for (const auto& entry: self->schema()) {
-      rows.push_back(entry.section);
-      rows.push_back(entry.key);
-      rows.push_back(gum::Configuration::kindName(entry.meta.kind));
-      rows.push_back(entry.meta.joinedValues());
-      rows.push_back(entry.meta.doc);
-      rows.push_back(entry.meta.targetSection);
-      rows.push_back(entry.meta.targetKey);
-      rows.push_back(entry.defaultValue);
-    }
-    return rows;
-  }
-SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_takeNoticeRows(gum::Configuration *self){
-    std::vector< std::string > rows;
-    for (const auto& notice: self->takeNotices()) {
-      rows.push_back(notice.kind == gum::Configuration::Notice::Kind::DEPRECATION ? "deprecation"
-                                                                                   : "file");
-      rows.push_back(notice.message);
-    }
-    return rows;
-  }
 SWIGINTERN PyObject *gum_Configuration_getValue(gum::Configuration const *self,std::string_view section,std::string_view key){
     return std::visit(
         [](const auto& value) -> PyObject* {
@@ -4860,6 +4841,31 @@ SWIGINTERN void gum_Configuration_addPythonHook(gum::Configuration *self,PyObjec
       PyGILState_Release(gil);
       if (failed) throw PythonErrorAlreadySet();
     });
+  }
+SWIGINTERN std::string gum_Configuration___repr__(gum::Configuration const *self){ return self->describe(); }
+SWIGINTERN std::string gum_Configuration___str__(gum::Configuration const *self){ return self->toString(); }
+SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_schemaRows(gum::Configuration const *self){
+    std::vector< std::string > rows;
+    for (const auto& entry: self->schema()) {
+      rows.push_back(entry.section);
+      rows.push_back(entry.key);
+      rows.push_back(gum::Configuration::kindName(entry.meta.kind));
+      rows.push_back(entry.meta.joinedValues());
+      rows.push_back(entry.meta.doc);
+      rows.push_back(entry.meta.targetSection);
+      rows.push_back(entry.meta.targetKey);
+      rows.push_back(entry.defaultValue);
+    }
+    return rows;
+  }
+SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configuration_takeNoticeRows(gum::Configuration *self){
+    std::vector< std::string > rows;
+    for (const auto& notice: self->takeNotices()) {
+      rows.push_back(notice.kind == gum::Configuration::Notice::Kind::DEPRECATION ? "deprecation"
+                                                                                   : "file");
+      rows.push_back(notice.message);
+    }
+    return rows;
   }
 
 SWIGINTERNINLINE PyObject*
@@ -6051,10 +6057,6 @@ namespace gum {
     }
   }
 }
-
-
-#include <type_traits>
-#include <variant>
 
 
 #include "extensions/PythonBNListener.h"
@@ -22331,7 +22333,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -22344,10 +22346,10 @@ SWIGINTERN PyObject *_wrap__Configuration_get(PyObject *self, PyObject *args) {
   std::string result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_get", 3, 3, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__get", 3, 3, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_get" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__get" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22499,7 +22501,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_doc(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__doc(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -22512,10 +22514,10 @@ SWIGINTERN PyObject *_wrap__Configuration_doc(PyObject *self, PyObject *args) {
   std::string result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_doc", 3, 3, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__doc", 3, 3, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_doc" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__doc" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22620,7 +22622,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap__Configuration__set__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -22639,7 +22641,7 @@ SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_0(PyObject *self, Py_ssize_t
   if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22701,7 +22703,7 @@ SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_0(PyObject *self, Py_ssize_t
   }
   ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
   if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "_Configuration_set" "', argument " "5"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "_Configuration__set" "', argument " "5"" of type '" "bool""'");
   } 
   arg5 = static_cast< bool >(val5);
   {
@@ -22737,7 +22739,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap__Configuration__set__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -22753,7 +22755,7 @@ SWIGINTERN PyObject *_wrap__Configuration_set__SWIG_1(PyObject *self, Py_ssize_t
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__set" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22846,27 +22848,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_set(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__set(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[6] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "_Configuration_set", 0, 5, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_Configuration__set", 0, 5, argv))) SWIG_fail;
   --argc;
   if (argc == 4) {
-    PyObject *retobj = _wrap__Configuration_set__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap__Configuration__set__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 5) {
-    PyObject *retobj = _wrap__Configuration_set__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap__Configuration__set__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_Configuration_set'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_Configuration__set'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::Configuration::set(std::string_view,std::string_view,std::string_view,bool)\n"
     "    gum::Configuration::set(std::string_view,std::string_view,std::string_view)\n");
@@ -22874,7 +22876,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_reset(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__reset(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -22886,7 +22888,7 @@ SWIGINTERN PyObject *_wrap__Configuration_reset(PyObject *self, PyObject *args) 
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_reset" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__reset" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22904,7 +22906,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_push(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__push(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -22916,7 +22918,7 @@ SWIGINTERN PyObject *_wrap__Configuration_push(PyObject *self, PyObject *args) {
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_push" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__push" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22934,7 +22936,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_pop(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__pop(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -22946,7 +22948,7 @@ SWIGINTERN PyObject *_wrap__Configuration_pop(PyObject *self, PyObject *args) {
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_pop" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__pop" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -22964,7 +22966,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_load(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__load(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -22974,20 +22976,20 @@ SWIGINTERN PyObject *_wrap__Configuration_load(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_load", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__load", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_load" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__load" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration_load" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration__load" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration_load" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration__load" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -23008,7 +23010,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_save(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__save(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -23018,20 +23020,20 @@ SWIGINTERN PyObject *_wrap__Configuration_save(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_save", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__save", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_save" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__save" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_Configuration__save" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration_save" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_Configuration__save" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -23052,7 +23054,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_grep(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__grep(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -23063,10 +23065,10 @@ SWIGINTERN PyObject *_wrap__Configuration_grep(PyObject *self, PyObject *args) {
   std::string result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_grep", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__grep", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_grep" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__grep" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -23109,7 +23111,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_diff(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__diff(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -23122,7 +23124,7 @@ SWIGINTERN PyObject *_wrap__Configuration_diff(PyObject *self, PyObject *args) {
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_diff" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__diff" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -23202,7 +23204,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_runHooks(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__runHooks(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -23214,7 +23216,7 @@ SWIGINTERN PyObject *_wrap__Configuration_runHooks(PyObject *self, PyObject *arg
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_runHooks" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__runHooks" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -23232,81 +23234,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_schemaRows(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Configuration *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_schemaRows" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
-  {
-    try {
-      result = gum_Configuration_schemaRows((gum::Configuration const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  {
-    std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__Configuration_takeNoticeRows(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Configuration *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_takeNoticeRows" "', argument " "1"" of type '" "gum::Configuration *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
-  {
-    try {
-      result = gum_Configuration_takeNoticeRows(arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  {
-    std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__Configuration_getValue(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__getValue(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   std::string_view arg2 ;
@@ -23319,10 +23247,10 @@ SWIGINTERN PyObject *_wrap__Configuration_getValue(PyObject *self, PyObject *arg
   PyObject *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_getValue", 3, 3, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__getValue", 3, 3, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_getValue" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__getValue" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   {
@@ -23391,7 +23319,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_addPythonHook(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__addPythonHook(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *arg1 = 0 ;
   PyObject *arg2 = 0 ;
@@ -23400,10 +23328,10 @@ SWIGINTERN PyObject *_wrap__Configuration_addPythonHook(PyObject *self, PyObject
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_addPythonHook", 2, 2, swig_obj)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__addPythonHook", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration_addPythonHook" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__addPythonHook" "', argument " "1"" of type '" "gum::Configuration *""'"); 
   }
   arg1 = reinterpret_cast< gum::Configuration * >(argp1);
   arg2 = swig_obj[1];
@@ -23416,6 +23344,142 @@ SWIGINTERN PyObject *_wrap__Configuration_addPythonHook(PyObject *self, PyObject
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration___repr__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration___repr__" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration___repr__((gum::Configuration const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration___str__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration___str__" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration___str__((gum::Configuration const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration__schemaRows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__schemaRows" "', argument " "1"" of type '" "gum::Configuration const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration_schemaRows((gum::Configuration const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    std::vector<std::string> _v = std::move(result);
+    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+    resultobj = PyTuple_New(_n);
+    for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Configuration__takeNoticeRows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Configuration *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::vector< std::string,std::allocator< std::string > > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__Configuration, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Configuration__takeNoticeRows" "', argument " "1"" of type '" "gum::Configuration *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Configuration * >(argp1);
+  {
+    try {
+      result = gum_Configuration_takeNoticeRows(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    std::vector<std::string> _v = std::move(result);
+    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
+    resultobj = PyTuple_New(_n);
+    for (Py_ssize_t _i = 0; _i < _n; ++_i)
+    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+  }
   return resultobj;
 fail:
   return NULL;
@@ -130327,25 +130391,27 @@ static PyMethodDef SwigMethods[] = {
 	 { "new__Configuration", _wrap_new__Configuration, METH_VARARGS, NULL},
 	 { "_Configuration_instance", _wrap__Configuration_instance, METH_NOARGS, NULL},
 	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, NULL},
-	 { "_Configuration_get", _wrap__Configuration_get, METH_VARARGS, NULL},
+	 { "_Configuration__get", _wrap__Configuration__get, METH_VARARGS, NULL},
 	 { "_Configuration_has", _wrap__Configuration_has, METH_VARARGS, NULL},
-	 { "_Configuration_doc", _wrap__Configuration_doc, METH_VARARGS, NULL},
+	 { "_Configuration__doc", _wrap__Configuration__doc, METH_VARARGS, NULL},
 	 { "_Configuration_sections", _wrap__Configuration_sections, METH_O, NULL},
-	 { "_Configuration_set", _wrap__Configuration_set, METH_VARARGS, NULL},
-	 { "_Configuration_reset", _wrap__Configuration_reset, METH_O, NULL},
-	 { "_Configuration_push", _wrap__Configuration_push, METH_O, NULL},
-	 { "_Configuration_pop", _wrap__Configuration_pop, METH_O, NULL},
-	 { "_Configuration_load", _wrap__Configuration_load, METH_VARARGS, NULL},
-	 { "_Configuration_save", _wrap__Configuration_save, METH_VARARGS, NULL},
-	 { "_Configuration_grep", _wrap__Configuration_grep, METH_VARARGS, NULL},
-	 { "_Configuration_diff", _wrap__Configuration_diff, METH_O, NULL},
+	 { "_Configuration__set", _wrap__Configuration__set, METH_VARARGS, NULL},
+	 { "_Configuration__reset", _wrap__Configuration__reset, METH_O, NULL},
+	 { "_Configuration__push", _wrap__Configuration__push, METH_O, NULL},
+	 { "_Configuration__pop", _wrap__Configuration__pop, METH_O, NULL},
+	 { "_Configuration__load", _wrap__Configuration__load, METH_VARARGS, NULL},
+	 { "_Configuration__save", _wrap__Configuration__save, METH_VARARGS, NULL},
+	 { "_Configuration__grep", _wrap__Configuration__grep, METH_VARARGS, NULL},
+	 { "_Configuration__diff", _wrap__Configuration__diff, METH_O, NULL},
 	 { "_Configuration_toString", _wrap__Configuration_toString, METH_O, NULL},
 	 { "_Configuration_describe", _wrap__Configuration_describe, METH_O, NULL},
-	 { "_Configuration_runHooks", _wrap__Configuration_runHooks, METH_O, NULL},
-	 { "_Configuration_schemaRows", _wrap__Configuration_schemaRows, METH_O, NULL},
-	 { "_Configuration_takeNoticeRows", _wrap__Configuration_takeNoticeRows, METH_O, NULL},
-	 { "_Configuration_getValue", _wrap__Configuration_getValue, METH_VARARGS, NULL},
-	 { "_Configuration_addPythonHook", _wrap__Configuration_addPythonHook, METH_VARARGS, NULL},
+	 { "_Configuration__runHooks", _wrap__Configuration__runHooks, METH_O, NULL},
+	 { "_Configuration__getValue", _wrap__Configuration__getValue, METH_VARARGS, NULL},
+	 { "_Configuration__addPythonHook", _wrap__Configuration__addPythonHook, METH_VARARGS, NULL},
+	 { "_Configuration___repr__", _wrap__Configuration___repr__, METH_O, NULL},
+	 { "_Configuration___str__", _wrap__Configuration___str__, METH_O, NULL},
+	 { "_Configuration__schemaRows", _wrap__Configuration__schemaRows, METH_O, NULL},
+	 { "_Configuration__takeNoticeRows", _wrap__Configuration__takeNoticeRows, METH_O, NULL},
 	 { "delete__Configuration", _wrap_delete__Configuration, METH_O, NULL},
 	 { "_Configuration_swigregister", _Configuration_swigregister, METH_O, NULL},
 	 { "_Configuration_swiginit", _Configuration_swiginit, METH_VARARGS, NULL},

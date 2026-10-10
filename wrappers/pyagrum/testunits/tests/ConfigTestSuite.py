@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import importlib
 import json
 import os
 import re
@@ -52,16 +51,18 @@ import pyagrum as gum
 from pyagrum.pyagrumcpp import _Configuration
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-# the attribute pyagrum.config is the configuration singleton: the module itself
-# (which holds the wrapper PyAgrumConfiguration) needs an explicit import
-gumconfig = importlib.import_module("pyagrum.config")
-
 # The logic (parsing of the schema, validation, deprecations, ...) is the one of gum::Configuration and is
 # tested in C++ (ConfigurationTestSuite.h): this suite only tests the wrapper (conversions of types,
 # exceptions, warnings and Python hooks).
 
 
 class TestConfig(pyAgrumTestCase):
+  def testConfigIsTheConfigurationOfTheLibrary(self):
+    # no Python layer: pyagrum.config is the object of the C++ library
+    self.assertIsInstance(gum.config, _Configuration)
+    with self.assertRaises(ModuleNotFoundError):
+      __import__("pyagrum.config")
+
   def testReadOnlyConfigurationStructure(self):
     with self.assertRaises(SyntaxError):
       gum.config["gogo", "gaga"] = 0
@@ -170,7 +171,7 @@ class TestConfig(pyAgrumTestCase):
   @staticmethod
   def _freshConfig(content):
     # a configuration independent from gum.config, around a C++ configuration built from a text
-    return gumconfig.PyAgrumConfiguration(_Configuration(content))
+    return _Configuration(content)
 
   def testDeprecatedKey(self):
     cfg = self._freshConfig(

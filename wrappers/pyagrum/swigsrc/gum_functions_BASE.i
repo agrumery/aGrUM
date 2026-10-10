@@ -53,8 +53,9 @@ initRandom(0)
 
 # configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
 # current directory (if any), and applied the parameters that act on the library (number of threads, ...)
-from .config import PyAgrumConfiguration
-config = PyAgrumConfiguration()
+config = _Configuration.instance()
+# warnings for the notices queued when the library loaded pyagrum.ini
+config._emitNotices()
 
 
 def log2(p):

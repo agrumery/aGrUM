@@ -4,14 +4,14 @@
 
 - pyAgrum
 
-    - `pyagrum.config` is now a thin layer over the new C++ `gum::Configuration`: same API, same `defaults.ini`
+    - `pyagrum.config` is now the new C++ `gum::Configuration` itself (the Python class `PyAgrumConfiguration` and the module
+      `pyagrum/config.py` are removed; the Python glue is in the SWIG interface): same API, same `defaults.ini`
       (`pyLibs/defaults.ini` now holds the sections specific to pyAgrum: cmake concatenates it to the defaults of aGrUM
       and embeds both in the library) and same `pyagrum.ini` file, read when the library is loaded, which changes
       values but never creates a section or a key.
       `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allow_modification_when_saving` through
-      the C++ writers. The Python class only converts types, exceptions and notices (as warnings): Python hooks are
+      the C++ writers. The Python glue only converts types, exceptions and notices (as warnings): Python hooks are
       registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
-      The (hidden) class `PyAgrumConfiguration` no longer reads a defaults file: it wraps a C++ configuration.
 
 - aGrUM
 

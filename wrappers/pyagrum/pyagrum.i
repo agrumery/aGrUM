@@ -114,10 +114,12 @@ static int _pyagrum_import_numpy(void) {
 
 %include "graphs.i"
 
+/* %rename of the configuration: before the declaration of its class */
+%include "configurationPython.i"
+
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BASE.i"
 
-%include "configurationPython.i"
 %include "gum_functions_BASE.i"
 
 /////////////////////////////////
