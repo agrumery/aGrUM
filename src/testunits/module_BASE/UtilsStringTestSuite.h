@@ -41,6 +41,11 @@
 #pragma once
 
 
+#include <clocale>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include <agrum/base/core/utils_string.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -88,6 +93,35 @@ namespace gum_tests {
     CHECK(gum::isNumerical("1.2"));
     CHECK(gum::isNumerical("+1.2"));
     CHECK(gum::isNumerical("1.2e-8"));
+  }
+
+  GUM_TEST(ParseDecimal) {
+    double res = 0;
+
+    for (const auto& [s, expected]:
+         std::vector< std::pair< std::string, double > >{{"0.5", 0.5},
+                                                         {"-2.25", -2.25},
+                                                         {".5", 0.5},
+                                                         {"1e-3", 1e-3},
+                                                         {"+1.5E2", 150.0},
+                                                         {"3", 3.0}}) {
+      CHECK(gum::parseDecimal(s, res));
+      CHECK_EQ(res, expected);
+    }
+
+    for (const auto* ko: {"", "0,5", "1.5x", "0x10", "nan", "inf", "1e999", "1e", "--1", "1 2"}) {
+      CHECK(!gum::parseDecimal(ko, res));
+    }
+
+    // the decimal separator of the locale of the program is ignored
+    const std::string previous = std::setlocale(LC_NUMERIC, nullptr);
+    if (std::setlocale(LC_NUMERIC, "fr_FR.UTF-8") != nullptr
+        || std::setlocale(LC_NUMERIC, "de_DE.UTF-8") != nullptr) {
+      CHECK(gum::parseDecimal("0.25", res));
+      CHECK_EQ(res, 0.25);
+      CHECK(!gum::parseDecimal("0,25", res));
+    }
+    std::setlocale(LC_NUMERIC, previous.c_str());
   }
 
   GUM_TEST(IsIntegerWithResult) {

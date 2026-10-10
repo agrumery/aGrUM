@@ -49,6 +49,10 @@ namespace gum {
 
   const char* XmlException::what() const noexcept { return _message_.c_str(); }
 
+  XmlElement::XmlElement(void* ticppElement) noexcept : _handle_(ticppElement) {}
+
+  bool XmlElement::isNull() const noexcept { return _handle_ == nullptr; }
+
   XmlElement XmlElement::firstChildElement(const std::string& tag) const {
     auto* self = static_cast< ticpp::Element* >(_handle_);
     try {

@@ -136,6 +136,17 @@ namespace gum {
    */
   GUM_SHARED_PUBLIC bool isNumericalWithResult(std::string_view val, double* res);
 
+  /**
+   * @brief parse a decimal number, whatever the locale of the program
+   *
+   * Unlike isNumerical(), only the decimal notation (with a '.') and the scientific notation are
+   * accepted: hexadecimal, "inf" and "nan" are refused, on every platform.
+   * @param val A string, without leading or trailing space
+   * @param res The parsed value (unspecified if the function returns false)
+   * @return true if val exactly contains a finite decimal number
+   */
+  GUM_SHARED_PUBLIC bool parseDecimal(std::string_view val, double& res);
+
 
   /**
    * @brief trim from start (in place)

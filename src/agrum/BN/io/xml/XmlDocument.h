@@ -90,7 +90,7 @@ namespace gum {
     public:
     XmlElement() = default;
 
-    bool isNull() const noexcept { return _handle_ == nullptr; }
+    bool isNull() const noexcept;
 
     /// @throws XmlException if no such child exists.
     XmlElement firstChildElement(const std::string& tag) const;
@@ -113,7 +113,7 @@ namespace gum {
     private:
     friend class XmlDocument;
 
-    explicit XmlElement(void* ticppElement) noexcept : _handle_(ticppElement) {}
+    explicit XmlElement(void* ticppElement) noexcept;
 
     void* _handle_ = nullptr;   ///< opaque ticpp::Element*, never exposed
   };

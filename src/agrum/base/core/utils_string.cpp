@@ -49,6 +49,7 @@
 #include <charconv>
 #include <chrono>
 #include <filesystem>
+#include <locale>
 #include <sstream>
 #include <string>
 
@@ -133,6 +134,17 @@ namespace gum {
     if (res != nullptr) *res = d;
 
     return true;
+  }
+
+  bool parseDecimal(std::string_view val, double& res) {
+    // the standard library accepts more than that (hexadecimal, inf, nan) on some platforms
+    if (val.empty() || val.find_first_not_of("0123456789+-.eE") != std::string_view::npos) {
+      return false;
+    }
+    std::istringstream in{std::string(val)};
+    in.imbue(std::locale::classic());
+    in >> res;
+    return !in.fail() && in.peek() == std::istringstream::traits_type::eof();
   }
 
 
