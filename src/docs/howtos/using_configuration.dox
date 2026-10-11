@@ -82,7 +82,7 @@
  * ### int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)
  * maxNumberOfThreads = -1
  * ### bool :: allow to fix syntax errors in a model instead of raising when exporting
- * allow_modification_when_saving = False
+ * allowModificationWhenSaving = False
  * \endcode
  *
  * where <tt>type</tt> is one of
@@ -109,8 +109,8 @@
  * auto& conf = gum::Configuration::instance();
  *
  * std::string s  = conf.get("core", "jgumIndent");                         // "-1"
- * auto        n  = conf.getTyped< std::int64_t >("core", "maxNumberOfThreads");
- * bool        ok = conf.getTyped< bool >("core", "allow_modification_when_saving");
+ * auto        n  = conf.typed< std::int64_t >("core", "maxNumberOfThreads");
+ * bool        ok = conf.typed< bool >("core", "allowModificationWhenSaving");
  *
  * conf.set("core", "jgumIndent", "2");    // checked against the declared type
  * \endcode
@@ -118,12 +118,19 @@
  * - Values are stored as strings and are <em>canonicalized</em> when set: any accepted spelling of a boolean
  *   (<tt>true/1/on/yes</tt>, <tt>false/0/off/no</tt>, whatever the case) is stored as <tt>True</tt> or
  *   <tt>False</tt>; an enumerated value is stored with the casing declared in <tt>defaults.ini</tt>.
- * - gum::Configuration::getTyped() accepts <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> (also valid for an
+ * - gum::Configuration::typed() accepts <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> (also valid for an
  *   <tt>int</tt> key) and <tt>std::string</tt> (valid for any key). Another type is a
  *   gum::InvalidArgument.
  * - gum::Configuration::getValue() gives the value converted according to the declared type of its key
  *   (a gum::Configuration::Value: <tt>bool</tt>, <tt>int64_t</tt>, <tt>double</tt> or <tt>std::string</tt>),
  *   when the type is not known at compile time. This is what pyAgrum uses for <tt>config.typed</tt>.
+ * - gum::config() is a short name for gum::Configuration::instance().
+ * - The three numerical tolerances of aGrUM (<tt>core.epsilonCoarse</tt> = 1e-2,
+ *   <tt>core.epsilonStandard</tt> = 1e-6 and <tt>core.epsilonFine</tt> = 1e-10, in the non-overlapping domains
+ *   [1e-3,1e-1], [1e-8,1e-5] and [1e-11,1e-9]) have
+ *   dedicated accessors, <tt>gum::config().epsilonStandard()</tt> and so on, which read an atomic
+ *   updated by every change of the configuration: no lock, no allocation, so they can be used in loops.
+ *   Other keys (<tt>typed()</tt>, <tt>get()</tt>) take a lock and should be read once, in a constructor.
  * - gum::Configuration::describe() gives a human-readable summary: the differences with the defaults
  *   (see gum::Configuration::diff()) or, if there are none, a note saying so followed by the whole
  *   configuration. This is what <tt>repr(pyagrum.config)</tt> shows.
@@ -155,7 +162,7 @@
  * \code{.cpp}
  * gum::Configuration::instance().addHook([](const gum::Configuration& conf) {
  *   gum::setNumberOfThreads(static_cast< unsigned int >(
- *       conf.getTyped< std::int64_t >("core", "maxNumberOfThreads")));
+ *       conf.typed< std::int64_t >("core", "maxNumberOfThreads")));
  * });
  * \endcode
  *
@@ -181,7 +188,7 @@
  * ## What a hook may (not) do ##
  *
  * - Hooks are run <em>outside</em> of any internal lock: a hook may freely read the configuration
- *   (<tt>get</tt>, <tt>getTyped</tt>...).
+ *   (<tt>get</tt>, <tt>typed</tt>...).
  * - A hook <b>must not change the configuration with a call that runs the hooks</b> (<tt>set</tt> without
  *   <tt>noHook = true</tt>, <tt>reset</tt>, <tt>pop</tt>, <tt>load</tt>): it would call itself endlessly. Use
  *   <tt>set(section, key, value, true)</tt> if it really has to correct a value.
@@ -251,7 +258,7 @@
  *
  * # Thread-safety #
  *
- * Every public method is thread-safe: reads (<tt>get</tt>, <tt>getTyped</tt>, <tt>diff</tt>...) run
+ * Every public method is thread-safe: reads (<tt>get</tt>, <tt>typed</tt>, <tt>diff</tt>...) run
  * concurrently, writes (<tt>set</tt>, <tt>load</tt>, <tt>push</tt>...) are exclusive.
  *
  * # See also #

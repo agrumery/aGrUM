@@ -9,7 +9,7 @@
       (`pyLibs/defaults.ini` now holds the sections specific to pyAgrum: cmake concatenates it to the defaults of aGrUM
       and embeds both in the library) and same `pyagrum.ini` file, read when the library is loaded, which changes
       values but never creates a section or a key.
-      `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allow_modification_when_saving` through
+      `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allowModificationWhenSaving` through
       the C++ writers. The Python glue only converts types, exceptions and notices (as warnings): Python hooks are
       registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
 
@@ -25,10 +25,49 @@
       (new `gum::parseDecimal` in `utils_string.h`).
     - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
-      from `core.allow_modification_when_saving`.
+      from `core.allowModificationWhenSaving`.
+    - The default parameters of the approximation schemes are now keys of `gum::Configuration` (same default values
+      as before): sections `approximation` (epsilon, minEpsilonRate, maxIter, maxTime, burnIn, periodSize, verbosity: base
+      of `ApproximationScheme`, hence of the learners, the credal inference engines, ...), `sampling` (Monte Carlo,
+      weighted, importance sampling), `gibbs`, `lbp`, `loopySampling`, `gibbsKL` and `mcKL`. The values are read when an
+      object is built. The macros that held these defaults (`DEFAULT_EPSILON`, `GIBBSKL_DEFAULT_*`, ...) are removed.
+      `ApproximationScheme(bool verbosity = false)` is split into `ApproximationScheme()` (verbosity read from the
+      configuration) and `explicit ApproximationScheme(bool verbosity)`.
+    - The default parameters of the learners are now keys of the new section `learning` of `gum::Configuration` (same
+      default values as before): `alpha` (0.05, significance level of PC and FCI), `priorWeight` (1.0, weight of the
+      BDeu, smoothing and Dirichlet priors), `emNoise` (0.1, noise of EM), `tabuListSize` (100) and `tabuNbDecrease`
+      (2) of the local search with tabu list. In `BNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` the default
+      arguments of `useEM*`, `useBDeuPrior`, `useSmoothingPrior`, `useDirichletPrior` and
+      `useLocalSearchWithTabuList` are replaced by overloads without these arguments, which read the configuration
+      (`IBNLearner::default_EM_noise` is removed). The weight of `Prior` itself (and so the ESS of the BDeu score) is
+      not concerned.
+    - The text display of a `Tensor` (`toString`, hence `operator<<` and `__str__`) is now driven by the new section
+      `tensor` of `gum::Configuration`: `displayMaxRows` (6, number of rows kept at the beginning and at the end of a big
+      tensor, at least 1) and `displayColumnWidth` (9, width of the value columns, at least 6; the values have
+      `displayColumnWidth - 5` decimals). The keys are read at each call; a value out of range is refused by the configuration (see below).
+    - **Domains of validity**: the `###` metadata line of an `int` or a `float` key may give its domain, `int[1,10]`,
+      `float]0,1[`, `int[1,]` (a bracket turned toward a bound includes it, turned away excludes it, an omitted bound is
+      unbounded). A value out of the domain is refused by `set()` and `load()` (`InvalidArgument`, `ValueError` in Python),
+      and `Configuration::meta()` gives it in `Meta::domain`.
+    - **Numerical tolerances**: three keys of `[core]`, `epsilonCoarse` (1e-2), `epsilonStandard` (1e-6) and `epsilonFine`
+      (1e-10), in the non-overlapping domains `[1e-3,1e-1]`, `[1e-8,1e-5]` and `[1e-11,1e-9]` (a value out of its domain is refused), read without lock by `gum::config().epsilonCoarse()` and so on
+      (atomics updated by `set`, `reset`, `pop` and `load`). `gum::config()` is a short name for `Configuration::instance()`.
+      They replace the literals of: the credal networks (redundancy, Farey, sums to one, vertices), `isCloseToZero` and
+      `isCloseToOne` (default 1e-9, now `epsilonFine`), the default precision of `Rational::farey` and
+      `continuedFracFirst`, the ticks of `DiscretizedVariable`, the comparison of the `==` of `InfluenceDiagram` and
+      `MarkovRandomField`, the Chi2 critical value, the threshold of the corrected mutual information, the O3PRM warning
+      and error on the sum of a CPT and `AlmostDifferent` (the `==` of tensors and Bayesian networks). Changes of behavior:
+      `IBayesNet::check()` tolerance 1e-8 becomes 1e-6 and its limit of "normalization problem" 1e-1 becomes 1e-2 ;
+      `AlmostDifferent` tolerance 1e-5 becomes 1e-6 ; the O3PRM error on the sum of a CPT, 1e-3, becomes `epsilonCoarse` (1e-2) ; `isCloseToZero`/`isCloseToOne` default 1e-9 becomes 1e-10.
+      The macros `GUM_CHI_EPSILON` and `GUM_LEARNING_CONFIDENCE_PROBA` and `ChiSquare::_CHI_EPSILON_` are removed.
+    - `Configuration::getTyped<T>()` is renamed `Configuration::typed<T>()` (the Python `getTyped` is unchanged).
+    - `GibbsBNdistance(const BNdistance&)` no longer forces the variables to be drawn at random: like the other
+      constructor, it uses `gibbsKL.drawnAtRandom`, whose default is `True`. The constructor `GibbsBNdistance(P, Q)`, which
+      used to draw the variables in turn, now draws them at random by default.
     - The number of threads is now stored in an atomic, initialized on first use.
     - The keys of `defaults.ini` no longer start with `default_` (`core.maxNumberOfThreads`, `core.jgumIndent`,
-      `notebook.node_bgcolor`, ...). The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
+      `notebook.node_bgcolor`, ...) and `core.allow_modification_when_saving` becomes
+      `core.allowModificationWhenSaving`. The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
       and redirected to the new ones, with a deprecation notice (`DeprecationWarning` in pyAgrum).
 
 ## Changelog for 3.2.1
