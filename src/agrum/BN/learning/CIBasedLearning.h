@@ -178,7 +178,7 @@ namespace gum {
       // ##########################################################################
 
       IndependenceTest* test_{nullptr};
-      double            alpha_            = 0.05;
+      double            alpha_            = gum::config().typed< double >("learning", "alpha");
       Size              maxCondSetSize_   = Size(-1);
       bool              stable_           = true;
       bool              exhaustiveSepSet_ = false;

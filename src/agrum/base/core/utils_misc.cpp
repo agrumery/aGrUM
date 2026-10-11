@@ -46,6 +46,8 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/core/configuration/configuration.h>
+
 #include <agrum/base/core/utils_misc.h>
 
 namespace std {
@@ -53,6 +55,8 @@ namespace std {
 }   // namespace std
 
 namespace gum {
+
+  double almostDifferentEpsilon() { return config().epsilonStandard(); }
 
   bool Memcmp(const void* const in_, const void* const out_, unsigned long size) {
     unsigned char* in  = (unsigned char*)in_;

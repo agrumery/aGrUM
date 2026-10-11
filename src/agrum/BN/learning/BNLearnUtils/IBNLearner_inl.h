@@ -383,12 +383,31 @@ namespace gum::learning {
     return greedyThickThinning_.allowReversalsInThinPhase();
   }
 
+  // indicate that we wish to use a local search with tabu list and the default parameters
+  INLINE void IBNLearner::useLocalSearchWithTabuList() {
+    useLocalSearchWithTabuList(
+        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize")),
+        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+  }
+
+  // indicate that we wish to use a local search with tabu list and the default nb_decrease
+  INLINE void IBNLearner::useLocalSearchWithTabuList(Size tabu_size) {
+    useLocalSearchWithTabuList(
+        tabu_size,
+        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+  }
+
   // indicate that we wish to use a local search with tabu list
   INLINE void IBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
     selectedAlgo_        = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
     nbDecreasingChanges_ = nb_decrease;
     constraintTabuList_.setTabuListSize(tabu_size);
     localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);
+  }
+
+  /// use The EM algorithm to learn parameters with the default noise
+  INLINE void IBNLearner::useEM(const double epsilon) {
+    useEM(epsilon, gum::config().typed< double >("learning", "emNoise"));
   }
 
   /// use The EM algorithm to learn parameters
@@ -407,11 +426,23 @@ namespace gum::learning {
     }
   }
 
+  /// use The EM algorithm to learn parameters with the rate stopping criterion and the default
+  /// noise
+  INLINE void IBNLearner::useEMWithRateCriterion(const double epsilon) {
+    useEMWithRateCriterion(epsilon, gum::config().typed< double >("learning", "emNoise"));
+  }
+
   /// use The EM algorithm to learn parameters with the rate stopping criterion
   INLINE void IBNLearner::useEMWithRateCriterion(const double epsilon, const double noise) {
     if (epsilon <= 0.0)
       GUM_ERROR(OutOfBounds, "EM's min log-likelihood evolution rate must be positive");
     useEM(epsilon, noise);
+  }
+
+  /// use The EM algorithm to learn parameters with the diff stopping criterion and the default
+  /// noise
+  INLINE void IBNLearner::useEMWithDiffCriterion(const double epsilon) {
+    useEMWithDiffCriterion(epsilon, gum::config().typed< double >("learning", "emNoise"));
   }
 
   /// use The EM algorithm to learn parameters with the diff stoppîng criterion
@@ -654,6 +685,11 @@ namespace gum::learning {
     checkScorePriorCompatibility();
   }
 
+  // use the prior smoothing with the default weight
+  INLINE void IBNLearner::useSmoothingPrior() {
+    useSmoothingPrior(gum::config().typed< double >("learning", "priorWeight"));
+  }
+
   // use the prior smoothing
   INLINE void IBNLearner::useSmoothingPrior(double weight) {
     if (weight < 0) { GUM_ERROR(OutOfBounds, "the weight of the prior must be positive") }
@@ -662,6 +698,11 @@ namespace gum::learning {
     _setPriorWeight_(weight);
 
     checkScorePriorCompatibility();
+  }
+
+  // use the Dirichlet prior with the default weight
+  INLINE void IBNLearner::useDirichletPrior(std::string_view filename) {
+    useDirichletPrior(filename, gum::config().typed< double >("learning", "priorWeight"));
   }
 
   // use the Dirichlet prior
@@ -673,6 +714,11 @@ namespace gum::learning {
     _setPriorWeight_(weight);
 
     checkScorePriorCompatibility();
+  }
+
+  // use the prior BDeu with the default weight
+  INLINE void IBNLearner::useBDeuPrior() {
+    useBDeuPrior(gum::config().typed< double >("learning", "priorWeight"));
   }
 
   // use the prior BDeu

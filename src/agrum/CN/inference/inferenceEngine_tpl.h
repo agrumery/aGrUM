@@ -899,13 +899,14 @@ namespace gum {
       auto& nodeCredalSet = marginalSets_[id];
       auto  dsize         = vertex.size();
 
-      bool eq = true;
+      bool         eq      = true;
+      const double epsilon = config().epsilonStandard();
 
       for (auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it) {
         eq = true;
 
         for (Size i = 0; i < dsize; i++) {
-          if (std::fabs(vertex[i] - (*it)[i]) > 1e-6) {
+          if (std::fabs(vertex[i] - (*it)[i]) > epsilon) {
             eq = false;
             break;
           }
@@ -936,8 +937,8 @@ namespace gum {
                       maxItEnd = marginalMax_[id].cend();
                  jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
                  ++jt, ++minIt, ++maxIt) {
-              if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6)
-                  && std::fabs(*minIt - *maxIt) > 1e-6)
+              if ((std::fabs(*jt - *minIt) < epsilon || std::fabs(*jt - *maxIt) < epsilon)
+                  && std::fabs(*minIt - *maxIt) > epsilon)
                 return false;
             }
             return true;

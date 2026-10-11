@@ -158,7 +158,7 @@ namespace gum {
         break;
       }
 
-      if (std::abs(rnumber - a.back()) < 1e-6) break;
+      if (std::abs(rnumber - a.back()) < config().epsilonStandard()) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
     }   /// end of while
@@ -250,7 +250,7 @@ namespace gum {
       p.push_back(p_tmp);
       q.push_back(q_tmp);
 
-      if (std::fabs(rnumber - a.back()) < 1e-6) break;
+      if (std::fabs(rnumber - a.back()) < config().epsilonStandard()) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
     }   /// end of while

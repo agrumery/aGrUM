@@ -142,11 +142,17 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      virtual IKTBNLearner< GUM_SCALAR >& useGreedyHillClimbing()                          = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing()                  = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                                     Size nb_decrease = 2) = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useMIIC()                                        = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useGreedyHillClimbing()                      = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing()              = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size,
+                                                                     Size nb_decrease) = 0;
+      /// local search with tabu list, with the default number of decreasing changes (key
+      /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
+      IKTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
+      /// local search with tabu list and the default parameters (keys `tabuListSize` and
+      /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
+      IKTBNLearner< GUM_SCALAR >&         useLocalSearchWithTabuList();
+      virtual IKTBNLearner< GUM_SCALAR >& useMIIC() = 0;
 
       /// @}
       // #######################################################################
@@ -164,7 +170,10 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      virtual IKTBNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1.0) = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useSmoothingPrior(double weight) = 0;
+      /// smoothing prior with the default weight (key `priorWeight` of the section `learning` of
+      /// gum::Configuration)
+      IKTBNLearner< GUM_SCALAR >& useSmoothingPrior();
 
       /// @}
       // #######################################################################

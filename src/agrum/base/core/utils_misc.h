@@ -157,6 +157,14 @@ namespace gum {
   void _atexit_();
 
   /**
+   * @brief The tolerance of AlmostDifferent : the key core.epsilonStandard of the configuration.
+   *
+   * It is a function (and not a direct access to the configuration) because the configuration
+   * itself includes this header.
+   */
+  GUM_SHARED_PUBLIC double almostDifferentEpsilon();
+
+  /**
    * @brief Indicate whether two elements are (almost) different or not.
    * @tparam T The type of the elements to compare.
    */

@@ -51,6 +51,8 @@
 #include <cmath>
 #include <limits>
 
+#include <agrum/base/core/configuration/configuration.h>
+
 #ifndef M_LOG2E
 #  define M_LOG2E 1.4426950408889634074 /* log_2 e */
 #endif
@@ -71,11 +73,13 @@
 
 // redefined due to a strange bug in visual c++
 namespace gum {
+  /// @brief Is |x| <= tol ? By default, tol is the key core.epsilonFine of the configuration.
   template < typename T >
-  bool isCloseToZero(T x, T tol = T(1e-9));
+  bool isCloseToZero(T x, T tol = static_cast< T >(config().epsilonFine()));
 
+  /// @brief Is |x - 1| <= tol ? By default, tol is the key core.epsilonFine of the configuration.
   template < typename T >
-  bool isCloseToOne(T x, T tol = T(1e-9));
+  bool isCloseToOne(T x, T tol = static_cast< T >(config().epsilonFine()));
 
   template < typename T >
   bool isfinite(T arg);

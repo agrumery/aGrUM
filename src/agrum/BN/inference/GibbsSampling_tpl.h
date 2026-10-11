@@ -48,14 +48,8 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/inference/GibbsSampling.h>
-
-#define GIBBS_SAMPLING_DEFAULT_EPSILON          std::exp(-1.6)
-#define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE std::exp(-5)
-#define GIBBS_SAMPLING_DEFAULT_BURNIN           300
-
-#define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50   // percent drawn
-#define GIBBS_SAMPLING_DRAWN_AT_RANDOM       true
 
 namespace gum {
 
@@ -63,15 +57,13 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn) :
       SamplingInference< GUM_SCALAR >(bn),
-      GibbsOperator< GUM_SCALAR >(*bn,
-                                  &this->hardEvidence(),
-                                  1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
-                                  GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
+      GibbsOperator< GUM_SCALAR >(*bn, &this->hardEvidence(), "gibbs") {
     GUM_CONSTRUCTOR(GibbsSampling);
 
-    this->setEpsilon(GIBBS_SAMPLING_DEFAULT_EPSILON);
-    this->setMinEpsilonRate(GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE);
-    this->setBurnIn(GIBBS_SAMPLING_DEFAULT_BURNIN);
+    const auto& conf = Configuration::instance();
+    this->setEpsilon(conf.typed< double >("gibbs", "epsilon"));
+    this->setMinEpsilonRate(conf.typed< double >("gibbs", "minEpsilonRate"));
+    this->setBurnIn(this->sizeFromConfiguration_("gibbs", "burnIn"));
   }
 
   /// destructor

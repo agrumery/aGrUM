@@ -51,9 +51,8 @@
  */
 
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/inference/loopySamplingInference.h>
-
-#define DEFAULT_VIRTUAL_LBP_SIZE 5000
 
 namespace gum {
 
@@ -61,7 +60,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR, template < typename > class APPROX >
   LoopySamplingInference< GUM_SCALAR, APPROX >::LoopySamplingInference(
       const IBayesNet< GUM_SCALAR >* BN) :
-      APPROX< GUM_SCALAR >(BN), virtualLBPSize_(DEFAULT_VIRTUAL_LBP_SIZE) {
+      APPROX< GUM_SCALAR >(BN),
+      virtualLBPSize_(static_cast< GUM_SCALAR >(
+          Configuration::instance().typed< double >("loopySampling", "virtualLBPSize"))) {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 

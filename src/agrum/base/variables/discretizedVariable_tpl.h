@@ -39,6 +39,7 @@
  ****************************************************************************/
 
 #pragma once
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/variables/discretizedVariable.h>   // to ease IDE parser
 #pragma once
 
@@ -222,8 +223,9 @@ namespace gum {
     std::istringstream i(std::string{label});
     T_TICKS            target;
     if (i >> target) {
+      const double epsilon = config().epsilonFine();
       if (target < _ticks_[0]) {
-        if (_ticks_[0] - target < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[0]))))
+        if (_ticks_[0] - target < epsilon * (1.0 + std::abs(static_cast< double >(_ticks_[0]))))
           return 0;
         if (_is_empirical) return 0;
         else
@@ -234,7 +236,7 @@ namespace gum {
 
       if (const auto size = _ticks_.size(); target > _ticks_[size - 1]) {
         if (target - _ticks_[size - 1]
-            < 1e-10 * (1.0 + std::abs(static_cast< double >(_ticks_[size - 1])))) {
+            < epsilon * (1.0 + std::abs(static_cast< double >(_ticks_[size - 1])))) {
           return size - 2;
         }
         if (_is_empirical) {

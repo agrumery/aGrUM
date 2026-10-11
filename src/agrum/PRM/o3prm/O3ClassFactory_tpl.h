@@ -49,6 +49,7 @@
  * @author Lionel TORTI
  */
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/PRM/o3prm/O3ClassFactory.h>
 
 namespace gum {
@@ -737,10 +738,10 @@ namespace gum {
         }
 
         // Check that CPT sums to 1
-        if (std::abs(sum - 1.0) > 1e-3) {
+        if (std::abs(sum - 1.0) > config().epsilonCoarse()) {
           O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(c.name(), attr.name(), float(sum), *_errors_);
           errors = true;
-        } else if (std::abs(sum - 1.0f) > 1e-6) {
+        } else if (std::abs(sum - 1.0f) > config().epsilonStandard()) {
           O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(c.name(), attr.name(), float(sum), *_errors_);
         }
         return errors == false;
@@ -823,10 +824,10 @@ namespace gum {
         }
 
         for (auto f: values) {
-          if (std::abs(f - GUM_SCALAR(1.0)) > 1.0e-3) {
+          if (std::abs(f - GUM_SCALAR(1.0)) > config().epsilonCoarse()) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(c.name(), attr.name(), float(f), *_errors_);
             return false;
-          } else if (std::abs(f - GUM_SCALAR(1.0)) > 1.0e-6) {
+          } else if (std::abs(f - GUM_SCALAR(1.0)) > config().epsilonStandard()) {
             O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(c.name(), attr.name(), float(f), *_errors_);
           }
         }

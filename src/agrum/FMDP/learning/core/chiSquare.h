@@ -76,9 +76,6 @@ namespace gum {
     /// maximum meaningful z value
     static constexpr double _Z_MAX_ = 6.0;
 
-    /// accuracy of critchi approximation
-    static constexpr double _CHI_EPSILON_ = 0.000001;
-
     /// maximum chi square value
     static constexpr double _CHI_MAX_ = 99999.0;
 

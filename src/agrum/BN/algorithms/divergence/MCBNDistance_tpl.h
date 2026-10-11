@@ -56,13 +56,6 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
-#define MCBNDISTANCE_DEFAULT_MAXITER          10000000
-#define MCBNDISTANCE_DEFAULT_EPSILON          1e-10
-#define MCBNDISTANCE_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define MCBNDISTANCE_DEFAULT_PERIOD_SIZE      200
-#define MCBNDISTANCE_DEFAULT_VERBOSITY        false
-#define MCBNDISTANCE_DEFAULT_TIMEOUT          6000
-
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
@@ -71,12 +64,7 @@ namespace gum {
       BNdistance< GUM_SCALAR >(P, Q), ApproximationScheme() {
     GUM_CONSTRUCTOR(MCBNDistance);
 
-    setEpsilon(MCBNDISTANCE_DEFAULT_EPSILON);
-    setMinEpsilonRate(MCBNDISTANCE_DEFAULT_MIN_EPSILON_RATE);
-    setMaxIter(MCBNDISTANCE_DEFAULT_MAXITER);
-    setVerbosity(MCBNDISTANCE_DEFAULT_VERBOSITY);
-    setPeriodSize(MCBNDISTANCE_DEFAULT_PERIOD_SIZE);
-    setMaxTime(MCBNDISTANCE_DEFAULT_TIMEOUT);
+    setFromConfiguration_("mcKL", true);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -84,12 +72,7 @@ namespace gum {
       BNdistance< GUM_SCALAR >(kl), ApproximationScheme() {
     GUM_CONSTRUCTOR(MCBNDistance);
 
-    setEpsilon(MCBNDISTANCE_DEFAULT_EPSILON);
-    setMinEpsilonRate(MCBNDISTANCE_DEFAULT_MIN_EPSILON_RATE);
-    setMaxIter(MCBNDISTANCE_DEFAULT_MAXITER);
-    setVerbosity(MCBNDISTANCE_DEFAULT_VERBOSITY);
-    setPeriodSize(MCBNDISTANCE_DEFAULT_PERIOD_SIZE);
-    setMaxTime(MCBNDISTANCE_DEFAULT_TIMEOUT);
+    setFromConfiguration_("mcKL", true);
   }
 
   template < GUM_Numeric GUM_SCALAR >

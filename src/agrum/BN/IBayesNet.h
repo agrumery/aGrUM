@@ -148,6 +148,11 @@ namespace gum {
     /**
      * Check if the BayesNet is consistent (variables, CPT)
      *
+     * A distribution is considered normalized if its sum is in [1-e, 1+e], where e is the standard
+     * tolerance of the configuration (`core.epsilonStandard`, 1e-6 by default). A sum that is
+     * out of this interval but in [1-c, 1+c], where c is the coarse tolerance
+     * (`core.epsilonCoarse`, 1e-2 by default), is reported with the hint "(normalization problem ?)".
+     *
      * @return a list of comments on the consistency of the Bayes Net
      */
     std::vector< std::string > check() const;

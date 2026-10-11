@@ -128,7 +128,20 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    explicit ApproximationScheme(bool verbosity = false);
+    /**
+     * @brief Build a scheme whose parameters are read from the configuration.
+     *
+     * The section `approximation` of gum::Configuration provides the epsilon, the minimal epsilon
+     * rate, the maximum number of iterations, the maximum time (disabled by default), the burn-in,
+     * the period size and the verbosity.
+     */
+    ApproximationScheme();
+
+    /**
+     * @brief Build a scheme whose parameters are read from the configuration, except the verbosity.
+     * @param verbosity If true, the history of the errors is recorded.
+     */
+    explicit ApproximationScheme(bool verbosity);
 
     ~ApproximationScheme() override;
 
@@ -382,6 +395,28 @@ namespace gum {
     void stopScheme_(ApproximationSchemeSTATE new_state);
 
     protected:
+    /**
+     * @brief Set the parameters of the scheme from a section of gum::Configuration.
+     *
+     * The keys `epsilon`, `minEpsilonRate`, `maxIter`, `periodSize` and `verbosity` of the section
+     * are read (and `maxTime` if withMaxTime is true) and applied through the corresponding
+     * setters, which enable the matching stopping criteria and check the values.
+     *
+     * @param section The name of the section of the configuration.
+     * @param withMaxTime If true, the key `maxTime` is read and the timeout is enabled.
+     * @throw OutOfBounds Raised if a value of the section is not valid for its setter.
+     */
+    void setFromConfiguration_(const std::string& section, bool withMaxTime);
+
+    /**
+     * @brief Read a non negative integer key of gum::Configuration.
+     * @param section The name of the section of the configuration.
+     * @param key The name of the key of the section.
+     * @return The value of the key.
+     * @throw OutOfBounds Raised if the value is negative.
+     */
+    static Size sizeFromConfiguration_(const std::string& section, const std::string& key);
+
     /// Current epsilon.
     double current_epsilon_;
 

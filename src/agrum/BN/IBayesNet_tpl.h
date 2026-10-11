@@ -51,6 +51,7 @@
 #include <cmath>
 #include <limits>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
@@ -322,8 +323,8 @@ namespace gum {
   std::vector< std::string > IBayesNet< GUM_SCALAR >::check() const {
     std::vector< std::string > comments;
 
-    const double epsilon       = 1e-8;
-    const double error_epsilon = 1e-1;
+    const double epsilon       = config().epsilonStandard();
+    const double error_epsilon = config().epsilonCoarse();
 
     // CHECKING domain
     for (const auto i: nodes())

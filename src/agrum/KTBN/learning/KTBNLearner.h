@@ -291,8 +291,12 @@ namespace gum {
 
       KTBNLearner< GUM_SCALAR >& useGreedyHillClimbing() override;
       KTBNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() override;
-      KTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                            Size nb_decrease = 2) override;
+      KTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size,
+                                                            Size nb_decrease) override;
+      /// the default parameters (keys `tabuListSize`, `tabuNbDecrease` of the section `learning`)
+      KTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList();
+      /// the default number of decreasing changes (key `tabuNbDecrease`)
+      KTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
       KTBNLearner< GUM_SCALAR >& useMIIC() override;
 
       /// @}
@@ -317,7 +321,9 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      KTBNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1.0) override;
+      KTBNLearner< GUM_SCALAR >& useSmoothingPrior(double weight) override;
+      /// the default weight (key `priorWeight` of the section `learning`)
+      KTBNLearner< GUM_SCALAR >& useSmoothingPrior();
 
       /// @}
       // #######################################################################

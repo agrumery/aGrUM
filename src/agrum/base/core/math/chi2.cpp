@@ -56,7 +56,6 @@
 // constants used by Gary Perlman for his code for computing chi2 critical
 // values
 #  define GUM_Z_MAX       6.0                           // maximum meaningful z value
-#  define GUM_CHI_EPSILON 0.000001                      // accuracy of critchi approximation
 #  define GUM_CHI_MAX     99999.0                       // maximum chi square value
 #  define GUM_LOG_SQRT_PI 0.5723649429247000870717135   // std::log (std::sqrt (pi))
 #  define GUM_I_SQRT_PI   0.5641895835477562869480795   // 1 / std::sqrt (pi)
@@ -182,7 +181,9 @@ namespace gum {
 
     chisqval = df / std::sqrt(proba); /* fair first value */
 
-    while (maxchisq - minchisq > GUM_CHI_EPSILON) {
+    // accuracy of critchi approximation
+    const double chiEpsilon = config().epsilonStandard();
+    while (maxchisq - minchisq > chiEpsilon) {
       if (probaChi2(chisqval, df) < proba) maxchisq = chisqval;
       else minchisq = chisqval;
 

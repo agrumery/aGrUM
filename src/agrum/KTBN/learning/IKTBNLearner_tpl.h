@@ -47,11 +47,32 @@
 
 #pragma once
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/KTBN/learning/IKTBNLearner.h>
 
 namespace gum {
 
   namespace learning {
+
+    template < GUM_Numeric GUM_SCALAR >
+    IKTBNLearner< GUM_SCALAR >&
+        IKTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size) {
+      return useLocalSearchWithTabuList(
+          tabu_size,
+          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    IKTBNLearner< GUM_SCALAR >& IKTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList() {
+      return useLocalSearchWithTabuList(
+          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize")),
+          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    IKTBNLearner< GUM_SCALAR >& IKTBNLearner< GUM_SCALAR >::useSmoothingPrior() {
+      return useSmoothingPrior(gum::config().typed< double >("learning", "priorWeight"));
+    }
 
     template < GUM_Numeric GUM_SCALAR >
     std::string IKTBNLearner< GUM_SCALAR >::_encode_(std::string_view base, int slice) const {

@@ -374,8 +374,12 @@ namespace gum {
 
       KTBNAdaptiveLearner< GUM_SCALAR >& useGreedyHillClimbing() override;
       KTBNAdaptiveLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing() override;
-      KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                                    Size nb_decrease = 2) override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size,
+                                                                    Size nb_decrease) override;
+      /// the default parameters (keys `tabuListSize`, `tabuNbDecrease` of the section `learning`)
+      KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList();
+      /// the default number of decreasing changes (key `tabuNbDecrease`)
+      KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
       KTBNAdaptiveLearner< GUM_SCALAR >& useMIIC() override;
 
       /// @}
@@ -394,7 +398,9 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      KTBNAdaptiveLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1.0) override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& useSmoothingPrior(double weight) override;
+      /// the default weight (key `priorWeight` of the section `learning`)
+      KTBNAdaptiveLearner< GUM_SCALAR >& useSmoothingPrior();
 
       /// @}
       // #######################################################################
@@ -564,8 +570,10 @@ namespace gum {
       IBNLearner::AlgoType _algo_{IBNLearner::AlgoType::MIIC};
 
       /// tabu-list parameters (meaningful when _algo_ is LOCAL_SEARCH_WITH_TABU_LIST)
-      Size _tabuSize_{100};
-      Size _nbDecrease_{2};
+      Size _tabuSize_{
+          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize"))};
+      Size _nbDecrease_{
+          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"))};
 
       /// recorded MIIC correction
       CorrectedMutualInformation::KModeTypes _correction_{
@@ -573,7 +581,7 @@ namespace gum {
 
       /// recorded prior and its weight
       IBNLearner::BNLearnerPriorType _prior_{IBNLearner::BNLearnerPriorType::NO_prior};
-      double                         _priorWeight_{1.0};
+      double _priorWeight_{gum::config().typed< double >("learning", "priorWeight")};
 
       /// recorded graph-change permissions / indegree cap
       bool _allowAdditions_{true};

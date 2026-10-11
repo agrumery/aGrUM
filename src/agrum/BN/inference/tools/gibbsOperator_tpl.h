@@ -49,11 +49,31 @@
  */
 
 
+#include <algorithm>
+#include <cstdint>
+
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 
 #include <agrum/base/core/utils_random.h>
 
 namespace gum {
+
+  template < GUM_Numeric GUM_SCALAR >
+  GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
+                                             const NodeProperty< Idx >*     hardEv,
+                                             const std::string&             section) :
+      GibbsOperator(
+          BN,
+          hardEv,
+          // number of variables drawn between two samples (percentage of the variables, in [0,100]
+          // according to the domain of the key)
+          1
+              + (BN.size()
+                 * static_cast< Size >(
+                     Configuration::instance().typed< std::int64_t >(section, "percentDrawnSample"))
+                 / 100),
+          Configuration::instance().typed< bool >(section, "drawnAtRandom")) {}
 
   template < GUM_Numeric GUM_SCALAR >
   GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,

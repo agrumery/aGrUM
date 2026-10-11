@@ -267,13 +267,14 @@ namespace gum {
                   "LRSWrapper< GUM_SCALAR >::fillV : input is already full with " << _vertices_
                                                                                   << " vertices.");
 
-      bool eq = true;
+      bool         eq      = true;
+      const double epsilon = config().epsilonStandard();
 
       for (const auto& v: _insertedVertices_) {
         eq = true;
 
         for (decltype(_card_) mod = 0; mod < _card_; mod++)
-          if (std::fabs(v[mod] - vertex[mod]) > 1e-6) {
+          if (std::fabs(v[mod] - vertex[mod]) > epsilon) {
             eq = false;
             break;
           }
@@ -313,7 +314,7 @@ namespace gum {
       for (const auto elem: _vertex_)
         sum += elem;
 
-      if (gum::isCloseToOne(sum, GUM_SCALAR(1e-6))) {
+      if (gum::isCloseToOne(sum, GUM_SCALAR(config().epsilonStandard()))) {
         _output_ = std::vector< std::vector< GUM_SCALAR > >(1, _vertex_);
         return;
       }

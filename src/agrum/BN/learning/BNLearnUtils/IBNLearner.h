@@ -133,9 +133,6 @@ namespace gum::learning {
       GREEDY_THICK_THINNING
     };
 
-    /// the default noise amount added to CPTs during EM's initialization (see method useEM())
-    static constexpr double default_EM_noise{0.1};
-
     /// a helper to easily read databases
     class GUM_PUBLIC_BN Database {
       public:
@@ -656,7 +653,15 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is strictly negative or if
      * noise does not belong to interval [0,1].
      */
-    void useEM(const double epsilon, const double noise = default_EM_noise);
+    void useEM(const double epsilon, const double noise);
+
+    /**
+     * use The EM algorithm to learn parameters, with the default noise
+     * @param epsilon sets the approximation stopping criterion (see useEM(epsilon, noise))
+     * @see the key `emNoise` of the section `learning` of gum::Configuration, which gives the noise
+     * @throws OutOfBounds is raised if epsilon is strictly negative.
+     */
+    void useEM(const double epsilon);
 
     /**
      * @brief use The EM algorithm to learn parameters with the rate stopping criterion
@@ -672,7 +677,10 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is not strictly positive or if
      * noise does not belong to interval [0,1].
      */
-    void useEMWithRateCriterion(const double epsilon, const double noise = default_EM_noise);
+    void useEMWithRateCriterion(const double epsilon, const double noise);
+
+    /// use The EM algorithm with the rate stopping criterion and the default noise (key `emNoise`)
+    void useEMWithRateCriterion(const double epsilon);
 
     /**
      * @brief use The EM algorithm to learn parameters with the diff stopping criterion
@@ -687,7 +695,10 @@ namespace gum::learning {
      * @throws OutOfBounds is raised if epsilon is not strictly positive or if
      * noise does not belong to interval [0,1].
      */
-    void useEMWithDiffCriterion(const double epsilon, const double noise = default_EM_noise);
+    void useEMWithDiffCriterion(const double epsilon, const double noise);
+
+    /// use The EM algorithm with the diff stopping criterion and the default noise (key `emNoise`)
+    void useEMWithDiffCriterion(const double epsilon);
 
     /// prevent using the EM algorithm for parameter learning
     void forbidEM();
@@ -760,16 +771,24 @@ namespace gum::learning {
     /** The BDeu prior adds weight to all the cells of the counts
      * tables. In other words, it adds weight rows in the database with
      * equally probable values. */
-    void useBDeuPrior(double weight = 1.0);
+    void useBDeuPrior(double weight);
+
+    /// use the BDeu prior with the default weight (key `priorWeight` of the section `learning`)
+    void useBDeuPrior();
 
     /// use the prior smoothing
-    /** @param weight pass in argument a weight if you wish to assign a weight
-     * to the smoothing, else the current weight of the IBNLearner will
-     * be used. */
-    void useSmoothingPrior(double weight = 1);
+    /** @param weight the weight assigned to the smoothing */
+    void useSmoothingPrior(double weight);
+
+    /// use the prior smoothing with the default weight (key `priorWeight` of the section
+    /// `learning`)
+    void useSmoothingPrior();
 
     /// use the Dirichlet prior from a database
-    void useDirichletPrior(std::string_view filename, double weight = 1);
+    void useDirichletPrior(std::string_view filename, double weight);
+
+    /// use the Dirichlet prior from a database with the default weight (key `priorWeight`)
+    void useDirichletPrior(std::string_view filename);
 
     /// checks whether the current score and prior are compatible
     /** @returns a non empty string if the prior is somehow compatible with the
@@ -804,7 +823,19 @@ namespace gum::learning {
     /** @param tabu_size indicate the size of the tabu list
      * @param nb_decrease indicate the max number of changes decreasing the
      * score consecutively that we allow to apply */
-    void useLocalSearchWithTabuList(Size tabu_size = 100, Size nb_decrease = 2);
+    void useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease);
+
+    /// indicate that we wish to use a local search with tabu list
+    /** @param tabu_size indicate the size of the tabu list
+     * The max number of consecutive decreasing changes is the default one (key `tabuNbDecrease`
+     * of the section `learning` of gum::Configuration) */
+    void useLocalSearchWithTabuList(Size tabu_size);
+
+    /// indicate that we wish to use a local search with tabu list and the default parameters
+    /** The size of the tabu list and the max number of consecutive decreasing changes are given by
+     * the keys `tabuListSize` and `tabuNbDecrease` of the section `learning` of gum::Configuration
+     */
+    void useLocalSearchWithTabuList();
 
     /// indicate that we wish to use K2
     void useK2(const Sequence< NodeId >& order);
@@ -1133,7 +1164,7 @@ namespace gum::learning {
     bool useEM_{false};
 
     /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init
-    double noiseEM_{0.1};
+    double noiseEM_{gum::config().typed< double >("learning", "emNoise")};
 
     /// the selected correction for miic
     CorrectedMutualInformation* mutualInfo_{nullptr};
@@ -1147,7 +1178,7 @@ namespace gum::learning {
     NoPrior* noPrior_{nullptr};
 
     /// the weight of the prior
-    double priorWeight_{1.0f};
+    double priorWeight_{gum::config().typed< double >("learning", "priorWeight")};
 
     /// the constraint for 2TBNs
     StructuralConstraintSliceOrder constraintSliceOrder_;
@@ -1215,7 +1246,7 @@ namespace gum::learning {
     IndependenceTest* indepTestPC_{nullptr};
 
     /// PC parameters
-    double alphaPc_{0.05};
+    double alphaPc_{gum::config().typed< double >("learning", "alpha")};
     bool   stablePc_{true};
     Size   maxCondSetSizePc_{Size(-1)};
     bool   sortedUCPc_{false};
@@ -1230,7 +1261,7 @@ namespace gum::learning {
     IndependenceTest* indepTestFCI_{nullptr};
 
     /// FCI parameters
-    double alphaFci_{0.05};
+    double alphaFci_{gum::config().typed< double >("learning", "alpha")};
     Size   maxPathLengthFci_{Size(-1)};
     bool   exhaustiveSepSetFci_{false};
 
@@ -1268,7 +1299,8 @@ namespace gum::learning {
     std::string filename_{"-"};
 
     // size of the tabu list
-    Size nbDecreasingChanges_{2};
+    Size nbDecreasingChanges_{
+        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"))};
 
     // the current algorithm as an approximationScheme
     const ApproximationScheme* currentAlgorithm_{nullptr};

@@ -56,17 +56,6 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
-#define GIBBSKL_DEFAULT_MAXITER          10000000
-#define GIBBSKL_DEFAULT_EPSILON          1e-10
-#define GIBBSKL_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define GIBBSKL_DEFAULT_PERIOD_SIZE      200
-#define GIBBSKL_DEFAULT_VERBOSITY        false
-#define GIBBSKL_DEFAULT_BURNIN           2000
-#define GIBBSKL_DEFAULT_TIMEOUT          6000
-
-#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10   // percent drawn
-#define GIBBSKL_DRAWN_AT_RANDOM       false
-
 namespace gum {
 
 
@@ -74,39 +63,21 @@ namespace gum {
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const IBayesNet< GUM_SCALAR >& P,
                                                  const IBayesNet< GUM_SCALAR >& Q) :
       BNdistance< GUM_SCALAR >(P, Q), ApproximationScheme(),
-      GibbsOperator< GUM_SCALAR >(P,
-                                  nullptr,
-                                  1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-                                  GIBBSKL_DRAWN_AT_RANDOM) {
+      GibbsOperator< GUM_SCALAR >(P, nullptr, "gibbsKL") {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
-    setEpsilon(GIBBSKL_DEFAULT_EPSILON);
-    setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
-    setMaxIter(GIBBSKL_DEFAULT_MAXITER);
-    setVerbosity(GIBBSKL_DEFAULT_VERBOSITY);
-    setBurnIn(GIBBSKL_DEFAULT_BURNIN);
-    setPeriodSize(GIBBSKL_DEFAULT_PERIOD_SIZE);
-    setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
+    setFromConfiguration_("gibbsKL", true);
+    setBurnIn(sizeFromConfiguration_("gibbsKL", "burnIn"));
   }
 
   template < GUM_Numeric GUM_SCALAR >
   GibbsBNdistance< GUM_SCALAR >::GibbsBNdistance(const BNdistance< GUM_SCALAR >& kl) :
-      BNdistance< GUM_SCALAR >(kl), ApproximationScheme()
-      // Gibbs operator with 10% of nodes changes at random between each samples
-      ,
-      GibbsOperator< GUM_SCALAR >(kl.p(),
-                                  nullptr,
-                                  1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
-                                  true) {
+      BNdistance< GUM_SCALAR >(kl), ApproximationScheme(),
+      GibbsOperator< GUM_SCALAR >(kl.p(), nullptr, "gibbsKL") {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
-    setEpsilon(GIBBSKL_DEFAULT_EPSILON);
-    setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
-    setMaxIter(GIBBSKL_DEFAULT_MAXITER);
-    setVerbosity(GIBBSKL_DEFAULT_VERBOSITY);
-    setBurnIn(GIBBSKL_DEFAULT_BURNIN);
-    setPeriodSize(GIBBSKL_DEFAULT_PERIOD_SIZE);
-    setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
+    setFromConfiguration_("gibbsKL", true);
+    setBurnIn(sizeFromConfiguration_("gibbsKL", "burnIn"));
   }
 
   template < GUM_Numeric GUM_SCALAR >

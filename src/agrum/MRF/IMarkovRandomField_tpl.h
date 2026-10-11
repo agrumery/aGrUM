@@ -50,6 +50,7 @@
 
 #include <limits>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/MRF/IMarkovRandomField.h>
 
@@ -283,15 +284,16 @@ namespace gum {
 
       const auto& fromfactor = from.factor(fromkey);
 
-      Instantiation i(factor);
-      Instantiation j(fromfactor);
+      Instantiation    i(factor);
+      Instantiation    j(fromfactor);
+      const GUM_SCALAR tolerance = static_cast< GUM_SCALAR >(config().epsilonStandard());
       for (i.setFirst(); !i.end(); i.inc()) {
         for (Idx indice = 0; indice < factor.nbrDim(); ++indice) {
           const DiscreteVariable* p = &(i.variable(indice));
           j.chgVal(*(alignment.second(p)), i.val(*p));
         }
 
-        if (std::pow(factor.get(i) - fromfactor.get(j), (GUM_SCALAR)2) > (GUM_SCALAR)1e-6) {
+        if (std::pow(factor.get(i) - fromfactor.get(j), (GUM_SCALAR)2) > tolerance) {
           return false;
         }
       }

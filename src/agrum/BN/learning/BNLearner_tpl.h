@@ -778,6 +778,24 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEM(const double epsilon) {
+      IBNLearner::useEM(epsilon);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEMWithRateCriterion(const double epsilon) {
+      IBNLearner::useEMWithRateCriterion(epsilon);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEMWithDiffCriterion(const double epsilon) {
+      IBNLearner::useEMWithDiffCriterion(epsilon);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useEM(const double epsilon,
                                                             const double noise) {
       IBNLearner::useEM(epsilon, noise);
@@ -931,6 +949,30 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useBDeuPrior() {
+      IBNLearner::useBDeuPrior();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useSmoothingPrior() {
+      IBNLearner::useSmoothingPrior();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useDirichletPrior(std::string_view filename) {
+      IBNLearner::useDirichletPrior(filename);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >&
+        BNLearner< GUM_SCALAR >::useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn) {
+      return useDirichletPrior(bn, gum::config().typed< double >("learning", "priorWeight"));
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useBDeuPrior(double weight) {
       IBNLearner::useBDeuPrior(weight);
       return *this;
@@ -986,6 +1028,18 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     bool BNLearner< GUM_SCALAR >::greedyThickThinningReversals() const {
       return IBNLearner::greedyThickThinningReversals();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size) {
+      IBNLearner::useLocalSearchWithTabuList(tabu_size);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useLocalSearchWithTabuList() {
+      IBNLearner::useLocalSearchWithTabuList();
+      return *this;
     }
 
     template < GUM_Numeric GUM_SCALAR >

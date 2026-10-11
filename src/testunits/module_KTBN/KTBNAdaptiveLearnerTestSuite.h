@@ -48,6 +48,7 @@
 #include <utility>
 #include <vector>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
@@ -807,5 +808,44 @@ namespace gum_tests {
     gum::initRandom(42);
     lm.learnKTBN();
     GUM_CHECK_ASSERT_THROWS_NOTHING(lm.latentVariables());
+  }
+
+  GUM_TEST(LearnerDefaultsComeFromConfiguration) {
+    auto& conf = gum::Configuration::instance();
+    auto  l    = _solo_();
+
+    // the values written in the code before the section `learning` of the configuration
+    CHECK_EQ(_stateValue_(l, "Prior weight"), "");   // no prior yet
+    l.useSmoothingPrior();
+    CHECK_EQ(_stateValue_(l, "Prior weight"), std::to_string(1.0));
+    l.useLocalSearchWithTabuList();
+    CHECK_EQ(_stateValue_(l, "Tabu list size"), std::to_string(100));
+    CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(2));
+
+    conf.push();
+    conf.set("learning", "priorWeight", "0.25");
+    conf.set("learning", "tabuListSize", "30");
+    conf.set("learning", "tabuNbDecrease", "4");
+    CHECK_EQ(&l.useSmoothingPrior(), &l);   // covariant chaining on the concrete type
+    CHECK_EQ(_stateValue_(l, "Prior weight"), std::to_string(0.25));
+    l.useLocalSearchWithTabuList();
+    CHECK_EQ(_stateValue_(l, "Tabu list size"), std::to_string(30));
+    CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(4));
+    l.useLocalSearchWithTabuList(50);
+    CHECK_EQ(_stateValue_(l, "Tabu list size"), std::to_string(50));
+    CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(4));
+    // explicit values never use the configuration
+    l.useSmoothingPrior(0.5);
+    CHECK_EQ(_stateValue_(l, "Prior weight"), std::to_string(0.5));
+    l.useLocalSearchWithTabuList(50, 3);
+    CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(3));
+
+    // a new learner reads the configuration when it is built
+    auto fresh = _solo_();
+    fresh.useLocalSearchWithTabuList();
+    CHECK_EQ(_stateValue_(fresh, "Tabu list size"), std::to_string(30));
+    conf.pop();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(l.useLocalSearchWithTabuList());
   }
 }   // namespace gum_tests

@@ -51,6 +51,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/tensor.h>
 
 #include <agrum/base/core/math/math_utils.h>
@@ -1045,9 +1046,20 @@ namespace gum {
       ss << "[" << this->get(I) << "]";
       return ss.str();
     }
+    // size of the display from the configuration (tensor.displayColumnWidth, tensor.displayMaxRows)
+    const auto sizeFromConfiguration = [](const std::string& key, std::int64_t minimum) {
+      const auto value = Configuration::instance().typed< std::int64_t >("tensor", key);
+      if (value < minimum) {
+        GUM_ERROR(OutOfBounds,
+                  "The key tensor." << key << " of the configuration must be at least " << minimum
+                                    << ".")
+      }
+      return static_cast< Size >(value);
+    };
+
     const Size colwidth    = 6;
-    const Size numberwidth = 9;
-    const Size nbrLigMax   = 6;
+    const Size numberwidth = sizeFromConfiguration("displayColumnWidth", 6);
+    const Size nbrLigMax   = sizeFromConfiguration("displayMaxRows", 1);
 
     ss << std::left << std::fixed << std::endl;
     ss.precision(numberwidth - 5);

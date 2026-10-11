@@ -75,6 +75,21 @@ namespace gum {
                   bool                           atRandom = false);
 
     /**
+     * @brief Constructor whose Gibbs parameters are read from gum::Configuration.
+     *
+     * The key `percentDrawnSample` of the section gives the percentage (0 to 100) of the variables
+     * drawn between two samples and the key `drawnAtRandom` tells whether they are chosen at random
+     * or in turn.
+     *
+     * @param BN The Bayesian network to sample.
+     * @param hardEv The hard evidence (may be nullptr).
+     * @param section The name of the section of the configuration.
+     */
+    GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
+                  const NodeProperty< Idx >*     hardEv,
+                  const std::string&             section);
+
+    /**
      * Destructor.
      */
     virtual ~GibbsOperator();

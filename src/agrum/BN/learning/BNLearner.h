@@ -255,7 +255,11 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is strictly negative or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise = default_EM_noise);
+      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise);
+
+      /// use The EM algorithm to learn parameters with the default noise (key `emNoise` of the
+      /// section `learning` of gum::Configuration)
+      BNLearner< GUM_SCALAR >& useEM(const double epsilon);
 
       /**
        * @brief use The EM algorithm to learn parameters with the rate stopping criterion
@@ -274,8 +278,11 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is not strictly positive or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon,
-                                                      const double noise = default_EM_noise);
+      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon, const double noise);
+
+      /// use The EM algorithm with the rate stopping criterion and the default noise (key
+      /// `emNoise`)
+      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon);
 
       /**
        * @brief use The EM algorithm to learn parameters with the diff stopping criterion
@@ -291,8 +298,11 @@ namespace gum {
        * @throws OutOfBounds is raised if epsilon is not strictly positive or if
        * noise does not belong to interval [0,1].
        */
-      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon,
-                                                      const double noise = default_EM_noise);
+      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon, const double noise);
+
+      /// use The EM algorithm with the diff stopping criterion and the default noise (key
+      /// `emNoise`)
+      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon);
 
       /// prevent using the EM algorithm for parameter learning
       BNLearner< GUM_SCALAR >& forbidEM();
@@ -389,14 +399,26 @@ namespace gum {
 
       BNLearner< GUM_SCALAR >& useNoPrior();
 
-      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight = 1.0);
+      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight);
 
-      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight = 1);
+      /// use the BDeu prior with the default weight (key `priorWeight` of the section `learning`)
+      BNLearner< GUM_SCALAR >& useBDeuPrior();
 
-      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight = 1);
+      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight);
+
+      /// use the smoothing prior with the default weight (key `priorWeight`)
+      BNLearner< GUM_SCALAR >& useSmoothingPrior();
+
+      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight);
+
+      /// use the Dirichlet prior from a database with the default weight (key `priorWeight`)
+      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename);
 
       BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
-                                                 double                             weight = 1);
+                                                 double                             weight);
+
+      /// use the Dirichlet prior from a BN with the default weight (key `priorWeight`)
+      BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn);
 
       BNLearner< GUM_SCALAR >& useGreedyHillClimbing();
 
@@ -408,8 +430,15 @@ namespace gum {
 
       bool greedyThickThinningReversals() const;
 
-      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size   = 100,
-                                                          Size nb_decrease = 2);
+      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease);
+
+      /// use a local search with tabu list, with the default number of decreasing changes (key
+      /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
+      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
+
+      /// use a local search with tabu list and the default parameters (keys `tabuListSize` and
+      /// `tabuNbDecrease`)
+      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList();
 
       BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order);
 

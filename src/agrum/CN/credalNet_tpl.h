@@ -118,7 +118,7 @@ namespace gum {
             sum += prob;
           }
 
-          if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
+          if (!gum::isCloseToOne(sum, GUM_SCALAR(config().epsilonStandard())))
             GUM_ERROR(CPTError,
                       "setCPTs : a vertex coordinates does not "
                       "sum to one for node id : "
@@ -160,7 +160,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
+        if (!gum::isCloseToOne(sum, GUM_SCALAR(config().epsilonStandard())))
           GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                         << id << " at entry " << entry << " with vertex " << vertex);
@@ -249,7 +249,7 @@ namespace gum {
           sum += prob;
         }
 
-        if (!gum::isCloseToOne(sum, GUM_SCALAR(1e-6)))
+        if (!gum::isCloseToOne(sum, GUM_SCALAR(config().epsilonStandard())))
           GUM_ERROR(CPTError,
                     "setCPT : a vertex coordinates does not sum to one for node id : "
                         << id << " at entry " << entry << " with vertex " << vertex);
@@ -717,7 +717,7 @@ namespace gum {
           std::vector< std::vector< GUM_SCALAR > > vertices;
 
           for (Size modality = 0; modality < var_dSize; modality++) {
-            if (std::fabs(upper[modality] - lower[modality]) < 1e-6) continue;
+            if (std::fabs(upper[modality] - lower[modality]) < config().epsilonStandard()) continue;
 
             all_equals = false;
             std::vector< GUM_SCALAR > vertex(var_dSize);
@@ -734,7 +734,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (std::fabs(total - 1.) > 1e-6)
+            if (std::fabs(total - 1.) > config().epsilonStandard())
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
                             << "  does not sum to one for " << entry << std::endl
@@ -756,7 +756,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (std::fabs(total - 1.) > 1e-6)
+            if (std::fabs(total - 1.) > config().epsilonStandard())
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
                             << "  does not sum to one for " << entry << std::endl
@@ -1355,10 +1355,10 @@ namespace gum {
       _epsilonMax_ = 0;
       _epsilonMoy_ = 0;
 
-      _epsRedund_ = GUM_SCALAR(1e-6);
+      _epsRedund_ = GUM_SCALAR(config().epsilonStandard());
 
       // farey algorithm
-      _epsF_   = GUM_SCALAR(1e-6);
+      _epsF_   = GUM_SCALAR(config().epsilonStandard());
       _denMax_ = GUM_SCALAR(1e6);   // beware LRSWrapper
 
       // continued fractions, beware LRSWrapper

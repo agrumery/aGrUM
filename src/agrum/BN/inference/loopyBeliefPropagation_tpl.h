@@ -52,13 +52,6 @@
 #  include <sstream>
 #  include <string>
 
-constexpr auto LBP_DEFAULT_MAXITER          = 100;
-constexpr auto LBP_DEFAULT_EPSILON          = 1e-8;
-constexpr auto LBP_DEFAULT_MIN_EPSILON_RATE = 1e-10;
-constexpr auto LBP_DEFAULT_PERIOD_SIZE      = 1;
-constexpr auto LBP_DEFAULT_VERBOSITY        = false;
-
-
 // to ease parsing for IDE
 #  include <agrum/BN/inference/loopyBeliefPropagation.h>
 
@@ -71,11 +64,9 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR(LoopyBeliefPropagation)
 
-    this->setEpsilon(LBP_DEFAULT_EPSILON);
-    this->setMinEpsilonRate(LBP_DEFAULT_MIN_EPSILON_RATE);
-    this->setMaxIter(LBP_DEFAULT_MAXITER);
-    this->setVerbosity(LBP_DEFAULT_VERBOSITY);
-    this->setPeriodSize(LBP_DEFAULT_PERIOD_SIZE);
+    // epsilon, minimal epsilon rate, maximum number of iterations, period size and verbosity (no
+    // timeout)
+    this->setFromConfiguration_("lbp", false);
 
     _init_messages_();
   }

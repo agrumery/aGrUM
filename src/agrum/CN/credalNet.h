@@ -568,12 +568,12 @@ namespace gum {
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * computing redundant vertices. */
-      GUM_SCALAR _epsRedund_;   //= 1e-6;
+      GUM_SCALAR _epsRedund_;   // core.epsilonStandard (1e-6 by default), read at construction
 
       /** @brief Value under which a decimal number is considered to be zero
        * when
        * using  _farey_. */
-      GUM_SCALAR _epsF_;   // = 1e-6;
+      GUM_SCALAR _epsF_;   // core.epsilonStandard (1e-6 by default), read at construction
       /** @brief Highest possible denominator allowed when using  _farey_. A
        * value too
        * high may lead to lrs being unable to find vertices. */

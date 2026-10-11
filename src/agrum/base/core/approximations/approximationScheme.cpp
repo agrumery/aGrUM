@@ -51,17 +51,50 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <cstdint>
+
 #include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/configuration/configuration.h>
 
 namespace gum {
 
+  ApproximationScheme::ApproximationScheme() :
+      ApproximationScheme(Configuration::instance().typed< bool >("approximation", "verbosity")) {}
+
   ApproximationScheme::ApproximationScheme(bool verbosity) :
-      current_state_(ApproximationSchemeSTATE::Undefined), eps_(5e-2), enabled_eps_(true),
-      min_rate_eps_(1e-2), enabled_min_rate_eps_(true), max_time_(1.), enabled_max_time_(false),
-      max_iter_(static_cast< Size >(10000)), enabled_max_iter_(true),
-      burn_in_(static_cast< Size >(0)), period_size_(static_cast< Size >(1)),
-      verbosity_(verbosity) {
+      current_state_(ApproximationSchemeSTATE::Undefined), eps_(0.), enabled_eps_(true),
+      min_rate_eps_(0.), enabled_min_rate_eps_(true), max_time_(1.), enabled_max_time_(false),
+      max_iter_(static_cast< Size >(1)), enabled_max_iter_(true), burn_in_(static_cast< Size >(0)),
+      period_size_(static_cast< Size >(1)), verbosity_(verbosity) {
     GUM_CONSTRUCTOR(ApproximationScheme);
+
+    setFromConfiguration_("approximation", true);
+    // the timeout is read (and checked) but stays disabled until the user asks for it
+    disableMaxTime();
+    burn_in_   = sizeFromConfiguration_("approximation", "burnIn");
+    verbosity_ = verbosity;
+  }
+
+  Size ApproximationScheme::sizeFromConfiguration_(const std::string& section,
+                                                   const std::string& key) {
+    const auto value = Configuration::instance().typed< std::int64_t >(section, key);
+    if (value < 0) {
+      GUM_ERROR(OutOfBounds,
+                "The key " << section << "." << key
+                           << " of the configuration must not be negative.")
+    }
+    return static_cast< Size >(value);
+  }
+
+  void ApproximationScheme::setFromConfiguration_(const std::string& section, bool withMaxTime) {
+    const auto& conf = Configuration::instance();
+
+    setEpsilon(conf.typed< double >(section, "epsilon"));
+    setMinEpsilonRate(conf.typed< double >(section, "minEpsilonRate"));
+    setMaxIter(sizeFromConfiguration_(section, "maxIter"));
+    setPeriodSize(sizeFromConfiguration_(section, "periodSize"));
+    setVerbosity(conf.typed< bool >(section, "verbosity"));
+    if (withMaxTime) setMaxTime(conf.typed< double >(section, "maxTime"));
   }
 
   ApproximationScheme::~ApproximationScheme() { GUM_DESTRUCTOR(ApproximationScheme); }

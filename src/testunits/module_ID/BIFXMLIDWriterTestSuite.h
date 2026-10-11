@@ -44,6 +44,7 @@
 #include <iostream>
 #include <string>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/ID/generator/influenceDiagramGenerator.h>
 #include <agrum/ID/influenceDiagram.h>
@@ -214,6 +215,10 @@ namespace gum_tests {
   GUM_TEST(GenerationReadWrite) {
     gum::InfluenceDiagramGenerator< double > gen;
 
+    // the values are written in the xml file with 6 digits
+    gum::config().push();
+    gum::config().set("core", "epsilonStandard", "1e-5");
+
     for (int i = 0; i < 5; i++) {
       gum::InfluenceDiagram< double >* net = gen.generateID(25, 0.3f, 0.3f, 0.1f, 4);
 
@@ -242,6 +247,8 @@ namespace gum_tests {
 
       delete net;
     }
+
+    gum::config().pop();
   }
 
   GUM_TEST(GenerationReadWrite2) {

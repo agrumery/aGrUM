@@ -223,13 +223,14 @@ namespace gum {
       auto& nodeCredalSet = l_marginalSets_[tId][id];
       Size  dsize         = Size(vertex.size());
 
-      bool eq = true;
+      bool         eq      = true;
+      const double epsilon = config().epsilonStandard();
 
       for (auto it = nodeCredalSet.cbegin(), itEnd = nodeCredalSet.cend(); it != itEnd; ++it) {
         eq = true;
 
         for (Size i = 0; i < dsize; i++) {
-          if (std::fabs(vertex[i] - (*it)[i]) > 1e-6) {
+          if (std::fabs(vertex[i] - (*it)[i]) > epsilon) {
             eq = false;
             break;
           }
@@ -244,7 +245,7 @@ namespace gum {
       } else return;
 
       /// we need this because of the next lambda return contidion fabs ( *minIt
-      /// - *maxIt ) > 1e-6 which never happens if there is only one vertice
+      /// - *maxIt ) > epsilon which never happens if there is only one vertice
       if (nodeCredalSet.size() == 1) return;
 
       // check that the point and all previously added ones are not inside the
@@ -262,8 +263,8 @@ namespace gum {
                       maxItEnd = l_marginalMax_[tId][id].cend();
                  jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
                  ++jt, ++minIt, ++maxIt) {
-              if ((std::fabs(*jt - *minIt) < 1e-6 || std::fabs(*jt - *maxIt) < 1e-6)
-                  && std::fabs(*minIt - *maxIt) > 1e-6)
+              if ((std::fabs(*jt - *minIt) < epsilon || std::fabs(*jt - *maxIt) < epsilon)
+                  && std::fabs(*minIt - *maxIt) > epsilon)
                 return false;
             }
             return true;

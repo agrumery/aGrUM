@@ -100,13 +100,14 @@ namespace gum {
      * @param den_max The constant highest authorized denominator. 1000000 by
      * default.
      * @param zero The positive value below which a number is considered zero.
-     * 1e-6 by default.
+     * The key core.epsilonStandard of the configuration (1e-6) by default.
      */
     static void farey(int64_t&          numerator,
                       int64_t&          denominator,
                       const GUM_SCALAR& number,
                       const int64_t&    den_max = 1000000L,
-                      const GUM_SCALAR& zero    = 1e-6);
+                      const GUM_SCALAR& zero
+                      = static_cast< GUM_SCALAR >(config().epsilonStandard()));
 
     /**
      * @brief Find the first best rational approximation.
@@ -127,12 +128,12 @@ namespace gum {
      * @param denominator The denominator of the rational.
      * @param number The constant number we want to approximate using rationals.
      * @param zero The positive value below which a number is considered zero.
-     * 1e-6 by default.
+     * The key core.epsilonStandard of the configuration (1e-6) by default.
      */
     static void continuedFracFirst(int64_t&          numerator,
                                    int64_t&          denominator,
                                    const GUM_SCALAR& number,
-                                   const double&     zero = 1e-6);
+                                   const double&     zero = config().epsilonStandard());
 
     /**
      * @brief Find the best rational approximation.

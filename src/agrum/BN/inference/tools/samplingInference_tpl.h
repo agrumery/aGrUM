@@ -54,25 +54,14 @@
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
-
-#define DEFAULT_MAXITER          10000000
-#define DEFAULT_PERIOD_SIZE      100
-#define DEFAULT_VERBOSITY        false
-#define DEFAULT_TIMEOUT          6000
-#define DEFAULT_EPSILON          1e-2
-#define DEFAULT_MIN_EPSILON_RATE 1e-5
-
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::SamplingInference(const IBayesNet< GUM_SCALAR >* bn) :
       ApproximateInference< GUM_SCALAR >(bn), _estimator_(), _samplingBN_(nullptr) {
-    this->setEpsilon(DEFAULT_EPSILON);
-    this->setMinEpsilonRate(DEFAULT_MIN_EPSILON_RATE);
-    this->setMaxIter(DEFAULT_MAXITER);
-    this->setVerbosity(DEFAULT_VERBOSITY);
-    this->setPeriodSize(DEFAULT_PERIOD_SIZE);
-    this->setMaxTime(DEFAULT_TIMEOUT);
+    // epsilon, minimal epsilon rate, maximum number of iterations, period size, verbosity and
+    // timeout
+    this->setFromConfiguration_("sampling", true);
     GUM_CONSTRUCTOR(SamplingInference);
   }
 

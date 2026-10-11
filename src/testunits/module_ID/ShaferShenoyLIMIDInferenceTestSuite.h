@@ -47,6 +47,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/variables/discreteVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -169,6 +170,10 @@ namespace gum_tests {
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(dIDI.makeInference());
 
+    // the expected utilities are given with 5 digits
+    gum::config().push();
+    gum::config().set("core", "epsilonStandard", "1e-5");
+
     CHECK((dIDI.posterior("OilContents"))
           == ((gum::Tensor< double >() << net.variableFromName("OilContents"))
                   .fillWith({0.5, 0.3, 0.2})));
@@ -194,6 +199,8 @@ namespace gum_tests {
     CHECK((dIDI.posteriorUtility("Drilling"))
           == ((gum::Tensor< double >() << net.variableFromName("Drilling"))
                   .fillWith({45.0847, -10})));
+
+    gum::config().pop();
 
     CHECK((dIDI.meanVar("Cost").first) == doctest::Approx(-10).epsilon(GUM_SMALL_ERROR));
     CHECK((dIDI.meanVar("Cost").second) == doctest::Approx(0).epsilon(GUM_SMALL_ERROR));

@@ -351,8 +351,8 @@ namespace gum {
       /// an empty conditioning set
       const std::vector< NodeId > _empty_conditioning_set_;
 
-      /// a constant used to prevent numerical instabilities
-      const double _threshold_{1e-10};
+      /// a constant used to prevent numerical instabilities (core.epsilonFine)
+      const double _threshold_{config().epsilonFine()};
 
 
       /// returns the 2-point mutual information corresponding to a given nodeset

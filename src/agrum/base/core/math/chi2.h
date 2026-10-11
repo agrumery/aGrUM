@@ -56,8 +56,6 @@
 
 #include <agrum/base/core/math/math_utils.h>
 
-#define GUM_LEARNING_CONFIDENCE_PROBA 0.05
-
 namespace gum {
 
   // =========================================================================

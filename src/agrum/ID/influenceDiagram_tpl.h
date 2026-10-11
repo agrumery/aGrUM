@@ -53,6 +53,7 @@
 #include <cstdio>
 #include <iostream>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/ID/influenceDiagram.h>
@@ -899,8 +900,9 @@ namespace gum {
 
       if (p1.domainSize() != p2.domainSize()) { return false; }
 
-      Instantiation i(p1);
-      Instantiation j(p2);
+      Instantiation    i(p1);
+      Instantiation    j(p2);
+      const GUM_SCALAR tolerance = static_cast< GUM_SCALAR >(config().epsilonStandard());
 
       for (i.setFirst(); !i.end(); i.inc()) {
         for (Idx indice = 0; indice < p1.nbrDim(); ++indice) {
@@ -908,7 +910,7 @@ namespace gum {
           j.chgVal(*(alignment.second(p)), i.val(*p));
         }
 
-        if (std::pow(p1.get(i) - p2.get(j), (GUM_SCALAR)2) > (GUM_SCALAR)1e-6) { return false; }
+        if (std::pow(p1.get(i) - p2.get(j), (GUM_SCALAR)2) > tolerance) { return false; }
       }
       return true;
     };

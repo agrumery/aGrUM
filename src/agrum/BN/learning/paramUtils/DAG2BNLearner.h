@@ -201,7 +201,7 @@ namespace gum {
        * random noise. The formula used is, up to some normalizing constant:
        * new_cpt = (1-noise) * cpt + noise * random_cpt().
        */
-      double noiseEM_{0.1};
+      double noiseEM_{gum::config().typed< double >("learning", "emNoise")};
 
       /// keep trak of the log-likelihood when performing EM
       /**
