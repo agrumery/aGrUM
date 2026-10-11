@@ -4799,7 +4799,7 @@ SWIGINTERNINLINE PyObject*
 
 // default of the argument allowModificationWhenSaving of the save* methods: the configuration
 inline bool gumConfigAllowModificationWhenSaving() {
-  return gum::Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving");
+  return gum::Configuration::instance().typed< bool >("core", "allowModificationWhenSaving");
 }
 
 
@@ -52574,7 +52574,28 @@ SWIGINTERN PyObject *UGmodel_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *
   return SWIG_Python_InitShadowInstance(args);
 }
 
-SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
+  {
+    try {
+      result = (gum::ApproximationScheme *)new gum::ApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__ApproximationScheme, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   bool arg1 ;
   bool val1 ;
@@ -52603,27 +52624,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
-  PyObject *resultobj = 0;
-  gum::ApproximationScheme *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
-  {
-    try {
-      result = (gum::ApproximationScheme *)new gum::ApproximationScheme();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__ApproximationScheme, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_new_ApproximationScheme(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[2] = {
@@ -52633,12 +52633,12 @@ SWIGINTERN PyObject *_wrap_new_ApproximationScheme(PyObject *self, PyObject *arg
   if (!(argc = SWIG_Python_UnpackTuple(args, "new_ApproximationScheme", 0, 1, argv))) SWIG_fail;
   --argc;
   if (argc == 0) {
-    PyObject *retobj = _wrap_new_ApproximationScheme__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_new_ApproximationScheme__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_ApproximationScheme__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_new_ApproximationScheme__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -52646,8 +52646,8 @@ SWIGINTERN PyObject *_wrap_new_ApproximationScheme(PyObject *self, PyObject *arg
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_ApproximationScheme'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::ApproximationScheme::ApproximationScheme(bool)\n"
-    "    gum::ApproximationScheme::ApproximationScheme()\n");
+    "    gum::ApproximationScheme::ApproximationScheme()\n"
+    "    gum::ApproximationScheme::ApproximationScheme(bool)\n");
   return 0;
 }
 
@@ -121289,7 +121289,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEM__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEM__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121306,17 +121306,17 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEM__SWIG_0(PyObject *self, Py_ssize_t no
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEM" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEM" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEM" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEM" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useEM" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useEM" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
@@ -121334,7 +121334,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEM__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEM__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121348,12 +121348,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEM__SWIG_1(PyObject *self, Py_ssize_t no
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEM" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEM" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEM" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEM" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -121371,27 +121371,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEM(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEM(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useEM", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useEM", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useEM__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEM__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_BNLearner_useEM__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEM__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useEM'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useEM'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useEM(double const,double const)\n"
     "    gum::learning::BNLearner< double >::useEM(double const)\n");
@@ -121399,7 +121399,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithRateCriterion__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithRateCriterion__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121416,17 +121416,17 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEMWithRateCriterion__SWIG_0(PyObject *se
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEMWithRateCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEMWithRateCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEMWithRateCriterion" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEMWithRateCriterion" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useEMWithRateCriterion" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useEMWithRateCriterion" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
@@ -121444,7 +121444,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithRateCriterion__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithRateCriterion__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121458,12 +121458,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEMWithRateCriterion__SWIG_1(PyObject *se
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEMWithRateCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEMWithRateCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEMWithRateCriterion" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEMWithRateCriterion" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -121481,27 +121481,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithRateCriterion(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithRateCriterion(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useEMWithRateCriterion", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useEMWithRateCriterion", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useEMWithRateCriterion__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEMWithRateCriterion__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_BNLearner_useEMWithRateCriterion__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEMWithRateCriterion__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useEMWithRateCriterion'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useEMWithRateCriterion'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useEMWithRateCriterion(double const,double const)\n"
     "    gum::learning::BNLearner< double >::useEMWithRateCriterion(double const)\n");
@@ -121509,7 +121509,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithDiffCriterion__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithDiffCriterion__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121526,17 +121526,17 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEMWithDiffCriterion__SWIG_0(PyObject *se
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEMWithDiffCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEMWithDiffCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEMWithDiffCriterion" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEMWithDiffCriterion" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useEMWithDiffCriterion" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useEMWithDiffCriterion" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
@@ -121554,7 +121554,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithDiffCriterion__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithDiffCriterion__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -121568,12 +121568,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useEMWithDiffCriterion__SWIG_1(PyObject *se
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useEMWithDiffCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useEMWithDiffCriterion" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useEMWithDiffCriterion" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useEMWithDiffCriterion" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -121591,27 +121591,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useEMWithDiffCriterion(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useEMWithDiffCriterion(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useEMWithDiffCriterion", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useEMWithDiffCriterion", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useEMWithDiffCriterion__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEMWithDiffCriterion__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_BNLearner_useEMWithDiffCriterion__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useEMWithDiffCriterion__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useEMWithDiffCriterion'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useEMWithDiffCriterion'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useEMWithDiffCriterion(double const,double const)\n"
     "    gum::learning::BNLearner< double >::useEMWithDiffCriterion(double const)\n");
@@ -122374,7 +122374,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useBDeuPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useBDeuPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -122388,12 +122388,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useBDeuPrior__SWIG_0(PyObject *self, Py_ssi
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useBDeuPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useBDeuPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useBDeuPrior" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useBDeuPrior" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -122411,7 +122411,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useBDeuPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useBDeuPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -122422,7 +122422,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useBDeuPrior__SWIG_1(PyObject *self, Py_ssi
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useBDeuPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useBDeuPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
@@ -122440,27 +122440,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useBDeuPrior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useBDeuPrior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useBDeuPrior", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useBDeuPrior", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_BNLearner_useBDeuPrior__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useBDeuPrior__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useBDeuPrior__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useBDeuPrior__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useBDeuPrior'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useBDeuPrior'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useBDeuPrior(double)\n"
     "    gum::learning::BNLearner< double >::useBDeuPrior()\n");
@@ -122468,7 +122468,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -122482,12 +122482,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useSmoothingPrior__SWIG_0(PyObject *self, P
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useSmoothingPrior" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useSmoothingPrior" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -122505,7 +122505,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -122516,7 +122516,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useSmoothingPrior__SWIG_1(PyObject *self, P
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
@@ -122534,27 +122534,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useSmoothingPrior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useSmoothingPrior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useSmoothingPrior", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useSmoothingPrior", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_BNLearner_useSmoothingPrior__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useSmoothingPrior__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useSmoothingPrior__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useSmoothingPrior__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useSmoothingPrior'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useSmoothingPrior'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useSmoothingPrior(double)\n"
     "    gum::learning::BNLearner< double >::useSmoothingPrior()\n");
@@ -122562,7 +122562,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useDirichletPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   std::string_view arg2 ;
@@ -122578,7 +122578,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_0(PyObject *self, P
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
@@ -122602,7 +122602,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_0(PyObject *self, P
   }
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useDirichletPrior" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useDirichletPrior" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
@@ -122626,7 +122626,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useDirichletPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   std::string_view arg2 ;
@@ -122639,7 +122639,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_1(PyObject *self, P
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
@@ -122682,7 +122682,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useDirichletPrior__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   gum::BayesNet< double > *arg2 = 0 ;
@@ -122699,20 +122699,20 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_2(PyObject *self, P
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__BayesNetT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner__useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner_useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner__useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::BayesNet< double > * >(argp2);
   ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useDirichletPrior" "', argument " "3"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useDirichletPrior" "', argument " "3"" of type '" "double""'");
   } 
   arg3 = static_cast< double >(val3);
   {
@@ -122730,7 +122730,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useDirichletPrior__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   gum::BayesNet< double > *arg2 = 0 ;
@@ -122744,15 +122744,15 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior__SWIG_3(PyObject *self, P
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useDirichletPrior" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__BayesNetT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner__useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner_useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner__useDirichletPrior" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::BayesNet< double > * >(argp2);
   {
@@ -122770,13 +122770,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useDirichletPrior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useDirichletPrior", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useDirichletPrior", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -122785,12 +122785,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useDirichletPrior(PyObject *self, PyObject 
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_BNLearner_useDirichletPrior__SWIG_3(self, argc, argv);
+    return _wrap_BNLearner__useDirichletPrior__SWIG_3(self, argc, argv);
   }
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useDirichletPrior__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useDirichletPrior__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -122801,20 +122801,20 @@ check_1:
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_3;
-    PyObject *retobj = _wrap_BNLearner_useDirichletPrior__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useDirichletPrior__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
 check_3:
   
   if (argc == 3) {
-    PyObject *retobj = _wrap_BNLearner_useDirichletPrior__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useDirichletPrior__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useDirichletPrior'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useDirichletPrior'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useDirichletPrior(std::string_view,double)\n"
     "    gum::learning::BNLearner< double >::useDirichletPrior(std::string_view)\n"
@@ -122986,7 +122986,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   gum::Size arg2 ;
@@ -123003,17 +123003,17 @@ SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_0(PyObject
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
   } 
   arg3 = static_cast< gum::Size >(val3);
   {
@@ -123031,7 +123031,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   gum::Size arg2 ;
@@ -123045,12 +123045,12 @@ SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_1(PyObject
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   {
@@ -123068,7 +123068,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner__useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -123079,7 +123079,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList__SWIG_2(PyObject
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
@@ -123097,32 +123097,32 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BNLearner__useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner__useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_BNLearner_useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_BNLearner_useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_BNLearner__useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useLocalSearchWithTabuList'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner__useLocalSearchWithTabuList'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::BNLearner< double >::useLocalSearchWithTabuList(gum::Size,gum::Size)\n"
     "    gum::learning::BNLearner< double >::useLocalSearchWithTabuList(gum::Size)\n"
@@ -138147,6 +138147,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Check if the BayesNet is consistent (variables, CPT, ...)\n"
 		"\n"
+		"A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`\n"
+		"(1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`\n"
+		"(1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a\n"
+		"rounding problem rather than an error in the parameters.\n"
+		"\n"
 		"Returns\n"
 		"-------\n"
 		"list of str\n"
@@ -139511,7 +139516,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
+		"        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -139562,7 +139567,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
+		"        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -139607,7 +139612,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
+		"        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -139639,7 +139644,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
+		"        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -139671,7 +139676,7 @@ static PyMethodDef SwigMethods[] = {
 		"name : str\n"
 		"    the file's name\n"
 		"allowModificationWhenSaving: bool\n"
-		"        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).\n"
+		"        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).\n"
 		"        if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.\n"
 		"\n"
 		""},
@@ -147767,12 +147772,12 @@ static PyMethodDef SwigMethods[] = {
 		"    an initial pyagrum.DAG structure\n"
 		"\n"
 		""},
-	 { "BNLearner_useEM", _wrap_BNLearner_useEM, METH_VARARGS, "\n"
+	 { "BNLearner__useEM", _wrap_BNLearner__useEM, METH_VARARGS, "\n"
 		"\n"
 		"Sets whether we use EM for parameter learning or not, depending on the value of epsilon.\n"
 		"\n"
 		"usage:\n"
-		"  * `useEM(epsilon, noise=0.1)`\n"
+		"  * `useEM(epsilon, noise=None)`\n"
 		"\n"
 		"When epsilon is equal to 0.0, EM is forbidden, else EM is used for parameter learning\n"
 		"whenever the database contains missing values. In this case, its stopping criterion\n"
@@ -147791,10 +147796,10 @@ static PyMethodDef SwigMethods[] = {
 		"    if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer\n"
 		"    executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.\n"
 		"\n"
-		"noise: float, default=0.1\n"
+		"noise: float, optional\n"
 		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
 		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is equal to 0.1.\n"
+		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -147807,7 +147812,7 @@ static PyMethodDef SwigMethods[] = {
 		"        if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].\n"
 		"\n"
 		""},
-	 { "BNLearner_useEMWithRateCriterion", _wrap_BNLearner_useEMWithRateCriterion, METH_VARARGS, "\n"
+	 { "BNLearner__useEMWithRateCriterion", _wrap_BNLearner__useEMWithRateCriterion, METH_VARARGS, "\n"
 		"\n"
 		"Enforces that EM with the log-likelihood min evolution rate stopping criterion will be\n"
 		"used for parameter learning when the dataset contains missing values.\n"
@@ -147819,10 +147824,10 @@ static PyMethodDef SwigMethods[] = {
 		"     value of the relative difference between two consecutive log-likelihoods drops below\n"
 		"     epsilon. Note that epsilon should be strictly positive.\n"
 		"\n"
-		"noise: float, default=0.1\n"
+		"noise: float, optional\n"
 		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
 		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is equal to 0.1.\n"
+		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -147835,7 +147840,7 @@ static PyMethodDef SwigMethods[] = {
 		"        if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].\n"
 		"\n"
 		""},
-	 { "BNLearner_useEMWithDiffCriterion", _wrap_BNLearner_useEMWithDiffCriterion, METH_VARARGS, "\n"
+	 { "BNLearner__useEMWithDiffCriterion", _wrap_BNLearner__useEMWithDiffCriterion, METH_VARARGS, "\n"
 		"\n"
 		"Enforces that EM with the log-likelihood min difference criterion will be used for\n"
 		"parameter learning whenever the dataset contains missing values.\n"
@@ -147847,10 +147852,10 @@ static PyMethodDef SwigMethods[] = {
 		"     difference between two consecutive log-likelihoods drops below\n"
 		"     epsilon. Note that epsilon should be strictly positive.\n"
 		"\n"
-		"noise: float (optional, default = 0.1)\n"
+		"noise: float, optional\n"
 		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
 		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is equal to 0.1.\n"
+		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -148135,7 +148140,7 @@ static PyMethodDef SwigMethods[] = {
 		"Use no prior.\n"
 		"\n"
 		""},
-	 { "BNLearner_useBDeuPrior", _wrap_BNLearner_useBDeuPrior, METH_VARARGS, "\n"
+	 { "BNLearner__useBDeuPrior", _wrap_BNLearner__useBDeuPrior, METH_VARARGS, "\n"
 		"\n"
 		"The BDeu prior adds weight to all the cells of the counting tables.\n"
 		"In other words, it adds weight rows in the database with equally probable\n"
@@ -148143,21 +148148,21 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"weight : float\n"
-		"    the prior weight\n"
+		"weight : float, optional\n"
+		"    the prior weight. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
 		"\n"
 		""},
-	 { "BNLearner_useSmoothingPrior", _wrap_BNLearner_useSmoothingPrior, METH_VARARGS, "\n"
+	 { "BNLearner__useSmoothingPrior", _wrap_BNLearner__useSmoothingPrior, METH_VARARGS, "\n"
 		"\n"
 		"Use the prior smoothing.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"weight : float\n"
-		"        pass in argument a weight if you wish to assign a weight to the smoothing, otherwise the current weight of the learner will be used.\n"
+		"weight : float, optional\n"
+		"        the weight of the smoothing. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
 		"\n"
 		""},
-	 { "BNLearner_useDirichletPrior", _wrap_BNLearner_useDirichletPrior, METH_VARARGS, "\n"
+	 { "BNLearner__useDirichletPrior", _wrap_BNLearner__useDirichletPrior, METH_VARARGS, "\n"
 		"\n"
 		"Use the Dirichlet prior.\n"
 		"\n"
@@ -148165,8 +148170,9 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"source : str|pyagrum.BayesNet\n"
 		"        the Dirichlet related source (filename of a database or a Bayesian network)\n"
-		"weight : float (optional)\n"
-		"        the weight of the prior (the 'size' of the corresponding 'virtual database')\n"
+		"weight : float, optional\n"
+		"        the weight of the prior (the 'size' of the corresponding 'virtual database'). Default is\n"
+		"        `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
 		"\n"
 		""},
 	 { "BNLearner_useGreedyHillClimbing", _wrap_BNLearner_useGreedyHillClimbing, METH_O, "\n"
@@ -148218,17 +148224,18 @@ static PyMethodDef SwigMethods[] = {
 		"    True if arc reversals are enabled in the thin phase, False otherwise.\n"
 		"\n"
 		""},
-	 { "BNLearner_useLocalSearchWithTabuList", _wrap_BNLearner_useLocalSearchWithTabuList, METH_VARARGS, "\n"
+	 { "BNLearner__useLocalSearchWithTabuList", _wrap_BNLearner__useLocalSearchWithTabuList, METH_VARARGS, "\n"
 		"\n"
 		"Indicate that we wish to use a local search with tabu list\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tabu_size : int\n"
-		"        The size of the tabu list\n"
+		"tabu_size : int, optional\n"
+		"        The size of the tabu list. Default is `pyagrum.config['learning', 'tabuListSize']` (100).\n"
 		"\n"
-		"nb_decrease : int\n"
-		"        The max number of changes decreasing the score consecutively that we allow to apply\n"
+		"nb_decrease : int, optional\n"
+		"        The max number of changes decreasing the score consecutively that we allow to apply.\n"
+		"        Default is `pyagrum.config['learning', 'tabuNbDecrease']` (2).\n"
 		"\n"
 		""},
 	 { "BNLearner_useMIIC", _wrap_BNLearner_useMIIC, METH_O, "\n"
@@ -148311,7 +148318,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"alpha : float\n"
-		"    significance level in (0, 1). Lower values produce sparser graphs.\n"
+		"    significance level in (0, 1). Lower values produce sparser graphs. Default is `pyagrum.config['learning', 'alpha']` (0.05).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -148436,7 +148443,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"alpha : float\n"
-		"    significance threshold in (0, 1). Default is 0.05.\n"
+		"    significance threshold in (0, 1). Default is `pyagrum.config['learning', 'alpha']` (0.05).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

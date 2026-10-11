@@ -8871,17 +8871,21 @@ class ApproximationScheme(object):
 
     Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
-    ApproximationScheme(verbosity=False) -> ApproximationScheme
+    ApproximationScheme(verbosity=None) -> ApproximationScheme
         Parameters:
-          - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons)
+          - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons). If it is
+            not given, the key `verbosity` of the section `approximation` of `pyagrum.config` is used.
+
+        The other parameters (epsilon, minimal epsilon rate, maximum number of iterations, maximum time, burn-in and period size)
+        are the ones of the section `approximation` of `pyagrum.config`.
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, verbosity: bool=False):
-        _pyagrumcpp.ApproximationScheme_swiginit(self, _pyagrumcpp.new_ApproximationScheme(verbosity))
+    def __init__(self, *args):
+        _pyagrumcpp.ApproximationScheme_swiginit(self, _pyagrumcpp.new_ApproximationScheme(*args))
     __swig_destroy__ = _pyagrumcpp.delete_ApproximationScheme
 
     def setEpsilon(self, eps: float) -> None:
@@ -13605,6 +13609,11 @@ class IBayesNet(DAGmodel):
 
         Check if the BayesNet is consistent (variables, CPT, ...)
 
+        A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`
+        (1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`
+        (1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a
+        rounding problem rather than an error in the parameters.
+
         Returns
         -------
         list of str
@@ -15469,7 +15478,7 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+                by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
@@ -15529,7 +15538,7 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+                by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
@@ -15583,7 +15592,7 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+                by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
@@ -15621,7 +15630,7 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+                by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
@@ -15659,7 +15668,7 @@ class BayesNet(IBayesNet):
         name : str
             the file's name
         allowModificationWhenSaving: bool
-                by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+                by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
                 if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 
         """
@@ -27468,13 +27477,13 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_setInitialDAG(self, dag)
 
-    def useEM(self, *args) -> "pyagrum.BNLearner":
+    def _useEM(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
 
         usage:
-          * `useEM(epsilon, noise=0.1)`
+          * `useEM(epsilon, noise=None)`
 
         When epsilon is equal to 0.0, EM is forbidden, else EM is used for parameter learning
         whenever the database contains missing values. In this case, its stopping criterion
@@ -27493,10 +27502,10 @@ class BNLearner(object):
             if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
             executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
 
-        noise: float, default=0.1
+        noise: float, optional
                 During EM's initialization, the CPTs are randomly perturbed using the following formula:
                 new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-                to interval [0,1]. By default, noise is equal to 0.1.
+                to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
         Returns
         -------
@@ -27509,9 +27518,9 @@ class BNLearner(object):
                 if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].
 
         """
-        return _pyagrumcpp.BNLearner_useEM(self, *args)
+        return _pyagrumcpp.BNLearner__useEM(self, *args)
 
-    def useEMWithRateCriterion(self, *args) -> "pyagrum.BNLearner":
+    def _useEMWithRateCriterion(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Enforces that EM with the log-likelihood min evolution rate stopping criterion will be
@@ -27524,10 +27533,10 @@ class BNLearner(object):
              value of the relative difference between two consecutive log-likelihoods drops below
              epsilon. Note that epsilon should be strictly positive.
 
-        noise: float, default=0.1
+        noise: float, optional
                 During EM's initialization, the CPTs are randomly perturbed using the following formula:
                 new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-                to interval [0,1]. By default, noise is equal to 0.1.
+                to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
         Returns
         -------
@@ -27540,9 +27549,9 @@ class BNLearner(object):
                 if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
 
         """
-        return _pyagrumcpp.BNLearner_useEMWithRateCriterion(self, *args)
+        return _pyagrumcpp.BNLearner__useEMWithRateCriterion(self, *args)
 
-    def useEMWithDiffCriterion(self, *args) -> "pyagrum.BNLearner":
+    def _useEMWithDiffCriterion(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Enforces that EM with the log-likelihood min difference criterion will be used for
@@ -27555,10 +27564,10 @@ class BNLearner(object):
              difference between two consecutive log-likelihoods drops below
              epsilon. Note that epsilon should be strictly positive.
 
-        noise: float (optional, default = 0.1)
+        noise: float, optional
                 During EM's initialization, the CPTs are randomly perturbed using the following formula:
                 new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-                to interval [0,1]. By default, noise is equal to 0.1.
+                to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
         Returns
         -------
@@ -27571,7 +27580,7 @@ class BNLearner(object):
                 if epsilon is not strictly positive or if noise does not belong to interval [0,1].
 
         """
-        return _pyagrumcpp.BNLearner_useEMWithDiffCriterion(self, *args)
+        return _pyagrumcpp.BNLearner__useEMWithDiffCriterion(self, *args)
 
     def forbidEM(self) -> "pyagrum.BNLearner":
         r"""
@@ -27914,7 +27923,7 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_useNoPrior(self)
 
-    def useBDeuPrior(self, weight: float=1.0) -> "pyagrum.BNLearner":
+    def _useBDeuPrior(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         The BDeu prior adds weight to all the cells of the counting tables.
@@ -27923,26 +27932,26 @@ class BNLearner(object):
 
         Parameters
         ----------
-        weight : float
-            the prior weight
+        weight : float, optional
+            the prior weight. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
 
         """
-        return _pyagrumcpp.BNLearner_useBDeuPrior(self, weight)
+        return _pyagrumcpp.BNLearner__useBDeuPrior(self, *args)
 
-    def useSmoothingPrior(self, weight: float=1) -> "pyagrum.BNLearner":
+    def _useSmoothingPrior(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Use the prior smoothing.
 
         Parameters
         ----------
-        weight : float
-                pass in argument a weight if you wish to assign a weight to the smoothing, otherwise the current weight of the learner will be used.
+        weight : float, optional
+                the weight of the smoothing. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
 
         """
-        return _pyagrumcpp.BNLearner_useSmoothingPrior(self, weight)
+        return _pyagrumcpp.BNLearner__useSmoothingPrior(self, *args)
 
-    def useDirichletPrior(self, *args) -> "pyagrum.BNLearner":
+    def _useDirichletPrior(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Use the Dirichlet prior.
@@ -27951,11 +27960,12 @@ class BNLearner(object):
         ----------
         source : str|pyagrum.BayesNet
                 the Dirichlet related source (filename of a database or a Bayesian network)
-        weight : float (optional)
-                the weight of the prior (the 'size' of the corresponding 'virtual database')
+        weight : float, optional
+                the weight of the prior (the 'size' of the corresponding 'virtual database'). Default is
+                `pyagrum.config['learning', 'priorWeight']` (1.0).
 
         """
-        return _pyagrumcpp.BNLearner_useDirichletPrior(self, *args)
+        return _pyagrumcpp.BNLearner__useDirichletPrior(self, *args)
 
     def useGreedyHillClimbing(self) -> "pyagrum.BNLearner":
         r"""
@@ -28021,21 +28031,22 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_greedyThickThinningReversals(self)
 
-    def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.BNLearner":
+    def _useLocalSearchWithTabuList(self, *args) -> "pyagrum.BNLearner":
         r"""
 
         Indicate that we wish to use a local search with tabu list
 
         Parameters
         ----------
-        tabu_size : int
-                The size of the tabu list
+        tabu_size : int, optional
+                The size of the tabu list. Default is `pyagrum.config['learning', 'tabuListSize']` (100).
 
-        nb_decrease : int
-                The max number of changes decreasing the score consecutively that we allow to apply
+        nb_decrease : int, optional
+                The max number of changes decreasing the score consecutively that we allow to apply.
+                Default is `pyagrum.config['learning', 'tabuNbDecrease']` (2).
 
         """
-        return _pyagrumcpp.BNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
+        return _pyagrumcpp.BNLearner__useLocalSearchWithTabuList(self, *args)
 
     def useMIIC(self) -> "pyagrum.BNLearner":
         r"""
@@ -28151,7 +28162,7 @@ class BNLearner(object):
         Parameters
         ----------
         alpha : float
-            significance level in (0, 1). Lower values produce sparser graphs.
+            significance level in (0, 1). Lower values produce sparser graphs. Default is `pyagrum.config['learning', 'alpha']` (0.05).
 
         Returns
         -------
@@ -28312,7 +28323,7 @@ class BNLearner(object):
         Parameters
         ----------
         alpha : float
-            significance threshold in (0, 1). Default is 0.05.
+            significance threshold in (0, 1). Default is `pyagrum.config['learning', 'alpha']` (0.05).
 
         Returns
         -------
@@ -28968,6 +28979,169 @@ class BNLearner(object):
       ge._bn=bn
 
       return ge
+
+    def useEM(self, epsilon: float, noise: float = None) -> "pyagrum.BNLearner":
+      """
+      Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
+
+      Parameters
+      ----------
+      epsilon : float
+        if epsilon>0 then EM is used and stops whenever the relative difference between two
+        consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon. If epsilon=0.0 then EM is not used.
+      noise : float, optional
+        the noise added to the initial CPTs, in [0,1]. Defaults to ``pyagrum.config["learning","emNoise"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if noise is None:
+        self._useEM(epsilon)
+      else:
+        self._useEM(epsilon, noise)
+      return self
+
+    def useEMWithRateCriterion(self, epsilon: float, noise: float = None) -> "pyagrum.BNLearner":
+      """
+      Enforces that EM with the log-likelihood min evolution rate stopping criterion will be used for parameter learning
+      when the dataset contains missing values.
+
+      Parameters
+      ----------
+      epsilon : float
+        EM stops whenever the absolute value of the relative difference between two consecutive log-likelihoods drops
+        below epsilon. Note that epsilon should be strictly positive.
+      noise : float, optional
+        the noise added to the initial CPTs, in [0,1]. Defaults to ``pyagrum.config["learning","emNoise"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if noise is None:
+        self._useEMWithRateCriterion(epsilon)
+      else:
+        self._useEMWithRateCriterion(epsilon, noise)
+      return self
+
+    def useEMWithDiffCriterion(self, epsilon: float, noise: float = None) -> "pyagrum.BNLearner":
+      """
+      Enforces that EM with the log-likelihood min difference criterion will be used for parameter learning whenever
+      the dataset contains missing values.
+
+      Parameters
+      ----------
+      epsilon : float
+        EM stops whenever the difference between two consecutive log-likelihoods drops below epsilon. Note that epsilon
+        should be strictly positive.
+      noise : float, optional
+        the noise added to the initial CPTs, in [0,1]. Defaults to ``pyagrum.config["learning","emNoise"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if noise is None:
+        self._useEMWithDiffCriterion(epsilon)
+      else:
+        self._useEMWithDiffCriterion(epsilon, noise)
+      return self
+
+    def useBDeuPrior(self, weight: float = None) -> "pyagrum.BNLearner":
+      """
+      The BDeu prior adds weight to all the cells of the counting tables. In other words, it adds weight rows in the
+      database with equally probable values.
+
+      Parameters
+      ----------
+      weight : float, optional
+        the prior weight. Defaults to ``pyagrum.config["learning","priorWeight"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if weight is None:
+        self._useBDeuPrior()
+      else:
+        self._useBDeuPrior(weight)
+      return self
+
+    def useSmoothingPrior(self, weight: float = None) -> "pyagrum.BNLearner":
+      """
+      Use the prior smoothing.
+
+      Parameters
+      ----------
+      weight : float, optional
+        the weight of the smoothing. Defaults to ``pyagrum.config["learning","priorWeight"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if weight is None:
+        self._useSmoothingPrior()
+      else:
+        self._useSmoothingPrior(weight)
+      return self
+
+    def useDirichletPrior(self, source, weight: float = None) -> "pyagrum.BNLearner":
+      """
+      Use the Dirichlet prior.
+
+      Parameters
+      ----------
+      source : str|pyagrum.BayesNet
+        the Dirichlet related source (filename of a database or a Bayesian network)
+      weight : float, optional
+        the weight of the prior (the 'size' of the corresponding 'virtual database'). Defaults to
+        ``pyagrum.config["learning","priorWeight"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if weight is None:
+        self._useDirichletPrior(source)
+      else:
+        self._useDirichletPrior(source, weight)
+      return self
+
+    def useLocalSearchWithTabuList(self, tabu_size: int = None, nb_decrease: int = None) -> "pyagrum.BNLearner":
+      """
+      Indicate that we wish to use a local search with tabu list
+
+      Parameters
+      ----------
+      tabu_size : int, optional
+        The size of the tabu list. Defaults to ``pyagrum.config["learning","tabuListSize"]``.
+      nb_decrease : int, optional
+        The max number of changes decreasing the score consecutively that we allow to apply. Defaults to
+        ``pyagrum.config["learning","tabuNbDecrease"]``.
+
+      Returns
+      -------
+      pyagrum.BNLearner
+        the BNLearner itself, so that we can chain useXXX() methods.
+      """
+      if tabu_size is None:
+        if nb_decrease is None:
+          self._useLocalSearchWithTabuList()
+        else:
+          self._useLocalSearchWithTabuList(int(pyagrum.config["learning", "tabuListSize"]), nb_decrease)
+      elif nb_decrease is None:
+        self._useLocalSearchWithTabuList(tabu_size)
+      else:
+        self._useLocalSearchWithTabuList(tabu_size, nb_decrease)
+      return self
 
 
     def setVerbosity(self, v: bool) -> None:
@@ -29863,7 +30037,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allow_modification_when_saving"]` is used.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
 
   Notes
   ----
@@ -29871,7 +30045,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
-# None: the writers use pyagrum.config["core","allow_modification_when_saving"]
+# None: the writers use pyagrum.config["core","allowModificationWhenSaving"]
   allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
 
   extension = filename.split('.')[-1].upper()

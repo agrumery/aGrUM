@@ -15792,7 +15792,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
   gum::Size arg2 ;
@@ -15809,17 +15809,17 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_0(PyObje
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
   } 
   arg3 = static_cast< gum::Size >(val3);
   {
@@ -15837,44 +15837,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::learning::KTBNLearner< double > *arg1 = 0 ;
-  gum::Size arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  gum::learning::KTBNLearner< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
-  } 
-  arg2 = static_cast< gum::Size >(val2);
-  {
-    try {
-      result = (gum::learning::KTBNLearner< double > *) &(arg1)->useLocalSearchWithTabuList(SWIG_STD_MOVE(*(&arg2)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -15885,7 +15848,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_2(PyObje
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
   {
@@ -15903,36 +15866,73 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNLearner< double > *arg1 = 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  gum::learning::KTBNLearner< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      result = (gum::learning::KTBNLearner< double > *) &(arg1)->useLocalSearchWithTabuList(SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNLearner__useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNLearner_useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNLearner__useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_KTBNLearner_useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNLearner__useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNLearner_useLocalSearchWithTabuList'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNLearner__useLocalSearchWithTabuList'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::KTBNLearner< double >::useLocalSearchWithTabuList(gum::Size,gum::Size)\n"
-    "    gum::learning::KTBNLearner< double >::useLocalSearchWithTabuList(gum::Size)\n"
-    "    gum::learning::KTBNLearner< double >::useLocalSearchWithTabuList()\n");
+    "    gum::learning::KTBNLearner< double >::useLocalSearchWithTabuList()\n"
+    "    gum::learning::KTBNLearner< double >::useLocalSearchWithTabuList(gum::Size)\n");
   return 0;
 }
 
@@ -16094,7 +16094,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -16108,12 +16108,12 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_useSmoothingPrior__SWIG_0(PyObject *self,
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner_useSmoothingPrior" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNLearner__useSmoothingPrior" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -16131,7 +16131,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -16142,7 +16142,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_useSmoothingPrior__SWIG_1(PyObject *self,
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
   {
@@ -16160,27 +16160,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useSmoothingPrior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_KTBNLearner__useSmoothingPrior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNLearner_useSmoothingPrior", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNLearner__useSmoothingPrior", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_KTBNLearner_useSmoothingPrior__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNLearner__useSmoothingPrior__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_KTBNLearner_useSmoothingPrior__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNLearner__useSmoothingPrior__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNLearner_useSmoothingPrior'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNLearner__useSmoothingPrior'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::KTBNLearner< double >::useSmoothingPrior(double)\n"
     "    gum::learning::KTBNLearner< double >::useSmoothingPrior()\n");
@@ -21197,7 +21197,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
   gum::Size arg2 ;
@@ -21214,17 +21214,17 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "3"" of type '" "gum::Size""'");
   } 
   arg3 = static_cast< gum::Size >(val3);
   {
@@ -21242,44 +21242,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
-  gum::Size arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
-  } 
-  arg2 = static_cast< gum::Size >(val2);
-  {
-    try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->useLocalSearchWithTabuList(SWIG_STD_MOVE(*(&arg2)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -21290,7 +21253,7 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
   {
@@ -21308,36 +21271,73 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner__useLocalSearchWithTabuList" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->useLocalSearchWithTabuList(SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNAdaptiveLearner_useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNAdaptiveLearner__useLocalSearchWithTabuList", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNAdaptiveLearner_useLocalSearchWithTabuList'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNAdaptiveLearner__useLocalSearchWithTabuList'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::useLocalSearchWithTabuList(gum::Size,gum::Size)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::useLocalSearchWithTabuList(gum::Size)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::useLocalSearchWithTabuList()\n");
+    "    gum::learning::KTBNAdaptiveLearner< double >::useLocalSearchWithTabuList()\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::useLocalSearchWithTabuList(gum::Size)\n");
   return 0;
 }
 
@@ -21466,7 +21466,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useSmoothingPrior__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
   double arg2 ;
@@ -21480,12 +21480,12 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_0(PyObjec
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner_useSmoothingPrior" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBNAdaptiveLearner__useSmoothingPrior" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
@@ -21503,7 +21503,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useSmoothingPrior__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -21514,7 +21514,7 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_1(PyObjec
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner__useSmoothingPrior" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
   {
@@ -21532,27 +21532,27 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useSmoothingPrior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner__useSmoothingPrior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNAdaptiveLearner_useSmoothingPrior", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBNAdaptiveLearner__useSmoothingPrior", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNAdaptiveLearner__useSmoothingPrior__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_KTBNAdaptiveLearner_useSmoothingPrior__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_KTBNAdaptiveLearner__useSmoothingPrior__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNAdaptiveLearner_useSmoothingPrior'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBNAdaptiveLearner__useSmoothingPrior'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::useSmoothingPrior(double)\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::useSmoothingPrior()\n");
@@ -25805,16 +25805,17 @@ static PyMethodDef SwigMethods[] = {
 		"    self, for chaining\n"
 		"\n"
 		""},
-	 { "KTBNLearner_useLocalSearchWithTabuList", _wrap_KTBNLearner_useLocalSearchWithTabuList, METH_VARARGS, "\n"
+	 { "KTBNLearner__useLocalSearchWithTabuList", _wrap_KTBNLearner__useLocalSearchWithTabuList, METH_VARARGS, "\n"
 		"\n"
 		"Use local search with a tabu list.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tabu_size : int\n"
-		"    the tabu list size (default 100)\n"
-		"nb_decrease : int\n"
-		"    the number of non-improving moves tolerated before stopping (default 2)\n"
+		"tabu_size : int, optional\n"
+		"    the tabu list size (default `pyagrum.config['learning', 'tabuListSize']`, 100)\n"
+		"nb_decrease : int, optional\n"
+		"    the number of non-improving moves tolerated before stopping (default\n"
+		"    `pyagrum.config['learning', 'tabuNbDecrease']`, 2)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -25872,14 +25873,14 @@ static PyMethodDef SwigMethods[] = {
 		"    algorithm is not MIIC\n"
 		"\n"
 		""},
-	 { "KTBNLearner_useSmoothingPrior", _wrap_KTBNLearner_useSmoothingPrior, METH_VARARGS, "\n"
+	 { "KTBNLearner__useSmoothingPrior", _wrap_KTBNLearner__useSmoothingPrior, METH_VARARGS, "\n"
 		"\n"
 		"Use a Laplace/BDeu-style smoothing prior.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"weight : float\n"
-		"    the prior weight (default 1.0)\n"
+		"weight : float, optional\n"
+		"    the prior weight (default `pyagrum.config['learning', 'priorWeight']`, 1.0)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -26466,12 +26467,12 @@ static PyMethodDef SwigMethods[] = {
 	 { "KTBNAdaptiveLearner_useScorefNML", _wrap_KTBNAdaptiveLearner_useScorefNML, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useGreedyHillClimbing", _wrap_KTBNAdaptiveLearner_useGreedyHillClimbing, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useExtendedGreedyHillClimbing", _wrap_KTBNAdaptiveLearner_useExtendedGreedyHillClimbing, METH_O, NULL},
-	 { "KTBNAdaptiveLearner_useLocalSearchWithTabuList", _wrap_KTBNAdaptiveLearner_useLocalSearchWithTabuList, METH_VARARGS, NULL},
+	 { "KTBNAdaptiveLearner__useLocalSearchWithTabuList", _wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList, METH_VARARGS, NULL},
 	 { "KTBNAdaptiveLearner_useMIIC", _wrap_KTBNAdaptiveLearner_useMIIC, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useNMLCorrection", _wrap_KTBNAdaptiveLearner_useNMLCorrection, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useMDLCorrection", _wrap_KTBNAdaptiveLearner_useMDLCorrection, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useNoCorrection", _wrap_KTBNAdaptiveLearner_useNoCorrection, METH_O, NULL},
-	 { "KTBNAdaptiveLearner_useSmoothingPrior", _wrap_KTBNAdaptiveLearner_useSmoothingPrior, METH_VARARGS, NULL},
+	 { "KTBNAdaptiveLearner__useSmoothingPrior", _wrap_KTBNAdaptiveLearner__useSmoothingPrior, METH_VARARGS, NULL},
 	 { "KTBNAdaptiveLearner_addForbiddenArc", _wrap_KTBNAdaptiveLearner_addForbiddenArc, METH_VARARGS, NULL},
 	 { "KTBNAdaptiveLearner_eraseForbiddenArc", _wrap_KTBNAdaptiveLearner_eraseForbiddenArc, METH_VARARGS, NULL},
 	 { "KTBNAdaptiveLearner_addMandatoryArc", _wrap_KTBNAdaptiveLearner_addMandatoryArc, METH_VARARGS, NULL},

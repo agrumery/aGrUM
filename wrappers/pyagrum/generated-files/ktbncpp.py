@@ -2006,17 +2006,18 @@ class KTBNLearner(object):
         return val
 
 
-    def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.KTBNLearner":
+    def _useLocalSearchWithTabuList(self, *args) -> "pyagrum.KTBNLearner":
         r"""
 
         Use local search with a tabu list.
 
         Parameters
         ----------
-        tabu_size : int
-            the tabu list size (default 100)
-        nb_decrease : int
-            the number of non-improving moves tolerated before stopping (default 2)
+        tabu_size : int, optional
+            the tabu list size (default `pyagrum.config['learning', 'tabuListSize']`, 100)
+        nb_decrease : int, optional
+            the number of non-improving moves tolerated before stopping (default
+            `pyagrum.config['learning', 'tabuNbDecrease']`, 2)
 
         Returns
         -------
@@ -2024,13 +2025,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbncpp.KTBNLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
-
-        return self
-
-
-        return val
-
+        return _ktbncpp.KTBNLearner__useLocalSearchWithTabuList(self, *args)
 
     def useMIIC(self) -> "pyagrum.KTBNLearner":
         r"""
@@ -2121,15 +2116,15 @@ class KTBNLearner(object):
         """
         return _ktbncpp.KTBNLearner_latentVariables(self)
 
-    def useSmoothingPrior(self, weight: float=1.0) -> "pyagrum.KTBNLearner":
+    def _useSmoothingPrior(self, *args) -> "pyagrum.KTBNLearner":
         r"""
 
         Use a Laplace/BDeu-style smoothing prior.
 
         Parameters
         ----------
-        weight : float
-            the prior weight (default 1.0)
+        weight : float, optional
+            the prior weight (default `pyagrum.config['learning', 'priorWeight']`, 1.0)
 
         Returns
         -------
@@ -2137,13 +2132,7 @@ class KTBNLearner(object):
             self, for chaining
 
         """
-        val = _ktbncpp.KTBNLearner_useSmoothingPrior(self, weight)
-
-        return self
-
-
-        return val
-
+        return _ktbncpp.KTBNLearner__useSmoothingPrior(self, *args)
 
     def addForbiddenArc(self, *args) -> "pyagrum.KTBNLearner":
         r"""
@@ -2760,6 +2749,53 @@ class KTBNLearner(object):
         """
         return _ktbncpp.KTBNLearner_domainSize(self, base)
 
+    def useSmoothingPrior(self, weight: float = None):
+      """
+      Use a Laplace/BDeu-style smoothing prior.
+
+      Parameters
+      ----------
+      weight : float, optional
+        the prior weight. Defaults to ``pyagrum.config["learning","priorWeight"]``.
+
+      Returns
+      -------
+      self, for chaining
+      """
+      if weight is None:
+        self._useSmoothingPrior()
+      else:
+        self._useSmoothingPrior(weight)
+      return self
+
+    def useLocalSearchWithTabuList(self, tabu_size: int = None, nb_decrease: int = None):
+      """
+      Use local search with a tabu list.
+
+      Parameters
+      ----------
+      tabu_size : int, optional
+        the tabu list size. Defaults to ``pyagrum.config["learning","tabuListSize"]``.
+      nb_decrease : int, optional
+        the number of non-improving moves tolerated before stopping. Defaults to
+        ``pyagrum.config["learning","tabuNbDecrease"]``.
+
+      Returns
+      -------
+      self, for chaining
+      """
+      if tabu_size is None:
+        if nb_decrease is None:
+          self._useLocalSearchWithTabuList()
+        else:
+          self._useLocalSearchWithTabuList(int(pyagrum.config["learning", "tabuListSize"]), nb_decrease)
+      elif nb_decrease is None:
+        self._useLocalSearchWithTabuList(tabu_size)
+      else:
+        self._useLocalSearchWithTabuList(tabu_size, nb_decrease)
+      return self
+
+
 # Register KTBNLearner in _ktbncpp:
 _ktbncpp.KTBNLearner_swigregister(KTBNLearner)
 class KTBNAdaptiveLearner(object):
@@ -3116,14 +3152,8 @@ class KTBNAdaptiveLearner(object):
         return val
 
 
-    def useLocalSearchWithTabuList(self, tabu_size: int=100, nb_decrease: int=2) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbncpp.KTBNAdaptiveLearner_useLocalSearchWithTabuList(self, tabu_size, nb_decrease)
-
-        return self
-
-
-        return val
-
+    def _useLocalSearchWithTabuList(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
+        return _ktbncpp.KTBNAdaptiveLearner__useLocalSearchWithTabuList(self, *args)
 
     def useMIIC(self) -> "pyagrum.KTBNAdaptiveLearner":
         val = _ktbncpp.KTBNAdaptiveLearner_useMIIC(self)
@@ -3161,14 +3191,8 @@ class KTBNAdaptiveLearner(object):
         return val
 
 
-    def useSmoothingPrior(self, weight: float=1.0) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbncpp.KTBNAdaptiveLearner_useSmoothingPrior(self, weight)
-
-        return self
-
-
-        return val
-
+    def _useSmoothingPrior(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
+        return _ktbncpp.KTBNAdaptiveLearner__useSmoothingPrior(self, *args)
 
     def addForbiddenArc(self, *args) -> "pyagrum.KTBNAdaptiveLearner":
         val = _ktbncpp.KTBNAdaptiveLearner_addForbiddenArc(self, *args)
@@ -3426,6 +3450,53 @@ class KTBNAdaptiveLearner(object):
 
 
         return val
+
+
+    def useSmoothingPrior(self, weight: float = None):
+      """
+      Use a Laplace/BDeu-style smoothing prior.
+
+      Parameters
+      ----------
+      weight : float, optional
+        the prior weight. Defaults to ``pyagrum.config["learning","priorWeight"]``.
+
+      Returns
+      -------
+      self, for chaining
+      """
+      if weight is None:
+        self._useSmoothingPrior()
+      else:
+        self._useSmoothingPrior(weight)
+      return self
+
+    def useLocalSearchWithTabuList(self, tabu_size: int = None, nb_decrease: int = None):
+      """
+      Use local search with a tabu list.
+
+      Parameters
+      ----------
+      tabu_size : int, optional
+        the tabu list size. Defaults to ``pyagrum.config["learning","tabuListSize"]``.
+      nb_decrease : int, optional
+        the number of non-improving moves tolerated before stopping. Defaults to
+        ``pyagrum.config["learning","tabuNbDecrease"]``.
+
+      Returns
+      -------
+      self, for chaining
+      """
+      if tabu_size is None:
+        if nb_decrease is None:
+          self._useLocalSearchWithTabuList()
+        else:
+          self._useLocalSearchWithTabuList(int(pyagrum.config["learning", "tabuListSize"]), nb_decrease)
+      elif nb_decrease is None:
+        self._useLocalSearchWithTabuList(tabu_size)
+      else:
+        self._useLocalSearchWithTabuList(tabu_size, nb_decrease)
+      return self
 
 
 # Register KTBNAdaptiveLearner in _ktbncpp:
