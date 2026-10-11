@@ -182,7 +182,7 @@ Set the significance threshold (alpha) for independence tests used by FCI.
 Parameters
 ----------
 alpha : float
-    significance level in (0, 1). Lower values produce sparser graphs.
+    significance level in (0, 1). Lower values produce sparser graphs. Default is `pyagrum.config['learning', 'alpha']` (0.05).
 
 Returns
 -------
@@ -468,11 +468,12 @@ Indicate that we wish to use a local search with tabu list
 
 Parameters
 ----------
-tabu_size : int
-        The size of the tabu list
+tabu_size : int, optional
+        The size of the tabu list. Default is `pyagrum.config['learning', 'tabuListSize']` (100).
 
-nb_decrease : int
-        The max number of changes decreasing the score consecutively that we allow to apply
+nb_decrease : int, optional
+        The max number of changes decreasing the score consecutively that we allow to apply.
+        Default is `pyagrum.config['learning', 'tabuNbDecrease']` (2).
 "
 
 
@@ -555,7 +556,7 @@ conservative (fewer edges removed); larger α makes it more aggressive.
 Parameters
 ----------
 alpha : float
-    significance threshold in (0, 1). Default is 0.05.
+    significance threshold in (0, 1). Default is `pyagrum.config['learning', 'alpha']` (0.05).
 
 Returns
 -------
@@ -723,8 +724,8 @@ values.
 
 Parameters
 ----------
-weight : float
-    the prior weight
+weight : float, optional
+    the prior weight. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
 "
 
 
@@ -736,8 +737,9 @@ Parameters
 ----------
 source : str|pyagrum.BayesNet
         the Dirichlet related source (filename of a database or a Bayesian network)
-weight : float (optional)
-        the weight of the prior (the 'size' of the corresponding 'virtual database')
+weight : float, optional
+        the weight of the prior (the 'size' of the corresponding 'virtual database'). Default is
+        `pyagrum.config['learning', 'priorWeight']` (1.0).
 "
 
 
@@ -747,8 +749,8 @@ Use the prior smoothing.
 
 Parameters
 ----------
-weight : float
-        pass in argument a weight if you wish to assign a weight to the smoothing, otherwise the current weight of the learner will be used.
+weight : float, optional
+        the weight of the smoothing. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
 "
 
 
@@ -1063,7 +1065,7 @@ pyagrum.BNLearner
 Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
 
 usage:
-  * `useEM(epsilon, noise=0.1)`
+  * `useEM(epsilon, noise=None)`
 
 When epsilon is equal to 0.0, EM is forbidden, else EM is used for parameter learning
 whenever the database contains missing values. In this case, its stopping criterion
@@ -1082,10 +1084,10 @@ epsilon : float
     if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
     executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
 
-noise: float, default=0.1
+noise: float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is equal to 0.1.
+        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
 Returns
 -------
@@ -1111,10 +1113,10 @@ epsilon : float
      value of the relative difference between two consecutive log-likelihoods drops below
      epsilon. Note that epsilon should be strictly positive.
 
-noise: float, default=0.1
+noise: float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is equal to 0.1.
+        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
 Returns
 -------
@@ -1140,10 +1142,10 @@ epsilon : float
      difference between two consecutive log-likelihoods drops below
      epsilon. Note that epsilon should be strictly positive.
 
-noise: float (optional, default = 0.1)
+noise: float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is equal to 0.1.
+        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
 
 Returns
 -------

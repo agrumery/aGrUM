@@ -1028,6 +1028,73 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     finally:
       os.unlink(csv_path)
 
+  def testDefaultParametersCanBeOmittedOrNamed(self):
+    # the optional parameters default to the keys of the section "learning" of the configuration;
+    # all the useXXX() chain, with or without the optional parameters, positional or named
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    self.assertIs(learner.useBDeuPrior(), learner)
+    self.assertIs(learner.useBDeuPrior(weight=2), learner)
+    self.assertIs(learner.useSmoothingPrior(), learner)
+    self.assertIs(learner.useSmoothingPrior(weight=0.5), learner)
+    self.assertIs(learner.useDirichletPrior(self.agrumSrcDir("asia.csv")), learner)
+    self.assertIs(learner.useDirichletPrior(self.agrumSrcDir("asia.csv"), weight=3), learner)
+    self.assertIs(learner.useEM(1e-3), learner)
+    self.assertIs(learner.useEM(1e-3, noise=0.2), learner)
+    self.assertIs(learner.useEM(epsilon=1e-3, noise=0.2), learner)
+    self.assertIs(learner.useEMWithRateCriterion(1e-3), learner)
+    self.assertIs(learner.useEMWithRateCriterion(1e-3, 0.2), learner)
+    self.assertIs(learner.useEMWithDiffCriterion(epsilon=1e-3), learner)
+    self.assertIs(learner.useEMWithDiffCriterion(1e-3, noise=0.2), learner)
+    self.assertIs(learner.useLocalSearchWithTabuList(), learner)
+    self.assertIs(learner.useLocalSearchWithTabuList(tabu_size=50), learner)
+    self.assertIs(learner.useLocalSearchWithTabuList(50, 3), learner)
+    self.assertIs(learner.useLocalSearchWithTabuList(tabu_size=50, nb_decrease=3), learner)
+    self.assertIs(learner.useLocalSearchWithTabuList(nb_decrease=3), learner)
+
+    with self.assertRaises(gum.OutOfBounds):
+      learner.useBDeuPrior(weight=-1)
+
+  def testDefaultParametersComeFromTheConfiguration(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+
+    gum.config.push()
+    try:
+      # a value out of the domain of its key is refused by the configuration itself
+      with self.assertRaises(ValueError):
+        gum.config["learning", "emNoise"] = 2.0
+      with self.assertRaises(ValueError):
+        gum.config["learning", "priorWeight"] = -1.0
+      with self.assertRaises(ValueError):
+        gum.config["learning", "tabuListSize"] = 0
+      with self.assertRaises(ValueError):
+        gum.config["learning", "alpha"] = 1.0
+
+      # ... as an explicit value is refused by the learner
+      with self.assertRaises(gum.OutOfBounds):
+        learner.useEM(1e-3, noise=2.0)
+      with self.assertRaises(gum.OutOfBounds):
+        learner.useBDeuPrior(weight=-1.0)
+      learner.useEM(1e-3, noise=0.3)
+      learner.useBDeuPrior(weight=1)
+    finally:
+      gum.config.pop()
+
+    learner.useEM(1e-3)
+    learner.useBDeuPrior()
+    learner.useLocalSearchWithTabuList()
+
+  def testDefaultParametersAreDocumented(self):
+    for name in [
+      "useEM",
+      "useEMWithRateCriterion",
+      "useEMWithDiffCriterion",
+      "useBDeuPrior",
+      "useSmoothingPrior",
+      "useDirichletPrior",
+      "useLocalSearchWithTabuList",
+    ]:
+      self.assertIn("learning", getattr(gum.BNLearner, name).__doc__)
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

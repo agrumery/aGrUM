@@ -161,7 +161,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allow_modification_when_saving"]` is used.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
 
   Notes
   ----
@@ -169,7 +169,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
   """
-  # None: the writers use pyagrum.config["core","allow_modification_when_saving"]
+  # None: the writers use pyagrum.config["core","allowModificationWhenSaving"]
   allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
 
   extension = filename.split('.')[-1].upper()

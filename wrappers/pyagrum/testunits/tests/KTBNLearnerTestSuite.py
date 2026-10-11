@@ -42,6 +42,7 @@ import os
 import tempfile
 import unittest
 
+import pyagrum
 import pyagrum.ktbn as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
@@ -595,6 +596,31 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
 
     mono = self._std(2, {"C"})
     mono.copyState(src)  # safe no-op for unknown names, must not throw
+
+  def testDefaultParametersComeFromTheConfiguration(self):
+    l = self._solo()
+
+    # chaining, with or without the optional parameters, positional or named
+    self.assertIs(l.useSmoothingPrior(), l)
+    self.assertIs(l.useSmoothingPrior(weight=0.5), l)
+    self.assertIs(l.useLocalSearchWithTabuList(), l)
+    self.assertIs(l.useLocalSearchWithTabuList(tabu_size=50), l)
+    self.assertIs(l.useLocalSearchWithTabuList(nb_decrease=3), l)
+    self.assertIs(l.useLocalSearchWithTabuList(50, 3), l)
+
+    pyagrum.config.push()
+    try:
+      # a value out of the domain of its key is refused by the configuration itself
+      with self.assertRaises(ValueError):
+        pyagrum.config["learning", "priorWeight"] = -1.0
+      with self.assertRaises(pyagrum.OutOfBounds):
+        l.useSmoothingPrior(weight=-1.0)
+      l.useSmoothingPrior(weight=1)
+    finally:
+      pyagrum.config.pop()
+
+    l.useSmoothingPrior()
+    l.useLocalSearchWithTabuList()
 
 
 ts = unittest.TestSuite()

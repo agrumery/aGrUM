@@ -236,10 +236,11 @@ Use local search with a tabu list.
 
 Parameters
 ----------
-tabu_size : int
-    the tabu list size (default 100)
-nb_decrease : int
-    the number of non-improving moves tolerated before stopping (default 2)
+tabu_size : int, optional
+    the tabu list size (default `pyagrum.config['learning', 'tabuListSize']`, 100)
+nb_decrease : int, optional
+    the number of non-improving moves tolerated before stopping (default
+    `pyagrum.config['learning', 'tabuNbDecrease']`, 2)
 
 Returns
 -------
@@ -303,8 +304,8 @@ Use a Laplace/BDeu-style smoothing prior.
 
 Parameters
 ----------
-weight : float
-    the prior weight (default 1.0)
+weight : float, optional
+    the prior weight (default `pyagrum.config['learning', 'priorWeight']`, 1.0)
 
 Returns
 -------

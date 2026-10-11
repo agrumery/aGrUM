@@ -1545,9 +1545,52 @@ class TestGetSetItemPaths(pyAgrumTestCase):
       t[{"b": 0}] = "invalid"
 
 
+class TestDisplayConfiguration(pyAgrumTestCase):
+  def makeTensor(self):
+    p = gum.Tensor()
+    p.add(gum.LabelizedVariable("x", "", 2))
+    p.add(gum.LabelizedVariable("p", "", 30))
+    return p.fillWith(0.5)
+
+  def testDisplayComesFromTheConfiguration(self):
+    p = self.makeTensor()
+    self.assertIn("[...18 more line(s) ...]", str(p))
+    self.assertIn("0.5000", str(p))
+    self.assertNotIn("0.50000", str(p))
+
+    gum.config.push()
+    try:
+      gum.config["tensor", "displayMaxRows"] = 2
+      gum.config["tensor", "displayColumnWidth"] = 12
+      self.assertIn("[...26 more line(s) ...]", str(p))
+      self.assertIn("0.5000000", str(p))
+
+      gum.config["tensor", "displayMaxRows"] = 15
+      self.assertNotIn("more line(s)", str(p))
+    finally:
+      gum.config.pop()
+
+    self.assertIn("[...18 more line(s) ...]", str(p))
+
+  def testInvalidDisplayIsRefused(self):
+    p = self.makeTensor()
+    gum.config.push()
+    try:
+      # refused by the configuration itself (domain of the key): the display is left unchanged
+      with self.assertRaises(ValueError):
+        gum.config["tensor", "displayMaxRows"] = 0
+      with self.assertRaises(ValueError):
+        gum.config["tensor", "displayColumnWidth"] = 5
+      self.assertIn("more line(s)", str(p))
+    finally:
+      gum.config.pop()
+    self.assertIn("more line(s)", str(p))
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)
 addTests(ts, TestIndexs)
 addTests(ts, TestOperators)
 addTests(ts, TestNumpyInterop)
 addTests(ts, TestGetSetItemPaths)
+addTests(ts, TestDisplayConfiguration)

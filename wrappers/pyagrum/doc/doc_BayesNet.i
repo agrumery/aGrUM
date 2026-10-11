@@ -759,7 +759,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -772,7 +772,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -785,7 +785,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -811,7 +811,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -828,7 +828,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -841,7 +841,7 @@ Parameters
 name : str
     the file's name
 allowModificationWhenSaving: bool
-        by default, ``pyagrum.config['core','allow_modification_when_saving']`` (False unless configured).
+        by default, ``pyagrum.config['core','allowModificationWhenSaving']`` (False unless configured).
         if true, syntax errors are corrected when saving the file. If false, they throw a FatalError.
 "
 
@@ -868,6 +868,11 @@ pyagrum.NotFound
 %feature("docstring") gum::IBayesNet::check
 "
 Check if the BayesNet is consistent (variables, CPT, ...)
+
+A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`
+(1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`
+(1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a
+rounding problem rather than an error in the parameters.
 
 Returns
 -------

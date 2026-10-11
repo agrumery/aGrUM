@@ -91,12 +91,10 @@ KTBN_LEARNER_RETURN_SELF(classname, useScoreLog2Likelihood);
 KTBN_LEARNER_RETURN_SELF(classname, useScoreMDL);
 KTBN_LEARNER_RETURN_SELF(classname, useGreedyHillClimbing);
 KTBN_LEARNER_RETURN_SELF(classname, useExtendedGreedyHillClimbing);
-KTBN_LEARNER_RETURN_SELF(classname, useLocalSearchWithTabuList);
 KTBN_LEARNER_RETURN_SELF(classname, useMIIC);
 KTBN_LEARNER_RETURN_SELF(classname, useNMLCorrection);
 KTBN_LEARNER_RETURN_SELF(classname, useMDLCorrection);
 KTBN_LEARNER_RETURN_SELF(classname, useNoCorrection);
-KTBN_LEARNER_RETURN_SELF(classname, useSmoothingPrior);
 KTBN_LEARNER_RETURN_SELF(classname, addForbiddenArc);
 KTBN_LEARNER_RETURN_SELF(classname, eraseForbiddenArc);
 KTBN_LEARNER_RETURN_SELF(classname, addMandatoryArc);
@@ -116,6 +114,69 @@ KTBN_LEARNER_RETURN_SELF(classname, allowArcDeletions);
 KTBN_LEARNER_RETURN_SELF(classname, allowArcReversals);
 KTBN_LEARNER_RETURN_SELF(classname, setMaxIndegree);
 %enddef
+
+// Renamed so that the public methods (added in %pythoncode below) keep named arguments and default their
+// optional parameters to None: the library then uses the keys of the section "learning" of
+// pyagrum.config (see the section learning of the configuration), while an explicit value is used as is.
+%rename(_useSmoothingPrior) gum::learning::KTBNLearner::useSmoothingPrior;
+%rename(_useLocalSearchWithTabuList) gum::learning::KTBNLearner::useLocalSearchWithTabuList;
+%rename(_useSmoothingPrior) gum::learning::KTBNAdaptiveLearner::useSmoothingPrior;
+%rename(_useLocalSearchWithTabuList) gum::learning::KTBNAdaptiveLearner::useLocalSearchWithTabuList;
+
+%define KTBN_LEARNER_DEFAULTS(classname)
+%extend classname {
+%pythoncode {
+def useSmoothingPrior(self, weight: float = None):
+  """
+  Use a Laplace/BDeu-style smoothing prior.
+
+  Parameters
+  ----------
+  weight : float, optional
+    the prior weight. Defaults to ``pyagrum.config["learning","priorWeight"]``.
+
+  Returns
+  -------
+  self, for chaining
+  """
+  if weight is None:
+    self._useSmoothingPrior()
+  else:
+    self._useSmoothingPrior(weight)
+  return self
+
+def useLocalSearchWithTabuList(self, tabu_size: int = None, nb_decrease: int = None):
+  """
+  Use local search with a tabu list.
+
+  Parameters
+  ----------
+  tabu_size : int, optional
+    the tabu list size. Defaults to ``pyagrum.config["learning","tabuListSize"]``.
+  nb_decrease : int, optional
+    the number of non-improving moves tolerated before stopping. Defaults to
+    ``pyagrum.config["learning","tabuNbDecrease"]``.
+
+  Returns
+  -------
+  self, for chaining
+  """
+  if tabu_size is None:
+    if nb_decrease is None:
+      self._useLocalSearchWithTabuList()
+    else:
+      self._useLocalSearchWithTabuList(int(pyagrum.config["learning", "tabuListSize"]), nb_decrease)
+  elif nb_decrease is None:
+    self._useLocalSearchWithTabuList(tabu_size)
+  else:
+    self._useLocalSearchWithTabuList(tabu_size, nb_decrease)
+  return self
+}
+}
+%enddef
+
+KTBN_LEARNER_DEFAULTS(gum::learning::KTBNLearner<double>);
+KTBN_LEARNER_DEFAULTS(gum::learning::KTBNAdaptiveLearner<double>);
 
 KTBN_LEARNER_RETURN_SELF_COMMON(gum::learning::KTBNLearner<double>);
 KTBN_LEARNER_RETURN_SELF_COMMON(gum::learning::KTBNAdaptiveLearner<double>);

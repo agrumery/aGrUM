@@ -145,10 +145,23 @@ class TestConfig(pyAgrumTestCase):
         self.assertEqual(default, "svg")
     self.assertTrue(found)
 
+  def testDomainOfValidity(self):
+    # the domain of a key is part of its documentation and is checked by set()
+    self.assertTrue(gum.config.doc("core", "epsilonStandard").startswith("float[1e-8,1e-5] ::"))
+    gum.config.push()
+    try:
+      for value in (0, 1, -1e-3, 2, 1e-4, 1e-9):
+        with self.assertRaises(ValueError):
+          gum.config["core", "epsilonStandard"] = value
+      gum.config["core", "epsilonStandard"] = 1e-5
+      self.assertEqual(gum.config.typed["core", "epsilonStandard"], 1e-5)
+    finally:
+      gum.config.pop()
+
   def testDoc(self):
     self.assertEqual(
       gum.config.doc("notebook", "tensor_visible_digits"),
-      "int :: number of visible digits when displaying a tensor",
+      "int[0,] :: number of visible digits when displaying a tensor",
     )
     self.assertIn("histogram|bar", gum.config.doc("notebook", "histogram_discretized_visualisation"))
     with self.assertRaises(SyntaxError):
@@ -219,8 +232,31 @@ class TestConfig(pyAgrumTestCase):
     # [core] comes from the defaults of aGrUM, the other sections from the defaults of pyAgrum
     self.assertEqual(sections[0], "core")
     self.assertIn("notebook", sections)
-    self.assertEqual(gum.config.getTyped("core", "allow_modification_when_saving"), False)
+    self.assertEqual(gum.config.getTyped("core", "allowModificationWhenSaving"), False)
     self.assertEqual(gum.config.getTyped("notebook", "tensor_visible_digits"), 4)
+
+  def testNumericalTolerances(self):
+    self.assertEqual(gum.config.getTyped("core", "epsilonCoarse"), 1e-2)
+    self.assertEqual(gum.config.getTyped("core", "epsilonStandard"), 1e-6)
+    self.assertEqual(gum.config.getTyped("core", "epsilonFine"), 1e-10)
+
+    gum.config.push()
+    try:
+      # epsilonStandard is in [1e-8,1e-5]
+      for bad in ("0", "1", "-1e-3", "2", "nan", "abc", "1e-4", "1e-9"):
+        with self.assertRaises(ValueError):
+          gum.config["core", "epsilonStandard"] = bad
+        self.assertEqual(gum.config.getTyped("core", "epsilonStandard"), 1e-6)
+
+      # IBayesNet.check() uses epsilonStandard : the sum of the distribution is 1 + 1e-7
+      bn = gum.fastBN("a->b")
+      bn.cpt("a").fillWith([0.5, 0.5 + 1e-7])
+      self.assertEqual(len(bn.check()), 0)
+      gum.config["core", "epsilonStandard"] = 1e-8
+      self.assertEqual(len(bn.check()), 1)
+    finally:
+      gum.config.pop()
+    self.assertEqual(gum.config.getTyped("core", "epsilonStandard"), 1e-6)
 
   def testUserFileChangesButNeverCreates(self):
     # a new process: pyagrum.ini is read when the library is loaded, after the defaults of pyAgrum
@@ -257,7 +293,9 @@ class TestConfig(pyAgrumTestCase):
 
   def testLibraryDoesNotReadDeprecatedKeys(self):
     # a deprecated key read by the library itself would emit a warning each time it is used
-    deprecated = {(section, option.lower()) for section, option, meta, _ in gum.config.schema() if meta.kind == "deprecated"}
+    deprecated = {
+      (section, option.lower()) for section, option, meta, _ in gum.config.schema() if meta.kind == "deprecated"
+    }
     pattern = re.compile(r"""config\[\s*["'](\w+)["']\s*,\s*["'](\w+)["']""")
     root = os.path.dirname(gum.__file__)
     for dirpath, _, filenames in os.walk(root):
@@ -276,6 +314,7 @@ class TestConfig(pyAgrumTestCase):
   RENAMED_AFTER_3_2_1 = (
     ("core", "default_jgumIndent", "jgumIndent", "2"),
     ("notebook", "default_node_bgcolor", "node_bgcolor", "red"),
+    ("core", "allow_modification_when_saving", "allowModificationWhenSaving", "True"),
   )
 
   def testRenamedKeysAfter321StillWork(self):

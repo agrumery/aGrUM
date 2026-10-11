@@ -95,7 +95,7 @@ namespace gum {
       return "";
   }
 
-  // the configuration (core.allow_modification_when_saving) tells whether the BN can be modified
+  // the configuration (core.allowModificationWhenSaving) tells whether the BN can be modified
   void _o3prm_saveBN(gum::BayesNet<double>* bn, std::string name) {
     gum::O3prmBNWriter<double> writer;
     writer.write( name, *bn );
