@@ -125,10 +125,18 @@ Examples
     }
     Py_INCREF(callable);
     self->addHook([callable](const gum::Configuration&) {
-      const PyGILState_STATE gil    = PyGILState_Ensure();
-      PyObject*              result = PyObject_CallNoArgs(callable);
-      const bool             failed = (result == nullptr);
+      const PyGILState_STATE gil = PyGILState_Ensure();
+      // Configuration::set() runs the hooks again to roll back a failed change: the Python error of
+      // the first failure is still pending and must neither be seen by this call nor be replaced
+      PyObject *pendingType, *pendingValue, *pendingTrace;
+      PyErr_Fetch(&pendingType, &pendingValue, &pendingTrace);
+      PyObject*  result = PyObject_CallNoArgs(callable);
+      const bool failed = (result == nullptr);
       Py_XDECREF(result);
+      if (pendingType != nullptr) {
+        if (failed) PyErr_Clear();
+        PyErr_Restore(pendingType, pendingValue, pendingTrace);
+      }
       PyGILState_Release(gil);
       if (failed) throw PythonErrorAlreadySet();
     });

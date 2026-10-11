@@ -240,7 +240,10 @@ class TestConfig(pyAgrumTestCase):
         f.write("[notebook]\ntensor_visible_digits = 7\nnotakey = 1\n[newsection]\nk = 1\n[core]\njgumIndent = 3\n")
       with open(os.path.join(tmp, "agrum.ini"), "w") as f:  # the file of aGrUM is not read by pyAgrum
         f.write("[notebook]\ntensor_visible_digits = 9\n")
-      out = subprocess.run([sys.executable, "-c", code], cwd=tmp, capture_output=True, text=True, check=True)
+      # the local pyAgrum is found through sys.path (not installed), which a new process does not inherit
+      env = dict(os.environ, PYTHONPATH=os.pathsep.join(p for p in sys.path if p))
+      out = subprocess.run([sys.executable, "-c", code], cwd=tmp, capture_output=True, text=True, env=env)
+      self.assertEqual(out.returncode, 0, out.stderr)
     res = json.loads(out.stdout.strip().splitlines()[-1])
     self.assertEqual(res["digits"], "7")  # a key created by the defaults of pyAgrum is modified ...
     self.assertEqual(res["indent"], "3")  # ... as well as a key of aGrUM
