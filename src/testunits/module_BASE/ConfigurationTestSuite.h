@@ -45,6 +45,7 @@
 #include <clocale>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -153,7 +154,7 @@ Color = #FF7F64
     c.set("main", "number", "-12");
     CHECK_EQ(c.get("main", "number"), "-12");
     c.set("main", "number", "+7");
-    CHECK_EQ(c.getTyped< std::int64_t >("main", "number"), 7);
+    CHECK_EQ(c.typed< std::int64_t >("main", "number"), 7);
 
     for (const auto* yes: {"true", "TRUE", "1", "on", "Yes"}) {
       c.set("main", "flag", yes);
@@ -174,19 +175,19 @@ Color = #FF7F64
   GUM_TEST(ConfigurationTyped) {
     gum::Configuration c(ConfigurationTestSuite::defaults());
 
-    CHECK_EQ(c.getTyped< std::int64_t >("main", "number"), 4);
-    CHECK_EQ(c.getTyped< double >("main", "number"), 4.0);   // an int is a valid float
-    CHECK_EQ(c.getTyped< double >("main", "real"), 1e-6);
-    CHECK_EQ(c.getTyped< bool >("main", "flag"), false);
+    CHECK_EQ(c.typed< std::int64_t >("main", "number"), 4);
+    CHECK_EQ(c.typed< double >("main", "number"), 4.0);   // an int is a valid float
+    CHECK_EQ(c.typed< double >("main", "real"), 1e-6);
+    CHECK_EQ(c.typed< bool >("main", "flag"), false);
     c.set("main", "flag", "yes");
-    CHECK_EQ(c.getTyped< bool >("main", "flag"), true);
-    CHECK_EQ(c.getTyped< std::string >("main", "number"), "4");
-    CHECK_EQ(c.getTyped< std::string >("main", "mode"), "auto");
+    CHECK_EQ(c.typed< bool >("main", "flag"), true);
+    CHECK_EQ(c.typed< std::string >("main", "number"), "4");
+    CHECK_EQ(c.typed< std::string >("main", "mode"), "auto");
 
-    CHECK_THROWS_AS(c.getTyped< bool >("main", "number"), const gum::InvalidArgument&);
-    CHECK_THROWS_AS(c.getTyped< std::int64_t >("main", "real"), const gum::InvalidArgument&);
-    CHECK_THROWS_AS(c.getTyped< double >("main", "text"), const gum::InvalidArgument&);
-    CHECK_THROWS_AS(c.getTyped< bool >("main", "nokey"), const gum::SyntaxError&);
+    CHECK_THROWS_AS(c.typed< bool >("main", "number"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.typed< std::int64_t >("main", "real"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.typed< double >("main", "text"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.typed< bool >("main", "nokey"), const gum::SyntaxError&);
   }
 
   GUM_TEST(ConfigurationFloatsDoNotDependOnTheLocale) {
@@ -205,7 +206,7 @@ Color = #FF7F64
     if (std::setlocale(LC_NUMERIC, "fr_FR.UTF-8") != nullptr
         || std::setlocale(LC_NUMERIC, "de_DE.UTF-8") != nullptr) {
       c.set("main", "real", "0.25");
-      CHECK_EQ(c.getTyped< double >("main", "real"), 0.25);
+      CHECK_EQ(c.typed< double >("main", "real"), 0.25);
       CHECK_EQ(std::get< double >(c.getValue("main", "real")), 0.25);
     }
     std::setlocale(LC_NUMERIC, previous.c_str());
@@ -275,6 +276,82 @@ Color = #FF7F64
     CHECK_NOTHROW(gum::Configuration("; c\r\n[s]\r\n### int :: x\r\nk : 1\r\n"));
   }
 
+  GUM_TEST(ConfigurationDomainOfValidity) {
+    gum::Configuration c("[s]\n"
+                         "### float]0,1[ :: open on both sides\n"
+                         "open = 0.5\n"
+                         "### int[1,10] :: closed on both sides\n"
+                         "closed = 5\n"
+                         "### int[1,] :: lower bound only\n"
+                         "atLeast = 1\n"
+                         "### float[,1] :: upper bound only\n"
+                         "atMost = 1\n"
+                         "### float ] 0 , 1e-2 ] :: blanks are ignored\n"
+                         "spaced = 1e-2\n"
+                         "### int :: no domain\n"
+                         "free = -3\n");
+
+    // the domain is part of the documentation of the key
+    CHECK_EQ(c.doc("s", "open"), "float]0,1[ :: open on both sides");
+    CHECK_EQ(c.doc("s", "closed"), "int[1,10] :: closed on both sides");
+    CHECK_EQ(c.doc("s", "spaced"), "float]0,1e-2] :: blanks are ignored");
+    CHECK_EQ(c.doc("s", "free"), "int :: no domain");
+
+    // bounds are included or excluded according to the brackets
+    CHECK_THROWS_AS(c.set("s", "open", "0"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.set("s", "open", "1"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.set("s", "open", "-1e-3"), const gum::InvalidArgument&);
+    CHECK_NOTHROW(c.set("s", "open", "1e-9"));
+    CHECK_THROWS_AS(c.set("s", "closed", "0"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(c.set("s", "closed", "11"), const gum::InvalidArgument&);
+    CHECK_NOTHROW(c.set("s", "closed", "1"));
+    CHECK_NOTHROW(c.set("s", "closed", "10"));
+    CHECK_THROWS_AS(c.set("s", "spaced", "0"), const gum::InvalidArgument&);
+    CHECK_NOTHROW(c.set("s", "spaced", "1e-2"));
+
+    // an omitted bound is unbounded
+    CHECK_THROWS_AS(c.set("s", "atLeast", "0"), const gum::InvalidArgument&);
+    CHECK_NOTHROW(c.set("s", "atLeast", "123456789"));
+    CHECK_THROWS_AS(c.set("s", "atMost", "1.5"), const gum::InvalidArgument&);
+    CHECK_NOTHROW(c.set("s", "atMost", "-1e30"));
+    CHECK_NOTHROW(c.set("s", "free", "-123456789"));
+
+    // a refused value leaves the previous one in place
+    CHECK_EQ(c.get("s", "open"), "1e-9");
+    CHECK_EQ(c.typed< std::int64_t >("s", "closed"), 10);
+
+    // the domain is available in the metadata
+    const auto m = c.meta("s", "open");
+    CHECK(m.domain.contains(0.5));
+    CHECK(!m.domain.contains(0.));
+    CHECK(!m.domain.contains(std::numeric_limits< double >::quiet_NaN()));
+    CHECK(c.meta("s", "free").domain.contains(1e300));
+
+    // the domain of a default value is checked
+    const std::string h = "[s]\n";
+    CHECK_THROWS_AS(gum::Configuration(h + "### int[1,10] :: x\nk = 11\n"),
+                    const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::Configuration(h + "### float]0,1[ :: x\nk = 1\n"),
+                    const gum::InvalidArgument&);
+
+    // malformed domains
+    for (const std::string bad: {"int[1,10",
+                                 "int1,10]",
+                                 "int[1;10]",
+                                 "int[1,2,3]",
+                                 "int[2,1]",
+                                 "int]1,1[",
+                                 "int[a,2]",
+                                 "int[1.5,2]",
+                                 "float[x,]",
+                                 "bool[0,1]",
+                                 "str[a,b]"}) {
+      CHECK_THROWS_AS(gum::Configuration(h + "### " + bad + " :: x\nk = 1\n"),
+                      const gum::SyntaxError&);
+    }
+    CHECK_NOTHROW(gum::Configuration(h + "### int[1,1] :: x\nk = 1\n"));   // one value
+  }
+
   GUM_TEST(ConfigurationDeprecatedKey) {
     gum::Configuration c("[s]\n### int :: the new one\nnew = 1\n"
                          "### deprecated -> s.new :: replaced\nold = 0\n");
@@ -288,7 +365,7 @@ Color = #FF7F64
     CHECK_EQ(c.get("s", "new"), "5");
 
     CHECK_EQ(c.get("s", "old"), "5");
-    CHECK_EQ(c.getTyped< std::int64_t >("s", "old"), 5);
+    CHECK_EQ(c.typed< std::int64_t >("s", "old"), 5);
     CHECK_EQ(c.takeNotices().size(), std::size_t(1));   // the same notice is queued once
 
     CHECK_EQ(c.doc("s", "old"), "deprecated -> s.new :: replaced");
@@ -372,7 +449,7 @@ Color = #FF7F64
     c.load(filename);
     CHECK_EQ(nbHooks, 1);
     CHECK_EQ(c.get("main", "number"), "9");
-    CHECK_EQ(c.getTyped< bool >("main", "flag"), true);
+    CHECK_EQ(c.typed< bool >("main", "flag"), true);
     CHECK_EQ(c.get("other", "color"), "red");
     CHECK(c.takeNotices().empty());
     CHECK_EQ(ConfigurationTestSuite::readFile(filename),
@@ -535,7 +612,7 @@ Color = #FF7F64
             if (t % 2 == 0) {
               c.set("main", "number", std::to_string(i));
             } else {
-              const auto v = c.getTyped< std::int64_t >("main", "number");
+              const auto v = c.typed< std::int64_t >("main", "number");
               if (v < 0 || v >= 200) ok = false;
               (void)c.toString();
             }
@@ -557,7 +634,7 @@ Color = #FF7F64
     // the embedded defaults are the ones of defaults.ini
     CHECK(c.has("core", "maxNumberOfThreads"));
     CHECK(c.has("core", "jgumIndent"));
-    CHECK(c.has("core", "allow_modification_when_saving"));
+    CHECK(c.has("core", "allowModificationWhenSaving"));
     CHECK_EQ(
         c.doc("core", "maxNumberOfThreads"),
         "int :: default maximum number of threads used by aGrUM (-1 = adapted to the machine)");

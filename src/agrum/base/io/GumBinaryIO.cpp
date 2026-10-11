@@ -49,8 +49,7 @@
 namespace gum {
 
   int defaultJgumIndent() {
-    const auto indent
-        = Configuration::instance().getTyped< std::int64_t >("core", "jgumIndent");
+    const auto indent = Configuration::instance().typed< std::int64_t >("core", "jgumIndent");
     return static_cast< int >(std::clamp< std::int64_t >(indent, -1, INT_MAX));
   }
 

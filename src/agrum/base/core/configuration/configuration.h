@@ -59,6 +59,8 @@
 #ifndef GUM_CONFIGURATION_H
 #define GUM_CONFIGURATION_H
 
+#include <array>
+#include <atomic>
 #include <cstdint>
 #include <functional>
 #include <mutex>
@@ -106,7 +108,24 @@ namespace gum {
 
     /// metadata attached to a key by a `###` line
     struct Meta {
+      /// domain of validity of an int or float key, written after the type in the `###` line:
+      /// `float]0,1[`, `int[1,]`, `int[0,100]`. A bracket turned toward the bound includes it, turned
+      /// away excludes it ; an omitted bound is unbounded.
+      struct Domain {
+        bool        hasLower{false};
+        bool        hasUpper{false};
+        bool        lowerIncluded{true};
+        bool        upperIncluded{true};
+        double      lower{0.};
+        double      upper{0.};
+        std::string text;   ///< the domain as written, without blanks (e.g. `]0,1[`) ; empty if none
+
+        /// @return true if x belongs to the domain (a domain without bound contains every number).
+        bool contains(double x) const;
+      };
+
       Kind                       kind{Kind::STR};
+      Domain                     domain;          ///< domain of validity (kind == INT or FLOAT)
       std::vector< std::string > values;          ///< allowed values (kind == ENUM)
       std::string                doc;             ///< one-line documentation
       std::string                targetSection;   ///< replacement key (kind == DEPRECATED)
@@ -188,7 +207,7 @@ namespace gum {
      * @throws InvalidArgument if T is not compatible with the declared type of the key.
      */
     template < typename T >
-    T getTyped(std::string_view section, std::string_view key) const;
+    T typed(std::string_view section, std::string_view key) const;
 
     /**
      * @brief Value of section.key converted according to its declared type (following a
@@ -285,6 +304,27 @@ namespace gum {
 
     /// @}
 
+    /// @name Numerical tolerances
+    /// @{
+
+    /**
+     * @brief The coarse tolerance (key `core.epsilonCoarse`, 1e-2 by default).
+     *
+     * The three tolerances of aGrUM are read without any lock nor allocation (an atomic load),
+     * so that they can be used in loops. Their domains do not overlap (coarse in [1e-3,1e-1],
+     * standard in [1e-8,1e-5], fine in [1e-11,1e-9]), so that fine < standard < coarse always holds : a
+     * value out of the domain is refused as any invalid value (see set() and load()).
+     */
+    double epsilonCoarse() const noexcept;
+
+    /// @return the standard tolerance (key `core.epsilonStandard`, 1e-6 by default).
+    double epsilonStandard() const noexcept;
+
+    /// @return the fine tolerance (key `core.epsilonFine`, 1e-10 by default).
+    double epsilonFine() const noexcept;
+
+    /// @}
+
     /// @name Hooks and notices
     /// @{
 
@@ -318,6 +358,13 @@ namespace gum {
                             _index_;   // "section\0key" -> position in _items_
     std::vector< Snapshot > _stack_;
     std::vector< Hook >     _hooks_;
+
+    // the numerical tolerances (core.epsilonCoarse, ...) are copied in atomics, under the lock,
+    // each time a value changes; their positions in _items_ are _npos_ if the schema does not have
+    // them
+    static constexpr std::size_t                      _nbEpsilons_ = 3;
+    std::array< std::atomic< double >, _nbEpsilons_ > _epsilons_{{1e-2, 1e-6, 1e-10}};
+    std::array< std::size_t, _nbEpsilons_ >           _epsilonPos_{};
 
     mutable std::mutex            _noticeMutex_;
     mutable std::vector< Notice > _notices_;
@@ -353,11 +400,20 @@ namespace gum {
     std::string _render_(const std::function< bool(const Item&) >& keep) const;
     Snapshot    _snapshot_() const;
     void        _restore_(const Snapshot& snapshot);
-    void        _queue_(Notice::Kind kind, std::string message) const;
+    // copies the values of the numerical tolerances in their atomics (needs the exclusive lock)
+    void _refreshEpsilons_();
+    void _queue_(Notice::Kind kind, std::string message) const;
   };
+
+  /// @brief A short name for Configuration::instance() : `gum::config().epsilonStandard()`.
+  Configuration& config();
 
 }   // namespace gum
 
 #include <agrum/base/core/configuration/configuration_tpl.h>
 
-#endif /* GUM_CONFIGURATION_H */
+#ifndef GUM_NO_INLINE
+#  include <agrum/base/core/configuration/configuration_inl.h>
+#endif   // GUM_NO_INLINE
+
+#endif   /* GUM_CONFIGURATION_H */

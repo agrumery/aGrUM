@@ -50,7 +50,7 @@
 
 // default of the argument allowModificationWhenSaving of the save* methods: the configuration
 inline bool gumConfigAllowModificationWhenSaving() {
-  return gum::Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving");
+  return gum::Configuration::instance().typed< bool >("core", "allowModificationWhenSaving");
 }
 %}
 

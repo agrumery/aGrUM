@@ -59,10 +59,10 @@
 namespace gum {
 
   template < typename T >
-  T Configuration::getTyped(std::string_view section, std::string_view key) const {
+  T Configuration::typed(std::string_view section, std::string_view key) const {
     static_assert(std::is_same_v< T, bool > || std::is_same_v< T, int64_t >
                       || std::is_same_v< T, double > || std::is_same_v< T, std::string >,
-                  "Configuration::getTyped<T>: T must be bool, int64_t, double or std::string");
+                  "Configuration::typed<T>: T must be bool, int64_t, double or std::string");
 
     const auto [value, kind] = _typedRaw_(section, key);
 

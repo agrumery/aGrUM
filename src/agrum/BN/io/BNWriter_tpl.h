@@ -60,7 +60,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   BNWriter< GUM_SCALAR >::BNWriter() :
       _allowModification_(
-          Configuration::instance().getTyped< bool >("core", "allow_modification_when_saving")) {
+          Configuration::instance().typed< bool >("core", "allowModificationWhenSaving")) {
     GUM_CONSTRUCTOR(BNWriter);
   }
 

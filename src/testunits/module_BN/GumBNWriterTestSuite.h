@@ -399,9 +399,9 @@ namespace gum_tests {
     auto& conf = gum::Configuration::instance();
 
     conf.push();
-    conf.set("core", "allow_modification_when_saving", "False");
+    conf.set("core", "allowModificationWhenSaving", "False");
     CHECK(!gum::GumBNWriter< double >().isModificationAllowed());
-    conf.set("core", "allow_modification_when_saving", "True");
+    conf.set("core", "allowModificationWhenSaving", "True");
     CHECK(gum::GumBNWriter< double >().isModificationAllowed());
 
     // explicitly set, the value no longer depends on the configuration

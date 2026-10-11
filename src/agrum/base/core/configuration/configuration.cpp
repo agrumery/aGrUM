@@ -48,7 +48,9 @@
 
 // to ease automatic parsers
 #include <algorithm>
+#include <cctype>
 #include <charconv>
+#include <cmath>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -57,6 +59,9 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/configuration/configuration.h>
+#ifdef GUM_NO_INLINE
+#  include <agrum/base/core/configuration/configuration_inl.h>
+#endif   // GUM_NO_INLINE
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/threads/threads.h>
 
@@ -79,6 +84,11 @@ namespace gum {
   namespace {
 
     constexpr std::string_view _undocumented_ = "(undocumented)";
+
+    // the keys of section core copied in atomics (see Configuration::epsilonCoarse() and so on), in
+    // the order of Configuration::_epsilons_
+    constexpr std::array< std::string_view, 3 > _epsilonKeys_
+        = {"epsiloncoarse", "epsilonstandard", "epsilonfine"};
 
     [[noreturn]] void
         _syntaxError_(const std::string& msg, std::string_view origin, std::size_t line) {
@@ -149,6 +159,54 @@ namespace gum {
       return ec == std::errc() && ptr == s.data() + s.size();
     }
 
+    // parses the domain of an int or float (e.g. `]0,1[`, `[1,]`); on failure, gives the reason in error
+    bool _parseDomain_(std::string_view             text,
+                       bool                         isInt,
+                       Configuration::Meta::Domain& domain,
+                       std::string&                 error) {
+      std::string t;
+      for (const char c: text)
+        if (!std::isspace(static_cast< unsigned char >(c))) t += c;
+
+      const auto isBracket = [](char c) { return c == '[' || c == ']'; };
+      const auto comma     = t.find(',');
+      if (t.size() < 3 || !isBracket(t.front()) || !isBracket(t.back()) || comma == std::string::npos
+          || t.find(',', comma + 1) != std::string::npos) {
+        error = "'" + t + "' is not a valid domain (e.g. ]0,1[ or [1,])";
+        return false;
+      }
+
+      const auto parseBound = [&](const std::string& s, bool& has, double& value) {
+        has = !s.empty();
+        if (!has) return true;
+        if (isInt) {
+          std::int64_t i = 0;
+          if (!_toInt_(s, i)) return false;
+          value = static_cast< double >(i);
+          return true;
+        }
+        return parseDecimal(s, value);
+      };
+
+      domain               = Configuration::Meta::Domain();
+      domain.lowerIncluded = t.front() == '[';
+      domain.upperIncluded = t.back() == ']';
+      if (!parseBound(t.substr(1, comma - 1), domain.hasLower, domain.lower)
+          || !parseBound(t.substr(comma + 1, t.size() - comma - 2), domain.hasUpper, domain.upper)) {
+        error = "'" + t + "' has a bound that is not " + (isInt ? "an int" : "a float");
+        return false;
+      }
+      if (domain.hasLower && domain.hasUpper
+          && (domain.lower > domain.upper
+              || (domain.lower == domain.upper
+                  && !(domain.lowerIncluded && domain.upperIncluded)))) {
+        error = "the domain '" + t + "' is empty";
+        return false;
+      }
+      domain.text = t;
+      return true;
+    }
+
     // parses the `type` part of a metadata line; on failure, gives the reason in error
     bool _parseMetaSpec_(const std::string&   spec,
                          const std::string&   doc,
@@ -156,6 +214,10 @@ namespace gum {
                          std::string&         error) {
       meta     = Configuration::Meta();
       meta.doc = doc;
+
+      // the type, without the domain of validity that may follow it (e.g. `float]0,1[`)
+      const auto cut  = spec.find_first_of("[]");
+      const auto type = trim_copy(std::string_view(spec).substr(0, cut));
 
       if (spec.rfind("deprecated", 0) == 0) {
         const auto rest = trim_copy(std::string_view(spec).substr(10));
@@ -170,12 +232,20 @@ namespace gum {
             return true;
           }
         }
-      } else if (spec == "int" || spec == "float" || spec == "bool" || spec == "str") {
-        meta.kind = spec == "int"   ? Configuration::Kind::INT
-                  : spec == "float" ? Configuration::Kind::FLOAT
-                  : spec == "bool"  ? Configuration::Kind::BOOL
+      } else if (type == "int" || type == "float" || type == "bool" || type == "str") {
+        meta.kind = type == "int"   ? Configuration::Kind::INT
+                  : type == "float" ? Configuration::Kind::FLOAT
+                  : type == "bool"  ? Configuration::Kind::BOOL
                                     : Configuration::Kind::STR;
-        return true;
+        if (cut == std::string::npos) return true;
+        if (meta.kind == Configuration::Kind::INT || meta.kind == Configuration::Kind::FLOAT) {
+          return _parseDomain_(std::string_view(spec).substr(cut),
+                               meta.kind == Configuration::Kind::INT,
+                               meta.domain,
+                               error);
+        }
+        error = "'" + type + "' cannot have a domain";
+        return false;
       } else if (spec.find('|') != std::string::npos) {
         std::size_t prev = 0;
         bool        ok   = true;
@@ -194,7 +264,8 @@ namespace gum {
         }
       }
       error = "'" + spec
-            + "' is not a valid type (int, float, bool, str, v1|v2|..., deprecated -> section.key)";
+            + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, v1|v2|..., "
+              "deprecated -> section.key)";
       return false;
     }
 
@@ -217,6 +288,13 @@ namespace gum {
     return res;
   }
 
+  bool Configuration::Meta::Domain::contains(double x) const {
+    if ((hasLower || hasUpper) && std::isnan(x)) return false;
+    if (hasLower && (x < lower || (x == lower && !lowerIncluded))) return false;
+    if (hasUpper && (x > upper || (x == upper && !upperIncluded))) return false;
+    return true;
+  }
+
   std::string Configuration::kindName(Kind kind) {
     switch (kind) {
       case Kind::INT : return "int";
@@ -235,6 +313,9 @@ namespace gum {
   Configuration::Configuration(std::string_view defaultsText, std::string_view origin) {
     _parse_(defaultsText, origin);
     _checkSchema_(origin);
+    for (std::size_t i = 0; i < _nbEpsilons_; ++i)
+      _epsilonPos_[i] = _tryFind_("core", _epsilonKeys_[i]);
+    _refreshEpsilons_();
   }
 
   void Configuration::_parse_(std::string_view text, std::string_view origin) {
@@ -296,9 +377,9 @@ namespace gum {
       }
 
       Item item;
-      item.section = section;
-      item.key     = key;
-      item.value   = value;
+      item.section      = section;
+      item.key          = key;
+      item.value        = value;
       if (pending) {
         item.meta = pendingMeta;
         pending   = false;
@@ -420,12 +501,20 @@ namespace gum {
           error = "'" + s + "' must be an int for '" + name + "'.";
           return false;
         }
+        if (!item.meta.domain.contains(static_cast< double >(res))) {
+          error = "'" + s + "' must be in " + item.meta.domain.text + " for '" + name + "'.";
+          return false;
+        }
         return true;
       }
       case Kind::FLOAT : {
         double res = 0;
         if (!parseDecimal(s, res)) {
           error = "'" + s + "' must be a float for '" + name + "'.";
+          return false;
+        }
+        if (!item.meta.domain.contains(res)) {
+          error = "'" + s + "' must be in " + item.meta.domain.text + " for '" + name + "'.";
           return false;
         }
         return true;
@@ -500,7 +589,7 @@ namespace gum {
       case Kind::DEPRECATED :
         return "deprecated -> " + m.targetSection + "." + m.targetKey + " :: " + m.doc;
       case Kind::ENUM : return m.joinedValues() + " :: " + m.doc;
-      default : return kindName(m.kind) + " :: " + m.doc;
+      default : return kindName(m.kind) + m.domain.text + " :: " + m.doc;
     }
   }
 
@@ -527,6 +616,16 @@ namespace gum {
     std::string canonical, error;
     if (!_validate_(_items_[pos], value, canonical, error)) { GUM_ERROR(InvalidArgument, error) }
     _items_[pos].value = std::move(canonical);
+    _refreshEpsilons_();
+  }
+
+  void Configuration::_refreshEpsilons_() {
+    for (std::size_t i = 0; i < _nbEpsilons_; ++i) {
+      double value = 0;
+      if (_epsilonPos_[i] != _npos_ && parseDecimal(_items_[_epsilonPos_[i]].value, value)) {
+        _epsilons_[i].store(value, std::memory_order_relaxed);
+      }
+    }
   }
 
   void Configuration::set(std::string_view section,
@@ -549,6 +648,7 @@ namespace gum {
       {
         std::unique_lock lock(_mutex_);
         _items_[pos].value = std::move(previous);
+        _refreshEpsilons_();
       }
       // bring back the state driven by the hooks; the original exception is the one to report
       try {
@@ -569,6 +669,7 @@ namespace gum {
   void Configuration::_restore_(const Snapshot& snapshot) {
     for (std::size_t i = 0; i < _items_.size(); ++i)
       _items_[i].value = snapshot[i];
+    _refreshEpsilons_();
   }
 
   void Configuration::reset() {
@@ -576,6 +677,7 @@ namespace gum {
       std::unique_lock lock(_mutex_);
       for (auto& item: _items_)
         if (item.meta.kind != Kind::DEPRECATED) item.value = item.defaultValue;
+      _refreshEpsilons_();
     }
     runHooks();
   }
@@ -653,6 +755,7 @@ namespace gum {
       std::unique_lock lock(_mutex_);
       for (auto& [pos, value]: changes)
         _items_[pos].value = std::move(value);
+      _refreshEpsilons_();
     }
     for (auto& notice: notices)
       _queue_(notice.kind, std::move(notice.message));
@@ -745,12 +848,12 @@ namespace gum {
 
   Configuration& Configuration::instance() {
     // built, completed by the user file and applied once (thread-safe), the first time it is needed
-    static Configuration& config = []() -> Configuration& {
+    static Configuration& instanceRef = []() -> Configuration& {
       static Configuration global(configurationEmbeddedDefaults());
       // the number of threads is the only [core] key acting directly on the library; a negative
       // value gives back what the machine (or OMP_NUM_THREADS) provides, read before any change
       global.addHook([machine = gum::getMaxNumberOfThreads()](const Configuration& c) {
-        const auto n = c.getTyped< std::int64_t >("core", "maxNumberOfThreads");
+        const auto n = c.typed< std::int64_t >("core", "maxNumberOfThreads");
         gum::setNumberOfThreads(n < 0 ? machine : static_cast< unsigned int >(n));
       });
       global._loadUserFile_();
@@ -762,7 +865,7 @@ namespace gum {
       }
       return global;
     }();
-    return config;
+    return instanceRef;
   }
 
   namespace {
