@@ -900,8 +900,10 @@ namespace gum {
 
       if (p1.domainSize() != p2.domainSize()) { return false; }
 
-      Instantiation    i(p1);
-      Instantiation    j(p2);
+      Instantiation i(p1);
+      Instantiation j(p2);
+      // the tolerance applies to the squared difference: two values are equal when
+      // |a - b| <= sqrt(epsilonStandard), i.e. 1e-3 by default
       const GUM_SCALAR tolerance = static_cast< GUM_SCALAR >(config().epsilonStandard());
 
       for (i.setFirst(); !i.end(); i.inc()) {

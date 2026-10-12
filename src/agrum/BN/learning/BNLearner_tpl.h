@@ -51,6 +51,7 @@
  */
 #include <fstream>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/learning/BNLearner.h>   // to ease IDE parser
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -424,7 +425,10 @@ namespace gum {
         } break;
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
           vals.emplace_back(key, "Local Search with Tabu List", "");
-          vals.emplace_back("Tabu list size", std::to_string(nbDecreasingChanges_), "");
+          vals.emplace_back("Tabu list size", std::to_string(tabuListSize_), "");
+          vals.emplace_back("Max consecutive decreasing changes",
+                            std::to_string(nbDecreasingChanges_),
+                            "");
           break;
         case AlgoType::MIIC : vals.emplace_back(key, "MIIC", ""); break;
         case AlgoType::PC : vals.emplace_back(key, "PC", ""); break;
@@ -612,7 +616,7 @@ namespace gum {
           break;
         case AlgoType::K2 : useK2(learner.algoK2_.order()); break;
         case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST :
-          useLocalSearchWithTabuList(learner.nbDecreasingChanges_);
+          useLocalSearchWithTabuList(learner.tabuListSize_, learner.nbDecreasingChanges_);
           break;
         case AlgoType::MIIC : useMIIC(); break;
         case AlgoType::PC : usePC(); break;

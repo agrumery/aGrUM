@@ -53,6 +53,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/base/stattests/indepTestG2.h>
 #include <agrum/base/stattests/pseudoCount.h>
@@ -228,7 +229,8 @@ namespace gum::learning {
       dag2BN_(from.dag2BN_), greedyHillClimbing_(from.greedyHillClimbing_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
-      filename_(from.filename_), nbDecreasingChanges_(from.nbDecreasingChanges_) {
+      filename_(from.filename_), tabuListSize_(from.tabuListSize_),
+      nbDecreasingChanges_(from.nbDecreasingChanges_) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
     GUM_CONS_CPY(IBNLearner)
@@ -252,7 +254,7 @@ namespace gum::learning {
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
       priorDbname_(std::move(from.priorDbname_)), initialDag_(std::move(from.initialDag_)),
-      filename_(std::move(from.filename_)),
+      filename_(std::move(from.filename_)), tabuListSize_(from.tabuListSize_),
       nbDecreasingChanges_(std::move(from.nbDecreasingChanges_)) {
     noPrior_ = new NoPrior(scoreDatabase_.databaseTable());
 
@@ -326,6 +328,7 @@ namespace gum::learning {
       priorDbname_               = from.priorDbname_;
       initialDag_                = from.initialDag_;
       filename_                  = from.filename_;
+      tabuListSize_              = from.tabuListSize_;
       nbDecreasingChanges_       = from.nbDecreasingChanges_;
       currentAlgorithm_          = nullptr;
     }
@@ -382,6 +385,7 @@ namespace gum::learning {
       priorDbname_               = std::move(from.priorDbname_);
       filename_                  = std::move(from.filename_);
       initialDag_                = std::move(from.initialDag_);
+      tabuListSize_              = from.tabuListSize_;
       nbDecreasingChanges_       = std::move(from.nbDecreasingChanges_);
       currentAlgorithm_          = nullptr;
     }
@@ -791,7 +795,7 @@ namespace gum::learning {
     algoPC_.setMandatoryGraph(mandatoryGraph);
     algoPC_.setForbiddenGraph(forbiddenGraph);
     algoPC_.setIndependenceTest(*indepTestPC_);
-    algoPC_.setAlpha(alphaPc_);
+    algoPC_.setAlpha(alphaPc_.value_or(gum::config().typed< double >("learning", "alpha")));
     algoPC_.setStable(stablePc_);
     algoPC_.setMaxCondSetSize(maxCondSetSizePc_);
     algoPC_.setUCPriority(sortedUCPc_ ? gum::learning::PC::UCPriority::Sorted
@@ -883,7 +887,7 @@ namespace gum::learning {
     algoFCI_.setMandatoryGraph(mandatoryGraph);
     algoFCI_.setForbiddenGraph(forbiddenGraph);
     algoFCI_.setIndependenceTest(*indepTestFCI_);
-    algoFCI_.setAlpha(alphaFci_);
+    algoFCI_.setAlpha(alphaFci_.value_or(gum::config().typed< double >("learning", "alpha")));
     algoFCI_.setMaxPathLength(maxPathLengthFci_);
     algoFCI_.setExhaustiveSepSet(exhaustiveSepSetFci_);
 

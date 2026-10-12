@@ -109,16 +109,17 @@ namespace gum {
     /// metadata attached to a key by a `###` line
     struct Meta {
       /// domain of validity of an int or float key, written after the type in the `###` line:
-      /// `float]0,1[`, `int[1,]`, `int[0,100]`. A bracket turned toward the bound includes it, turned
-      /// away excludes it ; an omitted bound is unbounded.
+      /// `float]0,1[`, `int[1,]`, `int[0,100]`. A bracket turned toward the bound includes it,
+      /// turned away excludes it ; an omitted bound is unbounded.
       struct Domain {
-        bool        hasLower{false};
-        bool        hasUpper{false};
-        bool        lowerIncluded{true};
-        bool        upperIncluded{true};
-        double      lower{0.};
-        double      upper{0.};
-        std::string text;   ///< the domain as written, without blanks (e.g. `]0,1[`) ; empty if none
+        bool   hasLower{false};
+        bool   hasUpper{false};
+        bool   lowerIncluded{true};
+        bool   upperIncluded{true};
+        double lower{0.};
+        double upper{0.};
+        std::string
+            text;   ///< the domain as written, without blanks (e.g. `]0,1[`) ; empty if none
 
         /// @return true if x belongs to the domain (a domain without bound contains every number).
         bool contains(double x) const;
@@ -312,8 +313,8 @@ namespace gum {
      *
      * The three tolerances of aGrUM are read without any lock nor allocation (an atomic load),
      * so that they can be used in loops. Their domains do not overlap (coarse in [1e-3,1e-1],
-     * standard in [1e-8,1e-5], fine in [1e-11,1e-9]), so that fine < standard < coarse always holds : a
-     * value out of the domain is refused as any invalid value (see set() and load()).
+     * standard in [1e-8,1e-5], fine in [1e-11,1e-9]), so that fine < standard < coarse always holds
+     * : a value out of the domain is refused as any invalid value (see set() and load()).
      */
     double epsilonCoarse() const noexcept;
 
@@ -406,7 +407,8 @@ namespace gum {
   };
 
   /// @brief A short name for Configuration::instance() : `gum::config().epsilonStandard()`.
-  Configuration& config();
+  /// It is not inline so that it is exported by the library (shared build on Windows).
+  GUM_SHARED_PUBLIC Configuration& config();
 
 }   // namespace gum
 

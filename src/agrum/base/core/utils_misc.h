@@ -166,11 +166,18 @@ namespace gum {
 
   /**
    * @brief Indicate whether two elements are (almost) different or not.
+   *
+   * The tolerance (core.epsilonStandard) is read once, when the functor is built, and not at each
+   * comparison: a functor is meant to be created for a whole comparison (a loop on the elements of
+   * two containers) and an object built before a change of the configuration keeps its tolerance.
    * @tparam T The type of the elements to compare.
    */
   template < typename T >
   struct AlmostDifferent {
     bool operator()(const T& t1, const T& t2);
+
+    private:
+    double _epsilon_{almostDifferentEpsilon()};
   };
 
   /**

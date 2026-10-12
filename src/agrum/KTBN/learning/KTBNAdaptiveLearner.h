@@ -569,11 +569,11 @@ namespace gum {
       /// recorded structure-learning algorithm
       IBNLearner::AlgoType _algo_{IBNLearner::AlgoType::MIIC};
 
-      /// tabu-list parameters (meaningful when _algo_ is LOCAL_SEARCH_WITH_TABU_LIST)
-      Size _tabuSize_{
-          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize"))};
-      Size _nbDecrease_{
-          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"))};
+      /// tabu-list parameters (meaningful when _algo_ is LOCAL_SEARCH_WITH_TABU_LIST). They are
+      /// always written by useLocalSearchWithTabuList(), which reads `learning.tabuListSize` and
+      /// `learning.tabuNbDecrease` when no value is given.
+      Size _tabuSize_{100};
+      Size _nbDecrease_{2};
 
       /// recorded MIIC correction
       CorrectedMutualInformation::KModeTypes _correction_{
@@ -581,7 +581,9 @@ namespace gum {
 
       /// recorded prior and its weight
       IBNLearner::BNLearnerPriorType _prior_{IBNLearner::BNLearnerPriorType::NO_prior};
-      double _priorWeight_{gum::config().typed< double >("learning", "priorWeight")};
+      /// always written by the useXxxPrior() methods, which read `learning.priorWeight` when no
+      /// weight is given
+      double _priorWeight_{1.0};
 
       /// recorded graph-change permissions / indegree cap
       bool _allowAdditions_{true};

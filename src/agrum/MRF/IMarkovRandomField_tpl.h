@@ -284,8 +284,10 @@ namespace gum {
 
       const auto& fromfactor = from.factor(fromkey);
 
-      Instantiation    i(factor);
-      Instantiation    j(fromfactor);
+      Instantiation i(factor);
+      Instantiation j(fromfactor);
+      // the tolerance applies to the squared difference: two values are equal when
+      // |a - b| <= sqrt(epsilonStandard), i.e. 1e-3 by default
       const GUM_SCALAR tolerance = static_cast< GUM_SCALAR >(config().epsilonStandard());
       for (i.setFirst(); !i.end(); i.inc()) {
         for (Idx indice = 0; indice < factor.nbrDim(); ++indice) {

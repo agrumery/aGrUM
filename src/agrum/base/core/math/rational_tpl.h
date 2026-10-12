@@ -50,6 +50,7 @@
 // To help IDE Parsers
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/math/rational.h>
 
 namespace gum {
@@ -139,6 +140,9 @@ namespace gum {
     uint64_t n;
     double   delta, delta_tmp;
 
+    /// the tolerance is read once, not at each iteration
+    const double epsilon = config().epsilonStandard();
+
     /// we find all convergents until we found a best one
     /// since we look for a delta < zero, we can start looking for
     /// semi-convergents
@@ -158,7 +162,7 @@ namespace gum {
         break;
       }
 
-      if (std::abs(rnumber - a.back()) < config().epsilonStandard()) break;
+      if (std::abs(rnumber - a.back()) < epsilon) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
     }   /// end of while
@@ -238,6 +242,9 @@ namespace gum {
     uint64_t n;
     double   delta, delta_tmp;
 
+    /// the tolerance is read once, not at each iteration
+    const double epsilon = config().epsilonStandard();
+
     /// we find all convergents until we met den_max
     while (true) {
       a.push_back(std::lrint(std::floor(rnumber)));
@@ -250,7 +257,7 @@ namespace gum {
       p.push_back(p_tmp);
       q.push_back(q_tmp);
 
-      if (std::fabs(rnumber - a.back()) < config().epsilonStandard()) break;
+      if (std::fabs(rnumber - a.back()) < epsilon) break;
 
       rnumber = GUM_SCALAR(1.) / (rnumber - a.back());
     }   /// end of while

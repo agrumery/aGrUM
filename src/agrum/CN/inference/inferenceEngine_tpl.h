@@ -50,6 +50,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/CN/inference/inferenceEngine.h>
 
 namespace gum {

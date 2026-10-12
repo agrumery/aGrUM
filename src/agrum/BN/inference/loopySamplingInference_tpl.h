@@ -61,8 +61,9 @@ namespace gum {
   LoopySamplingInference< GUM_SCALAR, APPROX >::LoopySamplingInference(
       const IBayesNet< GUM_SCALAR >* BN) :
       APPROX< GUM_SCALAR >(BN),
+      // an int of the configuration, which is positive according to the domain of its key
       virtualLBPSize_(static_cast< GUM_SCALAR >(
-          Configuration::instance().typed< double >("loopySampling", "virtualLBPSize"))) {
+          Configuration::instance().typed< std::int64_t >("loopySampling", "virtualLBPSize"))) {
     GUM_CONSTRUCTOR(LoopySamplingInference);
   }
 
@@ -82,6 +83,11 @@ namespace gum {
     if (!this->isSetEstimator) { this->setEstimatorFromLBP_(&lbp, virtualLBPSize_); }
 
     this->loopApproxInference_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR, template < typename > class APPROX >
+  GUM_SCALAR LoopySamplingInference< GUM_SCALAR, APPROX >::virtualLBPSize() const {
+    return virtualLBPSize_;
   }
 
   template < GUM_Numeric GUM_SCALAR, template < typename > class APPROX >

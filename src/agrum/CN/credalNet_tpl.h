@@ -43,6 +43,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/base/core/math/math_utils.h>
@@ -707,6 +708,9 @@ namespace gum {
         std::vector< GUM_SCALAR > lower(var_dSize);
         std::vector< GUM_SCALAR > upper(var_dSize);
 
+        // the tolerance is read once per node, not at each test
+        const double epsilon = config().epsilonStandard();
+
         for (Size entry = 0; entry < entry_size; entry++) {
           for (Size modality = 0; modality < var_dSize; modality++, ++ins_min, ++ins_max) {
             lower[modality] = tensor_min->get(ins_min);
@@ -717,7 +721,7 @@ namespace gum {
           std::vector< std::vector< GUM_SCALAR > > vertices;
 
           for (Size modality = 0; modality < var_dSize; modality++) {
-            if (std::fabs(upper[modality] - lower[modality]) < config().epsilonStandard()) continue;
+            if (std::fabs(upper[modality] - lower[modality]) < epsilon) continue;
 
             all_equals = false;
             std::vector< GUM_SCALAR > vertex(var_dSize);
@@ -734,7 +738,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (std::fabs(total - 1.) > config().epsilonStandard())
+            if (std::fabs(total - 1.) > epsilon)
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
                             << "  does not sum to one for " << entry << std::endl
@@ -756,7 +760,7 @@ namespace gum {
             for (Size i = 0; i < vsize; i++)
               total += vertex[i];
 
-            if (std::fabs(total - 1.) > config().epsilonStandard())
+            if (std::fabs(total - 1.) > epsilon)
               GUM_ERROR(CPTError,
                         _src_bn_.variable(node).name()
                             << "  does not sum to one for " << entry << std::endl

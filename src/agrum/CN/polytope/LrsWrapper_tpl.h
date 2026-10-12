@@ -45,6 +45,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/CN/polytope/LrsWrapper.h>
 
 #include <agrum/base/core/math/math_utils.h>

@@ -67,7 +67,6 @@ namespace gum {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setFromConfiguration_("gibbsKL", true);
-    setBurnIn(sizeFromConfiguration_("gibbsKL", "burnIn"));
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -77,7 +76,6 @@ namespace gum {
     GUM_CONSTRUCTOR(GibbsBNdistance);
 
     setFromConfiguration_("gibbsKL", true);
-    setBurnIn(sizeFromConfiguration_("gibbsKL", "burnIn"));
   }
 
   template < GUM_Numeric GUM_SCALAR >

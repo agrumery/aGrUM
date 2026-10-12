@@ -66,13 +66,14 @@ namespace gum {
       min_rate_eps_(0.), enabled_min_rate_eps_(true), max_time_(1.), enabled_max_time_(false),
       max_iter_(static_cast< Size >(1)), enabled_max_iter_(true), burn_in_(static_cast< Size >(0)),
       period_size_(static_cast< Size >(1)), verbosity_(verbosity) {
-    GUM_CONSTRUCTOR(ApproximationScheme);
-
-    setFromConfiguration_("approximation", true);
+    // the verbosity is the argument, the other parameters come from the configuration
+    setFromConfiguration_("approximation", true, false);
     // the timeout is read (and checked) but stays disabled until the user asks for it
     disableMaxTime();
-    burn_in_   = sizeFromConfiguration_("approximation", "burnIn");
-    verbosity_ = verbosity;
+
+    // after the reading of the configuration, which may throw: the destructor is not called if the
+    // constructor throws, so that GUM_CONSTRUCTOR would unbalance the counters of the debug mode
+    GUM_CONSTRUCTOR(ApproximationScheme);
   }
 
   Size ApproximationScheme::sizeFromConfiguration_(const std::string& section,
@@ -86,15 +87,19 @@ namespace gum {
     return static_cast< Size >(value);
   }
 
-  void ApproximationScheme::setFromConfiguration_(const std::string& section, bool withMaxTime) {
+  void ApproximationScheme::setFromConfiguration_(const std::string& section,
+                                                  bool               withMaxTime,
+                                                  bool               withVerbosity) {
     const auto& conf = Configuration::instance();
 
     setEpsilon(conf.typed< double >(section, "epsilon"));
     setMinEpsilonRate(conf.typed< double >(section, "minEpsilonRate"));
     setMaxIter(sizeFromConfiguration_(section, "maxIter"));
     setPeriodSize(sizeFromConfiguration_(section, "periodSize"));
-    setVerbosity(conf.typed< bool >(section, "verbosity"));
+    if (withVerbosity) setVerbosity(conf.typed< bool >(section, "verbosity"));
     if (withMaxTime) setMaxTime(conf.typed< double >(section, "maxTime"));
+    // only some sections have a burn-in (approximation, gibbs, gibbsKL)
+    if (conf.has(section, "burnIn")) burn_in_ = sizeFromConfiguration_(section, "burnIn");
   }
 
   ApproximationScheme::~ApproximationScheme() { GUM_DESTRUCTOR(ApproximationScheme); }

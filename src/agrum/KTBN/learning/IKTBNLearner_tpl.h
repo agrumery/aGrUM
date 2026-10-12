@@ -55,23 +55,34 @@ namespace gum {
   namespace learning {
 
     template < GUM_Numeric GUM_SCALAR >
+    Size IKTBNLearner< GUM_SCALAR >::defaultTabuListSize_() {
+      return static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize"));
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    Size IKTBNLearner< GUM_SCALAR >::defaultTabuNbDecrease_() {
+      return static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"));
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    double IKTBNLearner< GUM_SCALAR >::defaultPriorWeight_() {
+      return gum::config().typed< double >("learning", "priorWeight");
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     IKTBNLearner< GUM_SCALAR >&
         IKTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size) {
-      return useLocalSearchWithTabuList(
-          tabu_size,
-          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+      return useLocalSearchWithTabuList(tabu_size, defaultTabuNbDecrease_());
     }
 
     template < GUM_Numeric GUM_SCALAR >
     IKTBNLearner< GUM_SCALAR >& IKTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList() {
-      return useLocalSearchWithTabuList(
-          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize")),
-          static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+      return useLocalSearchWithTabuList(defaultTabuListSize_(), defaultTabuNbDecrease_());
     }
 
     template < GUM_Numeric GUM_SCALAR >
     IKTBNLearner< GUM_SCALAR >& IKTBNLearner< GUM_SCALAR >::useSmoothingPrior() {
-      return useSmoothingPrior(gum::config().typed< double >("learning", "priorWeight"));
+      return useSmoothingPrior(defaultPriorWeight_());
     }
 
     template < GUM_Numeric GUM_SCALAR >

@@ -51,6 +51,7 @@
  */
 
 // to help IDE parser
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/graphs/undiGraph.h>
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 
@@ -400,6 +401,7 @@ namespace gum::learning {
   // indicate that we wish to use a local search with tabu list
   INLINE void IBNLearner::useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease) {
     selectedAlgo_        = AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+    tabuListSize_        = tabu_size;
     nbDecreasingChanges_ = nb_decrease;
     constraintTabuList_.setTabuListSize(tabu_size);
     localSearchWithTabuList_.setMaxNbDecreasingChanges(nb_decrease);

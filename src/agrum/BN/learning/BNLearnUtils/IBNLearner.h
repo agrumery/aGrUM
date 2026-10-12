@@ -52,7 +52,9 @@
 #ifndef GUM_LEARNING_GENERIC_BN_LEARNER_H
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
 
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <sstream>
 
 #include <agrum/agrum.h>
@@ -938,7 +940,8 @@ namespace gum::learning {
     /// @throws OperationNotAllowed when PC is not the selected algorithm
     void useG2Test();
 
-    /// set the significance threshold alpha for PC (default 0.05)
+    /// set the significance threshold alpha for PC. If it is never set, PC uses the key
+    /// `learning.alpha` of the configuration, read when the structure is learned.
     /// @throws OperationNotAllowed when PC is not the selected algorithm
     void setPCAlpha(double alpha);
 
@@ -970,7 +973,8 @@ namespace gum::learning {
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     void useFCIG2Test();
 
-    /// set the significance threshold alpha for FCI (default 0.05)
+    /// set the significance threshold alpha for FCI. If it is never set, FCI uses the key
+    /// `learning.alpha` of the configuration, read when the structure is learned.
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     void setFCIAlpha(double alpha);
 
@@ -1163,8 +1167,9 @@ namespace gum::learning {
     /// a Boolean indicating whether we should use EM for parameter learning or not
     bool useEM_{false};
 
-    /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init
-    double noiseEM_{gum::config().typed< double >("learning", "emNoise")};
+    /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init. It is always
+    /// written by useEM() and its variants, which read `learning.emNoise` when no noise is given.
+    double noiseEM_{0.1};
 
     /// the selected correction for miic
     CorrectedMutualInformation* mutualInfo_{nullptr};
@@ -1177,8 +1182,9 @@ namespace gum::learning {
 
     NoPrior* noPrior_{nullptr};
 
-    /// the weight of the prior
-    double priorWeight_{gum::config().typed< double >("learning", "priorWeight")};
+    /// the weight of the prior. It is always written by the useXxxPrior() methods, which read
+    /// `learning.priorWeight` when no weight is given.
+    double priorWeight_{1.0f};
 
     /// the constraint for 2TBNs
     StructuralConstraintSliceOrder constraintSliceOrder_;
@@ -1246,10 +1252,12 @@ namespace gum::learning {
     IndependenceTest* indepTestPC_{nullptr};
 
     /// PC parameters
-    double alphaPc_{gum::config().typed< double >("learning", "alpha")};
-    bool   stablePc_{true};
-    Size   maxCondSetSizePc_{Size(-1)};
-    bool   sortedUCPc_{false};
+    /// the threshold of the tests ; the key `learning.alpha` is read when the structure is learned
+    /// if it is not set
+    std::optional< double > alphaPc_;
+    bool                    stablePc_{true};
+    Size                    maxCondSetSizePc_{Size(-1)};
+    bool                    sortedUCPc_{false};
 
     /// the FCI algorithm
     gum::learning::FCI algoFCI_;
@@ -1261,9 +1269,11 @@ namespace gum::learning {
     IndependenceTest* indepTestFCI_{nullptr};
 
     /// FCI parameters
-    double alphaFci_{gum::config().typed< double >("learning", "alpha")};
-    Size   maxPathLengthFci_{Size(-1)};
-    bool   exhaustiveSepSetFci_{false};
+    /// the threshold of the tests ; the key `learning.alpha` is read when the structure is learned
+    /// if it is not set
+    std::optional< double > alphaFci_;
+    Size                    maxPathLengthFci_{Size(-1)};
+    bool                    exhaustiveSepSetFci_{false};
 
     /// the parametric EM
     DAG2BNLearner dag2BN_;
@@ -1298,9 +1308,11 @@ namespace gum::learning {
     /// the filename database
     std::string filename_{"-"};
 
-    // size of the tabu list
-    Size nbDecreasingChanges_{
-        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"))};
+    // size of the tabu list and number of consecutive decreasing changes tolerated by the local
+    // search. They are always written by useLocalSearchWithTabuList(), which reads
+    // `learning.tabuListSize` and `learning.tabuNbDecrease` when no value is given.
+    Size tabuListSize_{100};
+    Size nbDecreasingChanges_{2};
 
     // the current algorithm as an approximationScheme
     const ApproximationScheme* currentAlgorithm_{nullptr};

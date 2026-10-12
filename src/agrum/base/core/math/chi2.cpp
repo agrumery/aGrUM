@@ -49,6 +49,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/math/chi2.h>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -91,6 +91,10 @@ namespace gum {
 
     void setVirtualLBPSize(GUM_SCALAR vlbpsize);
 
+    /// @return the size of the virtual sample given by the loopy belief propagation (by default,
+    /// the key `loopySampling.virtualLBPSize` of gum::Configuration)
+    GUM_SCALAR virtualLBPSize() const;
+
     protected:
     GUM_SCALAR virtualLBPSize_;
   };

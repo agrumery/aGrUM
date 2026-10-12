@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/CN/inference/inferenceEngine.h>
 #include <agrum/CN/inference/multipleInferenceEngine.h>
 

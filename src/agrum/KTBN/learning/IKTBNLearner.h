@@ -298,6 +298,20 @@ namespace gum {
 
       protected:
       // #######################################################################
+      /// @name Default parameters (keys of the section `learning` of gum::Configuration)
+      // #######################################################################
+      /// @{
+
+      /// @return the key `tabuListSize`, read when it is called
+      static Size defaultTabuListSize_();
+      /// @return the key `tabuNbDecrease`, read when it is called
+      static Size defaultTabuNbDecrease_();
+      /// @return the key `priorWeight`, read when it is called
+      static double defaultPriorWeight_();
+
+      /// @}
+
+      // #######################################################################
       /// @name Name encoding: (base, slice) <-> engine name
       // #######################################################################
       /// @{

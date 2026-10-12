@@ -159,7 +159,8 @@ namespace gum {
       return ec == std::errc() && ptr == s.data() + s.size();
     }
 
-    // parses the domain of an int or float (e.g. `]0,1[`, `[1,]`); on failure, gives the reason in error
+    // parses the domain of an int or float (e.g. `]0,1[`, `[1,]`); on failure, gives the reason in
+    // error
     bool _parseDomain_(std::string_view             text,
                        bool                         isInt,
                        Configuration::Meta::Domain& domain,
@@ -170,8 +171,8 @@ namespace gum {
 
       const auto isBracket = [](char c) { return c == '[' || c == ']'; };
       const auto comma     = t.find(',');
-      if (t.size() < 3 || !isBracket(t.front()) || !isBracket(t.back()) || comma == std::string::npos
-          || t.find(',', comma + 1) != std::string::npos) {
+      if (t.size() < 3 || !isBracket(t.front()) || !isBracket(t.back())
+          || comma == std::string::npos || t.find(',', comma + 1) != std::string::npos) {
         error = "'" + t + "' is not a valid domain (e.g. ]0,1[ or [1,])";
         return false;
       }
@@ -192,7 +193,9 @@ namespace gum {
       domain.lowerIncluded = t.front() == '[';
       domain.upperIncluded = t.back() == ']';
       if (!parseBound(t.substr(1, comma - 1), domain.hasLower, domain.lower)
-          || !parseBound(t.substr(comma + 1, t.size() - comma - 2), domain.hasUpper, domain.upper)) {
+          || !parseBound(t.substr(comma + 1, t.size() - comma - 2),
+                         domain.hasUpper,
+                         domain.upper)) {
         error = "'" + t + "' has a bound that is not " + (isInt ? "an int" : "a float");
         return false;
       }
@@ -264,7 +267,8 @@ namespace gum {
         }
       }
       error = "'" + spec
-            + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, v1|v2|..., "
+            + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, "
+              "v1|v2|..., "
               "deprecated -> section.key)";
       return false;
     }
@@ -377,9 +381,9 @@ namespace gum {
       }
 
       Item item;
-      item.section      = section;
-      item.key          = key;
-      item.value        = value;
+      item.section = section;
+      item.key     = key;
+      item.value   = value;
       if (pending) {
         item.meta = pendingMeta;
         pending   = false;
@@ -616,7 +620,10 @@ namespace gum {
     std::string canonical, error;
     if (!_validate_(_items_[pos], value, canonical, error)) { GUM_ERROR(InvalidArgument, error) }
     _items_[pos].value = std::move(canonical);
-    _refreshEpsilons_();
+    // the atomics only depend on the three tolerances
+    if (std::find(_epsilonPos_.begin(), _epsilonPos_.end(), pos) != _epsilonPos_.end()) {
+      _refreshEpsilons_();
+    }
   }
 
   void Configuration::_refreshEpsilons_() {
@@ -845,6 +852,8 @@ namespace gum {
       _queue_(Notice::Kind::FILE, std::string("[") + userFileName() + "] " + e.what());
     }
   }
+
+  Configuration& config() { return Configuration::instance(); }
 
   Configuration& Configuration::instance() {
     // built, completed by the user file and applied once (thread-safe), the first time it is needed

@@ -398,15 +398,21 @@ namespace gum {
     /**
      * @brief Set the parameters of the scheme from a section of gum::Configuration.
      *
-     * The keys `epsilon`, `minEpsilonRate`, `maxIter`, `periodSize` and `verbosity` of the section
-     * are read (and `maxTime` if withMaxTime is true) and applied through the corresponding
-     * setters, which enable the matching stopping criteria and check the values.
+     * The keys `epsilon`, `minEpsilonRate`, `maxIter` and `periodSize` of the section are read
+     * (and `maxTime` if withMaxTime is true, `verbosity` if withVerbosity is true, `burnIn` if the
+     * section has this key) and applied
+     * through the corresponding setters, which enable the matching stopping criteria and check
+     * the values.
      *
      * @param section The name of the section of the configuration.
      * @param withMaxTime If true, the key `maxTime` is read and the timeout is enabled.
+     * @param withVerbosity If true, the key `verbosity` is read ; otherwise the verbosity is left
+     * unchanged.
      * @throw OutOfBounds Raised if a value of the section is not valid for its setter.
      */
-    void setFromConfiguration_(const std::string& section, bool withMaxTime);
+    void setFromConfiguration_(const std::string& section,
+                               bool               withMaxTime,
+                               bool               withVerbosity = true);
 
     /**
      * @brief Read a non negative integer key of gum::Configuration.
@@ -418,16 +424,16 @@ namespace gum {
     static Size sizeFromConfiguration_(const std::string& section, const std::string& key);
 
     /// Current epsilon.
-    double current_epsilon_;
+    double current_epsilon_{-1.};
 
     /// Last epsilon value.
-    double last_epsilon_;
+    double last_epsilon_{-1.};
 
     /// Current rate.
-    double current_rate_;
+    double current_rate_{-1.};
 
     /// The current step.
-    Size current_step_;
+    Size current_step_{0};
 
     /// The timer.
     Timer timer_;

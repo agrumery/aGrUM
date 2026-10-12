@@ -60,6 +60,8 @@ namespace gum {
       GibbsOperator< GUM_SCALAR >(*bn, &this->hardEvidence(), "gibbs") {
     GUM_CONSTRUCTOR(GibbsSampling);
 
+    // the section gibbs only has epsilon, minEpsilonRate and burnIn (the other parameters are those
+    // of the section sampling, read by SamplingInference), so setFromConfiguration_ is not used
     const auto& conf = Configuration::instance();
     this->setEpsilon(conf.typed< double >("gibbs", "epsilon"));
     this->setMinEpsilonRate(conf.typed< double >("gibbs", "minEpsilonRate"));

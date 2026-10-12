@@ -67,7 +67,4 @@ namespace gum {
     return _epsilons_[2].load(std::memory_order_relaxed);
   }
 
-  INLINE
-  Configuration& config() { return Configuration::instance(); }
-
 }   // namespace gum

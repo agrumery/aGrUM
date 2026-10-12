@@ -52,6 +52,7 @@
 #include <fstream>
 #include <sstream>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/CSVParser.h>
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/KTBN/learning/KTBNLearner.h>
@@ -378,16 +379,14 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList() {
-    return useLocalSearchWithTabuList(
-        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuListSize")),
-        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+    return useLocalSearchWithTabuList(IKTBNLearner< GUM_SCALAR >::defaultTabuListSize_(),
+                                      IKTBNLearner< GUM_SCALAR >::defaultTabuNbDecrease_());
   }
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useLocalSearchWithTabuList(Size tabu_size) {
-    return useLocalSearchWithTabuList(
-        tabu_size,
-        static_cast< Size >(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease")));
+    return useLocalSearchWithTabuList(tabu_size,
+                                      IKTBNLearner< GUM_SCALAR >::defaultTabuNbDecrease_());
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -458,7 +457,7 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useSmoothingPrior() {
-    return useSmoothingPrior(gum::config().typed< double >("learning", "priorWeight"));
+    return useSmoothingPrior(IKTBNLearner< GUM_SCALAR >::defaultPriorWeight_());
   }
 
   template < GUM_Numeric GUM_SCALAR >
