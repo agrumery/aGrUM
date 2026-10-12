@@ -69,6 +69,12 @@
       `notebook.node_bgcolor`, ...) and `core.allow_modification_when_saving` becomes
       `core.allowModificationWhenSaving`. The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
       and redirected to the new ones, with a deprecation notice (`DeprecationWarning` in pyAgrum).
+    - **Much faster reading of models with clang (libc++) and MSVC**: the CoCo/R parsers (BIF, DSL, NET, UAI, O3PRM, ...)
+      built a new `std::locale("C")` for every number they read, which is very slow with libc++ (the C++ library used
+      with clang on macOS) and with the MSVC library. They now use `std::locale::classic()`: with clang, reading a large
+      BIF file such as Diabetes goes from about 8 s to 0.1 s and the whole C++ test suite from 86 s to 36 s; with MSVC
+      2022 and 2019, the `BIFReader` tests go from 24-26 s to 2.7-2.8 s and the `DSLReader` tests from 11-12 s to
+      1.4-1.9 s. With gcc (libstdc++, MinGW), where this construction is already cheap, there is no change.
 
 ## Changelog for 3.2.1
 

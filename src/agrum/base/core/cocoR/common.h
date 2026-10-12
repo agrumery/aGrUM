@@ -178,7 +178,7 @@ namespace gum {
   inline float coco_atof(const wchar_t* c) {
     float              res;
     std::istringstream istr(narrow(c));
-    istr.imbue(std::locale("C"));
+    istr.imbue(std::locale::classic());
     istr >> res;
     return res;
   }
@@ -186,7 +186,7 @@ namespace gum {
   inline int coco_atoi(const wchar_t* c) {
     int                res;
     std::istringstream istr(narrow(c));
-    istr.imbue(std::locale("C"));
+    istr.imbue(std::locale::classic());
     istr >> res;
     return res;
   }
