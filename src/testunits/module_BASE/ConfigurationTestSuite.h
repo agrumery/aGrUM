@@ -683,23 +683,23 @@ Color = #FF7F64
     auto&              conf   = gum::Configuration::instance();
     const unsigned int before = gum::getNumberOfThreads();
 
-    conf.push();
-    conf.set("core", "maxNumberOfThreads", "3");
-    CHECK_EQ(gum::getNumberOfThreads(), 3u);
-    conf.set("core", "maxNumberOfThreads", "2");
-    CHECK_EQ(gum::getNumberOfThreads(), 2u);
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "maxNumberOfThreads", "3");
+      CHECK_EQ(gum::getNumberOfThreads(), 3u);
+      conf.set("core", "maxNumberOfThreads", "2");
+      CHECK_EQ(gum::getNumberOfThreads(), 2u);
 
-    // no hook: the configuration changes, not the library
-    conf.set("core", "maxNumberOfThreads", "5", true);
-    CHECK_EQ(gum::getNumberOfThreads(), 2u);
-    conf.runHooks();
-    CHECK_EQ(gum::getNumberOfThreads(), 5u);
+      // no hook: the configuration changes, not the library
+      conf.set("core", "maxNumberOfThreads", "5", true);
+      CHECK_EQ(gum::getNumberOfThreads(), 2u);
+      conf.runHooks();
+      CHECK_EQ(gum::getNumberOfThreads(), 5u);
 
-    // a negative value gives back the number of threads provided by the machine
-    conf.set("core", "maxNumberOfThreads", "-1");
-    CHECK_GE(gum::getNumberOfThreads(), 1u);
-
-    conf.pop();
+      // a negative value gives back the number of threads provided by the machine
+      conf.set("core", "maxNumberOfThreads", "-1");
+      CHECK_GE(gum::getNumberOfThreads(), 1u);
+    }
     gum::setNumberOfThreads(before);
   }
 
@@ -714,10 +714,9 @@ Color = #FF7F64
     // hooks are never called when registered, only after a change
     CHECK_EQ(ConfigurationTestSuite::seenThreads.load(), 0u);
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("core", "maxNumberOfThreads", "4");
     CHECK_EQ(ConfigurationTestSuite::seenThreads.load(), 4u);   // the built-in hook has already run
-    conf.pop();
   }
 
 }   // namespace gum_tests

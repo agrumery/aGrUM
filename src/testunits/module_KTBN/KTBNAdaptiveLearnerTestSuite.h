@@ -56,6 +56,7 @@
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
+#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -811,8 +812,9 @@ namespace gum_tests {
   }
 
   GUM_TEST(LearnerDefaultsComeFromConfiguration) {
-    auto& conf = gum::Configuration::instance();
-    auto  l    = _solo_();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               l    = _solo_();
 
     // the values written in the code before the section `learning` of the configuration
     CHECK_EQ(_stateValue_(l, "Prior weight"), "");   // no prior yet
@@ -822,11 +824,14 @@ namespace gum_tests {
     CHECK_EQ(_stateValue_(l, "Tabu list size"), std::to_string(100));
     CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(2));
 
-    conf.push();
+    // the learner has been built before the change: the configuration is read when the prior and
+    // the tabu list are chosen, not when the learner is built
     conf.set("learning", "priorWeight", "0.25");
     conf.set("learning", "tabuListSize", "30");
     conf.set("learning", "tabuNbDecrease", "4");
-    CHECK_EQ(&l.useSmoothingPrior(), &l);   // covariant chaining on the concrete type
+    // covariant chaining on the concrete type
+    static_assert(std::is_same_v< decltype(l.useSmoothingPrior()), decltype(l)& >);
+    l.useSmoothingPrior();
     CHECK_EQ(_stateValue_(l, "Prior weight"), std::to_string(0.25));
     l.useLocalSearchWithTabuList();
     CHECK_EQ(_stateValue_(l, "Tabu list size"), std::to_string(30));
@@ -839,13 +844,33 @@ namespace gum_tests {
     CHECK_EQ(_stateValue_(l, "Prior weight"), std::to_string(0.5));
     l.useLocalSearchWithTabuList(50, 3);
     CHECK_EQ(_stateValue_(l, "Tabu nb decrease"), std::to_string(3));
-
-    // a new learner reads the configuration when it is built
-    auto fresh = _solo_();
-    fresh.useLocalSearchWithTabuList();
-    CHECK_EQ(_stateValue_(fresh, "Tabu list size"), std::to_string(30));
-    conf.pop();
-
-    GUM_CHECK_ASSERT_THROWS_NOTHING(l.useLocalSearchWithTabuList());
   }
+
+  GUM_TEST(PriorWeightOfTheConfigurationIsReplayedOnEachCandidate) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+
+    auto scores = [](double weight, bool fromConfiguration) {
+      auto&              c = gum::Configuration::instance();
+      ConfigurationGuard scoped;
+      if (fromConfiguration) c.set("learning", "priorWeight", std::to_string(weight));
+      auto l = KTBNAdaptiveLearnerTestSuite::_solo_();
+      if (fromConfiguration) l.useSmoothingPrior();
+      else l.useSmoothingPrior(weight);
+      KTBNAdaptiveLearnerTestSuite::_learn_(l);
+      return l.scorePerCandidateK();
+    };
+
+    const auto fromConfiguration = scores(1000., true);
+    const auto explicitWeight    = scores(1000., false);
+    const auto small             = scores(0.001, false);
+
+    // the weight of the configuration is the one used to learn the parameters of every candidate
+    // ...
+    CHECK(fromConfiguration == explicitWeight);
+    // ... and the weight does change what is learned
+    CHECK(fromConfiguration != small);
+    CHECK_EQ(conf.typed< double >("learning", "priorWeight"), 1.0);
+  }
+
 }   // namespace gum_tests

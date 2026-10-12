@@ -47,6 +47,8 @@
 #include <fstream>
 #include <iostream>
 
+#include <agrum/base/core/configuration/configuration.h>
+
 #define xstrfy(s) strfy(s)
 #define strfy(x)  #x
 
@@ -56,6 +58,21 @@
 #define FASTVARDBL gum::fastVariable< double >
 
 namespace gum_tests {
+  // Scope of a test that reads or changes gum::Configuration: the configuration is saved on entry
+  // and restored on exit, even if an assertion throws. It also starts from the defaults of the
+  // schema, so that the test does not depend on an `agrum.ini` found in the working directory.
+  struct ConfigurationGuard {
+    ConfigurationGuard() {
+      gum::Configuration::instance().push();
+      gum::Configuration::instance().reset();
+    }
+
+    ~ConfigurationGuard() { gum::Configuration::instance().pop(); }
+
+    ConfigurationGuard(const ConfigurationGuard&)            = delete;
+    ConfigurationGuard& operator=(const ConfigurationGuard&) = delete;
+  };
+
   inline const std::string waiter[]{"[*  ]", "[ * ]", "[  *]", "[ * ]"};
   inline const std::string backst = "\b\b\b\b\b";
 

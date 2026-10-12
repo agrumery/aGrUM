@@ -42,6 +42,7 @@
 
 
 #include <algorithm>
+#include <sstream>
 #include <string>
 #include <tuple>
 
@@ -55,8 +56,8 @@
 
 namespace gum_tests {
 
-  // The text display of a tensor comes from the configuration (keys tensor.displayMaxRows and
-  // tensor.displayColumnWidth). The default values are the ones that were written in the code
+  // The text display of a tensor comes from the configuration (keys tensor.maxRowsConsole and
+  // tensor.columnWidthConsole). The default values are the ones that were written in the code
   // before.
   struct TensorDisplayConfigurationTestSuite {
     public:
@@ -70,8 +71,14 @@ namespace gum_tests {
       return t;
     }
 
-    static gum::Size lines(const std::string& s) {
-      return static_cast< gum::Size >(std::count(s.begin(), s.end(), '\n'));
+    // number of rows of values displayed (the tensor is filled with 0.5), whatever the layout of
+    // the header
+    static gum::Size dataRows(const std::string& s) {
+      gum::Size          n = 0;
+      std::istringstream in(s);
+      for (std::string line; std::getline(in, line);)
+        if (line.find("0.5") != std::string::npos) ++n;
+      return n;
     }
 
     static bool contains(const std::string& s, const std::string& sub) {
@@ -80,31 +87,33 @@ namespace gum_tests {
   };
 
   GUM_TEST(TensorDisplayDefaults) {
-    const auto text = TensorDisplayConfigurationTestSuite::buildTensor().toString();
+    ConfigurationGuard guard;
+    const auto         text = TensorDisplayConfigurationTestSuite::buildTensor().toString();
 
     // 6 rows at the beginning, 6 at the end, 30 - 12 rows summarized, 4 decimals
     CHECK(TensorDisplayConfigurationTestSuite::contains(text, "[...18 more line(s) ...]"));
     CHECK(TensorDisplayConfigurationTestSuite::contains(text, "0.5000"));
     CHECK(!TensorDisplayConfigurationTestSuite::contains(text, "0.50000"));
-    // empty first line + 3 header lines + 6 rows + summary + 6 rows
-    CHECK_EQ(TensorDisplayConfigurationTestSuite::lines(text), gum::Size(17));
+    CHECK_EQ(TensorDisplayConfigurationTestSuite::dataRows(text), gum::Size(12));
   }
 
   GUM_TEST(TensorDisplayMaxRowsComesFromTheConfiguration) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
-    conf.push();
-    conf.set("tensor", "displayMaxRows", "2");
-    const auto text = TensorDisplayConfigurationTestSuite::buildTensor().toString();
-    CHECK(TensorDisplayConfigurationTestSuite::contains(text, "[...26 more line(s) ...]"));
-    CHECK_EQ(TensorDisplayConfigurationTestSuite::lines(text), gum::Size(9));
+    {
+      ConfigurationGuard scoped;
+      conf.set("tensor", "maxRowsConsole", "2");
+      const auto text = TensorDisplayConfigurationTestSuite::buildTensor().toString();
+      CHECK(TensorDisplayConfigurationTestSuite::contains(text, "[...26 more line(s) ...]"));
+      CHECK_EQ(TensorDisplayConfigurationTestSuite::dataRows(text), gum::Size(4));
 
-    // every row is displayed as soon as there are not more than 2 * maxRows of them
-    conf.set("tensor", "displayMaxRows", "15");
-    const auto full = TensorDisplayConfigurationTestSuite::buildTensor().toString();
-    CHECK(!TensorDisplayConfigurationTestSuite::contains(full, "more line(s)"));
-    CHECK_EQ(TensorDisplayConfigurationTestSuite::lines(full), gum::Size(34));
-    conf.pop();
+      // every row is displayed as soon as there are not more than 2 * maxRows of them
+      conf.set("tensor", "maxRowsConsole", "15");
+      const auto full = TensorDisplayConfigurationTestSuite::buildTensor().toString();
+      CHECK(!TensorDisplayConfigurationTestSuite::contains(full, "more line(s)"));
+      CHECK_EQ(TensorDisplayConfigurationTestSuite::dataRows(full), gum::Size(30));
+    }
 
     CHECK(TensorDisplayConfigurationTestSuite::contains(
         TensorDisplayConfigurationTestSuite::buildTensor().toString(),
@@ -112,20 +121,22 @@ namespace gum_tests {
   }
 
   GUM_TEST(TensorDisplayColumnWidthComesFromTheConfiguration) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
-    conf.push();
-    conf.set("tensor", "displayColumnWidth", "12");
-    const auto wide = TensorDisplayConfigurationTestSuite::buildTensor().toString();
-    // (width - 5) decimals
-    CHECK(TensorDisplayConfigurationTestSuite::contains(wide, "0.5000000"));
-    CHECK(!TensorDisplayConfigurationTestSuite::contains(wide, "0.50000000"));
+    {
+      ConfigurationGuard scoped;
+      conf.set("tensor", "columnWidthConsole", "12");
+      const auto wide = TensorDisplayConfigurationTestSuite::buildTensor().toString();
+      // (width - 5) decimals
+      CHECK(TensorDisplayConfigurationTestSuite::contains(wide, "0.5000000"));
+      CHECK(!TensorDisplayConfigurationTestSuite::contains(wide, "0.50000000"));
 
-    conf.set("tensor", "displayColumnWidth", "6");
-    CHECK(TensorDisplayConfigurationTestSuite::contains(
-        TensorDisplayConfigurationTestSuite::buildTensor().toString(),
-        "0.5"));
-    conf.pop();
+      conf.set("tensor", "columnWidthConsole", "6");
+      CHECK(TensorDisplayConfigurationTestSuite::contains(
+          TensorDisplayConfigurationTestSuite::buildTensor().toString(),
+          "0.5"));
+    }
 
     CHECK(!TensorDisplayConfigurationTestSuite::contains(
         TensorDisplayConfigurationTestSuite::buildTensor().toString(),
@@ -133,14 +144,16 @@ namespace gum_tests {
   }
 
   GUM_TEST(TensorDisplayInvalidValuesAreRefused) {
-    auto& conf = gum::Configuration::instance();
-    auto  t    = TensorDisplayConfigurationTestSuite::buildTensor();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               t    = TensorDisplayConfigurationTestSuite::buildTensor();
 
-    conf.push();
-    CHECK_THROWS_AS(conf.set("tensor", "displayMaxRows", "0"), gum::InvalidArgument);
-    CHECK_THROWS_AS(conf.set("tensor", "displayColumnWidth", "5"), gum::InvalidArgument);
+    {
+      ConfigurationGuard scoped;
+      CHECK_THROWS_AS(conf.set("tensor", "maxRowsConsole", "0"), gum::InvalidArgument);
+      CHECK_THROWS_AS(conf.set("tensor", "columnWidthConsole", "5"), gum::InvalidArgument);
+    }
     CHECK_NOTHROW(std::ignore = t.toString());
-    conf.pop();
 
     CHECK_NOTHROW(std::ignore = t.toString());
   }

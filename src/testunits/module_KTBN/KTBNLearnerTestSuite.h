@@ -48,6 +48,7 @@
 #include <utility>
 #include <vector>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
@@ -56,6 +57,7 @@
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
+#include <type_traits>
 #include <unordered_set>
 
 namespace gum_tests {
@@ -1030,5 +1032,68 @@ namespace gum_tests {
     // without an atemporal learner) is a safe no-op for unknown names
     auto mono = _std_(2, {"C"});
     GUM_CHECK_ASSERT_THROWS_NOTHING(mono.copyState(src));
+  }
+
+  GUM_TEST(LearnerDefaultsComeFromConfiguration) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               l    = KTBNLearnerTestSuite::_solo_();
+    using Learner           = KTBNLearnerTestSuite::Learner;
+    using Base              = gum::learning::IKTBNLearner< double >;
+
+    // the overloads return the concrete type on the concrete learner and the interface through it
+    static_assert(std::is_same_v< decltype(l.useSmoothingPrior()), Learner& >);
+    static_assert(std::is_same_v< decltype(l.useLocalSearchWithTabuList()), Learner& >);
+    static_assert(std::is_same_v< decltype(l.useLocalSearchWithTabuList(5)), Learner& >);
+    Base& base = l;
+    static_assert(std::is_same_v< decltype(base.useSmoothingPrior()), Base& >);
+    static_assert(std::is_same_v< decltype(base.useLocalSearchWithTabuList()), Base& >);
+    static_assert(std::is_same_v< decltype(base.useLocalSearchWithTabuList(5)), Base& >);
+
+    // the values written in the code before the section `learning` of the configuration
+    l.useSmoothingPrior();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Prior weight"), std::to_string(1.0));
+    l.useLocalSearchWithTabuList();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Tabu list size"), "100");
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Max consecutive decreasing changes"), "2");
+
+    conf.set("learning", "priorWeight", "0.25");
+    conf.set("learning", "tabuListSize", "30");
+    conf.set("learning", "tabuNbDecrease", "4");
+
+    // the concrete learner ...
+    l.useSmoothingPrior();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Prior weight"), std::to_string(0.25));
+    l.useLocalSearchWithTabuList();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Tabu list size"), "30");
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Max consecutive decreasing changes"), "4");
+    l.useLocalSearchWithTabuList(50);
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Tabu list size"), "50");
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Max consecutive decreasing changes"), "4");
+
+    // ... and the same learner seen through the interface
+    conf.set("learning", "priorWeight", "0.5");
+    conf.set("learning", "tabuListSize", "20");
+    base.useSmoothingPrior();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Prior weight"), std::to_string(0.5));
+    base.useLocalSearchWithTabuList();
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Tabu list size"), "20");
+    base.useLocalSearchWithTabuList(15);
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Tabu list size"), "15");
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Max consecutive decreasing changes"), "4");
+
+    // explicit values never use the configuration
+    l.useSmoothingPrior(0.75);
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Prior weight"), std::to_string(0.75));
+    l.useLocalSearchWithTabuList(50, 3);
+    CHECK_EQ(KTBNLearnerTestSuite::_stateValue_(l, "Max consecutive decreasing changes"), "3");
+
+    // every internal learner (transition, initial and atemporal) has the parameters
+    const std::string s  = l.toString();
+    std::size_t       nb = 0;
+    for (auto pos = s.find("Tabu list size"); pos != std::string::npos;
+         pos      = s.find("Tabu list size", pos + 1))
+      ++nb;
+    CHECK_EQ(nb, std::size_t(3));
   }
 }   // namespace gum_tests

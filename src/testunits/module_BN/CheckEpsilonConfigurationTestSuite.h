@@ -70,6 +70,7 @@ namespace gum_tests {
   };
 
   GUM_TEST(CheckDefaultTolerances) {
+    ConfigurationGuard guard;
     // the tolerance is 1e-6 and the limit of the normalization problems is 1e-2
     CHECK(CheckEpsilonConfigurationTestSuite::build(1e-7).check().empty());
     CHECK(CheckEpsilonConfigurationTestSuite::build(0.).check().empty());
@@ -86,12 +87,13 @@ namespace gum_tests {
   GUM_TEST(CheckToleranceComesFromTheConfiguration) {
     auto& conf = gum::config();
 
-    conf.push();
-    conf.set("core", "epsilonStandard", "1e-8");
-    CHECK_EQ(CheckEpsilonConfigurationTestSuite::build(1e-7).check().size(), std::size_t(1));
-    conf.set("core", "epsilonStandard", "1e-5");
-    CHECK(CheckEpsilonConfigurationTestSuite::build(5e-6).check().empty());
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "epsilonStandard", "1e-8");
+      CHECK_EQ(CheckEpsilonConfigurationTestSuite::build(1e-7).check().size(), std::size_t(1));
+      conf.set("core", "epsilonStandard", "1e-5");
+      CHECK(CheckEpsilonConfigurationTestSuite::build(5e-6).check().empty());
+    }
 
     CHECK(CheckEpsilonConfigurationTestSuite::build(1e-7).check().empty());
   }
@@ -99,13 +101,12 @@ namespace gum_tests {
   GUM_TEST(CheckNormalizationLimitComesFromTheConfiguration) {
     auto& conf = gum::config();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("core", "epsilonCoarse", "0.1");
     CHECK(CheckEpsilonConfigurationTestSuite::hasNormalizationProblem(
         CheckEpsilonConfigurationTestSuite::build(0.05).check()));
     conf.set("core", "epsilonCoarse", "1e-3");
     CHECK(!CheckEpsilonConfigurationTestSuite::hasNormalizationProblem(
         CheckEpsilonConfigurationTestSuite::build(5e-3).check()));
-    conf.pop();
   }
 }   // namespace gum_tests

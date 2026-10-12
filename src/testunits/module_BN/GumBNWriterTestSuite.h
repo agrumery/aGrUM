@@ -378,7 +378,7 @@ namespace gum_tests {
     auto  bn   = gum::BayesNet< double >::fastPrototype("A->B");
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("core", "jgumIndent", "-1");
     const std::string compact = gum::GumBNWriter< double >(false).toString(bn);
 
@@ -392,13 +392,12 @@ namespace gum_tests {
     conf.set("core", "jgumIndent", "-1");
     CHECK_EQ(gum::GumBNWriter< double >(false, 2).toString(bn), indented);
     CHECK_EQ(gum::GumBNWriter< double >(false).toString(bn), compact);
-    conf.pop();
   }
 
   GUM_TEST(AllowModificationComesFromConfiguration) {
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("core", "allowModificationWhenSaving", "False");
     CHECK(!gum::GumBNWriter< double >().isModificationAllowed());
     conf.set("core", "allowModificationWhenSaving", "True");
@@ -408,6 +407,5 @@ namespace gum_tests {
     gum::GumBNWriter< double > writer;
     writer.setAllowModification(false);
     CHECK(!writer.isModificationAllowed());
-    conf.pop();
   }
 }   // namespace gum_tests

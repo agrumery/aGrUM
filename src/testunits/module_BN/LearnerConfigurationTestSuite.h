@@ -41,6 +41,8 @@
 #pragma once
 
 
+#include <algorithm>
+#include <cmath>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -51,6 +53,7 @@
 #include <agrum/BN/learning/FCI.h>
 #include <agrum/BN/learning/PC.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
@@ -73,9 +76,44 @@ namespace gum_tests {
     static gum::learning::BNLearner< double > learner() {
       return gum::learning::BNLearner< double >(GET_RESSOURCES_PATH("csv/asia3.csv"));
     }
+
+    // the parameters learned by one iteration of EM from a database with missing values : with a
+    // fixed seed, they only depend on the noise added to the initial CPTs
+    template < typename NOISE >
+    static gum::BayesNet< double > oneEMStep(NOISE useEM) {
+      gum::initRandom(42);
+      gum::learning::BNLearner< double > l(GET_RESSOURCES_PATH("csv/EM.csv"),
+                                           std::vector< std::string >{"?"});
+      gum::DAG                           dag;
+      for (auto i = std::size_t(0); i < l.database().nbVariables(); ++i)
+        dag.addNodeWithId(gum::NodeId(i));
+      dag.addArc(gum::NodeId(1), gum::NodeId(0));
+      dag.addArc(gum::NodeId(2), gum::NodeId(1));
+      dag.addArc(gum::NodeId(3), gum::NodeId(2));
+
+      useEM(l);
+      l.useSmoothingPrior();   // some conditioning sets never appear in the database
+      l.EMsetMaxIter(1);
+      return l.learnParameters(dag, false);
+    }
+
+    // the largest difference between two parameters of two Bayesian networks
+    static double maxDifference(const gum::BayesNet< double >& a,
+                                const gum::BayesNet< double >& b) {
+      double res = 0.;
+      for (const auto node: a.nodes()) {
+        const auto&        p = a.cpt(node);
+        const auto&        q = b.cpt(node);
+        gum::Instantiation i(p), j(q);
+        for (i.setFirst(), j.setFirst(); !i.end(); ++i, ++j)
+          res = std::max(res, std::abs(p.get(i) - q.get(j)));
+      }
+      return res;
+    }
   };
 
   GUM_TEST(DefaultsAreTheHistoricalValues) {
+    ConfigurationGuard guard;
     CHECK_EQ(gum::config().typed< double >("learning", "alpha"), 0.05);
     CHECK_EQ(gum::config().typed< double >("learning", "priorWeight"), 1.0);
     CHECK_EQ(gum::config().typed< double >("learning", "emNoise"), 0.1);
@@ -84,28 +122,52 @@ namespace gum_tests {
   }
 
   GUM_TEST(AlphaComesFromTheConfiguration) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
     CHECK_EQ(gum::learning::PC().alpha(), 0.05);
     CHECK_EQ(gum::learning::FCI().alpha(), 0.05);
 
-    conf.push();
     conf.set("learning", "alpha", "0.2");
     CHECK_EQ(gum::learning::PC().alpha(), 0.2);
     CHECK_EQ(gum::learning::FCI().alpha(), 0.2);
-    conf.pop();
+  }
 
-    CHECK_EQ(gum::learning::PC().alpha(), 0.05);
+  GUM_TEST(AlphaIsReadWhenTheStructureIsLearned) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+
+    auto learnPC = [](auto& l) {
+      l.usePC();
+      return l.learnPDAG().toString();
+    };
+
+    auto       reference   = learner();
+    const auto withDefault = learnPC(reference);   // alpha = 0.05
+
+    // a learner built before the change of the configuration reads the new alpha when it learns
+    auto early = learner();
+    conf.set("learning", "alpha", "0.99999");
+    auto       late      = learner();
+    const auto withLarge = learnPC(late);
+    CHECK_NE(withLarge, withDefault);   // the two alphas do not give the same structure
+    CHECK_EQ(learnPC(early), withLarge);
+
+    // an alpha given to the learner wins over the configuration
+    auto explicitAlpha = learner();
+    explicitAlpha.usePC();
+    explicitAlpha.setPCAlpha(0.05);
+    CHECK_EQ(explicitAlpha.learnPDAG().toString(), withDefault);
   }
 
   GUM_TEST(PriorWeightComesFromTheConfiguration) {
     auto& conf = gum::Configuration::instance();
     auto  l    = learner();
 
+    ConfigurationGuard guard;
     l.useSmoothingPrior();
     CHECK_EQ(stateValue(l.state(), "Prior weight"), "1.000000");
 
-    conf.push();
     conf.set("learning", "priorWeight", "3");
     l.useBDeuPrior();
     CHECK_EQ(stateValue(l.state(), "Prior weight"), "3.000000");
@@ -117,8 +179,8 @@ namespace gum_tests {
     // an explicit weight never uses the configuration
     l.useBDeuPrior(2.);
     CHECK_EQ(stateValue(l.state(), "Prior weight"), "2.000000");
-    conf.pop();
 
+    conf.reset();   // the defaults again
     l.useBDeuPrior();
     CHECK_EQ(stateValue(l.state(), "Prior weight"), "1.000000");
   }
@@ -127,42 +189,111 @@ namespace gum_tests {
     auto& conf = gum::Configuration::instance();
     auto  l    = learner();
 
-    // the row "Tabu list size" of the state shows the max number of decreasing changes
-    l.useLocalSearchWithTabuList();
-    CHECK_EQ(stateValue(l.state(), "Tabu list size"), "2");
+    ConfigurationGuard guard;
+    const auto         size = [&]() { return stateValue(l.state(), "Tabu list size"); };
+    const auto         changes
+        = [&]() { return stateValue(l.state(), "Max consecutive decreasing changes"); };
 
-    conf.push();
+    l.useLocalSearchWithTabuList();
+    CHECK_EQ(size(), "100");
+    CHECK_EQ(changes(), "2");
+
+    conf.set("learning", "tabuListSize", "40");
     conf.set("learning", "tabuNbDecrease", "5");
     l.useLocalSearchWithTabuList();
-    CHECK_EQ(stateValue(l.state(), "Tabu list size"), "5");
+    CHECK_EQ(size(), "40");
+    CHECK_EQ(changes(), "5");
+    // only the size is given: the number of decreasing changes comes from the configuration
     l.useLocalSearchWithTabuList(10);
-    CHECK_EQ(stateValue(l.state(), "Tabu list size"), "5");
-    l.useLocalSearchWithTabuList(10, 1);
-    CHECK_EQ(stateValue(l.state(), "Tabu list size"), "1");
-    conf.pop();
+    CHECK_EQ(size(), "10");
+    CHECK_EQ(changes(), "5");
+    // explicit values never use the configuration
+    l.useLocalSearchWithTabuList(20, 1);
+    CHECK_EQ(size(), "20");
+    CHECK_EQ(changes(), "1");
 
+    conf.reset();   // the defaults again
     l.useLocalSearchWithTabuList(10);
-    CHECK_EQ(stateValue(l.state(), "Tabu list size"), "2");
+    CHECK_EQ(size(), "10");
+    CHECK_EQ(changes(), "2");
+  }
+
+  GUM_TEST(TabuListParametersAreCopiedWithTheState) {
+    ConfigurationGuard guard;
+    auto               l = learner();
+    l.useLocalSearchWithTabuList(30, 4);
+
+    auto other = learner();
+    other.copyState(l);
+    CHECK_EQ(stateValue(other.state(), "Tabu list size"), "30");
+    CHECK_EQ(stateValue(other.state(), "Max consecutive decreasing changes"), "4");
+
+    // a copy of the learner keeps them too
+    auto copy = l;
+    CHECK_EQ(stateValue(copy.state(), "Tabu list size"), "30");
+    CHECK_EQ(stateValue(copy.state(), "Max consecutive decreasing changes"), "4");
+  }
+
+  GUM_TEST(DirichletPriorFromABayesNetWeightComesFromTheConfiguration) {
+    auto& conf = gum::Configuration::instance();
+    auto  l    = learner();
+    auto  bn   = l.learnBN();
+
+    ConfigurationGuard guard;
+    l.useDirichletPrior(bn);
+    CHECK_EQ(stateValue(l.state(), "Prior weight"), "1.000000");
+
+    conf.set("learning", "priorWeight", "3");
+    l.useDirichletPrior(bn);
+    CHECK_EQ(stateValue(l.state(), "Prior weight"), "3.000000");
+    // an explicit weight never uses the configuration
+    l.useDirichletPrior(bn, 2.);
+    CHECK_EQ(stateValue(l.state(), "Prior weight"), "2.000000");
+    CHECK_THROWS_AS(l.useDirichletPrior(bn, -1.), gum::OutOfBounds);
+
+    conf.reset();   // the defaults again
+    l.useDirichletPrior(bn);
+    CHECK_EQ(stateValue(l.state(), "Prior weight"), "1.000000");
+  }
+
+  GUM_TEST(EMNoiseIsAppliedToTheInitialCPTs) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+
+    const auto explicitNoise
+        = [](double noise) { return [noise](auto& l) { l.useEM(1e-3, noise); }; };
+
+    const auto none  = oneEMStep(explicitNoise(0.));
+    const auto noisy = oneEMStep(explicitNoise(0.9));
+    // the noise perturbs the initial CPTs, so the result of the first iteration changes
+    CHECK_GT(maxDifference(none, noisy), 1e-3);
+    // ... and nothing else is random (up to the order of the floating point operations of EM)
+    CHECK_LT(maxDifference(noisy, oneEMStep(explicitNoise(0.9))), 1e-8);
+
+    // the noise of the configuration is the one of the algorithm when none is given
+    conf.set("learning", "emNoise", "0.9");
+    CHECK_LT(maxDifference(noisy, oneEMStep([](auto& l) { l.useEM(1e-3); })), 1e-8);
+    CHECK_LT(maxDifference(noisy, oneEMStep([](auto& l) { l.useEMWithRateCriterion(1e-3); })),
+             1e-8);
+    conf.set("learning", "emNoise", "0");
+    CHECK_LT(maxDifference(none, oneEMStep([](auto& l) { l.useEM(1e-3); })), 1e-8);
   }
 
   GUM_TEST(EMNoiseComesFromTheConfiguration) {
-    auto& conf = gum::Configuration::instance();
-    auto  l    = learner();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               l    = learner();
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEM(1e-3));
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEMWithRateCriterion(1e-3));
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEMWithDiffCriterion(1e-3));
 
     // a noise out of [0,1] is refused, by the configuration (domain of the key) as by the learner
-    conf.push();
     CHECK_THROWS_AS(conf.set("learning", "emNoise", "2"), gum::InvalidArgument);
     CHECK_THROWS_AS(l.useEM(1e-3, 2.), gum::OutOfBounds);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEM(1e-3, 0.3));
 
     conf.set("learning", "emNoise", "0.5");
-    GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEM(1e-3));
-    conf.pop();
-
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEM(1e-3));
   }
 
@@ -170,15 +301,13 @@ namespace gum_tests {
     auto& conf = gum::Configuration::instance();
     auto  l    = learner();
 
-    conf.push();
+    ConfigurationGuard guard;
     CHECK_THROWS_AS(conf.set("learning", "priorWeight", "-1"), gum::InvalidArgument);
     CHECK_THROWS_AS(l.useBDeuPrior(-1.), gum::OutOfBounds);
     CHECK_THROWS_AS(conf.set("learning", "tabuListSize", "0"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("learning", "tabuNbDecrease", "-1"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("learning", "alpha", "1"), gum::InvalidArgument);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior(1.));
-    conf.pop();
-
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior());
   }
 }   // namespace gum_tests

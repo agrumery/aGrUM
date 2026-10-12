@@ -68,7 +68,9 @@ namespace gum_tests {
   struct ApproximationConfigurationTestSuite {
     public:
     static gum::BayesNet< double > buildBN() {
-      // 10 nodes: 50% of the variables are 5 of them and 10% are 1 of them
+      // 10 nodes. The number of variables drawn between two samples of a Gibbs sampling is
+      // 1 + 10 * percent / 100 (50% gives 6, 10% gives 2), and it is bounded by the number of nodes
+      // only when the sampling starts (so 100% gives 11 here).
       return gum::BayesNet< double >::fastPrototype("a->b->c->d->e->f->g->h->i->j");
     }
 
@@ -78,8 +80,9 @@ namespace gum_tests {
                             gum::Size                                     maxIter,
                             gum::Size                                     period,
                             bool                                          verbosity) {
-      CHECK_EQ(scheme.epsilon(), epsilon);
-      CHECK_EQ(scheme.minEpsilonRate(), rate);
+      // a tolerance, since some defaults are written with a decimal literal (exp(-1.6) for Gibbs)
+      CHECK_LT(std::abs(scheme.epsilon() - epsilon), 1e-15);
+      CHECK_LT(std::abs(scheme.minEpsilonRate() - rate), 1e-15);
       CHECK_EQ(scheme.maxIter(), maxIter);
       CHECK_EQ(scheme.periodSize(), period);
       CHECK_EQ(scheme.verbosity(), verbosity);
@@ -96,19 +99,11 @@ namespace gum_tests {
       CHECK_EQ(scheme.maxTime(), 6000.);
       CHECK(scheme.isEnabledMaxTime());
     }
-
-    // gives access to the protected size of the virtual sample
-    template < template < typename > class APPROX >
-    struct HybridProbe: public gum::LoopySamplingInference< double, APPROX > {
-      explicit HybridProbe(const gum::IBayesNet< double >* bn) :
-          gum::LoopySamplingInference< double, APPROX >(bn) {}
-
-      double virtualSize() const { return this->virtualLBPSize_; }
-    };
   };
 
   GUM_TEST(SamplingDefaults) {
-    auto bn = buildBN();
+    ConfigurationGuard guard;
+    auto               bn = buildBN();
 
     checkSampling(gum::MonteCarloSampling< double >(&bn));
     checkSampling(gum::WeightedSampling< double >(&bn));
@@ -116,12 +111,11 @@ namespace gum_tests {
   }
 
   GUM_TEST(GibbsDefaults) {
+    ConfigurationGuard           guard;
     auto                         bn = buildBN();
     gum::GibbsSampling< double > gibbs(&bn);
 
     checkScheme(gibbs, std::exp(-1.6), std::exp(-5), 10000000, 100, false);
-    CHECK_LT(std::abs(gibbs.epsilon() - std::exp(-1.6)), 1e-15);
-    CHECK_LT(std::abs(gibbs.minEpsilonRate() - std::exp(-5)), 1e-15);
     CHECK_EQ(gibbs.maxTime(), 6000.);
     CHECK_EQ(gibbs.burnIn(), gum::Size(300));
     CHECK_EQ(gibbs.nbrDrawnVar(), gum::Size(6));
@@ -129,6 +123,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(LoopyBeliefPropagationDefaults) {
+    ConfigurationGuard                    guard;
     auto                                  bn = buildBN();
     gum::LoopyBeliefPropagation< double > lbp(&bn);
 
@@ -139,20 +134,22 @@ namespace gum_tests {
   }
 
   GUM_TEST(HybridSamplingDefaults) {
-    auto bn = buildBN();
+    ConfigurationGuard guard;
+    auto               bn = buildBN();
 
-    HybridProbe< gum::MonteCarloSampling > hybridMC(&bn);
-    CHECK_EQ(hybridMC.virtualSize(), 5000.);
+    gum::HybridMonteCarloSampling< double > hybridMC(&bn);
+    CHECK_EQ(hybridMC.virtualLBPSize(), 5000.);
     checkSampling(hybridMC);
 
-    HybridProbe< gum::GibbsSampling > hybridGibbs(&bn);
-    CHECK_EQ(hybridGibbs.virtualSize(), 5000.);
+    gum::HybridGibbsSampling< double > hybridGibbs(&bn);
+    CHECK_EQ(hybridGibbs.virtualLBPSize(), 5000.);
     CHECK_EQ(hybridGibbs.burnIn(), gum::Size(300));
   }
 
   GUM_TEST(GibbsKLDefaults) {
-    auto bn1 = buildBN();
-    auto bn2 = buildBN();
+    ConfigurationGuard guard;
+    auto               bn1 = buildBN();
+    auto               bn2 = buildBN();
 
     gum::GibbsBNdistance< double > fromBNs(bn1, bn2);
     checkKL(fromBNs);
@@ -170,8 +167,9 @@ namespace gum_tests {
   }
 
   GUM_TEST(MonteCarloKLDefaults) {
-    auto bn1 = buildBN();
-    auto bn2 = buildBN();
+    ConfigurationGuard guard;
+    auto               bn1 = buildBN();
+    auto               bn2 = buildBN();
 
     gum::MCBNDistance< double > fromBNs(bn1, bn2);
     checkKL(fromBNs);
@@ -182,10 +180,10 @@ namespace gum_tests {
   }
 
   GUM_TEST(SectionsAreIndependent) {
-    auto  bn   = buildBN();
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto               bn   = buildBN();
+    auto&              conf = gum::Configuration::instance();
 
-    conf.push();
     conf.set("sampling", "epsilon", "0.5");
     conf.set("sampling", "maxTime", "10");
     conf.set("sampling", "periodSize", "7");
@@ -202,7 +200,7 @@ namespace gum_tests {
     // other schemes are not concerned
     checkScheme(gum::LoopyBeliefPropagation< double >(&bn), 1e-8, 1e-10, 100, 1, false);
     checkKL(gum::MCBNDistance< double >(bn, bn));
-    conf.pop();
+    conf.reset();   // the defaults again
 
     checkSampling(gum::MonteCarloSampling< double >(&bn));
   }
@@ -211,7 +209,7 @@ namespace gum_tests {
     auto  bn   = buildBN();
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("gibbs", "epsilon", "0.3");
     conf.set("gibbs", "minEpsilonRate", "0.2");
     conf.set("gibbs", "burnIn", "11");
@@ -231,22 +229,20 @@ namespace gum_tests {
     CHECK_EQ(gum::GibbsSampling< double >(&bn).nbrDrawnVar(), gum::Size(11));
     conf.set("gibbs", "percentDrawnSample", "0");
     CHECK_EQ(gum::GibbsSampling< double >(&bn).nbrDrawnVar(), gum::Size(1));
-    conf.pop();
   }
 
   GUM_TEST(LoopyParametersAreReadFromTheConfiguration) {
     auto  bn   = buildBN();
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("lbp", "maxIter", "3");
     conf.set("lbp", "epsilon", "0.1");
     conf.set("lbp", "verbosity", "True");
     conf.set("loopySampling", "virtualLBPSize", "12");
 
     checkScheme(gum::LoopyBeliefPropagation< double >(&bn), 0.1, 1e-10, 3, 1, true);
-    CHECK_EQ(HybridProbe< gum::WeightedSampling >(&bn).virtualSize(), 12.);
-    conf.pop();
+    CHECK_EQ(gum::HybridWeightedSampling< double >(&bn).virtualLBPSize(), 12.);
   }
 
   GUM_TEST(KLParametersAreReadFromTheConfiguration) {
@@ -254,7 +250,7 @@ namespace gum_tests {
     auto  bn2  = buildBN();
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("gibbsKL", "burnIn", "13");
     conf.set("gibbsKL", "maxTime", "42");
     conf.set("gibbsKL", "percentDrawnSample", "30");
@@ -275,20 +271,19 @@ namespace gum_tests {
     gum::MCBNDistance< double > mc(bn1, bn2);
     CHECK_EQ(mc.maxIter(), gum::Size(99));
     CHECK_EQ(mc.periodSize(), gum::Size(9));
-    conf.pop();
   }
 
   GUM_TEST(InvalidParametersAreRefused) {
-    auto  bn   = buildBN();
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto               bn   = buildBN();
+    auto&              conf = gum::Configuration::instance();
 
     // an invalid value is refused by the configuration itself (domain of the key)
-    conf.push();
     CHECK_THROWS_AS(conf.set("lbp", "periodSize", "0"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("sampling", "maxIter", "-3"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("gibbs", "burnIn", "-1"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("gibbs", "percentDrawnSample", "101"), gum::InvalidArgument);
-    conf.pop();
+    conf.reset();   // the defaults again
 
     checkSampling(gum::MonteCarloSampling< double >(&bn));
   }

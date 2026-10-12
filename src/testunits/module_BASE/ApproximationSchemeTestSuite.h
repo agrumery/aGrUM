@@ -63,79 +63,111 @@ namespace gum_tests {
       CHECK_EQ(scheme.maxTime(), 1.);
       CHECK(!scheme.isEnabledMaxTime());
       CHECK_EQ(scheme.periodSize(), gum::Size(1));
+      CHECK_EQ(scheme.remainingBurnIn(), gum::Size(0));   // no burn-in
       CHECK(!scheme.verbosity());
     }
   };
 
   GUM_TEST(DefaultsComeFromTheConfiguration) {
+    ConfigurationGuard guard;
     checkDefaults(gum::ApproximationScheme());
     checkDefaults(gum::ApproximationScheme(false));
   }
 
   GUM_TEST(ExplicitVerbosityNeverUsesTheConfiguration) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
-    conf.push();
-    CHECK(gum::ApproximationScheme(true).verbosity());
-    conf.set("approximation", "verbosity", "True");
-    CHECK(gum::ApproximationScheme().verbosity());
-    CHECK(!gum::ApproximationScheme(false).verbosity());
-    CHECK(gum::ApproximationScheme(true).verbosity());
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      CHECK(gum::ApproximationScheme(true).verbosity());
+      conf.set("approximation", "verbosity", "True");
+      CHECK(gum::ApproximationScheme().verbosity());
+      CHECK(!gum::ApproximationScheme(false).verbosity());
+      CHECK(gum::ApproximationScheme(true).verbosity());
+    }
 
     CHECK(!gum::ApproximationScheme().verbosity());
   }
 
-  GUM_TEST(ParametersAreReadFromTheConfiguration) {
+  GUM_TEST(ExplicitVerbosityKeepsTheOtherParametersOfTheConfiguration) {
     auto& conf = gum::Configuration::instance();
 
-    conf.push();
-    conf.set("approximation", "epsilon", "0.5");
-    conf.set("approximation", "minEpsilonRate", "0.25");
+    ConfigurationGuard guard;
     conf.set("approximation", "maxIter", "7");
-    conf.set("approximation", "maxTime", "3.5");
-    conf.set("approximation", "periodSize", "3");
-    conf.set("approximation", "verbosity", "True");
+    conf.set("approximation", "burnIn", "4");
+    // the argument gives the verbosity, whatever the key of the configuration
+    conf.set("approximation", "verbosity", "False");
+    const gum::ApproximationScheme verbose(true);
+    CHECK(verbose.verbosity());
+    CHECK_EQ(verbose.maxIter(), gum::Size(7));
+    CHECK_EQ(verbose.remainingBurnIn(), gum::Size(4));
 
-    const gum::ApproximationScheme scheme;
-    CHECK_EQ(scheme.epsilon(), 0.5);
-    CHECK_EQ(scheme.minEpsilonRate(), 0.25);
-    CHECK_EQ(scheme.maxIter(), gum::Size(7));
-    CHECK_EQ(scheme.maxTime(), 3.5);
-    CHECK_EQ(scheme.periodSize(), gum::Size(3));
-    CHECK(scheme.verbosity());
-    // the timeout is read but the criterion stays disabled until the user enables it
-    CHECK(!scheme.isEnabledMaxTime());
-    conf.pop();
+    conf.set("approximation", "verbosity", "True");
+    const gum::ApproximationScheme quiet(false);
+    CHECK(!quiet.verbosity());
+    CHECK_EQ(quiet.maxIter(), gum::Size(7));
+    CHECK_EQ(quiet.remainingBurnIn(), gum::Size(4));
+  }
+
+  GUM_TEST(ParametersAreReadFromTheConfiguration) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+
+    {
+      ConfigurationGuard scoped;
+      conf.set("approximation", "epsilon", "0.5");
+      conf.set("approximation", "minEpsilonRate", "0.25");
+      conf.set("approximation", "maxIter", "7");
+      conf.set("approximation", "maxTime", "3.5");
+      conf.set("approximation", "periodSize", "3");
+      conf.set("approximation", "burnIn", "11");
+      conf.set("approximation", "verbosity", "True");
+
+      const gum::ApproximationScheme scheme;
+      CHECK_EQ(scheme.remainingBurnIn(), gum::Size(11));
+      CHECK_EQ(scheme.epsilon(), 0.5);
+      CHECK_EQ(scheme.minEpsilonRate(), 0.25);
+      CHECK_EQ(scheme.maxIter(), gum::Size(7));
+      CHECK_EQ(scheme.maxTime(), 3.5);
+      CHECK_EQ(scheme.periodSize(), gum::Size(3));
+      CHECK(scheme.verbosity());
+      // the timeout is read but the criterion stays disabled until the user enables it
+      CHECK(!scheme.isEnabledMaxTime());
+    }
 
     checkDefaults(gum::ApproximationScheme());
   }
 
   GUM_TEST(ACopyKeepsTheParametersOfTheSource) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
-    conf.push();
-    conf.set("approximation", "maxIter", "7");
-    gum::ApproximationScheme source;
-    conf.pop();
+    const auto source = [&conf] {
+      ConfigurationGuard scoped;
+      conf.set("approximation", "maxIter", "7");
+      return gum::ApproximationScheme();
+    }();
 
     const gum::ApproximationScheme copy(source);
     CHECK_EQ(copy.maxIter(), gum::Size(7));
   }
 
   GUM_TEST(InvalidParametersAreRefused) {
-    auto& conf = gum::Configuration::instance();
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
 
     // an invalid value is refused by the configuration itself (domain of the key), so that no
     // scheme can ever be built from it
-    conf.push();
-    CHECK_THROWS_AS(conf.set("approximation", "maxIter", "0"), gum::InvalidArgument);
-    CHECK_THROWS_AS(conf.set("approximation", "epsilon", "-1"), gum::InvalidArgument);
-    CHECK_THROWS_AS(conf.set("approximation", "periodSize", "0"), gum::InvalidArgument);
-    CHECK_THROWS_AS(conf.set("approximation", "maxTime", "0"), gum::InvalidArgument);
-    CHECK_THROWS_AS(conf.set("approximation", "burnIn", "-1"), gum::InvalidArgument);
-    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::ApproximationScheme());
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      CHECK_THROWS_AS(conf.set("approximation", "maxIter", "0"), gum::InvalidArgument);
+      CHECK_THROWS_AS(conf.set("approximation", "epsilon", "-1"), gum::InvalidArgument);
+      CHECK_THROWS_AS(conf.set("approximation", "periodSize", "0"), gum::InvalidArgument);
+      CHECK_THROWS_AS(conf.set("approximation", "maxTime", "0"), gum::InvalidArgument);
+      CHECK_THROWS_AS(conf.set("approximation", "burnIn", "-1"), gum::InvalidArgument);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(gum::ApproximationScheme());
+    }
 
     checkDefaults(gum::ApproximationScheme());
   }

@@ -66,13 +66,14 @@ namespace gum_tests {
   struct EpsilonConfigurationTestSuite {
     public:
     static std::string writeFile(const std::string& content) {
-      const auto path = (std::filesystem::temp_directory_path() / "gumEpsilonTest.ini").string();
+      const auto path = getTempFilePath(".ini");
       std::ofstream(path) << content;
       return path;
     }
   };
 
   GUM_TEST(EpsilonDefaults) {
+    ConfigurationGuard guard;
     CHECK_EQ(&gum::config(), &gum::Configuration::instance());
 
     const auto& conf = gum::config();
@@ -83,36 +84,38 @@ namespace gum_tests {
   }
 
   GUM_TEST(EpsilonFollowsSetPopAndReset) {
-    auto& conf = gum::config();
+    ConfigurationGuard guard;
+    auto&              conf = gum::config();
 
-    conf.push();
-    conf.set("core", "epsilonCoarse", "0.05");
-    conf.set("core", "epsilonStandard", "1e-7");
-    conf.set("core", "epsilonFine", "1e-11");
-    CHECK_EQ(conf.epsilonCoarse(), 0.05);
-    CHECK_EQ(conf.epsilonStandard(), 1e-7);
-    CHECK_EQ(conf.epsilonFine(), 1e-11);
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "epsilonCoarse", "0.05");
+      conf.set("core", "epsilonStandard", "1e-7");
+      conf.set("core", "epsilonFine", "1e-11");
+      CHECK_EQ(conf.epsilonCoarse(), 0.05);
+      CHECK_EQ(conf.epsilonStandard(), 1e-7);
+      CHECK_EQ(conf.epsilonFine(), 1e-11);
 
-    conf.reset();
-    CHECK_EQ(conf.epsilonCoarse(), 1e-2);
-    CHECK_EQ(conf.epsilonStandard(), 1e-6);
-    CHECK_EQ(conf.epsilonFine(), 1e-10);
+      conf.reset();
+      CHECK_EQ(conf.epsilonCoarse(), 1e-2);
+      CHECK_EQ(conf.epsilonStandard(), 1e-6);
+      CHECK_EQ(conf.epsilonFine(), 1e-10);
 
-    conf.set("core", "epsilonStandard", "1e-5");
-    conf.pop();
+      conf.set("core", "epsilonStandard", "1e-5");
+      CHECK_EQ(conf.epsilonStandard(), 1e-5);
+    }
     CHECK_EQ(conf.epsilonStandard(), 1e-6);
   }
 
   GUM_TEST(EpsilonInvalidValuesAreRefused) {
     auto& conf = gum::config();
 
-    conf.push();
+    ConfigurationGuard guard;
     for (const char* bad: {"0", "1", "-1e-3", "2", "nan", "inf", "abc", "1e-4", "1e-9"}) {
       CHECK_THROWS_AS(conf.set("core", "epsilonStandard", bad), gum::InvalidArgument);
       CHECK_EQ(conf.epsilonStandard(), 1e-6);
       CHECK_EQ(conf.typed< double >("core", "epsilonStandard"), 1e-6);
     }
-    conf.pop();
   }
 
   GUM_TEST(EpsilonDomainsDoNotOverlap) {
@@ -120,7 +123,7 @@ namespace gum_tests {
     // values chosen, fine < standard < coarse
     auto& conf = gum::config();
 
-    conf.push();
+    ConfigurationGuard guard;
     CHECK_NOTHROW(conf.set("core", "epsilonCoarse", "1e-3"));
     CHECK_NOTHROW(conf.set("core", "epsilonCoarse", "1e-1"));
     CHECK_THROWS_AS(conf.set("core", "epsilonCoarse", "1e-4"), gum::InvalidArgument);
@@ -134,7 +137,6 @@ namespace gum_tests {
     CHECK_THROWS_AS(conf.set("core", "epsilonFine", "1e-12"), gum::InvalidArgument);
     CHECK_LT(conf.epsilonFine(), conf.epsilonStandard());
     CHECK_LT(conf.epsilonStandard(), conf.epsilonCoarse());
-    conf.pop();
   }
 
   GUM_TEST(Chi2CriticalValueTerminatesWithTheFinestStandardEpsilon) {
@@ -142,7 +144,7 @@ namespace gum_tests {
     // the doubles around the largest chi2 value (99999), so that the bisection always ends
     auto& conf = gum::config();
 
-    conf.push();
+    ConfigurationGuard guard;
     conf.set("core", "epsilonStandard", "1e-8");
     for (const double proba: {0.5, 0.05, 1e-10, 1e-300}) {
       const double v = gum::Chi2::criticalValue(proba, 1000);
@@ -150,22 +152,23 @@ namespace gum_tests {
       CHECK_GE(v, 0.);
       CHECK_LE(v, 99999.);
     }
-    conf.pop();
   }
 
   GUM_TEST(EpsilonFromAFile) {
-    auto& conf = gum::config();
+    ConfigurationGuard guard;
+    auto&              conf = gum::config();
 
-    conf.push();
-    // an invalid value in a file is a notice and changes nothing, the valid ones are applied
     const auto path = EpsilonConfigurationTestSuite::writeFile(
         "[core]\nepsilonFine = 5\nepsilonStandard = 1e-7\n");
-    conf.takeNotices();
-    conf.load(path);
-    CHECK_EQ(conf.epsilonFine(), 1e-10);
-    CHECK_EQ(conf.epsilonStandard(), 1e-7);
-    CHECK_FALSE(conf.takeNotices().empty());
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      // an invalid value in a file is a notice and changes nothing, the valid ones are applied
+      conf.takeNotices();
+      conf.load(path);
+      CHECK_EQ(conf.epsilonFine(), 1e-10);
+      CHECK_EQ(conf.epsilonStandard(), 1e-7);
+      CHECK_FALSE(conf.takeNotices().empty());
+    }
     std::filesystem::remove(path);
 
     CHECK_EQ(conf.epsilonStandard(), 1e-6);
@@ -180,86 +183,100 @@ namespace gum_tests {
   }
 
   GUM_TEST(EpsilonIsTheDefaultOfTheMathFunctions) {
-    auto& conf = gum::config();
+    ConfigurationGuard guard;
+    auto&              conf = gum::config();
 
     CHECK(!gum::isCloseToZero(5e-10));
     CHECK(!gum::isCloseToOne(1. + 5e-10));
 
-    conf.push();
-    conf.set("core", "epsilonFine", "1e-9");
-    CHECK(gum::isCloseToZero(5e-10));
-    CHECK(gum::isCloseToOne(1. + 5e-10));
-    // an explicit tolerance is never changed
-    CHECK(!gum::isCloseToZero(5e-10, 1e-12));
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "epsilonFine", "1e-9");
+      CHECK(gum::isCloseToZero(5e-10));
+      CHECK(gum::isCloseToOne(1. + 5e-10));
+      // an explicit tolerance is never changed
+      CHECK(!gum::isCloseToZero(5e-10, 1e-12));
+    }
 
     CHECK(!gum::isCloseToZero(5e-10));
   }
 
   GUM_TEST(EpsilonIsTheDefaultOfTheRationalApproximations) {
-    auto&   conf = gum::config();
-    int64_t num = 0, den = 0;
+    ConfigurationGuard guard;
+    auto&              conf = gum::config();
+    int64_t            num = 0, den = 0;
 
     // 0.33333 is at 3.3e-6 of 1/3 : out of the default tolerance (1e-6), in the loosest one (1e-5)
     gum::Rational< double >::farey(num, den, 0.33333);
     CHECK((num != 1 || den != 3));
 
-    conf.push();
-    conf.set("core", "epsilonStandard", "1e-5");
-    gum::Rational< double >::farey(num, den, 0.33333);
-    CHECK_EQ(num, 1);
-    CHECK_EQ(den, 3);
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "epsilonStandard", "1e-5");
+      gum::Rational< double >::farey(num, den, 0.33333);
+      CHECK_EQ(num, 1);
+      CHECK_EQ(den, 3);
 
-    int64_t num2 = 0, den2 = 0;
-    gum::Rational< double >::continuedFracFirst(num2, den2, 0.33333);
-    gum::Rational< double >::continuedFracFirst(num, den, 0.33333, 1e-5);
-    CHECK_EQ(num2, num);
-    CHECK_EQ(den2, den);
-    conf.pop();
+      int64_t num2 = 0, den2 = 0;
+      gum::Rational< double >::continuedFracFirst(num2, den2, 0.33333);
+      gum::Rational< double >::continuedFracFirst(num, den, 0.33333, 1e-5);
+      CHECK_EQ(num2, num);
+      CHECK_EQ(den2, den);
+    }
 
     gum::Rational< double >::farey(num, den, 0.33333);
     CHECK((num != 1 || den != 3));
   }
 
   GUM_TEST(EpsilonIsTheToleranceOfAlmostDifferent) {
+    ConfigurationGuard             guard;
     auto&                          conf = gum::config();
     gum::AlmostDifferent< double > different;
 
     CHECK(different(1.0, 1.0 + 5e-6));
     CHECK(different(0.0, 5e-6));
 
-    conf.push();
-    conf.set("core", "epsilonStandard", "1e-5");
-    CHECK(!different(1.0, 1.0 + 5e-6));
-    CHECK(!different(0.0, 5e-6));
-    CHECK(different(1.0, 1.1));
-    conf.pop();
+    {
+      ConfigurationGuard scoped;
+      conf.set("core", "epsilonStandard", "1e-5");
+      // the tolerance is read when the functor is built : a new functor follows the configuration
+      gum::AlmostDifferent< double > looser;
+      CHECK(!looser(1.0, 1.0 + 5e-6));
+      CHECK(!looser(0.0, 5e-6));
+      CHECK(looser(1.0, 1.1));
+      // ... and the functor built before keeps the tolerance it was built with
+      CHECK(different(1.0, 1.0 + 5e-6));
+    }
 
-    CHECK(different(1.0, 1.0 + 5e-6));
+    // back to the default tolerance
+    gum::AlmostDifferent< double > again;
+    CHECK(again(1.0, 1.0 + 5e-6));
   }
 
   GUM_TEST(EpsilonCanBeReadWhileItIsChanged) {
+    ConfigurationGuard  guard;
     auto&               conf = gum::config();
     std::atomic< bool > stop{false};
     std::atomic< int >  nbBad{0};
 
-    conf.push();
-    std::vector< std::thread > readers;
-    for (int t = 0; t < 4; ++t) {
-      readers.emplace_back([&]() {
-        while (!stop.load()) {
-          const auto e = conf.epsilonStandard();
-          // only the two values written below are possible
-          if (e != 1e-6 && e != 1e-5) nbBad++;
-        }
-      });
+    {
+      ConfigurationGuard         scoped;
+      std::vector< std::thread > readers;
+      for (int t = 0; t < 4; ++t) {
+        readers.emplace_back([&]() {
+          while (!stop.load()) {
+            const auto e = conf.epsilonStandard();
+            // only the two values written below are possible
+            if (e != 1e-6 && e != 1e-5) nbBad++;
+          }
+        });
+      }
+      for (int i = 0; i < 200; ++i)
+        conf.set("core", "epsilonStandard", (i % 2) ? "1e-6" : "1e-5");
+      stop = true;
+      for (auto& r: readers)
+        r.join();
     }
-    for (int i = 0; i < 200; ++i)
-      conf.set("core", "epsilonStandard", (i % 2) ? "1e-6" : "1e-5");
-    stop = true;
-    for (auto& r: readers)
-      r.join();
-    conf.pop();
 
     CHECK_EQ(nbBad.load(), 0);
   }
