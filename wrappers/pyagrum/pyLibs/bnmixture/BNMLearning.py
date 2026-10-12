@@ -61,9 +61,9 @@ class IMixtureLearner:
     order : list[str or int]
         Order for K2 algorithm.
     tabu_size : int
-        size for local search with tabu list.
+        size for local search with tabu list (by default, `pyagrum.config['learning', 'tabuListSize']`).
     nb_decrease : int
-        decrease for local search with tabu list.
+        decrease for local search with tabu list (by default, `pyagrum.config['learning', 'tabuNbDecrease']`).
     score : str
         Type of score to use.
     correction : str
@@ -73,7 +73,7 @@ class IMixtureLearner:
     source : str | pyagrum.BayesNet
         Source for dirichlet prior
     prior_weight : float
-        Weight used for prior.
+        Weight used for prior (by default, `pyagrum.config['learning', 'priorWeight']`).
     """
     if len(kargs) == 0 and self._ref_learner is not None:
       learner.copyState(self._ref_learner)
@@ -88,7 +88,7 @@ class IMixtureLearner:
           raise pyagrum.ArgumentError("Tried to use K2 without an order")
         learner.useK2(kargs["order"])
       elif zemethod == "Local Search with Tabu List":
-        learner.useLocalSearchWithTabuList(kargs.get("tabu_size", 100), kargs.get("nb_decrease", 2))
+        learner.useLocalSearchWithTabuList(kargs.get("tabu_size"), kargs.get("nb_decrease"))
       else:
         raise pyagrum.ArgumentError(f"could not find the algorithm {kargs['algorithm']}")
 
@@ -341,10 +341,10 @@ class BNMBootstrapLearner(IMixtureLearner):
     """
     self._iter = N
 
-  def useBDeuPrior(self, weight=1.0):
+  def useBDeuPrior(self, weight=None):
     self._ref_learner.useBDeuPrior(weight)
 
-  def useDirichletPrior(self, source, weight=1.0):
+  def useDirichletPrior(self, source, weight=None):
     self._ref_learner.useDirichletPrior(source, weight)
 
   def useGreedyHillClimbing(self):
@@ -353,7 +353,7 @@ class BNMBootstrapLearner(IMixtureLearner):
   def useK2(self, order):
     self._ref_learner.useK2(order)
 
-  def useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2):
+  def useLocalSearchWithTabuList(self, tabu_size=None, nb_decrease=None):
     self._ref_learner.useLocalSearchWithTabuList(tabu_size, nb_decrease)
 
   def useMDLCorrection(self):
@@ -389,5 +389,5 @@ class BNMBootstrapLearner(IMixtureLearner):
   def useScoreLog2Likelihood(self):
     self._ref_learner.useScoreLog2Likelihood()
 
-  def useSmoothingPrior(self, weight=1):
+  def useSmoothingPrior(self, weight=None):
     self._ref_learner.useSmoothingPrior(weight)

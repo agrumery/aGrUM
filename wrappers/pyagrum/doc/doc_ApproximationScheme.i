@@ -48,7 +48,8 @@
 "
 Used to parametrize stopping criteria in approximate inference or learning algorithm.
 
-ApproximationScheme(verbosity=None) -> ApproximationScheme
+ApproximationScheme() -> ApproximationScheme
+ApproximationScheme(verbosity) -> ApproximationScheme
     Parameters:
       - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons). If it is
         not given, the key `verbosity` of the section `approximation` of `pyagrum.config` is used.

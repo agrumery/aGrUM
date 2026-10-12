@@ -42,9 +42,15 @@
       (`IBNLearner::default_EM_noise` is removed). The weight of `Prior` itself (and so the ESS of the BDeu score) is
       not concerned.
     - The text display of a `Tensor` (`toString`, hence `operator<<` and `__str__`) is now driven by the new section
-      `tensor` of `gum::Configuration`: `displayMaxRows` (6, number of rows kept at the beginning and at the end of a big
-      tensor, at least 1) and `displayColumnWidth` (9, width of the value columns, at least 6; the values have
-      `displayColumnWidth - 5` decimals). The keys are read at each call; a value out of range is refused by the configuration (see below).
+      `tensor` of `gum::Configuration`: `maxRowsConsole` (6, number of rows kept at the beginning and at the end of a big
+      tensor, at least 1) and `columnWidthConsole` (9, width of the value columns, at least 6; the values have
+      `columnWidthConsole - 5` decimals). The keys are read at each call; a value out of range is refused by the configuration (see below).
+    - `BNLearner::state()` showed the number of consecutive decreasing changes under the label "Tabu list size": it now
+      shows two rows, "Tabu list size" and "Max consecutive decreasing changes". `BNLearner::copyState()` gave the number
+      of decreasing changes as the size of the tabu list: it now copies both.
+    - `LoopySamplingInference` (and the `Hybrid*Sampling` inference engines, `Loopy*Sampling` in pyAgrum) has a new accessor
+      `virtualLBPSize()`. The members `current_step_`, `current_epsilon_`, `last_epsilon_` and `current_rate_` of
+      `ApproximationScheme` are now initialized by the constructor (they were not before `initApproximationScheme()`).
     - **Domains of validity**: the `###` metadata line of an `int` or a `float` key may give its domain, `int[1,10]`,
       `float]0,1[`, `int[1,]` (a bracket turned toward a bound includes it, turned away excludes it, an omitted bound is
       unbounded). A value out of the domain is refused by `set()` and `load()` (`InvalidArgument`, `ValueError` in Python),

@@ -649,6 +649,14 @@ vlbpsize : float
   the size of the virtual LBP
 "
 
+%feature("docstring") gum::classname::virtualLBPSize
+"
+Returns
+-------
+float
+  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+"
+
 %feature("docstring") gum::classname::setRelevantTensorsFinderType
 "
 sets how we determine the relevant tensors to combine

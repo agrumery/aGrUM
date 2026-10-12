@@ -230,24 +230,6 @@ pyagrum.ktbn.KTBNLearner
     self, for chaining
 "
 
-%feature("docstring") gum::learning::KTBNLearner::useLocalSearchWithTabuList
-"
-Use local search with a tabu list.
-
-Parameters
-----------
-tabu_size : int, optional
-    the tabu list size (default `pyagrum.config['learning', 'tabuListSize']`, 100)
-nb_decrease : int, optional
-    the number of non-improving moves tolerated before stopping (default
-    `pyagrum.config['learning', 'tabuNbDecrease']`, 2)
-
-Returns
--------
-pyagrum.ktbn.KTBNLearner
-    self, for chaining
-"
-
 %feature("docstring") gum::learning::KTBNLearner::useMIIC
 "
 Use the constraint-based MIIC algorithm for structure search.
@@ -296,21 +278,6 @@ tuple[tuple[str, str]]
     (tail, head) engine-name pairs of arcs MIIC flagged as hiding a latent
     variable (merged from the three internal learners); empty when the
     algorithm is not MIIC
-"
-
-%feature("docstring") gum::learning::KTBNLearner::useSmoothingPrior
-"
-Use a Laplace/BDeu-style smoothing prior.
-
-Parameters
-----------
-weight : float, optional
-    the prior weight (default `pyagrum.config['learning', 'priorWeight']`, 1.0)
-
-Returns
--------
-pyagrum.ktbn.KTBNLearner
-    self, for chaining
 "
 
 %feature("docstring") gum::learning::KTBNLearner::addForbiddenArc

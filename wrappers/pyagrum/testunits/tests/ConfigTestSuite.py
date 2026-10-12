@@ -161,7 +161,7 @@ class TestConfig(pyAgrumTestCase):
   def testDoc(self):
     self.assertEqual(
       gum.config.doc("notebook", "tensor_visible_digits"),
-      "int[0,] :: number of visible digits when displaying a tensor",
+      "int[0,] :: number of visible digits when displaying a tensor in a notebook",
     )
     self.assertIn("histogram|bar", gum.config.doc("notebook", "histogram_discretized_visualisation"))
     with self.assertRaises(SyntaxError):

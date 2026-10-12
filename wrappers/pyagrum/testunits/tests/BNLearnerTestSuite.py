@@ -1084,16 +1084,21 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useLocalSearchWithTabuList()
 
   def testDefaultParametersAreDocumented(self):
-    for name in [
-      "useEM",
-      "useEMWithRateCriterion",
-      "useEMWithDiffCriterion",
-      "useBDeuPrior",
-      "useSmoothingPrior",
-      "useDirichletPrior",
-      "useLocalSearchWithTabuList",
-    ]:
-      self.assertIn("learning", getattr(gum.BNLearner, name).__doc__)
+    # the docstring of a method says which key of the configuration gives its default values
+    for name, keys in {
+      "useEM": ["emNoise"],
+      "useEMWithRateCriterion": ["emNoise"],
+      "useEMWithDiffCriterion": ["emNoise"],
+      "useBDeuPrior": ["priorWeight"],
+      "useSmoothingPrior": ["priorWeight"],
+      "useDirichletPrior": ["priorWeight"],
+      "useLocalSearchWithTabuList": ["tabuListSize", "tabuNbDecrease"],
+      "setPCAlpha": ["alpha"],
+      "setFCIAlpha": ["alpha"],
+    }.items():
+      doc = getattr(gum.BNLearner, name).__doc__
+      for key in keys:
+        self.assertIn(key, doc, f"{name} does not document {key}")
 
 
 ts = unittest.TestSuite()

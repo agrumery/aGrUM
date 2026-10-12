@@ -182,7 +182,8 @@ Set the significance threshold (alpha) for independence tests used by FCI.
 Parameters
 ----------
 alpha : float
-    significance level in (0, 1). Lower values produce sparser graphs. Default is `pyagrum.config['learning', 'alpha']` (0.05).
+    significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses
+    `pyagrum.config['learning', 'alpha']` (0.05) as it is when the structure is learned.
 
 Returns
 -------
@@ -462,21 +463,6 @@ order : list[int or str]
 "
 
 
-%feature("docstring") gum::learning::BNLearner::useLocalSearchWithTabuList
-"
-Indicate that we wish to use a local search with tabu list
-
-Parameters
-----------
-tabu_size : int, optional
-        The size of the tabu list. Default is `pyagrum.config['learning', 'tabuListSize']` (100).
-
-nb_decrease : int, optional
-        The max number of changes decreasing the score consecutively that we allow to apply.
-        Default is `pyagrum.config['learning', 'tabuNbDecrease']` (2).
-"
-
-
 %feature("docstring") gum::learning::BNLearner::useMIIC
 "
 Indicate that we wish to use MIIC.
@@ -556,7 +542,8 @@ conservative (fewer edges removed); larger α makes it more aggressive.
 Parameters
 ----------
 alpha : float
-    significance threshold in (0, 1). Default is `pyagrum.config['learning', 'alpha']` (0.05).
+    significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)
+    as it is when the structure is learned.
 
 Returns
 -------
@@ -713,44 +700,6 @@ Indicate that we wish to use a K2 score.
 %feature("docstring") gum::learning::BNLearner::useScoreLog2Likelihood
 "
 Indicate that we wish to use a Log2Likelihood score.
-"
-
-
-%feature("docstring") gum::learning::BNLearner::useBDeuPrior
-"
-The BDeu prior adds weight to all the cells of the counting tables.
-In other words, it adds weight rows in the database with equally probable
-values.
-
-Parameters
-----------
-weight : float, optional
-    the prior weight. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
-"
-
-
-%feature("docstring") gum::learning::BNLearner::useDirichletPrior
-"
-Use the Dirichlet prior.
-
-Parameters
-----------
-source : str|pyagrum.BayesNet
-        the Dirichlet related source (filename of a database or a Bayesian network)
-weight : float, optional
-        the weight of the prior (the 'size' of the corresponding 'virtual database'). Default is
-        `pyagrum.config['learning', 'priorWeight']` (1.0).
-"
-
-
-%feature("docstring") gum::learning::BNLearner::useSmoothingPrior
-"
-Use the prior smoothing.
-
-Parameters
-----------
-weight : float, optional
-        the weight of the smoothing. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).
 "
 
 
@@ -1058,105 +1007,6 @@ pyagrum.BNLearner
 /// ================================================================================
 /// EM parameter learning fine-tuning
 /// ================================================================================
-
-
-%feature("docstring") gum::learning::BNLearner::useEM
-"
-Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
-
-usage:
-  * `useEM(epsilon, noise=None)`
-
-When epsilon is equal to 0.0, EM is forbidden, else EM is used for parameter learning
-whenever the database contains missing values. In this case, its stopping criterion
-is a threshold on the log-likelihood evolution rate, i.e., if llc and llo refer to
-the log-likelihoods at the current and previous EM steps respectively, EM will stop
-when (llc - llo) / llc drops below epsilon. If you wish to be more specific on which
-stopping criterion to use, you may prefer exploiting methods `useEMWithRateCriterion()`
-or `useEMWithDiffCriterion()`.
-
-Parameters
-----------
-epsilon : float
-    if epsilon>0 then EM is used and stops whenever the relative difference between two
-    consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
-
-    if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-    executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
-
-noise: float, optional
-        During EM's initialization, the CPTs are randomly perturbed using the following formula:
-        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
-
-Returns
--------
-pyagrum.BNLearner
-        the BNLearner itself, so that we can chain useXXX() methods.
-
-Raises
-------
-pyagrum.OutOfBounds
-        if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].
-"
-
-
-%feature("docstring") gum::learning::BNLearner::useEMWithRateCriterion
-"
-Enforces that EM with the log-likelihood min evolution rate stopping criterion will be
-used for parameter learning when the dataset contains missing values.
-
-Parameters
-----------
-epsilon : float
-     epsilon sets the approximation stopping criterion: EM stops whenever the absolute
-     value of the relative difference between two consecutive log-likelihoods drops below
-     epsilon. Note that epsilon should be strictly positive.
-
-noise: float, optional
-        During EM's initialization, the CPTs are randomly perturbed using the following formula:
-        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
-
-Returns
--------
-pyagrum.BNLearner
-        the BNLearner itself, so that we can chain useXXX() methods.
-
-Raises
-------
-pyagrum.OutOfBounds
-        if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
-"
-
-
-%feature("docstring") gum::learning::BNLearner::useEMWithDiffCriterion
-"
-Enforces that EM with the log-likelihood min difference criterion will be used for
-parameter learning whenever the dataset contains missing values.
-
-Parameters
-----------
-epsilon : float
-     epsilon sets the approximation stopping criterion: EM stops whenever the
-     difference between two consecutive log-likelihoods drops below
-     epsilon. Note that epsilon should be strictly positive.
-
-noise: float, optional
-        During EM's initialization, the CPTs are randomly perturbed using the following formula:
-        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
-
-Returns
--------
-pyagrum.BNLearner
-        the BNLearner itself, so that we can chain useXXX() methods.
-
-Raises
-------
-pyagrum.OutOfBounds
-        if epsilon is not strictly positive or if noise does not belong to interval [0,1].
-"
 
 
 %feature("docstring") gum::learning::BNLearner::forbidEM

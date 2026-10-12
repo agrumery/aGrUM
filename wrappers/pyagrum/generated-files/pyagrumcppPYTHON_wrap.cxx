@@ -100856,6 +100856,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_virtualLBPSize(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_virtualLBPSize" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      result = (double)((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1)->virtualLBPSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_setEvidence(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
@@ -104101,6 +104132,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_virtualLBPSize(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_virtualLBPSize" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      result = (double)((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1)->virtualLBPSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_setEvidence(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
@@ -107340,6 +107402,37 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_setVirtualLBPSize(PyObject *self, 
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_virtualLBPSize(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_virtualLBPSize" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      result = (double)((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1)->virtualLBPSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
   return resultobj;
 fail:
   return NULL;
@@ -110789,6 +110882,37 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_setVirtualLBPSize(PyObject *s
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_virtualLBPSize(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_virtualLBPSize" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      result = (double)((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1)->virtualLBPSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
   return resultobj;
 fail:
   return NULL;
@@ -144243,6 +144367,14 @@ static PyMethodDef SwigMethods[] = {
 		"  the size of the virtual LBP\n"
 		"\n"
 		""},
+	 { "LoopyImportanceSampling_virtualLBPSize", _wrap_LoopyImportanceSampling_virtualLBPSize, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"float\n"
+		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"\n"
+		""},
 	 { "LoopyImportanceSampling_setEvidence", _wrap_LoopyImportanceSampling_setEvidence, METH_VARARGS, NULL},
 	 { "LoopyImportanceSampling_updateEvidence", _wrap_LoopyImportanceSampling_updateEvidence, METH_VARARGS, NULL},
 	 { "LoopyImportanceSampling_setTargets", _wrap_LoopyImportanceSampling_setTargets, METH_VARARGS, NULL},
@@ -144793,6 +144925,14 @@ static PyMethodDef SwigMethods[] = {
 		"  the size of the virtual LBP\n"
 		"\n"
 		""},
+	 { "LoopyWeightedSampling_virtualLBPSize", _wrap_LoopyWeightedSampling_virtualLBPSize, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"float\n"
+		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"\n"
+		""},
 	 { "LoopyWeightedSampling_setEvidence", _wrap_LoopyWeightedSampling_setEvidence, METH_VARARGS, NULL},
 	 { "LoopyWeightedSampling_updateEvidence", _wrap_LoopyWeightedSampling_updateEvidence, METH_VARARGS, NULL},
 	 { "LoopyWeightedSampling_setTargets", _wrap_LoopyWeightedSampling_setTargets, METH_VARARGS, NULL},
@@ -145341,6 +145481,14 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"vlbpsize : float\n"
 		"  the size of the virtual LBP\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_virtualLBPSize", _wrap_LoopyGibbsSampling_virtualLBPSize, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"float\n"
+		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyGibbsSampling_setEvidence", _wrap_LoopyGibbsSampling_setEvidence, METH_VARARGS, NULL},
@@ -145939,6 +146087,14 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"vlbpsize : float\n"
 		"  the size of the virtual LBP\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_virtualLBPSize", _wrap_LoopyMonteCarloSampling_virtualLBPSize, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"float\n"
+		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyMonteCarloSampling_setEvidence", _wrap_LoopyMonteCarloSampling_setEvidence, METH_VARARGS, NULL},
@@ -147772,102 +147928,9 @@ static PyMethodDef SwigMethods[] = {
 		"    an initial pyagrum.DAG structure\n"
 		"\n"
 		""},
-	 { "BNLearner__useEM", _wrap_BNLearner__useEM, METH_VARARGS, "\n"
-		"\n"
-		"Sets whether we use EM for parameter learning or not, depending on the value of epsilon.\n"
-		"\n"
-		"usage:\n"
-		"  * `useEM(epsilon, noise=None)`\n"
-		"\n"
-		"When epsilon is equal to 0.0, EM is forbidden, else EM is used for parameter learning\n"
-		"whenever the database contains missing values. In this case, its stopping criterion\n"
-		"is a threshold on the log-likelihood evolution rate, i.e., if llc and llo refer to\n"
-		"the log-likelihoods at the current and previous EM steps respectively, EM will stop\n"
-		"when (llc - llo) / llc drops below epsilon. If you wish to be more specific on which\n"
-		"stopping criterion to use, you may prefer exploiting methods `useEMWithRateCriterion()`\n"
-		"or `useEMWithDiffCriterion()`.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"epsilon : float\n"
-		"    if epsilon>0 then EM is used and stops whenever the relative difference between two\n"
-		"    consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.\n"
-		"\n"
-		"    if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer\n"
-		"    executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.\n"
-		"\n"
-		"noise: float, optional\n"
-		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
-		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.BNLearner\n"
-		"        the BNLearner itself, so that we can chain useXXX() methods.\n"
-		"\n"
-		"Raises\n"
-		"------\n"
-		"pyagrum.OutOfBounds\n"
-		"        if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].\n"
-		"\n"
-		""},
-	 { "BNLearner__useEMWithRateCriterion", _wrap_BNLearner__useEMWithRateCriterion, METH_VARARGS, "\n"
-		"\n"
-		"Enforces that EM with the log-likelihood min evolution rate stopping criterion will be\n"
-		"used for parameter learning when the dataset contains missing values.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"epsilon : float\n"
-		"     epsilon sets the approximation stopping criterion: EM stops whenever the absolute\n"
-		"     value of the relative difference between two consecutive log-likelihoods drops below\n"
-		"     epsilon. Note that epsilon should be strictly positive.\n"
-		"\n"
-		"noise: float, optional\n"
-		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
-		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.BNLearner\n"
-		"        the BNLearner itself, so that we can chain useXXX() methods.\n"
-		"\n"
-		"Raises\n"
-		"------\n"
-		"pyagrum.OutOfBounds\n"
-		"        if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].\n"
-		"\n"
-		""},
-	 { "BNLearner__useEMWithDiffCriterion", _wrap_BNLearner__useEMWithDiffCriterion, METH_VARARGS, "\n"
-		"\n"
-		"Enforces that EM with the log-likelihood min difference criterion will be used for\n"
-		"parameter learning whenever the dataset contains missing values.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"epsilon : float\n"
-		"     epsilon sets the approximation stopping criterion: EM stops whenever the\n"
-		"     difference between two consecutive log-likelihoods drops below\n"
-		"     epsilon. Note that epsilon should be strictly positive.\n"
-		"\n"
-		"noise: float, optional\n"
-		"        During EM's initialization, the CPTs are randomly perturbed using the following formula:\n"
-		"        new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong\n"
-		"        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.BNLearner\n"
-		"        the BNLearner itself, so that we can chain useXXX() methods.\n"
-		"\n"
-		"Raises\n"
-		"------\n"
-		"pyagrum.OutOfBounds\n"
-		"        if epsilon is not strictly positive or if noise does not belong to interval [0,1].\n"
-		"\n"
-		""},
+	 { "BNLearner__useEM", _wrap_BNLearner__useEM, METH_VARARGS, NULL},
+	 { "BNLearner__useEMWithRateCriterion", _wrap_BNLearner__useEMWithRateCriterion, METH_VARARGS, NULL},
+	 { "BNLearner__useEMWithDiffCriterion", _wrap_BNLearner__useEMWithDiffCriterion, METH_VARARGS, NULL},
 	 { "BNLearner_forbidEM", _wrap_BNLearner_forbidEM, METH_O, "\n"
 		"\n"
 		"Forbids the use of EM for parameter learning.\n"
@@ -148140,41 +148203,9 @@ static PyMethodDef SwigMethods[] = {
 		"Use no prior.\n"
 		"\n"
 		""},
-	 { "BNLearner__useBDeuPrior", _wrap_BNLearner__useBDeuPrior, METH_VARARGS, "\n"
-		"\n"
-		"The BDeu prior adds weight to all the cells of the counting tables.\n"
-		"In other words, it adds weight rows in the database with equally probable\n"
-		"values.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"weight : float, optional\n"
-		"    the prior weight. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
-		"\n"
-		""},
-	 { "BNLearner__useSmoothingPrior", _wrap_BNLearner__useSmoothingPrior, METH_VARARGS, "\n"
-		"\n"
-		"Use the prior smoothing.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"weight : float, optional\n"
-		"        the weight of the smoothing. Default is `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
-		"\n"
-		""},
-	 { "BNLearner__useDirichletPrior", _wrap_BNLearner__useDirichletPrior, METH_VARARGS, "\n"
-		"\n"
-		"Use the Dirichlet prior.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"source : str|pyagrum.BayesNet\n"
-		"        the Dirichlet related source (filename of a database or a Bayesian network)\n"
-		"weight : float, optional\n"
-		"        the weight of the prior (the 'size' of the corresponding 'virtual database'). Default is\n"
-		"        `pyagrum.config['learning', 'priorWeight']` (1.0).\n"
-		"\n"
-		""},
+	 { "BNLearner__useBDeuPrior", _wrap_BNLearner__useBDeuPrior, METH_VARARGS, NULL},
+	 { "BNLearner__useSmoothingPrior", _wrap_BNLearner__useSmoothingPrior, METH_VARARGS, NULL},
+	 { "BNLearner__useDirichletPrior", _wrap_BNLearner__useDirichletPrior, METH_VARARGS, NULL},
 	 { "BNLearner_useGreedyHillClimbing", _wrap_BNLearner_useGreedyHillClimbing, METH_O, "\n"
 		"\n"
 		"Indicate that we wish to use a greedy hill climbing algorithm. This algorithm\n"
@@ -148224,20 +148255,7 @@ static PyMethodDef SwigMethods[] = {
 		"    True if arc reversals are enabled in the thin phase, False otherwise.\n"
 		"\n"
 		""},
-	 { "BNLearner__useLocalSearchWithTabuList", _wrap_BNLearner__useLocalSearchWithTabuList, METH_VARARGS, "\n"
-		"\n"
-		"Indicate that we wish to use a local search with tabu list\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"tabu_size : int, optional\n"
-		"        The size of the tabu list. Default is `pyagrum.config['learning', 'tabuListSize']` (100).\n"
-		"\n"
-		"nb_decrease : int, optional\n"
-		"        The max number of changes decreasing the score consecutively that we allow to apply.\n"
-		"        Default is `pyagrum.config['learning', 'tabuNbDecrease']` (2).\n"
-		"\n"
-		""},
+	 { "BNLearner__useLocalSearchWithTabuList", _wrap_BNLearner__useLocalSearchWithTabuList, METH_VARARGS, NULL},
 	 { "BNLearner_useMIIC", _wrap_BNLearner_useMIIC, METH_O, "\n"
 		"\n"
 		"Indicate that we wish to use MIIC.\n"
@@ -148318,7 +148336,8 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"alpha : float\n"
-		"    significance level in (0, 1). Lower values produce sparser graphs. Default is `pyagrum.config['learning', 'alpha']` (0.05).\n"
+		"    significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses\n"
+		"    `pyagrum.config['learning', 'alpha']` (0.05) as it is when the structure is learned.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -148443,7 +148462,8 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"alpha : float\n"
-		"    significance threshold in (0, 1). Default is `pyagrum.config['learning', 'alpha']` (0.05).\n"
+		"    significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)\n"
+		"    as it is when the structure is learned.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

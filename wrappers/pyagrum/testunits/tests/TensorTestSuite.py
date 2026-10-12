@@ -1560,12 +1560,12 @@ class TestDisplayConfiguration(pyAgrumTestCase):
 
     gum.config.push()
     try:
-      gum.config["tensor", "displayMaxRows"] = 2
-      gum.config["tensor", "displayColumnWidth"] = 12
+      gum.config["tensor", "maxRowsConsole"] = 2
+      gum.config["tensor", "columnWidthConsole"] = 12
       self.assertIn("[...26 more line(s) ...]", str(p))
       self.assertIn("0.5000000", str(p))
 
-      gum.config["tensor", "displayMaxRows"] = 15
+      gum.config["tensor", "maxRowsConsole"] = 15
       self.assertNotIn("more line(s)", str(p))
     finally:
       gum.config.pop()
@@ -1578,9 +1578,9 @@ class TestDisplayConfiguration(pyAgrumTestCase):
     try:
       # refused by the configuration itself (domain of the key): the display is left unchanged
       with self.assertRaises(ValueError):
-        gum.config["tensor", "displayMaxRows"] = 0
+        gum.config["tensor", "maxRowsConsole"] = 0
       with self.assertRaises(ValueError):
-        gum.config["tensor", "displayColumnWidth"] = 5
+        gum.config["tensor", "columnWidthConsole"] = 5
       self.assertIn("more line(s)", str(p))
     finally:
       gum.config.pop()
