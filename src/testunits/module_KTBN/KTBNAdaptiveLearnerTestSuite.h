@@ -559,6 +559,75 @@ namespace gum_tests {
     CHECK_EQ(l2.checkScorePriorCompatibility(), "");
   }
 
+  GUM_TEST(ConstraintBasedAndThickThinningAlgorithms) {
+    auto l = _solo_();
+
+    l.usePC();
+    CHECK_EQ(_stateValue_(l, "Algorithm"), "PC");
+    CHECK_EQ(_stateValue_(l, "Structure score"), "");   // constraint-based : no score
+    CHECK_EQ(_stateValue_(l, "Correction"), "");        // and no MIIC correction
+    l.useFCI();
+    CHECK_EQ(_stateValue_(l, "Algorithm"), "FCI");
+    l.useGreedyThickThinning();
+    CHECK_EQ(_stateValue_(l, "Algorithm"), "Greedy Thick Thinning");
+    CHECK_EQ(_stateValue_(l, "Structure score"), "BDeu");   // score-based
+
+    // PC and FCI never clash with a prior (no score)
+    l.usePC().useSmoothingPrior(1.0);
+    CHECK_EQ(l.checkScorePriorCompatibility(), "");
+
+    // each of them can be replayed on the candidate orders
+    for (const auto use: {0, 1, 2}) {
+      auto learner = _solo_(2);
+      if (use == 0) learner.usePC();
+      else if (use == 1) learner.useFCI();
+      else learner.useGreedyThickThinning();
+      gum::initRandom(42);
+      const auto m = learner.learnKTBN();
+      _checkTemporalValidity_(m);
+    }
+  }
+
+  GUM_TEST(PreferredAlgoComesFromTheConfiguration) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               l    = _solo_();
+
+    CHECK_EQ(_stateValue_(l, "Algorithm"), "MIIC");
+
+    // a learner built before the change of the configuration keeps its algorithm
+    conf.set("learning", "BNLearnerPreferredAlgo", "GreedyHillClimbing");
+    CHECK_EQ(_stateValue_(l, "Algorithm"), "MIIC");
+
+    // a learner built after the change takes the new one
+    auto ghc = _solo_();
+    CHECK_EQ(_stateValue_(ghc, "Algorithm"), "Greedy Hill Climbing");
+    CHECK_EQ(_stateValue_(ghc, "Structure score"), "BDeu");
+    CHECK_EQ(_stateValue_(ghc, "Correction"), "");
+
+    conf.set("learning", "BNLearnerPreferredAlgo", "PC");
+    auto pc = _solo_();
+    CHECK_EQ(_stateValue_(pc, "Algorithm"), "PC");
+
+    // an algorithm selected explicitly wins over the configuration
+    pc.useMIIC();
+    CHECK_EQ(_stateValue_(pc, "Algorithm"), "MIIC");
+
+    // the preferred algorithm is the one that is replayed on the candidate orders
+    conf.set("learning", "BNLearnerPreferredAlgo", "GreedyHillClimbing");
+    auto preferred = _solo_(2);
+    preferred.useScoreBIC();
+    gum::initRandom(42);
+    const auto fromConfig = preferred.learnKTBN();
+
+    auto explicitGHC = _solo_(2);
+    explicitGHC.useScoreBIC().useGreedyHillClimbing();
+    gum::initRandom(42);
+    const auto fromCall = explicitGHC.learnKTBN();
+    CHECK_EQ(fromConfig.arcs().size(), fromCall.arcs().size());
+    CHECK_EQ(fromConfig.arcs(), fromCall.arcs());
+  }
+
   GUM_TEST(ConstraintRecording) {
     auto l = _multi_();   // X, C, D all temporal
 

@@ -145,5 +145,12 @@ namespace gum_tests {
       INFO(e.section << "." << e.key);
       CHECK_EQ(conf.typed< bool >(e.section, e.key), e.value);
     }
+
+    for (const auto& e: std::vector< ConfigurationDefaultsTestSuite::Expected< std::string > >{
+             {"learning", "BNLearnerPreferredAlgo", "MIIC"},
+         }) {
+      INFO(e.section << "." << e.key);
+      CHECK_EQ(conf.typed< std::string >(e.section, e.key), e.value);
+    }
   }
 }   // namespace gum_tests

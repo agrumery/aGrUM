@@ -119,6 +119,7 @@ namespace gum_tests {
     CHECK_EQ(gum::config().typed< double >("learning", "emNoise"), 0.1);
     CHECK_EQ(gum::config().typed< std::int64_t >("learning", "tabuListSize"), 100);
     CHECK_EQ(gum::config().typed< std::int64_t >("learning", "tabuNbDecrease"), 2);
+    CHECK_EQ(gum::config().typed< std::string >("learning", "BNLearnerPreferredAlgo"), "MIIC");
   }
 
   GUM_TEST(AlphaComesFromTheConfiguration) {
@@ -133,7 +134,7 @@ namespace gum_tests {
     CHECK_EQ(gum::learning::FCI().alpha(), 0.2);
   }
 
-  GUM_TEST(AlphaIsReadWhenTheStructureIsLearned) {
+  GUM_TEST(AlphaIsTakenWhenTheLearnerIsConstructed) {
     ConfigurationGuard guard;
     auto&              conf = gum::Configuration::instance();
 
@@ -145,19 +146,77 @@ namespace gum_tests {
     auto       reference   = learner();
     const auto withDefault = learnPC(reference);   // alpha = 0.05
 
-    // a learner built before the change of the configuration reads the new alpha when it learns
+    // a learner built before the change of the configuration keeps the alpha it was built with
     auto early = learner();
     conf.set("learning", "alpha", "0.99999");
     auto       late      = learner();
     const auto withLarge = learnPC(late);
     CHECK_NE(withLarge, withDefault);   // the two alphas do not give the same structure
-    CHECK_EQ(learnPC(early), withLarge);
+    CHECK_EQ(learnPC(early), withDefault);
 
     // an alpha given to the learner wins over the configuration
     auto explicitAlpha = learner();
     explicitAlpha.usePC();
     explicitAlpha.setPCAlpha(0.05);
     CHECK_EQ(explicitAlpha.learnPDAG().toString(), withDefault);
+  }
+
+  GUM_TEST(CopyStateKeepsThePriorWeight) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    auto       src = learner();
+    src.useDirichletPrior(bn, 3.0);
+    CHECK_EQ(stateValue(src.state(), "Prior weight"), "3.000000");
+
+    auto dst = learner();
+    dst.copyState(src);
+    CHECK_EQ(stateValue(dst.state(), "Prior weight"), "3.000000");
+
+    // the other kinds of prior
+    src.useBDeuPrior(2.0);
+    dst.copyState(src);
+    CHECK_EQ(stateValue(dst.state(), "Prior weight"), "2.000000");
+  }
+
+  GUM_TEST(CopyAndMoveKeepTheAlgorithmOptions) {
+    // PC : the alpha set on the original must be the one used by its copies
+    auto reference = learner();
+    reference.usePC();
+    const auto withDefault = reference.learnPDAG().toString();
+
+    auto pc = learner();
+    pc.usePC();
+    pc.setPCAlpha(0.99999);
+    const auto withLarge = pc.learnPDAG().toString();
+    CHECK_NE(withLarge, withDefault);
+
+    auto copy = pc;
+    CHECK_EQ(copy.learnPDAG().toString(), withLarge);
+    auto assigned = learner();
+    assigned      = pc;
+    CHECK_EQ(assigned.learnPDAG().toString(), withLarge);
+    auto moved = std::move(copy);
+    CHECK_EQ(moved.learnPDAG().toString(), withLarge);
+    auto moveAssigned = learner();
+    moveAssigned      = std::move(assigned);
+    CHECK_EQ(moveAssigned.learnPDAG().toString(), withLarge);
+
+    // FCI : same thing
+    auto fci = learner();
+    fci.useFCI();
+    fci.setFCIAlpha(0.99999);
+    const auto fciLarge = fci.learnPAG().toString();
+    auto       fciCopy  = fci;
+    CHECK_EQ(fciCopy.learnPAG().toString(), fciLarge);
+
+    // local search with tabu list : forbidding the additions of arcs gives an empty graph
+    auto ghc = learner();
+    ghc.useLocalSearchWithTabuList();
+    ghc.allowArcAdditions(false);
+    CHECK_EQ(ghc.learnDAG().arcs().size(), gum::Size(0));
+    auto ghcCopy = ghc;
+    CHECK_EQ(ghcCopy.learnDAG().arcs().size(), gum::Size(0));
+    auto ghcMoved = std::move(ghcCopy);
+    CHECK_EQ(ghcMoved.learnDAG().arcs().size(), gum::Size(0));
   }
 
   GUM_TEST(PriorWeightComesFromTheConfiguration) {
@@ -297,6 +356,60 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useEM(1e-3));
   }
 
+  GUM_TEST(PreferredAlgoComesFromTheConfiguration) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+    auto               l    = learner();
+    const auto         algo = [&](const auto& x) { return stateValue(x.state(), "Algorithm"); };
+
+    CHECK_EQ(algo(l), "MIIC");
+
+    // a learner built before the change of the configuration keeps its algorithm
+    conf.set("learning", "BNLearnerPreferredAlgo", "PC");
+    CHECK_EQ(algo(l), "MIIC");
+
+    // a learner built after the change takes the new one
+    auto pc = learner();
+    CHECK_EQ(algo(pc), "PC");
+    CHECK(pc.isConstraintBased());
+
+    conf.set("learning", "BNLearnerPreferredAlgo", "GreedyHillClimbing");
+    auto ghc = learner();
+    CHECK_EQ(algo(ghc), "Greedy Hill Climbing");
+    CHECK(ghc.isScoreBased());
+
+    // an algorithm selected explicitly wins over the configuration
+    ghc.useMIIC();
+    CHECK_EQ(algo(ghc), "MIIC");
+
+    // copies and moves keep the algorithm of the original
+    auto copy = pc;
+    conf.set("learning", "BNLearnerPreferredAlgo", "FCI");
+    CHECK_EQ(algo(copy), "PC");
+    auto moved = std::move(copy);
+    CHECK_EQ(algo(moved), "PC");
+  }
+
+  GUM_TEST(PreferredAlgoIsUsedToLearn) {
+    ConfigurationGuard guard;
+    auto&              conf = gum::Configuration::instance();
+
+    auto reference = learner();
+    reference.usePC();
+    const auto expected = reference.learnPDAG().toString();
+
+    conf.set("learning", "BNLearnerPreferredAlgo", "PC");
+    auto l = learner();
+    CHECK_EQ(l.learnPDAG().toString(), expected);
+
+    // the options of the preferred algorithm can be set without selecting it explicitly
+    GUM_CHECK_ASSERT_THROWS_NOTHING(l.setPCAlpha(0.05));
+    CHECK_EQ(l.learnPDAG().toString(), expected);
+
+    // but not the ones of another algorithm
+    CHECK_THROWS_AS(l.setFCIAlpha(0.05), gum::OperationNotAllowed);
+  }
+
   GUM_TEST(InvalidValuesAreRefused) {
     auto& conf = gum::Configuration::instance();
     auto  l    = learner();
@@ -307,6 +420,9 @@ namespace gum_tests {
     CHECK_THROWS_AS(conf.set("learning", "tabuListSize", "0"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("learning", "tabuNbDecrease", "-1"), gum::InvalidArgument);
     CHECK_THROWS_AS(conf.set("learning", "alpha", "1"), gum::InvalidArgument);
+    // K2 needs an order : it cannot be the preferred algorithm
+    CHECK_THROWS_AS(conf.set("learning", "BNLearnerPreferredAlgo", "K2"), gum::InvalidArgument);
+    CHECK_THROWS_AS(conf.set("learning", "BNLearnerPreferredAlgo", "foo"), gum::InvalidArgument);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior(1.));
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior());
   }
