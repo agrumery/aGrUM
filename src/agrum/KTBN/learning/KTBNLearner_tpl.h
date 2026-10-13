@@ -403,6 +403,24 @@ namespace gum::learning {
     return *this;
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useGreedyThickThinning() {
+    _forEachLearner_([](BNLearner< GUM_SCALAR >& l) { l.useGreedyThickThinning(); });
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::usePC() {
+    _forEachLearner_([](BNLearner< GUM_SCALAR >& l) { l.usePC(); });
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useFCI() {
+    _forEachLearner_([](BNLearner< GUM_SCALAR >& l) { l.useFCI(); });
+    return *this;
+  }
+
   // =========================================================================
   // MIIC correction
   // =========================================================================

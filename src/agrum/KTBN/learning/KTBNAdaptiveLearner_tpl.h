@@ -337,9 +337,12 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBNAdaptiveLearner< GUM_SCALAR >::checkScorePriorCompatibility() const {
-    // MIIC is constraint-based: it consumes a correction, not a score, so no
-    // score/prior clash is possible. (Mirrors IBNLearner::isConstraintBased.)
-    if (_algo_ == IBNLearner::AlgoType::MIIC) return "";
+    // constraint-based algorithms (MIIC, PC, FCI) consume no score, so no score/prior clash
+    // is possible. (Mirrors IBNLearner::isConstraintBased.)
+    const auto algo = _algo_;
+    if (algo == IBNLearner::AlgoType::MIIC || algo == IBNLearner::AlgoType::PC
+        || algo == IBNLearner::AlgoType::FCI)
+      return "";
 
     // map the recorded prior to the internal PriorType. The adaptive learner only
     // ever records NO_prior or SMOOTHING (its sole prior setter is useSmoothingPrior).
@@ -406,8 +409,14 @@ namespace gum::learning {
     add("Base variables", std::to_string(_baseNames_.size()));
     add("Atemporal variables", names({_atemporalVars_.begin(), _atemporalVars_.end()}));
 
-    switch (_algo_) {
+    const auto algo = _algo_;
+    switch (algo) {
       case IBNLearner::AlgoType::MIIC : add("Algorithm", "MIIC"); break;
+      case IBNLearner::AlgoType::PC : add("Algorithm", "PC"); break;
+      case IBNLearner::AlgoType::FCI : add("Algorithm", "FCI"); break;
+      case IBNLearner::AlgoType::GREEDY_THICK_THINNING :
+        add("Algorithm", "Greedy Thick Thinning");
+        break;
       case IBNLearner::AlgoType::GREEDY_HILL_CLIMBING :
         add("Algorithm", "Greedy Hill Climbing");
         break;
@@ -422,7 +431,7 @@ namespace gum::learning {
       default : add("Algorithm", "(other)"); break;
     }
 
-    if (_algo_ == IBNLearner::AlgoType::MIIC) {
+    if (algo == IBNLearner::AlgoType::MIIC) {
       switch (_correction_) {
         case CorrectedMutualInformation::KModeTypes::MDL : add("Correction", "MDL"); break;
         case CorrectedMutualInformation::KModeTypes::NML : add("Correction", "NML"); break;
@@ -430,7 +439,7 @@ namespace gum::learning {
           add("Correction", "No correction");
           break;
       }
-    } else {
+    } else if (algo != IBNLearner::AlgoType::PC && algo != IBNLearner::AlgoType::FCI) {
       switch (_score_) {
         case IBNLearner::ScoreType::AIC : add("Structure score", "AIC"); break;
         case IBNLearner::ScoreType::BD : add("Structure score", "BD"); break;
@@ -625,6 +634,24 @@ namespace gum::learning {
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::useMIIC() {
     _algo_ = IBNLearner::AlgoType::MIIC;
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::useGreedyThickThinning() {
+    _algo_ = IBNLearner::AlgoType::GREEDY_THICK_THINNING;
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::usePC() {
+    _algo_ = IBNLearner::AlgoType::PC;
+    return *this;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::useFCI() {
+    _algo_ = IBNLearner::AlgoType::FCI;
     return *this;
   }
 
@@ -1169,14 +1196,15 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNAdaptiveLearner< GUM_SCALAR >::_applyConfig_(KTBNLearner< GUM_SCALAR >& learner) const {
-    // A fresh KTBNLearner already starts at the mirrored defaults (MIIC / BDeu /
-    // MDL / NO_prior), so we only touch a knob when it differs from its default,
-    // and only the knobs the chosen algorithm actually consumes.
+    // The algorithm is always set explicitly (the preferred algorithm of the configuration
+    // may differ from the one of a fresh KTBNLearner). The other knobs are touched only when
+    // they differ from their default (BDeu / MDL / NO_prior), and only if the chosen algorithm
+    // actually consumes them.
     bool scoreBased = false;
     switch (_algo_) {
       case IBNLearner::AlgoType::MIIC :
-        // MIIC is the default algo — nothing to set on a fresh learner. It uses a
-        // correction (not a score); apply it only when it is not the default MDL.
+        learner.useMIIC();
+        // MIIC uses a correction (not a score); apply it only when it is not the default MDL.
         switch (_correction_) {
           case CorrectedMutualInformation::KModeTypes::NML : learner.useNMLCorrection(); break;
           case CorrectedMutualInformation::KModeTypes::NoCorr : learner.useNoCorrection(); break;
@@ -1195,7 +1223,13 @@ namespace gum::learning {
         learner.useLocalSearchWithTabuList(_tabuSize_, _nbDecrease_);
         scoreBased = true;
         break;
-      default : break;   // K2 / PC are never recorded by our setters
+      case IBNLearner::AlgoType::GREEDY_THICK_THINNING :
+        learner.useGreedyThickThinning();
+        scoreBased = true;
+        break;
+      case IBNLearner::AlgoType::PC : learner.usePC(); break;
+      case IBNLearner::AlgoType::FCI : learner.useFCI(); break;
+      default : break;   // K2 is never recorded by our setters
     }
 
     // score-based algos consume a score; apply it only when it is not the default BDeu

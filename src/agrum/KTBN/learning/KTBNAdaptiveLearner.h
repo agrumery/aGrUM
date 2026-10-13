@@ -381,6 +381,9 @@ namespace gum {
       /// the default number of decreasing changes (key `tabuNbDecrease`)
       KTBNAdaptiveLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
       KTBNAdaptiveLearner< GUM_SCALAR >& useMIIC() override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& useGreedyThickThinning() override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& usePC() override;
+      KTBNAdaptiveLearner< GUM_SCALAR >& useFCI() override;
 
       /// @}
       // #######################################################################
@@ -566,12 +569,13 @@ namespace gum {
       /// learnKTBN() to pick the best k; independent of _score_)
       OrderScoreType _orderScore_{OrderScoreType::BIC};
 
-      /// recorded structure-learning algorithm
-      IBNLearner::AlgoType _algo_{IBNLearner::AlgoType::MIIC};
+      /// recorded structure-learning algorithm ; it is initialized from the configuration, see
+      /// IBNLearner::preferredAlgo()
+      IBNLearner::AlgoType _algo_{IBNLearner::preferredAlgo()};
 
-      /// tabu-list parameters (meaningful when _algo_ is LOCAL_SEARCH_WITH_TABU_LIST). They are
-      /// always written by useLocalSearchWithTabuList(), which reads `learning.tabuListSize` and
-      /// `learning.tabuNbDecrease` when no value is given.
+      /// tabu-list parameters (meaningful when the algorithm is
+      /// LOCAL_SEARCH_WITH_TABU_LIST). They are always written by useLocalSearchWithTabuList(),
+      /// which reads `learning.tabuListSize` and `learning.tabuNbDecrease` when no value is given.
       Size _tabuSize_{100};
       Size _nbDecrease_{2};
 

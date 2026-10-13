@@ -298,6 +298,9 @@ namespace gum {
       /// the default number of decreasing changes (key `tabuNbDecrease`)
       KTBNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
       KTBNLearner< GUM_SCALAR >& useMIIC() override;
+      KTBNLearner< GUM_SCALAR >& useGreedyThickThinning() override;
+      KTBNLearner< GUM_SCALAR >& usePC() override;
+      KTBNLearner< GUM_SCALAR >& useFCI() override;
 
       /// @}
       // #######################################################################

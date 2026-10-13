@@ -153,6 +153,9 @@ namespace gum {
       /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
       IKTBNLearner< GUM_SCALAR >&         useLocalSearchWithTabuList();
       virtual IKTBNLearner< GUM_SCALAR >& useMIIC() = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useGreedyThickThinning() = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& usePC()  = 0;
+      virtual IKTBNLearner< GUM_SCALAR >& useFCI() = 0;
 
       /// @}
       // #######################################################################
