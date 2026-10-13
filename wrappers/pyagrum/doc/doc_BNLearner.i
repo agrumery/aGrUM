@@ -183,7 +183,7 @@ Parameters
 ----------
 alpha : float
     significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses
-    `pyagrum.config['learning', 'alpha']` (0.05) as it is when the structure is learned.
+    `pyagrum.config['learning', 'alpha']` (0.05) as it was when the learner was created.
 
 Returns
 -------
@@ -543,7 +543,7 @@ Parameters
 ----------
 alpha : float
     significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)
-    as it is when the structure is learned.
+    as it was when the learner was created.
 
 Returns
 -------

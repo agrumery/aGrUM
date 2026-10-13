@@ -2028,6 +2028,67 @@ class KTBNLearner(object):
         return val
 
 
+    def useGreedyThickThinning(self) -> "pyagrum.KTBNLearner":
+        r"""
+
+        Use greedy thick-thinning for structure search.
+
+        Returns
+        -------
+        pyagrum.ktbn.KTBNLearner
+            self, for chaining
+
+        """
+        val = _ktbncpp.KTBNLearner_useGreedyThickThinning(self)
+
+        return self
+
+
+        return val
+
+
+    def usePC(self) -> "pyagrum.KTBNLearner":
+        r"""
+
+        Use the constraint-based PC algorithm for structure search.
+
+        The significance threshold is the key `alpha` of the section `learning` of the configuration.
+
+        Returns
+        -------
+        pyagrum.ktbn.KTBNLearner
+            self, for chaining
+
+        """
+        val = _ktbncpp.KTBNLearner_usePC(self)
+
+        return self
+
+
+        return val
+
+
+    def useFCI(self) -> "pyagrum.KTBNLearner":
+        r"""
+
+        Use the constraint-based FCI algorithm for structure search.
+
+        The significance threshold is the key `alpha` of the section `learning` of the configuration.
+
+        Returns
+        -------
+        pyagrum.ktbn.KTBNLearner
+            self, for chaining
+
+        """
+        val = _ktbncpp.KTBNLearner_useFCI(self)
+
+        return self
+
+
+        return val
+
+
     def useNMLCorrection(self) -> "pyagrum.KTBNLearner":
         r"""
 
@@ -3131,6 +3192,33 @@ class KTBNAdaptiveLearner(object):
 
     def useMIIC(self) -> "pyagrum.KTBNAdaptiveLearner":
         val = _ktbncpp.KTBNAdaptiveLearner_useMIIC(self)
+
+        return self
+
+
+        return val
+
+
+    def useGreedyThickThinning(self) -> "pyagrum.KTBNAdaptiveLearner":
+        val = _ktbncpp.KTBNAdaptiveLearner_useGreedyThickThinning(self)
+
+        return self
+
+
+        return val
+
+
+    def usePC(self) -> "pyagrum.KTBNAdaptiveLearner":
+        val = _ktbncpp.KTBNAdaptiveLearner_usePC(self)
+
+        return self
+
+
+        return val
+
+
+    def useFCI(self) -> "pyagrum.KTBNAdaptiveLearner":
+        val = _ktbncpp.KTBNAdaptiveLearner_useFCI(self)
 
         return self
 

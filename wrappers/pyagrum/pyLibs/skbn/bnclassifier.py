@@ -75,7 +75,7 @@ def createBNClassifier(
   prior=None,
   scoringType="BIC",
   constraints=None,
-  priorWeight=1,
+  priorWeight=None,
   possibleSkeleton=None,
   DirichletCsv=None,
   discretizationStrategy="quantile",
@@ -100,7 +100,8 @@ def createBNClassifier(
   scoringType : str, default="BIC"
       Ignored for fixed-structure algorithms (Chow-Liu, TAN, NaiveBayes).
   constraints : dict, optional
-  priorWeight : float, default=1
+  priorWeight : float, optional
+      Weight of the prior. By default (None), `pyagrum.config['learning', 'priorWeight']` is used when the classifier is fitted.
   possibleSkeleton : pyagrum.UndiGraph, optional
   DirichletCsv : str, optional
   discretizationStrategy : str, default="quantile"
@@ -193,7 +194,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 to be added to the Bayesian network, while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a prior.
+                The weight used for a prior. If None, `pyagrum.config['learning', 'priorWeight']` is used.
 
             possibleSkeleton: pyagrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
@@ -247,7 +248,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     prior=None,
     scoringType="BIC",
     constraints=None,
-    priorWeight=1,
+    priorWeight=None,
     possibleSkeleton=None,
     DirichletCsv=None,
     usePR=False,
@@ -292,7 +293,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a prior.
+                The weight used for a prior. If None, `pyagrum.config['learning', 'priorWeight']` is used.
 
             possibleSkeleton: pyagrum.undigraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network

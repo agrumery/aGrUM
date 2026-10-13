@@ -49,6 +49,7 @@ import sklearn.datasets
 
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
+import pyagrum
 import pyagrum.skbn as skbn
 
 
@@ -223,6 +224,29 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     clf = skbn.createBNClassifier(learningMethod="MIIC")
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
+
+  def testPriorWeightComesFromTheConfiguration(self):
+    X, y = _make_binary()
+
+    clf = skbn.createBNClassifier(prior="Smoothing")
+    self.assertIsNone(clf.get_params()["priorWeight"])
+    clf.fit(X, y)
+    self.assertFalse(np.allclose(clf.bn_.cpt(clf.target_).toarray(), 0.5, atol=1e-3))
+
+    # a huge weight of the prior makes the CPT of the target almost uniform
+    pyagrum.config.push()
+    try:
+      pyagrum.config["learning", "priorWeight"] = 1e6
+      heavy = skbn.createBNClassifier(prior="Smoothing")
+      heavy.fit(X, y)
+      self.assertTrue(np.allclose(heavy.bn_.cpt(heavy.target_).toarray(), 0.5, atol=1e-3))
+    finally:
+      pyagrum.config.pop()
+
+    # an explicit weight wins over the configuration
+    explicit = skbn.createBNClassifier(prior="Smoothing", priorWeight=1)
+    explicit.fit(X, y)
+    self.assertTrue(np.allclose(explicit.bn_.cpt(explicit.target_).toarray(), clf.bn_.cpt(clf.target_).toarray()))
 
 
 ts = unittest.TestSuite()

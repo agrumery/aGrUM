@@ -1083,6 +1083,35 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useBDeuPrior()
     learner.useLocalSearchWithTabuList()
 
+  def testPreferredAlgoComesFromTheConfiguration(self):
+    def algo(learner):
+      return learner.state()["Algorithm"][0]
+
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    self.assertEqual(algo(learner), "MIIC")
+
+    gum.config.push()
+    try:
+      gum.config["learning", "BNLearnerPreferredAlgo"] = "PC"
+      # a learner built before the change of the configuration keeps its algorithm
+      self.assertEqual(algo(learner), "MIIC")
+
+      # a learner built after the change takes the new one
+      other = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+      self.assertEqual(algo(other), "PC")
+
+      # an algorithm selected explicitly wins over the configuration
+      other.useMIIC()
+      self.assertEqual(algo(other), "MIIC")
+
+      # K2 needs an order: it cannot be the preferred algorithm
+      with self.assertRaises(ValueError):
+        gum.config["learning", "BNLearnerPreferredAlgo"] = "K2"
+    finally:
+      gum.config.pop()
+
+    self.assertEqual(algo(gum.BNLearner(self.agrumSrcDir("asia.csv"))), "MIIC")
+
   def testDefaultParametersAreDocumented(self):
     # the docstring of a method says which key of the configuration gives its default values
     for name, keys in {

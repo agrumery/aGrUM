@@ -240,6 +240,40 @@ pyagrum.ktbn.KTBNLearner
     self, for chaining
 "
 
+%feature("docstring") gum::learning::KTBNLearner::useGreedyThickThinning
+"
+Use greedy thick-thinning for structure search.
+
+Returns
+-------
+pyagrum.ktbn.KTBNLearner
+    self, for chaining
+"
+
+%feature("docstring") gum::learning::KTBNLearner::usePC
+"
+Use the constraint-based PC algorithm for structure search.
+
+The significance threshold is the key `alpha` of the section `learning` of the configuration.
+
+Returns
+-------
+pyagrum.ktbn.KTBNLearner
+    self, for chaining
+"
+
+%feature("docstring") gum::learning::KTBNLearner::useFCI
+"
+Use the constraint-based FCI algorithm for structure search.
+
+The significance threshold is the key `alpha` of the section `learning` of the configuration.
+
+Returns
+-------
+pyagrum.ktbn.KTBNLearner
+    self, for chaining
+"
+
 %feature("docstring") gum::learning::KTBNLearner::useNMLCorrection
 "
 Use the NML correction for MIIC's independence tests.

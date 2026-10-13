@@ -15968,6 +15968,99 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_KTBNLearner_useGreedyThickThinning(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useGreedyThickThinning" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNLearner< double > *) &(arg1)->useGreedyThickThinning();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNLearner_usePC(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_usePC" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNLearner< double > *) &(arg1)->usePC();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNLearner_useFCI(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useFCI" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNLearner< double > *) &(arg1)->useFCI();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_KTBNLearner_useNMLCorrection(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
@@ -21373,6 +21466,99 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useGreedyThickThinning(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useGreedyThickThinning" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->useGreedyThickThinning();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_usePC(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_usePC" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->usePC();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useFCI(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useFCI" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->useFCI();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useNMLCorrection(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
@@ -25816,6 +26002,40 @@ static PyMethodDef SwigMethods[] = {
 		"    self, for chaining\n"
 		"\n"
 		""},
+	 { "KTBNLearner_useGreedyThickThinning", _wrap_KTBNLearner_useGreedyThickThinning, METH_O, "\n"
+		"\n"
+		"Use greedy thick-thinning for structure search.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"pyagrum.ktbn.KTBNLearner\n"
+		"    self, for chaining\n"
+		"\n"
+		""},
+	 { "KTBNLearner_usePC", _wrap_KTBNLearner_usePC, METH_O, "\n"
+		"\n"
+		"Use the constraint-based PC algorithm for structure search.\n"
+		"\n"
+		"The significance threshold is the key `alpha` of the section `learning` of the configuration.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"pyagrum.ktbn.KTBNLearner\n"
+		"    self, for chaining\n"
+		"\n"
+		""},
+	 { "KTBNLearner_useFCI", _wrap_KTBNLearner_useFCI, METH_O, "\n"
+		"\n"
+		"Use the constraint-based FCI algorithm for structure search.\n"
+		"\n"
+		"The significance threshold is the key `alpha` of the section `learning` of the configuration.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"pyagrum.ktbn.KTBNLearner\n"
+		"    self, for chaining\n"
+		"\n"
+		""},
 	 { "KTBNLearner_useNMLCorrection", _wrap_KTBNLearner_useNMLCorrection, METH_O, "\n"
 		"\n"
 		"Use the NML correction for MIIC's independence tests.\n"
@@ -26438,6 +26658,9 @@ static PyMethodDef SwigMethods[] = {
 	 { "KTBNAdaptiveLearner_useExtendedGreedyHillClimbing", _wrap_KTBNAdaptiveLearner_useExtendedGreedyHillClimbing, METH_O, NULL},
 	 { "KTBNAdaptiveLearner__useLocalSearchWithTabuList", _wrap_KTBNAdaptiveLearner__useLocalSearchWithTabuList, METH_VARARGS, NULL},
 	 { "KTBNAdaptiveLearner_useMIIC", _wrap_KTBNAdaptiveLearner_useMIIC, METH_O, NULL},
+	 { "KTBNAdaptiveLearner_useGreedyThickThinning", _wrap_KTBNAdaptiveLearner_useGreedyThickThinning, METH_O, NULL},
+	 { "KTBNAdaptiveLearner_usePC", _wrap_KTBNAdaptiveLearner_usePC, METH_O, NULL},
+	 { "KTBNAdaptiveLearner_useFCI", _wrap_KTBNAdaptiveLearner_useFCI, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useNMLCorrection", _wrap_KTBNAdaptiveLearner_useNMLCorrection, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useMDLCorrection", _wrap_KTBNAdaptiveLearner_useMDLCorrection, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useNoCorrection", _wrap_KTBNAdaptiveLearner_useNoCorrection, METH_O, NULL},

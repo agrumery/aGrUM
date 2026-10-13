@@ -384,6 +384,18 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
     self.assertTrue(l.isConstraintBased())
     self.assertFalse(l.isScoreBased())
 
+    self.assertIs(l.usePC(), l)
+    self.assertEqual(self._stateValue(l, "Algorithm"), "PC")
+    self.assertTrue(l.isConstraintBased())
+
+    self.assertIs(l.useFCI(), l)
+    self.assertEqual(self._stateValue(l, "Algorithm"), "FCI")
+    self.assertTrue(l.isConstraintBased())
+
+    self.assertIs(l.useGreedyThickThinning(), l)
+    self.assertEqual(self._stateValue(l, "Algorithm"), "Greedy Thick Thinning")
+    self.assertTrue(l.isScoreBased())
+
   def testMIICCorrectionsAndLatentVariables(self):
     l = self._solo()
 

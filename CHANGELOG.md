@@ -41,6 +41,23 @@
       `useLocalSearchWithTabuList` are replaced by overloads without these arguments, which read the configuration
       (`IBNLearner::default_EM_noise` is removed). The weight of `Prior` itself (and so the ESS of the BDeu score) is
       not concerned.
+    - New key `learning.BNLearnerPreferredAlgo` (`MIIC` by default, so no change of behavior): the structure-learning
+      algorithm used by `BNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` when none is selected with a `use*()` method
+      (`MIIC`, `PC`, `FCI`, `GreedyHillClimbing`, `ExtendedGreedyHillClimbing`, `LocalSearchWithTabuList` or
+      `GreedyThickThinning`; not `K2`, which needs an order). A learner takes it when it is constructed (like
+      the other keys of the configuration, it does not follow later changes), and an algorithm selected explicitly
+      always wins. The options of
+      the preferred algorithm (`setPCAlpha`, `useFCIG2Test`, ...) can be set without selecting it explicitly. New static
+      `IBNLearner::preferredAlgo()`.
+    - Fixed the copy and the move of `IBNLearner` (and so of `BNLearner`): they now keep the options of PC and FCI (alpha,
+      independence test, ...), the permissions on the arc changes and the state of the extended greedy hill climbing and
+      of the greedy thick-thinning, which were silently reset to their defaults.
+    - Fixed `BNLearner::copyState()`, which lost the weight of a Dirichlet prior built from a Bayesian network. Removed the
+      unused member `IBNLearner::noiseEM_`.
+    - `pyagrum.skbn.BNClassifier`: `priorWeight` now defaults to `None`, meaning `pyagrum.config['learning', 'priorWeight']` (read when the
+      classifier is fitted) instead of a fixed 1.
+    - `KTBNLearner` and `KTBNAdaptiveLearner` (and so `pyagrum.ktbn`) now have `usePC()`, `useFCI()` and
+      `useGreedyThickThinning()`, like `BNLearner`.
     - The text display of a `Tensor` (`toString`, hence `operator<<` and `__str__`) is now driven by the new section
       `tensor` of `gum::Configuration`: `maxRowsConsole` (6, number of rows kept at the beginning and at the end of a big
       tensor, at least 1) and `columnWidthConsole` (9, width of the value columns, at least 6; the values have
