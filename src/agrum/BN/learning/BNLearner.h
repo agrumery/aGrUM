@@ -59,628 +59,625 @@
 #include <agrum/BN/learning/BNLearnUtils/IBNLearner.h>
 #include <agrum/BN/learning/priors/DirichletPriorFromBN.h>
 
-namespace gum {
-  namespace learning {
-    class BNLearnerListener;
+namespace gum::learning {
+  class BNLearnerListener;
 
-    /** @class BNLearner
-     * @brief A pack of learning algorithms that can easily be used
-     *
-     * The pack currently contains K2, GreedyHillClimbing and
-     * LocalSearchWithTabuList
-     * @ingroup learning_group
+  /** @class BNLearner
+   * @brief A pack of learning algorithms that can easily be used
+   *
+   * The pack currently contains K2, GreedyHillClimbing and
+   * LocalSearchWithTabuList
+   * @ingroup learning_group
+   */
+  template < GUM_Numeric GUM_SCALAR >
+  class BNLearner final: public IBNLearner {
+    public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
+
+    /// default constructor
+    /**
+     * read the database file for the score / parameter estimation and var
+     * names
+     * @param filename the name of a CSV file containing the dataset
+     * @param missingSymbols the set of symbols in the CSV that should
+     * be interpreted as missing values
+     * @param induceTypes By default, all the values in the dataset are
+     * interpreted as "labels", i.e., as categorical values. But if some
+     * columns of the dataset have only numerical values, it would certainly
+     * be better to tag them as corresponding to integer, range or continuous
+     * variables. By setting induceTypes to true, this is precisely what the
+     * BNLearner will do.
      */
-    template < GUM_Numeric GUM_SCALAR >
-    class BNLearner final: public IBNLearner {
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
-
-      /// default constructor
-      /**
-       * read the database file for the score / parameter estimation and var
-       * names
-       * @param filename the name of a CSV file containing the dataset
-       * @param missingSymbols the set of symbols in the CSV that should
-       * be interpreted as missing values
-       * @param induceTypes By default, all the values in the dataset are
-       * interpreted as "labels", i.e., as categorical values. But if some
-       * columns of the dataset have only numerical values, it would certainly
-       * be better to tag them as corresponding to integer, range or continuous
-       * variables. By setting induceTypes to true, this is precisely what the
-       * BNLearner will do.
-       */
-      BNLearner(std::string_view                  filename,
-                const std::vector< std::string >& missingSymbols = {"?"},
-                const bool                        induceTypes    = true);
-
-      /// default constructor
-      /**
-       * read the database file for the score / parameter estimation and var
-       * names
-       * @param db an already initialized database table that is used to
-       * fill the Database
-       */
-      BNLearner(const DatabaseTable& db);
-
-      /**
-       * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
-       * to find those modalities and nodeids.
-       **/
-      BNLearner(std::string_view                   filename,
-                const gum::BayesNet< GUM_SCALAR >& src,
-                const std::vector< std::string >&  missing_symbols = {"?"});
-
-      /// copy constructor
-      BNLearner(const BNLearner&);
-
-      /// move constructor
-      BNLearner(BNLearner&&);
-
-      /// destructor
-      ~BNLearner() override;
-
-      /// @}
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
-
-      /// copy operator
-      BNLearner& operator=(const BNLearner&);
-
-      /// move operator
-      BNLearner& operator=(BNLearner&&) noexcept;
-
-      /// @}
-
-      /// learn a Bayes Net from a file (must have read the db before)
-      BayesNet< GUM_SCALAR > learnBN();
-
-      /**
-       * @brief learns a BN (its parameters) with the structure passed in argument
-       * @param dag the structure of the Bayesian network
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @throw MissingValueInDatabase if the database contains some missing
-       * values and EM is not used for the learning.
-       * @throw OperationNotAllowed if EM is used but no EM stopping criterion
-       * has been selected.
-       * @warning if method useEM() has been executed, then the learning is
-       * performed using EM, else this is a standard (e.g. ML/MAP) learning
-       */
-      BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool takeIntoAccountScore = true);
-
-      /**
-       * @brief learns a BN (its parameters) with the BN structure passed in
-       * argument, EM being initialized by this argument
-       * @param bn the Bayesian network used to specify the graphical structure
-       * of the returned Bayes net and to initialize its CPTs before running EM.
-       * When a CPT is filled exclusively with only zeroes, then this one is
-       * initialized by the BNLearner using a specific estimator that does not
-       * take into account the missing values in the database
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @throw OperationNotAllowed if EM is used but no EM stopping criterion
-       * has been selected.
-       * @warning if method useEM() has been executed, then the learning is
-       * performed using EM, else this is a standard (e.g. ML/MAP) learning
-       * @warning the EM algorithm initializes the parameters of the CPTs using
-       * those of the Bayes net passed in argument whenever those are not fully
-       * filled with zeroes, else the BNLearner initializes them using an
-       * estimator that does not take into account the missing values.
-       * If you wish the BNLearner to automatically initialize all the CPTs, use
-       * the method in which a DAG is passed in argument rather than a Bayes net.
-       */
-      BayesNet< GUM_SCALAR > learnParameters(const BayesNet< GUM_SCALAR >& bn,
-                                             bool takeIntoAccountScore = true);
-
-      /**
-       * @brief learns a BN (its parameters) when its structure is known
-       * @param take_into_account_score The dag of the BN which was passed in
-       * argument to the BNLearner may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @warning if method useEM() has been executed, then the learning is
-       * performed using EM, else this is a standard (e.g. ML/MAP) learning
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @throw UnknownLabelInDatabase if a label is found in the databast that
-       * do not correpond to the variable.
-       * @throw OperationNotAllowed if EM is used but neither the min log-likelihood
-       * difference nor the min log-likelihood evolution rate have been
-       * selected as stopping criteria
-       */
-      BayesNet< GUM_SCALAR > learnParameters(bool take_into_account_score = true);
-
-      /// @return Returns a string representation of this BNLearner's current features.
-      std::string toString() const;
-
-      /// @return a representation of the state of the learner in the form vector<key,value,comment>
-      std::vector< std::tuple< std::string, std::string, std::string > > state() const;
-
-      /**
-       * @brief copy the states of the BNLearner
-       * @warning except the database ! just the configurations of the learner
-       */
-      void copyState(const BNLearner< GUM_SCALAR >& learner);
-
-      //=== === add return to certain methods in order to chain command
-      BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag);
-
-      /**
-       * @brief use The EM algorithm to learn parameters
-       *
-       * This is essentially an alias for Method useEMWithRateCriterion().
-       * @param epsilon sets the approximation stopping criterion: EM stops
-       * whenever the absolute value of the relative difference between two
-       * consecutive log-likelihoods drops below epsilon.
-       * Note that epsilon=0 is considered as a directive to not use EM.
-       * However, if you wish to forbid the use of EM, prefer executing Method
-       * forbidEM() rather than useEM(0) as it is more unequivocal.
-       * @param noise When EM starts, it initializes all the CPTs of the Bayes
-       * net. EM adds a noise to these CPTs by mixing their values with some
-       * random noise. The formula used is, up to some normalizing constant:
-       * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
-       * belong to interval [0,1].
-       * @return the BNLearner (so that we can chains the calls to useXXX() methods)
-       * @warning if epsilon=0, EM is not used
-       * @throws OutOfBounds is raised if epsilon is strictly negative or if
-       * noise does not belong to interval [0,1].
-       */
-      BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise);
-
-      /// use The EM algorithm to learn parameters with the default noise (key `emNoise` of the
-      /// section `learning` of gum::Configuration)
-      BNLearner< GUM_SCALAR >& useEM(const double epsilon);
-
-      /**
-       * @brief use The EM algorithm to learn parameters with the rate stopping criterion
-       * @param epsilon epsilon sets the approximation stopping criterion: EM stops
-       * whenever the absolute value of the relative difference between two
-       * consecutive log-likelihoods drops below epsilon. Note that, for using EM,
-       * epsilon should be strictly positive.
-       * @param max_nb_iter the maximum number of EM iterations allowed. If equal
-       * to 0, this stopping criterion is unused.
-       * @param noise When EM starts, it initializes all the CPTs of the Bayes
-       * net. EM adds a noise to these CPTs by mixing their values with some
-       * random noise. The formula used is, up to some normalizing constant:
-       * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
-       * belong to interval [0,1].
-       * @return the BNLearner (so that we can chains the calls to useXXX() methods)
-       * @throws OutOfBounds is raised if epsilon is not strictly positive or if
-       * noise does not belong to interval [0,1].
-       */
-      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon, const double noise);
-
-      /// use The EM algorithm with the rate stopping criterion and the default noise (key
-      /// `emNoise`)
-      BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon);
-
-      /**
-       * @brief use The EM algorithm to learn parameters with the diff stopping criterion
-       * @param epsilon epsilon sets the approximation stopping criterion: EM stops
-       * whenever the difference between two consecutive log-likelihoods drops below
-       * epsilon. Note that, for using EM, epsilon should be strictly positive.
-       * @param noise When EM starts, it initializes all the CPTs of the Bayes
-       * net. EM adds a noise to these CPTs by mixing their values with some
-       * random noise. The formula used is, up to some normalizing constant:
-       * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
-       * belong to interval [0,1].
-       * @return the BNLearner (so that we can chains the calls to useXXX() methods)
-       * @throws OutOfBounds is raised if epsilon is not strictly positive or if
-       * noise does not belong to interval [0,1].
-       */
-      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon, const double noise);
-
-      /// use The EM algorithm with the diff stopping criterion and the default noise (key
-      /// `emNoise`)
-      BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon);
-
-      /// prevent using the EM algorithm for parameter learning
-      BNLearner< GUM_SCALAR >& forbidEM();
-
-      /**
-       * @brief sets the stopping criterion of EM as being the minimal difference between two
-       * consecutive log-likelihoods
-       * @param eps the log-likelihood difference below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min rate criterion (if it was
-       * enabled)
-       * @throw OutOfBounds if eps <= 0
-       */
-      BNLearner< GUM_SCALAR >& EMsetEpsilon(const double eps);
-
-      /// Disable the min log-likelihood diff stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableEpsilon();
-
-      /**
-       * @brief Enable the log-likelihood min diff stopping criterion in EM
-       * @warning setting this stopping criterion disables the min rate criterion (if it was
-       * enabled)
-       */
-      BNLearner< GUM_SCALAR >& EMenableEpsilon();
-
-      /**
-       * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
-       * rate
-       * @param rate the log-likelihood evolution rate below which EM stops its iterations
-       * @warning setting this stopping criterion disables the min diff criterion (if it was
-       * enabled)
-       * @throw OutOfBounds if rate<=0
-       */
-      BNLearner< GUM_SCALAR >& EMsetMinEpsilonRate(const double rate);
-
-      /// Disable the log-likelihood evolution rate stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableMinEpsilonRate();
-
-      /**
-       * @brief Enable the log-likelihood evolution rate stopping criterion
-       * @warning setting this stopping criterion disables the min diff criterion (if it was
-       * enabled)
-       */
-      BNLearner< GUM_SCALAR >& EMenableMinEpsilonRate();
-
-      /**
-       * @brief add a max iteration stopping criterion
-       * @param max the max number of iterations that EM is allowed to perform
-       * @throw OutOfBounds if max<=1
-       */
-      BNLearner< GUM_SCALAR >& EMsetMaxIter(const Size max);
-
-      /// Disable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& EMdisableMaxIter();
-
-      /// Enable stopping criterion on max iterations
-      BNLearner< GUM_SCALAR >& EMenableMaxIter();
-
-      /**
-       * @brief add a stopping criterion on timeout
-       * @param timeout the timeout in milliseconds
-       * @throw OutOfBounds if timeout<=0.0
-       */
-      BNLearner< GUM_SCALAR >& EMsetMaxTime(const double timeout);
-
-      /// Disable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& EMdisableMaxTime();
-
-      /// enable EM's timeout stopping criterion
-      BNLearner< GUM_SCALAR >& EMenableMaxTime();
-
-      /**
-       * @brief how many samples between 2 stoppings isEnabled
-       * @throw OutOfBounds if p<1
-       */
-      BNLearner< GUM_SCALAR >& EMsetPeriodSize(const Size p);
-
-      // for pyagrum support
-      using IBNLearner::EMPeriodSize;
-
-      /// sets or unsets EM's verbosity
-      BNLearner< GUM_SCALAR >& EMsetVerbosity(const bool v);
-
-      BNLearner< GUM_SCALAR >& useScoreAIC();
-
-      BNLearner< GUM_SCALAR >& useScoreBD();
-
-      BNLearner< GUM_SCALAR >& useScoreBDeu();
-
-      BNLearner< GUM_SCALAR >& useScoreBIC();
-
-      BNLearner< GUM_SCALAR >& useScoreK2();
-
-      BNLearner< GUM_SCALAR >& useScoreLog2Likelihood();
-
-      BNLearner< GUM_SCALAR >& useNoPrior();
-
-      BNLearner< GUM_SCALAR >& useBDeuPrior(double weight);
-
-      /// use the BDeu prior with the default weight (key `priorWeight` of the section `learning`)
-      BNLearner< GUM_SCALAR >& useBDeuPrior();
-
-      BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight);
-
-      /// use the smoothing prior with the default weight (key `priorWeight`)
-      BNLearner< GUM_SCALAR >& useSmoothingPrior();
-
-      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight);
+    BNLearner(std::string_view                  filename,
+              const std::vector< std::string >& missingSymbols = {"?"},
+              const bool                        induceTypes    = true);
+
+    /// default constructor
+    /**
+     * read the database file for the score / parameter estimation and var
+     * names
+     * @param db an already initialized database table that is used to
+     * fill the Database
+     */
+    BNLearner(const DatabaseTable& db);
+
+    /**
+     * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
+     * to find those modalities and nodeids.
+     **/
+    BNLearner(std::string_view                   filename,
+              const gum::BayesNet< GUM_SCALAR >& src,
+              const std::vector< std::string >&  missing_symbols = {"?"});
+
+    /// copy constructor
+    BNLearner(const BNLearner&);
+
+    /// move constructor
+    BNLearner(BNLearner&&);
+
+    /// destructor
+    ~BNLearner() override;
+
+    /// @}
+
+    // ##########################################################################
+    /// @name Operators
+    // ##########################################################################
+    /// @{
+
+    /// copy operator
+    BNLearner& operator=(const BNLearner&);
+
+    /// move operator
+    BNLearner& operator=(BNLearner&&) noexcept;
+
+    /// @}
+
+    /// learn a Bayes Net from a file (must have read the db before)
+    BayesNet< GUM_SCALAR > learnBN();
+
+    /**
+     * @brief learns a BN (its parameters) with the structure passed in argument
+     * @param dag the structure of the Bayesian network
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @throw MissingValueInDatabase if the database contains some missing
+     * values and EM is not used for the learning.
+     * @throw OperationNotAllowed if EM is used but no EM stopping criterion
+     * has been selected.
+     * @warning if method useEM() has been executed, then the learning is
+     * performed using EM, else this is a standard (e.g. ML/MAP) learning
+     */
+    BayesNet< GUM_SCALAR > learnParameters(const DAG& dag, bool takeIntoAccountScore = true);
+
+    /**
+     * @brief learns a BN (its parameters) with the BN structure passed in
+     * argument, EM being initialized by this argument
+     * @param bn the Bayesian network used to specify the graphical structure
+     * of the returned Bayes net and to initialize its CPTs before running EM.
+     * When a CPT is filled exclusively with only zeroes, then this one is
+     * initialized by the BNLearner using a specific estimator that does not
+     * take into account the missing values in the database
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @throw OperationNotAllowed if EM is used but no EM stopping criterion
+     * has been selected.
+     * @warning if method useEM() has been executed, then the learning is
+     * performed using EM, else this is a standard (e.g. ML/MAP) learning
+     * @warning the EM algorithm initializes the parameters of the CPTs using
+     * those of the Bayes net passed in argument whenever those are not fully
+     * filled with zeroes, else the BNLearner initializes them using an
+     * estimator that does not take into account the missing values.
+     * If you wish the BNLearner to automatically initialize all the CPTs, use
+     * the method in which a DAG is passed in argument rather than a Bayes net.
+     */
+    BayesNet< GUM_SCALAR > learnParameters(const BayesNet< GUM_SCALAR >& bn,
+                                           bool takeIntoAccountScore = true);
+
+    /**
+     * @brief learns a BN (its parameters) when its structure is known
+     * @param take_into_account_score The dag of the BN which was passed in
+     * argument to the BNLearner may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @warning if method useEM() has been executed, then the learning is
+     * performed using EM, else this is a standard (e.g. ML/MAP) learning
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @throw UnknownLabelInDatabase if a label is found in the databast that
+     * do not correpond to the variable.
+     * @throw OperationNotAllowed if EM is used but neither the min log-likelihood
+     * difference nor the min log-likelihood evolution rate have been
+     * selected as stopping criteria
+     */
+    BayesNet< GUM_SCALAR > learnParameters(bool take_into_account_score = true);
+
+    /// @return Returns a string representation of this BNLearner's current features.
+    std::string toString() const;
+
+    /// @return a representation of the state of the learner in the form vector<key,value,comment>
+    std::vector< std::tuple< std::string, std::string, std::string > > state() const;
+
+    /**
+     * @brief copy the states of the BNLearner
+     * @warning except the database ! just the configurations of the learner
+     */
+    void copyState(const BNLearner< GUM_SCALAR >& learner);
+
+    //=== === add return to certain methods in order to chain command
+    BNLearner< GUM_SCALAR >& setInitialDAG(const DAG& dag);
+
+    /**
+     * @brief use The EM algorithm to learn parameters
+     *
+     * This is essentially an alias for Method useEMWithRateCriterion().
+     * @param epsilon sets the approximation stopping criterion: EM stops
+     * whenever the absolute value of the relative difference between two
+     * consecutive log-likelihoods drops below epsilon.
+     * Note that epsilon=0 is considered as a directive to not use EM.
+     * However, if you wish to forbid the use of EM, prefer executing Method
+     * forbidEM() rather than useEM(0) as it is more unequivocal.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @return the BNLearner (so that we can chains the calls to useXXX() methods)
+     * @warning if epsilon=0, EM is not used
+     * @throws OutOfBounds is raised if epsilon is strictly negative or if
+     * noise does not belong to interval [0,1].
+     */
+    BNLearner< GUM_SCALAR >& useEM(const double epsilon, const double noise);
+
+    /// use The EM algorithm to learn parameters with the default noise (key `emNoise` of the
+    /// section `learning` of gum::Configuration)
+    BNLearner< GUM_SCALAR >& useEM(const double epsilon);
+
+    /**
+     * @brief use The EM algorithm to learn parameters with the rate stopping criterion
+     * @param epsilon epsilon sets the approximation stopping criterion: EM stops
+     * whenever the absolute value of the relative difference between two
+     * consecutive log-likelihoods drops below epsilon. Note that, for using EM,
+     * epsilon should be strictly positive.
+     * @param max_nb_iter the maximum number of EM iterations allowed. If equal
+     * to 0, this stopping criterion is unused.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @return the BNLearner (so that we can chains the calls to useXXX() methods)
+     * @throws OutOfBounds is raised if epsilon is not strictly positive or if
+     * noise does not belong to interval [0,1].
+     */
+    BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon, const double noise);
+
+    /// use The EM algorithm with the rate stopping criterion and the default noise (key
+    /// `emNoise`)
+    BNLearner< GUM_SCALAR >& useEMWithRateCriterion(const double epsilon);
+
+    /**
+     * @brief use The EM algorithm to learn parameters with the diff stopping criterion
+     * @param epsilon epsilon sets the approximation stopping criterion: EM stops
+     * whenever the difference between two consecutive log-likelihoods drops below
+     * epsilon. Note that, for using EM, epsilon should be strictly positive.
+     * @param noise When EM starts, it initializes all the CPTs of the Bayes
+     * net. EM adds a noise to these CPTs by mixing their values with some
+     * random noise. The formula used is, up to some normalizing constant:
+     * new_cpt = (1-noise) * cpt + noise * random_cpt(). Of course, noise must
+     * belong to interval [0,1].
+     * @return the BNLearner (so that we can chains the calls to useXXX() methods)
+     * @throws OutOfBounds is raised if epsilon is not strictly positive or if
+     * noise does not belong to interval [0,1].
+     */
+    BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon, const double noise);
+
+    /// use The EM algorithm with the diff stopping criterion and the default noise (key
+    /// `emNoise`)
+    BNLearner< GUM_SCALAR >& useEMWithDiffCriterion(const double epsilon);
+
+    /// prevent using the EM algorithm for parameter learning
+    BNLearner< GUM_SCALAR >& forbidEM();
+
+    /**
+     * @brief sets the stopping criterion of EM as being the minimal difference between two
+     * consecutive log-likelihoods
+     * @param eps the log-likelihood difference below which EM stops its iterations
+     * @warning setting this stopping criterion disables the min rate criterion (if it was
+     * enabled)
+     * @throw OutOfBounds if eps <= 0
+     */
+    BNLearner< GUM_SCALAR >& EMsetEpsilon(const double eps);
+
+    /// Disable the min log-likelihood diff stopping criterion
+    BNLearner< GUM_SCALAR >& EMdisableEpsilon();
+
+    /**
+     * @brief Enable the log-likelihood min diff stopping criterion in EM
+     * @warning setting this stopping criterion disables the min rate criterion (if it was
+     * enabled)
+     */
+    BNLearner< GUM_SCALAR >& EMenableEpsilon();
+
+    /**
+     * @brief sets the stopping criterion of EM as being the minimal log-likelihood's evolution
+     * rate
+     * @param rate the log-likelihood evolution rate below which EM stops its iterations
+     * @warning setting this stopping criterion disables the min diff criterion (if it was
+     * enabled)
+     * @throw OutOfBounds if rate<=0
+     */
+    BNLearner< GUM_SCALAR >& EMsetMinEpsilonRate(const double rate);
+
+    /// Disable the log-likelihood evolution rate stopping criterion
+    BNLearner< GUM_SCALAR >& EMdisableMinEpsilonRate();
+
+    /**
+     * @brief Enable the log-likelihood evolution rate stopping criterion
+     * @warning setting this stopping criterion disables the min diff criterion (if it was
+     * enabled)
+     */
+    BNLearner< GUM_SCALAR >& EMenableMinEpsilonRate();
+
+    /**
+     * @brief add a max iteration stopping criterion
+     * @param max the max number of iterations that EM is allowed to perform
+     * @throw OutOfBounds if max<=1
+     */
+    BNLearner< GUM_SCALAR >& EMsetMaxIter(const Size max);
+
+    /// Disable stopping criterion on max iterations
+    BNLearner< GUM_SCALAR >& EMdisableMaxIter();
+
+    /// Enable stopping criterion on max iterations
+    BNLearner< GUM_SCALAR >& EMenableMaxIter();
+
+    /**
+     * @brief add a stopping criterion on timeout
+     * @param timeout the timeout in milliseconds
+     * @throw OutOfBounds if timeout<=0.0
+     */
+    BNLearner< GUM_SCALAR >& EMsetMaxTime(const double timeout);
+
+    /// Disable EM's timeout stopping criterion
+    BNLearner< GUM_SCALAR >& EMdisableMaxTime();
+
+    /// enable EM's timeout stopping criterion
+    BNLearner< GUM_SCALAR >& EMenableMaxTime();
+
+    /**
+     * @brief how many samples between 2 stoppings isEnabled
+     * @throw OutOfBounds if p<1
+     */
+    BNLearner< GUM_SCALAR >& EMsetPeriodSize(const Size p);
+
+    // for pyagrum support
+    using IBNLearner::EMPeriodSize;
+
+    /// sets or unsets EM's verbosity
+    BNLearner< GUM_SCALAR >& EMsetVerbosity(const bool v);
 
-      /// use the Dirichlet prior from a database with the default weight (key `priorWeight`)
-      BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename);
+    BNLearner< GUM_SCALAR >& useScoreAIC();
 
-      BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
-                                                 double                             weight);
+    BNLearner< GUM_SCALAR >& useScoreBD();
 
-      /// use the Dirichlet prior from a BN with the default weight (key `priorWeight`)
-      BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn);
+    BNLearner< GUM_SCALAR >& useScoreBDeu();
 
-      BNLearner< GUM_SCALAR >& useGreedyHillClimbing();
+    BNLearner< GUM_SCALAR >& useScoreBIC();
 
-      BNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing();
+    BNLearner< GUM_SCALAR >& useScoreK2();
 
-      BNLearner< GUM_SCALAR >& useGreedyThickThinning();
+    BNLearner< GUM_SCALAR >& useScoreLog2Likelihood();
 
-      BNLearner< GUM_SCALAR >& setGreedyThickThinningReversals(bool allow);
+    BNLearner< GUM_SCALAR >& useNoPrior();
 
-      bool greedyThickThinningReversals() const;
+    BNLearner< GUM_SCALAR >& useBDeuPrior(double weight);
 
-      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease);
+    /// use the BDeu prior with the default weight (key `priorWeight` of the section `learning`)
+    BNLearner< GUM_SCALAR >& useBDeuPrior();
 
-      /// use a local search with tabu list, with the default number of decreasing changes (key
-      /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
-      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
+    BNLearner< GUM_SCALAR >& useSmoothingPrior(double weight);
 
-      /// use a local search with tabu list and the default parameters (keys `tabuListSize` and
-      /// `tabuNbDecrease`)
-      BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList();
+    /// use the smoothing prior with the default weight (key `priorWeight`)
+    BNLearner< GUM_SCALAR >& useSmoothingPrior();
 
-      BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order);
+    BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename, double weight);
 
-      BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order);
+    /// use the Dirichlet prior from a database with the default weight (key `priorWeight`)
+    BNLearner< GUM_SCALAR >& useDirichletPrior(std::string_view filename);
 
-      BNLearner< GUM_SCALAR >& useMIIC();
+    BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn,
+                                               double                             weight);
 
-      BNLearner< GUM_SCALAR >& usePC();
+    /// use the Dirichlet prior from a BN with the default weight (key `priorWeight`)
+    BNLearner< GUM_SCALAR >& useDirichletPrior(const gum::BayesNet< GUM_SCALAR >& bn);
 
-      BNLearner< GUM_SCALAR >& useFCI();
+    BNLearner< GUM_SCALAR >& useGreedyHillClimbing();
 
-      BNLearner< GUM_SCALAR >& useFCIChi2Test();
+    BNLearner< GUM_SCALAR >& useExtendedGreedyHillClimbing();
 
-      BNLearner< GUM_SCALAR >& useFCIG2Test();
+    BNLearner< GUM_SCALAR >& useGreedyThickThinning();
 
-      BNLearner< GUM_SCALAR >& setFCIAlpha(double alpha);
+    BNLearner< GUM_SCALAR >& setGreedyThickThinningReversals(bool allow);
 
-      BNLearner< GUM_SCALAR >& setFCIMaxPathLength(Size max_len);
+    bool greedyThickThinningReversals() const;
 
-      BNLearner< GUM_SCALAR >& setFCIExhaustiveSepSet(bool exhaustive);
+    BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size, Size nb_decrease);
 
-      bool fciExhaustiveSepSet() const;
+    /// use a local search with tabu list, with the default number of decreasing changes (key
+    /// `tabuNbDecrease` of the section `learning` of gum::Configuration)
+    BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList(Size tabu_size);
 
-      BNLearner< GUM_SCALAR >& useChi2Test();
+    /// use a local search with tabu list and the default parameters (keys `tabuListSize` and
+    /// `tabuNbDecrease`)
+    BNLearner< GUM_SCALAR >& useLocalSearchWithTabuList();
 
-      BNLearner< GUM_SCALAR >& useG2Test();
+    BNLearner< GUM_SCALAR >& useK2(const Sequence< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& setPCAlpha(double alpha);
+    BNLearner< GUM_SCALAR >& useK2(const std::vector< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& setPCStable(bool stable);
+    BNLearner< GUM_SCALAR >& useMIIC();
 
-      BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k);
+    BNLearner< GUM_SCALAR >& usePC();
 
-      BNLearner< GUM_SCALAR >& setPCUnshieldedColliderSorted(bool sorted);
+    BNLearner< GUM_SCALAR >& useFCI();
 
-      BNLearner< GUM_SCALAR >& useNMLCorrection();
+    BNLearner< GUM_SCALAR >& useFCIChi2Test();
 
-      BNLearner< GUM_SCALAR >& useMDLCorrection();
+    BNLearner< GUM_SCALAR >& useFCIG2Test();
 
-      BNLearner< GUM_SCALAR >& useNoCorrection();
+    BNLearner< GUM_SCALAR >& setFCIAlpha(double alpha);
 
-      BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree);
+    BNLearner< GUM_SCALAR >& setFCIMaxPathLength(Size max_len);
 
-      BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order);
+    BNLearner< GUM_SCALAR >& setFCIExhaustiveSepSet(bool exhaustive);
 
-      BNLearner< GUM_SCALAR >&
-          setSliceOrder(const std::vector< std::vector< std::string > >& slices);
+    bool fciExhaustiveSepSet() const;
 
-      BNLearner< GUM_SCALAR >& setTotalOrder(const std::vector< std::string >& order);
+    BNLearner< GUM_SCALAR >& useChi2Test();
 
-      BNLearner< GUM_SCALAR >& setTotalOrder(const Sequence< NodeId >& order);
+    BNLearner< GUM_SCALAR >& useG2Test();
 
-      BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set);
+    BNLearner< GUM_SCALAR >& setPCAlpha(double alpha);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc);
+    BNLearner< GUM_SCALAR >& setPCStable(bool stable);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& setPCMaxCondSetSize(Size max_k);
 
-      BNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& setPCUnshieldedColliderSorted(bool sorted);
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc);
+    BNLearner< GUM_SCALAR >& useNMLCorrection();
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& useMDLCorrection();
 
-      BNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& useNoCorrection();
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc);
+    BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree);
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order);
 
-      BNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& setSliceOrder(const std::vector< std::vector< std::string > >& slices);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc);
+    BNLearner< GUM_SCALAR >& setTotalOrder(const std::vector< std::string >& order);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& setTotalOrder(const Sequence< NodeId >& order);
 
-      BNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& setForbiddenArcs(const ArcSet& set);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge);
+    BNLearner< GUM_SCALAR >& addForbiddenArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& addForbiddenArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& addForbiddenArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge);
+    BNLearner< GUM_SCALAR >& eraseForbiddenArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(NodeId tail, NodeId head);
+    BNLearner< GUM_SCALAR >& eraseForbiddenArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail, std::string_view head);
+    BNLearner< GUM_SCALAR >& eraseForbiddenArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set);
+    BNLearner< GUM_SCALAR >& addMandatoryArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set);
+    BNLearner< GUM_SCALAR >& addMandatoryArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton);
+    BNLearner< GUM_SCALAR >& addMandatoryArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& addNoParentNode(NodeId node);
+    BNLearner< GUM_SCALAR >& eraseMandatoryArc(const Arc& arc);
 
-      BNLearner< GUM_SCALAR >& addNoParentNode(std::string_view name);
+    BNLearner< GUM_SCALAR >& eraseMandatoryArc(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node);
+    BNLearner< GUM_SCALAR >& eraseMandatoryArc(std::string_view tail, std::string_view head);
 
-      BNLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name);
+    BNLearner< GUM_SCALAR >& addPossibleEdge(const Edge& edge);
 
-      BNLearner< GUM_SCALAR >& addNoChildrenNode(NodeId node);
-
-      BNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name);
+    BNLearner< GUM_SCALAR >& addPossibleEdge(NodeId tail, NodeId head);
 
-      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node);
-
-      BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name);
-
-      BNLearner< GUM_SCALAR >& allowArcAdditions(bool allow);
-
-      BNLearner< GUM_SCALAR >& allowArcDeletions(bool allow);
-
-      BNLearner< GUM_SCALAR >& allowArcReversals(bool allow);
-
-      BNLearner< GUM_SCALAR >& allowArcTriangleDeletions(bool allow);
-
-      bool isConstraintBased() const;
-
-      bool isScoreBased() const;
-
-      protected:
-      /// create the prior used for learning
-      void createPrior_() override;
-
-      private:
-      BayesNet< GUM_SCALAR > _prior_bn_;
-
-      /// read the first line of a file to find column names
-      NodeProperty< Sequence< std::string > > _labelsFromBN_(std::string_view              filename,
-                                                             const BayesNet< GUM_SCALAR >& src);
-
-      /**
-       * @brief check that the database contains the nodes of the dag, else raise an exception
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @return nothing if all the nodes of the dag belong to the dataset
-       */
-      void _checkDAGCompatibility_(const DAG& dag);
-
-      /**
-       * @brief learns a BN (its parameters) with the structure passed in argument
-       * using a single pass estimation (not EM)
-       * @param dag the structure of the Bayesian network
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @throw MissingValueInDatabase if the database contains some missing
-       * values
-       */
-      BayesNet< GUM_SCALAR > _learnParameters_(const DAG& dag, bool takeIntoAccountScore);
-
-      /**
-       * @brief initializes EM and returns a pair containing, first, a bootstrap estimator
-       * and, second, the EM estimator
-       * @param dag the graphical structure of the BN learnt by EM
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @return a pair of estimators. The first one is used to fill the CPTs
-       * of the returned BN in order to initialize EM. It fills them using
-       * the database records without taking into account the missing values.
-       * The second estimator is the one used by all the subsequent iterations of
-       * the EM algorithm.
-       */
-      std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
-          _initializeEMParameterLearning_(const DAG& dag, bool takeIntoAccountScore);
-
-      /**
-       * @brief learns a BN (its parameters) with the structure passed in argument
-       * using the EM algorithm initialized by the BNLearner
-       * @param dag the structure of the Bayesian network
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @warning the EM algorithm initializes the parameters of the CPTs by
-       * running a first estimator that does not take into account missing values.
-       * If you wish to initialize them yourself, use the method in which a
-       * Bayes net is passed in argument rather than a DAG.
-       */
-      BayesNet< GUM_SCALAR > _learnParametersWithEM_(const DAG& dag, bool takeIntoAccountScore);
-
-      /**
-       * @brief learns a BN (its parameters) with the structure passed in argument
-       * using the EM algorithm initialized by the Bayes net passed in argument
-       * @param bn the Bayesian network used to specify the graphical structure
-       * of the returned Bayes net and to initialize its CPTs before running EM.
-       * When a CPT is filled exclusively with only zeroes, then this one is
-       * initialized by the BNLearner using a specific estimator that does not
-       * take into account the missing values in the database
-       * @param takeIntoAccountScore The dag passed in argument may have
-       * been learnt from a structure learning. In this case, if the score used
-       * to learn the structure has an implicit prior (like K2 which has a
-       * 1-smoothing prior), it is important to also take into account this
-       * implicit prior for parameter learning. By default, if a score
-       * exists, we will learn parameters by taking into account the prior
-       * specified by methods usePriorXXX () + the implicit prior of the
-       * score, else we just take into account the prior specified by
-       * usePriorXXX ()
-       * @throw MissingVariableInDatabase if a variable of the BN is not found
-       * in the database.
-       * @warning the EM algorithm initializes the parameters of the CPTs using
-       * those of the Bayes net passed in argument whenever those are not fully
-       * filled with zeroes, else the BNLearner initializes them using an
-       * estimator that does not take into account the missing values.
-       * If you wish the BNLearner to automatically initialize all the CPTs, use
-       * the method in which a DAG is passed in argument rather than a Bayes net.
-       */
-      BayesNet< GUM_SCALAR > _learnParametersWithEM_(const BayesNet< GUM_SCALAR >& bn,
-                                                     bool takeIntoAccountScore);
-    };
-
-    /// Prints BNLearner's current features
-    template < GUM_Numeric GUM_SCALAR >
-    std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner);
-  } /* namespace learning */
-} /* namespace gum */
+    BNLearner< GUM_SCALAR >& addPossibleEdge(std::string_view tail, std::string_view head);
+
+    BNLearner< GUM_SCALAR >& erasePossibleEdge(const Edge& edge);
+
+    BNLearner< GUM_SCALAR >& erasePossibleEdge(NodeId tail, NodeId head);
+
+    BNLearner< GUM_SCALAR >& erasePossibleEdge(std::string_view tail, std::string_view head);
+
+    BNLearner< GUM_SCALAR >& setMandatoryArcs(const ArcSet& set);
+
+    BNLearner< GUM_SCALAR >& setPossibleEdges(const EdgeSet& set);
+
+    BNLearner< GUM_SCALAR >& setPossibleSkeleton(const UndiGraph& skeleton);
+
+    BNLearner< GUM_SCALAR >& addNoParentNode(NodeId node);
+
+    BNLearner< GUM_SCALAR >& addNoParentNode(std::string_view name);
+
+    BNLearner< GUM_SCALAR >& eraseNoParentNode(NodeId node);
+
+    BNLearner< GUM_SCALAR >& eraseNoParentNode(std::string_view name);
+
+    BNLearner< GUM_SCALAR >& addNoChildrenNode(NodeId node);
+
+    BNLearner< GUM_SCALAR >& addNoChildrenNode(std::string_view name);
+
+    BNLearner< GUM_SCALAR >& eraseNoChildrenNode(NodeId node);
+
+    BNLearner< GUM_SCALAR >& eraseNoChildrenNode(std::string_view name);
+
+    BNLearner< GUM_SCALAR >& allowArcAdditions(bool allow);
+
+    BNLearner< GUM_SCALAR >& allowArcDeletions(bool allow);
+
+    BNLearner< GUM_SCALAR >& allowArcReversals(bool allow);
+
+    BNLearner< GUM_SCALAR >& allowArcTriangleDeletions(bool allow);
+
+    bool isConstraintBased() const;
+
+    bool isScoreBased() const;
+
+    protected:
+    /// create the prior used for learning
+    void createPrior_() override;
+
+    private:
+    BayesNet< GUM_SCALAR > _prior_bn_;
+
+    /// read the first line of a file to find column names
+    NodeProperty< Sequence< std::string > > _labelsFromBN_(std::string_view              filename,
+                                                           const BayesNet< GUM_SCALAR >& src);
+
+    /**
+     * @brief check that the database contains the nodes of the dag, else raise an exception
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @return nothing if all the nodes of the dag belong to the dataset
+     */
+    void _checkDAGCompatibility_(const DAG& dag);
+
+    /**
+     * @brief learns a BN (its parameters) with the structure passed in argument
+     * using a single pass estimation (not EM)
+     * @param dag the structure of the Bayesian network
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @throw MissingValueInDatabase if the database contains some missing
+     * values
+     */
+    BayesNet< GUM_SCALAR > _learnParameters_(const DAG& dag, bool takeIntoAccountScore);
+
+    /**
+     * @brief initializes EM and returns a pair containing, first, a bootstrap estimator
+     * and, second, the EM estimator
+     * @param dag the graphical structure of the BN learnt by EM
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @return a pair of estimators. The first one is used to fill the CPTs
+     * of the returned BN in order to initialize EM. It fills them using
+     * the database records without taking into account the missing values.
+     * The second estimator is the one used by all the subsequent iterations of
+     * the EM algorithm.
+     */
+    std::pair< std::shared_ptr< ParamEstimator >, std::shared_ptr< ParamEstimator > >
+        _initializeEMParameterLearning_(const DAG& dag, bool takeIntoAccountScore);
+
+    /**
+     * @brief learns a BN (its parameters) with the structure passed in argument
+     * using the EM algorithm initialized by the BNLearner
+     * @param dag the structure of the Bayesian network
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @warning the EM algorithm initializes the parameters of the CPTs by
+     * running a first estimator that does not take into account missing values.
+     * If you wish to initialize them yourself, use the method in which a
+     * Bayes net is passed in argument rather than a DAG.
+     */
+    BayesNet< GUM_SCALAR > _learnParametersWithEM_(const DAG& dag, bool takeIntoAccountScore);
+
+    /**
+     * @brief learns a BN (its parameters) with the structure passed in argument
+     * using the EM algorithm initialized by the Bayes net passed in argument
+     * @param bn the Bayesian network used to specify the graphical structure
+     * of the returned Bayes net and to initialize its CPTs before running EM.
+     * When a CPT is filled exclusively with only zeroes, then this one is
+     * initialized by the BNLearner using a specific estimator that does not
+     * take into account the missing values in the database
+     * @param takeIntoAccountScore The dag passed in argument may have
+     * been learnt from a structure learning. In this case, if the score used
+     * to learn the structure has an implicit prior (like K2 which has a
+     * 1-smoothing prior), it is important to also take into account this
+     * implicit prior for parameter learning. By default, if a score
+     * exists, we will learn parameters by taking into account the prior
+     * specified by methods usePriorXXX () + the implicit prior of the
+     * score, else we just take into account the prior specified by
+     * usePriorXXX ()
+     * @throw MissingVariableInDatabase if a variable of the BN is not found
+     * in the database.
+     * @warning the EM algorithm initializes the parameters of the CPTs using
+     * those of the Bayes net passed in argument whenever those are not fully
+     * filled with zeroes, else the BNLearner initializes them using an
+     * estimator that does not take into account the missing values.
+     * If you wish the BNLearner to automatically initialize all the CPTs, use
+     * the method in which a DAG is passed in argument rather than a Bayes net.
+     */
+    BayesNet< GUM_SCALAR > _learnParametersWithEM_(const BayesNet< GUM_SCALAR >& bn,
+                                                   bool takeIntoAccountScore);
+  };
+
+  /// Prints BNLearner's current features
+  template < GUM_Numeric GUM_SCALAR >
+  std::ostream& operator<<(std::ostream& output, const BNLearner< GUM_SCALAR >& learner);
+}   // namespace gum::learning
 
 /// always include templated methods
 #include <agrum/BN/learning/BNLearner_tpl.h>

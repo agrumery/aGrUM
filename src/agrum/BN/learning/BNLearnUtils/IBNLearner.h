@@ -54,11 +54,11 @@
 
 #include <cstdint>
 #include <memory>
-#include <optional>
 #include <sstream>
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/base/database/DBRowGeneratorEM.h>
@@ -869,6 +869,15 @@ namespace gum::learning {
     /// indicate if the selected algorithm is score-based
     bool isScoreBased() const;
 
+    /** @brief the algorithm used by the learners when none is selected explicitly
+     *
+     * It is read from the configuration key "learning" / "BNLearnerPreferredAlgo". A learner takes
+     * it when it is constructed and does not follow later changes of the configuration. K2 cannot
+     * be the preferred algorithm since it requires an order.
+     * @throws InvalidArgument if the configured name is not a known algorithm
+     */
+    static AlgoType preferredAlgo();
+
     // ##########################################################################
     /// @name allow/forbid the graph operations used during learning
     // ##########################################################################
@@ -941,7 +950,7 @@ namespace gum::learning {
     void useG2Test();
 
     /// set the significance threshold alpha for PC. If it is never set, PC uses the key
-    /// `learning.alpha` of the configuration, read when the structure is learned.
+    /// `learning.alpha` of the configuration, as it was when the learner was constructed.
     /// @throws OperationNotAllowed when PC is not the selected algorithm
     void setPCAlpha(double alpha);
 
@@ -974,7 +983,7 @@ namespace gum::learning {
     void useFCIG2Test();
 
     /// set the significance threshold alpha for FCI. If it is never set, FCI uses the key
-    /// `learning.alpha` of the configuration, read when the structure is learned.
+    /// `learning.alpha` of the configuration, as it was when the learner was constructed.
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     void setFCIAlpha(double alpha);
 
@@ -1167,10 +1176,6 @@ namespace gum::learning {
     /// a Boolean indicating whether we should use EM for parameter learning or not
     bool useEM_{false};
 
-    /// the noise factor (in (0,1)) used by EM for perturbing the CPT during init. It is always
-    /// written by useEM() and its variants, which read `learning.emNoise` when no noise is given.
-    double noiseEM_{0.1};
-
     /// the selected correction for miic
     CorrectedMutualInformation* mutualInfo_{nullptr};
 
@@ -1213,8 +1218,8 @@ namespace gum::learning {
     /// the constraint on no children nodes
     StructuralConstraintNoChildrenNodes constraintNoChildrenNodes_;
 
-    /// the selected learning algorithm
-    AlgoType selectedAlgo_{AlgoType::MIIC};
+    /// the learning algorithm ; it is initialized from the configuration, see preferredAlgo()
+    AlgoType selectedAlgo_{preferredAlgo()};
 
     /// whether we allow or not arc additions during learning
     bool allowArcAdditions_{true};
@@ -1252,12 +1257,11 @@ namespace gum::learning {
     IndependenceTest* indepTestPC_{nullptr};
 
     /// PC parameters
-    /// the threshold of the tests ; the key `learning.alpha` is read when the structure is learned
-    /// if it is not set
-    std::optional< double > alphaPc_;
-    bool                    stablePc_{true};
-    Size                    maxCondSetSizePc_{Size(-1)};
-    bool                    sortedUCPc_{false};
+    /// the threshold of the tests ; it is initialized from the key `learning.alpha`
+    double alphaPc_{gum::config().typed< double >("learning", "alpha")};
+    bool   stablePc_{true};
+    Size   maxCondSetSizePc_{Size(-1)};
+    bool   sortedUCPc_{false};
 
     /// the FCI algorithm
     gum::learning::FCI algoFCI_;
@@ -1269,11 +1273,10 @@ namespace gum::learning {
     IndependenceTest* indepTestFCI_{nullptr};
 
     /// FCI parameters
-    /// the threshold of the tests ; the key `learning.alpha` is read when the structure is learned
-    /// if it is not set
-    std::optional< double > alphaFci_;
-    Size                    maxPathLengthFci_{Size(-1)};
-    bool                    exhaustiveSepSetFci_{false};
+    /// the threshold of the tests ; it is initialized from the key `learning.alpha`
+    double alphaFci_{gum::config().typed< double >("learning", "alpha")};
+    Size   maxPathLengthFci_{Size(-1)};
+    bool   exhaustiveSepSetFci_{false};
 
     /// the parametric EM
     DAG2BNLearner dag2BN_;

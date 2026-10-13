@@ -646,15 +646,14 @@ namespace gum {
           useDirichletPrior(learner.priorDbname_, learner.priorWeight_);
           break;
         case BNLearnerPriorType::DIRICHLET_FROM_BAYESNET :
-          useDirichletPrior(learner._prior_bn_);
+          useDirichletPrior(learner._prior_bn_, learner.priorWeight_);
           break;
         case BNLearnerPriorType::BDEU : useBDeuPrior(learner.priorWeight_); break;
         case BNLearnerPriorType::SMOOTHING : useSmoothingPrior(learner.priorWeight_); break;
       }
 
-      useEM_   = learner.useEM_;
-      noiseEM_ = learner.noiseEM_;
-      dag2BN_  = learner.dag2BN_;
+      useEM_  = learner.useEM_;
+      dag2BN_ = learner.dag2BN_;
 
       setMaxIndegree(learner.constraintIndegree_.maxIndegree());
       for (const auto src: learner.constraintNoParentNodes_.nodes()) {

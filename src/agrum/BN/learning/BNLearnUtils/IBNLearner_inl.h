@@ -422,7 +422,6 @@ namespace gum::learning {
       useEM_ = true;
       dag2BN_.setMinEpsilonRate(epsilon);
       dag2BN_.setNoise(noise);
-      noiseEM_ = noise;
     } else {
       useEM_ = false;   // epsilon == 0
     }
@@ -456,7 +455,6 @@ namespace gum::learning {
     useEM_ = true;
     dag2BN_.setEpsilon(epsilon);
     dag2BN_.setNoise(noise);
-    noiseEM_ = noise;
   }
 
   /// forbid to use EM

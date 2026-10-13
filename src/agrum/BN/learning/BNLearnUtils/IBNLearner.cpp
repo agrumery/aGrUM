@@ -216,7 +216,7 @@ namespace gum::learning {
   IBNLearner::IBNLearner(const IBNLearner& from) :
       IApproximationSchemeConfiguration(from), ThreadNumberManager(from),
       inducedTypes_(from.inducedTypes_), scoreType_(from.scoreType_),
-      paramEstimatorType_(from.paramEstimatorType_), useEM_(from.useEM_), noiseEM_(from.noiseEM_),
+      paramEstimatorType_(from.paramEstimatorType_), useEM_(from.useEM_),
       priorType_(from.priorType_), priorWeight_(from.priorWeight_),
       constraintSliceOrder_(from.constraintSliceOrder_),
       constraintIndegree_(from.constraintIndegree_), constraintTabuList_(from.constraintTabuList_),
@@ -224,9 +224,17 @@ namespace gum::learning {
       constraintMandatoryArcs_(from.constraintMandatoryArcs_),
       constraintNoParentNodes_(from.constraintNoParentNodes_),
       constraintNoChildrenNodes_(from.constraintNoChildrenNodes_),
-      selectedAlgo_(from.selectedAlgo_), algoK2_(from.algoK2_),
+      selectedAlgo_(from.selectedAlgo_), allowArcAdditions_(from.allowArcAdditions_),
+      allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
+      allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(from.algoK2_),
       algoSimpleMiic_(from.algoSimpleMiic_), algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_),
+      indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_), stablePc_(from.stablePc_),
+      maxCondSetSizePc_(from.maxCondSetSizePc_), sortedUCPc_(from.sortedUCPc_),
+      indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
+      maxPathLengthFci_(from.maxPathLengthFci_), exhaustiveSepSetFci_(from.exhaustiveSepSetFci_),
       dag2BN_(from.dag2BN_), greedyHillClimbing_(from.greedyHillClimbing_),
+      extendedGreedyHillClimbing_(from.extendedGreedyHillClimbing_),
+      greedyThickThinning_(from.greedyThickThinning_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
       ranges_(from.ranges_), priorDbname_(from.priorDbname_), initialDag_(from.initialDag_),
       filename_(from.filename_), tabuListSize_(from.tabuListSize_),
@@ -239,18 +247,26 @@ namespace gum::learning {
   IBNLearner::IBNLearner(IBNLearner&& from) :
       ThreadNumberManager(std::move(from)), inducedTypes_(from.inducedTypes_),
       scoreType_(from.scoreType_), paramEstimatorType_(from.paramEstimatorType_),
-      useEM_(from.useEM_), noiseEM_(from.noiseEM_), priorType_(from.priorType_),
-      priorWeight_(from.priorWeight_), constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
+      useEM_(from.useEM_), priorType_(from.priorType_), priorWeight_(from.priorWeight_),
+      constraintSliceOrder_(std::move(from.constraintSliceOrder_)),
       constraintIndegree_(std::move(from.constraintIndegree_)),
       constraintTabuList_(std::move(from.constraintTabuList_)),
       constraintForbiddenArcs_(std::move(from.constraintForbiddenArcs_)),
       constraintMandatoryArcs_(std::move(from.constraintMandatoryArcs_)),
       constraintNoParentNodes_(std::move(from.constraintNoParentNodes_)),
       constraintNoChildrenNodes_(std::move(from.constraintNoChildrenNodes_)),
-      selectedAlgo_(from.selectedAlgo_), algoK2_(std::move(from.algoK2_)),
+      selectedAlgo_(from.selectedAlgo_), allowArcAdditions_(from.allowArcAdditions_),
+      allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
+      allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(std::move(from.algoK2_)),
       algoSimpleMiic_(std::move(from.algoSimpleMiic_)), algoMiic_(std::move(from.algoMiic_)),
-      kmodeMiic_(from.kmodeMiic_), dag2BN_(std::move(from.dag2BN_)),
+      kmodeMiic_(from.kmodeMiic_), indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_),
+      stablePc_(from.stablePc_), maxCondSetSizePc_(from.maxCondSetSizePc_),
+      sortedUCPc_(from.sortedUCPc_), indepTestTypeFCI_(from.indepTestTypeFCI_),
+      alphaFci_(from.alphaFci_), maxPathLengthFci_(from.maxPathLengthFci_),
+      exhaustiveSepSetFci_(from.exhaustiveSepSetFci_), dag2BN_(std::move(from.dag2BN_)),
       greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
+      extendedGreedyHillClimbing_(std::move(from.extendedGreedyHillClimbing_)),
+      greedyThickThinning_(std::move(from.greedyThickThinning_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
       scoreDatabase_(std::move(from.scoreDatabase_)), ranges_(std::move(from.ranges_)),
       priorDbname_(std::move(from.priorDbname_)), initialDag_(std::move(from.initialDag_)),
@@ -302,35 +318,49 @@ namespace gum::learning {
       }
 
       ThreadNumberManager::operator=(from);
-      scoreType_                 = from.scoreType_;
-      paramEstimatorType_        = from.paramEstimatorType_;
-      useEM_                     = from.useEM_;
-      noiseEM_                   = from.noiseEM_;
-      priorType_                 = from.priorType_;
-      priorWeight_               = from.priorWeight_;
-      constraintSliceOrder_      = from.constraintSliceOrder_;
-      constraintIndegree_        = from.constraintIndegree_;
-      constraintTabuList_        = from.constraintTabuList_;
-      constraintForbiddenArcs_   = from.constraintForbiddenArcs_;
-      constraintNoParentNodes_   = from.constraintNoParentNodes_;
-      constraintNoChildrenNodes_ = from.constraintNoChildrenNodes_;
-      constraintMandatoryArcs_   = from.constraintMandatoryArcs_;
-      selectedAlgo_              = from.selectedAlgo_;
-      algoK2_                    = from.algoK2_;
-      algoSimpleMiic_            = from.algoSimpleMiic_;
-      algoMiic_                  = from.algoMiic_;
-      kmodeMiic_                 = from.kmodeMiic_;
-      dag2BN_                    = from.dag2BN_;
-      greedyHillClimbing_        = from.greedyHillClimbing_;
-      localSearchWithTabuList_   = from.localSearchWithTabuList_;
-      scoreDatabase_             = from.scoreDatabase_;
-      ranges_                    = from.ranges_;
-      priorDbname_               = from.priorDbname_;
-      initialDag_                = from.initialDag_;
-      filename_                  = from.filename_;
-      tabuListSize_              = from.tabuListSize_;
-      nbDecreasingChanges_       = from.nbDecreasingChanges_;
-      currentAlgorithm_          = nullptr;
+      scoreType_                  = from.scoreType_;
+      paramEstimatorType_         = from.paramEstimatorType_;
+      useEM_                      = from.useEM_;
+      priorType_                  = from.priorType_;
+      priorWeight_                = from.priorWeight_;
+      constraintSliceOrder_       = from.constraintSliceOrder_;
+      constraintIndegree_         = from.constraintIndegree_;
+      constraintTabuList_         = from.constraintTabuList_;
+      constraintForbiddenArcs_    = from.constraintForbiddenArcs_;
+      constraintNoParentNodes_    = from.constraintNoParentNodes_;
+      constraintNoChildrenNodes_  = from.constraintNoChildrenNodes_;
+      constraintMandatoryArcs_    = from.constraintMandatoryArcs_;
+      selectedAlgo_               = from.selectedAlgo_;
+      allowArcAdditions_          = from.allowArcAdditions_;
+      allowArcDeletions_          = from.allowArcDeletions_;
+      allowArcReversals_          = from.allowArcReversals_;
+      allowArcTriangleDeletions_  = from.allowArcTriangleDeletions_;
+      algoK2_                     = from.algoK2_;
+      algoSimpleMiic_             = from.algoSimpleMiic_;
+      algoMiic_                   = from.algoMiic_;
+      kmodeMiic_                  = from.kmodeMiic_;
+      indepTestTypePC_            = from.indepTestTypePC_;
+      alphaPc_                    = from.alphaPc_;
+      stablePc_                   = from.stablePc_;
+      maxCondSetSizePc_           = from.maxCondSetSizePc_;
+      sortedUCPc_                 = from.sortedUCPc_;
+      indepTestTypeFCI_           = from.indepTestTypeFCI_;
+      alphaFci_                   = from.alphaFci_;
+      maxPathLengthFci_           = from.maxPathLengthFci_;
+      exhaustiveSepSetFci_        = from.exhaustiveSepSetFci_;
+      dag2BN_                     = from.dag2BN_;
+      greedyHillClimbing_         = from.greedyHillClimbing_;
+      extendedGreedyHillClimbing_ = from.extendedGreedyHillClimbing_;
+      greedyThickThinning_        = from.greedyThickThinning_;
+      localSearchWithTabuList_    = from.localSearchWithTabuList_;
+      scoreDatabase_              = from.scoreDatabase_;
+      ranges_                     = from.ranges_;
+      priorDbname_                = from.priorDbname_;
+      initialDag_                 = from.initialDag_;
+      filename_                   = from.filename_;
+      tabuListSize_               = from.tabuListSize_;
+      nbDecreasingChanges_        = from.nbDecreasingChanges_;
+      currentAlgorithm_           = nullptr;
     }
 
     return *this;
@@ -359,35 +389,49 @@ namespace gum::learning {
       }
 
       ThreadNumberManager::operator=(std::move(from));
-      scoreType_                 = from.scoreType_;
-      paramEstimatorType_        = from.paramEstimatorType_;
-      useEM_                     = from.useEM_;
-      noiseEM_                   = from.noiseEM_;
-      priorType_                 = from.priorType_;
-      priorWeight_               = from.priorWeight_;
-      constraintSliceOrder_      = std::move(from.constraintSliceOrder_);
-      constraintIndegree_        = std::move(from.constraintIndegree_);
-      constraintTabuList_        = std::move(from.constraintTabuList_);
-      constraintForbiddenArcs_   = std::move(from.constraintForbiddenArcs_);
-      constraintNoParentNodes_   = std::move(from.constraintNoParentNodes_);
-      constraintNoChildrenNodes_ = std::move(from.constraintNoChildrenNodes_);
-      constraintMandatoryArcs_   = std::move(from.constraintMandatoryArcs_);
-      selectedAlgo_              = from.selectedAlgo_;
-      algoK2_                    = from.algoK2_;
-      algoSimpleMiic_            = std::move(from.algoSimpleMiic_);
-      algoMiic_                  = std::move(from.algoMiic_);
-      kmodeMiic_                 = from.kmodeMiic_;
-      dag2BN_                    = std::move(from.dag2BN_);
-      greedyHillClimbing_        = std::move(from.greedyHillClimbing_);
-      localSearchWithTabuList_   = std::move(from.localSearchWithTabuList_);
-      scoreDatabase_             = std::move(from.scoreDatabase_);
-      ranges_                    = std::move(from.ranges_);
-      priorDbname_               = std::move(from.priorDbname_);
-      filename_                  = std::move(from.filename_);
-      initialDag_                = std::move(from.initialDag_);
-      tabuListSize_              = from.tabuListSize_;
-      nbDecreasingChanges_       = std::move(from.nbDecreasingChanges_);
-      currentAlgorithm_          = nullptr;
+      scoreType_                  = from.scoreType_;
+      paramEstimatorType_         = from.paramEstimatorType_;
+      useEM_                      = from.useEM_;
+      priorType_                  = from.priorType_;
+      priorWeight_                = from.priorWeight_;
+      constraintSliceOrder_       = std::move(from.constraintSliceOrder_);
+      constraintIndegree_         = std::move(from.constraintIndegree_);
+      constraintTabuList_         = std::move(from.constraintTabuList_);
+      constraintForbiddenArcs_    = std::move(from.constraintForbiddenArcs_);
+      constraintNoParentNodes_    = std::move(from.constraintNoParentNodes_);
+      constraintNoChildrenNodes_  = std::move(from.constraintNoChildrenNodes_);
+      constraintMandatoryArcs_    = std::move(from.constraintMandatoryArcs_);
+      selectedAlgo_               = from.selectedAlgo_;
+      allowArcAdditions_          = from.allowArcAdditions_;
+      allowArcDeletions_          = from.allowArcDeletions_;
+      allowArcReversals_          = from.allowArcReversals_;
+      allowArcTriangleDeletions_  = from.allowArcTriangleDeletions_;
+      algoK2_                     = from.algoK2_;
+      algoSimpleMiic_             = std::move(from.algoSimpleMiic_);
+      algoMiic_                   = std::move(from.algoMiic_);
+      kmodeMiic_                  = from.kmodeMiic_;
+      indepTestTypePC_            = from.indepTestTypePC_;
+      alphaPc_                    = from.alphaPc_;
+      stablePc_                   = from.stablePc_;
+      maxCondSetSizePc_           = from.maxCondSetSizePc_;
+      sortedUCPc_                 = from.sortedUCPc_;
+      indepTestTypeFCI_           = from.indepTestTypeFCI_;
+      alphaFci_                   = from.alphaFci_;
+      maxPathLengthFci_           = from.maxPathLengthFci_;
+      exhaustiveSepSetFci_        = from.exhaustiveSepSetFci_;
+      dag2BN_                     = std::move(from.dag2BN_);
+      greedyHillClimbing_         = std::move(from.greedyHillClimbing_);
+      extendedGreedyHillClimbing_ = std::move(from.extendedGreedyHillClimbing_);
+      greedyThickThinning_        = std::move(from.greedyThickThinning_);
+      localSearchWithTabuList_    = std::move(from.localSearchWithTabuList_);
+      scoreDatabase_              = std::move(from.scoreDatabase_);
+      ranges_                     = std::move(from.ranges_);
+      priorDbname_                = std::move(from.priorDbname_);
+      filename_                   = std::move(from.filename_);
+      initialDag_                 = std::move(from.initialDag_);
+      tabuListSize_               = from.tabuListSize_;
+      nbDecreasingChanges_        = std::move(from.nbDecreasingChanges_);
+      currentAlgorithm_           = nullptr;
     }
 
     return *this;
@@ -795,7 +839,7 @@ namespace gum::learning {
     algoPC_.setMandatoryGraph(mandatoryGraph);
     algoPC_.setForbiddenGraph(forbiddenGraph);
     algoPC_.setIndependenceTest(*indepTestPC_);
-    algoPC_.setAlpha(alphaPc_.value_or(gum::config().typed< double >("learning", "alpha")));
+    algoPC_.setAlpha(alphaPc_);
     algoPC_.setStable(stablePc_);
     algoPC_.setMaxCondSetSize(maxCondSetSizePc_);
     algoPC_.setUCPriority(sortedUCPc_ ? gum::learning::PC::UCPriority::Sorted
@@ -887,11 +931,24 @@ namespace gum::learning {
     algoFCI_.setMandatoryGraph(mandatoryGraph);
     algoFCI_.setForbiddenGraph(forbiddenGraph);
     algoFCI_.setIndependenceTest(*indepTestFCI_);
-    algoFCI_.setAlpha(alphaFci_.value_or(gum::config().typed< double >("learning", "alpha")));
+    algoFCI_.setAlpha(alphaFci_);
     algoFCI_.setMaxPathLength(maxPathLengthFci_);
     algoFCI_.setExhaustiveSepSet(exhaustiveSepSetFci_);
 
     return mgraph;
+  }
+
+  IBNLearner::AlgoType IBNLearner::preferredAlgo() {
+    const auto name = gum::config().typed< std::string >("learning", "BNLearnerPreferredAlgo");
+    if (name == "MIIC") return AlgoType::MIIC;
+    if (name == "PC") return AlgoType::PC;
+    if (name == "FCI") return AlgoType::FCI;
+    if (name == "GreedyHillClimbing") return AlgoType::GREEDY_HILL_CLIMBING;
+    if (name == "ExtendedGreedyHillClimbing") return AlgoType::EXTENDED_GREEDY_HILL_CLIMBING;
+    if (name == "LocalSearchWithTabuList") return AlgoType::LOCAL_SEARCH_WITH_TABU_LIST;
+    if (name == "GreedyThickThinning") return AlgoType::GREEDY_THICK_THINNING;
+    GUM_ERROR(InvalidArgument,
+              "'" << name << "' is not a valid value for learning.BNLearnerPreferredAlgo")
   }
 
   PDAG IBNLearner::learnPDAG_() {
