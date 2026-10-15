@@ -955,8 +955,8 @@ class _Configuration(object):
     Examples
     --------
       >>> import pyagrum
-      >>> pyagrum.config["dynamicBN", "graph_size"] = 10
-      >>> pyagrum.config["dynamicBN", "graph_size"]
+      >>> pyagrum.config["dynamicBN", "graphSize"] = 10
+      >>> pyagrum.config["dynamicBN", "graphSize"]
       "10"
 
     """
@@ -1115,8 +1115,8 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config["dynamicBN", "graph_size"] = 10
-        >>> pyagrum.config["dynamicBN", "graph_size"]
+        >>> pyagrum.config["dynamicBN", "graphSize"] = 10
+        >>> pyagrum.config["dynamicBN", "graphSize"]
         "10"
 
       Parameters
@@ -1144,8 +1144,8 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config["dynamicBN", "graph_size"] = 10
-        >>> pyagrum.config["dynamicBN", "graph_size"]
+        >>> pyagrum.config["dynamicBN", "graphSize"] = 10
+        >>> pyagrum.config["dynamicBN", "graphSize"]
         "10"
 
       Parameters
@@ -1313,6 +1313,363 @@ class _Configuration(object):
 
 # Register _Configuration in _pyagrumcpp:
 _pyagrumcpp._Configuration_swigregister(_Configuration)
+
+def _resolveFgColor(fgColor: str, bgColor: str, fallback: str) -> str:
+    return _pyagrumcpp._resolveFgColor(fgColor, bgColor, fallback)
+class DotOptions(object):
+    r"""
+
+    What you give to the ``toDot(options)`` of a graph, a Bayesian network, a Markov random field, an influence diagram,
+    a causal model, a credal network, a junction tree... beyond the look given by ``pyagrum.config`` (sections
+    ``notebook``, ``factorgraph``, ``dynamicBN``, ``influenceDiagram``, ``credalnet`` and ``causal``).
+
+    What is not given is taken from the configuration. The nodes are designated by their identifiers, the arcs by the
+    identifiers of their tail and of their head (an undirected edge by its two ends, in any order) and the factor of a
+    factor graph by the identifiers of its variables.
+
+    Examples
+    --------
+      >>> import pyagrum as gum
+      >>> bn = pyagrum.fastBN('A->B->C')
+      >>> options = pyagrum.DotOptions()
+      >>> options.setSize('12!')
+      >>> options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
+      >>> options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
+      >>> dot = bn.toDot(options)
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        _pyagrumcpp.DotOptions_swiginit(self, _pyagrumcpp.new_DotOptions())
+
+    def setSize(self, size: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        size : str
+          the size (for graphviz, in inches) of the graph, such as ``'5'`` or ``'12!'`` for an exact size.
+
+        """
+        return _pyagrumcpp.DotOptions_setSize(self, size)
+
+    def setRankDir(self, rankDir: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        rankDir : str
+          the direction of the layout: ``'TB'`` (top to bottom) or ``'LR'`` (left to right).
+
+        """
+        return _pyagrumcpp.DotOptions_setRankDir(self, rankDir)
+
+    def setLayout(self, layout: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        layout : str
+          the graphviz layout engine (``'dot'``, ``'neato'``, ``'fdp'``...).
+
+        """
+        return _pyagrumcpp.DotOptions_setLayout(self, layout)
+
+    def setLabel(self, label: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        label : str
+          the label of the graph.
+
+        """
+        return _pyagrumcpp.DotOptions_setLabel(self, label)
+
+    def size(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the size given for the graph, an empty string if none was given.
+
+        """
+        return _pyagrumcpp.DotOptions_size(self)
+
+    def rankDir(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the direction of the layout given for the graph, an empty string if none was given.
+
+        """
+        return _pyagrumcpp.DotOptions_rankDir(self)
+
+    def layout(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the layout given for the graph, an empty string if none was given.
+
+        """
+        return _pyagrumcpp.DotOptions_layout(self)
+
+    def label(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the label given for the graph, an empty string if none was given.
+
+        """
+        return _pyagrumcpp.DotOptions_label(self)
+
+    def setNodeBgColor(self, node: int, color: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of the node.
+        color : str
+          the background color of the node (``'#RRGGBB'`` or a name of color). If no font color is given for the node, the text
+          is black or white according to the brightness of this background.
+
+        """
+        return _pyagrumcpp.DotOptions_setNodeBgColor(self, node, color)
+
+    def setNodeFgColor(self, node: int, color: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of the node.
+        color : str
+          the font color of the node (``'adaptive'`` for black or white according to the background).
+
+        """
+        return _pyagrumcpp.DotOptions_setNodeFgColor(self, node, color)
+
+    def setNodeLabel(self, node: int, label: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of the node.
+        label : str
+          the text displayed in the node (by default, its name).
+
+        """
+        return _pyagrumcpp.DotOptions_setNodeLabel(self, node, label)
+
+    def setNodeTooltip(self, node: int, tooltip: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of the node.
+        tooltip : str
+          the text displayed when the mouse is over the node.
+
+        """
+        return _pyagrumcpp.DotOptions_setNodeTooltip(self, node, tooltip)
+
+    def setNodeAttribute(self, node: int, key: str, value: str, verbatim: bool=False) -> None:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of the node.
+        key : str
+          the name of a graphviz attribute of the node (letters, digits and underscores).
+        value : str
+          its value.
+        verbatim : bool
+          if True, the value is written as it is (with its own quotes if it needs some), for instance for an HTML label.
+
+        """
+        return _pyagrumcpp.DotOptions_setNodeAttribute(self, node, key, value, verbatim)
+
+    def setArcColor(self, tail: int, head: int, color: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail of the arc.
+        head : int
+          the id of the head of the arc.
+        color : str
+          the color of the arc.
+
+        """
+        return _pyagrumcpp.DotOptions_setArcColor(self, tail, head, color)
+
+    def setArcWidth(self, tail: int, head: int, width: float) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail of the arc.
+        head : int
+          the id of the head of the arc.
+        width : float
+          the width of the line of the arc (at least 0).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if the width is negative or not a finite number.
+
+        """
+        return _pyagrumcpp.DotOptions_setArcWidth(self, tail, head, width)
+
+    def setArcLabel(self, tail: int, head: int, label: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail of the arc.
+        head : int
+          the id of the head of the arc.
+        label : str
+          the text displayed next to the arc.
+
+        """
+        return _pyagrumcpp.DotOptions_setArcLabel(self, tail, head, label)
+
+    def setArcTooltip(self, tail: int, head: int, tooltip: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail of the arc.
+        head : int
+          the id of the head of the arc.
+        tooltip : str
+          the text displayed when the mouse is over the arc.
+
+        """
+        return _pyagrumcpp.DotOptions_setArcTooltip(self, tail, head, tooltip)
+
+    def setArcAttribute(self, tail: int, head: int, key: str, value: str, verbatim: bool=False) -> None:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail of the arc.
+        head : int
+          the id of the head of the arc.
+        key : str
+          the name of a graphviz attribute of the arc (letters, digits and underscores).
+        value : str
+          its value.
+        verbatim : bool
+          if True, the value is written as it is.
+
+        """
+        return _pyagrumcpp.DotOptions_setArcAttribute(self, tail, head, key, value, verbatim)
+
+    def empty(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if nothing was given.
+
+        """
+        return _pyagrumcpp.DotOptions_empty(self)
+
+    def setFactorBgColor(self, variables: list[int], color: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        variables : Set[int]
+          the ids of the variables of the factor (in a factor graph of a Markov random field).
+        color : str
+          the background color of the factor.
+
+        """
+        return _pyagrumcpp.DotOptions_setFactorBgColor(self, variables, color)
+
+    def setFactorFgColor(self, variables: list[int], color: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        variables : Set[int]
+          the ids of the variables of the factor (in a factor graph of a Markov random field).
+        color : str
+          the font color of the factor.
+
+        """
+        return _pyagrumcpp.DotOptions_setFactorFgColor(self, variables, color)
+
+    def setFactorLabel(self, variables: list[int], label: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        variables : Set[int]
+          the ids of the variables of the factor (in a factor graph of a Markov random field).
+        label : str
+          the text displayed in the factor.
+
+        """
+        return _pyagrumcpp.DotOptions_setFactorLabel(self, variables, label)
+
+    def setFactorTooltip(self, variables: list[int], tooltip: str) -> None:
+        r"""
+
+        Parameters
+        ----------
+        variables : Set[int]
+          the ids of the variables of the factor (in a factor graph of a Markov random field).
+        tooltip : str
+          the text displayed when the mouse is over the factor.
+
+        """
+        return _pyagrumcpp.DotOptions_setFactorTooltip(self, variables, tooltip)
+
+    def setFactorAttribute(self, variables: list[int], key: str, value: str, verbatim: bool=False) -> None:
+        r"""
+
+        Parameters
+        ----------
+        variables : Set[int]
+          the ids of the variables of the factor (in a factor graph of a Markov random field).
+        key : str
+          the name of a graphviz attribute of the factor.
+        value : str
+          its value.
+        verbatim : bool
+          if True, the value is written as it is.
+
+        """
+        return _pyagrumcpp.DotOptions_setFactorAttribute(self, variables, key, value, verbatim)
+    __swig_destroy__ = _pyagrumcpp.delete_DotOptions
+
+# Register DotOptions in _pyagrumcpp:
+_pyagrumcpp.DotOptions_swigregister(DotOptions)
 VarType_DISCRETIZED = _pyagrumcpp.VarType_DISCRETIZED
 VarType_LABELIZED = _pyagrumcpp.VarType_LABELIZED
 VarType_INTEGER = _pyagrumcpp.VarType_INTEGER
@@ -3503,8 +3860,13 @@ class UndiGraph(object):
         """
         return _pyagrumcpp.UndiGraph_clear(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -3512,7 +3874,7 @@ class UndiGraph(object):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.UndiGraph_toDot(self)
+        return _pyagrumcpp.UndiGraph_toDot(self, *args)
 
     def hasUndirectedCycle(self) -> bool:
         r"""
@@ -4083,8 +4445,13 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_clear(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -4092,7 +4459,7 @@ class DiGraph(object):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.DiGraph_toDot(self)
+        return _pyagrumcpp.DiGraph_toDot(self, *args)
 
     def topologicalOrder(self) -> list[int]:
         r"""
@@ -5084,8 +5451,13 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_hasMixedOrientedPath(self, node1, node2)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -5093,7 +5465,7 @@ class MixedGraph(UndiGraph, DiGraph):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.MixedGraph_toDot(self)
+        return _pyagrumcpp.MixedGraph_toDot(self, *args)
 
     def chainComponent(self, node: int) -> list[int]:
         r"""
@@ -5747,8 +6119,13 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -5756,7 +6133,7 @@ class PDAG(MixedGraph):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.PDAG_toDot(self)
+        return _pyagrumcpp.PDAG_toDot(self, *args)
 
     def __repr__(self) -> str:
         return _pyagrumcpp.PDAG___repr__(self)
@@ -6501,7 +6878,7 @@ class PAG(UndiGraph):
         """
         return _pyagrumcpp.PAG_toMixedGraph(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
 
         Return a Graphviz dot representation of the PAG.
@@ -6511,13 +6888,18 @@ class PAG(UndiGraph):
         - Tail: ``none``
         - Arrowhead: ``normal``
 
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+
         Returns
         -------
         str
             dot-format string
 
         """
-        return _pyagrumcpp.PAG_toDot(self)
+        return _pyagrumcpp.PAG_toDot(self, *args)
 
     def addNode(self) -> int:
         r"""
@@ -6993,16 +7375,23 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrumcpp.CliqueGraph_isJoinTree(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (keys ``junctionTree*`` of the
+            section ``notebook``). The options of a clique are the ones of its node; the options of an edge are
+            the ones of its separator (label, tooltip, color, attributes, and width of the two links).
 
         Returns
         -------
         str
-            a friendly display of the graph in DOT format
+            a friendly display of the clique graph in DOT format: the cliques and the separators are nodes
 
         """
-        return _pyagrumcpp.CliqueGraph_toDot(self)
+        return _pyagrumcpp.CliqueGraph_toDot(self, *args)
 
     def __map_str__(self, *args) -> str:
         return _pyagrumcpp.CliqueGraph___map_str__(self, *args)
@@ -12549,8 +12938,13 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_pdag(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -12558,7 +12952,7 @@ class EssentialGraph(object):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.EssentialGraph_toDot(self)
+        return _pyagrumcpp.EssentialGraph_toDot(self, *args)
 
     def sizeArcs(self) -> int:
         r"""
@@ -12928,8 +13322,13 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_dag(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -12937,7 +13336,7 @@ class MarkovBlanket(object):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.MarkovBlanket_toDot(self)
+        return _pyagrumcpp.MarkovBlanket_toDot(self, *args)
 
     def sizeArcs(self) -> int:
         r"""
@@ -13694,8 +14093,13 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrumcpp.IBayesNet_maxNonOneParam(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -13703,7 +14107,7 @@ class IBayesNet(DAGmodel):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.IBayesNet_toDot(self)
+        return _pyagrumcpp.IBayesNet_toDot(self, *args)
 
     def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
@@ -16007,8 +16411,13 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrumcpp.BayesNetFragment_variableFromName(self, name)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -16016,7 +16425,7 @@ class BayesNetFragment(IBayesNet, ):
             a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.BayesNetFragment_toDot(self)
+        return _pyagrumcpp.BayesNetFragment_toDot(self, *args)
 
     def isInstalledNode(self, *args) -> bool:
         r"""

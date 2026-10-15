@@ -686,6 +686,9 @@ T : int
 highlightReplicated : bool
     if True, shade the replicated slices (>= k) differently from the template
     slices (default False)
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``dynamicBN``):
+    the nodes and the arcs are designated by their ids in the unrolled :class:`pyagrum.BayesNet`
 
 Returns
 -------

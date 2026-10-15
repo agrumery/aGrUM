@@ -71,69 +71,11 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
   pydot.Dot
     the dot representation of the influence diagram
   """
-  res = "digraph  {\n"
-
-  # chance node
-  res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "chance_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "chance_fgcolor"]}",
-          style=filled,shape={pyagrum.config["influenceDiagram", "chance_shape"]}, 
-          height=0,margin=0.1];
-'''
-  for node in diag.nodes():
-    if diag.isChanceNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # decision node
-  res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "decision_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "decision_fgcolor"]}",
-          style=filled,shape={pyagrum.config["influenceDiagram", "decision_shape"]}, 
-          height=0,margin=0.1];
-'''
-  for node in diag.nodes():
-    if diag.isDecisionNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # utility node
-  res += f'''
-    node [fillcolor="{pyagrum.config["influenceDiagram", "utility_bgcolor"]}",
-          fontcolor="{pyagrum.config["influenceDiagram", "utility_fgcolor"]}",
-          style=filled,shape={pyagrum.config["influenceDiagram", "utility_shape"]}, height=0,margin=0.1];
-'''
-  for node in diag.nodes():
-    if diag.isUtilityNode(node):
-      res += '   "' + diag.variable(node).name() + '";' + "\n"
-
-  # arcs
-  res += "\n"
-  for node in diag.nodes():
-    for chi in diag.children(node):
-      res += '  "' + diag.variable(node).name() + '"->"' + diag.variable(chi).name() + '"'
-      if diag.isDecisionNode(chi):
-        res += f' [style="{pyagrum.config["influenceDiagram", "decision_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
-      elif diag.isUtilityNode(chi):
-        res += (
-          f' [style="{pyagrum.config["influenceDiagram", "utility_arc_style"]}", color = "{gumcols.getBlackInTheme()}"]'
-        )
-      else:
-        res += f' [color = "{gumcols.getBlackInTheme()}"]'
-      res += ";\n"
-  res += "}"
-
-  _graphs = dot.graph_from_dot_data(res)
-  assert _graphs is not None
-  g = _graphs[0]
-
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-
-  if size is None:
-    size = pyagrum.config["influenceDiagram", "id_size"]
-  # dynamic member makes pylink unhappy
-  # pylint: disable=no-member
-  g.set_size(size)
-  return g
+  # the look comes from the configuration (written by the toDot of the influence diagram)
+  options = pyagrum.DotOptions()
+  if size is not None:
+    options.setSize(str(size))
+  return gumcols.dotFromAgrum(diag.toDot(options))
 
 
 def LIMIDinference2dot(
@@ -200,17 +142,17 @@ def LIMIDinference2dot(
 
     # defaults
     if diag.isChanceNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "chance_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "chance_fgcolor"]
-      shape = pyagrum.config["influenceDiagram", "chance_shape"]
+      bgcolor = pyagrum.config["influenceDiagram", "chanceBgColor"]
+      fgcolor = gumcols.configFgColor("influenceDiagram", "chanceFgColor")
+      shape = pyagrum.config["influenceDiagram", "chanceShape"]
     elif diag.isDecisionNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "decision_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "decision_fgcolor"]
-      shape = pyagrum.config["influenceDiagram", "decision_shape"]
+      bgcolor = pyagrum.config["influenceDiagram", "decisionBgColor"]
+      fgcolor = gumcols.configFgColor("influenceDiagram", "decisionFgColor")
+      shape = pyagrum.config["influenceDiagram", "decisionShape"]
     else:  # diag.isUtilityNode(nid):
-      bgcolor = pyagrum.config["influenceDiagram", "utility_bgcolor"]
-      fgcolor = pyagrum.config["influenceDiagram", "utility_fgcolor"]
-      shape = pyagrum.config["influenceDiagram", "utility_shape"]
+      bgcolor = pyagrum.config["influenceDiagram", "utilityBgColor"]
+      fgcolor = gumcols.configFgColor("influenceDiagram", "utilityFgColor")
+      shape = pyagrum.config["influenceDiagram", "utilityShape"]
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -254,9 +196,9 @@ def LIMIDinference2dot(
     for chi in diag.children(node):
       dotstr += '  "' + diag.variable(node).name() + '"->"' + diag.variable(chi).name() + '"'
       if diag.isDecisionNode(chi):
-        dotstr += f' [style="{pyagrum.config["influenceDiagram", "decision_arc_style"]}"]'
+        dotstr += f' [style="{pyagrum.config["influenceDiagram", "decisionArcStyle"]}"]'
       elif diag.isUtilityNode(chi):
-        dotstr += f' [style="{pyagrum.config["influenceDiagram", "utility_arc_style"]}"]'
+        dotstr += f' [style="{pyagrum.config["influenceDiagram", "utilityArcStyle"]}"]'
       dotstr += ";\n"
   dotstr += "}"
 

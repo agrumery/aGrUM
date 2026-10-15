@@ -279,7 +279,7 @@ class KTBNConstructionTestCase(pyAgrumTestCase):
     m = _buildK2Model()
 
     dot = m.toDot()
-    self.assertIn("digraph KTBN", dot)
+    self.assertIn('digraph "KTBN"', dot)
     self.assertIn("cluster_0", dot)
     self.assertIn("cluster_1", dot)
     self.assertIn('"X[0]" -> "X[1]"', dot)

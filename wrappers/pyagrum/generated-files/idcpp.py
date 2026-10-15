@@ -181,8 +181,13 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
     def __eq__(self, other: "InfluenceDiagram") -> bool:
         return _idcpp.InfluenceDiagram___eq__(self, other)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -190,7 +195,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
             a friendly display of the graph in DOT format
 
         """
-        return _idcpp.InfluenceDiagram_toDot(self)
+        return _idcpp.InfluenceDiagram_toDot(self, *args)
 
     def clear(self) -> None:
         r"""

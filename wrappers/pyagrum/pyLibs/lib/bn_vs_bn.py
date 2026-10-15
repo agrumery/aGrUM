@@ -48,7 +48,7 @@ import math
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib.bn2graph as ggr
+import pyagrum.lib._colors as gumcols
 import pyagrum.lib.utils as gutils
 
 
@@ -361,9 +361,27 @@ class GraphicalBNComparator:
     }
 
 
+def _structureLayout(model) -> dict[str, gutils.DotPoint]:
+  """
+  The position, given by graphviz, of each node (identified by its name) of a model, from its structure only: any model
+  which is a DAG with names (a Bayesian network, a CLG, ...) is accepted.
+  """
+  dag = pyagrum.DiGraph()
+  options = pyagrum.DotOptions()
+  for i in model.nodes():
+    dag.addNodeWithId(i)
+    options.setNodeLabel(i, model.variable(i).name())  # the size of a node is the one of its name
+  for tail, head in model.arcs():
+    dag.addArc(tail, head)
+  layout = gutils.dot_layout(gumcols.dotFromAgrum(dag.toDot(options)))  # the nodes of a DiGraph are its ids
+  return {model.variable(i).name(): layout[str(i)] for i in model.nodes()}
+
+
 def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
   """Return a pydot graph that compares the arcs of bnref to bncmp.
   graphDiff allows bncmp to have less nodes than bnref. (this is not the case in GraphicalBNComparator.dotDiff())
+
+  It is a diff of DAGs: bnref and bncmp can be any model which is a DAG with named nodes (a Bayesian network, a CLG...).
 
   if noStyle is False use 4 styles (fixed in pyagrum.config) :
     - the arc is common for both
@@ -381,8 +399,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
   pydot.Dot
     the result dot graph or None if pydot can not be imported
   """
-  g = ggr.BN2dot(bnref)
-  positions = gutils.dot_layout(g)
+  positions = _structureLayout(bnref)
 
   res = dot.Dot(graph_type="digraph", bgcolor="transparent", layout="fdp", splines=True)
   for i1 in bnref.nodes():

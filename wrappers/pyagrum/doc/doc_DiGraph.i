@@ -271,6 +271,11 @@ int
 
 %feature("docstring") gum::DiGraph::toDot
 "
+Parameters
+----------
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+
 Returns
 -------
 str

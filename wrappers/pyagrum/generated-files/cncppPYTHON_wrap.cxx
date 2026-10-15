@@ -3753,24 +3753,25 @@ namespace Swig {
 #define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[38]
 #define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t swig_types[39]
 #define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[40]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[41]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[42]
-#define SWIGTYPE_p_iterator swig_types[43]
-#define SWIGTYPE_p_iterator_category swig_types[44]
-#define SWIGTYPE_p_iterator_safe swig_types[45]
-#define SWIGTYPE_p_msg swig_types[46]
-#define SWIGTYPE_p_node_const_iterator swig_types[47]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[48]
-#define SWIGTYPE_p_node_iterator swig_types[49]
-#define SWIGTYPE_p_node_iterator_safe swig_types[50]
-#define SWIGTYPE_p_second_type swig_types[51]
-#define SWIGTYPE_p_size_type swig_types[52]
-#define SWIGTYPE_p_std__size_t swig_types[53]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[54]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[55]
-#define SWIGTYPE_p_value_type swig_types[56]
-static swig_type_info *swig_types[58];
-static swig_module_info swig_module = {swig_types, 57, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[41]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[42]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[43]
+#define SWIGTYPE_p_iterator swig_types[44]
+#define SWIGTYPE_p_iterator_category swig_types[45]
+#define SWIGTYPE_p_iterator_safe swig_types[46]
+#define SWIGTYPE_p_msg swig_types[47]
+#define SWIGTYPE_p_node_const_iterator swig_types[48]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[49]
+#define SWIGTYPE_p_node_iterator swig_types[50]
+#define SWIGTYPE_p_node_iterator_safe swig_types[51]
+#define SWIGTYPE_p_second_type swig_types[52]
+#define SWIGTYPE_p_size_type swig_types[53]
+#define SWIGTYPE_p_std__size_t swig_types[54]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[55]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[56]
+#define SWIGTYPE_p_value_type swig_types[57]
+static swig_type_info *swig_types[59];
+static swig_module_info swig_module = {swig_types, 58, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4226,21 +4227,6 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 }
 
 
-  #define SWIG_From_double   PyFloat_FromDouble 
-
-
-SWIGINTERNINLINE PyObject*
-  SWIG_From_bool  (bool value)
-{
-  return PyBool_FromLong(value ? 1 : 0);
-}
-
-SWIGINTERN std::string gum_credal_CredalNet_Sl_double_Sg____repr__(gum::credal::CredalNet< double > const *self){
-   std::stringstream s;
-   s<<"(pyagrum.CredalNet@"<<std::hex<<self<<") "<<self->toString();
-   return s.str();
-  }
-
 SWIGINTERN swig_type_info*
 SWIG_pchar_descriptor(void)
 {
@@ -4282,6 +4268,21 @@ SWIG_From_std_string  (const std::string& s)
   return SWIG_FromCharPtrAndSize(s.data(), s.size());
 }
 
+
+  #define SWIG_From_double   PyFloat_FromDouble 
+
+
+SWIGINTERNINLINE PyObject*
+  SWIG_From_bool  (bool value)
+{
+  return PyBool_FromLong(value ? 1 : 0);
+}
+
+SWIGINTERN std::string gum_credal_CredalNet_Sl_double_Sg____repr__(gum::credal::CredalNet< double > const *self){
+   std::stringstream s;
+   s<<"(pyagrum.CredalNet@"<<std::hex<<self<<") "<<self->toString();
+   return s.str();
+  }
 SWIGINTERN std::string gum_credal_CredalNet_Sl_double_Sg____str__(gum::credal::CredalNet< double > const *self){ return self->toString();}
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setVerbosity(gum::credal::CNMonteCarloSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setEpsilon(gum::credal::CNMonteCarloSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
@@ -6018,6 +6019,103 @@ fail:
   SWIG_Py_XDECREF(bytes3);
   
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CredalNet_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::credal::CredalNet< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CredalNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CredalNet_toDot" "', argument " "1"" of type '" "gum::credal::CredalNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CredalNet< double > * >(argp1);
+  {
+    try {
+      result = ((gum::credal::CredalNet< double > const *)arg1)->toDot();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CredalNet_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::credal::CredalNet< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CredalNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CredalNet_toDot" "', argument " "1"" of type '" "gum::credal::CredalNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CredalNet< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CredalNet_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CredalNet_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::credal::CredalNet< double > const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CredalNet_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CredalNet_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_CredalNet_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_CredalNet_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CredalNet_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::credal::CredalNet< double >::toDot() const\n"
+    "    gum::credal::CredalNet< double >::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -10276,6 +10374,20 @@ static PyMethodDef SwigMethods[] = {
 		"    the path to save the BayesNet which contains the upper probabilities of each node X.\n"
 		"\n"
 		""},
+	 { "CredalNet_toDot", _wrap_CredalNet_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):\n"
+		"    size, label, colors of some nodes, width of some arcs...\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"    a friendly display of the graph of the credal network in DOT format (the nodes are heptagons)\n"
+		"\n"
+		""},
 	 { "CredalNet_computeBinaryCPTMinMax", _wrap_CredalNet_computeBinaryCPTMinMax, METH_O, "\n"
 		"\n"
 		"Used with binary networks to speed-up L2U inference.\n"
@@ -11117,6 +11229,7 @@ static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double
 static swig_type_info _swigt__p_gum__credal__CNLoopyPropagationT_double_t = {"_p_gum__credal__CNLoopyPropagationT_double_t", "gum::credal::CNLoopyPropagation< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CNMonteCarloSamplingT_double_t = {"_p_gum__credal__CNMonteCarloSamplingT_double_t", "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *|gum::credal::CNMonteCarloSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CredalNetT_double_t = {"_p_gum__credal__CredalNetT_double_t", "gum::credal::CredalNet< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator = {"_p_iterator", "iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_category = {"_p_iterator_category", "iterator_category *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_safe = {"_p_iterator_safe", "iterator_safe *", 0, 0, (void*)0, 0};
@@ -11174,6 +11287,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__credal__CNLoopyPropagationT_double_t,
   &_swigt__p_gum__credal__CNMonteCarloSamplingT_double_t,
   &_swigt__p_gum__credal__CredalNetT_double_t,
+  &_swigt__p_gum__dot__DotOptions,
   &_swigt__p_gum__learning__BNLearnerT_double_t,
   &_swigt__p_gum__learning__IBNLearner,
   &_swigt__p_iterator,
@@ -11235,6 +11349,7 @@ static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__Te
 static swig_cast_info _swigc__p_gum__credal__CNLoopyPropagationT_double_t[] = {  {&_swigt__p_gum__credal__CNLoopyPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CNMonteCarloSamplingT_double_t[] = {  {&_swigt__p_gum__credal__CNMonteCarloSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CredalNetT_double_t[] = {  {&_swigt__p_gum__credal__CredalNetT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator[] = {  {&_swigt__p_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_category[] = {  {&_swigt__p_iterator_category, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_safe[] = {  {&_swigt__p_iterator_safe, 0, 0, 0},{0, 0, 0, 0}};
@@ -11292,6 +11407,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__credal__CNLoopyPropagationT_double_t,
   _swigc__p_gum__credal__CNMonteCarloSamplingT_double_t,
   _swigc__p_gum__credal__CredalNetT_double_t,
+  _swigc__p_gum__dot__DotOptions,
   _swigc__p_gum__learning__BNLearnerT_double_t,
   _swigc__p_gum__learning__IBNLearner,
   _swigc__p_iterator,

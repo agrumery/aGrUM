@@ -132,7 +132,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
     the size of the visualisation
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   gumcols.prepareDot(gr, size=size)
   display(Image(data=gr.create_png(), format="png"))
@@ -177,7 +177,7 @@ def showBNDiff(bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str |
       Size of the rendered graph.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
   cmp = GraphicalBNComparator(bn1, bn2)
   showGraph(cmp.dotDiff(), size)
 
@@ -212,7 +212,7 @@ def showJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctiontree_map_size"]
+    size = pyagrum.config["notebook", "junctionTreeMapSize"]
   showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -230,7 +230,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
       Size of the rendered graph.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
   showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -314,7 +314,7 @@ def showBN(
       Color map to show the arc values.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmap
@@ -355,7 +355,7 @@ def showCN(
     color map to show the vals of arcs
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -412,10 +412,10 @@ def showMRF(
       Color map to show the edge colors.
   """
   if view is None:
-    view = pyagrum.config["notebook", "markovrandomfield_view"]
+    view = pyagrum.config["notebook", "markovRandomFieldView"]
 
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmap
@@ -440,7 +440,7 @@ def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | Non
       Size of the rendered graph.
   """
   if size is None:
-    size = pyagrum.config["influenceDiagram", "id_size"]
+    size = pyagrum.config["influenceDiagram", "graphSize"]
 
   showGraph(ID2dot(diag), size)
 
@@ -457,7 +457,7 @@ def showCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) ->
     the size of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["causal", "graph_size"]
+    size = pyagrum.config["causal", "graphSize"]
   showDot(cm.toDot(), size=size)
 
 

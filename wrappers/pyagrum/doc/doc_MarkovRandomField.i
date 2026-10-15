@@ -692,6 +692,11 @@ float
 "
 Return a Graphviz dot representation of the Markov random field.
 
+Parameters
+----------
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+
 Returns
 -------
 str
@@ -701,6 +706,11 @@ str
 %feature("docstring") gum::IMarkovRandomField::toDotAsFactorGraph
 "
 Return a Graphviz dot representation of the Markov random field as a factor graph.
+
+Parameters
+----------
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------

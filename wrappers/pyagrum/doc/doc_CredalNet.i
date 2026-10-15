@@ -174,6 +174,20 @@ pyagrum.CredalNet
     the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
 "
 
+%feature("docstring") gum::credal::CredalNet::toDot
+"
+Parameters
+----------
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):
+    size, label, colors of some nodes, width of some arcs...
+
+Returns
+-------
+str
+    a friendly display of the graph of the credal network in DOT format (the nodes are heptagons)
+"
+
 %feature("docstring") gum::credal::CredalNet::current_bn
 "
 Returns

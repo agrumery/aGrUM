@@ -769,7 +769,7 @@ class KTBN(object):
         """
         return _ktbncpp.KTBN_toDot(self)
 
-    def toUnrolledDot(self, T: int, highlightReplicated: bool=False) -> str:
+    def toUnrolledDot(self, *args) -> str:
         r"""
 
         Returns a Graphviz dot string of the k-TBN unrolled over T time slices, without
@@ -782,6 +782,9 @@ class KTBN(object):
         highlightReplicated : bool
             if True, shade the replicated slices (>= k) differently from the template
             slices (default False)
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (section ``dynamicBN``):
+            the nodes and the arcs are designated by their ids in the unrolled :class:`pyagrum.BayesNet`
 
         Returns
         -------
@@ -794,7 +797,7 @@ class KTBN(object):
             if T < k
 
         """
-        return _ktbncpp.KTBN_toUnrolledDot(self, T, highlightReplicated)
+        return _ktbncpp.KTBN_toUnrolledDot(self, *args)
 
     def bnToDot(self) -> str:
         r"""

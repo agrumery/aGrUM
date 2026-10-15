@@ -116,6 +116,8 @@ static int _pyagrum_import_numpy(void) {
 
 /* %rename of the configuration: before the declaration of its class */
 %include "configurationPython.i"
+/* documentation of the options of the toDot() */
+%include "dotPython.i"
 
 /* extraction of the API for all wrappers */
 %include "aGrUM_wrap_BASE.i"

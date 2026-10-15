@@ -373,6 +373,23 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_saveBNsMinMax(self, min_path, max_path)
 
+    def toDot(self, *args) -> str:
+        r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):
+            size, label, colors of some nodes, width of some arcs...
+
+        Returns
+        -------
+        str
+            a friendly display of the graph of the credal network in DOT format (the nodes are heptagons)
+
+        """
+        return _cncpp.CredalNet_toDot(self, *args)
+
     def computeBinaryCPTMinMax(self) -> None:
         r"""
 

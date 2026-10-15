@@ -129,6 +129,7 @@ Reference manual
   :titlesonly:
 
   PyAgrumConfiguration
+  DotOptions
 
 
 .. toctree::

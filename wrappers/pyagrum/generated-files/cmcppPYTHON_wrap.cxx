@@ -3752,21 +3752,22 @@ namespace Swig {
 #define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[37]
 #define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[38]
 #define SWIGTYPE_p_gum__TensorT_double_t swig_types[39]
-#define SWIGTYPE_p_iterator swig_types[40]
-#define SWIGTYPE_p_iterator_category swig_types[41]
-#define SWIGTYPE_p_iterator_safe swig_types[42]
-#define SWIGTYPE_p_node_const_iterator swig_types[43]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[44]
-#define SWIGTYPE_p_node_iterator swig_types[45]
-#define SWIGTYPE_p_node_iterator_safe swig_types[46]
-#define SWIGTYPE_p_second_type swig_types[47]
-#define SWIGTYPE_p_size_type swig_types[48]
-#define SWIGTYPE_p_std__size_t swig_types[49]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t swig_types[50]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[51]
-#define SWIGTYPE_p_value_type swig_types[52]
-static swig_type_info *swig_types[54];
-static swig_module_info swig_module = {swig_types, 53, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[40]
+#define SWIGTYPE_p_iterator swig_types[41]
+#define SWIGTYPE_p_iterator_category swig_types[42]
+#define SWIGTYPE_p_iterator_safe swig_types[43]
+#define SWIGTYPE_p_node_const_iterator swig_types[44]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[45]
+#define SWIGTYPE_p_node_iterator swig_types[46]
+#define SWIGTYPE_p_node_iterator_safe swig_types[47]
+#define SWIGTYPE_p_second_type swig_types[48]
+#define SWIGTYPE_p_size_type swig_types[49]
+#define SWIGTYPE_p_std__size_t swig_types[50]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t swig_types[51]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[52]
+#define SWIGTYPE_p_value_type swig_types[53]
+static swig_type_info *swig_types[55];
+static swig_module_info swig_module = {swig_types, 54, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4200,6 +4201,37 @@ SWIG_pchar_descriptor(void)
 }
 
 
+#define SWIG_FromCharPtrAndSize(carray, size) SWIG_FromBinaryCharPtrAndSize(carray, size, 0)
+SWIGINTERNINLINE PyObject *
+SWIG_FromBinaryCharPtrAndSize(const char* carray, size_t size, int flags)
+{
+  if (carray) {
+    if (size > (size_t)PY_SSIZE_T_MAX) {
+      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+      return pchar_descriptor ? 
+	SWIG_InternalNewPointerObj(const_cast< char * >(carray), pchar_descriptor, 0) : SWIG_Py_Void();
+    } else {
+#if defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
+      return PyBytes_FromStringAndSize(carray, static_cast< Py_ssize_t >(size));
+#else
+      if (SWIG_IsBinaryStr(flags))
+        return PyBytes_FromStringAndSize(carray, static_cast< Py_ssize_t >(size));
+      return PyUnicode_DecodeUTF8(carray, static_cast< Py_ssize_t >(size), "surrogateescape");
+#endif
+    }
+  } else {
+    return SWIG_Py_Void();
+  }
+}
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_std_string  (const std::string& s)
+{
+  return SWIG_FromCharPtrAndSize(s.data(), s.size());
+}
+
+
 /* Return string from Python obj. NOTE: obj must remain in scope in order
    to use the returned cptr (but only when alloc is set to SWIG_OLDOBJ) */
 SWIGINTERN int
@@ -4271,37 +4303,6 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char **cptr, size_t *psize, int *alloc)
 
 
 
-
-
-#define SWIG_FromCharPtrAndSize(carray, size) SWIG_FromBinaryCharPtrAndSize(carray, size, 0)
-SWIGINTERNINLINE PyObject *
-SWIG_FromBinaryCharPtrAndSize(const char* carray, size_t size, int flags)
-{
-  if (carray) {
-    if (size > (size_t)PY_SSIZE_T_MAX) {
-      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-      return pchar_descriptor ? 
-	SWIG_InternalNewPointerObj(const_cast< char * >(carray), pchar_descriptor, 0) : SWIG_Py_Void();
-    } else {
-#if defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-      return PyBytes_FromStringAndSize(carray, static_cast< Py_ssize_t >(size));
-#else
-      if (SWIG_IsBinaryStr(flags))
-        return PyBytes_FromStringAndSize(carray, static_cast< Py_ssize_t >(size));
-      return PyUnicode_DecodeUTF8(carray, static_cast< Py_ssize_t >(size), "surrogateescape");
-#endif
-    }
-  } else {
-    return SWIG_Py_Void();
-  }
-}
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_std_string  (const std::string& s)
-{
-  return SWIG_FromCharPtrAndSize(s.data(), s.size());
-}
 
 
   #define SWIG_From_long   PyLong_FromLong 
@@ -8677,6 +8678,75 @@ fail:
 SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_toDot" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  {
+    try {
+      result = ((gum::CausalModel< double > const *)arg1)->toDot();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_toDot" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CausalModel_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CausalModel_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::CausalModel< double > const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
   bool arg2 ;
   char *arg3 = 0 ;
   char *arg4 = 0 ;
@@ -8744,7 +8814,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   bool arg2 ;
@@ -8803,7 +8873,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   bool arg2 ;
@@ -8851,7 +8921,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   bool arg2 ;
@@ -8888,35 +8958,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CausalModel_toDot__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::CausalModel< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::string result;
-  
-  (void)self;
-  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_toDot" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
-  {
-    try {
-      result = ((gum::CausalModel< double > const *)arg1)->toDot();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_CausalModel_toDot(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[6] = {
@@ -8926,27 +8967,38 @@ SWIGINTERN PyObject *_wrap_CausalModel_toDot(PyObject *self, PyObject *args) {
   if (!(argc = SWIG_Python_UnpackTuple(args, "CausalModel_toDot", 0, 5, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
-    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_4(self, argc, argv);
+    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_3(self, argc, argv);
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__dot__DotOptions, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap_CausalModel_toDot__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_5(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 3) {
-    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_4(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 4) {
-    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_3(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 5) {
-    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_CausalModel_toDot__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -8954,11 +9006,12 @@ SWIGINTERN PyObject *_wrap_CausalModel_toDot(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CausalModel_toDot'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    gum::CausalModel< double >::toDot() const\n"
+    "    gum::CausalModel< double >::toDot(gum::dot::DotOptions const &) const\n"
     "    gum::CausalModel< double >::toDot(bool const,char const *,char const *,char const *) const\n"
     "    gum::CausalModel< double >::toDot(bool const,char const *,char const *) const\n"
     "    gum::CausalModel< double >::toDot(bool const,char const *) const\n"
-    "    gum::CausalModel< double >::toDot(bool const) const\n"
-    "    gum::CausalModel< double >::toDot() const\n");
+    "    gum::CausalModel< double >::toDot(bool const) const\n");
   return 0;
 }
 
@@ -13284,20 +13337,27 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Return a Graphviz dot string representing the causal model.\n"
 		"\n"
-		"Observed nodes are shown with default styling. Latent nodes are displayed\n"
-		"with a distinct background colour. Their names are hidden by default.\n"
+		"The look is the one of the section ``causal`` of ``pyagrum.config``: observed nodes\n"
+		"(``nodeBgColor``, ``nodeFgColor``), latent nodes (``latentBgColor``, ``latentFgColor``), whose\n"
+		"names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``notebook.arcColor``).\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some\n"
+		"    nodes, width of some arcs...).\n"
 		"SHOW_LATENT_NAMES : bool, optional\n"
-		"    If True, display the names of latent nodes in the graph. Default is False.\n"
+		"    Deprecated: use ``pyagrum.config['causal', 'showLatentNames']``.\n"
+		"    If True, display the names of latent nodes in the graph.\n"
 		"NODE_BG : str, optional\n"
-		"    Background colour for latent nodes (hex or CSS colour name).\n"
-		"    Default is '#404040'.\n"
+		"    Deprecated: use ``pyagrum.config['causal', 'nodeBgColor']``.\n"
+		"    Background colour for all the nodes (hex or CSS colour name).\n"
 		"NODE_FG : str, optional\n"
-		"    Text colour for latent nodes. Default is 'white'.\n"
+		"    Deprecated: use ``pyagrum.config['causal', 'nodeFgColor']``.\n"
+		"    Text colour for all the nodes.\n"
 		"EDGE_COL : str, optional\n"
-		"    Edge colour. Default is '#4A4A4A'.\n"
+		"    Deprecated: use ``pyagrum.config['notebook', 'arcColor']``.\n"
+		"    Edge colour.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13894,6 +13954,7 @@ static swig_type_info _swigt__p_gum__SetT_gum__Edge_t__const_iterator = {"_p_gum
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t = {"_p_gum__SetT_std__size_t_t", "gum::NodeSet *|gum::Set< std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_gum__SetT_std__size_t_t__const_iterator", "gum::NodeSetIterator *|gum::Set< std::size_t >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator = {"_p_iterator", "iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_category = {"_p_iterator_category", "iterator_category *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_safe = {"_p_iterator_safe", "iterator_safe *", 0, 0, (void*)0, 0};
@@ -13949,6 +14010,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__SetT_std__size_t_t,
   &_swigt__p_gum__SetT_std__size_t_t__const_iterator,
   &_swigt__p_gum__TensorT_double_t,
+  &_swigt__p_gum__dot__DotOptions,
   &_swigt__p_iterator,
   &_swigt__p_iterator_category,
   &_swigt__p_iterator_safe,
@@ -14004,6 +14066,7 @@ static swig_cast_info _swigc__p_gum__SetT_gum__Edge_t__const_iterator[] = {  {&_
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__SetT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator[] = {  {&_swigt__p_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_category[] = {  {&_swigt__p_iterator_category, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_safe[] = {  {&_swigt__p_iterator_safe, 0, 0, 0},{0, 0, 0, 0}};
@@ -14059,6 +14122,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__SetT_std__size_t_t,
   _swigc__p_gum__SetT_std__size_t_t__const_iterator,
   _swigc__p_gum__TensorT_double_t,
+  _swigc__p_gum__dot__DotOptions,
   _swigc__p_iterator,
   _swigc__p_iterator_category,
   _swigc__p_iterator_safe,

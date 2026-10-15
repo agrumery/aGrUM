@@ -105,68 +105,13 @@ def BN2dot(
   if cmapArc is None:
     cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
 
-  # default
-  maxarcs = 100.0
-  minarcs = 0.0
+  # the look comes from the configuration (written by the toDot of the BN), the values by the options
+  options = pyagrum.DotOptions()
+  options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
+  gumcols.setNodesOptions(options, bn, nodeColor, cmapNode, showMsg)
+  gumcols.setLinksOptions(options, bn.arcs(), arcWidth, arcLabel, arcColor, cmapArc, "&rarr;")
 
-  if arcWidth is not None:
-    minarcs = min(arcWidth.values())
-    maxarcs = max(arcWidth.values())
-
-  dotobj = dot.Dot(graph_type="digraph", bgcolor="transparent")
-
-  for n in bn.names():
-    if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "node_bgcolor"]
-      fgcol = pyagrum.config["notebook", "node_fgcolor"]
-      res = ""
-    else:
-      bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
-      res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
-
-    node = dot.Node(
-      f'"{n}"', style="filled", fillcolor=bgcol, fontcolor=fgcol, tooltip=f'"({bn.idFromName(n)}) {n}{res}"'
-    )
-    dotobj.add_node(node)
-
-  for a in bn.arcs():
-    (n, j) = a
-    pw = 1.0
-    av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = getBlackInTheme()
-    lb = ""
-
-    if arcWidth is not None and a in arcWidth:
-      if maxarcs != minarcs:
-        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-      av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
-
-    if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
-
-    if arcLabel is not None and a in arcLabel:
-      lb = arcLabel[a]
-
-    edge = dot.Edge(
-      '"' + bn.variable(a[0]).name() + '"',
-      '"' + bn.variable(a[1]).name() + '"',
-      label=lb,
-      fontsize="10",
-      penwidth=pw,
-      color=col,
-      tooltip=av,
-    )
-    dotobj.add_edge(edge)
-
-  if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
-
-  # dynamic member makes pylink unhappy
-  # pylint: disable=no-member
-  dotobj.set_size(str(size))
-
-  return dotobj
+  return gumcols.dotFromAgrum(bn.toDot(options))
 
 
 def BNinference2dot(
@@ -249,7 +194,7 @@ def BNinference2dot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
@@ -258,8 +203,8 @@ def BNinference2dot(
     name = bn.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "nodeBgColor"]
+    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 

@@ -73,7 +73,7 @@ from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
-from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
+from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr, _junctionTreeDot, _mapDotString
 from pyagrum.lib.ktbn2graph import getFollowKTBN, plotFollowKTBN
 
 from pyagrum.lib.bn_vs_bn import graphDiff
@@ -309,7 +309,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
     the size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   _reprGraph(gr, size, asString=False)
 
@@ -331,7 +331,7 @@ def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
     the HTML representation of the graph (as a string)
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   result = _reprGraph(gr, size, asString=True)
   assert result is not None
@@ -356,7 +356,7 @@ def showDot(dotstring: str, size: float | str | None = None) -> None:
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
   showGraph(_from_dotstring(dotstring), size)
 
 
@@ -376,7 +376,7 @@ def getDot(dotstring: str, size: float | str | None = None) -> str:
     the HTML representation of the dot string
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   return getGraph(_from_dotstring(dotstring), size)
 
@@ -410,7 +410,7 @@ def getBNDiff(
     the HTML representation of the comparison
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -439,7 +439,7 @@ def showBNDiff(
     with style or not.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -472,7 +472,7 @@ def getJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctiontree_map_size"]
+    size = pyagrum.config["notebook", "junctionTreeMapSize"]
   return getGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -504,7 +504,7 @@ def showJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctiontree_map_size"]
+    size = pyagrum.config["notebook", "junctionTreeMapSize"]
   showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -522,7 +522,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
   showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -544,7 +544,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
       the HTML representation of the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctiontree_graph_size"]
+    size = pyagrum.config["notebook", "junctionTreeGraphSize"]
   return getDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -716,10 +716,10 @@ def showMRF(
    the graph
   """
   if view is None:
-    view = pyagrum.config["notebook", "markovrandomfield_view"]
+    view = pyagrum.config["notebook", "markovRandomFieldView"]
 
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
@@ -750,7 +750,7 @@ def showInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | Non
     the representation of the influence diagram
   """
   if size is None:
-    size = pyagrum.config["influenceDiagram", "id_size"]
+    size = pyagrum.config["influenceDiagram", "graphSize"]
 
   return showGraph(ID2dot(diag), size)
 
@@ -772,7 +772,7 @@ def getInfluenceDiagram(diag: pyagrum.InfluenceDiagram, size: float | str | None
     the HTML representation of the influence diagram
   """
   if size is None:
-    size = pyagrum.config["influenceDiagram", "id_size"]
+    size = pyagrum.config["influenceDiagram", "graphSize"]
 
   return getGraph(ID2dot(diag), size)
 
@@ -812,7 +812,7 @@ def showBN(
     a nodeMap of values to be shown as tooltip
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -871,7 +871,7 @@ def showCN(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -931,13 +931,13 @@ def getMRF(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
 
   if view is None:
-    view = pyagrum.config["notebook", "markovrandomfield_view"]
+    view = pyagrum.config["notebook", "markovRandomFieldView"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth, edgeColor, cmapNode, cmapEdge)
@@ -987,7 +987,7 @@ def getBN(
     the desired representation of the Bayesian network
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1047,7 +1047,7 @@ def getCN(
     the desired representation of the Credal Network
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1563,71 +1563,7 @@ def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
     the pydot.Dot representation of the junction tree
 
   """
-  if pyagrum.config.typed["notebook", "junctiontree_with_names"]:
-
-    def cliqlabels(c):
-      labels = ",".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
-      return f"({c}):{labels}"
-
-    def cliqnames(c):
-      return "-".join(sorted([model.variable(n).name() for n in jt.clique(c)]))
-
-    def seplabels(c1, c2):
-      return ",".join(sorted([model.variable(n).name() for n in jt.separator(c1, c2)]))
-
-    def sepnames(c1, c2):
-      return cliqnames(c1) + "+" + cliqnames(c2)
-  else:
-
-    def cliqlabels(c):
-      ids = ",".join([str(n) for n in sorted(jt.clique(c))])
-      return f"({c}):{ids}"
-
-    def cliqnames(c):
-      return "-".join([str(n) for n in sorted(jt.clique(c))])
-
-    def seplabels(c1, c2):
-      return ",".join([str(n) for n in sorted(jt.separator(c1, c2))])
-
-    def sepnames(c1, c2):
-      return cliqnames(c1) + "^" + cliqnames(c2)
-
-  model = jt._engine._model
-  name = model.propertyWithDefault("name", str(type(model)).split(".")[-1][:-2])
-  graph = dot.Dot(graph_type="graph", graph_name=name, bgcolor="transparent")
-  for c in jt.nodes():
-    graph.add_node(
-      dot.Node(
-        '"' + cliqnames(c) + '"',
-        label='"' + cliqlabels(c) + '"',
-        style="filled",
-        fillcolor=pyagrum.config["notebook", "junctiontree_clique_bgcolor"],
-        fontcolor=pyagrum.config["notebook", "junctiontree_clique_fgcolor"],
-        fontsize=pyagrum.config["notebook", "junctiontree_clique_fontsize"],
-      )
-    )
-  for c1, c2 in jt.edges():
-    graph.add_node(
-      dot.Node(
-        '"' + sepnames(c1, c2) + '"',
-        label='"' + seplabels(c1, c2) + '"',
-        style="filled",
-        shape="box",
-        width="0",
-        height="0",
-        margin="0.02",
-        fillcolor=pyagrum.config["notebook", "junctiontree_separator_bgcolor"],
-        fontcolor=pyagrum.config["notebook", "junctiontree_separator_fgcolor"],
-        fontsize=pyagrum.config["notebook", "junctiontree_separator_fontsize"],
-      )
-    )
-  for c1, c2 in jt.edges():
-    graph.add_edge(dot.Edge('"' + cliqnames(c1) + '"', '"' + sepnames(c1, c2) + '"'))
-    graph.add_edge(dot.Edge('"' + sepnames(c1, c2) + '"', '"' + cliqnames(c2) + '"'))
-
-  graph.set_size(pyagrum.config["notebook", "junctiontree_graph_size"])
-
-  return graph
+  return _junctionTreeDot(jt, size)
 
 
 def getCliqueGraph(cg: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
@@ -1725,7 +1661,7 @@ def getCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) -> 
     the dot representation
   """
   if size is None:
-    size = pyagrum.config["causal", "graph_size"]
+    size = pyagrum.config["causal", "graphSize"]
   return getDot(cm.toDot(), size)
 
 
@@ -1741,7 +1677,7 @@ def showCausalModel(cm: pyagrum.CausalModel, size: float | str | None = None) ->
     the size of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["causal", "graph_size"]
+    size = pyagrum.config["causal", "graphSize"]
   showDot(cm.toDot(), size=size)
 
 
@@ -1865,17 +1801,7 @@ else:
     colorSep: str
       color for the separator nodes
     """
-    if scaleClique is None:
-      scaleClique = float(pyagrum.config["notebook", "junctiontree_map_cliquescale"])
-    if scaleSep is None:
-      scaleSep = float(pyagrum.config["notebook", "junctiontree_map_sepscale"])
-    if lenEdge is None:
-      lenEdge = float(pyagrum.config["notebook", "junctiontree_map_edgelen"])
-    if colorClique is None:
-      colorClique = pyagrum.config["notebook", "junctiontree_clique_bgcolor"]
-    if colorSep is None:
-      colorSep = pyagrum.config["notebook", "junctiontree_separator_bgcolor"]
-    return _from_dotstring(self.__map_str__(scaleClique, scaleSep, lenEdge, colorClique, colorSep))
+    return _from_dotstring(_mapDotString(self, scaleClique, scaleSep, lenEdge, colorClique, colorSep))
 
   setattr(pyagrum.CliqueGraph, "map", map)
 

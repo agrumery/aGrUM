@@ -3749,27 +3749,28 @@ namespace Swig {
 #define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[34]
 #define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[35]
 #define SWIGTYPE_p_gum__TensorT_double_t swig_types[36]
-#define SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t swig_types[37]
-#define SWIGTYPE_p_gum__learning__KTBNDatabaseGeneratorT_double_t swig_types[38]
-#define SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t swig_types[39]
-#define SWIGTYPE_p_iterator swig_types[40]
-#define SWIGTYPE_p_iterator_category swig_types[41]
-#define SWIGTYPE_p_iterator_safe swig_types[42]
-#define SWIGTYPE_p_node_const_iterator swig_types[43]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[44]
-#define SWIGTYPE_p_node_iterator swig_types[45]
-#define SWIGTYPE_p_node_iterator_safe swig_types[46]
-#define SWIGTYPE_p_second_type swig_types[47]
-#define SWIGTYPE_p_size_type swig_types[48]
-#define SWIGTYPE_p_std__mapT_std__pairT_std__string_int_t_gum__KTBNModality_t swig_types[49]
-#define SWIGTYPE_p_std__mapT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t swig_types[50]
-#define SWIGTYPE_p_std__size_t swig_types[51]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t_std__allocatorT_std__pairT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t_t_t swig_types[52]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[53]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[54]
-#define SWIGTYPE_p_value_type swig_types[55]
-static swig_type_info *swig_types[57];
-static swig_module_info swig_module = {swig_types, 56, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[37]
+#define SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t swig_types[38]
+#define SWIGTYPE_p_gum__learning__KTBNDatabaseGeneratorT_double_t swig_types[39]
+#define SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t swig_types[40]
+#define SWIGTYPE_p_iterator swig_types[41]
+#define SWIGTYPE_p_iterator_category swig_types[42]
+#define SWIGTYPE_p_iterator_safe swig_types[43]
+#define SWIGTYPE_p_node_const_iterator swig_types[44]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[45]
+#define SWIGTYPE_p_node_iterator swig_types[46]
+#define SWIGTYPE_p_node_iterator_safe swig_types[47]
+#define SWIGTYPE_p_second_type swig_types[48]
+#define SWIGTYPE_p_size_type swig_types[49]
+#define SWIGTYPE_p_std__mapT_std__pairT_std__string_int_t_gum__KTBNModality_t swig_types[50]
+#define SWIGTYPE_p_std__mapT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t swig_types[51]
+#define SWIGTYPE_p_std__size_t swig_types[52]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t_std__allocatorT_std__pairT_std__variantT_std__string_std__pairT_std__string_int_t_t_gum__KTBNModality_t_t_t swig_types[53]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[54]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[55]
+#define SWIGTYPE_p_value_type swig_types[56]
+static swig_type_info *swig_types[58];
+static swig_module_info swig_module = {swig_types, 57, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -8473,13 +8474,69 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_KTBN_toUnrolledDot__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::KTBN< double > *arg1 = 0 ;
+  gum::Size arg2 ;
+  bool arg3 ;
+  gum::dot::DotOptions *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__KTBNT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBN_toUnrolledDot" "', argument " "1"" of type '" "gum::KTBN< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::KTBN< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "KTBN_toUnrolledDot" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "KTBN_toUnrolledDot" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "KTBN_toUnrolledDot" "', argument " "4"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "KTBN_toUnrolledDot" "', argument " "4"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg4 = reinterpret_cast< gum::dot::DotOptions * >(argp4);
+  {
+    try {
+      result = ((gum::KTBN< double > const *)arg1)->toUnrolledDot(SWIG_STD_MOVE(*(&arg2)),arg3,(gum::dot::DotOptions const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_KTBN_toUnrolledDot(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[4] = {
+  PyObject *argv[5] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBN_toUnrolledDot", 0, 3, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "KTBN_toUnrolledDot", 0, 4, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     PyObject *retobj = _wrap_KTBN_toUnrolledDot__SWIG_1(self, argc, argv);
@@ -8491,12 +8548,18 @@ SWIGINTERN PyObject *_wrap_KTBN_toUnrolledDot(PyObject *self, PyObject *args) {
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
+  if (argc == 4) {
+    PyObject *retobj = _wrap_KTBN_toUnrolledDot__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
   
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBN_toUnrolledDot'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::KTBN< double >::toUnrolledDot(gum::Size,bool) const\n"
-    "    gum::KTBN< double >::toUnrolledDot(gum::Size) const\n");
+    "    gum::KTBN< double >::toUnrolledDot(gum::Size) const\n"
+    "    gum::KTBN< double >::toUnrolledDot(gum::Size,bool,gum::dot::DotOptions const &) const\n");
   return 0;
 }
 
@@ -25199,6 +25262,9 @@ static PyMethodDef SwigMethods[] = {
 		"highlightReplicated : bool\n"
 		"    if True, shade the replicated slices (>= k) differently from the template\n"
 		"    slices (default False)\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``dynamicBN``):\n"
+		"    the nodes and the arcs are designated by their ids in the unrolled :class:`pyagrum.BayesNet`\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -26806,6 +26872,7 @@ static swig_type_info _swigt__p_gum__SetT_gum__Edge_t__const_iterator = {"_p_gum
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t = {"_p_gum__SetT_std__size_t_t", "gum::NodeSet *|gum::Set< std::size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_gum__SetT_std__size_t_t__const_iterator", "gum::NodeSetIterator *|gum::Set< std::size_t >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__KTBNAdaptiveLearnerT_double_t = {"_p_gum__learning__KTBNAdaptiveLearnerT_double_t", "gum::learning::KTBNAdaptiveLearner< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__KTBNDatabaseGeneratorT_double_t = {"_p_gum__learning__KTBNDatabaseGeneratorT_double_t", "gum::learning::KTBNDatabaseGenerator< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__KTBNLearnerT_double_t = {"_p_gum__learning__KTBNLearnerT_double_t", "gum::learning::KTBNLearner< double > *", 0, 0, (void*)0, 0};
@@ -26864,6 +26931,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__SetT_std__size_t_t,
   &_swigt__p_gum__SetT_std__size_t_t__const_iterator,
   &_swigt__p_gum__TensorT_double_t,
+  &_swigt__p_gum__dot__DotOptions,
   &_swigt__p_gum__learning__KTBNAdaptiveLearnerT_double_t,
   &_swigt__p_gum__learning__KTBNDatabaseGeneratorT_double_t,
   &_swigt__p_gum__learning__KTBNLearnerT_double_t,
@@ -26922,6 +26990,7 @@ static swig_cast_info _swigc__p_gum__SetT_gum__Edge_t__const_iterator[] = {  {&_
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__SetT_std__size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__KTBNAdaptiveLearnerT_double_t[] = {  {&_swigt__p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__KTBNDatabaseGeneratorT_double_t[] = {  {&_swigt__p_gum__learning__KTBNDatabaseGeneratorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__KTBNLearnerT_double_t[] = {  {&_swigt__p_gum__learning__KTBNLearnerT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -26980,6 +27049,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__SetT_std__size_t_t,
   _swigc__p_gum__SetT_std__size_t_t__const_iterator,
   _swigc__p_gum__TensorT_double_t,
+  _swigc__p_gum__dot__DotOptions,
   _swigc__p_gum__learning__KTBNAdaptiveLearnerT_double_t,
   _swigc__p_gum__learning__KTBNDatabaseGeneratorT_double_t,
   _swigc__p_gum__learning__KTBNLearnerT_double_t,

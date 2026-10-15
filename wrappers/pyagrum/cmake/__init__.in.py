@@ -63,7 +63,7 @@ __all__ = [
   "ApproximationScheme", "Arc", "ArcSet", "ArgumentError", "ArrayLike", "BNDatabaseGenerator",
   "BNGenerator", "BNInference", "BNLearner", "BayesNet", "BayesNetFragment", "CPTError",
   "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel", "DiGraph", "DiscreteVariable",
-  "DiscretizedVariable", "DuplicateElement", "DuplicateLabel", "Edge", "EdgeMark_Arrowhead",
+  "DiscretizedVariable", "DotOptions", "DuplicateElement", "DuplicateLabel", "Edge", "EdgeMark_Arrowhead",
   "EdgeMark_Circle", "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FatalError",
   "FormatNotFound", "GibbsBNdistance", "GibbsSampling", "Graph", "GraphError", "GumException",
   "HedgeException", "IOError", "ImportanceSampling", "InformationTheory", "Instantiation",
@@ -209,6 +209,7 @@ from .pyagrumcpp import Tensor, Instantiation, Tensor
 from .pyagrumcpp import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, PAG, CliqueGraph
 from .pyagrumcpp import EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
 from .pyagrumcpp import JunctionTreeGenerator
+from .pyagrumcpp import DotOptions
 from .pyagrumcpp import MeekRules
 from .pyagrumcpp import ApproximationScheme
 from .pyagrumcpp import fastVariable

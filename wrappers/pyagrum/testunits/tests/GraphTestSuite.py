@@ -372,6 +372,39 @@ class TestGraph(pyAgrumTestCase):
     self.assertIn('1 [label="(1) beta"]', dot)
     self.assertNotIn("0 [label=", dot)
 
+  def testToDotLookFollowsTheConfiguration(self):
+    g = gum.DiGraph()
+    g.addNodes(2)
+    g.addArc(0, 1)
+
+    gum.config.push()
+    try:
+      gum.config.reset()
+      dot = g.toDot()
+      self.assertTrue(dot.startswith("digraph {\n"))
+      self.assertIn('bgcolor="transparent"', dot)
+      self.assertIn('fillcolor="#404040", fontcolor="white", color="#4A4A4A"', dot)
+      self.assertIn('edge [color="#4A4A4A"]', dot)
+
+      # the dark theme only changes the color of the arcs
+      gum.config["notebook", "arcColor"] = "#AAAAAA"
+      self.assertIn('edge [color="#AAAAAA"]', g.toDot())
+
+      gum.config["notebook", "graphSize"] = "12!"
+      gum.config["notebook", "nodeBgColor"] = "burlywood"
+      dot = g.toDot()
+      self.assertIn('size="12!"', dot)
+      self.assertIn('fillcolor="burlywood", fontcolor="black"', dot)
+
+      # an undirected graph is drawn as a graph
+      u = gum.UndiGraph()
+      u.addNodes(2)
+      u.addEdge(0, 1)
+      self.assertTrue(u.toDot().startswith("graph {\n"))
+      self.assertIn("0 -- 1;", u.toDot())
+    finally:
+      gum.config.pop()
+
   def testPAGBasic(self):
     p = gum.PAG()
     for i in range(4):

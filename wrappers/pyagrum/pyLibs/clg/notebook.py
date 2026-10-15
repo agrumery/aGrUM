@@ -103,8 +103,8 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
 
   for n in clg.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "node_bgcolor"]
-      fgcol = pyagrum.config["notebook", "node_fgcolor"]
+      bgcol = pyagrum.config["notebook", "nodeBgColor"]
+      fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
       res = ""
     else:
       bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -164,7 +164,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -282,7 +282,7 @@ def CLGInference2dot(
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
+    size = pyagrum.config["notebook", "graphSize"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member

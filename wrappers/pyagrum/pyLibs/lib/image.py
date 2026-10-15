@@ -162,7 +162,7 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   if isinstance(model, pyagrum.BayesNet):
     fig = BN2dot(model, **kwargs)
   elif isinstance(model, pyagrum.MarkovRandomField):
-    if pyagrum.config["notebook", "markovrandomfield_view"] == "graph":
+    if pyagrum.config["notebook", "markovRandomFieldView"] == "graph":
       fig = MRF2UGdot(model, **kwargs)
     else:
       fig = MRF2FactorGraphdot(model, **kwargs)
@@ -275,7 +275,7 @@ def prepareShowInference(
     )
   if isinstance(model, pyagrum.MarkovRandomField):
     if view is None:
-      view = pyagrum.config["notebook", "markovrandomfield_view"]
+      view = pyagrum.config["notebook", "markovRandomFieldView"]
     if engine is None:
       engine = pyagrum.ShaferShenoyMRFInference(model)
 

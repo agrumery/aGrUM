@@ -94,8 +94,8 @@ See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/noteb
 Examples
 --------
   >>> import pyagrum
-  >>> pyagrum.config[\"dynamicBN\", \"graph_size\"] = 10
-  >>> pyagrum.config[\"dynamicBN\", \"graph_size\"]
+  >>> pyagrum.config[\"dynamicBN\", \"graphSize\"] = 10
+  >>> pyagrum.config[\"dynamicBN\", \"graphSize\"]
   \"10\"
 "
 
@@ -246,8 +246,8 @@ def set(self, section, option, value, no_hook=False):
 
   Examples
   --------
-    >>> pyagrum.config["dynamicBN", "graph_size"] = 10
-    >>> pyagrum.config["dynamicBN", "graph_size"]
+    >>> pyagrum.config["dynamicBN", "graphSize"] = 10
+    >>> pyagrum.config["dynamicBN", "graphSize"]
     "10"
 
   Parameters
@@ -275,8 +275,8 @@ def get(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config["dynamicBN", "graph_size"] = 10
-    >>> pyagrum.config["dynamicBN", "graph_size"]
+    >>> pyagrum.config["dynamicBN", "graphSize"] = 10
+    >>> pyagrum.config["dynamicBN", "graphSize"]
     "10"
 
   Parameters

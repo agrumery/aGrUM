@@ -3764,21 +3764,22 @@ namespace Swig {
 #define SWIGTYPE_p_gum__UndiGraph swig_types[49]
 #define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[50]
 #define SWIGTYPE_p_gum__VariableNodeMap swig_types[51]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[52]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[53]
-#define SWIGTYPE_p_iterator swig_types[54]
-#define SWIGTYPE_p_iterator_category swig_types[55]
-#define SWIGTYPE_p_iterator_safe swig_types[56]
-#define SWIGTYPE_p_node_const_iterator swig_types[57]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[58]
-#define SWIGTYPE_p_node_iterator swig_types[59]
-#define SWIGTYPE_p_node_iterator_safe swig_types[60]
-#define SWIGTYPE_p_second_type swig_types[61]
-#define SWIGTYPE_p_size_type swig_types[62]
-#define SWIGTYPE_p_std__size_t swig_types[63]
-#define SWIGTYPE_p_value_type swig_types[64]
-static swig_type_info *swig_types[66];
-static swig_module_info swig_module = {swig_types, 65, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[52]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[53]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[54]
+#define SWIGTYPE_p_iterator swig_types[55]
+#define SWIGTYPE_p_iterator_category swig_types[56]
+#define SWIGTYPE_p_iterator_safe swig_types[57]
+#define SWIGTYPE_p_node_const_iterator swig_types[58]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[59]
+#define SWIGTYPE_p_node_iterator swig_types[60]
+#define SWIGTYPE_p_node_iterator_safe swig_types[61]
+#define SWIGTYPE_p_second_type swig_types[62]
+#define SWIGTYPE_p_size_type swig_types[63]
+#define SWIGTYPE_p_std__size_t swig_types[64]
+#define SWIGTYPE_p_value_type swig_types[65]
+static swig_type_info *swig_types[67];
+static swig_module_info swig_module = {swig_types, 66, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5317,17 +5318,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IMarkovRandomField< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_toDot" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
@@ -5348,17 +5347,83 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDotAsFactorGraph(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::IMarkovRandomField< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_toDot" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IMarkovRandomField_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IMarkovRandomField_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::IMarkovRandomField< double > const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "IMarkovRandomField_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_IMarkovRandomField_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_IMarkovRandomField_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'IMarkovRandomField_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::IMarkovRandomField< double >::toDot() const\n"
+    "    gum::IMarkovRandomField< double >::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDotAsFactorGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IMarkovRandomField< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_toDotAsFactorGraph" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
@@ -5376,6 +5441,74 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDotAsFactorGraph(PyObject *self,
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDotAsFactorGraph__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::IMarkovRandomField< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_toDotAsFactorGraph" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IMarkovRandomField_toDotAsFactorGraph" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IMarkovRandomField_toDotAsFactorGraph" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::IMarkovRandomField< double > const *)arg1)->toDotAsFactorGraph((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_toDotAsFactorGraph(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "IMarkovRandomField_toDotAsFactorGraph", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_IMarkovRandomField_toDotAsFactorGraph__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_IMarkovRandomField_toDotAsFactorGraph__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'IMarkovRandomField_toDotAsFactorGraph'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::IMarkovRandomField< double >::toDotAsFactorGraph() const\n"
+    "    gum::IMarkovRandomField< double >::toDotAsFactorGraph(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -13055,9 +13188,14 @@ static PyMethodDef SwigMethods[] = {
 		"    the maximum non-one factor parameter\n"
 		"\n"
 		""},
-	 { "IMarkovRandomField_toDot", _wrap_IMarkovRandomField_toDot, METH_O, "\n"
+	 { "IMarkovRandomField_toDot", _wrap_IMarkovRandomField_toDot, METH_VARARGS, "\n"
 		"\n"
 		"Return a Graphviz dot representation of the Markov random field.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13065,9 +13203,14 @@ static PyMethodDef SwigMethods[] = {
 		"    a dot-format string\n"
 		"\n"
 		""},
-	 { "IMarkovRandomField_toDotAsFactorGraph", _wrap_IMarkovRandomField_toDotAsFactorGraph, METH_O, "\n"
+	 { "IMarkovRandomField_toDotAsFactorGraph", _wrap_IMarkovRandomField_toDotAsFactorGraph, METH_VARARGS, "\n"
 		"\n"
 		"Return a Graphviz dot representation of the Markov random field as a factor graph.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -14412,6 +14555,7 @@ static swig_type_info _swigt__p_gum__MixedGraph = {"_p_gum__MixedGraph", 0, 0, 0
 static swig_type_info _swigt__p_gum__PAG = {"_p_gum__PAG", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__PDAG = {"_p_gum__PDAG", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap", "gum::VariableNodeMap *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator = {"_p_iterator", "iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_category = {"_p_iterator_category", "iterator_category *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator_safe = {"_p_iterator_safe", "iterator_safe *", 0, 0, (void*)0, 0};
@@ -14477,6 +14621,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__UndiGraph,
   &_swigt__p_gum__VariableEliminationT_double_t,
   &_swigt__p_gum__VariableNodeMap,
+  &_swigt__p_gum__dot__DotOptions,
   &_swigt__p_gum__learning__BNLearnerT_double_t,
   &_swigt__p_gum__learning__IBNLearner,
   &_swigt__p_iterator,
@@ -14546,6 +14691,7 @@ static swig_cast_info _swigc__p_gum__PAG[] = {{&_swigt__p_gum__PAG, 0, 0, 0},{0,
 static swig_cast_info _swigc__p_gum__PDAG[] = {{&_swigt__p_gum__PDAG, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__UndiGraph[] = {  {&_swigt__p_gum__UndiGraph, 0, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__PAG, _p_gum__PAGTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__PDAG, _p_gum__PDAGTo_p_gum__UndiGraph, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__VariableNodeMap[] = {  {&_swigt__p_gum__VariableNodeMap, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator[] = {  {&_swigt__p_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_category[] = {  {&_swigt__p_iterator_category, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_safe[] = {  {&_swigt__p_iterator_safe, 0, 0, 0},{0, 0, 0, 0}};
@@ -14611,6 +14757,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__UndiGraph,
   _swigc__p_gum__VariableEliminationT_double_t,
   _swigc__p_gum__VariableNodeMap,
+  _swigc__p_gum__dot__DotOptions,
   _swigc__p_gum__learning__BNLearnerT_double_t,
   _swigc__p_gum__learning__IBNLearner,
   _swigc__p_iterator,

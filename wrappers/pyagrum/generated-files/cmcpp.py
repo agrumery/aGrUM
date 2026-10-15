@@ -801,20 +801,27 @@ class CausalModel(object):
 
         Return a Graphviz dot string representing the causal model.
 
-        Observed nodes are shown with default styling. Latent nodes are displayed
-        with a distinct background colour. Their names are hidden by default.
+        The look is the one of the section ``causal`` of ``pyagrum.config``: observed nodes
+        (``nodeBgColor``, ``nodeFgColor``), latent nodes (``latentBgColor``, ``latentFgColor``), whose
+        names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``notebook.arcColor``).
 
         Parameters
         ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some
+            nodes, width of some arcs...).
         SHOW_LATENT_NAMES : bool, optional
-            If True, display the names of latent nodes in the graph. Default is False.
+            Deprecated: use ``pyagrum.config['causal', 'showLatentNames']``.
+            If True, display the names of latent nodes in the graph.
         NODE_BG : str, optional
-            Background colour for latent nodes (hex or CSS colour name).
-            Default is '#404040'.
+            Deprecated: use ``pyagrum.config['causal', 'nodeBgColor']``.
+            Background colour for all the nodes (hex or CSS colour name).
         NODE_FG : str, optional
-            Text colour for latent nodes. Default is 'white'.
+            Deprecated: use ``pyagrum.config['causal', 'nodeFgColor']``.
+            Text colour for all the nodes.
         EDGE_COL : str, optional
-            Edge colour. Default is '#4A4A4A'.
+            Deprecated: use ``pyagrum.config['notebook', 'arcColor']``.
+            Edge colour.
 
         Returns
         -------

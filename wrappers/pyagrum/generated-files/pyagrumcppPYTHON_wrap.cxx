@@ -3871,35 +3871,36 @@ namespace Swig {
 #define SWIGTYPE_p_gum__VariableNodeMap swig_types[153]
 #define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[154]
 #define SWIGTYPE_p_gum__WrongClassElement swig_types[155]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[156]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[157]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[158]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[159]
-#define SWIGTYPE_p_iterator swig_types[160]
-#define SWIGTYPE_p_iterator_category swig_types[161]
-#define SWIGTYPE_p_iterator_safe swig_types[162]
-#define SWIGTYPE_p_node_const_iterator swig_types[163]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[164]
-#define SWIGTYPE_p_node_iterator swig_types[165]
-#define SWIGTYPE_p_node_iterator_safe swig_types[166]
-#define SWIGTYPE_p_second_type swig_types[167]
-#define SWIGTYPE_p_size_type swig_types[168]
-#define SWIGTYPE_p_std__exception swig_types[169]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[170]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[171]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[172]
-#define SWIGTYPE_p_std__invalid_argument swig_types[173]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[174]
-#define SWIGTYPE_p_std__size_t swig_types[175]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[176]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[177]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[178]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[179]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[180]
-#define SWIGTYPE_p_value_type swig_types[181]
-#define SWIGTYPE_p_void swig_types[182]
-static swig_type_info *swig_types[184];
-static swig_module_info swig_module = {swig_types, 183, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[156]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[157]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[158]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[159]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[160]
+#define SWIGTYPE_p_iterator swig_types[161]
+#define SWIGTYPE_p_iterator_category swig_types[162]
+#define SWIGTYPE_p_iterator_safe swig_types[163]
+#define SWIGTYPE_p_node_const_iterator swig_types[164]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[165]
+#define SWIGTYPE_p_node_iterator swig_types[166]
+#define SWIGTYPE_p_node_iterator_safe swig_types[167]
+#define SWIGTYPE_p_second_type swig_types[168]
+#define SWIGTYPE_p_size_type swig_types[169]
+#define SWIGTYPE_p_std__exception swig_types[170]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[171]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[172]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[173]
+#define SWIGTYPE_p_std__invalid_argument swig_types[174]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[175]
+#define SWIGTYPE_p_std__size_t swig_types[176]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[177]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[178]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[179]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[180]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[181]
+#define SWIGTYPE_p_value_type swig_types[182]
+#define SWIGTYPE_p_void swig_types[183]
+static swig_type_info *swig_types[185];
+static swig_module_info swig_module = {swig_types, 184, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4874,6 +4875,26 @@ SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configur
       rows.push_back(notice.message);
     }
     return rows;
+  }
+
+#include <agrum/base/core/dot/dotColor.h>
+#include <agrum/base/core/dot/dotOptions.h>
+#include <agrum/base/graphs/graphElements.h>
+
+SWIGINTERN void gum_dot_DotOptions_setFactorBgColor(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &color){
+    self->setFactorBgColor(std::vector< gum::Size >(variables.begin(), variables.end()), color);
+  }
+SWIGINTERN void gum_dot_DotOptions_setFactorFgColor(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &color){
+    self->setFactorFgColor(std::vector< gum::Size >(variables.begin(), variables.end()), color);
+  }
+SWIGINTERN void gum_dot_DotOptions_setFactorLabel(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &label){
+    self->setFactorLabel(std::vector< gum::Size >(variables.begin(), variables.end()), label);
+  }
+SWIGINTERN void gum_dot_DotOptions_setFactorTooltip(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &tooltip){
+    self->setFactorTooltip(std::vector< gum::Size >(variables.begin(), variables.end()), tooltip);
+  }
+SWIGINTERN void gum_dot_DotOptions_setFactorAttribute__SWIG_0(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &key,std::string const &value,bool verbatim=false){
+    self->setFactorAttribute(std::vector< gum::Size >(variables.begin(), variables.end()), key, value, verbatim);
   }
 
 SWIGINTERNINLINE PyObject*
@@ -23535,6 +23556,1749 @@ SWIGINTERN PyObject *_Configuration_swiginit(PyObject *SWIGUNUSEDPARM(self), PyO
   return SWIG_Python_InitShadowInstance(args);
 }
 
+SWIGINTERN PyObject *_wrap__resolveFgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  std::string_view arg2 ;
+  std::string_view arg3 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *bytes2 = NULL ;
+  PyObject *bytes3 = NULL ;
+  PyObject *swig_obj[3] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_resolveFgColor", 3, 3, swig_obj)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[2]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[2]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[2])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[2], &len, &bytes3);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[2]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[2]);
+    }
+#endif
+    arg3 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum::dot::resolveFgColor(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  
+  SWIG_Py_XDECREF(bytes3);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DotOptions(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DotOptions", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (gum::dot::DotOptions *)new gum::dot::DotOptions();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__dot__DotOptions, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setSize(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setSize", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setSize" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DotOptions_setSize" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setSize" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->setSize((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setRankDir(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setRankDir", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setRankDir" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DotOptions_setRankDir" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setRankDir" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->setRankDir((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setLayout(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setLayout", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setLayout" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DotOptions_setLayout" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setLayout" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->setLayout((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setLabel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setLabel", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setLabel" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DotOptions_setLabel" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setLabel" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->setLabel((std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_size" "', argument " "1"" of type '" "gum::dot::DotOptions const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      result = (std::string *) &((gum::dot::DotOptions const *)arg1)->size();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_rankDir(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_rankDir" "', argument " "1"" of type '" "gum::dot::DotOptions const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      result = (std::string *) &((gum::dot::DotOptions const *)arg1)->rankDir();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_layout(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_layout" "', argument " "1"" of type '" "gum::dot::DotOptions const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      result = (std::string *) &((gum::dot::DotOptions const *)arg1)->layout();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_label(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_label" "', argument " "1"" of type '" "gum::dot::DotOptions const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      result = (std::string *) &((gum::dot::DotOptions const *)arg1)->label();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeBgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setNodeBgColor", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeBgColor" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeBgColor" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeBgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeBgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      (arg1)->setNodeBgColor(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeFgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setNodeFgColor", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeFgColor" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeFgColor" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeFgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeFgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      (arg1)->setNodeFgColor(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeLabel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setNodeLabel", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeLabel" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeLabel" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeLabel" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeLabel" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      (arg1)->setNodeLabel(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeTooltip(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setNodeTooltip", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeTooltip" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeTooltip" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeTooltip" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeTooltip" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      (arg1)->setNodeTooltip(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeAttribute__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeAttribute" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setNodeAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DotOptions_setNodeAttribute" "', argument " "5"" of type '" "bool""'");
+  } 
+  arg5 = static_cast< bool >(val5);
+  {
+    try {
+      (arg1)->setNodeAttribute(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeAttribute__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setNodeAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setNodeAttribute" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setNodeAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setNodeAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setNodeAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->setNodeAttribute(SWIG_STD_MOVE(*(&arg2)),(std::string const &)*arg3,(std::string const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setNodeAttribute(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DotOptions_setNodeAttribute", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    PyObject *retobj = _wrap_DotOptions_setNodeAttribute__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 5) {
+    PyObject *retobj = _wrap_DotOptions_setNodeAttribute__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DotOptions_setNodeAttribute'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::dot::DotOptions::setNodeAttribute(gum::Size,std::string const &,std::string const &,bool)\n"
+    "    gum::dot::DotOptions::setNodeAttribute(gum::Size,std::string const &,std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setArcColor", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcColor" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcColor" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcColor" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setArcColor" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcColor" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->setArcColor(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::string const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcWidth(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setArcWidth", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcWidth" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcWidth" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcWidth" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "DotOptions_setArcWidth" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    try {
+      (arg1)->setArcWidth(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcLabel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setArcLabel", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcLabel" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcLabel" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcLabel" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setArcLabel" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcLabel" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->setArcLabel(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::string const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcTooltip(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setArcTooltip", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcTooltip" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcTooltip" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcTooltip" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setArcTooltip" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcTooltip" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      (arg1)->setArcTooltip(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::string const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcAttribute__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  bool arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  bool val6 ;
+  int ecode6 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcAttribute" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcAttribute" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setArcAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DotOptions_setArcAttribute" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcAttribute" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  ecode6 = SWIG_AsVal_bool(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "DotOptions_setArcAttribute" "', argument " "6"" of type '" "bool""'");
+  } 
+  arg6 = static_cast< bool >(val6);
+  {
+    try {
+      (arg1)->setArcAttribute(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::string const &)*arg4,(std::string const &)*arg5,arg6);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcAttribute__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::Size arg2 ;
+  gum::Size arg3 ;
+  std::string *arg4 = 0 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setArcAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DotOptions_setArcAttribute" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DotOptions_setArcAttribute" "', argument " "3"" of type '" "gum::Size""'");
+  } 
+  arg3 = static_cast< gum::Size >(val3);
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setArcAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "DotOptions_setArcAttribute" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setArcAttribute" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    try {
+      (arg1)->setArcAttribute(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::string const &)*arg4,(std::string const &)*arg5);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setArcAttribute(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[7] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DotOptions_setArcAttribute", 0, 6, argv))) SWIG_fail;
+  --argc;
+  if (argc == 5) {
+    PyObject *retobj = _wrap_DotOptions_setArcAttribute__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 6) {
+    PyObject *retobj = _wrap_DotOptions_setArcAttribute__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DotOptions_setArcAttribute'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::dot::DotOptions::setArcAttribute(gum::Size,gum::Size,std::string const &,std::string const &,bool)\n"
+    "    gum::dot::DotOptions::setArcAttribute(gum::Size,gum::Size,std::string const &,std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_empty(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_empty" "', argument " "1"" of type '" "gum::dot::DotOptions const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      result = (bool)((gum::dot::DotOptions const *)arg1)->empty();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorBgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setFactorBgColor", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorBgColor" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorBgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorBgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_dot_DotOptions_setFactorBgColor(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorFgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setFactorFgColor", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorFgColor" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorFgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorFgColor" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_dot_DotOptions_setFactorFgColor(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorLabel(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setFactorLabel", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorLabel" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorLabel" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorLabel" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_dot_DotOptions_setFactorLabel(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorTooltip(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DotOptions_setFactorTooltip", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorTooltip" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorTooltip" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorTooltip" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_dot_DotOptions_setFactorTooltip(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorAttribute__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  bool arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  bool val5 ;
+  int ecode5 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setFactorAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  ecode5 = SWIG_AsVal_bool(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "DotOptions_setFactorAttribute" "', argument " "5"" of type '" "bool""'");
+  } 
+  arg5 = static_cast< bool >(val5);
+  {
+    try {
+      gum_dot_DotOptions_setFactorAttribute__SWIG_0(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4,arg5);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorAttribute__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DotOptions_setFactorAttribute" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "DotOptions_setFactorAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorAttribute" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "DotOptions_setFactorAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DotOptions_setFactorAttribute" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      gum_dot_DotOptions_setFactorAttribute__SWIG_0(arg1,(gum::Set< std::size_t > const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DotOptions_setFactorAttribute(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DotOptions_setFactorAttribute", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    PyObject *retobj = _wrap_DotOptions_setFactorAttribute__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 5) {
+    PyObject *retobj = _wrap_DotOptions_setFactorAttribute__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DotOptions_setFactorAttribute'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::dot::DotOptions::setFactorAttribute(gum::NodeSet const &,std::string const &,std::string const &,bool)\n"
+    "    gum::dot::DotOptions::setFactorAttribute(gum::NodeSet const &,std::string const &,std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DotOptions(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::DotOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__DotOptions, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DotOptions" "', argument " "1"" of type '" "gum::dot::DotOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::DotOptions * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DotOptions_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__dot__DotOptions, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DotOptions_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
 SWIGINTERN PyObject *_wrap_delete_Variable(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Variable *arg1 = 0 ;
@@ -30482,17 +32246,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_toDot" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
@@ -30510,6 +32272,74 @@ SWIGINTERN PyObject *_wrap_UndiGraph_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_UndiGraph_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_toDot" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "UndiGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "UndiGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::UndiGraph const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_UndiGraph_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "UndiGraph_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_UndiGraph_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_UndiGraph_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'UndiGraph_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::UndiGraph::toDot() const\n"
+    "    gum::UndiGraph::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -32363,17 +34193,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_toDot" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
@@ -32391,6 +34219,74 @@ SWIGINTERN PyObject *_wrap_DiGraph_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DiGraph_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_toDot" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DiGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "DiGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::DiGraph const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DiGraph_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "DiGraph_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_DiGraph_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_DiGraph_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'DiGraph_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::DiGraph::toDot() const\n"
+    "    gum::DiGraph::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -36260,17 +38156,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_toDot" "', argument " "1"" of type '" "gum::MixedGraph const *""'"); 
@@ -36288,6 +38182,74 @@ SWIGINTERN PyObject *_wrap_MixedGraph_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MixedGraph_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_toDot" "', argument " "1"" of type '" "gum::MixedGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MixedGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MixedGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::MixedGraph const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MixedGraph_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MixedGraph_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_MixedGraph_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_MixedGraph_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'MixedGraph_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MixedGraph::toDot() const\n"
+    "    gum::MixedGraph::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -38600,17 +40562,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_PDAG_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_PDAG_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::PDAG *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PDAG, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PDAG_toDot" "', argument " "1"" of type '" "gum::PDAG const *""'"); 
@@ -38628,6 +40588,74 @@ SWIGINTERN PyObject *_wrap_PDAG_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PDAG_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::PDAG *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PDAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PDAG_toDot" "', argument " "1"" of type '" "gum::PDAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PDAG * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PDAG_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PDAG_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::PDAG const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PDAG_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "PDAG_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_PDAG_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_PDAG_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'PDAG_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::PDAG::toDot() const\n"
+    "    gum::PDAG::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -40941,17 +42969,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_PAG_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_PAG_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::PAG *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PAG, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PAG_toDot" "', argument " "1"" of type '" "gum::PAG const *""'"); 
@@ -40969,6 +42995,74 @@ SWIGINTERN PyObject *_wrap_PAG_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PAG_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::PAG *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PAG_toDot" "', argument " "1"" of type '" "gum::PAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PAG * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PAG_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "PAG_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::PAG const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PAG_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "PAG_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_PAG_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_PAG_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'PAG_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::PAG::toDot() const\n"
+    "    gum::PAG::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -42710,17 +44804,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CliqueGraph_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_CliqueGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CliqueGraph *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CliqueGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CliqueGraph_toDot" "', argument " "1"" of type '" "gum::CliqueGraph const *""'"); 
@@ -42741,7 +44833,104 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CliqueGraph_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CliqueGraph *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CliqueGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CliqueGraph_toDot" "', argument " "1"" of type '" "gum::CliqueGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CliqueGraph * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CliqueGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CliqueGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::CliqueGraph const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CliqueGraph_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CliqueGraph_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_CliqueGraph_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_CliqueGraph_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CliqueGraph_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::CliqueGraph::toDot() const\n"
+    "    gum::CliqueGraph::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CliqueGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CliqueGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CliqueGraph___map_str__" "', argument " "1"" of type '" "gum::CliqueGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CliqueGraph * >(argp1);
+  {
+    try {
+      result = ((gum::CliqueGraph const *)arg1)->mapToDot();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CliqueGraph *arg1 = 0 ;
   double arg2 ;
@@ -42848,7 +45037,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CliqueGraph *arg1 = 0 ;
   double arg2 ;
@@ -42928,7 +45117,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_CliqueGraph___map_str____SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CliqueGraph *arg1 = 0 ;
   double arg2 ;
@@ -42989,18 +45178,23 @@ SWIGINTERN PyObject *_wrap_CliqueGraph___map_str__(PyObject *self, PyObject *arg
   
   if (!(argc = SWIG_Python_UnpackTuple(args, "CliqueGraph___map_str__", 0, 6, argv))) SWIG_fail;
   --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
   if (argc == 4) {
-    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_2(self, argc, argv);
+    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_3(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 5) {
-    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 6) {
-    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_CliqueGraph___map_str____SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -43008,6 +45202,7 @@ SWIGINTERN PyObject *_wrap_CliqueGraph___map_str__(PyObject *self, PyObject *arg
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CliqueGraph___map_str__'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    gum::CliqueGraph::mapToDot() const\n"
     "    gum::CliqueGraph::mapToDot(double,double,double,std::string_view,std::string_view) const\n"
     "    gum::CliqueGraph::mapToDot(double,double,double,std::string_view) const\n"
     "    gum::CliqueGraph::mapToDot(double,double,double) const\n");
@@ -64091,17 +66286,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_EssentialGraph_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_EssentialGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::EssentialGraph *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_toDot" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
@@ -64119,6 +66312,74 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_toDot(PyObject *self, PyObject *args) 
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_toDot" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "EssentialGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "EssentialGraph_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::EssentialGraph const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "EssentialGraph_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_EssentialGraph_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_EssentialGraph_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'EssentialGraph_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::EssentialGraph::toDot() const\n"
+    "    gum::EssentialGraph::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -65180,17 +67441,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MarkovBlanket_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_MarkovBlanket_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MarkovBlanket *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovBlanket, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovBlanket_toDot" "', argument " "1"" of type '" "gum::MarkovBlanket const *""'"); 
@@ -65208,6 +67467,74 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkovBlanket_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkovBlanket *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovBlanket, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovBlanket_toDot" "', argument " "1"" of type '" "gum::MarkovBlanket const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovBlanket * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MarkovBlanket_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "MarkovBlanket_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::MarkovBlanket const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkovBlanket_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MarkovBlanket_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_MarkovBlanket_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_MarkovBlanket_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'MarkovBlanket_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MarkovBlanket::toDot() const\n"
+    "    gum::MarkovBlanket::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -67105,17 +69432,15 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IBayesNet_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_IBayesNet_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_toDot" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
@@ -67133,6 +69458,74 @@ SWIGINTERN PyObject *_wrap_IBayesNet_toDot(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_toDot" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IBayesNet_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "IBayesNet_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::IBayesNet< double > const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "IBayesNet_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_IBayesNet_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_IBayesNet_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'IBayesNet_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::IBayesNet< double >::toDot() const\n"
+    "    gum::IBayesNet< double >::toDot(gum::dot::DotOptions const &) const\n");
+  return 0;
 }
 
 
@@ -75826,17 +78219,55 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetFragment_toDot(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetFragment_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::BayesNetFragment< double > *arg1 = 0 ;
+  gum::dot::DotOptions *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_toDot" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__DotOptions,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNetFragment_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNetFragment_toDot" "', argument " "2"" of type '" "gum::dot::DotOptions const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::DotOptions * >(argp2);
+  {
+    try {
+      result = ((gum::BayesNetFragment< double > const *)arg1)->toDot((gum::dot::DotOptions const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNetFragment_toDot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNetFragment< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   std::string result;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_toDot" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
@@ -75854,6 +78285,34 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_toDot(PyObject *self, PyObject *args
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNetFragment_toDot(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BayesNetFragment_toDot", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_BayesNetFragment_toDot__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_BayesNetFragment_toDot__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BayesNetFragment_toDot'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::BayesNetFragment< double >::toDot(gum::dot::DotOptions const &) const\n"
+    "    gum::BayesNetFragment< double >::toDot() const\n");
+  return 0;
 }
 
 
@@ -130547,6 +133006,261 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete__Configuration", _wrap_delete__Configuration, METH_O, NULL},
 	 { "_Configuration_swigregister", _Configuration_swigregister, METH_O, NULL},
 	 { "_Configuration_swiginit", _Configuration_swiginit, METH_VARARGS, NULL},
+	 { "_resolveFgColor", _wrap__resolveFgColor, METH_VARARGS, NULL},
+	 { "new_DotOptions", _wrap_new_DotOptions, METH_NOARGS, NULL},
+	 { "DotOptions_setSize", _wrap_DotOptions_setSize, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"size : str\n"
+		"  the size (for graphviz, in inches) of the graph, such as ``'5'`` or ``'12!'`` for an exact size.\n"
+		"\n"
+		""},
+	 { "DotOptions_setRankDir", _wrap_DotOptions_setRankDir, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"rankDir : str\n"
+		"  the direction of the layout: ``'TB'`` (top to bottom) or ``'LR'`` (left to right).\n"
+		"\n"
+		""},
+	 { "DotOptions_setLayout", _wrap_DotOptions_setLayout, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"layout : str\n"
+		"  the graphviz layout engine (``'dot'``, ``'neato'``, ``'fdp'``...).\n"
+		"\n"
+		""},
+	 { "DotOptions_setLabel", _wrap_DotOptions_setLabel, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"label : str\n"
+		"  the label of the graph.\n"
+		"\n"
+		""},
+	 { "DotOptions_size", _wrap_DotOptions_size, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the size given for the graph, an empty string if none was given.\n"
+		"\n"
+		""},
+	 { "DotOptions_rankDir", _wrap_DotOptions_rankDir, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the direction of the layout given for the graph, an empty string if none was given.\n"
+		"\n"
+		""},
+	 { "DotOptions_layout", _wrap_DotOptions_layout, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the layout given for the graph, an empty string if none was given.\n"
+		"\n"
+		""},
+	 { "DotOptions_label", _wrap_DotOptions_label, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the label given for the graph, an empty string if none was given.\n"
+		"\n"
+		""},
+	 { "DotOptions_setNodeBgColor", _wrap_DotOptions_setNodeBgColor, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"node : int\n"
+		"  the id of the node.\n"
+		"color : str\n"
+		"  the background color of the node (``'#RRGGBB'`` or a name of color). If no font color is given for the node, the text\n"
+		"  is black or white according to the brightness of this background.\n"
+		"\n"
+		""},
+	 { "DotOptions_setNodeFgColor", _wrap_DotOptions_setNodeFgColor, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"node : int\n"
+		"  the id of the node.\n"
+		"color : str\n"
+		"  the font color of the node (``'adaptive'`` for black or white according to the background).\n"
+		"\n"
+		""},
+	 { "DotOptions_setNodeLabel", _wrap_DotOptions_setNodeLabel, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"node : int\n"
+		"  the id of the node.\n"
+		"label : str\n"
+		"  the text displayed in the node (by default, its name).\n"
+		"\n"
+		""},
+	 { "DotOptions_setNodeTooltip", _wrap_DotOptions_setNodeTooltip, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"node : int\n"
+		"  the id of the node.\n"
+		"tooltip : str\n"
+		"  the text displayed when the mouse is over the node.\n"
+		"\n"
+		""},
+	 { "DotOptions_setNodeAttribute", _wrap_DotOptions_setNodeAttribute, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"node : int\n"
+		"  the id of the node.\n"
+		"key : str\n"
+		"  the name of a graphviz attribute of the node (letters, digits and underscores).\n"
+		"value : str\n"
+		"  its value.\n"
+		"verbatim : bool\n"
+		"  if True, the value is written as it is (with its own quotes if it needs some), for instance for an HTML label.\n"
+		"\n"
+		""},
+	 { "DotOptions_setArcColor", _wrap_DotOptions_setArcColor, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"tail : int\n"
+		"  the id of the tail of the arc.\n"
+		"head : int\n"
+		"  the id of the head of the arc.\n"
+		"color : str\n"
+		"  the color of the arc.\n"
+		"\n"
+		""},
+	 { "DotOptions_setArcWidth", _wrap_DotOptions_setArcWidth, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"tail : int\n"
+		"  the id of the tail of the arc.\n"
+		"head : int\n"
+		"  the id of the head of the arc.\n"
+		"width : float\n"
+		"  the width of the line of the arc (at least 0).\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  if the width is negative or not a finite number.\n"
+		"\n"
+		""},
+	 { "DotOptions_setArcLabel", _wrap_DotOptions_setArcLabel, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"tail : int\n"
+		"  the id of the tail of the arc.\n"
+		"head : int\n"
+		"  the id of the head of the arc.\n"
+		"label : str\n"
+		"  the text displayed next to the arc.\n"
+		"\n"
+		""},
+	 { "DotOptions_setArcTooltip", _wrap_DotOptions_setArcTooltip, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"tail : int\n"
+		"  the id of the tail of the arc.\n"
+		"head : int\n"
+		"  the id of the head of the arc.\n"
+		"tooltip : str\n"
+		"  the text displayed when the mouse is over the arc.\n"
+		"\n"
+		""},
+	 { "DotOptions_setArcAttribute", _wrap_DotOptions_setArcAttribute, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"tail : int\n"
+		"  the id of the tail of the arc.\n"
+		"head : int\n"
+		"  the id of the head of the arc.\n"
+		"key : str\n"
+		"  the name of a graphviz attribute of the arc (letters, digits and underscores).\n"
+		"value : str\n"
+		"  its value.\n"
+		"verbatim : bool\n"
+		"  if True, the value is written as it is.\n"
+		"\n"
+		""},
+	 { "DotOptions_empty", _wrap_DotOptions_empty, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if nothing was given.\n"
+		"\n"
+		""},
+	 { "DotOptions_setFactorBgColor", _wrap_DotOptions_setFactorBgColor, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variables : Set[int]\n"
+		"  the ids of the variables of the factor (in a factor graph of a Markov random field).\n"
+		"color : str\n"
+		"  the background color of the factor.\n"
+		"\n"
+		""},
+	 { "DotOptions_setFactorFgColor", _wrap_DotOptions_setFactorFgColor, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variables : Set[int]\n"
+		"  the ids of the variables of the factor (in a factor graph of a Markov random field).\n"
+		"color : str\n"
+		"  the font color of the factor.\n"
+		"\n"
+		""},
+	 { "DotOptions_setFactorLabel", _wrap_DotOptions_setFactorLabel, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variables : Set[int]\n"
+		"  the ids of the variables of the factor (in a factor graph of a Markov random field).\n"
+		"label : str\n"
+		"  the text displayed in the factor.\n"
+		"\n"
+		""},
+	 { "DotOptions_setFactorTooltip", _wrap_DotOptions_setFactorTooltip, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variables : Set[int]\n"
+		"  the ids of the variables of the factor (in a factor graph of a Markov random field).\n"
+		"tooltip : str\n"
+		"  the text displayed when the mouse is over the factor.\n"
+		"\n"
+		""},
+	 { "DotOptions_setFactorAttribute", _wrap_DotOptions_setFactorAttribute, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variables : Set[int]\n"
+		"  the ids of the variables of the factor (in a factor graph of a Markov random field).\n"
+		"key : str\n"
+		"  the name of a graphviz attribute of the factor.\n"
+		"value : str\n"
+		"  its value.\n"
+		"verbatim : bool\n"
+		"  if True, the value is written as it is.\n"
+		"\n"
+		""},
+	 { "delete_DotOptions", _wrap_delete_DotOptions, METH_O, NULL},
+	 { "DotOptions_swigregister", DotOptions_swigregister, METH_O, NULL},
+	 { "DotOptions_swiginit", DotOptions_swiginit, METH_VARARGS, NULL},
 	 { "delete_Variable", _wrap_delete_Variable, METH_O, NULL},
 	 { "Variable_clone", _wrap_Variable_clone, METH_O, "\n"
 		"\n"
@@ -131741,7 +134455,12 @@ static PyMethodDef SwigMethods[] = {
 		"Remove all the nodes and edges from the graph.\n"
 		"\n"
 		""},
-	 { "UndiGraph_toDot", _wrap_UndiGraph_toDot, METH_O, "\n"
+	 { "UndiGraph_toDot", _wrap_UndiGraph_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -132114,7 +134833,12 @@ static PyMethodDef SwigMethods[] = {
 		"Remove all the nodes and arcs from the graph.\n"
 		"\n"
 		""},
-	 { "DiGraph_toDot", _wrap_DiGraph_toDot, METH_O, "\n"
+	 { "DiGraph_toDot", _wrap_DiGraph_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -132787,7 +135511,12 @@ static PyMethodDef SwigMethods[] = {
 		"    True if such a path exists\n"
 		"\n"
 		""},
-	 { "MixedGraph_toDot", _wrap_MixedGraph_toDot, METH_O, "\n"
+	 { "MixedGraph_toDot", _wrap_MixedGraph_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -133252,7 +135981,12 @@ static PyMethodDef SwigMethods[] = {
 		"    True if such a path exists\n"
 		"\n"
 		""},
-	 { "PDAG_toDot", _wrap_PDAG_toDot, METH_O, "\n"
+	 { "PDAG_toDot", _wrap_PDAG_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -133780,7 +136514,7 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.MixedGraph\n"
 		"\n"
 		""},
-	 { "PAG_toDot", _wrap_PAG_toDot, METH_O, "\n"
+	 { "PAG_toDot", _wrap_PAG_toDot, METH_VARARGS, "\n"
 		"\n"
 		"Return a Graphviz dot representation of the PAG.\n"
 		"\n"
@@ -133788,6 +136522,11 @@ static PyMethodDef SwigMethods[] = {
 		"- Circle: ``odot``\n"
 		"- Tail: ``none``\n"
 		"- Arrowhead: ``normal``\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -134166,12 +136905,19 @@ static PyMethodDef SwigMethods[] = {
 		"  True if the graph is a join tree\n"
 		"\n"
 		""},
-	 { "CliqueGraph_toDot", _wrap_CliqueGraph_toDot, METH_O, "\n"
+	 { "CliqueGraph_toDot", _wrap_CliqueGraph_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (keys ``junctionTree*`` of the\n"
+		"    section ``notebook``). The options of a clique are the ones of its node; the options of an edge are\n"
+		"    the ones of its separator (label, tooltip, color, attributes, and width of the two links).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"    a friendly display of the graph in DOT format\n"
+		"    a friendly display of the clique graph in DOT format: the cliques and the separators are nodes\n"
 		"\n"
 		""},
 	 { "CliqueGraph___map_str__", _wrap_CliqueGraph___map_str__, METH_VARARGS, NULL},
@@ -137644,7 +140390,12 @@ static PyMethodDef SwigMethods[] = {
 		"    the PDAG (Partially Directed Graph)\n"
 		"\n"
 		""},
-	 { "EssentialGraph_toDot", _wrap_EssentialGraph_toDot, METH_O, "\n"
+	 { "EssentialGraph_toDot", _wrap_EssentialGraph_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -137839,7 +140590,12 @@ static PyMethodDef SwigMethods[] = {
 		"  a copy of the DAG\n"
 		"\n"
 		""},
-	 { "MarkovBlanket_toDot", _wrap_MarkovBlanket_toDot, METH_O, "\n"
+	 { "MarkovBlanket_toDot", _wrap_MarkovBlanket_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -138333,7 +141089,12 @@ static PyMethodDef SwigMethods[] = {
 		"    The biggest value (not equal to 1) in the CPTs of the BayesNet\n"
 		"\n"
 		""},
-	 { "IBayesNet_toDot", _wrap_IBayesNet_toDot, METH_O, "\n"
+	 { "IBayesNet_toDot", _wrap_IBayesNet_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -139994,7 +142755,12 @@ static PyMethodDef SwigMethods[] = {
 		"    If the graph does not contain the variable\n"
 		"\n"
 		""},
-	 { "BayesNetFragment_toDot", _wrap_BayesNetFragment_toDot, METH_O, "\n"
+	 { "BayesNetFragment_toDot", _wrap_BayesNetFragment_toDot, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"options : pyagrum.DotOptions, optional\n"
+		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150464,6 +153230,7 @@ static swig_type_info _swigt__p_gum__VariableEliminationT_double_t = {"_p_gum__V
 static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap", "gum::VariableNodeMap *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WeightedSamplingT_double_t = {"_p_gum__WeightedSamplingT_double_t", "gum::WeightedSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongClassElement = {"_p_gum__WrongClassElement", "gum::WrongClassElement *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__BNDatabaseGeneratorT_double_t = {"_p_gum__learning__BNDatabaseGeneratorT_double_t", "gum::learning::BNDatabaseGenerator< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__learning__BNLearnerT_double_t", "gum::learning::BNLearner< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__DatabaseTable = {"_p_gum__learning__DatabaseTable", "gum::learning::DatabaseTable *", 0, 0, (void*)0, 0};
@@ -150649,6 +153416,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__VariableNodeMap,
   &_swigt__p_gum__WeightedSamplingT_double_t,
   &_swigt__p_gum__WrongClassElement,
+  &_swigt__p_gum__dot__DotOptions,
   &_swigt__p_gum__learning__BNDatabaseGeneratorT_double_t,
   &_swigt__p_gum__learning__BNLearnerT_double_t,
   &_swigt__p_gum__learning__DatabaseTable,
@@ -150834,6 +153602,7 @@ static swig_cast_info _swigc__p_gum__VariableEliminationT_double_t[] = {  {&_swi
 static swig_cast_info _swigc__p_gum__VariableNodeMap[] = {  {&_swigt__p_gum__VariableNodeMap, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WeightedSamplingT_double_t[] = {  {&_swigt__p_gum__WeightedSamplingT_double_t, 0, 0, 0},  {&_swigt__p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, _p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_tTo_p_gum__WeightedSamplingT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongClassElement[] = {  {&_swigt__p_gum__WrongClassElement, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__BNDatabaseGeneratorT_double_t[] = {  {&_swigt__p_gum__learning__BNDatabaseGeneratorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__BNLearnerT_double_t[] = {  {&_swigt__p_gum__learning__BNLearnerT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__DatabaseTable[] = {  {&_swigt__p_gum__learning__DatabaseTable, 0, 0, 0},{0, 0, 0, 0}};
@@ -151019,6 +153788,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__VariableNodeMap,
   _swigc__p_gum__WeightedSamplingT_double_t,
   _swigc__p_gum__WrongClassElement,
+  _swigc__p_gum__dot__DotOptions,
   _swigc__p_gum__learning__BNDatabaseGeneratorT_double_t,
   _swigc__p_gum__learning__BNLearnerT_double_t,
   _swigc__p_gum__learning__DatabaseTable,

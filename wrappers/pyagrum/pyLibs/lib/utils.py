@@ -56,17 +56,17 @@ from collections import namedtuple
 
 def setDarkTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in dark theme"""
-  pyagrum.config["notebook", "arc_color"] = "#AAAAAA"
+  pyagrum.config["notebook", "arcColor"] = "#AAAAAA"
 
 
 def setLightTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in light theme"""
-  pyagrum.config["notebook", "arc_color"] = "#4A4A4A"
+  pyagrum.config["notebook", "arcColor"] = "#4A4A4A"
 
 
 def getBlackInTheme() -> str:
   """return the color used for arc and text in graphs"""
-  return pyagrum.config["notebook", "arc_color"]
+  return pyagrum.config["notebook", "arcColor"]
 
 
 def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
@@ -165,7 +165,7 @@ def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]) -> None:
   g.set_layout("fdp")  # force directed placement
   for n in g.get_nodes():
     name = n.get_name()
-    if name in {"edge", "node"}:  # default attributes for all following nodes or edges
+    if name in {"edge", "node", "graph"}:  # default attributes for all following nodes or edges, or for the graph
       continue
     if name[0] == '"':
       pos = layout[name[1:-1]]

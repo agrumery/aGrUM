@@ -46,6 +46,52 @@ Used internally by notebook.py.
 import pydot as dot
 
 import pyagrum
+import pyagrum.lib._colors as gumcols
+
+
+def _junctionTreeOptions(
+  jt: pyagrum.CliqueGraph, model: pyagrum.BayesNet, withNames: bool, size: float | str | None = None
+) -> pyagrum.DotOptions:
+  """The options of the toDot of a junction tree of a model: the cliques and the separators are labelled by the names (or the ids) of their variables."""
+  options = pyagrum.DotOptions()
+  if size is not None:
+    options.setSize(str(size))
+
+  def names(nodes) -> list[str]:
+    return sorted(model.variable(n).name() for n in nodes) if withNames else [str(n) for n in sorted(nodes)]
+
+  for c in jt.nodes():
+    options.setNodeLabel(c, f"({c}):" + ",".join(names(jt.clique(c))))
+  for c1, c2 in jt.edges():
+    options.setArcLabel(c1, c2, ",".join(names(jt.separator(c1, c2))))
+  return options
+
+
+def _junctionTreeDot(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
+  """The pydot graph of a junction tree built for a model (the attribute `_engine` of the junction tree)."""
+  model = jt._engine._model
+  withNames = pyagrum.config.typed["notebook", "junctionTreeWithNames"]
+  return gumcols.dotFromAgrum(jt.toDot(_junctionTreeOptions(jt, model, withNames, size)))
+
+
+def _mapDotString(
+  jt: pyagrum.CliqueGraph,
+  scaleClique: float | None,
+  scaleSep: float | None,
+  lenEdge: float | None,
+  colorClique: str | None,
+  colorSep: str | None,
+) -> str:
+  """The dot string of the map of a junction tree; the values which are None are the ones of the configuration."""
+  if scaleClique is None and scaleSep is None and lenEdge is None and colorClique is None and colorSep is None:
+    return jt.__map_str__()
+  if scaleClique is None:
+    scaleClique = float(pyagrum.config["notebook", "junctionTreeMapCliqueScale"])
+  if scaleSep is None:
+    scaleSep = float(pyagrum.config["notebook", "junctionTreeMapSepScale"])
+  if lenEdge is None:
+    lenEdge = float(pyagrum.config["notebook", "junctionTreeMapEdgeLen"])
+  return jt.__map_str__(scaleClique, scaleSep, lenEdge, colorClique or "", colorSep or "")
 
 
 def _junctionTreeMapDot(
@@ -57,33 +103,13 @@ def _junctionTreeMapDot(
   colorSep: str | None,
 ) -> dot.Dot:
   """Build junction tree map as a pydot.Dot using config defaults for None parameters."""
-  if scaleClique is None:
-    scaleClique = float(pyagrum.config["notebook", "junctiontree_map_cliquescale"])
-  if scaleSep is None:
-    scaleSep = float(pyagrum.config["notebook", "junctiontree_map_sepscale"])
-  if lenEdge is None:
-    lenEdge = float(pyagrum.config["notebook", "junctiontree_map_edgelen"])
-  if colorClique is None:
-    colorClique = pyagrum.config["notebook", "junctiontree_clique_bgcolor"]
-  if colorSep is None:
-    colorSep = pyagrum.config["notebook", "junctiontree_separator_bgcolor"]
   jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
-  dotstring = jt.__map_str__(scaleClique, scaleSep, lenEdge, colorClique, colorSep)
-  graphs = dot.graph_from_dot_data(dotstring)
-  assert graphs is not None
-  return graphs[0]
+  return gumcols.dotFromAgrum(_mapDotString(jt, scaleClique, scaleSep, lenEdge, colorClique, colorSep))
 
 
 def _junctionTreeDotStr(bn: pyagrum.BayesNet, withNames: bool) -> str:
-  """Build junction tree as a dot string with transparent background."""
+  """Build junction tree as a dot string."""
   jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
-  jt._engine = jtg
-  jtg._model = bn
-  dotstring = jt.toDotWithNames(bn) if withNames else jt.toDot()
-  graphs = dot.graph_from_dot_data(dotstring)
-  assert graphs is not None
-  g = graphs[0]
-  g.set_bgcolor("transparent")
-  return g.to_string()
+  return jt.toDot(_junctionTreeOptions(jt, bn, withNames))

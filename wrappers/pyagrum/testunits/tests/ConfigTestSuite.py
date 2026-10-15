@@ -313,7 +313,7 @@ class TestConfig(pyAgrumTestCase):
   # keys renamed after aGrUM 3.2.1 (section, old name, new name, value)
   RENAMED_AFTER_3_2_1 = (
     ("core", "default_jgumIndent", "jgumIndent", "2"),
-    ("notebook", "default_node_bgcolor", "node_bgcolor", "red"),
+    ("notebook", "default_node_bgcolor", "nodeBgColor", "red"),
     ("core", "allow_modification_when_saving", "allowModificationWhenSaving", "True"),
   )
 
@@ -334,6 +334,257 @@ class TestConfig(pyAgrumTestCase):
         self.assertTrue(issubclass(w[0].category, DeprecationWarning))
         self.assertIn("3.2.1", str(w[0].message))
         self.assertEqual(gum.config[section, new], value)
+    finally:
+      gum.config.pop()
+
+  # keys moved to the defaults of aGrUM and renamed in lowerCamelCase (section -> old name -> new name)
+  MOVED_TO_AGRUM = {
+    "notebook": {
+      "arc_color": "arcColor",
+      "node_bgcolor": "nodeBgColor",
+      "node_fgcolor": "nodeFgColor",
+      "graph_size": "graphSize",
+      "graph_rankdir": "graphRankDir",
+      "graph_layout": "graphLayout",
+      "markovrandomfield_view": "markovRandomFieldView",
+      "junctiontree_graph_size": "junctionTreeGraphSize",
+      "junctiontree_with_names": "junctionTreeWithNames",
+      "junctiontree_separator_bgcolor": "junctionTreeSeparatorBgColor",
+      "junctiontree_separator_fgcolor": "junctionTreeSeparatorFgColor",
+      "junctiontree_separator_fontsize": "junctionTreeSeparatorFontSize",
+      "junctiontree_clique_bgcolor": "junctionTreeCliqueBgColor",
+      "junctiontree_clique_fgcolor": "junctionTreeCliqueFgColor",
+      "junctiontree_clique_fontsize": "junctionTreeCliqueFontSize",
+      "junctiontree_map_cliquescale": "junctionTreeMapCliqueScale",
+      "junctiontree_map_sepscale": "junctionTreeMapSepScale",
+      "junctiontree_map_edgelen": "junctionTreeMapEdgeLen",
+      "junctiontree_map_size": "junctionTreeMapSize",
+    },
+    "factorgraph": {
+      "node_bgcolor": "nodeBgColor",
+      "node_fgcolor": "nodeFgColor",
+      "factor_bgcolor": "factorBgColor",
+      "edge_length": "edgeLength",
+      "graph_layout": "graphLayout",
+    },
+    "dynamicBN": {
+      "graph_size": "graphSize",
+    },
+    "influenceDiagram": {
+      "graph_size": "graphSize",
+      "id_size": "graphSize",
+      "chance_bgcolor": "chanceBgColor",
+      "chance_fgcolor": "chanceFgColor",
+      "utility_bgcolor": "utilityBgColor",
+      "utility_fgcolor": "utilityFgColor",
+      "decision_bgcolor": "decisionBgColor",
+      "decision_fgcolor": "decisionFgColor",
+      "chance_shape": "chanceShape",
+      "utility_shape": "utilityShape",
+      "decision_shape": "decisionShape",
+      "decision_arc_style": "decisionArcStyle",
+      "utility_arc_style": "utilityArcStyle",
+    },
+    "credalnet": {
+      "node_bgcolor": "nodeBgColor",
+      "node_fgcolor": "nodeFgColor",
+    },
+    "causal": {
+      "show_latent_names": "showLatentNames",
+      "graph_size": "graphSize",
+      "node_bgcolor": "nodeBgColor",
+      "node_fgcolor": "nodeFgColor",
+      "latent_bgcolor": "latentBgColor",
+      "latent_fgcolor": "latentFgColor",
+    },
+  }
+
+  def testEveryDeprecatedKeyRedirectsToItsTarget(self):
+    # generic: it stays valid when the deprecated keys are removed
+    target = re.compile(r"deprecated -> (\w+)\.(\w+)")
+    for section, option, meta, _ in gum.config.schema():
+      if meta.kind != "deprecated":
+        continue
+      found = target.match(gum.config.doc(section, option))
+      self.assertIsNotNone(found, f"{section}.{option}")
+      tsection, toption = found.groups()
+      self.assertNotEqual(
+        next(m.kind for s, o, m, _ in gum.config.schema() if (s, o) == (tsection, toption.lower())), "deprecated"
+      )
+      with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        value = gum.config[section, option]
+        typed = gum.config.typed[section, option]
+      self.assertEqual(len(w), 2, f"{section}.{option}")
+      self.assertTrue(all(issubclass(x.category, DeprecationWarning) for x in w))
+      self.assertEqual(value, gum.config[tsection, toption], f"{section}.{option}")
+      self.assertEqual(typed, gum.config.typed[tsection, toption], f"{section}.{option}")
+
+  def testKeysMovedToAgrumStillWork(self):
+    # transitory: to be removed together with these deprecated keys in defaults.ini
+    # the schema gives the names of the keys in lower case
+    schema = {(section, option): meta for section, option, meta, _ in gum.config.schema()}
+    moved = [(section, old, new) for section, keys in self.MOVED_TO_AGRUM.items() for old, new in keys.items()]
+    if any(
+      schema.get((section, old.lower())) is None or schema[(section, old.lower())].kind != "deprecated"
+      for section, old, _ in moved
+    ):
+      self.skipTest("the keys moved to aGrUM are no more deprecated keys")
+
+    self.assertEqual(len(moved), 46)
+    gum.config.push()
+    try:
+      for section, old, new in moved:
+        self.assertNotEqual(schema[(section, new.lower())].kind, "deprecated", f"{section}.{new}")
+        value = gum.config[section, new]
+        # the old name reads the value of the new one ...
+        with warnings.catch_warnings(record=True) as w:
+          warnings.simplefilter("always")
+          self.assertEqual(gum.config[section, old], value, f"{section}.{old}")
+        self.assertEqual(len(w), 1)
+        self.assertTrue(issubclass(w[0].category, DeprecationWarning))
+        # ... and writes it
+        with warnings.catch_warnings(record=True):
+          warnings.simplefilter("always")
+          gum.config[section, old] = value
+        self.assertEqual(gum.config[section, new], value)
+
+      # a value written with an old name is the value of the new name
+      with warnings.catch_warnings(record=True):
+        warnings.simplefilter("always")
+        gum.config["notebook", "graph_size"] = "7"
+        gum.config["influenceDiagram", "id_size"] = "8"
+        self.assertEqual(gum.config["notebook", "default_graph_size"], "7")
+        self.assertEqual(gum.config["influenceDiagram", "default_graph_size"], "8")
+      self.assertEqual(gum.config["notebook", "graphSize"], "7")
+      self.assertEqual(gum.config["influenceDiagram", "graphSize"], "8")
+    finally:
+      gum.config.pop()
+
+  def testSectionsSharedByAgrumAndPyAgrum(self):
+    keys = {}
+    for section, option, meta, _ in gum.config.schema():
+      self.assertNotIn(option, keys.setdefault(section, []), f"{section}.{option} twice")
+      keys[section].append(option)
+    for section in ("notebook", "factorgraph", "dynamicBN", "influenceDiagram", "credalnet", "causal"):
+      self.assertIn(section, keys)
+    # a key of the defaults of aGrUM and a key of the defaults of pyAgrum in the same section, aGrUM first
+    notebook = keys["notebook"]
+    self.assertLess(notebook.index("nodebgcolor"), notebook.index("tensor_visible_digits"))
+    self.assertLess(notebook.index("graphsize"), notebook.index("graph_inference_size"))
+    self.assertLess(keys["causal"].index("graphsize"), keys["causal"].index("latex_do_prefix"))
+
+  def testGraphsDoNotReadDeprecatedKeys(self):
+    import pyagrum.lib.bn2graph as gbn2
+    import pyagrum.lib.id2graph as gid2
+    import pyagrum.lib.notebook as gnb
+    import pyagrum.lib.utils as gutils
+
+    bn = gum.fastBN("A->B->C;A->C", 3)
+    mrf = gum.fastMRF("A--B--C;A--C", 2)
+    diag = gum.fastID("A->B->*D->$U;B->$U")
+    ie = gum.ShaferShenoyLIMIDInference(diag)
+    ie.makeInference()
+
+    gum.config.push()
+    try:
+      with warnings.catch_warnings():
+        # only the notices of the configuration: the libraries we use may have their own deprecation warnings
+        warnings.filterwarnings("error", message=r"'\w+\.\w+' is deprecated", category=DeprecationWarning)
+        gnb.BN2dot(bn)
+        gnb.MRF2UGdot(mrf)
+        gnb.MRF2FactorGraphdot(mrf)
+        gnb.ID2dot(diag)
+        gbn2.BNinference2dot(bn, evs={"A": 1}, targets={"C"})
+        gid2.LIMIDinference2dot(diag, "6", ie, {}, set())
+        gutils.setDarkTheme()
+        gutils.setLightTheme()
+        gutils.getBlackInTheme()
+    finally:
+      gum.config.pop()
+
+  # the font colors, which can be 'adaptive' (black or white according to their background color)
+  FONT_COLORS = (
+    ("notebook", "nodeFgColor"),
+    ("notebook", "junctionTreeSeparatorFgColor"),
+    ("notebook", "junctionTreeCliqueFgColor"),
+    ("factorgraph", "nodeFgColor"),
+    ("influenceDiagram", "chanceFgColor"),
+    ("influenceDiagram", "utilityFgColor"),
+    ("influenceDiagram", "decisionFgColor"),
+    ("credalnet", "nodeFgColor"),
+    ("causal", "nodeFgColor"),
+    ("causal", "latentFgColor"),
+  )
+
+  def testFontColorsAreAdaptiveByDefault(self):
+    gum.config.push()
+    try:
+      gum.config.reset()
+      for section, key in self.FONT_COLORS:
+        self.assertEqual(gum.config[section, key], "adaptive", f"{section}.{key}")
+        # the old names (here of the keys of the notebook) give the same value
+      with warnings.catch_warnings(record=True):
+        warnings.simplefilter("always")
+        self.assertEqual(gum.config["notebook", "node_fgcolor"], "adaptive")
+        self.assertEqual(gum.config["notebook", "default_node_fgcolor"], "adaptive")
+        self.assertEqual(gum.config["influenceDiagram", "default_chance_fgcolor"], "adaptive")
+    finally:
+      gum.config.pop()
+
+  def testAdaptiveFontColor(self):
+    import pyagrum.lib._colors as gumcols
+
+    gum.config.push()
+    try:
+      gum.config["notebook", "nodeFgColor"] = "adaptive"
+      gum.config["notebook", "arcColor"] = "#AAAAAA"
+
+      gum.config["notebook", "nodeBgColor"] = "#404040"
+      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "white")
+      gum.config["notebook", "nodeBgColor"] = "burlywood"
+      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "black")
+      # a background which is not a color: the color of the arcs (so the theme)
+      gum.config["notebook", "nodeBgColor"] = "transparent"
+      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "#AAAAAA")
+      # a color of the configuration is never changed
+      gum.config["notebook", "nodeFgColor"] = "red"
+      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "red")
+
+      # the background is the twin key of the font color
+      gum.config["influenceDiagram", "chanceFgColor"] = "adaptive"
+      gum.config["influenceDiagram", "chanceBgColor"] = "#000000"
+      self.assertEqual(gumcols.configFgColor("influenceDiagram", "chanceFgColor"), "white")
+      gum.config["influenceDiagram", "chanceBgColor"] = "#FFFFFF"
+      self.assertEqual(gumcols.configFgColor("influenceDiagram", "chanceFgColor"), "black")
+    finally:
+      gum.config.pop()
+
+  def testGraphsWithAdaptiveFontColors(self):
+    import pyagrum.lib.bn2graph as gbn2
+    import pyagrum.lib.id2graph as gid2
+    import pyagrum.lib.notebook as gnb
+
+    bn = gum.fastBN("A->B->C;A->C", 3)
+    mrf = gum.fastMRF("A--B--C;A--C", 2)
+    diag = gum.fastID("A->B->*D->$U;B->$U")
+    ie = gum.ShaferShenoyLIMIDInference(diag)
+    ie.makeInference()
+
+    gum.config.push()
+    try:
+      for section, key in self.FONT_COLORS:
+        gum.config[section, key] = "adaptive"
+
+      for graph in (
+        gnb.BN2dot(bn),
+        gnb.MRF2UGdot(mrf),
+        gnb.MRF2FactorGraphdot(mrf),
+        gnb.ID2dot(diag),
+        gbn2.BNinference2dot(bn, evs={"A": 1}, targets={"C"}),
+        gid2.LIMIDinference2dot(diag, "6", ie, {}, set()),
+      ):
+        self.assertNotIn("adaptive", graph if isinstance(graph, str) else graph.to_string())
     finally:
       gum.config.pop()
 

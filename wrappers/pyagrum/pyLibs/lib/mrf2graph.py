@@ -58,7 +58,7 @@ from .proba_histogram import saveFigProba
 
 def MRF2UGdot(
   mrf: pyagrum.MarkovRandomField,
-  size: float | str = "4",
+  size: float | str | None = None,
   nodeColor: dict[int, float] | None = None,
   edgeWidth: dict[tuple[int, int], float] | None = None,
   edgeLabel: dict[tuple[int, int], str] | None = None,
@@ -75,7 +75,7 @@ def MRF2UGdot(
   mrf: pyagrum.MarkovRandomField
     The Markov random field
   size : int |str
-    Size of the rendered graph
+    Size of the rendered graph (by default, the one of the configuration)
   nodeColor : dict[int,float]
     a nodeMap of values (between 0 and 1) to be shown as color of nodes (with special colors for 0 and 1)
   edgeWidth : dict[Tuple(int,int),float]
@@ -102,64 +102,13 @@ def MRF2UGdot(
   if cmapEdge is None:
     cmapEdge = plt.get_cmap(pyagrum.config["notebook", "edge_cmap"])
 
-  # default
-  maxedges = 100.0
-  minedges = 0.0
+  # the look comes from the configuration (written by the toDot of the MRF), the values by the options
+  options = pyagrum.DotOptions()
+  options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
+  gumcols.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
+  gumcols.setLinksOptions(options, mrf.edges(), edgeWidth, edgeLabel, edgeColor, cmapEdge, "&mdash;")
 
-  if edgeWidth is not None:
-    minedges = min(edgeWidth.values())
-    maxedges = max(edgeWidth.values())
-
-  graph = dot.Dot(graph_type="graph", bgcolor="transparent")
-
-  for n in mrf.names():
-    if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "node_bgcolor"]
-      fgcol = pyagrum.config["notebook", "node_fgcolor"]
-      res = ""
-    else:
-      bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
-      res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
-
-    node = dot.Node(
-      '"' + n + '"', style="filled", fillcolor=bgcol, fontcolor=fgcol, tooltip=f'"({mrf.idFromName(n)}) {n}{res}"'
-    )
-    graph.add_node(node)
-
-  for a in mrf.edges():
-    (n, j) = a
-    pw = 1.0
-    av = f"{n}&nbsp;&mdash;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
-    lb = ""
-
-    if edgeWidth is not None and a in edgeWidth:
-      if maxedges != minedges:
-        pw = 0.1 + 5 * (edgeWidth[a] - minedges) / (maxedges - minedges)
-      av = f"{n}&nbsp;&mdash;&nbsp;{j} : {edgeWidth[a]}"
-
-    if edgeColor is not None and a in edgeColor:
-      col = gumcols.proba2color(edgeColor[a], cmapEdge)
-
-    if edgeLabel is not None and a in edgeLabel:
-      lb = edgeLabel[a]
-
-    edge = dot.Edge(
-      '"' + mrf.variable(a[0]).name() + '"',
-      '"' + mrf.variable(a[1]).name() + '"',
-      label=lb,
-      fontsize="10",
-      penwidth=pw,
-      color=col,
-      tooltip=av,
-    )
-    graph.add_edge(edge)
-
-  if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
-  graph.set_size(str(size))
-  return graph
+  return gumcols.dotFromAgrum(mrf.toDot(options))
 
 
 def MRF2FactorGraphdot(
@@ -196,56 +145,15 @@ def MRF2FactorGraphdot(
   if cmapNode is None:
     cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
 
-  graph = dot.Dot(graph_type="graph", bgcolor="transparent", layout=pyagrum.config["factorgraph", "graph_layout"])
+  # the look comes from the configuration (written by the toDot of the MRF), the values by the options
+  options = pyagrum.DotOptions()
+  options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
+  gumcols.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
+  if factorColor is not None:
+    for f in mrf.factors():
+      options.setFactorBgColor(f, gumcols.proba2bgcolor(factorColor(f), cmapNode))
 
-  for n in mrf.names():
-    if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["factorgraph", "node_bgcolor"]
-      fgcol = pyagrum.config["factorgraph", "node_fgcolor"]
-      res = ""
-    else:
-      bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
-      res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
-
-    node = dot.Node(
-      '"' + n + '"',
-      style="filled",
-      fillcolor=bgcol,
-      fontcolor=fgcol,
-      shape="rectangle",
-      margin=0.04,
-      width=0,
-      height=0,
-      tooltip=f'"({mrf.idFromName(n)}) {n}{res}"',
-    )
-    graph.add_node(node)
-
-  def factorname(factor):
-    return '"f' + "#".join(map(str, sorted(list(factor)))) + '"'
-
-  for f in mrf.factors():
-    if factorColor is None:
-      bgcol = pyagrum.config["factorgraph", "factor_bgcolor"]
-    else:
-      bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
-    node = dot.Node(factorname(f), style="filled", fillcolor=bgcol, shape="point", width=0.1, height=0.1)
-    graph.add_node(node)
-
-  for f in mrf.factors():
-    for n in f:
-      edge = dot.Edge(
-        factorname(f),
-        '"' + mrf.variable(n).name() + '"',
-        color=gumcols.getBlackInTheme(),
-        len=pyagrum.config["factorgraph", "edge_length"],
-      )
-      graph.add_edge(edge)
-
-  if size is None:
-    size = pyagrum.config["notebook", "graph_size"]
-  graph.set_size(str(size))
-  return graph
+  return gumcols.dotFromAgrum(mrf.toDotAsFactorGraph(options))
 
 
 def MRFinference2UGdot(
@@ -331,15 +239,15 @@ def MRFinference2UGdot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "nodeBgColor"]
+    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -445,7 +353,7 @@ def MRFinference2FactorGraphdot(
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
   dotstr = f'''graph{{ 
-    layout="{pyagrum.config["factorgraph", "graph_layout"]}";
+    layout="{pyagrum.config["factorgraph", "graphLayout"]}";
     fontcolor="{gumcols.getBlackInTheme()}";
     bgcolor="transparent";
   '''
@@ -455,9 +363,9 @@ def MRFinference2FactorGraphdot(
 
   dotstr += (
     '  node [fillcolor="'
-    + pyagrum.config["notebook", "node_bgcolor"]
+    + pyagrum.config["notebook", "nodeBgColor"]
     + '", style=filled,color="'
-    + pyagrum.config["notebook", "node_fgcolor"]
+    + gumcols.configFgColor("notebook", "nodeFgColor")
     + '"];'
     + "\n"
   )
@@ -467,8 +375,8 @@ def MRFinference2FactorGraphdot(
     name = mrf.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "nodeBgColor"]
+    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
@@ -494,7 +402,7 @@ def MRFinference2FactorGraphdot(
 
   for f in mrf.factors():
     if factorColor is None:
-      bgcol = pyagrum.config["factorgraph", "factor_bgcolor"]
+      bgcol = pyagrum.config["factorgraph", "factorBgColor"]
     else:
       bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
     dotstr += f"  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n"

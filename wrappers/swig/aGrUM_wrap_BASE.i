@@ -169,6 +169,7 @@
 %import <agrum/base/core/threads/threadNumberManager.h>
 %include <agrum/base/core/utils_random.h>
 %include "configuration.i"
+%include "dot.i"
 
 
 %include <agrum/base/variables/variable.h>

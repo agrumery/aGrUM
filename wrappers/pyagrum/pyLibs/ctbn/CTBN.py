@@ -440,10 +440,13 @@ class CTBN:
         A display of the graph.
     """
 
-    chaine = """
-        digraph  "ctbn" {
+    # the look comes from the configuration: the section ctbn for the nodes, the theme for the arcs
+    arcColor = pyagrum.config["notebook", "arcColor"]
+    chaine = f"""
+        digraph  "ctbn" {{
         graph [bgcolor=transparent,label=""];
-        node [style=filled fillcolor="#ffffaa"];
+        node [style=filled fillcolor="{pyagrum.config["ctbn", "node_bgcolor"]}" fontcolor="{pyagrum.config["ctbn", "node_fgcolor"]}" color="{arcColor}"];
+        edge [color="{arcColor}"];
 
         """
 

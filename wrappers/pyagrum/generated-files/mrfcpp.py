@@ -151,10 +151,15 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
         """
         return _mrfcpp.IMarkovRandomField_maxNonOneParam(self)
 
-    def toDot(self) -> str:
+    def toDot(self, *args) -> str:
         r"""
 
         Return a Graphviz dot representation of the Markov random field.
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -162,12 +167,17 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
             a dot-format string
 
         """
-        return _mrfcpp.IMarkovRandomField_toDot(self)
+        return _mrfcpp.IMarkovRandomField_toDot(self, *args)
 
-    def toDotAsFactorGraph(self) -> str:
+    def toDotAsFactorGraph(self, *args) -> str:
         r"""
 
         Return a Graphviz dot representation of the Markov random field as a factor graph.
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -175,7 +185,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
             a dot-format string with variable nodes and factor nodes
 
         """
-        return _mrfcpp.IMarkovRandomField_toDotAsFactorGraph(self)
+        return _mrfcpp.IMarkovRandomField_toDotAsFactorGraph(self, *args)
 
     def names(self) -> set[str]:
         r"""

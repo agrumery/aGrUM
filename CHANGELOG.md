@@ -6,12 +6,53 @@
 
     - `pyagrum.config` is now the new C++ `gum::Configuration` itself (the Python class `PyAgrumConfiguration` and the module
       `pyagrum/config.py` are removed; the Python glue is in the SWIG interface): same API, same `defaults.ini`
-      (`pyLibs/defaults.ini` now holds the sections specific to pyAgrum: cmake concatenates it to the defaults of aGrUM
-      and embeds both in the library) and same `pyagrum.ini` file, read when the library is loaded, which changes
+      (`pyLibs/defaults.ini` now holds the keys specific to pyAgrum: cmake embeds it, next to the defaults of aGrUM,
+      in the library, which reads the two as sources of the same configuration) and same `pyagrum.ini` file, read when the library is loaded, which changes
       values but never creates a section or a key.
       `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allowModificationWhenSaving` through
       the C++ writers. The Python glue only converts types, exceptions and notices (as warnings): Python hooks are
       registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
+    - **Renamed keys of the look of the graphs**: the keys of the sections `notebook`, `factorgraph`, `dynamicBN`,
+      `influenceDiagram`, `credalnet` and `causal` that give the colors, sizes, shapes, styles and layout of the graphs
+      drawn by graphviz are now defined in the defaults of aGrUM, in lowerCamelCase: `notebook.arcColor`, `nodeBgColor`,
+      `nodeFgColor`, `graphSize`, `graphRankDir`, `graphLayout`, `markovRandomFieldView`, `junctionTreeGraphSize`,
+      `junctionTreeWithNames`, `junctionTree{Separator,Clique}{BgColor,FgColor,FontSize}`, `junctionTreeMap{CliqueScale,
+      SepScale,EdgeLen,Size}`; `factorgraph.nodeBgColor`, `nodeFgColor`, `factorBgColor`, `edgeLength`, `graphLayout`;
+      `dynamicBN.graphSize`; `influenceDiagram.graphSize` (which merges `graph_size` and `id_size`), `chance|utility|decisionBgColor`,
+      `chance|utility|decisionFgColor`, `chance|utility|decisionShape`, `decisionArcStyle`, `utilityArcStyle`;
+      `credalnet.nodeBgColor`, `nodeFgColor`; `causal.showLatentNames`, `graphSize`, `nodeBgColor`, `nodeFgColor`,
+      `latentBgColor`, `latentFgColor`. The previous names (`node_bgcolor`, `graph_size`, `junctiontree_map_size`, ...)
+      and the `default_*` names are deprecated keys: they are still accepted and redirected to the new ones, with a
+      `DeprecationWarning`; so are `agrum.ini` / `pyagrum.ini` files written with them. The keys that need matplotlib
+      (color maps, `evidence_*`, inference graphs, `graph_format`, `tensor_*`, `histogram_*`, `flow_*`), the keys of
+      `graphDiff`, of `ctbn`, `clg` and `bnmixture` keep their names and stay in the defaults of pyAgrum.
+    - **Font colors `adaptive`**: the ten font colors of the graphs (`notebook.nodeFgColor`, `junctionTreeSeparatorFgColor`,
+      `junctionTreeCliqueFgColor`, `factorgraph.nodeFgColor`, `influenceDiagram.{chance,utility,decision}FgColor`,
+      `credalnet.nodeFgColor`, `causal.nodeFgColor` and `latentFgColor`) can take the value `adaptive`, which is now their
+      default: the text is black or white, according to the brightness of the background color it is drawn on (white up to
+      a brightness of 153; the color of the arcs, so the theme, if the background is not a color that can be interpreted).
+      This is what the notebooks already displayed for the nodes drawn with a color of the configuration, so there is no
+      visible change. New C++ `gum::dot::resolveFgColor`, `parseColor` and the table of the 146 HTML colors
+      (`agrum/base/core/dot/dotColor.h`).
+
+    - **New `pyagrum.DotOptions` and `toDot(options)`**: the `toDot()` of the graphs (`DiGraph`, `UndiGraph`, `MixedGraph`, `DAG`,
+      `PDAG`, `PAG`, `CliqueGraph`), `EssentialGraph`, `MarkovBlanket`, `BayesNet`, `BayesNetFragment`, `MarkovRandomField`
+      (`toDot` and `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel` and `CredalNet` (new `toDot`) accept a
+      `pyagrum.DotOptions` giving, for this drawing, the size, direction, layout and label of the graph, and the labels,
+      tooltips, colors of some nodes and the labels, tooltips, colors and widths of some arcs (and the factors of a factor
+      graph, designated by the ids of their variables). `KTBN.toUnrolledDot(T, highlightReplicated, options)` takes it too.
+      `CliqueGraph.__map_str__()` (the map of a junction tree) can be called without argument: the values come from the
+      configuration.
+    - **The look of the raw `toDot()` is the one displayed in a notebook**: all the C++ `toDot()` listed above now write what
+      pyAgrum used to add afterwards (transparent background, `size`, `rankdir`, `layout`, colors of the nodes and of the arcs,
+      tooltips `(id) name`) from `pyagrum.config`, and follow it at each call (for instance the dark theme). An
+      undirected graph is now a `graph` (edges `--`) and not a `digraph` with `dir=none`; the nodes of a `BayesNet`,
+      `MarkovRandomField`, `InfluenceDiagram` and `CausalModel` are named after the variables; the junction tree is
+      drawn with cliques and separators in the colors of `junctionTree*`; the broken dot of `BayesNetFragment.toDot()`
+      is fixed, as are the doubled braces of `PDAG.toDot()`. `CausalModel.toDot()` finally reads the `causal` keys (the
+      latent variables have their own colors); its arguments `SHOW_LATENT_NAMES`, `NODE_BG`, `NODE_FG` and `EDGE_COL` are
+      deprecated. Code that parses the text of a `toDot()` has to be adapted (the arcs are written `"A" -> "B"` with
+      spaces, the identifiers of the junction tree nodes are `0` and `0~1`).
 
 - aGrUM
 

@@ -190,7 +190,7 @@ def CTBNinference2dot(
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
   fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "node_bgcolor"]}", style=filled,color="{pyagrum.config["notebook", "node_fgcolor"]}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
 
   showdag = ctbn._graph
@@ -199,8 +199,8 @@ def CTBNinference2dot(
     name = ctbn.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "node_bgcolor"]
-    fgcol = pyagrum.config["notebook", "node_fgcolor"]
+    bgcol = pyagrum.config["notebook", "nodeBgColor"]
+    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
