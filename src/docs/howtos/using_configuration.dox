@@ -54,9 +54,15 @@
  *    embedded in the library at build time (it is not read from the disk at run time).
  *    It declares every section and key of aGrUM, its default value, its type and its documentation.
  * -# <b>The defaults of pyAgrum</b> (pyAgrum only) are in <tt>wrappers/pyagrum/pyLibs/defaults.ini</tt>. When
- *    pyAgrum is compiled, cmake concatenates this file after the one of aGrUM before embedding them: pyAgrum
- *    thus creates its own sections and keys. As the result is a single file, the one of pyAgrum must not
- *    reopen a section of the one of aGrUM (this is a gum::SyntaxError when the library is loaded).
+ *    pyAgrum is compiled, cmake embeds this file next to the one of aGrUM and gum::Configuration reads the two
+ *    files in this order, as two sources. pyAgrum can thus create its own sections and keys, and add keys to a
+ *    section of aGrUM (for instance <tt>[notebook]</tt>): a section may be opened by both files, but only once
+ *    inside a file. A key is defined by one file only (a duplicated key is a gum::SyntaxError when the library
+ *    is loaded). In a shared section, the keys of aGrUM come first. A deprecated key of one file may point to a
+ *    key of the other one. The keys that give the look of the graphs drawn with graphviz (colors, sizes, shapes,
+ *    layout) are in the defaults of aGrUM, in the sections <tt>[notebook]</tt>, <tt>[factorgraph]</tt>,
+ *    <tt>[dynamicBN]</tt>, <tt>[influenceDiagram]</tt>, <tt>[credalnet]</tt> and <tt>[causal]</tt>, in
+ *    lowerCamelCase (<tt>notebook.nodeBgColor</tt>); the keys that need matplotlib stay in the defaults of pyAgrum.
  * -# <b>The user file</b>, if it exists in the <em>current directory</em>, overrides some of these values.
  *    Its name is <tt>agrum.ini</tt> for aGrUM, <tt>pyagrum.ini</tt> for pyAgrum (which does not read
  *    <tt>agrum.ini</tt>), see gum::Configuration::userFileName(). It can only change the value of existing
@@ -93,7 +99,7 @@
  *
  * A line starting with exactly three <tt>#</tt> is a metadata line; <tt>####</tt> and a plain <tt>#</tt> are
  * ordinary comments. A malformed metadata line, a metadata line which is not immediately followed by its
- * key, a duplicated section or key, a default value which does not respect its own type... all raise a
+ * key, a section opened twice in the same file, a duplicated key, a default value which does not respect its own type... all raise a
  * gum::SyntaxError (or a gum::InvalidArgument) as soon as the library is loaded: <tt>defaults.ini</tt> is a
  * file maintained by the developers, so it fails fast.
  *

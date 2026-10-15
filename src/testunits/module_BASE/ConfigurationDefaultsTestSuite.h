@@ -98,6 +98,8 @@ namespace gum_tests {
              {"learning", "tabuNbDecrease", 2},
              {"tensor", "maxRowsConsole", 6},
              {"tensor", "columnWidthConsole", 9},
+             {"notebook", "junctionTreeSeparatorFontSize", 8},
+             {"notebook", "junctionTreeCliqueFontSize", 10},
          }) {
       INFO(e.section << "." << e.key);
       CHECK_EQ(conf.typed< std::int64_t >(e.section, e.key), e.value);
@@ -126,6 +128,10 @@ namespace gum_tests {
              {"learning", "alpha", 0.05},
              {"learning", "priorWeight", 1.0},
              {"learning", "emNoise", 0.1},
+             {"notebook", "junctionTreeMapCliqueScale", 0.3},
+             {"notebook", "junctionTreeMapSepScale", 0.1},
+             {"notebook", "junctionTreeMapEdgeLen", 1.0},
+             {"factorgraph", "edgeLength", 0.7},
          }) {
       INFO(e.section << "." << e.key);
       // a tolerance : some values are written as decimal literals of a computed constant
@@ -141,6 +147,8 @@ namespace gum_tests {
              {"gibbsKL", "verbosity", false},
              {"gibbsKL", "drawnAtRandom", true},
              {"mcKL", "verbosity", false},
+             {"notebook", "junctionTreeWithNames", true},
+             {"causal", "showLatentNames", false},
          }) {
       INFO(e.section << "." << e.key);
       CHECK_EQ(conf.typed< bool >(e.section, e.key), e.value);
@@ -148,6 +156,47 @@ namespace gum_tests {
 
     for (const auto& e: std::vector< ConfigurationDefaultsTestSuite::Expected< std::string > >{
              {"learning", "BNLearnerPreferredAlgo", "MIIC"},
+             // look of the graphs (toDot): the values that were in the defaults of pyAgrum
+             {"notebook", "arcColor", "#4A4A4A"},
+             {"notebook", "nodeBgColor", "#404040"},
+             {"notebook", "nodeFgColor", "adaptive"},
+             {"notebook", "graphSize", "5"},
+             {"notebook", "graphRankDir", "TB"},
+             {"notebook", "graphLayout", "dot"},
+             {"notebook", "markovRandomFieldView", "factorgraph"},
+             {"notebook", "junctionTreeGraphSize", "10"},
+             {"notebook", "junctionTreeSeparatorBgColor", "palegreen"},
+             {"notebook", "junctionTreeSeparatorFgColor", "adaptive"},
+             {"notebook", "junctionTreeCliqueBgColor", "burlywood"},
+             {"notebook", "junctionTreeCliqueFgColor", "adaptive"},
+             {"notebook", "junctionTreeMapSize", "10"},
+             {"factorgraph", "nodeBgColor", "coral"},
+             {"factorgraph", "nodeFgColor", "adaptive"},
+             {"factorgraph", "factorBgColor", "burlywood"},
+             {"factorgraph", "graphLayout", "neato"},
+             {"dynamicBN", "graphSize", "6"},
+             {"dynamicBN", "timeSliceBgColor", "#DDDDDD"},
+             {"dynamicBN", "replicatedSliceBgColor", "lightcyan"},
+             {"dynamicBN", "atemporalBgColor", "lightyellow"},
+             {"influenceDiagram", "graphSize", "6"},
+             {"influenceDiagram", "chanceBgColor", "#808080"},
+             {"influenceDiagram", "chanceFgColor", "adaptive"},
+             {"influenceDiagram", "utilityBgColor", "#50508A"},
+             {"influenceDiagram", "utilityFgColor", "adaptive"},
+             {"influenceDiagram", "decisionBgColor", "#9A5050"},
+             {"influenceDiagram", "decisionFgColor", "adaptive"},
+             {"influenceDiagram", "chanceShape", "ellipse"},
+             {"influenceDiagram", "utilityShape", "hexagon"},
+             {"influenceDiagram", "decisionShape", "box"},
+             {"influenceDiagram", "decisionArcStyle", "tapered, bold, dotted"},
+             {"influenceDiagram", "utilityArcStyle", "dashed"},
+             {"credalnet", "nodeBgColor", "#404040"},
+             {"credalnet", "nodeFgColor", "adaptive"},
+             {"causal", "graphSize", "2.5"},
+             {"causal", "nodeBgColor", "#404040"},
+             {"causal", "nodeFgColor", "adaptive"},
+             {"causal", "latentBgColor", "#A08080"},
+             {"causal", "latentFgColor", "adaptive"},
          }) {
       INFO(e.section << "." << e.key);
       CHECK_EQ(conf.typed< std::string >(e.section, e.key), e.value);

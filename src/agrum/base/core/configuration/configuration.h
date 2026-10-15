@@ -71,6 +71,7 @@
 
 #include <agrum/agrum.h>
 
+#include <initializer_list>
 #include <shared_mutex>
 #include <string_view>
 #include <unordered_map>
@@ -162,6 +163,12 @@ namespace gum {
     /// @name Constructors, destructor and singleton
     /// @{
 
+    /// a text of defaults, with the name designating it in error messages
+    struct DefaultsSource {
+      std::string_view text;
+      std::string_view origin;
+    };
+
     /**
      * @brief Builds a configuration from a defaults text.
      * @param defaultsText the content of a defaults ini.
@@ -171,6 +178,23 @@ namespace gum {
      * @throws InvalidArgument if a default value does not respect its own declared type.
      */
     explicit Configuration(std::string_view defaultsText, std::string_view origin = "defaults.ini");
+
+    /**
+     * @brief Builds a configuration from several defaults texts (e.g. those of aGrUM and of
+     * pyAgrum).
+     *
+     * The sources are read in order. A section may be opened by several sources (the keys of the
+     * later ones are added to the section), but only once inside a source. A key can be defined
+     * only once, whatever the sources. In the resulting configuration, the keys of a section are
+     * grouped: those of the first source defining the section come first. A source whose text is
+     * empty is ignored. A deprecated key may point to a key defined by another source.
+     * @param sources the defaults texts, in reading order.
+     * @throws SyntaxError if a text or its metadata are malformed, if a section is opened twice in
+     *         a source, if a key is defined twice, or if a deprecated key points to an unknown (or
+     *         itself deprecated) key.
+     * @throws InvalidArgument if a default value does not respect its own declared type.
+     */
+    explicit Configuration(std::initializer_list< DefaultsSource > sources);
 
     Configuration(const Configuration&)            = delete;
     Configuration& operator=(const Configuration&) = delete;
@@ -348,6 +372,7 @@ namespace gum {
       Meta        meta;
       std::string value;
       std::string defaultValue;
+      std::string origin;   // name of the defaults source that defines the key
     };
 
     using Snapshot = std::vector< std::string >;   // values, in the order of items_
@@ -370,9 +395,12 @@ namespace gum {
     mutable std::mutex            _noticeMutex_;
     mutable std::vector< Notice > _notices_;
 
+    // reads one defaults source: its sections may already exist (opened by a previous source)
     void _parse_(std::string_view text, std::string_view origin);
+    // gathers the items of each section (the sections can have been completed by later sources)
+    void _groupBySection_();
     // checks the consistency of the schema and canonicalizes the default values
-    void _checkSchema_(std::string_view origin);
+    void _checkSchema_();
 
     static constexpr std::size_t _npos_ = static_cast< std::size_t >(-1);
 

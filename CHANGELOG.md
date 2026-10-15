@@ -89,9 +89,18 @@
       used to draw the variables in turn, now draws them at random by default.
     - The number of threads is now stored in an atomic, initialized on first use.
     - The keys of `defaults.ini` no longer start with `default_` (`core.maxNumberOfThreads`, `core.jgumIndent`,
-      `notebook.node_bgcolor`, ...) and `core.allow_modification_when_saving` becomes
+      `notebook.nodeBgColor`, ...) and `core.allow_modification_when_saving` becomes
       `core.allowModificationWhenSaving`. The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
       and redirected to the new ones, with a deprecation notice (`DeprecationWarning` in pyAgrum).
+    - **`gum::Configuration` can read several sources of defaults**, each one a text with its own name in the error
+      messages (`Configuration(std::initializer_list< DefaultsSource >)`): a section may be opened by several sources
+      (the keys of the later ones are added after those of the earlier ones), but a section may be opened only once inside
+      a source and a key may be defined only once. pyAgrum uses it to add its keys to sections of the defaults of aGrUM.
+    - New keys in the defaults of aGrUM for the look of the graphs (colors, sizes, shapes, layout of the notebook,
+      factor graph, dynamic BN, influence diagram, credal network and causal model; same default values as pyAgrum had,
+      see the list of the renamed keys of pyAgrum), and three new colors for the clusters of a k-TBN:
+      `dynamicBN.timeSliceBgColor` (`#DDDDDD`), `replicatedSliceBgColor` (`lightcyan`) and `atemporalBgColor` (`lightyellow`).
+      They are not read by aGrUM yet.
     - **Much faster reading of models with clang (libc++) and MSVC**: the CoCo/R parsers (BIF, DSL, NET, UAI, O3PRM, ...)
       built a new `std::locale("C")` for every number they read, which is very slow with libc++ (the C++ library used
       with clang on macOS) and with the MSVC library. They now use `std::locale::classic()`: with clang, reading a large

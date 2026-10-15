@@ -68,8 +68,8 @@
 #include <agrum/base/core/utils_string.h>
 
 // the whole of aGrUM is compiled with GUM_FOR_SWIG for a pyAgrum build: the embedded defaults are
-// then those of aGrUM followed by those of pyAgrum (concatenated by cmake), and the user file is
-// pyagrum.ini. Both files only change existing keys: they never create a section or a key.
+// then those of aGrUM followed by those of pyAgrum (two sources, embedded by cmake), and the user
+// file is pyagrum.ini. Both files only change existing keys: they never create a section or a key.
 #ifdef GUM_FOR_SWIG
 #  define GUM_CONFIGURATION_USER_FILE "pyagrum.ini"
 #else
@@ -78,8 +78,10 @@
 
 namespace gum {
 
-  // the content of defaults.ini, generated at build time (see src/cmake)
+  // the content of the defaults.ini of aGrUM and of the one of pyAgrum (empty if pyAgrum is not
+  // compiled), generated at build time (see src/cmake)
   std::string_view configurationEmbeddedDefaults();
+  std::string_view configurationEmbeddedPyAgrumDefaults();
 
   namespace {
 
@@ -314,9 +316,16 @@ namespace gum {
   // construction / parsing
   // ==========================================================================
 
-  Configuration::Configuration(std::string_view defaultsText, std::string_view origin) {
-    _parse_(defaultsText, origin);
-    _checkSchema_(origin);
+  Configuration::Configuration(std::string_view defaultsText, std::string_view origin) :
+      Configuration(std::initializer_list< DefaultsSource >{DefaultsSource{defaultsText, origin}}) {
+  }
+
+  Configuration::Configuration(std::initializer_list< DefaultsSource > sources) {
+    for (const auto& source: sources) {
+      if (!source.text.empty()) _parse_(source.text, source.origin);
+    }
+    _groupBySection_();
+    _checkSchema_();
     for (std::size_t i = 0; i < _nbEpsilons_; ++i)
       _epsilonPos_[i] = _tryFind_("core", _epsilonKeys_[i]);
     _refreshEpsilons_();
@@ -324,6 +333,9 @@ namespace gum {
 
   void Configuration::_parse_(std::string_view text, std::string_view origin) {
     const auto lines = _lines_(text);
+
+    // a section can be reopened by another source but not inside the same one
+    std::vector< std::string > openedHere;
 
     bool        inSection = false;
     std::string section;
@@ -363,12 +375,13 @@ namespace gum {
       if (_isCommentOrBlank_(trimmed)) continue;
 
       if (_isSectionLine_(trimmed, name)) {
-        if (std::find(_sections_.begin(), _sections_.end(), name) != _sections_.end()) {
+        if (std::find(openedHere.begin(), openedHere.end(), name) != openedHere.end()) {
           err("duplicate section '" + name + "'");
         }
+        openedHere.push_back(name);
+        if (!_hasSection_(name)) _sections_.push_back(name);
         section   = name;
         inSection = true;
-        _sections_.push_back(name);
         continue;
       }
 
@@ -376,14 +389,16 @@ namespace gum {
       if (!hasKeyValue) err("malformed line '" + trimmed + "'");
 
       key = toLower(key);
-      if (_index_.count(_indexKey_(section, key)) != 0) {
-        err("duplicate key '" + section + "." + key + "'");
+      if (const auto first = _tryFind_(section, key); first != _npos_) {
+        err("duplicate key '" + section + "." + key + "' (already defined in "
+            + _items_[first].origin + ")");
       }
 
       Item item;
       item.section = section;
       item.key     = key;
       item.value   = value;
+      item.origin  = std::string(origin);
       if (pending) {
         item.meta = pendingMeta;
         pending   = false;
@@ -397,7 +412,24 @@ namespace gum {
     if (pending) err("metadata line at end of file");
   }
 
-  void Configuration::_checkSchema_(std::string_view origin) {
+  void Configuration::_groupBySection_() {
+    // a section opened by several sources has its items spread in _items_: gather them, keeping
+    // the order of the sections and, inside a section, the order of reading
+    std::vector< Item > grouped;
+    grouped.reserve(_items_.size());
+    for (const auto& section: _sections_) {
+      for (auto& item: _items_) {
+        if (item.section == section) grouped.push_back(std::move(item));
+      }
+    }
+    _items_ = std::move(grouped);
+    _index_.clear();
+    for (std::size_t pos = 0; pos < _items_.size(); ++pos) {
+      _index_[_indexKey_(_items_[pos].section, _items_[pos].key)] = pos;
+    }
+  }
+
+  void Configuration::_checkSchema_() {
     for (auto& item: _items_) {
       if (item.meta.kind == Kind::DEPRECATED) {
         const auto pos = _tryFind_(item.meta.targetSection, item.meta.targetKey);
@@ -405,7 +437,7 @@ namespace gum {
           GUM_SYNTAX_ERROR("deprecated key '"
                                << item.section << "." << item.key << "' redirects to unknown key '"
                                << item.meta.targetSection << "." << item.meta.targetKey << "'",
-                           std::string(origin),
+                           item.origin,
                            0,
                            0)
         }
@@ -414,14 +446,14 @@ namespace gum {
                                               << "' redirects to deprecated key '"
                                               << item.meta.targetSection << "."
                                               << item.meta.targetKey << "'",
-                           std::string(origin),
+                           item.origin,
                            0,
                            0)
         }
       } else {
         std::string canonical, error;
         if (!_validate_(item, item.value, canonical, error)) {
-          GUM_ERROR(InvalidArgument, "[" << origin << "] " << error)
+          GUM_ERROR(InvalidArgument, "[" << item.origin << "] " << error)
         }
         item.value        = canonical;
         item.defaultValue = canonical;
@@ -858,7 +890,9 @@ namespace gum {
   Configuration& Configuration::instance() {
     // built, completed by the user file and applied once (thread-safe), the first time it is needed
     static Configuration& instanceRef = []() -> Configuration& {
-      static Configuration global(configurationEmbeddedDefaults());
+      static Configuration global{
+          {configurationEmbeddedDefaults(), "defaults.ini (aGrUM)"},
+          {configurationEmbeddedPyAgrumDefaults(), "defaults.ini (pyAgrum)"}};
       // the number of threads is the only [core] key acting directly on the library; a negative
       // value gives back what the machine (or OMP_NUM_THREADS) provides, read before any change
       global.addHook([machine = gum::getMaxNumberOfThreads()](const Configuration& c) {

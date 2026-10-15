@@ -82,15 +82,18 @@ foreach (MODULE ${LIST_OF_MODULES})
     endforeach ()
 endforeach ()
 
-# The defaults of gum::Configuration (defaults.ini, followed by the defaults.ini of pyAgrum when
-# BUILD_PYTHON is set) are embedded in agrumBASE as a
-# byte array (not as a string literal: MSVC limits the size of a literal) in a generated
-# source, so that no file has to be found at run time (wheels, relocated installs, static builds).
+# The defaults of gum::Configuration (defaults.ini, and the defaults.ini of pyAgrum when
+# BUILD_PYTHON is set) are embedded in agrumBASE as two byte arrays (not as string literals: MSVC
+# limits the size of a literal) in a generated source, so that no file has to be found at run time
+# (wheels, relocated installs, static builds). The two texts stay separate: gum::Configuration reads
+# them as two sources, which may both define keys in the same section.
 set(AGRUM_CONFIGURATION_DEFAULTS_INI "${AGRUM_SOURCE_DIR}/agrum/base/core/configuration/defaults.ini")
 set(AGRUM_CONFIGURATION_DEFAULTS_CPP "${AGRUM_BINARY_DIR}/agrum/base/core/configuration/configuration_defaults.cpp")
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${AGRUM_CONFIGURATION_DEFAULTS_INI}")
 file(READ "${AGRUM_CONFIGURATION_DEFAULTS_INI}" _defaults_hex HEX)
-# pyAgrum adds its own sections to the defaults of aGrUM: the two files are concatenated
+# pyAgrum adds its own sections and keys to the defaults of aGrUM (second source, empty if pyAgrum is
+# not compiled)
+set(_pyagrum_defaults_hex "")
 if (BUILD_PYTHON)
     set(AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI "${AGRUM_SOURCE_DIR}/../wrappers/pyagrum/pyLibs/defaults.ini")
     if (NOT EXISTS "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}")
@@ -98,24 +101,34 @@ if (BUILD_PYTHON)
     endif ()
     set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}")
     file(READ "${AGRUM_CONFIGURATION_PYAGRUM_DEFAULTS_INI}" _pyagrum_defaults_hex HEX)
-    # 0a: a line break, in case the first file does not end with one
-    set(_defaults_hex "${_defaults_hex}0a${_pyagrum_defaults_hex}")
 endif ()
+# a byte array cannot be empty: a NUL terminator (not part of the view) ends each array
 string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," _defaults_bytes "${_defaults_hex}")
 string(REGEX REPLACE "((0x[0-9a-f][0-9a-f],){16})" "\\1\n" _defaults_bytes "${_defaults_bytes}")
+string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1," _pyagrum_defaults_bytes "${_pyagrum_defaults_hex}")
+string(REGEX REPLACE "((0x[0-9a-f][0-9a-f],){16})" "\\1\n" _pyagrum_defaults_bytes "${_pyagrum_defaults_bytes}")
 set(_defaults_cpp
-"// generated from defaults.ini by Modules.agrum.cmake, do not edit
+"// generated from the defaults.ini of aGrUM and of pyAgrum by Modules.agrum.cmake, do not edit
 #include <string_view>
 
 namespace gum {
   namespace {
     constexpr unsigned char _defaults_[] = {
 ${_defaults_bytes}
-    };
+    0x00};
+    constexpr unsigned char _pyagrumDefaults_[] = {
+${_pyagrum_defaults_bytes}
+    0x00};
   }   // namespace
 
   std::string_view configurationEmbeddedDefaults() {
-    return std::string_view(reinterpret_cast< const char* >(_defaults_), sizeof(_defaults_));
+    return std::string_view(reinterpret_cast< const char* >(_defaults_), sizeof(_defaults_) - 1);
+  }
+
+  // empty if pyAgrum is not compiled
+  std::string_view configurationEmbeddedPyAgrumDefaults() {
+    return std::string_view(reinterpret_cast< const char* >(_pyagrumDefaults_),
+                            sizeof(_pyagrumDefaults_) - 1);
   }
 }   // namespace gum
 ")

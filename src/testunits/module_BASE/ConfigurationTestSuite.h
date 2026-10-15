@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <algorithm>
 #include <atomic>
 #include <clocale>
 #include <filesystem>
@@ -717,6 +718,143 @@ Color = #FF7F64
     ConfigurationGuard guard;
     conf.set("core", "maxNumberOfThreads", "4");
     CHECK_EQ(ConfigurationTestSuite::seenThreads.load(), 4u);   // the built-in hook has already run
+  }
+
+  // ==========================================================================
+  // several defaults sources (aGrUM, then pyAgrum) sharing sections
+  // ==========================================================================
+
+  GUM_TEST(ConfigurationSourcesShareASection) {
+    gum::Configuration c{{"[a]\n### int :: from the first source\none = 1\n"
+                          "[b]\n### str :: only in the first source\nx = y\n",
+                          "first.ini"},
+                         {"[c]\n### int :: a section of the second source\nz = 3\n"
+                          "[a]\n### int :: added to a by the second source\ntwo = 2\n",
+                          "second.ini"}};
+
+    CHECK_EQ(c.get("a", "one"), "1");
+    CHECK_EQ(c.get("a", "two"), "2");
+    CHECK_EQ(c.get("b", "x"), "y");
+    CHECK_EQ(c.get("c", "z"), "3");
+
+    // the sections are in the order of their first appearance, the keys of a section are grouped
+    // and the keys of the first source come first
+    CHECK_EQ(c.sections(), std::vector< std::string >({"a", "b", "c"}));
+    std::vector< std::string > keys;
+    for (const auto& entry: c.schema())
+      keys.push_back(entry.section + "." + entry.key);
+    CHECK_EQ(keys, std::vector< std::string >({"a.one", "a.two", "b.x", "c.z"}));
+    CHECK_EQ(c.toString(), "[a]\n  one = 1\n  two = 2\n[b]\n  x = y\n[c]\n  z = 3");
+
+    // a key of the second source is a key like any other
+    c.set("a", "two", "5");
+    CHECK_EQ(c.get("a", "two"), "5");
+    CHECK_EQ(c.diff(), "[a]\n  two = 5");
+    CHECK_EQ(c.doc("a", "two"), "int :: added to a by the second source");
+    c.reset();
+    CHECK_EQ(c.get("a", "two"), "2");
+  }
+
+  GUM_TEST(ConfigurationSourcesWithOneSourceAreTheSameAsTheTextConstructor) {
+    const auto         text = ConfigurationTestSuite::defaults();
+    gum::Configuration direct(text);
+    gum::Configuration viaSources{{text, "defaults.ini"}};
+    gum::Configuration withEmpty{{"", "empty.ini"}, {text, "defaults.ini"}, {"", "empty2.ini"}};
+
+    CHECK_EQ(viaSources.toString(), direct.toString());
+    CHECK_EQ(withEmpty.toString(), direct.toString());   // an empty source is ignored
+    CHECK_EQ(withEmpty.sections(), direct.sections());
+  }
+
+  GUM_TEST(ConfigurationSourcesDeprecatedKeysCrossSources) {
+    // an alias of the second source to a key of the first one, and an alias of the first source to
+    // a key of the second one
+    gum::Configuration c{{"[a]\n### int :: new key\nnewname = 1\n"
+                          "### deprecated -> a.latekey :: old name\nolderfirst = 0\n",
+                          "first.ini"},
+                         {"[a]\n### deprecated -> a.newname :: old name\noldname = 0\n"
+                          "### int :: key defined after its alias\nlatekey = 7\n",
+                          "second.ini"}};
+
+    CHECK_EQ(c.get("a", "oldname"), "1");
+    c.set("a", "oldname", "4");
+    CHECK_EQ(c.get("a", "newname"), "4");
+    CHECK_EQ(c.get("a", "olderfirst"), "7");
+    CHECK_FALSE(c.takeNotices().empty());   // the deprecations are notified
+
+    // the schema lists the aliases too, grouped in their section in the order of reading
+    std::vector< std::string > keys;
+    std::vector< std::string > aliases;
+    for (const auto& entry: c.schema()) {
+      keys.push_back(entry.key);
+      if (entry.meta.kind == gum::Configuration::Kind::DEPRECATED) aliases.push_back(entry.key);
+    }
+    CHECK_EQ(keys, std::vector< std::string >({"newname", "olderfirst", "oldname", "latekey"}));
+    CHECK_EQ(aliases, std::vector< std::string >({"olderfirst", "oldname"}));
+    // while the rendering of the configuration only shows the keys carrying a value
+    CHECK_EQ(c.toString(), "[a]\n  newname = 4\n  latekey = 7");
+  }
+
+  GUM_TEST(ConfigurationSourcesErrorsNameTheirOrigin) {
+    // a section opened twice inside the second source: refused, with the origin and the line of the
+    // second source
+    try {
+      gum::Configuration c{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
+                           {"[b]\n### int :: y\nl = 1\n\n[b]\n", "second.ini"}};
+      FAIL("a section opened twice in a source must be refused");
+    } catch (const gum::SyntaxError& e) {
+      CHECK_EQ(e.filename(), "second.ini");
+      CHECK_EQ(e.line(), gum::Size(5));
+    }
+
+    // a key defined by both sources: refused, the error is located in the second one and names the
+    // first
+    try {
+      gum::Configuration c{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
+                           {"[a]\n### int :: x again\nk = 2\n", "second.ini"}};
+      FAIL("a key defined twice must be refused");
+    } catch (const gum::SyntaxError& e) {
+      CHECK_EQ(e.filename(), "second.ini");
+      CHECK_EQ(e.line(), gum::Size(3));
+      CHECK_NE(e.errorContent().find("first.ini"), std::string::npos);
+    }
+
+    // a key outside of any section is still refused in the second source, even if the first one
+    // ends inside a section
+    CHECK_THROWS_AS((gum::Configuration{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
+                                        {"### int :: x\nl = 1\n", "second.ini"}}),
+                    const gum::SyntaxError&);
+
+    // a deprecated key of the second source pointing to an unknown key
+    try {
+      gum::Configuration c{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
+                           {"[a]\n### deprecated -> a.nokey :: x\nold = 1\n", "second.ini"}};
+      FAIL("an alias to an unknown key must be refused");
+    } catch (const gum::SyntaxError& e) { CHECK_EQ(e.filename(), "second.ini"); }
+
+    // a default of the second source violating its own type: the error names the second source
+    try {
+      gum::Configuration c{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
+                           {"[a]\n### int :: y\nl = abc\n", "second.ini"}};
+      FAIL("a default which does not respect its type must be refused");
+    } catch (const gum::InvalidArgument& e) {
+      CHECK_NE(e.errorContent().find("second.ini"), std::string::npos);
+    }
+  }
+
+  GUM_TEST(ConfigurationEmbeddedDefaultsAreTheSourcesOfTheLibrary) {
+    // the singleton is built from the sources embedded by cmake: it must at least have the keys
+    // of aGrUM, grouped by section whatever the sources
+    auto&                      conf = gum::Configuration::instance();
+    std::vector< std::string > seen;
+    for (const auto& entry: conf.schema()) {
+      if (seen.empty() || seen.back() != entry.section) {
+        CHECK_EQ(std::count(seen.begin(), seen.end(), entry.section),
+                 0);   // no section split in two
+        seen.push_back(entry.section);
+      }
+    }
+    CHECK(conf.has("core", "maxNumberOfThreads"));
   }
 
 }   // namespace gum_tests
