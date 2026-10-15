@@ -58,7 +58,6 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGenerator4CompleteRows.h>
 #include <agrum/base/database/DBRowGeneratorEM.h>

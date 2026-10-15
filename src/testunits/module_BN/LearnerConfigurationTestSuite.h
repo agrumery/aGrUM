@@ -162,7 +162,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(CopyStateKeepsThePriorWeight) {
-    const auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    const auto bn  = gum::BayesNet< double >::fastPrototype("A->B");
     auto       src = learner();
     src.useDirichletPrior(bn, 3.0);
     CHECK_EQ(stateValue(src.state(), "Prior weight"), "3.000000");
