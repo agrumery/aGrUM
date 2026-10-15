@@ -54,6 +54,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /**
 * @class MarkovBlanket
 * @headerfile MarkovBlanket.h <agrum/BN/algorithms/MarkovBlanket.h>
@@ -79,6 +83,9 @@ namespace gum {
     // special arcs (not used during the construction of the Markov Blanket) are in
     // grey
     std::string toDot() const;
+
+    // @return a dot representation of this MarkovBlanket, with the options given by the caller
+    std::string toDot(const dot::DotOptions& options) const;
 
     /// wrapping @ref DAG::parents(id)
     const NodeSet& parents(NodeId id) const;

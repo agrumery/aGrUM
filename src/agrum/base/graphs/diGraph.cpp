@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/graphElements.h>
@@ -90,19 +91,18 @@ namespace gum {
     return s;
   }
 
-  std::string DiGraph::toDot() const {
-    std::string strBuff = "digraph {\n";
+  std::string DiGraph::toDot() const { return toDot(dot::DotOptions()); }
 
-    for (const auto node: nodes())
-      strBuff += std::format("     {}{};\n", node, dotNodeLabel(node));
-
-    strBuff += "\n";
+  std::string DiGraph::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
+    writeDotNodes(writer, style, options);
 
     for (const auto& arc: arcs())
-      strBuff += std::format("     {} -> {};\n", arc.tail(), arc.head());
+      writer.edge(arc.tail(), arc.head(), dot::arcAttributes(options.arc(arc.tail(), arc.head())));
 
-    strBuff += "}\n\n";
-    return strBuff;
+    return writer.str();
   }
 
   /// for friendly displaying the content of directed graphs

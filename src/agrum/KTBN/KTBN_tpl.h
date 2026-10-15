@@ -56,6 +56,7 @@
 #include <sstream>
 #include <tuple>
 
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/BN/io/GUM/GumBNReader.h>
 #include <agrum/BN/io/GUM/GumBNWriter.h>
@@ -1117,14 +1118,94 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::toDot() const {
-    return _timeSlicesToDot_(_bn_, false);
+    return _timeSlicesToDot_(_bn_, false, dot::DotOptions());
   }
 
   template < GUM_Numeric GUM_SCALAR >
   std::string KTBN< GUM_SCALAR >::toUnrolledDot(Size T, bool highlightReplicated) const {
+    return toUnrolledDot(T, highlightReplicated, dot::DotOptions());
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string KTBN< GUM_SCALAR >::toUnrolledDot(Size                   T,
+                                                bool                   highlightReplicated,
+                                                const dot::DotOptions& options) const {
     if (T < _k_)
       GUM_ERROR(OperationNotAllowed, "toUnrolledDot: T=" << T << " must be >= k=" << _k_ << ".")
-    return _timeSlicesToDot_(unroll(T), highlightReplicated);
+    return _timeSlicesToDot_(unroll(T), highlightReplicated, options);
+  }
+
+  // Direct port of pyAgrum's pyagrum.lib.dynamicBN._TimeSlicesToDot: groups nodes by
+  // timeslice (one cluster per slice, atemporal nodes ungrouped), draws the real arcs
+  // unconstrained, then chains each temporal variable across consecutive slices with
+  // invisible edges so every cluster keeps the same vertical variable order.
+  template < GUM_Numeric GUM_SCALAR >
+  std::string KTBN< GUM_SCALAR >::_timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
+                                                    bool                   highlightReplicated,
+                                                    const dot::DotOptions& options) const {
+    const auto style = dot::DynamicBNDotStyle::read();
+
+    // Group (node, full name, base label) by timeslice. std::map keeps keys sorted, and
+    // ATEMPORAL == -1 so atemporal variables naturally sort first, followed by
+    // increasing slice indices — mirroring pyAgrum's noTimeCluster-then-slices order.
+    std::map< int, std::vector< std::tuple< std::string, std::string, NodeId > > > timeslices;
+    for (const NodeId n: bn.nodes()) {
+      const std::string& name  = bn.variable(n).name();
+      const auto [base, slice] = _decodeName_(name);
+      timeslices[slice].emplace_back(name, base, n);
+    }
+
+    dot::DotWriter writer(true, "KTBN");
+    writer.graphAttributes({{"bgcolor", "transparent"},
+                            {"size", options.size().empty() ? style.size : options.size()},
+                            {"rankdir", "LR"},
+                            {"splines", "ortho"}});
+    writer.nodeDefaults({{"color", "#000000"},
+                         {"fillcolor", "white"},
+                         {"fontcolor", "black"},
+                         {"style", "filled"}});
+
+    for (auto& [slice, nodes]: timeslices) {
+      std::sort(nodes.begin(), nodes.end());
+      if (slice == ATEMPORAL) {
+        writer.beginSubgraph(
+            "cluster_atemporal",
+            {{"label", "atemporal"}, {"style", "filled"}, {"bgcolor", style.atemporalBgColor}});
+      } else {
+        const bool replicated = highlightReplicated && Size(slice) >= _k_;
+        writer.beginSubgraph(
+            "cluster_" + std::to_string(slice),
+            {{"label", "Time slice " + std::to_string(slice)},
+             {"style", "filled"},
+             {"bgcolor", replicated ? style.replicatedSliceBgColor : style.timeSliceBgColor}});
+      }
+      for (const auto& [full, label, node]: nodes)
+        writer.node(full, dot::nodeAttributes(style, options.node(node), label));
+      writer.endSubgraph();
+    }
+
+    writer.edgeDefaults({{"color", "black"}, {"constraint", "false"}});
+    for (const auto& arc: bn.arcs())
+      writer.edge(bn.variable(arc.tail()).name(),
+                  bn.variable(arc.head()).name(),
+                  dot::arcAttributes(options.arc(arc.tail(), arc.head())));
+
+    writer.edgeDefaults({{"style", "invis"}, {"constraint", "true"}});
+    if (const auto it0 = timeslices.find(0); it0 != timeslices.end()) {
+      for (const auto& node0: it0->second) {
+        const std::string& label = std::get< 1 >(node0);
+        int                prec  = ATEMPORAL;
+        bool               first = true;
+        for (const auto& [slice, nodes]: timeslices) {
+          if (slice == ATEMPORAL) continue;
+          if (!first) writer.edge(_encode_(label, prec), _encode_(label, slice));
+          prec  = slice;
+          first = false;
+        }
+      }
+    }
+
+    return writer.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -1136,78 +1217,6 @@ namespace gum {
       out += c;
     }
     return out;
-  }
-
-  // Direct port of pyAgrum's pyagrum.lib.dynamicBN._TimeSlicesToDot: groups nodes by
-  // timeslice (one cluster per slice, atemporal nodes ungrouped), draws the real arcs
-  // unconstrained, then chains each temporal variable across consecutive slices with
-  // invisible edges so every cluster keeps the same vertical variable order.
-  template < GUM_Numeric GUM_SCALAR >
-  std::string KTBN< GUM_SCALAR >::_timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
-                                                    bool highlightReplicated) const {
-    // Group (full name, base label) by timeslice. std::map keeps keys sorted, and
-    // ATEMPORAL == -1 so atemporal variables naturally sort first, followed by
-    // increasing slice indices — mirroring pyAgrum's noTimeCluster-then-slices order.
-    std::map< int, std::vector< std::pair< std::string, std::string > > > timeslices;
-    for (const NodeId n: bn.nodes()) {
-      const std::string& name  = bn.variable(n).name();
-      const auto [base, slice] = _decodeName_(name);
-      timeslices[slice].emplace_back(name, base);
-    }
-
-    std::stringstream dot;
-    dot << "digraph KTBN {\n";
-    dot << "  rankdir=LR;\n";
-    dot << "  splines=ortho;\n";
-    dot << "  node [color=\"#000000\", fillcolor=white, style=filled];\n\n";
-
-    for (auto& [slice, nodes]: timeslices) {
-      std::sort(nodes.begin(), nodes.end());
-      if (slice == ATEMPORAL) {
-        dot << "  subgraph cluster_atemporal {\n";
-        dot << "    label=\"atemporal\";\n";
-        dot << "    style=filled;\n";
-        dot << "    bgcolor=\"lightyellow\";\n";
-        for (const auto& [full, label]: nodes)
-          dot << "    \"" << _escapeDot_(full) << "\" [label=\"" << _escapeDot_(label) << "\"];\n";
-        dot << "  }\n";
-      } else {
-        const bool replicated = highlightReplicated && Size(slice) >= _k_;
-        dot << "  subgraph cluster_" << slice << " {\n";
-        dot << "    label=\"Time slice " << slice << "\";\n";
-        dot << "    style=filled;\n";
-        dot << "    bgcolor=\"" << (replicated ? "lightcyan" : "#DDDDDD") << "\";\n";
-        for (const auto& [full, label]: nodes)
-          dot << "    \"" << _escapeDot_(full) << "\" [label=\"" << _escapeDot_(label) << "\"];\n";
-        dot << "  }\n";
-      }
-      dot << "\n";
-    }
-
-    dot << "  edge [color=black, constraint=false];\n";
-    for (const auto& arc: bn.arcs())
-      dot << "  \"" << _escapeDot_(bn.variable(arc.tail()).name()) << "\" -> \""
-          << _escapeDot_(bn.variable(arc.head()).name()) << "\";\n";
-
-    dot << "\n  edge [style=invis, constraint=true];\n";
-    if (const auto it0 = timeslices.find(0); it0 != timeslices.end()) {
-      for (const auto& node0: it0->second) {
-        const std::string& label = node0.second;
-        int                prec  = ATEMPORAL;
-        bool               first = true;
-        for (const auto& [slice, nodes]: timeslices) {
-          if (slice == ATEMPORAL) continue;
-          if (!first)
-            dot << "  \"" << _escapeDot_(_encode_(label, prec)) << "\" -> \""
-                << _escapeDot_(_encode_(label, slice)) << "\";\n";
-          prec  = slice;
-          first = false;
-        }
-      }
-    }
-
-    dot << "}\n";
-    return dot.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >

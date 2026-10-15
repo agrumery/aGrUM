@@ -46,6 +46,7 @@
  */
 #include <sstream>
 
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/PAG.h>
 
 namespace gum {
@@ -227,14 +228,13 @@ namespace gum {
     return s.str();
   }
 
-  std::string PAG::toDot() const {
-    std::ostringstream out;
-    out << "digraph PAG {\n";
-    out << "  node [shape=ellipse];\n";
+  std::string PAG::toDot() const { return toDot(dot::DotOptions()); }
 
-    for (const NodeId n: nodes()) {
-      out << std::format("  {}{};\n", n, dotNodeLabel(n));
-    }
+  std::string PAG::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
+    writeDotNodes(writer, style, options);
 
     for (const Edge& e: edges()) {
       const NodeId x       = e.first();
@@ -247,14 +247,13 @@ namespace gum {
       const std::string arrowhead = yArrow ? "normal" : (yCircle ? "odot" : "none");
       const std::string arrowtail = xArrow ? "normal" : (xCircle ? "odot" : "none");
 
-      out << std::format("  {} -> {} [dir=both, arrowhead={}, arrowtail={}];\n",
-                         x,
-                         y,
-                         arrowhead,
-                         arrowtail);
+      auto attributes = dot::arcAttributes(options.edge(x, y));
+      attributes.insert(attributes.begin(),
+                        {{"dir", "both"}, {"arrowhead", arrowhead}, {"arrowtail", arrowtail}});
+      writer.edge(x, y, attributes);
     }
-    out << "}\n";
-    return out.str();
+
+    return writer.str();
   }
 
   std::ostream& operator<<(std::ostream& stream, const PAG& g) {

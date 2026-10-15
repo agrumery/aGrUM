@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/mixedGraph.h>
 
 #ifdef GUM_NO_INLINE
@@ -98,33 +99,24 @@ namespace gum {
     return s;
   }
 
-  std::string MixedGraph::toDot() const {
-    std::stringstream output;
-    std::stringstream nodeStream;
-    std::stringstream edgeStream;
+  std::string MixedGraph::toDot() const { return toDot(dot::DotOptions()); }
 
-    NodeSet treatedNodes;
+  std::string MixedGraph::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
+    writeDotNodes(writer, style, options);
 
-    output << "digraph \"no_name\" {\n";
-    nodeStream << "node [shape = ellipse];\n";
-    std::string tab = "  ";
-
-    for (const auto node: nodes()) {
-      nodeStream << std::format("{}{}{};", tab, node, dotNodeLabel(node));
-
-      for (const auto nei: neighbours(node))
-        if (!treatedNodes.exists(nei))
-          edgeStream << std::format("{}{} -> {} [dir=none];\n", tab, node, nei);
-
-      for (const auto chi: children(node))
-        edgeStream << std::format("{}{} -> {};\n", tab, node, chi);
-
-      treatedNodes.insert(node);
+    for (const auto& edge: edges()) {
+      auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
+      attributes.insert(attributes.begin(), {"dir", "none"});
+      writer.edge(edge.first(), edge.second(), attributes);
     }
 
-    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
+    for (const auto& arc: arcs())
+      writer.edge(arc.tail(), arc.head(), dot::arcAttributes(options.arc(arc.tail(), arc.head())));
 
-    return output.str();
+    return writer.str();
   }
 
   /// for friendly displaying the content of directed graphs

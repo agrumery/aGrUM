@@ -51,9 +51,11 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <functional>
 #include <iostream>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/ID/influenceDiagram.h>
@@ -261,49 +263,64 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string InfluenceDiagram< GUM_SCALAR >::toDot() const {
-    std::stringstream output;
-    std::stringstream decisionNode;
-    std::stringstream utilityNode;
-    std::stringstream chanceNode;
-    std::stringstream arcstream;
+    return toDot(dot::DotOptions());
+  }
 
-    output << std::format("digraph \"{}\" {{\n", this->propertyWithDefault("name", "no_name"));
+  template < GUM_Numeric GUM_SCALAR >
+  std::string InfluenceDiagram< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::InfluenceDiagramDotStyle::read();
+    dot::DotWriter writer(true, this->propertyWithDefault("name", ""));
+    dot::writePreamble(writer, style, options);
 
-    output << "  node [bgcolor=\"#AAAAAA\", style=filled, height=0];" << std::endl;
+    // the nodes of a kind, whose default look is the one of the kind
+    const auto writeNodes = [&](const std::function< bool(NodeId) >& isOfThisKind,
+                                const std::string&                   bgColor,
+                                const std::string&                   fgColor,
+                                const std::string&                   shape) {
+      writer.nodeDefaults({{"fillcolor", bgColor},
+                           {"fontcolor", fgColor},
+                           {"style", "filled"},
+                           {"shape", shape},
+                           {"height", "0"},
+                           {"margin", "0.1"}});
 
-    decisionNode << "node [shape = box];" << std::endl;
+      // a font color which is adaptive is resolved against the background of the kind
+      auto kindStyle        = static_cast< dot::DotStyle >(style);
+      kindStyle.nodeBgColor = bgColor;
+      for (const auto node: dag_.nodes()) {
+        if (!isOfThisKind(node)) continue;
+        const auto& name = variable(node).name();
+        writer.node(name,
+                    dot::nodeAttributes(kindStyle,
+                                        options.node(node),
+                                        "",
+                                        "(" + std::to_string(node) + ") " + name));
+      }
+    };
 
-    utilityNode << "node [shape =  hexagon, margin=0];" << std::endl;
-    chanceNode << "node [shape = ellipse];" << std::endl;
-    std::string tab = "  ";
+    writeNodes([this](NodeId n) { return isChanceNode(n); },
+               style.chanceBgColor,
+               style.chanceFgColor,
+               style.chanceShape);
+    writeNodes([this](NodeId n) { return isDecisionNode(n); },
+               style.decisionBgColor,
+               style.decisionFgColor,
+               style.decisionShape);
+    writeNodes([this](NodeId n) { return isUtilityNode(n); },
+               style.utilityBgColor,
+               style.utilityFgColor,
+               style.utilityShape);
 
-    for (const auto node: dag_.nodes()) {
-      if (isChanceNode(node))
-        chanceNode << std::format("  \"{}-{}\";", node, variable(node).name());
-      else if (isUtilityNode(node))
-        utilityNode << std::format("  \"{}-{}\";", node, variable(node).name());
-      else decisionNode << std::format("  \"{}-{}\";", node, variable(node).name());
-
-      if (dag_.children(node).size() > 0)
-        for (const auto chi: dag_.children(node)) {
-          arcstream << std::format("\"{}-{}\" -> \"{}-{}\"",
-                                   node,
-                                   variable(node).name(),
-                                   chi,
-                                   variable(chi).name());
-          if (isDecisionNode(chi)) { arcstream << " [style=\"tapered, bold\"]"; }
-          arcstream << ";\n";
-        }
+    for (const auto& arc: dag_.arcs()) {
+      auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
+      if (isDecisionNode(arc.head()))
+        dot::addDefaultAttribute(attributes, "style", style.decisionArcStyle);
+      else if (isUtilityNode(arc.head()))
+        dot::addDefaultAttribute(attributes, "style", style.utilityArcStyle);
+      writer.edge(variable(arc.tail()).name(), variable(arc.head()).name(), attributes);
     }
 
-    output << decisionNode.str() << std::endl
-           << utilityNode.str() << std::endl
-           << chanceNode.str() << std::endl
-           << std::endl
-           << arcstream.str() << std::endl
-           << "}" << std::endl;
-
-    return output.str();
+    return writer.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >

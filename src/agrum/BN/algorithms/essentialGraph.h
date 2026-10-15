@@ -58,6 +58,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /**
    * @class EssentialGraph
    * @headerfile essentialGraph.h <agrum/BN/algorithms/essentialGraph.h>
@@ -90,6 +94,9 @@ namespace gum {
 
     /// @return a dot representation of this essentialGraph
     std::string toDot() const;
+
+    /// @return a dot representation of this essentialGraph, with the options given by the caller
+    std::string toDot(const dot::DotOptions& options) const;
 
     /// wrapping @ref MixedGraph::parents(id)
     const NodeSet& parents(NodeId id) const;

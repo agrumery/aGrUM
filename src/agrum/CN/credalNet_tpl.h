@@ -44,6 +44,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/CN/credalNet.h>
 
 #include <agrum/base/core/math/math_utils.h>
@@ -1335,6 +1336,43 @@ namespace gum {
       output << "\n";
 
       return output.str();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    std::string CredalNet< GUM_SCALAR >::toDot() const {
+      return toDot(dot::DotOptions());
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    std::string CredalNet< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+      const auto&    bn    = current_bn();
+      const auto     style = dot::DotStyle::readCredalNet();
+      dot::DotWriter writer(true);
+      dot::writePreamble(writer, style, options);
+
+      for (const auto node: bn.nodes()) {
+        const auto& name       = bn.variable(node).name();
+        auto        attributes = dot::nodeAttributes(style,
+                                                     options.node(node),
+                                                     "",
+                                                     "(" + std::to_string(node) + ") " + name);
+        dot::addDefaultAttribute(attributes, "peripheries", "1");
+        dot::addDefaultAttribute(attributes, "sides", "7");
+        dot::addDefaultAttribute(attributes, "shape", "polygon");
+        writer.node(name, attributes);
+      }
+
+      for (const auto& arc: bn.arcs()) {
+        auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
+        dot::addDefaultAttribute(attributes,
+                                 "tooltip",
+                                 std::to_string(arc.tail()) + "&nbsp;&rarr;&nbsp;"
+                                     + std::to_string(arc.head()));
+        dot::addDefaultAttribute(attributes, "fontsize", "10");
+        writer.edge(bn.variable(arc.tail()).name(), bn.variable(arc.head()).name(), attributes);
+      }
+
+      return writer.str();
     }
 
     template < GUM_Numeric GUM_SCALAR >

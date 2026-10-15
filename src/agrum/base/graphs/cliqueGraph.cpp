@@ -45,8 +45,10 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 #include <algorithm>
+#include <cmath>
 #include <sstream>
 
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/cliqueGraph.h>
 
 
@@ -301,76 +303,112 @@ namespace gum {
     return stream.str();
   }
 
-  std::string expandCliqueContent(const NodeSet& clique, std::string_view delim = "-") {
-    std::string result;
-    bool        first = true;
+  namespace {
+    // "0-1-3", the identifiers of a set of nodes
+    std::string expandCliqueContent(const NodeSet& clique, std::string_view delim = "-") {
+      std::string result;
+      bool        first = true;
 
-    std::vector< NodeId > sorted(clique.begin(), clique.end());
-    std::sort(sorted.begin(), sorted.end());
-    for (auto node: sorted) {
-      if (!first) { result += delim; }
-      result += std::to_string(node);
-      first = false;
+      std::vector< NodeId > sorted(clique.begin(), clique.end());
+      std::sort(sorted.begin(), sorted.end());
+      for (auto node: sorted) {
+        if (!first) { result += delim; }
+        result += std::to_string(node);
+        first = false;
+      }
+
+      return result;
     }
 
-    return result;
-  }
+    // "size : 2", then one identifier by line
+    std::string expandCliqueTooltip(const NodeSet& clique) {
+      return std::format("size : {}\n{}", clique.size(), expandCliqueContent(clique, "\n"));
+    }
 
-  std::string expandCliqueTooltip(const NodeSet& clique) {
-    return std::format("size : {}\\n{}", clique.size(), expandCliqueContent(clique, "\\n"));
-  }
+    // the node that stands for the separator of an edge
+    std::string separatorId(const Edge& edge) {
+      return std::format("{}~{}", edge.first(), edge.second());
+    }
 
-  std::string expandClique(const NodeId n, const NodeSet& clique) {
-    return std::format("({}) {}", n, expandCliqueContent(clique));
-  }
+    // a size, without the rounding errors of the products (0.3 * 4 is 1.2000000000000002)
+    std::string dotSize(double value) {
+      return dot::DotWriter::number(std::round(value * 1e6) / 1e6);
+    }
+  }   // namespace
 
-  std::string expandSeparator(const NodeId   n1,
-                              const NodeSet& clique1,
-                              const NodeId   n2,
-                              const NodeSet& clique2) {
-    return std::format("{}^{}", expandClique(n1, clique1), expandClique(n2, clique2));
-  }
+  std::string CliqueGraph::toDot() const { return toDot(dot::DotOptions()); }
 
-  std::string CliqueGraph::toDot() const {
-    std::stringstream stream;
-    stream << "graph {" << '\n';
-    stream << R"(  node [style="filled", fontcolor="black"];)" << '\n';
+  std::string CliqueGraph::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::JunctionTreeDotStyle::read();
+    dot::DotWriter writer(false);
+    dot::writePreamble(writer, style, options);
+
+    // the font color of a node is adaptive against its own background
+    auto cliqueStyle           = static_cast< dot::DotStyle >(style);
+    cliqueStyle.nodeBgColor    = style.cliqueBgColor;
+    auto separatorStyle        = static_cast< dot::DotStyle >(style);
+    separatorStyle.nodeBgColor = style.separatorBgColor;
 
     // cliques as nodes
-    for (auto node: nodes()) {
-      std::string nom = '"' + expandClique(node, clique(node)) + '"';
-      stream << "  " << nom << " [label=\"" << expandCliqueContent(clique(node)) << "\",tooltip=\""
-             << expandCliqueTooltip(clique(node)) << R"(",fillcolor ="burlywood"];)" << '\n';
+    for (const auto node: nodes()) {
+      auto attributes = dot::nodeAttributes(cliqueStyle,
+                                            options.node(node),
+                                            expandCliqueContent(clique(node)),
+                                            expandCliqueTooltip(clique(node)));
+      dot::addDefaultAttribute(attributes, "fontsize", std::to_string(style.cliqueFontSize));
+      dot::addDefaultAttribute(attributes, "fontcolor", style.cliqueFgColor);
+      dot::addDefaultAttribute(attributes, "fillcolor", style.cliqueBgColor);
+      writer.node(std::to_string(node), attributes);
     }
 
-    stream << '\n';
-
-    // separator as nodes
+    // separators as nodes : the options of an edge are the ones of its separator
     for (const auto& edge: edges()) {
-      stream << "  \""
-             << expandSeparator(edge.first(),
-                                clique(edge.first()),
-                                edge.second(),
-                                clique(edge.second()))
-             << "\" [label=\"" << expandCliqueContent(separator(edge)) << "\",tooltip=\""
-             << expandCliqueTooltip(separator(edge))
-             << R"(",shape=box,fillcolor="palegreen",fontsize=8,width=0,height=0];)" << '\n';
-    }
+      const auto  sep = separator(edge);
+      const auto* arc = options.edge(edge.first(), edge.second());
 
-    stream << '\n';
+      dot::DotNodeOptions separatorOptions;
+      if (arc != nullptr) {
+        separatorOptions.bgColor    = arc->color;
+        separatorOptions.label      = arc->label;
+        separatorOptions.tooltip    = arc->tooltip;
+        separatorOptions.attributes = arc->attributes;
+      }
+
+      auto attributes = dot::nodeAttributes(separatorStyle,
+                                            arc != nullptr ? &separatorOptions : nullptr,
+                                            expandCliqueContent(sep),
+                                            expandCliqueTooltip(sep));
+      dot::addDefaultAttribute(attributes, "margin", "0.02");
+      dot::addDefaultAttribute(attributes, "height", "0");
+      dot::addDefaultAttribute(attributes, "width", "0");
+      dot::addDefaultAttribute(attributes, "shape", "box");
+      dot::addDefaultAttribute(attributes, "fontsize", std::to_string(style.separatorFontSize));
+      dot::addDefaultAttribute(attributes, "fontcolor", style.separatorFgColor);
+      dot::addDefaultAttribute(attributes, "fillcolor", style.separatorBgColor);
+      writer.node(separatorId(edge), attributes);
+    }
 
     // edges now as c1--sep--c2
-    for (const auto& edge: edges())
-      stream << "  \"" << expandClique(edge.first(), clique(edge.first())) << "\"--\""
-             << expandSeparator(edge.first(),
-                                clique(edge.first()),
-                                edge.second(),
-                                clique(edge.second()))
-             << "\"--\"" << expandClique(edge.second(), clique(edge.second())) << "\";" << '\n';
+    for (const auto& edge: edges()) {
+      dot::DotAttributes link;
+      const auto*        arc = options.edge(edge.first(), edge.second());
+      if (arc != nullptr && arc->width.has_value())
+        link.push_back({"penwidth", dot::DotWriter::number(*arc->width)});
 
-    stream << "}" << '\n';
+      writer.edge(std::to_string(edge.first()), separatorId(edge), link);
+      writer.edge(separatorId(edge), std::to_string(edge.second()), link);
+    }
 
-    return stream.str();
+    return writer.str();
+  }
+
+  std::string CliqueGraph::mapToDot() const {
+    const auto style = dot::JunctionTreeDotStyle::read();
+    return mapToDot(style.mapCliqueScale,
+                    style.mapSepScale,
+                    style.mapEdgeLen,
+                    style.cliqueBgColor,
+                    style.separatorBgColor);
   }
 
   std::string CliqueGraph::mapToDot(double           scaleClique,
@@ -378,40 +416,42 @@ namespace gum {
                                     double           lenEdge,
                                     std::string_view colorClique,
                                     std::string_view colorSep) const {
-    std::stringstream stream;
-    stream << "graph {" << '\n';
-    stream << "  bgcolor=transparent;" << '\n';
-    stream << "  layout=neato;" << '\n' << '\n';
-    stream << "  node [shape=point,style=filled, fillcolor =" << colorClique << "];" << '\n';
-    stream << "  edge [len=" << lenEdge << "];" << '\n' << '\n';
+    const auto style = dot::JunctionTreeDotStyle::read();
+
+    dot::DotWriter writer(false);
+    writer.graphAttributes(
+        {{"bgcolor", "transparent"}, {"layout", "neato"}, {"size", style.mapSize}});
+    writer.nodeDefaults(
+        {{"shape", "point"},
+         {"style", "filled"},
+         {"fillcolor", std::string(colorClique.empty() ? style.cliqueBgColor : colorClique)}});
+    writer.edgeDefaults({{"len", dot::DotWriter::number(lenEdge)}, {"color", style.arcColor}});
 
     // cliques as nodes
-    for (auto node: nodes()) {
+    for (const auto node: nodes()) {
       const auto& clik = clique(node);
-      stream << "  " << node << " [tooltip=\"" << expandCliqueTooltip(clik)
-             << "\", width=" << scaleClique * double(clik.size()) << "];" << '\n';
+      writer.node(std::to_string(node),
+                  {{"tooltip", expandCliqueTooltip(clik)},
+                   {"width", dotSize(scaleClique * double(clik.size()))}});
     }
-    stream << '\n';
-    stream << "  node [shape=square,style=filled, fillcolor =" << colorSep << ",label=\"\"];"
-           << '\n'
-           << '\n';
 
-    // separator as nodes and edges
+    writer.nodeDefaults(
+        {{"shape", "square"},
+         {"style", "filled"},
+         {"fillcolor", std::string(colorSep.empty() ? style.separatorBgColor : colorSep)},
+         {"label", ""}});
+
+    // separators as nodes and edges
     for (const auto& edge: edges()) {
-      // the separator as node
       const auto sep = clique(edge.first()) * clique(edge.second());
-      stream << "  \"" << edge.first() << "~" << edge.second() << "\" [tooltip=\""
-             << expandCliqueTooltip(sep) << "\""
-             << ", width=" << scaleSep * double(sep.size()) << "];" << '\n';
-      // the edges
-      stream << "  \"" << edge.first() << "\"--\"" << edge.first() << "~" << edge.second()
-             << "\"--\"" << edge.second() << "\";" << '\n'
-             << '\n';
+      writer.node(separatorId(edge),
+                  {{"tooltip", expandCliqueTooltip(sep)},
+                   {"width", dotSize(scaleSep * double(sep.size()))}});
+      writer.edge(std::to_string(edge.first()), separatorId(edge));
+      writer.edge(separatorId(edge), std::to_string(edge.second()));
     }
 
-    stream << "}" << '\n';
-
-    return stream.str();
+    return writer.str();
   }
 
   /// a << operator for CliqueGraph

@@ -57,6 +57,11 @@
 #include <agrum/base/multidim/tensor.h>
 
 namespace gum {
+
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   template < GUM_Numeric GUM_SCALAR >
   using FactorTable = HashTable< NodeSet, const Tensor< GUM_SCALAR >* >;
 
@@ -186,11 +191,26 @@ namespace gum {
      */
     GUM_SCALAR maxNonOneParam() const;
 
-    /// @return Returns a dot representation of this IMarkovRandomField.
+    /// @return Returns a dot representation of this IMarkovRandomField (its graph of variables).
     virtual std::string toDot() const;
 
-    /// @return Returns a dot representation of this IMarkovRandomField.
+    /**
+     * @return Returns a dot representation of this IMarkovRandomField (its graph of variables),
+     * with the options given by the caller. The variables are nodes named after the variables, with
+     * the tooltip
+     * "(id) name" ; the options are indexed by the identifiers of the nodes and the edges.
+     */
+    virtual std::string toDot(const dot::DotOptions& options) const;
+
+    /// @return Returns a dot representation of this IMarkovRandomField as a factor graph.
     virtual std::string toDotAsFactorGraph() const;
+
+    /**
+     * @return Returns a dot representation of this IMarkovRandomField as a factor graph, with the
+     * options given by the caller : the options of the nodes are the ones of the variables, the
+     * options of a factor are given for the identifiers of its variables.
+     */
+    virtual std::string toDotAsFactorGraph(const dot::DotOptions& options) const;
 
     /// @return Returns a string representation of this IMarkovRandomField.
     std::string toString() const;

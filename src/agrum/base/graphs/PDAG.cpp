@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
 #include <agrum/base/graphs/PDAG.h>
@@ -126,57 +127,44 @@ namespace gum {
     return graph::cSeparated(*this, X, Y, Z);
   }
 
-  std::string PDAG::toDot() const {
-    std::string    output;
-    List< NodeId > treatedNodes;
-    output = "digraph \"no_name\" {\n";
+  std::string PDAG::toDot() const { return toDot(dot::DotOptions()); }
 
-    std::string tab = "  ";
-    output += tab + "rankdir = TD;\n";
-    output += tab + "node [style=filled,fillcolor=white,color=black];\n";
-    output += tab + "graph [style=filled,color=\"#F5F5F5\"];\n";
+  std::string PDAG::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
 
-    output += '\n';
-    auto nodeDecl = [&](NodeId n) -> std::string { return std::to_string(n) + dotNodeLabel(n); };
-
+    // the nodes without undirected edge, then one cluster for each chain component
+    NodeSet treatedNodes;
     for (const auto node: nodes()) {
       if (neighbours(node).empty()) {
-        output += tab + nodeDecl(node) + ";\n";
+        writeDotNode(writer, style, options, node);
         treatedNodes.insert(node);
       }
     }
-    output += '\n';
 
     int cluster = 0;
     for (const auto node: nodes()) {
-      if (!treatedNodes.exists(node)) {
-        output += tab + "subgraph cluster_" + std::to_string(cluster++) + "{{\n";
-        output += tab + tab + "rank=same;\n" + tab + tab;
-        for (const auto cc: chainComponent(node)) {
-          output += nodeDecl(cc) + ';';
-          treatedNodes.insert(cc);
-        }
-        output += '\n' + tab + "}}\n\n";
+      if (treatedNodes.exists(node)) continue;
+      writer.beginSubgraph("cluster_" + std::to_string(cluster++),
+                           {{"style", "filled"}, {"color", "#F5F5F5"}, {"rank", "same"}});
+      for (const auto cc: chainComponent(node)) {
+        writeDotNode(writer, style, options, cc);
+        treatedNodes.insert(cc);
       }
+      writer.endSubgraph();
     }
 
-    for (const auto node: nodes()) {
-      for (const auto child: children(node)) {
-        output += std::format("{}{}->{};", tab, node, child);
-        output += '\n';
-      }
-    }
-    output += '\n' + tab + "edge [dir=none];\n";
+    for (const auto& arc: arcs())
+      writer.edge(arc.tail(), arc.head(), dot::arcAttributes(options.arc(arc.tail(), arc.head())));
 
-    for (const auto node: nodes()) {
-      for (const auto other: neighbours(node))
-        if (other > node) {
-          output += std::format("{}{}->{};", tab, node, other);
-          output += '\n';
-        }
+    for (const auto& edge: edges()) {
+      auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
+      attributes.insert(attributes.begin(), {"dir", "none"});
+      writer.edge(edge.first(), edge.second(), attributes);
     }
-    output += "}\n";
-    return output;
+
+    return writer.str();
   }
 
 } /* namespace gum */

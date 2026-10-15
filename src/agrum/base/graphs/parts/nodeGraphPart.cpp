@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
 #ifdef GUM_NO_INLINE
@@ -185,25 +186,23 @@ namespace gum {
 
   bool NodeGraphPart::hasName(NodeId id) const { return _names_ && _names_->existsFirst(id); }
 
-  std::string NodeGraphPart::dotNodeLabel(NodeId id) const {
+  std::string NodeGraphPart::dotNodeText(NodeId id) const {
     if (!hasName(id)) return "";
-    const std::string& name = _names_->second(id);
-    std::string        result;
-    result.reserve(name.size() * 2 + 24);
-    result = " [label=\"(";
-    result += std::to_string(id);
-    result += ") ";
-    for (const char c: name) {
-      switch (c) {
-        case '"' : result += "\\\""; break;
-        case '\\' : result += "\\\\"; break;
-        case '\n' : result += "\\n"; break;
-        case '\r' : result += "\\r"; break;
-        default : result += c;
-      }
-    }
-    result += "\"]";
-    return result;
+    return "(" + std::to_string(id) + ") " + _names_->second(id);
+  }
+
+  void NodeGraphPart::writeDotNode(dot::DotWriter&        writer,
+                                   const dot::DotStyle&   style,
+                                   const dot::DotOptions& options,
+                                   NodeId                 id) const {
+    writer.node(id, dot::nodeAttributes(style, options.node(id), dotNodeText(id)));
+  }
+
+  void NodeGraphPart::writeDotNodes(dot::DotWriter&        writer,
+                                    const dot::DotStyle&   style,
+                                    const dot::DotOptions& options) const {
+    for (const auto node: nodes())
+      writeDotNode(writer, style, options, node);
   }
 
   std::ostream& operator<<(std::ostream& stream, const NodeGraphPart& set) {

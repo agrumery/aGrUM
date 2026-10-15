@@ -59,6 +59,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /* ===========================================================================
    */
   /* ===          BASE CLASS FOR MANIPULATING ALL UNDIRECTED GRAPHS          ===
@@ -210,6 +214,9 @@ namespace gum {
 
     /// to friendly display graph in DOT format
     virtual std::string toDot() const;
+
+    /// to friendly display graph in DOT format, with the options given by the caller
+    virtual std::string toDot(const dot::DotOptions& options) const;
 
     /// checks whether the graph contains cycles
     bool hasUndirectedCycle() const;

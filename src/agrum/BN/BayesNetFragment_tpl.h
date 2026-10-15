@@ -47,6 +47,7 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/BayesNetFragment.h>
@@ -299,68 +300,60 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::string BayesNetFragment< GUM_SCALAR >::toDot() const {
-    std::stringstream output;
+  std::string BayesNetFragment< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+    // the colors of the nodes, which tell what they are for the fragment
+    struct NodeColors {
+      const char* fill;
+      const char* border;
+      const char* font;
+    };
 
-    std::string bn_name;
+    static constexpr NodeColors inFragment{"#ffffaa", "#000000", "#000000"};
+    static constexpr NodeColors withLocalCPT{"#ffddaa", "#000000", "#000000"};
+    static constexpr NodeColors notConsistent{"#ff0000", "#000000", "#ffff00"};
+    static constexpr NodeColors outFragment{"#f0f0f0", "#f0f0f0", "#000000"};
 
-    static std::string inFragmentStyle    = "fillcolor=\"#ffffaa\","
-                                            "color=\"#000000\","
-                                            "fontcolor=\"#000000\"";
-    static std::string styleWithLocalCPT  = "fillcolor=\"#ffddaa\","
-                                            "color=\"#000000\","
-                                            "fontcolor=\"#000000\"";
-    static std::string notConsistantStyle = "fillcolor=\"#ff0000\","
-                                            "color=\"#000000\","
-                                            "fontcolor=\"#ffff00\"";
-    static std::string outFragmentStyle   = "fillcolor=\"#f0f0f0\","
-                                            "color=\"#f0f0f0\","
-                                            "fontcolor=\"#000000\"";
+    const auto     style = dot::DotStyle::read();
+    const auto     title = "Fragment of " + _bn_.propertyWithDefault("name", "no_name");
+    dot::DotWriter writer(true, title);
+    dot::writePreamble(writer, style, options, title);
 
-    bn_name = _bn_.propertyWithDefault("name", "no_name");
-
-    bn_name = "Fragment of " + bn_name;
-
-    output << std::format("digraph \"{}\" {{\n", bn_name);
-    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", bn_name);
-    output << "  node [style=filled];" << std::endl << std::endl;
-
-    for (auto node: _bn_.nodes()) {
-      output << "\"" << _bn_.variable(node).name() << "\" [comment=\"" << node << ":"
-             << _bn_.variable(node) << ", \"";
-
+    for (const auto node: _bn_.nodes()) {
+      const NodeColors* colors = &outFragment;
       if (isInstalledNode(node)) {
-        if (!checkConsistency(node)) {
-          output << notConsistantStyle;
-        } else if (_localCPTs_.exists(node)) output << styleWithLocalCPT;
-        else output << inFragmentStyle;
-      } else output << outFragmentStyle;
+        if (!checkConsistency(node)) colors = &notConsistent;
+        else if (_localCPTs_.exists(node)) colors = &withLocalCPT;
+        else colors = &inFragment;
+      }
 
-      output << "];" << std::endl;
+      const auto& name       = _bn_.variable(node).name();
+      auto        attributes = dot::nodeAttributes(style,
+                                                   options.node(node),
+                                                   "",
+                                                   "(" + std::to_string(node) + ") " + name);
+      dot::addDefaultAttribute(attributes, "fontcolor", colors->font);
+      dot::addDefaultAttribute(attributes, "color", colors->border);
+      dot::addDefaultAttribute(attributes, "fillcolor", colors->fill);
+      writer.node(name, attributes);
     }
 
-    output << std::endl;
-
-    std::string tab = "  ";
-
-    for (auto node: _bn_.nodes()) {
-      if (_bn_.children(node).size() > 0) {
-        for (auto child: _bn_.children(node)) {
-          output << std::format("  \"{}\" -> \"{}\" [",
-                                _bn_.variable(node).name(),
-                                _bn_.variable(child).name());
-
-          if (this->internalDag().existsArc(Arc(node, child))) output << inFragmentStyle;
-          else output << outFragmentStyle;
-
-          output << "];" << std::endl;
-        }
+    for (const auto node: _bn_.nodes()) {
+      for (const auto child: _bn_.children(node)) {
+        auto attributes = dot::arcAttributes(options.arc(node, child));
+        dot::addDefaultAttribute(attributes,
+                                 "tooltip",
+                                 std::to_string(node) + "&nbsp;&rarr;&nbsp;"
+                                     + std::to_string(child));
+        dot::addDefaultAttribute(attributes, "fontsize", "10");
+        dot::addDefaultAttribute(attributes,
+                                 "color",
+                                 this->internalDag().existsArc(Arc(node, child)) ? "#000000"
+                                                                                 : "#f0f0f0");
+        writer.edge(_bn_.variable(node).name(), _bn_.variable(child).name(), attributes);
       }
     }
 
-    output << "}" << std::endl;
-
-    return output.str();
+    return writer.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >

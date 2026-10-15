@@ -49,6 +49,11 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+    struct CausalDotStyle;
+  }   // namespace dot
+
   // forward declaration:
   template < GUM_Numeric GUM_SCALAR >
   class ASTtree;
@@ -90,6 +95,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   class PYGUM_PUBLIC CausalModel {
     private:
+    /// the dot of the causal DAG, with a look and options
+    std::string _toDot_(const dot::CausalDotStyle& style, const dot::DotOptions& options) const;
+
     /// The observed Bayesian network, when the model was built with CPTs. Absent when built
     /// from a plain DAG — see hasObservationalBN().
     std::optional< BayesNet< GUM_SCALAR > > _observationalBN_;
@@ -302,18 +310,44 @@ namespace gum {
                                                     NodeSet                          subset) const;
 
     /**
-     * @brief DOT representation of the causal DAG (observed + latent).
-     * @param SHOW_LATENT_NAMES  If true, display latent names explicitly.
-     * @param NODE_BG            Node background color (hex code like "#404040" or Graphviz color
-     * name like "lightgray").
-     * @param NODE_FG            Node label/text color (hex code or Graphviz color name).
-     * @param EDGE_COL           Edge color (hex code or Graphviz color name).
+     * @brief DOT representation of the causal DAG (observed + latent), with the look of the
+     * configuration.
+     *
+     * The colors of the nodes are the ones of the section `causal` (`nodeBgColor`, `nodeFgColor`
+     * for the observed variables, `latentBgColor`, `latentFgColor` for the latent ones), the latent
+     * variables are drawn as points unless `causal.showLatentNames` is true, and the color of the
+     * arcs is `notebook.arcColor`.
      * @return A string containing a Graphviz/DOT graph.
      */
-    std::string toDot(const bool  SHOW_LATENT_NAMES = false,
-                      const char* NODE_BG           = "#404040",
-                      const char* NODE_FG           = "white",
-                      const char* EDGE_COL          = "#4A4A4A") const;
+    std::string toDot() const;
+
+    /**
+     * @brief DOT representation of the causal DAG (observed + latent), with the options given by
+     * the caller.
+     *
+     * The nodes are named after the variables (`L<id>` for a latent variable without name), with
+     * the tooltip
+     * "(id) name" ; the options are indexed by the identifiers of the nodes of the causal DAG.
+     * @return A string containing a Graphviz/DOT graph.
+     */
+    std::string toDot(const dot::DotOptions& options) const;
+
+    /**
+     * @brief DOT representation of the causal DAG (observed + latent), with values given by
+     * position.
+     * @deprecated Use toDot() and the configuration, or toDot(const dot::DotOptions&).
+     * @param SHOW_LATENT_NAMES  If true, display latent names explicitly.
+     * @param NODE_BG            Node background color (hex code like "#404040" or Graphviz color
+     * name), for all the nodes ; the configuration if nullptr.
+     * @param NODE_FG            Node label/text color, for all the nodes ; the configuration if
+     * nullptr.
+     * @param EDGE_COL           Edge color ; the configuration if nullptr.
+     * @return A string containing a Graphviz/DOT graph.
+     */
+    std::string toDot(const bool  SHOW_LATENT_NAMES,
+                      const char* NODE_BG  = nullptr,
+                      const char* NODE_FG  = nullptr,
+                      const char* EDGE_COL = nullptr) const;
 
     /// @brief Whether this model was built from a BayesNet (CPTs available).
     bool hasObservationalBN() const noexcept;

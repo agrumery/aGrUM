@@ -52,6 +52,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /* =================================================================== */
   /* ===      BASE CLASS FOR MANIPULATING PARTIALLY DIRECTED ACYCLIC GRAPHS */
   /* =================================================================== */
@@ -253,6 +257,9 @@ namespace gum {
 
     /// to friendly display mixed graph in DOT format
     std::string toDot() const override;
+
+    /// to friendly display mixed graph in DOT format, with the options given by the caller
+    std::string toDot(const dot::DotOptions& options) const override;
   };
 
 } /* namespace gum */

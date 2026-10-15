@@ -69,6 +69,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /**
    * @class KTBNModality
    * @headerfile KTBN.h <agrum/KTBN/KTBN.h>
@@ -672,6 +676,16 @@ namespace gum {
     std::string toUnrolledDot(Size T, bool highlightReplicated = false) const;
 
     /**
+     * @brief Returns a Graphviz DOT string of the k-DBN unrolled over @p T time slices, with the
+     * options given by the caller (the look is the one of the section `dynamicBN` of the
+     * configuration : size of the graph, colors of the clusters). The options of a node and of an
+     * arc are indexed by the identifiers of the nodes of the unrolled BayesNet, see unroll().
+     * @throw OperationNotAllowed if @c T < k.
+     */
+    std::string
+        toUnrolledDot(Size T, bool highlightReplicated, const dot::DotOptions& options) const;
+
+    /**
      * @brief Returns the Graphviz DOT string of the underlying storage BayesNet.
      *
      * Nodes are labelled with their internal engine names (bracket notation:
@@ -750,10 +764,11 @@ namespace gum {
 
     /// @brief Renders @p bn as time-slice-clustered DOT. Shared engine behind
     /// toDot() (on @c _bn_) and toUnrolledDot() (on unroll(T)).
-    std::string _timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn, bool highlightReplicated) const;
+    std::string _timeSlicesToDot_(const BayesNet< GUM_SCALAR >& bn,
+                                  bool                          highlightReplicated,
+                                  const dot::DotOptions&        options) const;
 
-    /// @brief Escapes double quotes for a DOT identifier or label. Shared by
-    /// _timeSlicesToDot_() and summaryGraph().
+    /// @brief Escapes double quotes for a DOT identifier or label. Used by summaryGraph().
     static std::string _escapeDot_(std::string_view name);
   };
 

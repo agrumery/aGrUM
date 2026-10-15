@@ -61,6 +61,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /**
    * @class InfluenceDiagram
    * @headerfile influenceDiagram.h <agrum/ID/influenceDiagram.h>
@@ -136,6 +140,17 @@ namespace gum {
 
     /// @return Returns a dot representation of this Influence Diagram.
     std::string toDot() const;
+
+    /**
+     * @return Returns a dot representation of this Influence Diagram, with the options given by the
+     * caller.
+     *
+     * The nodes are named after the variables, with the tooltip "(id) name" ; the chance, decision
+     * and utility nodes have the colors and shapes of the section `influenceDiagram` of the
+     * configuration. The arcs towards a decision node or a utility node have the styles
+     * `decisionArcStyle` and `utilityArcStyle`.
+     */
+    std::string toDot(const dot::DotOptions& options) const;
 
     /// @return Returns a string representation of this Influence Diagram.
     std::string toString() const;

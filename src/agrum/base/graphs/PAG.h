@@ -53,6 +53,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /** @enum EdgeMark
    * @brief Endpoint marks used in PAG edges.
    *
@@ -189,6 +193,7 @@ namespace gum {
 
     std::string toString() const override;
     std::string toDot() const override;
+    std::string toDot(const dot::DotOptions& options) const override;
 
     /// @}
 

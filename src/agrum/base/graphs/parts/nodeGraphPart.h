@@ -60,6 +60,12 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+    class DotWriter;
+    struct DotStyle;
+  }   // namespace dot
+
   class NodeGraphPart;
 
   /**
@@ -450,9 +456,6 @@ namespace gum {
     /// returns true iff node id has an explicit name
     bool hasName(NodeId id) const;
 
-    /// returns " [label=\"...\"]" with DOT-escaped name, or "" if no name
-    std::string dotNodeLabel(NodeId id) const;
-
     /// a method to create a HashTable with key:NodeId and value:VAL
     /** VAL are computed from the nodes using for all node x, VAL f(x).
      * This method is a wrapper of the same method in HashTable.
@@ -487,6 +490,23 @@ namespace gum {
     List< VAL > listMapNodes(VAL (*f)(const NodeId&)) const;
 
     /// @}
+
+    protected:
+    /// @brief the label of a node in a graph drawn with graphviz : "(id) name", or "" if the node
+    /// has no name
+    std::string dotNodeText(NodeId id) const;
+
+    /// @brief writes a node in the dot language, with the label "(id) name" if it is named and
+    /// the colors given by the options
+    void writeDotNode(dot::DotWriter&        writer,
+                      const dot::DotStyle&   style,
+                      const dot::DotOptions& options,
+                      NodeId                 id) const;
+
+    /// @brief writes the nodes in the dot language, see writeDotNode()
+    void writeDotNodes(dot::DotWriter&        writer,
+                       const dot::DotStyle&   style,
+                       const dot::DotOptions& options) const;
 
     private:
     friend class NodeGraphPartIterator;

@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 #include <agrum/base/graphs/undiGraph.h>
 
@@ -99,28 +100,20 @@ namespace gum {
     return s;
   }
 
-  std::string UndiGraph::toDot() const {
-    std::stringstream output;
-    std::stringstream nodeStream;
-    std::stringstream edgeStream;
-    List< NodeId >    treatedNodes;
-    output << "digraph \"no_name\" {\nedge [dir=none]\n";
-    nodeStream << "node [shape = ellipse];\n";
-    std::string tab = "  ";
+  std::string UndiGraph::toDot() const { return toDot(dot::DotOptions()); }
 
-    for (const auto node: nodes()) {
-      nodeStream << std::format("{}{}{};", tab, node, dotNodeLabel(node));
+  std::string UndiGraph::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(false);
+    dot::writePreamble(writer, style, options);
+    writeDotNodes(writer, style, options);
 
-      if (neighbours(node).size() > 0)
-        for (const auto nei: neighbours(node))
-          if (!treatedNodes.exists(nei)) edgeStream << std::format("{}{} -> {};\n", tab, node, nei);
+    for (const auto& edge: edges())
+      writer.edge(edge.first(),
+                  edge.second(),
+                  dot::arcAttributes(options.edge(edge.first(), edge.second())));
 
-      treatedNodes.insert(node);
-    }
-
-    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
-
-    return output.str();
+    return writer.str();
   }
 
   /// returns the partial graph formed by the nodes given in parameter

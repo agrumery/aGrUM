@@ -54,6 +54,11 @@
 #include <agrum/base/graphs/undiGraph.h>
 
 namespace gum {
+
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /* ===========================================================================
    */
   /* ===                           GRAPHS OF CLIQUES                         ===
@@ -238,13 +243,28 @@ namespace gum {
 
     std::string toDot() const override;
 
-    /// friendly displays the content of the map of the CliqueGraph in DOT format
+    /// friendly displays the content of the CliqueGraph in DOT format, with the options given by
+    /// the caller
+    /**
+     * The cliques and the separators are nodes. The options of a clique are the ones of its node ;
+     * the options of an edge are the ones of its separator : its label, its tooltip, its color (the
+     * fill color) and its attributes, and its width (the width of the two links which go through
+     * it).
+     */
+    std::string toDot(const dot::DotOptions& options) const override;
 
+    /// friendly displays the content of the map of the CliqueGraph in DOT format, with the values
+    /// of the configuration (section notebook, keys junctionTreeMap* and junctionTree*BgColor)
+    std::string mapToDot() const;
+
+    /// friendly displays the content of the map of the CliqueGraph in DOT format
+    /** @param colorClique the color of the cliques, the one of the configuration if empty
+     *  @param colorSep the color of the separators, the one of the configuration if empty */
     virtual std::string mapToDot(double           scaleClique,
                                  double           scaleSep,
                                  double           lenEdge,
-                                 std::string_view colorClique = "burlywood",
-                                 std::string_view colorSep    = "palegreen") const;
+                                 std::string_view colorClique = "",
+                                 std::string_view colorSep    = "") const;
 
     /// @}
 

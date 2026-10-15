@@ -61,6 +61,10 @@
 
 namespace gum {
 
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   /* ===========================================================================
    */
   /* ===           BASE CLASS FOR MANIPULATING ALL DIRECTED GRAPHS           ===
@@ -218,6 +222,10 @@ namespace gum {
     /** @param name The graph name in the dot syntax. Default is G.
      * @return Returns a string describing the graph in the dot syntax */
     virtual std::string toDot() const;
+
+    /// to friendly display the content of the graph in the DOT syntax, with the options given by
+    /// the caller
+    virtual std::string toDot(const dot::DotOptions& options) const;
 
     /**
      * Build and return a topological order

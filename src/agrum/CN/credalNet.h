@@ -83,6 +83,10 @@ typedef unsigned __int64 uint64_t;
 #endif
 
 namespace gum {
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
+
   namespace credal {
     /**
      * @class CredalNet
@@ -430,6 +434,21 @@ namespace gum {
        * (which also represent arcs).
        */
       std::string toString() const;
+
+      /**
+       * @return Returns a dot representation of the graph of this CredalNet (the current one if
+       * any, the source one otherwise).
+       *
+       * The nodes are named after the variables, drawn as heptagons with the tooltip "(id) name",
+       * with the colors of the section `credalnet` of the configuration.
+       */
+      std::string toDot() const;
+
+      /**
+       * @return Returns a dot representation of the graph of this CredalNet, with the options given
+       * by the caller, indexed by the identifiers of the nodes of the graph.
+       */
+      std::string toDot(const dot::DotOptions& options) const;
       // PH void toPNG ( const std::string &png_path ) const;
 
       /**

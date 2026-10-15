@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/core/dot/dotOptions.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 #include <agrum/BN/BayesNet.h>
 
@@ -152,6 +153,30 @@ namespace gum_tests {
     CHECK_EQ(mb.ancestors(0), gum::NodeSet());
     CHECK_EQ(mb.ancestors(1), gum::NodeSet({0}));
     CHECK_EQ(mb.ancestors(2), gum::NodeSet({0, 1}));
+  }
+
+  GUM_TEST(ToDot) {
+    ConfigurationGuard guard;
+    auto               bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->c");
+    auto               mb = gum::MarkovBlanket(bn, "c");
+
+    const auto dot = mb.toDot();
+    CHECK_NE(dot.find("digraph {\n"), std::string::npos);
+    // the node of interest is in red
+    CHECK_NE(dot.find("  2 [color=\"red\", label=\"c\", tooltip=\"(2) c\"];\n"), std::string::npos);
+    CHECK_NE(dot.find("  0 [label=\"a\", tooltip=\"(0) a\"];\n"), std::string::npos);
+    CHECK_NE(dot.find("  0 -> 2;\n"), std::string::npos);
+    CHECK_NE(dot.find("  1 -> 2;\n"), std::string::npos);
+    // the arc a->b links two parents of c : it is a special one, in grey
+    CHECK_NE(dot.find("  0 -> 1 [color=\"grey\"];\n"), std::string::npos);
+
+    // the options of the caller win
+    gum::dot::DotOptions options;
+    options.setNodeBgColor(0, "burlywood");
+    options.setArcColor(0, 1, "blue");
+    const auto given = mb.toDot(options);
+    CHECK_NE(given.find("  0 -> 1 [color=\"blue\"];\n"), std::string::npos);
+    CHECK_NE(given.find("fillcolor=\"burlywood\", fontcolor=\"black\""), std::string::npos);
   }
 
 }   // namespace gum_tests

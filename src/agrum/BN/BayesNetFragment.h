@@ -181,10 +181,13 @@ namespace gum {
     const DiscreteVariable& variableFromName(std::string_view name) const final;
 
     /**
-     * creates a dot representing the whole referred BN hilighting the fragment.
+     * creates a dot representing the whole referred BN hilighting the fragment : the nodes and the
+     * arcs which are not in the fragment are in grey, the nodes with a local CPT are orange and the
+     * ones which are not consistent are red. The options given by the caller win.
      * @return Returns a dot representation of this fragment
      */
-    std::string toDot() const final;
+    std::string toDot(const dot::DotOptions& options) const final;
+    using IBayesNet< GUM_SCALAR >::toDot;
 
     /// @}
 

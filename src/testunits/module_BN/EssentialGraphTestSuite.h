@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/core/dot/dotOptions.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/BayesNet.h>
 
@@ -181,6 +182,35 @@ namespace gum_tests {
       CHECK_EQ(eg.descendants(0), gum::NodeSet());
       CHECK_EQ(eg.ancestors(2), gum::NodeSet());
     }
+  }
+
+  GUM_TEST(ToDot) {
+    ConfigurationGuard guard;
+    auto               bn = gum::BayesNet< float >::fastPrototype("a->b;c->b;b->d");
+    auto               eg = gum::EssentialGraph(bn);
+    // a->b<-c is a v-structure, b->d is compelled by the Meek rules : only arcs
+
+    const auto dot = eg.toDot();
+    CHECK_NE(dot.find("digraph {\n"), std::string::npos);
+    CHECK_NE(dot.find("  0 [label=\"a\", tooltip=\"(0) a\"];\n"), std::string::npos);
+    CHECK_NE(dot.find("  0 -> 1 [color=\"red\"];\n"), std::string::npos);
+    CHECK_NE(dot.find("  2 -> 1 [color=\"red\"];\n"), std::string::npos);
+    CHECK_NE(dot.find("  1 -> 3 [color=\"red\"];\n"), std::string::npos);
+    CHECK_EQ(dot.find("dir=\"none\""), std::string::npos);
+
+    // the options of the caller win
+    gum::dot::DotOptions options;
+    options.setArcColor(0, 1, "green");
+    options.setNodeBgColor(3, "yellow");
+    const auto given = eg.toDot(options);
+    CHECK_NE(given.find("  0 -> 1 [color=\"green\"];\n"), std::string::npos);
+    CHECK_NE(given.find("  2 -> 1 [color=\"red\"];\n"), std::string::npos);
+    CHECK_NE(given.find("fillcolor=\"yellow\", fontcolor=\"black\""), std::string::npos);
+
+    // a chain has only undirected edges
+    auto smallBn = gum::BayesNet< float >::fastPrototype("a->b");
+    auto chain   = gum::EssentialGraph(smallBn);
+    CHECK_NE(chain.toDot().find("  0 -> 1 [dir=\"none\"];\n"), std::string::npos);
   }
 
 }   // namespace gum_tests

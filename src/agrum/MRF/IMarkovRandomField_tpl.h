@@ -48,9 +48,11 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Lionel TORTI
  */
 
+#include <algorithm>
 #include <limits>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/MRF/IMarkovRandomField.h>
 
@@ -168,90 +170,99 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDot() const {
-    std::stringstream output;
+    return toDot(dot::DotOptions());
+  }
 
-    std::string mn_name = this->propertyWithDefault("name", "no_name");
+  template < GUM_Numeric GUM_SCALAR >
+  std::string IMarkovRandomField< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(false, this->propertyWithDefault("name", ""));
+    dot::writePreamble(writer, style, options);
 
-    output << std::format("graph \"{}\" {{\n", mn_name);
-    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", mn_name);
-    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
-
-    for (auto node: nodes())
-      output << std::format("  \"{}\" [comment=\"{}:{}\"];\n",
-                            variable(node).name(),
-                            node,
-                            variable(node).toStringWithDescription());
-
-    output << std::endl;
-
-    std::string tab = "  ";
-
-    for (auto node: nodes()) {
-      if (neighbours(node).size() > 0) {
-        for (auto nei: neighbours(node)) {
-          if (variable(node).name() < variable(nei).name()) {
-            output << std::format("  \"{}\" -- \"{}\";\n",
-                                  variable(node).name(),
-                                  variable(nei).name());
-          }
-        }
-      } else {
-        output << std::format("  \"{}\";\n", variable(node).name());
-      }
+    for (const auto node: nodes()) {
+      const auto& name = variable(node).name();
+      writer.node(name,
+                  dot::nodeAttributes(style,
+                                      options.node(node),
+                                      "",
+                                      "(" + std::to_string(node) + ") " + name));
     }
 
-    output << "}" << std::endl;
+    for (const auto& edge: edges()) {
+      auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
+      dot::addDefaultAttribute(attributes,
+                               "tooltip",
+                               std::to_string(edge.first()) + "&nbsp;&mdash;&nbsp;"
+                                   + std::to_string(edge.second()));
+      dot::addDefaultAttribute(attributes, "fontsize", "10");
+      writer.edge(variable(edge.first()).name(), variable(edge.second()).name(), attributes);
+    }
 
-    return output.str();
+    return writer.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >
   std::string IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph() const {
-    std::stringstream output;
-    std::string       mn_name = this->propertyWithDefault("name", "no_name");
+    return toDotAsFactorGraph(dot::DotOptions());
+  }
 
-    output << std::format("graph FG_{} {{\n", mn_name);
-    output << "  layout=neato;" << std::endl;
-    output << std::format("  graph [bgcolor=transparent,label=\"factor graph for {}\"];\n",
-                          mn_name);
+  template < GUM_Numeric GUM_SCALAR >
+  std::string
+      IMarkovRandomField< GUM_SCALAR >::toDotAsFactorGraph(const dot::DotOptions& options) const {
+    const auto     style = dot::FactorGraphDotStyle::read();
+    dot::DotWriter writer(false, this->propertyWithDefault("name", ""));
+    dot::writePreamble(writer, style, options);
+    writer.edgeDefaults({{"len", dot::DotWriter::number(style.edgeLength)}});
 
     // the variables
-    output << "  node [shape=rectangle,margin=0.04,width=0,height=0, "
-              "style=filled,color=\"coral\"];"
-           << std::endl;
-    for (auto nod: nodes()) {
-      output << std::format("\"{}\";\n", variable(nod).name());
+    for (const auto node: nodes()) {
+      const auto& name       = variable(node).name();
+      auto        attributes = dot::nodeAttributes(style,
+                                                   options.node(node),
+                                                   "",
+                                                   "(" + std::to_string(node) + ") " + name);
+      dot::addDefaultAttribute(attributes, "height", "0");
+      dot::addDefaultAttribute(attributes, "width", "0");
+      dot::addDefaultAttribute(attributes, "margin", "0.04");
+      dot::addDefaultAttribute(attributes, "shape", "rectangle");
+      writer.node(name, attributes);
     }
-    output << std::endl;
 
-    // the factor
-    output << "node[shape = point,width = 0.1,height = 0.1,style = filled,color = "
-              "\"burlywood\"];"
-           << std::endl;
+    // the factors, in the order of the identifiers of their variables
+    std::vector< std::vector< NodeId > > scopes;
     for (const auto& kv: factors()) {
-      output << "  \"f";
-      for (NodeId nod: kv.first) {
-        output << "#" << variable(nod).name();
-      }
-      output << "\";" << std::endl;
+      std::vector< NodeId > scope(kv.first.begin(), kv.first.end());
+      std::sort(scope.begin(), scope.end());
+      scopes.push_back(std::move(scope));
+    }
+    std::sort(scopes.begin(), scopes.end());
+
+    auto factorName = [this](const std::vector< NodeId >& scope) {
+      std::string name = "f";
+      for (const auto node: scope)
+        name += "#" + variable(node).name();
+      return name;
+    };
+
+    // a factor is a point, whose font color is adaptive against its own background
+    auto factorStyle        = static_cast< dot::DotStyle >(style);
+    factorStyle.nodeBgColor = style.factorBgColor;
+    for (const auto& scope: scopes) {
+      auto attributes = dot::nodeAttributes(factorStyle, options.factor(scope));
+      dot::addDefaultAttribute(attributes, "height", "0.1");
+      dot::addDefaultAttribute(attributes, "width", "0.1");
+      dot::addDefaultAttribute(attributes, "shape", "point");
+      dot::addDefaultAttribute(attributes, "fontcolor", style.factorFgColor);
+      dot::addDefaultAttribute(attributes, "fillcolor", style.factorBgColor);
+      writer.node(factorName(scope), attributes);
     }
 
-    // the link variable--factors
-    output << "  edge[len = 0.7];" << std::endl;
-    for (const auto& kv: factors()) {
-      std::string clicname = "\"f";
-      for (NodeId nod: kv.first) {
-        clicname += "#";
-        clicname += variable(nod).name();
-      }
-      clicname += "\"";
+    // the links variable -- factor
+    for (const auto& scope: scopes)
+      for (const auto node: scope)
+        writer.edge(factorName(scope), variable(node).name());
 
-      for (NodeId nod: kv.first)
-        output << std::format("  {} -- \"{}\";\n", clicname, variable(nod).name());
-    }
-    output << "}" << std::endl;
-
-    return output.str();
+    return writer.str();
   }
 
   template < GUM_Numeric GUM_SCALAR >

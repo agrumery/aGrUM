@@ -23,6 +23,15 @@
       the file (`save` writes the new names of the deprecated keys). `set` restores the previous value if a hook throws.
       A notice already waiting is not queued twice. Floats are parsed independently of the locale of the program
       (new `gum::parseDecimal` in `utils_string.h`).
+    - **New `agrum/base/core/dot/`**: `gum::dot::DotStyle` (the look read from the configuration at each call:
+      `DotStyle`, `JunctionTreeDotStyle`, `FactorGraphDotStyle`, `InfluenceDiagramDotStyle`, `CausalDotStyle`,
+      `DynamicBNDotStyle`), `gum::dot::DotWriter` (quoting, escaping and checked attributes of the dot language),
+      `gum::dot::DotOptions` (what the caller gives to a `toDot`) and the colors (`dotColor.h`). The `toDot()` of
+      `DiGraph`, `UndiGraph`, `MixedGraph`, `PDAG`, `PAG`, `CliqueGraph` (and its `mapToDot()`, which reads the
+      configuration), `EssentialGraph`, `MarkovBlanket`, `IBayesNet`, `BayesNetFragment`, `IMarkovRandomField` (and
+      `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel`, `KTBN` and the new `CredalNet::toDot` use them, and
+      most have a `toDot(const dot::DotOptions&)` overload. `NodeGraphPart::dotNodeLabel` is removed. See the
+      changes of the look of the dot in the entry of pyAgrum.
     - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
       from `core.allowModificationWhenSaving`.

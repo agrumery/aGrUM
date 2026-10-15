@@ -156,13 +156,13 @@ namespace gum_tests {
     CHECK_NE(dot.find("Genotype"), std::string::npos);
 
     // Expected arcs
-    CHECK_NE(dot.find("\"Smoking\"->\"Tar\""), std::string::npos);
-    CHECK_NE(dot.find("\"Tar\"->\"Cancer\""), std::string::npos);
-    CHECK_NE(dot.find("\"Genotype\"->\"Smoking\""), std::string::npos);
-    CHECK_NE(dot.find("\"Genotype\"->\"Cancer\""), std::string::npos);
+    CHECK_NE(dot.find("\"Smoking\" -> \"Tar\""), std::string::npos);
+    CHECK_NE(dot.find("\"Tar\" -> \"Cancer\""), std::string::npos);
+    CHECK_NE(dot.find("\"Genotype\" -> \"Smoking\""), std::string::npos);
+    CHECK_NE(dot.find("\"Genotype\" -> \"Cancer\""), std::string::npos);
 
     // Because assumeNonSpurious=false by default, the direct Smoking->Cancer must be gone
-    CHECK_EQ(dot.find("\"Smoking\"->\"Cancer\""), std::string::npos);
+    CHECK_EQ(dot.find("\"Smoking\" -> \"Cancer\""), std::string::npos);
   }
 
   GUM_TEST(ToDotSimpson) {
@@ -180,9 +180,9 @@ namespace gum_tests {
     CHECK_NE(dot.find("Patient"), std::string::npos);
 
     // Expected arcs
-    CHECK_NE(dot.find("\"Gender\"->\"Drug\""), std::string::npos);
-    CHECK_NE(dot.find("\"Gender\"->\"Patient\""), std::string::npos);
-    CHECK_NE(dot.find("\"Drug\"->\"Patient\""), std::string::npos);
+    CHECK_NE(dot.find("\"Gender\" -> \"Drug\""), std::string::npos);
+    CHECK_NE(dot.find("\"Gender\" -> \"Patient\""), std::string::npos);
+    CHECK_NE(dot.find("\"Drug\" -> \"Patient\""), std::string::npos);
   }
 
   GUM_TEST(InducedCausalSubModel_DropsSingletonLatent) {
@@ -495,7 +495,7 @@ namespace gum_tests {
 
     auto dot = cm.toDot();
     CHECK_NE(dot.find("A"), std::string::npos);
-    CHECK_NE(dot.find("\"A\"->\"B\""), std::string::npos);
+    CHECK_NE(dot.find("\"A\" -> \"B\""), std::string::npos);
 
     // CPT-dependent accessors throw OperationNotAllowed
     CHECK_THROWS_AS(cm.observationalBN(), const gum::OperationNotAllowed&);

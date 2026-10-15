@@ -52,6 +52,7 @@
 #include <limits>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/ICIModels/multiDimNoisyAND.h>
@@ -197,39 +198,35 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string IBayesNet< GUM_SCALAR >::toDot() const {
-    std::stringstream output;
+    return toDot(dot::DotOptions());
+  }
 
-    std::string bn_name = this->propertyWithDefault("name", "no_name");
+  template < GUM_Numeric GUM_SCALAR >
+  std::string IBayesNet< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true, this->propertyWithDefault("name", ""));
+    dot::writePreamble(writer, style, options);
 
-    output << std::format("digraph \"{}\" {{\n", bn_name);
-    output << std::format("  graph [bgcolor=transparent,label=\"{}\"];\n", bn_name);
-    output << "  node [style=filled fillcolor=\"#ffffaa\"];" << std::endl << std::endl;
-
-    for (auto node: nodes())
-      output << std::format("\"{}\" [comment=\"{}:{}\"];\n",
-                            variable(node).name(),
-                            node,
-                            variable(node).toStringWithDescription());
-
-    output << std::endl;
-
-    std::string tab = "  ";
-
-    for (auto node: nodes()) {
-      if (children(node).size() > 0) {
-        for (auto child: children(node)) {
-          output << std::format("  \"{}\" -> \"{}\";\n",
-                                variable(node).name(),
-                                variable(child).name());
-        }
-      } else if (parents(node).size() == 0) {
-        output << std::format("  \"{}\";\n", variable(node).name());
-      }
+    for (const auto node: nodes()) {
+      const auto& name = variable(node).name();
+      writer.node(name,
+                  dot::nodeAttributes(style,
+                                      options.node(node),
+                                      "",
+                                      "(" + std::to_string(node) + ") " + name));
     }
 
-    output << "}" << std::endl;
+    for (const auto& arc: arcs()) {
+      auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
+      dot::addDefaultAttribute(attributes,
+                               "tooltip",
+                               std::to_string(arc.tail()) + "&nbsp;&rarr;&nbsp;"
+                                   + std::to_string(arc.head()));
+      dot::addDefaultAttribute(attributes, "fontsize", "10");
+      writer.edge(variable(arc.tail()).name(), variable(arc.head()).name(), attributes);
+    }
 
-    return output.str();
+    return writer.str();
   }
 
   /// Compute a parameter of the joint probability for the BN (given an

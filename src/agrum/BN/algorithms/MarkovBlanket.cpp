@@ -46,6 +46,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/BN/algorithms/MarkovBlanket.h>
 
 #ifdef GUM_NO_INLINE
@@ -96,29 +97,32 @@ namespace gum {
     return true;
   }
 
-  std::string MarkovBlanket::toDot() const {
-    std::string    output;
-    std::string    nodeStream;
-    std::string    arcStream;
-    List< NodeId > treatedNodes;
-    output          = "digraph \"no_name\" {\n";
-    nodeStream      = "node [shape = ellipse];\n";
-    std::string tab = "  ";
+  std::string MarkovBlanket::toDot() const { return toDot(dot::DotOptions()); }
+
+  std::string MarkovBlanket::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
 
     for (const auto node: _mb_.nodes()) {
-      nodeStream += std::format("{}{}[label=\"{}\"", tab, node, _model_.variable(node).name());
-      if (node == _node_) { nodeStream += ", color=red"; }
-      nodeStream += "];\n";
+      const auto& name       = _model_.variable(node).name();
+      auto        attributes = dot::nodeAttributes(style,
+                                                   options.node(node),
+                                                   name,
+                                                   "(" + std::to_string(node) + ") " + name);
+      if (node == _node_) dot::addDefaultAttribute(attributes, "color", "red");
+      writer.node(node, attributes);
+    }
 
+    for (const auto node: _mb_.nodes()) {
       for (const auto chi: _mb_.children(node)) {
-        arcStream += std::format("{}{} -> {}", tab, node, chi);
-        if (_specialArcs_.exists(Arc(node, chi))) { arcStream += " [color=grey]"; }
-        arcStream += ";\n";
+        auto attributes = dot::arcAttributes(options.arc(node, chi));
+        if (_specialArcs_.exists(Arc(node, chi)))
+          dot::addDefaultAttribute(attributes, "color", "grey");
+        writer.edge(node, chi, attributes);
       }
     }
 
-    output += nodeStream + '\n' + arcStream + "\n}\n";
-
-    return output;
+    return writer.str();
   }
 }   // namespace gum

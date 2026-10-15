@@ -447,7 +447,7 @@ namespace gum_tests {
 
     // toDot(): time-slice clustered view with bracket-encoded node ids
     const std::string dot = m.toDot();
-    CHECK(dot.find("digraph KTBN") != std::string::npos);
+    CHECK(dot.find("digraph \"KTBN\"") != std::string::npos);
     CHECK(dot.find("cluster_0") != std::string::npos);
     CHECK(dot.find("cluster_1") != std::string::npos);
     CHECK(dot.find("\"C\" [label=\"C\"]") != std::string::npos);   // atemporal: no cluster
@@ -460,10 +460,10 @@ namespace gum_tests {
 
     // toUnrolledDot(T, true): slices >= k (here slice 2) are shaded lightcyan
     const std::string undotHl = m.toUnrolledDot(3, true);
-    CHECK(undotHl.find("cluster_2 {\n    label=\"Time slice 2\";\n    style=filled;\n    "
+    CHECK(undotHl.find("\"cluster_2\" {\n    label=\"Time slice 2\";\n    style=\"filled\";\n    "
                        "bgcolor=\"lightcyan\"")
           != std::string::npos);
-    CHECK(undotHl.find("cluster_0 {\n    label=\"Time slice 0\";\n    style=filled;\n    "
+    CHECK(undotHl.find("\"cluster_0\" {\n    label=\"Time slice 0\";\n    style=\"filled\";\n    "
                        "bgcolor=\"#DDDDDD\"")
           != std::string::npos);
 

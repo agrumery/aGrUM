@@ -46,6 +46,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 
 #ifdef GUM_NO_INLINE
@@ -149,34 +150,38 @@ namespace gum {
     return false;
   }
 
-  std::string EssentialGraph::toDot() const {
-    std::stringstream output;
-    std::stringstream nodeStream;
-    std::stringstream edgeStream;
-    List< NodeId >    treatedNodes;
-    output << "digraph \"no_name\" {\n";
-    nodeStream << "node [shape = ellipse];\n";
-    std::string tab = "  ";
+  std::string EssentialGraph::toDot() const { return toDot(dot::DotOptions()); }
+
+  std::string EssentialGraph::toDot(const dot::DotOptions& options) const {
+    const auto     style = dot::DotStyle::read();
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
+
     if (_dagmodel_ != nullptr) {
       for (const auto node: _pdag_.nodes()) {
-        nodeStream << std::format("{}{}[label=\"{}\"];",
-                                  tab,
-                                  node,
-                                  _dagmodel_->variable(node).name());
+        const auto& name = _dagmodel_->variable(node).name();
+        writer.node(node,
+                    dot::nodeAttributes(style,
+                                        options.node(node),
+                                        name,
+                                        "(" + std::to_string(node) + ") " + name));
+      }
 
-        for (const auto nei: _pdag_.neighbours(node))
-          if (!treatedNodes.exists(nei))
-            edgeStream << std::format("{}{} -> {} [dir=none];\n", tab, node, nei);
+      for (const auto& edge: _pdag_.edges()) {
+        auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
+        attributes.insert(attributes.begin(), {"dir", "none"});
+        writer.edge(edge.first(), edge.second(), attributes);
+      }
 
-        for (const auto chi: _pdag_.children(node))
-          edgeStream << std::format("{}{} -> {} [color=red];\n", tab, node, chi);
-
-        treatedNodes.insert(node);
+      // the arcs which are in every DAG of the equivalence class are in red
+      for (const auto& arc: _pdag_.arcs()) {
+        auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
+        dot::addDefaultAttribute(attributes, "color", "red");
+        writer.edge(arc.tail(), arc.head(), attributes);
       }
     }
-    output << nodeStream.str() << '\n' << edgeStream.str() << '\n' << "}\n";
 
-    return output.str();
+    return writer.str();
   }
 
   UndiGraph EssentialGraph::skeleton() const {

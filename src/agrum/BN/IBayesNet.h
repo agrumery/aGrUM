@@ -57,6 +57,10 @@
 #include <agrum/base/multidim/tensor.h>
 
 namespace gum {
+
+  namespace dot {
+    class DotOptions;
+  }   // namespace dot
   template < GUM_Numeric GUM_SCALAR >
   class BayesNetFactory;
 
@@ -210,6 +214,14 @@ namespace gum {
 
     /// @return Returns a dot representation of this IBayesNet.
     virtual std::string toDot() const;
+
+    /**
+     * @brief A dot representation of this IBayesNet, with the options given by the caller.
+     *
+     * The nodes are named after the variables, with the tooltip "(id) name"; the options are
+     * indexed by the identifiers of the nodes.
+     */
+    virtual std::string toDot(const dot::DotOptions& options) const;
 
     /// @return Returns a string representation of this IBayesNet.
     std::string toString() const;

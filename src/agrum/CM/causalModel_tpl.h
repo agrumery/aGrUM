@@ -48,6 +48,7 @@
 #include <optional>
 #include <sstream>
 
+#include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/doorCriteria.h>
@@ -408,73 +409,87 @@ namespace gum {
   // DOT export
   // ===============================
   template < GUM_Numeric GUM_SCALAR >
+  std::string CausalModel< GUM_SCALAR >::toDot() const {
+    return toDot(dot::DotOptions());
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string CausalModel< GUM_SCALAR >::toDot(const dot::DotOptions& options) const {
+    return _toDot_(dot::CausalDotStyle::read(), options);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   std::string CausalModel< GUM_SCALAR >::toDot(const bool  SHOW_LATENT_NAMES,
                                                const char* NODE_BG,
                                                const char* NODE_FG,
                                                const char* EDGE_COL) const {
-    //   SHOW_LATENT_NAMES => causal.show_latent_names
-    //   NODE_BG           => causal.node_bgcolor
-    //   NODE_FG           => causal.node_fgcolor
-    //   EDGE_COL          => notebook.arc_color
+    auto style            = dot::CausalDotStyle::read();
+    style.showLatentNames = SHOW_LATENT_NAMES;
+    if (EDGE_COL != nullptr) style.arcColor = EDGE_COL;
+    if (NODE_BG != nullptr) {
+      style.nodeBgColor   = NODE_BG;
+      style.latentBgColor = NODE_BG;
+    }
+    if (NODE_FG != nullptr) {
+      style.nodeFgColor   = NODE_FG;
+      style.latentFgColor = NODE_FG;
+    }
+    return _toDot_(style, dot::DotOptions());
+  }
 
-    std::stringstream out;
-    out << "digraph {\n";
+  template < GUM_Numeric GUM_SCALAR >
+  std::string CausalModel< GUM_SCALAR >::_toDot_(const dot::CausalDotStyle& style,
+                                                 const dot::DotOptions&     options) const {
+    dot::DotWriter writer(true);
+    dot::writePreamble(writer, style, options);
+
+    // the name of a node of the causal DAG
+    const auto label = [this](NodeId n) {
+      try {
+        return nameFromId(n);
+      } catch (gum::NotFound&) { return "L" + std::to_string(n); }
+    };
+
+    // a font color which is adaptive is resolved against the background of the kind of node
+    auto latentStyle        = static_cast< dot::DotStyle >(style);
+    latentStyle.nodeBgColor = style.latentBgColor;
 
     // First, latent nodes
     for (const auto n: _causalDAG_.nodes()) {
-      if (latentVariablesIds().contains(n)) {
-        std::string label;
-        try {
-          label = nameFromId(n);
-        } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
-        out << "  \"" << label << "\" "
-            << "[fillcolor=\"" << NODE_BG << "\", "
-            << "fontcolor=\"" << NODE_FG << "\", "
-            << "style=filled,shape=" << (SHOW_LATENT_NAMES ? "ellipse" : "point") << "];\n";
-      }
+      if (!latentVariablesIds().contains(n)) continue;
+      auto attributes = dot::nodeAttributes(latentStyle,
+                                            options.node(n),
+                                            "",
+                                            "(" + std::to_string(n) + ") " + label(n));
+      dot::addDefaultAttribute(attributes, "shape", style.showLatentNames ? "ellipse" : "point");
+      dot::addDefaultAttribute(attributes, "fontcolor", style.latentFgColor);
+      dot::addDefaultAttribute(attributes, "fillcolor", style.latentBgColor);
+      writer.node(label(n), attributes);
     }
 
     // Then, observed nodes
     for (const auto n: _causalDAG_.nodes()) {
-      if (!latentVariablesIds().contains(n)) {
-        std::string label;
-        try {
-          label = nameFromId(n);
-        } catch (gum::NotFound&) { label = "L" + std::to_string(n); }
-        out << "  \"" << label << "\" "
-            << "[fillcolor=\"" << NODE_BG << "\", "
-            << "fontcolor=\"" << NODE_FG << "\", "
-            << "style=filled,shape=ellipse];\n";
-      }
+      if (latentVariablesIds().contains(n)) continue;
+      writer.node(label(n),
+                  dot::nodeAttributes(style,
+                                      options.node(n),
+                                      "",
+                                      "(" + std::to_string(n) + ") " + label(n)));
     }
 
     // Edges
-    for (const auto tail: _causalDAG_.nodes()) {
-      for (const auto head: _causalDAG_.children(tail)) {
-        std::string lt, lh;
-        try {
-          lt = nameFromId(tail);
-        } catch (gum::NotFound&) { lt = "L" + std::to_string(tail); }
-        try {
-          lh = nameFromId(head);
-        } catch (gum::NotFound&) { lh = "L" + std::to_string(head); }
-
-        const bool dashed
-            = latentVariablesIds().contains(tail) || latentVariablesIds().contains(head);
-
-        out << "  \"" << lt << "\"->\"" << lh << "\" ";
-        if (dashed) {
-          out << "[style=dashed]";
-        } else {
-          // match Python: color="#4A4A4A:#4A4A4A"
-          out << "[color=\"" << EDGE_COL << ":" << EDGE_COL << "\"]";
-        }
-        out << ";\n";
+    for (const auto& arc: _causalDAG_.arcs()) {
+      auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
+      if (latentVariablesIds().contains(arc.tail()) || latentVariablesIds().contains(arc.head())) {
+        dot::addDefaultAttribute(attributes, "style", "dashed");
+      } else {
+        // two lines of the same color for an arc of the observed variables
+        dot::addDefaultAttribute(attributes, "color", style.arcColor + ":" + style.arcColor);
       }
+      writer.edge(label(arc.tail()), label(arc.head()), attributes);
     }
 
-    out << "}\n";
-    return out.str();
+    return writer.str();
   }
 
   // ===============================
