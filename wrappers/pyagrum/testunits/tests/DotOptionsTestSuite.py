@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import shutil
 import unittest
 
 import pyagrum as gum
@@ -284,6 +285,7 @@ class TestDotOptions(pyAgrumTestCase):
     self.assertEqual(graph.get_rankdir(), "TB")
     self.assertEqual(graph.get_edges()[0].get_color(), "#4A4A4A")
 
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   def testGraphDiffIsADiffOfDAGs(self):
     """graphDiff compares the structures of two models which are DAGs with names: Bayesian networks, CLG..."""
     import pyagrum.lib.bn_vs_bn as gcmp
@@ -307,6 +309,7 @@ class TestDotOptions(pyAgrumTestCase):
     bn = gum.fastBN("A->B->C")
     self.assertEqual(len(gcmp.graphDiff(bn, gum.fastBN("A->B->C;A->C")).get_edges()), 3)  # 2 common, 1 added
 
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   def testDotLayoutOfTheGraphsOfBNs(self):
     """The layout of a graph can be applied to another one: the statements `graph [...]` are not nodes."""
     import pyagrum.lib.bn2graph as gbn2
