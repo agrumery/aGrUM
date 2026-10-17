@@ -295,7 +295,7 @@ def MRFinference2UGdot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return g
+  return gumcols.prepareDot(g)
 
 
 def MRFinference2FactorGraphdot(
@@ -422,4 +422,4 @@ def MRFinference2FactorGraphdot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return g
+  return gumcols.prepareDot(g)

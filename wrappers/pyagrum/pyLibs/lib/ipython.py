@@ -63,7 +63,6 @@ from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
 from pyagrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyagrum.lib.utils import setDarkTheme, showApproximationScheme, animApproximationScheme
-import pyagrum.lib._colors as gumcols
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference
 from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
@@ -134,7 +133,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
   if size is None:
     size = pyagrum.config["notebook", "graphSize"]
 
-  gumcols.prepareDot(gr, size=size)
+  gr.set_size(size)
   display(Image(data=gr.create_png(), format="png"))
 
 

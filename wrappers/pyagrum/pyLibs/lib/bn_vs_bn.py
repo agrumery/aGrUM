@@ -496,7 +496,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
 
     gutils.apply_dot_layout(res, positions)
 
-  return res
+  return gumcols.prepareDot(res)
 
 
 def graphDiffLegend() -> dot.Dot | None:
@@ -547,4 +547,4 @@ def graphDiffLegend() -> dot.Dot | None:
     )
   )
 
-  return res
+  return gumcols.prepareDot(res)

@@ -444,7 +444,10 @@ class CTBN:
     arcColor = pyagrum.config["notebook", "arcColor"]
     chaine = f"""
         digraph  "ctbn" {{
-        graph [bgcolor=transparent,label=""];
+        bgcolor=transparent;
+        rankdir="{pyagrum.config["notebook", "graphRankDir"]}";
+        layout="{pyagrum.config["notebook", "graphLayout"]}";
+        graph [label=""];
         node [style=filled fillcolor="{pyagrum.config["ctbn", "node_bgcolor"]}" fontcolor="{pyagrum.config["ctbn", "node_fgcolor"]}" color="{arcColor}"];
         edge [color="{arcColor}"];
 

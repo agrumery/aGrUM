@@ -50,19 +50,13 @@ class WorkaroundTestCase(pyAgrumTestCase):
   Those tests will hopefully failed one day : they check bugs that did need workarounds in pyAgrum's code
   """
 
-  def testExtraNodeBecauseDotParser(self):
-    # pydot (and pydot) creates an extra-node with newline as content.
+  def testNoExtraNodeBecauseDotParser(self):
+    # pydot 1.x with pyparsing>=3.0.3 created an extra node with a newline as content. It does not happen with pydot>=2
+    # (the minimal version required by pyAgrum), so the workaround which removed this node is gone.
     g = dot.graph_from_dot_data("""graph G {
   A;B;
   A--B;
 }""")[0]
-
-    # g should have 2 nodes if no bug while parsing but 3 with the bug.
-    # workaround : cf. pyagrum.lib.notebook.py:255 and everywhere using dot.graph_from_dot_data
-    g.del_node('"\\n"')
-    self.assertEqual(len(g.get_node_list()), 2)
-    # if we try to remove a non-existing node : no problem
-    g.del_node('"\\n"')
     self.assertEqual(len(g.get_node_list()), 2)
 
 

@@ -57,6 +57,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
 import pyagrum
+import pyagrum.lib._colors as gumcols
 
 noTimeCluster = "void"
 
@@ -232,7 +233,7 @@ def _TimeSlicesToDot(dbn) -> dot.Dot:
         g.add_edge(dot.Edge(f'"{name}{prec}"', f'"{name}{k}"'))
       prec = k
 
-  return g
+  return gumcols.prepareDot(g)
 
 
 def showTimeSlices(dbn: pyagrum.BayesNet, size: str | None = None) -> None:

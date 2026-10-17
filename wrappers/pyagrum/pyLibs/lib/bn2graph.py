@@ -252,4 +252,4 @@ def BNinference2dot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return g
+  return gumcols.prepareDot(g)

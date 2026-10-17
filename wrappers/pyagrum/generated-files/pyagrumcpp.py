@@ -1313,6 +1313,28 @@ class _Configuration(object):
 
 # Register _Configuration in _pyagrumcpp:
 _pyagrumcpp._Configuration_swigregister(_Configuration)
+class _Rgb(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    red = property(_pyagrumcpp._Rgb_red_get, _pyagrumcpp._Rgb_red_set)
+    green = property(_pyagrumcpp._Rgb_green_get, _pyagrumcpp._Rgb_green_set)
+    blue = property(_pyagrumcpp._Rgb_blue_get, _pyagrumcpp._Rgb_blue_set)
+
+    def __init__(self):
+        _pyagrumcpp._Rgb_swiginit(self, _pyagrumcpp.new__Rgb())
+    __swig_destroy__ = _pyagrumcpp.delete__Rgb
+
+# Register _Rgb in _pyagrumcpp:
+_pyagrumcpp._Rgb_swigregister(_Rgb)
+
+def _parseColor(color: str, rgb: "_Rgb") -> bool:
+    return _pyagrumcpp._parseColor(color, rgb)
+
+def _contrastColor(rgb: "_Rgb") -> str:
+    return _pyagrumcpp._contrastColor(rgb)
+
+def _configFgColor(section: str, key: str) -> str:
+    return _pyagrumcpp._configFgColor(section, key)
 
 def _resolveFgColor(fgColor: str, bgColor: str, fallback: str) -> str:
     return _pyagrumcpp._resolveFgColor(fgColor, bgColor, fallback)

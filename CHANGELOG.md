@@ -53,6 +53,16 @@
       latent variables have their own colors); its arguments `SHOW_LATENT_NAMES`, `NODE_BG`, `NODE_FG` and `EDGE_COL` are
       deprecated. Code that parses the text of a `toDot()` has to be adapted (the arcs are written `"A" -> "B"` with
       spaces, the identifiers of the junction tree nodes are `0` and `0~1`).
+    - **Graphs shown or exported as they are**: `showGraph`, `getGraph`, `showDot`, `export` and the display of a `pydot.Dot`
+      in a notebook only apply the size of the graph. The graphs built in Python by pyAgrum (inference graphs, `graphDiff`,
+      `CLG2dot`, `CTBN.toDot()`, `bnmixture`, `explain`...) are complete when they are built, like the ones of the C++
+      `toDot()`; a pydot graph or a dot string given by the user is no longer completed with the look of the configuration.
+      The workaround which removed a spurious `"\n"` node from the parsed graphs (pydot 1.x) is removed: pyAgrum requires
+      pydot>=2.
+    - The colors of the graphs (`color2rgb`, `rgb2brightness`, `configFgColor`) are computed by the C++ functions of
+      `agrum/base/core/dot/`; `hex2rgb` is deprecated (use `color2rgb`).
+    - Fixed: `proba2hex` (and `proba2color`, `proba2bgcolor`) wrote an invalid color (`#100100cc` for `#ffffcc`) when a component
+      of the color map was 1.0, for instance with the default `Pastel1`; `CLGInference2dot` failed without `evs`.
 
 - aGrUM
 
@@ -73,6 +83,8 @@
       `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel`, `KTBN` and the new `CredalNet::toDot` use them, and
       most have a `toDot(const dot::DotOptions&)` overload. `NodeGraphPart::dotNodeLabel` is removed. See the
       changes of the look of the dot in the entry of pyAgrum.
+    - New `gum::dot::configFgColor(section, key)`: the font color of a key `...FgColor` of the configuration, resolved
+      against the key `...BgColor` which goes with it (the value `adaptive` gives black or white).
     - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.jgumIndent`,
       `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
       from `core.allowModificationWhenSaving`.

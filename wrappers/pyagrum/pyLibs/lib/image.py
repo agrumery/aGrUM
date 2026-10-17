@@ -56,7 +56,6 @@ from pyagrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyagrum.lib.id2graph import ID2dot, LIMIDinference2dot
 from pyagrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
 from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
-import pyagrum.lib._colors as gumcols
 import pyagrum.lib.utils as gutils
 
 
@@ -187,7 +186,9 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
       "Argument model should be a PGM (BayesNet, MarkovRandomField or Influence Diagram) or has a method `toDot()` or is a string"
     )
 
-  gumcols.prepareDot(fig, **kwargs).write(filename, format=fmt_image)
+  if kwargs.get("size") is not None:
+    fig.set_size(kwargs["size"])
+  fig.write(filename, format=fmt_image)
 
 
 def prepareShowInference(
@@ -454,7 +455,7 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
   else:
     size = pyagrum.config["notebook", "graph_inference_size"]
 
-  svgtxt = dot_as_svg_string(gumcols.prepareDot(prepareShowInference(model, **kwargs), **kwargs), size=size)
+  svgtxt = dot_as_svg_string(prepareShowInference(model, **kwargs), size=size)
 
   if fmt_image == "pdf":
     cairosvg.svg2pdf(bytestring=svgtxt, write_to=filename)

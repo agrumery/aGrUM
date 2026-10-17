@@ -45,6 +45,18 @@ import pyagrum as gum
 from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
+def _credalNet(bn):
+  """A credal net whose intervals are the cpts of bn scaled by 0.9 and 1.1."""
+  bmin = gum.BayesNet(bn)
+  bmax = gum.BayesNet(bn)
+  for name in bn.names():
+    bmin.cpt(name).scale(0.9)
+    bmax.cpt(name).scale(1.1)
+  cn = gum.CredalNet(bmin, bmax)
+  cn.intervalToCredal()
+  return cn
+
+
 class TestDotOptions(pyAgrumTestCase):
   """What the caller gives to a toDot(options), beyond the configuration."""
 
@@ -203,14 +215,7 @@ class TestDotOptions(pyAgrumTestCase):
     self.assertIn('fillcolor="#123456"', cm.toDot(True, "#123456", "pink", "#654321"))
 
   def testCredalNet(self):
-    bn = gum.fastBN("A->B", 2)
-    bmin = gum.BayesNet(bn)
-    bmax = gum.BayesNet(bn)
-    for name in bn.names():
-      bmin.cpt(name).scale(0.9)
-      bmax.cpt(name).scale(1.1)
-    cn = gum.CredalNet(bmin, bmax)
-    cn.intervalToCredal()
+    cn = _credalNet(gum.fastBN("A->B", 2))
     options = gum.DotOptions()
     options.setNodeBgColor(0, "red")
     dot = cn.toDot(options)
@@ -248,7 +253,7 @@ class TestDotOptions(pyAgrumTestCase):
 
   def testPrepareDotKeepsTheGraphsOfAgrum(self):
     """The graphs written by the toDot() of aGrUM are complete: prepareDot adds nothing which would change them."""
-    import pydot
+    import pydot as dot
     import pyagrum.lib._colors as gumcols
 
     dag = gum.DAG()
@@ -259,7 +264,7 @@ class TestDotOptions(pyAgrumTestCase):
     options.setNodeBgColor(0, "burlywood")
     options.setNodeFgColor(1, "red")
     graph = gumcols.dotFromAgrum(dag.toDot(options))
-    gumcols.prepareDot(graph, size="5")
+    gumcols.prepareDot(graph)
 
     nodes = {n.get_name(): n for n in graph.get_nodes()}
     # the font color of a node is the one given (no color added to the nodes which have nothing to say)
@@ -268,22 +273,103 @@ class TestDotOptions(pyAgrumTestCase):
     # the defaults of the graph are not replaced
     self.assertEqual(nodes["node"].get_attributes()["fontcolor"], '"white"')
     self.assertEqual(nodes["graph"].get_attributes()["rankdir"], '"LR"')
-    self.assertIsNone(graph.get_rankdir())  # not set a second time (it would win over the given LR)
-    self.assertIsInstance(graph, pydot.Dot)
+    self.assertEqual(graph.to_string().count("rankdir"), 1)  # not set a second time (it would win over the given LR)
+    self.assertIsInstance(graph, dot.Dot)
 
   def testPrepareDotStillCompletesTheOtherGraphs(self):
-    import pydot
+    import pydot as dot
     import pyagrum.lib._colors as gumcols
 
-    graph = pydot.graph_from_dot_data(
+    graph = dot.graph_from_dot_data(
       'digraph { "A" [fillcolor="#202020", style=filled]; "B" [fillcolor="yellow", style=filled]; "A"->"B"; }'
     )[0]
-    gumcols.prepareDot(graph, size="5")
+    gumcols.prepareDot(graph)
     nodes = {n.get_name().strip('"'): n for n in graph.get_nodes()}
     self.assertEqual(nodes["A"].get_fontcolor(), "white")
     self.assertEqual(nodes["B"].get_fontcolor(), "black")
     self.assertEqual(graph.get_rankdir(), "TB")
     self.assertEqual(graph.get_edges()[0].get_color(), "#4A4A4A")
+
+  def testProbaToColorGivesValidColors(self):
+    """A component of a colormap equal to 1.0 must give 'ff', not '100' (the yellow of Pastel1 for instance)."""
+    import matplotlib
+    import pyagrum.lib._colors as gumcols
+
+    for name in ["Pastel1", "BuGn", "Greys", "bwr"]:
+      cmap = matplotlib.colormaps[name]
+      for i in range(101):
+        p = i / 100
+        self.assertEqual("".join(gumcols.proba2hex(p, cmap, False)), matplotlib.colors.to_hex(cmap(p))[1:])
+    self.assertEqual(gumcols.proba2color(0.6, matplotlib.colormaps["Pastel1"]), "#ffffcc")
+
+  def testPythonBuiltGraphsAreComplete(self):
+    """The graphs built in Python by pyAgrum are already completed: prepareDot changes nothing on them."""
+    try:
+      import pyagrum.bnmixture as BNM
+      import pyagrum.bnmixture.notebook as bnmnb
+      import pyagrum.clg as gclg
+      import pyagrum.clg.notebook as clgnb
+      import pyagrum.explain as gexpl
+      import pyagrum.lib._colors as gumcols
+      import pyagrum.lib.bn2graph as gbn2
+      import pyagrum.lib.bn_vs_bn as gcm
+      import pyagrum.lib.cn2graph as gcn2
+      import pyagrum.lib.dynamicBN as gdyn
+      import pyagrum.lib.id2graph as gid2
+      import pyagrum.lib.mrf2graph as gmrf2
+      import pydot as dot
+      from pyagrum import ctbn
+    except ImportError:
+      self.skipTest("ipython and matplotlib are needed for the graphs of pyAgrum")
+
+    bn = gum.fastBN("A->B->C<-D")
+    cn = _credalNet(bn)
+    mrf = gum.fastMRF("A--B;B--C--D")
+    diag = gum.fastID("A->B->*D->$U;B->$U")
+    clg = gclg.CLG()
+    clg.add(gclg.GaussianVariable("X", 0, 1))
+    bnm = BNM.BNMixture()
+    bnm.add("bn0", bn, w=1.0)
+    bnm.add("bn1", gum.fastBN("A->B<-C<-D"), w=2.0)
+
+    graphs = {
+      "BNinference2dot": gbn2.BNinference2dot(bn),
+      "CNinference2dot": gcn2.CNinference2dot(cn),
+      "MRFinference2UGdot": gmrf2.MRFinference2UGdot(mrf),
+      "MRFinference2FactorGraphdot": gmrf2.MRFinference2FactorGraphdot(mrf),
+      "LIMIDinference2dot": gid2.LIMIDinference2dot(diag, "6", gum.ShaferShenoyLIMIDInference(diag), {}, set()),
+      "_TimeSlicesToDot": gdyn._TimeSlicesToDot(gum.fastBN("a0->a1->at")),
+      "graphDiff": gcm.graphDiff(bn, gum.fastBN("A->B<-C<-D")),
+      "graphDiffLegend": gcm.graphDiffLegend(),
+      "CLG2dot": clgnb.CLG2dot(clg),
+      "CLGInference2dot": clgnb.CLGInference2dot(clg),
+      "CTBN.toDot": dot.graph_from_dot_data(ctbn.randomCTBN((0.5, 1.2), n=3).toDot())[0],
+      "BNMixtureInference2dot": bnmnb.BNMixtureInference2dot(bnm),
+      "arcsCompLegend": bnmnb.arcsCompLegend(),
+      "generalizedMarkovBlanket": gexpl.generalizedMarkovBlanket(bn, "B"),
+    }
+    for name, graph in graphs.items():
+      with self.subTest(builder=name):
+        before = graph.to_string()
+        gumcols.prepareDot(graph)
+        self.assertEqual(graph.to_string(), before)
+        self.assertEqual(graph.get_bgcolor(), "transparent")
+
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
+  def testAGraphOfTheUserIsShownAsItIs(self):
+    """Showing a graph only applies its size: a graph given by the user is not completed."""
+    try:
+      import pyagrum.lib.notebook as gnb
+      import pydot as dot
+    except ImportError:
+      self.skipTest("ipython and matplotlib are needed for pyagrum.lib.notebook")
+
+    graph = dot.graph_from_dot_data("digraph { A [fillcolor=black, style=filled]; A -> B; }")[0]
+    gnb.getGraph(graph, size="3")
+    self.assertEqual(graph.get_size(), "3")
+    self.assertIsNone(graph.get_bgcolor())
+    self.assertIsNone(graph.get_node("A")[0].get_fontcolor())
+    self.assertIsNone(graph.get_edges()[0].get_color())
 
   @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   def testGraphDiffIsADiffOfDAGs(self):

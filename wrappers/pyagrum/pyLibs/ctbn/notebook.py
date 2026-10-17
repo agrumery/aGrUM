@@ -247,7 +247,7 @@ def CTBNinference2dot(
   g.set_size(size)
   g.temp_dir = temp_dir
 
-  return g
+  return gumcols.prepareDot(g)
 
 
 def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):

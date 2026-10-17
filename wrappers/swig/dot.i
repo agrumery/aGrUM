@@ -43,6 +43,12 @@
  *  - gum::dot::resolveFgColor : the resolution of the special font color `adaptive`, used by the language layers for
  *    the graphs they build themselves. It is private (underscore) : the language layers wrap it (see
  *    swigsrc/gum_functions_BASE.i for pyAgrum) ;
+ *  - gum::dot::parseColor (and gum::dot::Rgb which receives its result) : the reading of a color, private too
+ *    (underscore), for the language layers which need the components of a color ;
+ *  - gum::dot::contrastColor : the text color (white or black) readable on a background given by its components,
+ *    private too (underscore) ;
+ *  - gum::dot::configFgColor : a font color of the configuration resolved against its background color, private too
+ *    (underscore) ;
  *  - gum::dot::DotOptions : what the caller gives to a toDot() beyond the configuration. The class is declared by
  *    hand (its header also declares the structures of the options, which have no meaning in a target language) :
  *    the nodes are designated by their identifiers, the arcs by the identifiers of their tail and head, and a
@@ -52,13 +58,27 @@
 %{
 #include <agrum/base/core/dot/dotColor.h>
 #include <agrum/base/core/dot/dotOptions.h>
+#include <agrum/base/core/dot/dotStyle.h>
 #include <agrum/base/graphs/graphElements.h>
 %}
 
 %rename(_resolveFgColor) gum::dot::resolveFgColor;
+%rename(_Rgb) gum::dot::Rgb;
+%rename(_parseColor) gum::dot::parseColor;
+%rename(_contrastColor) gum::dot::contrastColor;
+%rename(_configFgColor) gum::dot::configFgColor;
 
 namespace gum {
   namespace dot {
+    struct Rgb {
+      unsigned char red;
+      unsigned char green;
+      unsigned char blue;
+    };
+
+    bool parseColor(std::string_view color, Rgb& rgb);
+    std::string contrastColor(const Rgb& rgb);
+    std::string configFgColor(std::string_view section, std::string_view key);
     std::string resolveFgColor(std::string_view fgColor, std::string_view bgColor, std::string_view fallback);
 
     class DotOptions {

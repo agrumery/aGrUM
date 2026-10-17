@@ -39,7 +39,6 @@
 ############################################################################
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
 from pyagrum.lib.bn2graph import BN2dot
 
 # Matplotlib
@@ -184,7 +183,6 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False, sh
     evs = {}
 
   gr, mi, ma, mi_arc, ma_arc = getInformationGraph(bn, evs, size, cmap, withMinMax=True)
-  gumcols.prepareDot(gr, size=size)
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member

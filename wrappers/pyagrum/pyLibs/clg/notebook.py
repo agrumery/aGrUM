@@ -170,9 +170,10 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   # pylint: disable=no-member
   dotobj.set_size(size)
 
-  return dotobj
+  return gumcols.prepareDot(dotobj)
 
 
+# noinspection PyProtectedMember
 def CLGInference2dot(
   clg, *, evs=None, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None
 ):
@@ -205,6 +206,9 @@ def CLGInference2dot(
   pydot.Dot
     The desired representation of the Conditional Linear Gaussian.
   """
+  if evs is None:
+    evs = {}
+
   ie = clginference.CLGVariableElimination(clg)
   ie.updateEvidence(evs)
 
@@ -232,7 +236,7 @@ def CLGInference2dot(
     else:
       if nodeColor is None or n not in nodeColor:
         bgcol = pyagrum.config["notebook", "histogram_color"]
-        fgcol = gumcols.rgb2brightness(*gumcols.hex2rgb(bgcol))
+        fgcol = pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcol, gumcols.getBlackInTheme())
         res = ""
       else:
         bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
@@ -288,7 +292,7 @@ def CLGInference2dot(
   # pylint: disable=no-member
   dotobj.set_size(size)
 
-  return dotobj
+  return gumcols.prepareDot(dotobj)
 
 
 def getInference(

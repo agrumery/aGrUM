@@ -3872,35 +3872,36 @@ namespace Swig {
 #define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[154]
 #define SWIGTYPE_p_gum__WrongClassElement swig_types[155]
 #define SWIGTYPE_p_gum__dot__DotOptions swig_types[156]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[157]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[158]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[159]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[160]
-#define SWIGTYPE_p_iterator swig_types[161]
-#define SWIGTYPE_p_iterator_category swig_types[162]
-#define SWIGTYPE_p_iterator_safe swig_types[163]
-#define SWIGTYPE_p_node_const_iterator swig_types[164]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[165]
-#define SWIGTYPE_p_node_iterator swig_types[166]
-#define SWIGTYPE_p_node_iterator_safe swig_types[167]
-#define SWIGTYPE_p_second_type swig_types[168]
-#define SWIGTYPE_p_size_type swig_types[169]
-#define SWIGTYPE_p_std__exception swig_types[170]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[171]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[172]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[173]
-#define SWIGTYPE_p_std__invalid_argument swig_types[174]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[175]
-#define SWIGTYPE_p_std__size_t swig_types[176]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[177]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[178]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[179]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[180]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[181]
-#define SWIGTYPE_p_value_type swig_types[182]
-#define SWIGTYPE_p_void swig_types[183]
-static swig_type_info *swig_types[185];
-static swig_module_info swig_module = {swig_types, 184, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__dot__Rgb swig_types[157]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[158]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[159]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[160]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[161]
+#define SWIGTYPE_p_iterator swig_types[162]
+#define SWIGTYPE_p_iterator_category swig_types[163]
+#define SWIGTYPE_p_iterator_safe swig_types[164]
+#define SWIGTYPE_p_node_const_iterator swig_types[165]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[166]
+#define SWIGTYPE_p_node_iterator swig_types[167]
+#define SWIGTYPE_p_node_iterator_safe swig_types[168]
+#define SWIGTYPE_p_second_type swig_types[169]
+#define SWIGTYPE_p_size_type swig_types[170]
+#define SWIGTYPE_p_std__exception swig_types[171]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[172]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[173]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[174]
+#define SWIGTYPE_p_std__invalid_argument swig_types[175]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[176]
+#define SWIGTYPE_p_std__size_t swig_types[177]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[178]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[179]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[180]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[181]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[182]
+#define SWIGTYPE_p_value_type swig_types[183]
+#define SWIGTYPE_p_void swig_types[184]
+static swig_type_info *swig_types[186];
+static swig_module_info swig_module = {swig_types, 185, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4879,7 +4880,31 @@ SWIGINTERN std::vector< std::string,std::allocator< std::string > > gum_Configur
 
 #include <agrum/base/core/dot/dotColor.h>
 #include <agrum/base/core/dot/dotOptions.h>
+#include <agrum/base/core/dot/dotStyle.h>
 #include <agrum/base/graphs/graphElements.h>
+
+
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_char (PyObject * obj, unsigned char *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > UCHAR_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< unsigned char >(v);
+    }
+  }  
+  return res;
+}
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_unsigned_SS_char  (unsigned char value)
+{    
+  return SWIG_From_unsigned_SS_long  (value);
+}
 
 SWIGINTERN void gum_dot_DotOptions_setFactorBgColor(gum::dot::DotOptions *self,gum::NodeSet const &variables,std::string const &color){
     self->setFactorBgColor(std::vector< gum::Size >(variables.begin(), variables.end()), color);
@@ -23555,6 +23580,400 @@ SWIGINTERN PyObject *_Configuration_swigregister(PyObject *SWIGUNUSEDPARM(self),
 SWIGINTERN PyObject *_Configuration_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
+
+SWIGINTERN PyObject *_wrap__Rgb_red_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  unsigned char arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned char val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Rgb_red_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_red_set" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_Rgb_red_set" "', argument " "2"" of type '" "unsigned char""'");
+  } 
+  arg2 = static_cast< unsigned char >(val2);
+  if (arg1) (arg1)->red = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Rgb_red_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  unsigned char result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_red_get" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  result = (unsigned char) ((arg1)->red);
+  resultobj = SWIG_From_unsigned_SS_char(static_cast< unsigned char >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Rgb_green_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  unsigned char arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned char val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Rgb_green_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_green_set" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_Rgb_green_set" "', argument " "2"" of type '" "unsigned char""'");
+  } 
+  arg2 = static_cast< unsigned char >(val2);
+  if (arg1) (arg1)->green = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Rgb_green_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  unsigned char result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_green_get" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  result = (unsigned char) ((arg1)->green);
+  resultobj = SWIG_From_unsigned_SS_char(static_cast< unsigned char >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Rgb_blue_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  unsigned char arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned char val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_Rgb_blue_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_blue_set" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_Rgb_blue_set" "', argument " "2"" of type '" "unsigned char""'");
+  } 
+  arg2 = static_cast< unsigned char >(val2);
+  if (arg1) (arg1)->blue = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__Rgb_blue_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  unsigned char result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_Rgb_blue_get" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  result = (unsigned char) ((arg1)->blue);
+  resultobj = SWIG_From_unsigned_SS_char(static_cast< unsigned char >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new__Rgb(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new__Rgb", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (gum::dot::Rgb *)new gum::dot::Rgb();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__dot__Rgb, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete__Rgb(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__dot__Rgb, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete__Rgb" "', argument " "1"" of type '" "gum::dot::Rgb *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_Rgb_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__dot__Rgb, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_Rgb_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap__parseColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  gum::dot::Rgb *arg2 = 0 ;
+  PyObject *bytes1 = NULL ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_parseColor", 2, 2, swig_obj)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__dot__Rgb,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "_parseColor" "', argument " "2"" of type '" "gum::dot::Rgb &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_parseColor" "', argument " "2"" of type '" "gum::dot::Rgb &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::dot::Rgb * >(argp2);
+  {
+    try {
+      result = (bool)gum::dot::parseColor(SWIG_STD_MOVE(*(&arg1)),*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__contrastColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::dot::Rgb *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__dot__Rgb,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_contrastColor" "', argument " "1"" of type '" "gum::dot::Rgb const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_contrastColor" "', argument " "1"" of type '" "gum::dot::Rgb const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::dot::Rgb * >(argp1);
+  {
+    try {
+      result = gum::dot::contrastColor((gum::dot::Rgb const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__configFgColor(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  std::string_view arg2 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *bytes2 = NULL ;
+  PyObject *swig_obj[2] ;
+  std::string result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_configFgColor", 2, 2, swig_obj)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum::dot::configFgColor(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return NULL;
+}
+
 
 SWIGINTERN PyObject *_wrap__resolveFgColor(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
@@ -133006,6 +133425,19 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete__Configuration", _wrap_delete__Configuration, METH_O, NULL},
 	 { "_Configuration_swigregister", _Configuration_swigregister, METH_O, NULL},
 	 { "_Configuration_swiginit", _Configuration_swiginit, METH_VARARGS, NULL},
+	 { "_Rgb_red_set", _wrap__Rgb_red_set, METH_VARARGS, NULL},
+	 { "_Rgb_red_get", _wrap__Rgb_red_get, METH_O, NULL},
+	 { "_Rgb_green_set", _wrap__Rgb_green_set, METH_VARARGS, NULL},
+	 { "_Rgb_green_get", _wrap__Rgb_green_get, METH_O, NULL},
+	 { "_Rgb_blue_set", _wrap__Rgb_blue_set, METH_VARARGS, NULL},
+	 { "_Rgb_blue_get", _wrap__Rgb_blue_get, METH_O, NULL},
+	 { "new__Rgb", _wrap_new__Rgb, METH_NOARGS, NULL},
+	 { "delete__Rgb", _wrap_delete__Rgb, METH_O, NULL},
+	 { "_Rgb_swigregister", _Rgb_swigregister, METH_O, NULL},
+	 { "_Rgb_swiginit", _Rgb_swiginit, METH_VARARGS, NULL},
+	 { "_parseColor", _wrap__parseColor, METH_VARARGS, NULL},
+	 { "_contrastColor", _wrap__contrastColor, METH_O, NULL},
+	 { "_configFgColor", _wrap__configFgColor, METH_VARARGS, NULL},
 	 { "_resolveFgColor", _wrap__resolveFgColor, METH_VARARGS, NULL},
 	 { "new_DotOptions", _wrap_new_DotOptions, METH_NOARGS, NULL},
 	 { "DotOptions_setSize", _wrap_DotOptions_setSize, METH_VARARGS, "\n"
@@ -153231,6 +153663,7 @@ static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap
 static swig_type_info _swigt__p_gum__WeightedSamplingT_double_t = {"_p_gum__WeightedSamplingT_double_t", "gum::WeightedSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongClassElement = {"_p_gum__WrongClassElement", "gum::WrongClassElement *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__dot__Rgb = {"_p_gum__dot__Rgb", "gum::dot::Rgb *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__BNDatabaseGeneratorT_double_t = {"_p_gum__learning__BNDatabaseGeneratorT_double_t", "gum::learning::BNDatabaseGenerator< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__learning__BNLearnerT_double_t", "gum::learning::BNLearner< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__DatabaseTable = {"_p_gum__learning__DatabaseTable", "gum::learning::DatabaseTable *", 0, 0, (void*)0, 0};
@@ -153417,6 +153850,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__WeightedSamplingT_double_t,
   &_swigt__p_gum__WrongClassElement,
   &_swigt__p_gum__dot__DotOptions,
+  &_swigt__p_gum__dot__Rgb,
   &_swigt__p_gum__learning__BNDatabaseGeneratorT_double_t,
   &_swigt__p_gum__learning__BNLearnerT_double_t,
   &_swigt__p_gum__learning__DatabaseTable,
@@ -153603,6 +154037,7 @@ static swig_cast_info _swigc__p_gum__VariableNodeMap[] = {  {&_swigt__p_gum__Var
 static swig_cast_info _swigc__p_gum__WeightedSamplingT_double_t[] = {  {&_swigt__p_gum__WeightedSamplingT_double_t, 0, 0, 0},  {&_swigt__p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, _p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_tTo_p_gum__WeightedSamplingT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongClassElement[] = {  {&_swigt__p_gum__WrongClassElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__dot__Rgb[] = {  {&_swigt__p_gum__dot__Rgb, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__BNDatabaseGeneratorT_double_t[] = {  {&_swigt__p_gum__learning__BNDatabaseGeneratorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__BNLearnerT_double_t[] = {  {&_swigt__p_gum__learning__BNLearnerT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__learning__DatabaseTable[] = {  {&_swigt__p_gum__learning__DatabaseTable, 0, 0, 0},{0, 0, 0, 0}};
@@ -153789,6 +154224,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__WeightedSamplingT_double_t,
   _swigc__p_gum__WrongClassElement,
   _swigc__p_gum__dot__DotOptions,
+  _swigc__p_gum__dot__Rgb,
   _swigc__p_gum__learning__BNDatabaseGeneratorT_double_t,
   _swigc__p_gum__learning__BNLearnerT_double_t,
   _swigc__p_gum__learning__DatabaseTable,

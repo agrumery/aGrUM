@@ -149,4 +149,4 @@ def generalizedMarkovBlanket(bn, var: int | str, k: int = 1, cmapNode=None):
         edge.set_color("#DDDDDD")
       mb.add_edge(edge)
 
-  return mb
+  return gumcols.prepareDot(mb)

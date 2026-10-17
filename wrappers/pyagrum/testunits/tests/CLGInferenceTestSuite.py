@@ -222,6 +222,17 @@ class CLGInferenceTestCase(pyAgrumTestCase):
     with self.assertRaises(ValueError):
       ie.canonicalPosterior("X")
 
+  def test_inference2dot_without_evidence(self):
+    try:
+      import pyagrum.clg.notebook as clgnb
+    except ImportError:
+      self.skipTest("ipython and matplotlib are needed for pyagrum.clg.notebook")
+
+    model = CLG()
+    model.add(GaussianVariable("X", 0, 1))
+    graph = clgnb.CLGInference2dot(model)
+    self.assertEqual([n.get_name().strip('"') for n in graph.get_nodes()], ["X"])
+
 
 ts = unittest.TestSuite()
 addTests(ts, CLGInferenceTestCase)

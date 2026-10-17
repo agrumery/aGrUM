@@ -125,7 +125,7 @@ def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
       )
     )
 
-  return res
+  return gumcols.prepareDot(res)
 
 
 def _compareBNinf(bnref: pyagrum.BayesNet, refdot: dot.Dot, cmpDot: dot.Dot, scale=1.0):
@@ -342,16 +342,13 @@ def BNMixtureInference2dot(
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-
   if size is None:
     size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
   g._td = _td
 
-  return g
+  return gumcols.prepareDot(g)
 
 
 def BootstrapInference2dot(
@@ -506,16 +503,13 @@ def BootstrapInference2dot(
 
   g = dot.graph_from_dot_data(dotstr)[0]
 
-  # workaround for some badly parsed graph (pyparsing>=3.03)
-  g.del_node('"\\n"')
-
   if size is None:
     size = pyagrum.config["notebook", "graph_inference_size"]
   g.set_size(size)
   g.temp_dir = temp_dir
   g._td = _td
 
-  return g
+  return gumcols.prepareDot(g)
 
 
 def showBNMixtureInference(
@@ -740,7 +734,7 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
         )
       )
 
-  return res, mi, ma
+  return gumcols.prepareDot(res), mi, ma
 
 
 def getComparison(bnm, size=None, refStruct=False):
@@ -837,7 +831,7 @@ def arcsCompLegend():
     )
   )
 
-  return res
+  return gumcols.prepareDot(res)
 
 
 ####################### tool box for quantiles #######################

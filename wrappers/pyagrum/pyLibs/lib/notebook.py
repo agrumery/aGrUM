@@ -277,7 +277,8 @@ def _reprGraph(gr: dot.Dot, size: float | str | None, asString: bool, graph_form
   str | None
     return the HTML representation as a str or display the graph
   """
-  gumcols.prepareDot(gr, size=size)
+  if size is not None:
+    gr.set_size(size)
 
   if graph_format is None:
     graph_format = pyagrum.config["notebook", "graph_format"]
@@ -1189,8 +1190,8 @@ def _reprTensor(
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gumcols.hex2rgb(pyagrum.config["notebook", "tensor_color_0"])
-  r1, g1, b1 = gumcols.hex2rgb(pyagrum.config["notebook", "tensor_color_1"])
+  r0, g0, b0 = gumcols.color2rgb(pyagrum.config["notebook", "tensor_color_0"])
+  r1, g1, b1 = gumcols.color2rgb(pyagrum.config["notebook", "tensor_color_1"])
 
   if digits is None:
     digits = pyagrum.config.typed["notebook", "tensor_visible_digits"]
