@@ -120,6 +120,27 @@ namespace gum_tests {
     CHECK_EQ(gum::dot::DotStyle::read().nodeFgColor, "red");
   }
 
+  // the font color of any section, resolved against the background color which goes with it
+  GUM_TEST(ConfigFgColor) {
+    ConfigurationGuard guard;
+    setDotKey("causal", "latentFgColor", "adaptive");
+    setDotKey("causal", "latentBgColor", "#404040");
+    CHECK_EQ(gum::dot::configFgColor("causal", "latentFgColor"), "white");
+    setDotKey("causal", "latentBgColor", "burlywood");
+    CHECK_EQ(gum::dot::configFgColor("causal", "latentFgColor"), "black");
+
+    // a background which is not a color: the color of the arcs of the section notebook
+    setDotKey("causal", "latentBgColor", "transparent");
+    setDotKey("notebook", "arcColor", "#AAAAAA");
+    CHECK_EQ(gum::dot::configFgColor("causal", "latentFgColor"), "#AAAAAA");
+
+    setDotKey("causal", "latentFgColor", "red");
+    CHECK_EQ(gum::dot::configFgColor("causal", "latentFgColor"), "red");
+
+    CHECK_THROWS_AS(gum::dot::configFgColor("causal", "latentBgColor"), gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::dot::configFgColor("causal", "unknownFgColor"), gum::SyntaxError&);
+  }
+
   GUM_TEST(CredalNetStyle) {
     ConfigurationGuard guard;
     setDotKey("notebook", "graphSize", "3");

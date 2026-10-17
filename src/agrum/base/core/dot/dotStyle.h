@@ -60,6 +60,8 @@
 
 #include <agrum/agrum.h>
 
+#include <string_view>
+
 namespace gum::dot {
 
   /**
@@ -169,6 +171,23 @@ namespace gum::dot {
 
     static DynamicBNDotStyle read();
   };
+
+  /**
+   * @brief A font color of the configuration, resolved against the background color which goes
+   * with it.
+   *
+   * The background color is the key of the same section whose suffix `FgColor` is replaced by
+   * `BgColor` (`nodeFgColor` goes with `nodeBgColor`). The special value `adaptive` is resolved by
+   * gum::dot::resolveFgColor, with the color of the arcs (key `arcColor` of the section `notebook`)
+   * when the background is not a color that can be interpreted.
+   *
+   * @param section the section of the configuration (`notebook`, `causal`...).
+   * @param key the key of the font color, which ends with `FgColor`.
+   * @return the font color, never `adaptive`.
+   * @throw InvalidArgument if `key` does not end with `FgColor`.
+   * @throw SyntaxError if the font color or the background color is not a key of the configuration.
+   */
+  GUM_SHARED_PUBLIC std::string configFgColor(std::string_view section, std::string_view key);
 
 }   // namespace gum::dot
 
