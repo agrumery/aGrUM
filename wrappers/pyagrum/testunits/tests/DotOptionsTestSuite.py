@@ -39,6 +39,7 @@
 ############################################################################
 
 import shutil
+import sys
 import unittest
 
 import pyagrum as gum
@@ -254,7 +255,7 @@ class TestDotOptions(pyAgrumTestCase):
   def testPrepareDotKeepsTheGraphsOfAgrum(self):
     """The graphs written by the toDot() of aGrUM are complete: prepareDot adds nothing which would change them."""
     import pydot as dot
-    import pyagrum.lib._colors as gumcols
+    import pyagrum.lib.dotstyle as gds
 
     dag = gum.DAG()
     dag.addNodes(2)
@@ -263,8 +264,8 @@ class TestDotOptions(pyAgrumTestCase):
     options.setRankDir("LR")
     options.setNodeBgColor(0, "burlywood")
     options.setNodeFgColor(1, "red")
-    graph = gumcols.dotFromAgrum(dag.toDot(options))
-    gumcols.prepareDot(graph)
+    graph = gds.dotFromAgrum(dag.toDot(options))
+    gds.prepareDot(graph)
 
     nodes = {n.get_name(): n for n in graph.get_nodes()}
     # the font color of a node is the one given (no color added to the nodes which have nothing to say)
@@ -278,12 +279,12 @@ class TestDotOptions(pyAgrumTestCase):
 
   def testPrepareDotStillCompletesTheOtherGraphs(self):
     import pydot as dot
-    import pyagrum.lib._colors as gumcols
+    import pyagrum.lib.dotstyle as gds
 
     graph = dot.graph_from_dot_data(
       'digraph { "A" [fillcolor="#202020", style=filled]; "B" [fillcolor="yellow", style=filled]; "A"->"B"; }'
     )[0]
-    gumcols.prepareDot(graph)
+    gds.prepareDot(graph)
     nodes = {n.get_name().strip('"'): n for n in graph.get_nodes()}
     self.assertEqual(nodes["A"].get_fontcolor(), "white")
     self.assertEqual(nodes["B"].get_fontcolor(), "black")
@@ -293,14 +294,14 @@ class TestDotOptions(pyAgrumTestCase):
   def testProbaToColorGivesValidColors(self):
     """A component of a colormap equal to 1.0 must give 'ff', not '100' (the yellow of Pastel1 for instance)."""
     import matplotlib
-    import pyagrum.lib._colors as gumcols
+    import pyagrum.lib.dotstyle as gds
 
     for name in ["Pastel1", "BuGn", "Greys", "bwr"]:
       cmap = matplotlib.colormaps[name]
       for i in range(101):
         p = i / 100
-        self.assertEqual("".join(gumcols.proba2hex(p, cmap, False)), matplotlib.colors.to_hex(cmap(p))[1:])
-    self.assertEqual(gumcols.proba2color(0.6, matplotlib.colormaps["Pastel1"]), "#ffffcc")
+        self.assertEqual("".join(gds.proba2hex(p, cmap, False)), matplotlib.colors.to_hex(cmap(p))[1:])
+    self.assertEqual(gds.proba2color(0.6, matplotlib.colormaps["Pastel1"]), "#ffffcc")
 
   def testPythonBuiltGraphsAreComplete(self):
     """The graphs built in Python by pyAgrum are already completed: prepareDot changes nothing on them."""
@@ -310,10 +311,10 @@ class TestDotOptions(pyAgrumTestCase):
       import pyagrum.clg as gclg
       import pyagrum.clg.notebook as clgnb
       import pyagrum.explain as gexpl
-      import pyagrum.lib._colors as gumcols
       import pyagrum.lib.bn2graph as gbn2
       import pyagrum.lib.bn_vs_bn as gcm
       import pyagrum.lib.cn2graph as gcn2
+      import pyagrum.lib.dotstyle as gds
       import pyagrum.lib.dynamicBN as gdyn
       import pyagrum.lib.id2graph as gid2
       import pyagrum.lib.mrf2graph as gmrf2
@@ -351,9 +352,22 @@ class TestDotOptions(pyAgrumTestCase):
     for name, graph in graphs.items():
       with self.subTest(builder=name):
         before = graph.to_string()
-        gumcols.prepareDot(graph)
+        gds.prepareDot(graph)
         self.assertEqual(graph.to_string(), before)
         self.assertEqual(graph.get_bgcolor(), "transparent")
+
+  def testDeprecatedColorsModule(self):
+    """pyagrum.lib._colors is a deprecated relay to pyagrum.lib.dotstyle."""
+    try:
+      import pyagrum.lib.dotstyle as gds
+    except ImportError:
+      self.skipTest("matplotlib is needed for pyagrum.lib.dotstyle")
+
+    sys.modules.pop("pyagrum.lib._colors", None)
+    with self.assertWarns(DeprecationWarning):
+      import pyagrum.lib._colors as gcols
+    self.assertIs(gcols.prepareDot, gds.prepareDot)
+    self.assertIs(gcols.getBlackInTheme, gds.getBlackInTheme)
 
   @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   def testAGraphOfTheUserIsShownAsItIs(self):

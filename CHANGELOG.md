@@ -35,6 +35,10 @@
       visible change. New C++ `gum::dot::resolveFgColor`, `parseColor` and the table of the 146 HTML colors
       (`agrum/base/core/dot/dotColor.h`).
 
+    - **`pyagrum.lib._colors` renamed `pyagrum.lib.dotstyle`**: the module deals with the look of the graphs drawn with
+      graphviz (colors, theme, completion of the dot graphs built in Python by pyAgrum), not only with colors.
+      `pyagrum.lib._colors` is kept as a deprecated relay (`DeprecationWarning`).
+
     - **New `pyagrum.DotOptions` and `toDot(options)`**: the `toDot()` of the graphs (`DiGraph`, `UndiGraph`, `MixedGraph`, `DAG`,
       `PDAG`, `PAG`, `CliqueGraph`), `EssentialGraph`, `MarkovBlanket`, `BayesNet`, `BayesNetFragment`, `MarkovRandomField`
       (`toDot` and `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel` and `CredalNet` (new `toDot`) accept a

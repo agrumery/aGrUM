@@ -47,7 +47,7 @@ import matplotlib.pyplot as plt
 import pyagrum
 import pydot as dot
 
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.image as gimg
 
 import pyagrum.clg.CLG as CLG
@@ -104,11 +104,11 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   for n in clg.names():
     if nodeColor is None or n not in nodeColor:
       bgcol = pyagrum.config["notebook", "nodeBgColor"]
-      fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+      fgcol = gds.configFgColor("notebook", "nodeFgColor")
       res = ""
     else:
-      bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[n], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[n], cmapNode)
       res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
     node = dot.Node(
       '"' + n + '"',
@@ -137,12 +137,12 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
         av = 1
 
     if arcColor is None:
-      col = gumcols.getBlackInTheme()
+      col = gds.getBlackInTheme()
     else:
       if a in arcColor:
-        col = gumcols.proba2color(arcColor[a], cmapArc)
+        col = gds.proba2color(arcColor[a], cmapArc)
       else:
-        col = gumcols.getBlackInTheme()
+        col = gds.getBlackInTheme()
 
     if arcLabel is None:
       lb = ""
@@ -170,7 +170,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   # pylint: disable=no-member
   dotobj.set_size(size)
 
-  return gumcols.prepareDot(dotobj)
+  return gds.prepareDot(dotobj)
 
 
 # noinspection PyProtectedMember
@@ -236,11 +236,11 @@ def CLGInference2dot(
     else:
       if nodeColor is None or n not in nodeColor:
         bgcol = pyagrum.config["notebook", "histogram_color"]
-        fgcol = pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcol, gumcols.getBlackInTheme())
+        fgcol = pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcol, gds.getBlackInTheme())
         res = ""
       else:
-        bgcol = gumcols.proba2bgcolor(nodeColor[n], cmapNode)
-        fgcol = gumcols.proba2fgcolor(nodeColor[n], cmapNode)
+        bgcol = gds.proba2bgcolor(nodeColor[n], cmapNode)
+        fgcol = gds.proba2fgcolor(nodeColor[n], cmapNode)
         res = f" : {nodeColor[n] if showMsg is None else showMsg[n]:2.5f}"
     v = ie.posterior(n)
     node = dot.Node(
@@ -269,12 +269,12 @@ def CLGInference2dot(
         pw = 1
         av = 1
     if arcColor is None:
-      col = gumcols.getBlackInTheme()
+      col = gds.getBlackInTheme()
     else:
       if a in arcColor:
-        col = gumcols.proba2color(arcColor[a], cmapArc)
+        col = gds.proba2color(arcColor[a], cmapArc)
       else:
-        col = gumcols.getBlackInTheme()
+        col = gds.getBlackInTheme()
 
     edge = dot.Edge(
       '"' + clg.variable(a[0]).name() + '"',
@@ -292,7 +292,7 @@ def CLGInference2dot(
   # pylint: disable=no-member
   dotobj.set_size(size)
 
-  return gumcols.prepareDot(dotobj)
+  return gds.prepareDot(dotobj)
 
 
 def getInference(

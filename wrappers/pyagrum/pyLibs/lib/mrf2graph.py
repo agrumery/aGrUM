@@ -51,7 +51,7 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 
 from .proba_histogram import saveFigProba
 
@@ -105,10 +105,10 @@ def MRF2UGdot(
   # the look comes from the configuration (written by the toDot of the MRF), the values by the options
   options = pyagrum.DotOptions()
   options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
-  gumcols.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
-  gumcols.setLinksOptions(options, mrf.edges(), edgeWidth, edgeLabel, edgeColor, cmapEdge, "&mdash;")
+  gds.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
+  gds.setLinksOptions(options, mrf.edges(), edgeWidth, edgeLabel, edgeColor, cmapEdge, "&mdash;")
 
-  return gumcols.dotFromAgrum(mrf.toDot(options))
+  return gds.dotFromAgrum(mrf.toDot(options))
 
 
 def MRF2FactorGraphdot(
@@ -148,12 +148,12 @@ def MRF2FactorGraphdot(
   # the look comes from the configuration (written by the toDot of the MRF), the values by the options
   options = pyagrum.DotOptions()
   options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
-  gumcols.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
+  gds.setNodesOptions(options, mrf, nodeColor, cmapNode, showMsg)
   if factorColor is not None:
     for f in mrf.factors():
-      options.setFactorBgColor(f, gumcols.proba2bgcolor(factorColor(f), cmapNode))
+      options.setFactorBgColor(f, gds.proba2bgcolor(factorColor(f), cmapNode))
 
-  return gumcols.dotFromAgrum(mrf.toDotAsFactorGraph(options))
+  return gds.dotFromAgrum(mrf.toDotAsFactorGraph(options))
 
 
 def MRFinference2UGdot(
@@ -233,27 +233,27 @@ def MRFinference2UGdot(
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = 'graph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'graph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
 
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -273,7 +273,7 @@ def MRFinference2UGdot(
     (n, j) = a
     pw = 1.0
     av = f"{n}&nbsp;&mdash;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
 
     if arcWidth is not None and (n, j) in arcWidth:
       if maxarcs != minarcs:
@@ -281,7 +281,7 @@ def MRFinference2UGdot(
       av = f"{n}&nbsp;&mdash;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
+      col = gds.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
   dotstr += "}"
@@ -295,7 +295,7 @@ def MRFinference2UGdot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)
 
 
 def MRFinference2FactorGraphdot(
@@ -354,7 +354,7 @@ def MRFinference2FactorGraphdot(
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
   dotstr = f'''graph{{ 
     layout="{pyagrum.config["factorgraph", "graphLayout"]}";
-    fontcolor="{gumcols.getBlackInTheme()}";
+    fontcolor="{gds.getBlackInTheme()}";
     bgcolor="transparent";
   '''
 
@@ -365,24 +365,24 @@ def MRFinference2FactorGraphdot(
     '  node [fillcolor="'
     + pyagrum.config["notebook", "nodeBgColor"]
     + '", style=filled,color="'
-    + gumcols.configFgColor("notebook", "nodeFgColor")
+    + gds.configFgColor("notebook", "nodeFgColor")
     + '"];'
     + "\n"
   )
-  dotstr += '  edge [color="' + gumcols.getBlackInTheme() + '"];' + "\n"
+  dotstr += '  edge [color="' + gds.getBlackInTheme() + '"];' + "\n"
 
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -404,11 +404,11 @@ def MRFinference2FactorGraphdot(
     if factorColor is None:
       bgcol = pyagrum.config["factorgraph", "factorBgColor"]
     else:
-      bgcol = gumcols.proba2bgcolor(factorColor(f), cmapNode)
+      bgcol = gds.proba2bgcolor(factorColor(f), cmapNode)
     dotstr += f"  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n"
 
   for f in mrf.factors():
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
     for n in f:
       dotstr += f' {factorname(f)}->"{mrf.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",fillcolor="{bgcol}",len="{pyagrum.config["factorgraph", "edge_length_inference"]}"];\n'
   dotstr += "}"
@@ -422,4 +422,4 @@ def MRFinference2FactorGraphdot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)

@@ -39,7 +39,7 @@
 ############################################################################
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.notebook as gnb
 from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.explain import Explanation
@@ -124,7 +124,7 @@ def showShapValues(
 
   if show_legend:
     default_bg = pyagrum.config["notebook", "nodeBgColor"]
-    default_fg = gumcols.configFgColor("notebook", "nodeFgColor")
+    default_fg = gds.configFgColor("notebook", "nodeFgColor")
 
     fig = plt.figure(figsize=(5, 1.0))
     fig.patch.set_alpha(0)

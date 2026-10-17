@@ -50,7 +50,7 @@ import hashlib
 
 import pyagrum
 from pyagrum.lib import proba_histogram
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.notebook as gnb
 import pydot as dot
 
@@ -184,14 +184,14 @@ def CTBNinference2dot(
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
 
   showdag = ctbn._graph
 
@@ -200,13 +200,13 @@ def CTBNinference2dot(
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     # if name in evs or nid in evs:
@@ -224,7 +224,7 @@ def CTBNinference2dot(
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -232,7 +232,7 @@ def CTBNinference2dot(
       av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
+      col = gds.proba2color(arcColor[a], cmapArc)
 
     dotstr += (
       f' "{ctbn.variable(n).name()}"->"{ctbn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
@@ -247,7 +247,7 @@ def CTBNinference2dot(
   g.set_size(size)
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)
 
 
 def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):

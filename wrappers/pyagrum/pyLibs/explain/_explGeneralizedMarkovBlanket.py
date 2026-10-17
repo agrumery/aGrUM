@@ -38,7 +38,7 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 import matplotlib.pyplot as plt
 import pydot as dot
 
@@ -134,8 +134,8 @@ def generalizedMarkovBlanket(bn, var: int | str, k: int = 1, cmapNode=None):
       bgcol = "#99FF99"
       fgcol = "black"
     else:
-      bgcol = gumcols.proba2bgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
-      fgcol = gumcols.proba2fgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
+      bgcol = gds.proba2bgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
+      fgcol = gds.proba2fgcolor(1 - (k - visited[n]) / maxcols, cmapNode)
     pnode.set_fillcolor(bgcol)
     pnode.set_fontcolor(fgcol)
     mb.add_node(pnode)
@@ -149,4 +149,4 @@ def generalizedMarkovBlanket(bn, var: int | str, k: int = 1, cmapNode=None):
         edge.set_color("#DDDDDD")
       mb.add_edge(edge)
 
-  return gumcols.prepareDot(mb)
+  return gds.prepareDot(mb)

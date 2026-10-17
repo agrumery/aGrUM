@@ -55,7 +55,7 @@ import pydot as dot
 import pyagrum
 
 from pyagrum.lib import proba_histogram
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 from pyagrum.lib.utils import getBlackInTheme
 
 
@@ -108,10 +108,10 @@ def BN2dot(
   # the look comes from the configuration (written by the toDot of the BN), the values by the options
   options = pyagrum.DotOptions()
   options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
-  gumcols.setNodesOptions(options, bn, nodeColor, cmapNode, showMsg)
-  gumcols.setLinksOptions(options, bn.arcs(), arcWidth, arcLabel, arcColor, cmapArc, "&rarr;")
+  gds.setNodesOptions(options, bn, nodeColor, cmapNode, showMsg)
+  gds.setLinksOptions(options, bn.arcs(), arcWidth, arcLabel, arcColor, cmapArc, "&rarr;")
 
-  return gumcols.dotFromAgrum(bn.toDot(options))
+  return gds.dotFromAgrum(bn.toDot(options))
 
 
 def BNinference2dot(
@@ -193,8 +193,8 @@ def BNinference2dot(
   if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
   dotstr += f'  edge [color="{getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
@@ -204,13 +204,13 @@ def BNinference2dot(
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -237,7 +237,7 @@ def BNinference2dot(
       av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
+      col = gds.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
@@ -252,4 +252,4 @@ def BNinference2dot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)

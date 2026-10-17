@@ -51,7 +51,7 @@ from tempfile import mkdtemp
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 from pyagrum.lib.proba_histogram import saveFigProba
 
 
@@ -75,7 +75,7 @@ def ID2dot(diag: pyagrum.InfluenceDiagram, size: str | None = None) -> dot.Dot:
   options = pyagrum.DotOptions()
   if size is not None:
     options.setSize(str(size))
-  return gumcols.dotFromAgrum(diag.toDot(options))
+  return gds.dotFromAgrum(diag.toDot(options))
 
 
 def LIMIDinference2dot(
@@ -118,9 +118,9 @@ def LIMIDinference2dot(
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
+  fontname, fontsize = gds.fontFromMatplotlib()
   dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
   fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
@@ -143,15 +143,15 @@ def LIMIDinference2dot(
     # defaults
     if diag.isChanceNode(nid):
       bgcolor = pyagrum.config["influenceDiagram", "chanceBgColor"]
-      fgcolor = gumcols.configFgColor("influenceDiagram", "chanceFgColor")
+      fgcolor = gds.configFgColor("influenceDiagram", "chanceFgColor")
       shape = pyagrum.config["influenceDiagram", "chanceShape"]
     elif diag.isDecisionNode(nid):
       bgcolor = pyagrum.config["influenceDiagram", "decisionBgColor"]
-      fgcolor = gumcols.configFgColor("influenceDiagram", "decisionFgColor")
+      fgcolor = gds.configFgColor("influenceDiagram", "decisionFgColor")
       shape = pyagrum.config["influenceDiagram", "decisionShape"]
     else:  # diag.isUtilityNode(nid):
       bgcolor = pyagrum.config["influenceDiagram", "utilityBgColor"]
-      fgcolor = gumcols.configFgColor("influenceDiagram", "utilityFgColor")
+      fgcolor = gds.configFgColor("influenceDiagram", "utilityFgColor")
       shape = pyagrum.config["influenceDiagram", "utilityShape"]
 
     # 'hard' colour for evidence (?)
@@ -211,4 +211,4 @@ def LIMIDinference2dot(
   g.set_size(size)
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)

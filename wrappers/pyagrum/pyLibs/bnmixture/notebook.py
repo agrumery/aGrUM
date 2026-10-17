@@ -58,7 +58,7 @@ try:
   import matplotlib as mpl
   import numpy as np
   import pyagrum.lib.notebook as gnb
-  import pyagrum.lib._colors as gumcols
+  import pyagrum.lib.dotstyle as gds
   from matplotlib.colors import LinearSegmentedColormap
   from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
@@ -125,7 +125,7 @@ def _compareBN(dotref: dot.Dot, bncmp: dot.Dot) -> dot.Dot:
       )
     )
 
-  return gumcols.prepareDot(res)
+  return gds.prepareDot(res)
 
 
 def _compareBNinf(bnref: pyagrum.BayesNet, refdot: dot.Dot, cmpDot: dot.Dot, scale=1.0):
@@ -284,14 +284,14 @@ def BNMixtureInference2dot(
   _td = TemporaryDirectory()
   temp_dir = _td.name + os.sep
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
 
   showdag = bnm.refBN.dag() if dag is None else dag
 
@@ -300,13 +300,13 @@ def BNMixtureInference2dot(
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -326,7 +326,7 @@ def BNMixtureInference2dot(
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -334,7 +334,7 @@ def BNMixtureInference2dot(
       av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
+      col = gds.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{bnm.refBN.variable(n).name()}"->"{bnm.refBN.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
@@ -348,7 +348,7 @@ def BNMixtureInference2dot(
   g.temp_dir = temp_dir
   g._td = _td
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)
 
 
 def BootstrapInference2dot(
@@ -430,7 +430,7 @@ def BootstrapInference2dot(
   _td = TemporaryDirectory()
   temp_dir = _td.name + os.sep
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   lab = ""
   if pyagrum.config.typed["notebook", "show_inference_time"]:
@@ -443,9 +443,9 @@ def BootstrapInference2dot(
     lab += f"\n{title}"
   dotstr += f'  label="{lab}";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
 
   showdag = bnm.refBN.dag() if dag is None else dag
 
@@ -454,13 +454,13 @@ def BootstrapInference2dot(
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -487,7 +487,7 @@ def BootstrapInference2dot(
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -495,7 +495,7 @@ def BootstrapInference2dot(
       av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[a], cmapArc)
+      col = gds.proba2color(arcColor[a], cmapArc)
 
     dotstr += f' "{bnm.variable(n).name()}"->"{bnm.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
@@ -509,7 +509,7 @@ def BootstrapInference2dot(
   g.temp_dir = temp_dir
   g._td = _td
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)
 
 
 def showBNMixtureInference(
@@ -720,7 +720,7 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
         style = pyagrum.config["bnmixture", "incorrect_arc_style"]
 
       # print(f"({n1}, {n2}) {countArcs[n1][n2]}")
-      col = gumcols.proba2color(min(countArcs[n1][n2], 0.99), _cmap1)
+      col = gds.proba2color(min(countArcs[n1][n2], 0.99), _cmap1)
       res.add_edge(
         dot.Edge(
           f'"{n1}"',
@@ -734,7 +734,7 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
         )
       )
 
-  return gumcols.prepareDot(res), mi, ma
+  return gds.prepareDot(res), mi, ma
 
 
 def getComparison(bnm, size=None, refStruct=False):
@@ -788,8 +788,8 @@ def getArcsComparison(bnm, size=None, refStruct=False):
   norm = mpl.colors.Normalize()
   cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=_cmap1, norm=norm, orientation="horizontal")
   cb1.set_label("Confidence")
-  cb1.ax.text(0.1, -3, f"min {mi:.4f}", ha="left", va="top", color=gumcols.proba2bgcolor(max(mi, 0.01), _cmap1))
-  cb1.ax.text(0.9, -3, f"max {ma:.4f}", ha="right", va="top", color=gumcols.proba2bgcolor(min(ma, 0.99), _cmap1))
+  cb1.ax.text(0.1, -3, f"min {mi:.4f}", ha="left", va="top", color=gds.proba2bgcolor(max(mi, 0.01), _cmap1))
+  cb1.ax.text(0.9, -3, f"max {ma:.4f}", ha="right", va="top", color=gds.proba2bgcolor(min(ma, 0.99), _cmap1))
   cb1.ax.text(mi, 1, "|", ha="center", va="top", color="red")
   cb1.ax.text(ma, 1, "|", ha="center", va="top", color="red")
   png = IPython.core.pylabtools.print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
@@ -831,7 +831,7 @@ def arcsCompLegend():
     )
   )
 
-  return gumcols.prepareDot(res)
+  return gds.prepareDot(res)
 
 
 ####################### tool box for quantiles #######################

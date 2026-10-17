@@ -53,7 +53,7 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 from pyagrum.lib.proba_histogram import saveFigProbaMinMax
 
 
@@ -107,10 +107,10 @@ def CN2dot(
   # the look comes from the configuration (written by the toDot of the credal network), the values by the options
   options = pyagrum.DotOptions()
   options.setSize(str(pyagrum.config["notebook", "graphSize"] if size is None else size))
-  gumcols.setNodesOptions(options, bn, nodeColor, cmapNode, showMsg)
-  gumcols.setLinksOptions(options, bn.arcs(), arcWidth, arcLabel, arcColor, cmapArc, "&rarr;")
+  gds.setNodesOptions(options, bn, nodeColor, cmapNode, showMsg)
+  gds.setLinksOptions(options, bn.arcs(), arcWidth, arcLabel, arcColor, cmapArc, "&rarr;")
 
-  return gumcols.dotFromAgrum(cn.toDot(options))
+  return gds.dotFromAgrum(cn.toDot(options))
 
 
 def CNinference2dot(
@@ -189,14 +189,14 @@ def CNinference2dot(
 
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gumcols.getBlackInTheme() + '";bgcolor="transparent";'
+  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   if pyagrum.config.typed["notebook", "show_inference_time"]:
     dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
 
-  fontname, fontsize = gumcols.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gumcols.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gumcols.getBlackInTheme()}"];\n'
+  fontname, fontsize = gds.fontFromMatplotlib()
+  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
 
   showdag = bn.dag() if dag is None else dag
   for nid in showdag.nodes():
@@ -204,13 +204,13 @@ def CNinference2dot(
 
     # defaults
     bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gumcols.configFgColor("notebook", "nodeFgColor")
+    fgcol = gds.configFgColor("notebook", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figure_facecolor"]
 
     if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gumcols.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gumcols.proba2fgcolor(nodeColor[name], cmapNode)
+      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
+      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
 
     # 'hard' colour for evidence (?)
     # if nid in ie.hardEvidenceNodes()|ie.softEvidenceNodes():
@@ -229,7 +229,7 @@ def CNinference2dot(
     (n, j) = a
     pw = 1
     av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = gumcols.getBlackInTheme()
+    col = gds.getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
       if maxarcs != minarcs:
@@ -237,7 +237,7 @@ def CNinference2dot(
       av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
 
     if arcColor is not None and a in arcColor:
-      col = gumcols.proba2color(arcColor[n, j], cmapArc)
+      col = gds.proba2color(arcColor[n, j], cmapArc)
 
     dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
 
@@ -252,4 +252,4 @@ def CNinference2dot(
   g.set_size(str(size))
   g.temp_dir = temp_dir
 
-  return gumcols.prepareDot(g)
+  return gds.prepareDot(g)

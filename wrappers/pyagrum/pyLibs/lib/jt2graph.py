@@ -46,7 +46,7 @@ Used internally by notebook.py.
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 
 
 def _junctionTreeOptions(
@@ -71,7 +71,7 @@ def _junctionTreeDot(jt: pyagrum.CliqueGraph, size: float | str | None = None) -
   """The pydot graph of a junction tree built for a model (the attribute `_engine` of the junction tree)."""
   model = jt._engine._model
   withNames = pyagrum.config.typed["notebook", "junctionTreeWithNames"]
-  return gumcols.dotFromAgrum(jt.toDot(_junctionTreeOptions(jt, model, withNames, size)))
+  return gds.dotFromAgrum(jt.toDot(_junctionTreeOptions(jt, model, withNames, size)))
 
 
 def _mapDotString(
@@ -105,7 +105,7 @@ def _junctionTreeMapDot(
   """Build junction tree map as a pydot.Dot using config defaults for None parameters."""
   jtg = pyagrum.JunctionTreeGenerator()
   jt = jtg.junctionTree(bn)
-  return gumcols.dotFromAgrum(_mapDotString(jt, scaleClique, scaleSep, lenEdge, colorClique, colorSep))
+  return gds.dotFromAgrum(_mapDotString(jt, scaleClique, scaleSep, lenEdge, colorClique, colorSep))
 
 
 def _junctionTreeDotStr(bn: pyagrum.BayesNet, withNames: bool) -> str:

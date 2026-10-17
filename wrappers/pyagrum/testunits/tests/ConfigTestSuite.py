@@ -533,7 +533,7 @@ class TestConfig(pyAgrumTestCase):
       gum.config.pop()
 
   def testAdaptiveFontColor(self):
-    import pyagrum.lib._colors as gumcols
+    import pyagrum.lib.dotstyle as gds
 
     gum.config.push()
     try:
@@ -541,22 +541,22 @@ class TestConfig(pyAgrumTestCase):
       gum.config["notebook", "arcColor"] = "#AAAAAA"
 
       gum.config["notebook", "nodeBgColor"] = "#404040"
-      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "white")
+      self.assertEqual(gds.configFgColor("notebook", "nodeFgColor"), "white")
       gum.config["notebook", "nodeBgColor"] = "burlywood"
-      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "black")
+      self.assertEqual(gds.configFgColor("notebook", "nodeFgColor"), "black")
       # a background which is not a color: the color of the arcs (so the theme)
       gum.config["notebook", "nodeBgColor"] = "transparent"
-      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "#AAAAAA")
+      self.assertEqual(gds.configFgColor("notebook", "nodeFgColor"), "#AAAAAA")
       # a color of the configuration is never changed
       gum.config["notebook", "nodeFgColor"] = "red"
-      self.assertEqual(gumcols.configFgColor("notebook", "nodeFgColor"), "red")
+      self.assertEqual(gds.configFgColor("notebook", "nodeFgColor"), "red")
 
       # the background is the twin key of the font color
       gum.config["influenceDiagram", "chanceFgColor"] = "adaptive"
       gum.config["influenceDiagram", "chanceBgColor"] = "#000000"
-      self.assertEqual(gumcols.configFgColor("influenceDiagram", "chanceFgColor"), "white")
+      self.assertEqual(gds.configFgColor("influenceDiagram", "chanceFgColor"), "white")
       gum.config["influenceDiagram", "chanceBgColor"] = "#FFFFFF"
-      self.assertEqual(gumcols.configFgColor("influenceDiagram", "chanceFgColor"), "black")
+      self.assertEqual(gds.configFgColor("influenceDiagram", "chanceFgColor"), "black")
     finally:
       gum.config.pop()
 

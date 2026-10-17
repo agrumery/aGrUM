@@ -48,7 +48,7 @@ import math
 import pydot as dot
 
 import pyagrum
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.utils as gutils
 
 
@@ -373,7 +373,7 @@ def _structureLayout(model) -> dict[str, gutils.DotPoint]:
     options.setNodeLabel(i, model.variable(i).name())  # the size of a node is the one of its name
   for tail, head in model.arcs():
     dag.addArc(tail, head)
-  layout = gutils.dot_layout(gumcols.dotFromAgrum(dag.toDot(options)))  # the nodes of a DiGraph are its ids
+  layout = gutils.dot_layout(gds.dotFromAgrum(dag.toDot(options)))  # the nodes of a DiGraph are its ids
   return {model.variable(i).name(): layout[str(i)] for i in model.nodes()}
 
 
@@ -496,7 +496,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
 
     gutils.apply_dot_layout(res, positions)
 
-  return gumcols.prepareDot(res)
+  return gds.prepareDot(res)
 
 
 def graphDiffLegend() -> dot.Dot | None:
@@ -547,4 +547,4 @@ def graphDiffLegend() -> dot.Dot | None:
     )
   )
 
-  return gumcols.prepareDot(res)
+  return gds.prepareDot(res)

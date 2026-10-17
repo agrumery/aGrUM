@@ -81,7 +81,7 @@ from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
 from pyagrum.lib.utils import showApproximationScheme, animApproximationScheme
 
-import pyagrum.lib._colors as gumcols
+import pyagrum.lib.dotstyle as gds
 
 
 class FlowLayout:
@@ -1190,8 +1190,8 @@ def _reprTensor(
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gumcols.color2rgb(pyagrum.config["notebook", "tensor_color_0"])
-  r1, g1, b1 = gumcols.color2rgb(pyagrum.config["notebook", "tensor_color_1"])
+  r0, g0, b0 = gds.color2rgb(pyagrum.config["notebook", "tensor_color_0"])
+  r1, g1, b1 = gds.color2rgb(pyagrum.config["notebook", "tensor_color_1"])
 
   if digits is None:
     digits = pyagrum.config.typed["notebook", "tensor_visible_digits"]
@@ -1215,7 +1215,7 @@ def _reprTensor(
       g = int(g0 + val * (g1 - g0))
       b = int(b0 + val * (b1 - b0))
 
-      tx = gumcols.rgb2brightness(r, g, b)
+      tx = gds.rgb2brightness(r, g, b)
 
       s += "color:" + tx + ";background-color:" + _rgb(r, g, b) + ";"
 
