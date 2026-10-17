@@ -89,13 +89,11 @@ class TestMixtureLearning(pyAgrumTestCase):
     bn_ref = gum.fastBN("A->C<-B")
     df = self._gen_df(bn_ref, n=100)
     lrn = BNM.BNMLearner([1.0], [df])
-    for score in ("K2", "AIC", "BIC", "BDeu", "Log2Likelihood"):
+    # with a prior: in 100 random samples, a configuration of the parents may never appear (DatabaseError without prior)
+    for score in ("K2", "AIC", "BIC", "BD", "BDeu", "Log2Likelihood"):
       learner = gum.BNLearner(df)
-      lrn.updateState(learner, score=score)
+      lrn.updateState(learner, score=score, prior="Smoothing")
       self.assertIsInstance(learner.learnBN(), gum.BayesNet, msg=f"score={score}")
-    learner = gum.BNLearner(df)
-    lrn.updateState(learner, score="BD", prior="Smoothing")
-    self.assertIsInstance(learner.learnBN(), gum.BayesNet, msg="score=BD")
 
   def testBNMLearner_updateState_allCorrectionTypes(self):
     bn_ref = gum.fastBN("A->C<-B")
