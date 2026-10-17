@@ -367,19 +367,18 @@ def showInference(
   showMsg: dict
     A nodeMap of values to be shown as tooltip.
   """
-  gnb.showDot(
-    CLGInference2dot(
-      clg,
-      evs=evs,
-      size=size,
-      nodeColor=nodeColor,
-      arcWidth=arcWidth,
-      arcColor=arcColor,
-      cmapNode=cmapNode,
-      cmapArc=cmapArc,
-      showMsg=showMsg,
-    )
+  g = CLGInference2dot(
+    clg,
+    evs=evs,
+    size=size,
+    nodeColor=nodeColor,
+    arcWidth=arcWidth,
+    arcColor=arcColor,
+    cmapNode=cmapNode,
+    cmapArc=cmapArc,
+    showMsg=showMsg,
   )
+  gnb.showGraph(g, size=g.get_size())
 
 
 def exportCLG(

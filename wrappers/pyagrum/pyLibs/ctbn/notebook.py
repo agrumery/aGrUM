@@ -254,11 +254,16 @@ def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
   if size is None:
     size = pyagrum.config["ctbn", "graph_size"]
 
-  return gnb.getGraph(CTBNinference2dot(ctbn, engine, targets=targets, size=size))
+  g = CTBNinference2dot(ctbn, engine, targets=targets, size=size)
+  return gnb.getGraph(g, size=g.get_size())
 
 
 def showCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
-  gnb._showGraph(getCtbnInference(ctbn, engine, targets=targets, size=size))
+  if size is None:
+    size = pyagrum.config["ctbn", "graph_size"]
+
+  g = CTBNinference2dot(ctbn, engine, targets=targets, size=size)
+  gnb.showGraph(g, size=g.get_size())
 
 
 CTBN._repr_html_ = lambda ctbn: getCtbnGraph(ctbn)

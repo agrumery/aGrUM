@@ -118,7 +118,7 @@ def generalizedMarkovBlanket(bn, var: int | str, k: int = 1, cmapNode=None):
     8, k
   )  # It is assumed that k<=8. If not, every thing is fine except that the colorscale will change in order to accept more colors.
 
-  mb = dot.Dot(f"MB({var},{k}", graph_type="digraph", bgcolor="transparent")
+  mb = dot.Dot(f"MB({var},{k})", graph_type="digraph", bgcolor="transparent")
 
   if isinstance(var, str):
     nx = bn.idFromName(var)

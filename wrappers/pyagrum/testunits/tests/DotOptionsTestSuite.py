@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import contextlib
+import io
 import shutil
 import sys
 import unittest
@@ -340,7 +342,6 @@ class TestDotOptions(pyAgrumTestCase):
       "MRFinference2FactorGraphdot": gmrf2.MRFinference2FactorGraphdot(mrf),
       "LIMIDinference2dot": gid2.LIMIDinference2dot(diag, "6", gum.ShaferShenoyLIMIDInference(diag), {}, set()),
       "_TimeSlicesToDot": gdyn._TimeSlicesToDot(gum.fastBN("a0->a1->at")),
-      "graphDiff": gcm.graphDiff(bn, gum.fastBN("A->B<-C<-D")),
       "graphDiffLegend": gcm.graphDiffLegend(),
       "CLG2dot": clgnb.CLG2dot(clg),
       "CLGInference2dot": clgnb.CLGInference2dot(clg),
@@ -349,12 +350,33 @@ class TestDotOptions(pyAgrumTestCase):
       "arcsCompLegend": bnmnb.arcsCompLegend(),
       "generalizedMarkovBlanket": gexpl.generalizedMarkovBlanket(bn, "B"),
     }
+    if shutil.which("dot"):  # graphDiff positions the nodes with graphviz
+      graphs["graphDiff"] = gcm.graphDiff(bn, gum.fastBN("A->B<-C<-D"))
     for name, graph in graphs.items():
       with self.subTest(builder=name):
         before = graph.to_string()
         gds.prepareDot(graph)
         self.assertEqual(graph.to_string(), before)
         self.assertEqual(graph.get_bgcolor(), "transparent")
+    self.assertEqual(graphs["generalizedMarkovBlanket"].get_name(), "MB(B,1)")
+
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
+  def testShowInferenceOfCTBNAndCLG(self):
+    """The show functions of the inferences of CTBN and CLG display the graph built in Python."""
+    try:
+      import pyagrum.clg as gclg
+      import pyagrum.clg.notebook as clgnb
+      import pyagrum.ctbn.notebook as ctbnnb
+      from pyagrum import ctbn
+    except ImportError:
+      self.skipTest("ipython and matplotlib are needed for the notebooks of CTBN and CLG")
+
+    model = ctbn.randomCTBN((0.5, 1.2), n=2)
+    clg = gclg.CLG()
+    clg.add(gclg.GaussianVariable("X", 0, 1))
+    with contextlib.redirect_stdout(io.StringIO()):  # without a notebook, IPython prints the displayed objects
+      ctbnnb.showCtbnInference(model, ctbn.SimpleInference(model))
+      clgnb.showInference(clg)
 
   def testDeprecatedColorsModule(self):
     """pyagrum.lib._colors is a deprecated relay to pyagrum.lib.dotstyle."""
