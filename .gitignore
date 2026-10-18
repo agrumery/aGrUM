@@ -110,6 +110,9 @@ wrappers/pyagrum/generated-files/pyagrumPYTHON_wrap.backup.cxx
 **/Untitled*.ipynb
 wrappers/pyagrum/doc/sphinx/notebooks/out/*
 apps/cppnotebooks/out/*
+# act guideline --build_graph/--build_summary (--svg)
+/agrum-map.*
+/agrum-summary.*
 
 # VS Code working folder
 .vscode/

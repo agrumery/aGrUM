@@ -42,10 +42,10 @@
 Specification of options and default values for the configuration of act
 """
 
-import sys
 import os
 import re
 import shutil
+import sys
 from argparse import ArgumentParser
 from subprocess import PIPE, Popen
 from typing import Any
@@ -209,7 +209,7 @@ cfg.gum_version = f"{cfg.gum_version_major}.{cfg.gum_version_minor}.{cfg.gum_ver
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.pymodulesFile = "wrappers/pyagrum/pymodules.txt"  # the file to parse to find the pyAgrum leaf modules
 cfg.pymodulesPath = "wrappers/pyagrum/pyLibs"  # the path to the python modules
-cfg.configFile = ".options.act3.pickle"  #
+cfg.configFile = ".options.act3.pickle"
 cfg.fixedSeedValue = "10"
 
 cfg.nbr_tests_for_stats = 100
@@ -258,6 +258,8 @@ def init_params() -> None:
     "guideline_check": None,
     "source": None,
     "build_graph": False,
+    "build_summary": False,
+    "svg": False,
     "profiling": False,
     "stable_abi_off": False,
     "no_gil": False,  # used to disable the GIL in the python wrapper
@@ -270,8 +272,23 @@ def init_params() -> None:
   else:
     cfg.default["compiler"] = "gcc"
 
-  cfg.actions = set("lib test install doc clean purge show package guideline pipinstall wheel nightly_wheel".split())
-  cfg.modes = set("debug release".split())
+  cfg.actions = set(
+    [
+      "lib",
+      "test",
+      "install",
+      "doc",
+      "clean",
+      "purge",
+      "show",
+      "package",
+      "guideline",
+      "pipinstall",
+      "wheel",
+      "nightly_wheel",
+    ]
+  )
+  cfg.modes = set(["debug", "release"])
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()
   cfg.pyagrum_leaf_modules = parse_pymodules_txt()
@@ -291,6 +308,8 @@ def init_params() -> None:
     "guideline_check",
     "source",
     "build_graph",
+    "build_summary",
+    "svg",
     "force_swig",
     "only",
   ]
@@ -545,9 +564,23 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
   )
   cfg.parser.add_argument(
     "--build_graph",
-    help="act guideline will build the dependency graph",
+    help="act guideline will only build the dependency graph of the headers (agrum-map.pdf), without any check",
     action="store_true",
     dest="build_graph",
+    default=False,
+  )
+  cfg.parser.add_argument(
+    "--build_summary",
+    help="act guideline will only build the dependency graph of the modules (agrum-summary.pdf), without any check",
+    action="store_true",
+    dest="build_summary",
+    default=False,
+  )
+  cfg.parser.add_argument(
+    "--svg",
+    help="with --build_graph or --build_summary, act guideline will also write the graphs in svg",
+    action="store_true",
+    dest="svg",
     default=False,
   )
   cfg.parser.add_argument(

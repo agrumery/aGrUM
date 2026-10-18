@@ -38,22 +38,22 @@
 #                                                                          #
 ############################################################################
 
+import inspect
 import os
 import re
 import sys
-from collections.abc import Iterable
 import types
-import inspect
+from collections.abc import Iterable
 from datetime import datetime
-from subprocess import call, run as subprocess_run, Popen, PIPE, STDOUT
-
-from .configuration import cfg
-from .utils import *
-
-from .check_dependencies import check_gum_dependencies
-from .ActBuilder import ActBuilder
+from subprocess import PIPE, STDOUT, Popen, call
+from subprocess import run as subprocess_run
 
 import pyagrum as gum
+
+from .ActBuilder import ActBuilder
+from .check_dependencies import build_gum_dependencies_graph, check_gum_dependencies
+from .configuration import cfg
+from .utils import *
 
 gumPath = os.path.join(os.path.dirname(sys.argv[0]), f"build/pyAgrum/{cfg.buildPath['Release']}/wrappers")
 
@@ -422,6 +422,15 @@ def guideline(
       error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")
     return nb
 
+  if current["build_graph"] or current["build_summary"]:
+    notif("[[aGrUM guideline: dependency graphs only (--build_graph/--build_summary), all checks are off]]")
+    build_gum_dependencies_graph(
+      headers_map=current["build_graph"],
+      summary=current["build_summary"],
+      svg=current["svg"],
+    )
+    return 0
+
   active = _parse_checks(checks) if checks is not None else _GUIDELINE_DEFAULT_CHECKS
   run_cpp = "cpp" in active
   run_python = "python" in active
@@ -477,7 +486,6 @@ def guideline(
     notif("  [[(4-deps) check for deps]]")
     nbrError += _aff_errors(
       check_gum_dependencies(
-        graph=current["build_graph"],
         details=details,
         correction=effective_correction,
       ),
@@ -776,26 +784,25 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
 
 
 def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
-  before = licence = code = ""
+  # before -> (beforeLicence) -> inComment -> after
+  # - before: lines that cannot be moved (shebang, encoding, docstring...), kept above the license
+  # - beforeLicence: from the first import above the license to the license, moved below it on correction
+  # - inComment: the license itself, closed by its second '####' line
+  before = moved = licence = code = ""
 
-  state = "before"  # before->inComment->after
+  state = "before"
   in_error = False
   with open(filename) as origin:
     while line := origin.readline():
-      if line.strip() == "":
-        if state == "before":
+      if state == "before":
+        if line.strip() == "":
           if before != "":
             before += line
-        elif state == "inComment":
-          licence += line
-        else:
-          code += line
-        continue
-
-      if state == "before":
-        if line.startswith("import"):
-          state = "after"
-          code += line
+        elif line.startswith(("import ", "from ")):
+          state = "beforeLicence"
+          moved += line
+          if details:
+            notif(f"[[{filename}]] imports before the license.")
         elif line[0] != "#" or line.startswith("#!"):
           if not in_error:
             in_error = True
@@ -805,24 +812,34 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
         else:
           licence += line
           state = "inComment"
+      elif state == "beforeLicence":
+        if line.startswith("####"):
+          licence += line
+          state = "inComment"
+        else:
+          moved += line
       elif state == "inComment":
-        if line[0] != "#":
+        if line.strip() != "" and line[0] != "#":
           state = "after"
           code += line
         else:
           licence += line
+          if line.startswith("####") and licence != line:
+            state = "after"  # end of the license: comments below belong to the code
       else:  # state == "after"
         code += line
 
   err = 0
-  if not (licence.startswith(_template_py_license) and licence[len(_template_py_license) :].strip("\n") == ""):
+  if not (moved == "" and licence + "\n" == _template_py_license and (code == "" or code.startswith("\n"))):
     err = 1
     res = f"[[{filename:.<80}]] missing up-to-date LGPL+MIT license (2)"
     if correction:
       with open(filename, "w") as dest:
         dest.write(before)
         dest.write(_template_py_license)
-        dest.write(code)
+        body = [part.strip("\n") for part in (moved, code) if part.strip() != ""]
+        if body:
+          dest.write("\n\n".join(body) + "\n")
       res = f"{res} [[(✓)]]"
     notif(res)
 
