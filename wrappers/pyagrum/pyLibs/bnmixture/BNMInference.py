@@ -1,5 +1,3 @@
-from numpy import quantile, array
-
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
@@ -40,8 +38,9 @@ from numpy import quantile, array
 #                                                                          #
 ############################################################################
 
-import pyagrum
+from numpy import array, quantile
 
+import pyagrum
 import pyagrum.bnmixture as BNM
 
 

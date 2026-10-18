@@ -77,10 +77,12 @@ def getFollowKTBN(
   import base64
   import io
   import math
-  import numpy as np
-  import pyagrum.ktbn as ktbn
+
   import matplotlib.pyplot as plt
+  import numpy as np
   from matplotlib.patches import Rectangle
+
+  from pyagrum import ktbn
 
   kie = ktbn.KTBNInference(m)
   if observations is not None:

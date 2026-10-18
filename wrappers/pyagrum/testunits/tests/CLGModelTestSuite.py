@@ -40,11 +40,11 @@
 
 import unittest
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum
 import pyagrum.clg as gclg
 from pyagrum.clg import CLG, GaussianVariable
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 SEM_SIMPLE = """
 A=4.5[0.3]

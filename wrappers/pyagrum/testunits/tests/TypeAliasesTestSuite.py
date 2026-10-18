@@ -45,7 +45,7 @@ import warnings
 
 import pyagrum as gum
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _members(alias) -> set:
@@ -121,7 +121,7 @@ class TestTypeAliases(pyAgrumTestCase):
     # namespace — catches missing type references at runtime (Python >= 3.10).
     with warnings.catch_warnings():
       warnings.simplefilter("ignore", UserWarning)
-      from pyagrum.lib import bn2graph, mrf2graph, cn2graph, image, notebook
+      from pyagrum.lib import bn2graph, cn2graph, image, mrf2graph, notebook
 
     for func, label in (
       (bn2graph.BNinference2dot, "bn2graph.BNinference2dot"),

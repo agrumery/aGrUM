@@ -39,13 +39,14 @@
 ############################################################################
 
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+import numpy as np
+import pandas as pd
 
 import pyagrum as gum
 from pyagrum.explain._ComputationCausal import CausalComputation
 
-import numpy as np
-import pandas as pd
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 # Load the data
 data = pd.read_csv("tests/resources/iris.csv")

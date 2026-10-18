@@ -43,9 +43,10 @@ Created on Thu Jun 11 14:08:14 2020
 
 """
 
-import numpy
 import math
 import warnings
+
+import numpy
 
 import pyagrum
 

@@ -38,13 +38,15 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum.lib.bn_vs_bn as bvb
 import unittest
 
 import numpy
+
 import pyagrum as gum
-import pyagrum.prm  # noqa -- needed for loadBN/saveBN on .o3prm files (see TestLoadBN/TestSaveBN below)
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+import pyagrum.lib.bn_vs_bn as bvb
+import pyagrum.prm
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class BayesNetTestCase(pyAgrumTestCase):

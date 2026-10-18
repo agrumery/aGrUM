@@ -44,17 +44,17 @@ The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a 
 
 from __future__ import annotations
 
-import pyagrum
 import random
 
-from .GaussianVariable import GaussianVariable
-from .canonicalForm import CanonicalForm
+import numpy as np
+import pandas as pd
+from scipy.stats import norm
 
+import pyagrum
 import pyagrum.lib.bn_vs_bn as gcm
 
-import numpy as np
-from scipy.stats import norm
-import pandas as pd
+from .canonicalForm import CanonicalForm
+from .GaussianVariable import GaussianVariable
 
 
 class CLG:
@@ -62,7 +62,7 @@ class CLG:
   _id2var: dict[int, GaussianVariable]
   _arc2coef: dict[tuple[int, int], float | int]
 
-  def __init__(self, clg: "CLG | None" = None) -> None:
+  def __init__(self, clg: CLG | None = None) -> None:
     self._graph = pyagrum.DAG()
     self._id2var = {}
     self._arc2coef = {}
@@ -231,7 +231,7 @@ class CLG:
     """
     return val if isinstance(val, int) else self._graph.idFromName(val)
 
-  def addArc(self, val1: int | str, val2: int | str, coef: float | int = 1) -> tuple[int, int]:
+  def addArc(self, val1: int | str, val2: int | str, coef: float = 1) -> tuple[int, int]:
     """
     Add an arc val->val2 with a coefficient coef to the CLG.
 
@@ -293,7 +293,7 @@ class CLG:
 
     return self._graph.existsArc(n1, n2)
 
-  def setCoef(self, val1: int | str, val2: int | str, coef: float | int) -> None:
+  def setCoef(self, val1: int | str, val2: int | str, coef: float) -> None:
     """
     Set the coefficient of an arc val1->val2.
 
@@ -617,7 +617,7 @@ class CLG:
 
     return log_likelihood
 
-  def structuralFScore(self, other: "CLG") -> float:
+  def structuralFScore(self, other: CLG) -> float:
     """
     Compare the structure of two CLGs using the F-score.
 

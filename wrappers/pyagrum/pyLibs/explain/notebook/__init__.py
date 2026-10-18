@@ -49,6 +49,6 @@ from ._showShapValues import showShapValues
 __all__ = [
   "bar",
   "beeswarm",
-  "waterfall",
   "showShapValues",
+  "waterfall",
 ]

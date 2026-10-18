@@ -41,9 +41,9 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum.bnmixture as BNM
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestMixtureModel(pyAgrumTestCase):
@@ -168,7 +168,8 @@ class TestMixtureModel(pyAgrumTestCase):
     self.assertEqual(bnm.variable("A"), bn0.variable("A"))
 
   def testBNMixture_saveLoad_jgum(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -188,7 +189,8 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertEqual(bnm2.BN("bn1"), bn1)
 
   def testBNMixture_saveLoad_bgum(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -205,17 +207,18 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertAlmostEqual(bnm2.weight("bn1"), 1.0)
 
   def testBNMixture_save_badFormat(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bnm = BNM.BNMixture()
     bnm.add("bn0", bn0, w=1.0)
-    with tempfile.TemporaryDirectory() as d:
-      with self.assertRaises(gum.InvalidArgument):
-        BNM.saveBNM(bnm, os.path.join(d, "mix.bnm"), fmt="bif")
+    with tempfile.TemporaryDirectory() as d, self.assertRaises(gum.InvalidArgument):
+      BNM.saveBNM(bnm, os.path.join(d, "mix.bnm"), fmt="bif")
 
   def testBootstrapMixture_saveLoad(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -232,7 +235,8 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertEqual(bnb2.BN("s1"), bn1)
 
   def testBootstrapMixture_saveLoad_bgum(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -249,7 +253,8 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertEqual(bnb2.BN("s1"), bn1)
 
   def testBootstrapMixture_saveLoad_refNameCorrect(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("X->Y")
     bn1 = gum.BayesNet(bn0)
@@ -265,7 +270,8 @@ class TestMixtureModel(pyAgrumTestCase):
         bnb2.add("myref", bn0, w=1.0)
 
   def testSaveBNM_loadBNM_BNMixture(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -285,7 +291,8 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertAlmostEqual(bnm2.weight("bn1"), 2.0)
 
   def testSaveBNM_loadBNM_BootstrapMixture(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -421,7 +428,8 @@ class TestMixtureModel(pyAgrumTestCase):
     self.assertTrue(any(b == bn1 for b in bns))
 
   def testBNMixture_saveLoad_multiDotFilename(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.fastBN("A->B->C")
@@ -435,7 +443,8 @@ class TestMixtureModel(pyAgrumTestCase):
       self.assertEqual(set(bnm2.names()), {"bn0", "bn1"})
 
   def testBug1_loadBNM_nameWithColon(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -465,7 +474,9 @@ class TestMixtureModel(pyAgrumTestCase):
     self.assertIn("diff", bnm.names())
 
   def testBug3_loadRetroCompatibleBNM_bootstrapWithoutRefFileRaises(self):
-    import tempfile, os, zipfile
+    import os
+    import tempfile
+    import zipfile
 
     bn0 = gum.fastBN("A->C<-B")
     bn1 = gum.BayesNet(bn0)
@@ -516,7 +527,10 @@ class TestMixtureModel(pyAgrumTestCase):
     self.assertTrue(bnm.isNormalized())
 
   def testSaveBNM_manifestPresent(self):
-    import tempfile, os, zipfile, json
+    import json
+    import os
+    import tempfile
+    import zipfile
 
     bn0 = gum.fastBN("A->C<-B")
     bnm = BNM.BNMixture()
@@ -540,7 +554,9 @@ class TestMixtureModel(pyAgrumTestCase):
         self.assertEqual(manifest["type"], "BootstrapMixture")
 
   def testLoadBNM_noManifestRaises(self):
-    import tempfile, os, zipfile
+    import os
+    import tempfile
+    import zipfile
 
     bn0 = gum.fastBN("A->C<-B")
     with tempfile.TemporaryDirectory() as d:
@@ -558,7 +574,9 @@ class TestMixtureModel(pyAgrumTestCase):
         BNM.loadBNM(old_zip)
 
   def testLoadRetroCompatibleBNM_oldArchive(self):
-    import tempfile, os, zipfile
+    import os
+    import tempfile
+    import zipfile
 
     bn0 = gum.fastBN("A->C<-B")
     with tempfile.TemporaryDirectory() as d:

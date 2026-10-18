@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import importlib.util
 import inspect
 import os
 import subprocess
@@ -46,8 +47,7 @@ import unittest
 
 import pyagrum as gum
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-import importlib.util
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 # Check if the required libraries are installed
 res = importlib.util.find_spec("sklearn")

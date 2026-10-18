@@ -40,13 +40,12 @@
 
 import csv
 from concurrent.futures import ProcessPoolExecutor
-from numpy.random import default_rng, choice
+
+from numpy.random import choice, default_rng
 from scipy.linalg import expm
 
 import pyagrum
-
-from pyagrum.ctbn import CIM
-from pyagrum.ctbn import CTBN
+from pyagrum.ctbn import CIM, CTBN
 
 """
 This file contains inference tools for CTBNs

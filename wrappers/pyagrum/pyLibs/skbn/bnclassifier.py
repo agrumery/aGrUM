@@ -39,34 +39,32 @@
 ############################################################################
 
 
-import pandas
-import numpy
+import copy
 import os
 import tempfile
 import warnings
-import copy
+
+import numpy
+import pandas
 import sklearn
 
 import pyagrum as gum
-from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
-from pyagrum.lib.discreteTypeProcessor import check_int
+from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor, check_int
 
-from ._utils import _ImplementPrior as IPrior
-from ._utils import _CalculateThreshold as CThreshold
-from ._utils import _DFNames as DFNames
-from ._utils import _createCSVfromNDArrays as CSV
-
-from ._MBCalcul import compileMarkovBlanket
-from ._MBCalcul import (
-  _calcul_proba_for_binary_class,
-  _calcul_most_probable_for_nary_class,
-  _calcul_proba_for_nary_class,
-)
-
-from ._learningMethods import _fitStandard as BN_fitStandard
-from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
-from ._learningMethods import _fitTAN as BN_fitTAN
 from ._learningMethods import _fitChowLiu as BN_fitChowLiu
+from ._learningMethods import _fitNaiveBayes as BN_fitNaiveBayes
+from ._learningMethods import _fitStandard as BN_fitStandard
+from ._learningMethods import _fitTAN as BN_fitTAN
+from ._MBCalcul import (
+  _calcul_most_probable_for_nary_class,
+  _calcul_proba_for_binary_class,
+  _calcul_proba_for_nary_class,
+  compileMarkovBlanket,
+)
+from ._utils import _CalculateThreshold as CThreshold
+from ._utils import _createCSVfromNDArrays as CSV
+from ._utils import _DFNames as DFNames
+from ._utils import _ImplementPrior as IPrior
 
 
 def createBNClassifier(
@@ -1096,7 +1094,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     bgcolor: str
         HTML background color for the figure (default: None if transparent)
     """
-    import pyagrum.lib.bn2roc as bn2roc
+    from pyagrum.lib import bn2roc
 
     bn2roc.showROC_PR(
       self.bn_,

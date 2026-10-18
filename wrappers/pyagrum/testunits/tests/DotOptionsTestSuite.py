@@ -45,7 +45,8 @@ import sys
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _credalNet(bn):
@@ -257,6 +258,7 @@ class TestDotOptions(pyAgrumTestCase):
   def testPrepareDotKeepsTheGraphsOfAgrum(self):
     """The graphs written by the toDot() of aGrUM are complete: prepareDot adds nothing which would change them."""
     import pydot as dot
+
     import pyagrum.lib.dotstyle as gds
 
     dag = gum.DAG()
@@ -281,6 +283,7 @@ class TestDotOptions(pyAgrumTestCase):
 
   def testPrepareDotStillCompletesTheOtherGraphs(self):
     import pydot as dot
+
     import pyagrum.lib.dotstyle as gds
 
     graph = dot.graph_from_dot_data(
@@ -296,6 +299,7 @@ class TestDotOptions(pyAgrumTestCase):
   def testProbaToColorGivesValidColors(self):
     """A component of a colormap equal to 1.0 must give 'ff', not '100' (the yellow of Pastel1 for instance)."""
     import matplotlib
+
     import pyagrum.lib.dotstyle as gds
 
     for name in ["Pastel1", "BuGn", "Greys", "bwr"]:
@@ -308,6 +312,8 @@ class TestDotOptions(pyAgrumTestCase):
   def testPythonBuiltGraphsAreComplete(self):
     """The graphs built in Python by pyAgrum are already completed: prepareDot changes nothing on them."""
     try:
+      import pydot as dot
+
       import pyagrum.bnmixture as BNM
       import pyagrum.bnmixture.notebook as bnmnb
       import pyagrum.clg as gclg
@@ -320,7 +326,6 @@ class TestDotOptions(pyAgrumTestCase):
       import pyagrum.lib.dynamicBN as gdyn
       import pyagrum.lib.id2graph as gid2
       import pyagrum.lib.mrf2graph as gmrf2
-      import pydot as dot
       from pyagrum import ctbn
     except ImportError:
       self.skipTest("ipython and matplotlib are needed for the graphs of pyAgrum")
@@ -395,8 +400,9 @@ class TestDotOptions(pyAgrumTestCase):
   def testAGraphOfTheUserIsShownAsItIs(self):
     """Showing a graph only applies its size: a graph given by the user is not completed."""
     try:
-      import pyagrum.lib.notebook as gnb
       import pydot as dot
+
+      import pyagrum.lib.notebook as gnb
     except ImportError:
       self.skipTest("ipython and matplotlib are needed for pyagrum.lib.notebook")
 

@@ -43,9 +43,9 @@ import unittest
 import numpy as np
 import sklearn.datasets
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from pyagrum import skbn
 
-import pyagrum.skbn as skbn
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _make_binary(n_samples=80, n_features=4):

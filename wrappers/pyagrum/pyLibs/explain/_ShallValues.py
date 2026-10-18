@@ -1,5 +1,3 @@
-from abc import abstractmethod
-
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
@@ -40,13 +38,15 @@ from abc import abstractmethod
 #                                                                          #
 ############################################################################
 
+import warnings
+from abc import abstractmethod
+
+import numpy as np
+import pandas as pd
+
 import pyagrum
 from pyagrum.explain._Explainer import Explainer
 from pyagrum.explain._Explanation import Explanation
-
-import pandas as pd
-import numpy as np
-import warnings
 
 
 class ShallValues(Explainer):

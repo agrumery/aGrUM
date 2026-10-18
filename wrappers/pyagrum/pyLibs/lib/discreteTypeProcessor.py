@@ -47,14 +47,13 @@ Some methods need specialized treatment of arguments for classification (y separ
 """
 
 import math
+from typing import Any
 
 import numpy
 import pandas
 import scipy
 import sklearn
 import sklearn.preprocessing as skp
-
-from typing import Any
 
 import pyagrum
 
@@ -133,7 +132,7 @@ class DiscreteTypeProcessor:
     self,
     defaultDiscretizationMethod: str = "quantile",
     defaultNumberOfBins: int | str = 10,
-    discretizationThreshold: int | float = 25,
+    discretizationThreshold: float = 25,
   ) -> None:
     """
     Initializes the DiscreteTypeProcessor object.
@@ -486,7 +485,7 @@ class DiscreteTypeProcessor:
 
     while any(continueDividingInterval):
       minimalValues["classInformationEntropy"] = math.inf
-      for param in {
+      for param in (
         "boundaryIndex",
         "leftSubintervalClass0",
         "leftSubintervalClass1",
@@ -494,7 +493,7 @@ class DiscreteTypeProcessor:
         "rightSubintervalClass0",
         "rightSubintervalClass1",
         "rightSubintervalShannonEntropy",
-      }:
+      ):
         (currentValues[param], minimalValues[param]) = (0, 0)
 
       position = 0

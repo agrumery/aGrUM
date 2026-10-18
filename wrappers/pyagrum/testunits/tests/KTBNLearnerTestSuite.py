@@ -44,7 +44,8 @@ import unittest
 
 import pyagrum
 import pyagrum.ktbn as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 AT = gum.KTBN.ATEMPORAL
 NO_ATEMPORAL = set()
@@ -53,8 +54,7 @@ NO_ATEMPORAL = set()
 def _writeCSV(path, header, rows):
   with open(path, "w") as f:
     f.write(header + "\n")
-    for r in rows:
-      f.write(r + "\n")
+    f.writelines(r + "\n" for r in rows)
 
 
 def _schema(names):

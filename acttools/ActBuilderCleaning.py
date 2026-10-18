@@ -38,15 +38,14 @@
 #                                                                          #
 ############################################################################
 
-import os
 import errno
+import glob
+import os
 import shutil
 import time
-import glob
-
-from .utils import *
 
 from .ActBuilder import ActBuilder, warn
+from .utils import *
 
 
 class ActBuilderCleaning(ActBuilder):

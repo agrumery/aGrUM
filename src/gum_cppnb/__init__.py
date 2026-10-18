@@ -116,7 +116,7 @@ def find_working_compiler(cxxflags: str, ldflags: str) -> str:
       tried.append((path, run.stderr.strip().splitlines()[-1] if run.stderr else f"exit {run.returncode}"))
 
     details = "\n".join(f"  {p}: {err}" for p, err in tried)
-    raise EnvironmentError(f"No compiler found that links against this aGrUM build:\n{details}")
+    raise OSError(f"No compiler found that links against this aGrUM build:\n{details}")
 
 
 def find_agrum_flags(agrum_prefix: str | None = None) -> dict[str, str]:
@@ -150,7 +150,7 @@ def find_agrum_flags(agrum_prefix: str | None = None) -> dict[str, str]:
       errors.append((compiler or "<cmake default>", result.stderr.strip().splitlines()[-1] if result.stderr else ""))
     else:
       details = "\n".join(f"  {c}: {err}" for c, err in errors)
-      raise EnvironmentError(f"aGrUM not found via CMake with any candidate compiler (set agrum_prefix?):\n{details}")
+      raise OSError(f"aGrUM not found via CMake with any candidate compiler (set agrum_prefix?):\n{details}")
 
     agrum_vars = {}
     for line in result.stdout.splitlines():
@@ -178,7 +178,7 @@ def find_dot() -> str:
     path = shutil.which(dot)
     if path:
       return path
-  raise EnvironmentError("Graphviz dot not found in PATH")
+  raise OSError("Graphviz dot not found in PATH")
 
 
 def _cache_path() -> pathlib.Path:

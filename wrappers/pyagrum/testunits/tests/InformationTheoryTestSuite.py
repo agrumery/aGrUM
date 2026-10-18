@@ -38,11 +38,12 @@
 #                                                                          #
 ############################################################################
 
-import unittest
 import math
+import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestInformationTheory(pyAgrumTestCase):

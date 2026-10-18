@@ -46,9 +46,8 @@ import subprocess
 import sys
 import time
 
-from .utils import *
-
 from .ActBuilder import ActBuilder, cmake_compiler_flags
+from .utils import *
 
 
 def test_name(filename: str) -> str:
@@ -85,8 +84,8 @@ def print_tests_for_module(m):
       i = 0
       print("\n┃ ", end="")
   if i != 0:
-    print("")
-  print("")
+    print()
+  print()
 
 
 def print_tests(modules):
@@ -144,7 +143,7 @@ class ActBuilderAgrum(ActBuilder):
         if len(missing) > 0:
           error(f"Tests [[{missing}]] not present. Please select 'all' or [[-t list]] to list all tests.")
           return False
-        alltests = {k: alltests[k] for k in alltests.keys() if k in asked_tests}
+        alltests = {k: alltests[k] for k in alltests if k in asked_tests}
 
       notif("Updating test(s) declaration.")
       write_test_list(list(alltests.values()))

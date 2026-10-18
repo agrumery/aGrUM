@@ -20,7 +20,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 # =============================================================================
 # UTILITY FUNCTIONS
 # =============================================================================
@@ -652,7 +651,7 @@ def migrate_file(filepath, base_dir=None):
     print(f"File not found: {filepath}")
     return False
 
-  with open(filepath, 'r') as f:
+  with open(filepath) as f:
     content = f.read()
 
   original = content

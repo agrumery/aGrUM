@@ -53,7 +53,7 @@ def convert_file(filepath):
     """Convert a single file to use GUM_TEST macro."""
     filepath = Path(filepath)
 
-    with open(filepath, 'r') as f:
+    with open(filepath) as f:
         content = f.read()
 
     original = content

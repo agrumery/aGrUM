@@ -38,12 +38,14 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum as gum
-import pandas as pd
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
+import pandas as pd
+
+import pyagrum as gum
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class ShapCustomCacheTestCase(pyAgrumTestCase):

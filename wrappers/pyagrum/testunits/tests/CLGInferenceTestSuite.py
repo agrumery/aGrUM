@@ -38,8 +38,8 @@
 #                                                                          #
 ############################################################################
 
-import unittest
 import math
+import unittest
 
 from numpy import allclose
 
@@ -47,7 +47,7 @@ from pyagrum.clg.CLG import CLG
 from pyagrum.clg.GaussianVariable import GaussianVariable
 from pyagrum.clg.variableElimination import CLGVariableElimination
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class CLGInferenceTestCase(pyAgrumTestCase):

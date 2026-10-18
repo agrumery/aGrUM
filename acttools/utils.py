@@ -38,12 +38,12 @@
 #                                                                          #
 ############################################################################
 
+import fnmatch
 import os
 import re
-import fnmatch
 import sys
-from pathlib import Path
 from collections.abc import Iterator
+from pathlib import Path
 
 try:
   from icecream import ic

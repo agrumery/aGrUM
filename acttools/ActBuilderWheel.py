@@ -38,30 +38,27 @@
 #                                                                          #
 ############################################################################
 
-import sys
-import re
 import hashlib
-import zipfile
-import platform
-import sysconfig
 import os
+import platform
+import re
 import subprocess
-
+import sys
+import sysconfig
+import zipfile
 from base64 import urlsafe_b64encode
-from shutil import copy2, move, rmtree
-from tempfile import mkdtemp, mkstemp
 from datetime import datetime
+from os import fdopen, listdir, remove, rename, walk
 from os.path import join, relpath
-from os import fdopen, remove, rename, listdir, walk
+from shutil import copy2, move, rmtree
 from subprocess import CalledProcessError
-from .utils import warn, critic
-from .configuration import cfg
-
-from .ActBuilderPyAgrum import ActBuilderPyAgrum
-
-from .utils import *
+from tempfile import mkdtemp, mkstemp
 
 from .ActBuilder import ActBuilder
+from .ActBuilderPyAgrum import ActBuilderPyAgrum
+from .configuration import cfg
+from .utils import *
+from .utils import critic, warn
 
 
 def _git_commit_timestamp() -> str:
@@ -198,10 +195,9 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
   lines = []
   try:
     with open(path) as f:
-      lines = [l.replace("#PYAGRUM_WHEEL_TAGS#", tags).replace("#ACT_VERSION#", act_version) for l in f.readlines()]
+      lines = [l.replace("#PYAGRUM_WHEEL_TAGS#", tags).replace("#ACT_VERSION#", act_version) for l in f]
     with open(path, "w") as f:
-      for line in lines:
-        f.write(line)
+      f.writelines(lines)
   except Exception:
     critic(f"Could not update WHEEL file: {path}")
 
@@ -291,8 +287,7 @@ def write_record_file(install_dir, version, nightly=False):
       dist_info_dir = f"pyagrum-{version}.dist-info"
 
     with open(join(install_dir, dist_info_dir, "RECORD"), "w") as f:
-      for l in files_hash:
-        f.write(l)
+      f.writelines(files_hash)
       f.write(f"{join(dist_info_dir, 'RECORD')},,")
   except Exception:
     critic("Could not write RECORD file.")
@@ -326,10 +321,9 @@ def update_metadata(dist_info_dir, version):
 
 def replace(file_path, pattern, subst):
   fh, abs_path = mkstemp()
-  with fdopen(fh, "w") as new_file:
-    with open(file_path) as old_file:
-      for line in old_file:
-        new_file.write(line.replace(pattern, subst))
+  with fdopen(fh, "w") as new_file, open(file_path) as old_file:
+    for line in old_file:
+      new_file.write(line.replace(pattern, subst))
   remove(file_path)
   move(abs_path, file_path)
 

@@ -40,13 +40,9 @@
 
 import unittest
 
+from pyagrum.clg import CLG, CLGVariableElimination, ForwardSampling, GaussianVariable
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
-from pyagrum.clg import CLG
-from pyagrum.clg import GaussianVariable
-from pyagrum.clg import ForwardSampling
-from pyagrum.clg import CLGVariableElimination
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class CLGSamplingTestCase(pyAgrumTestCase):

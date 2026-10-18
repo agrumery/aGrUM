@@ -38,17 +38,15 @@
 #                                                                          #
 ############################################################################
 
-from abc import abstractmethod
-from scipy.stats import f, chi2
 import logging
 import math
+from abc import abstractmethod
+
+from scipy.stats import chi2, f
 
 import pyagrum
-
-from pyagrum.ctbn import CIM
-from pyagrum.ctbn import CTBN
+from pyagrum.ctbn import CIM, CTBN, Stats, Trajectory
 from pyagrum.ctbn.constants import ALPHA, FAIL_TO_REJECT, REJECT
-from pyagrum.ctbn import Trajectory, Stats
 
 
 class IndepTest:
@@ -68,7 +66,6 @@ class IndepTest:
     U : list[str]
         Known parents.
     """
-    pass
 
 
 class Oracle(IndepTest):

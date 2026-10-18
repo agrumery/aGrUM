@@ -38,12 +38,11 @@
 #                                                                          #
 ############################################################################
 
-import time
 import platform
-
-from .utils import *
+import time
 
 from .ActBuilderAgrum import ActBuilderAgrum
+from .utils import *
 
 
 class ActBuilderDocDoxygen(ActBuilderAgrum):

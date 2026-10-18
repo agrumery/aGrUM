@@ -38,10 +38,12 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-import pylab
-import matplotlib as mpl
 import itertools
+
+import matplotlib as mpl
+import pylab
+
+import pyagrum
 
 
 def _independenceListForPairs(bn, target=None):

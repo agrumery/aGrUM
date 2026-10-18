@@ -39,10 +39,13 @@
 ############################################################################
 
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-import pyagrum as gum
+
 import pandas as pd
+
+import pyagrum as gum
 from pyagrum.explain import CausalShapValues
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class ShapCausalTestCase(pyAgrumTestCase):

@@ -38,13 +38,14 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-from pyagrum.explain._Explanation import Explanation
 from collections.abc import Callable
-import numpy as np
 
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import Polygon
+
+import pyagrum
+from pyagrum.explain._Explanation import Explanation
 
 
 def _POSTERIOR(y: int, func: str) -> str:

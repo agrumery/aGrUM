@@ -40,11 +40,11 @@
 
 import unittest
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from numpy import log, pi
 
-from numpy import pi
-from numpy import log
 from pyagrum.clg.canonicalForm import CanonicalForm
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class CLGCanonicalFormTestCase(pyAgrumTestCase):

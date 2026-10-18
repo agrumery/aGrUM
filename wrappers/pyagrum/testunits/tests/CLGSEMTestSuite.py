@@ -38,12 +38,12 @@
 #                                                                          #
 ############################################################################
 
+import pickle
 import unittest
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
-import pickle
 import pyagrum.clg as gclg
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 SEM1 = """
 A=4.5 [0.3] # comments are allowed

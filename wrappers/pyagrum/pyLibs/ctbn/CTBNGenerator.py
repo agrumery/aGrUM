@@ -38,11 +38,10 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
 import random
 
-from pyagrum.ctbn import CIM
-from pyagrum.ctbn import CTBN
+import pyagrum
+from pyagrum.ctbn import CIM, CTBN
 
 """
 This file is used to generate random CTBNs using Prufer code
@@ -153,8 +152,8 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
 
   elif n > 2:
     sequence = [random.randint(0, n - 1) for _ in range(n - 2)]
-    degree = {id: 1 for id in range(0, n)}
-    par = {id: 0 for id in range(0, n)}
+    degree = {id: 1 for id in range(n)}
+    par = {id: 0 for id in range(n)}
     for i in range(n - 2):
       degree[sequence[i]] += 1
 
@@ -186,7 +185,7 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
   # add/remove/invert arcs at random
 
   for i in range(n * 3):
-    event = random.sample(range(0, n), k=2)
+    event = random.sample(range(n), k=2)
     draw = random.randint(1, 3)
 
     if draw == 1:

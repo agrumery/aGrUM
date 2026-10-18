@@ -68,7 +68,7 @@ def toGML(model, filename: str | None = None) -> None:
       print(f"    id X{i}", file=gmlfile)
       print(f'    label "{model.variable(i).name()}"', file=gmlfile)
       print("  ]", file=gmlfile)
-    print("", file=gmlfile)
+    print(file=gmlfile)
     for i, j in model.arcs():
       print("  edge", file=gmlfile)
       print("  [", file=gmlfile)

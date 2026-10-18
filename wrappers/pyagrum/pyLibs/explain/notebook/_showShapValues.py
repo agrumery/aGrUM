@@ -38,13 +38,13 @@
 #                                                                          #
 ############################################################################
 
+import matplotlib.pyplot as plt
+
 import pyagrum
 import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.notebook as gnb
-from pyagrum.lib.bn2graph import BN2dot
 from pyagrum.explain import Explanation
-
-import matplotlib.pyplot as plt
+from pyagrum.lib.bn2graph import BN2dot
 
 
 def showShapValues(

@@ -38,14 +38,16 @@
 #                                                                          #
 ############################################################################
 
+import itertools
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+import numpy as np
+import pandas as pd
 
 import pyagrum as gum
 from pyagrum.explain import ConditionalShapValues
-import pandas as pd
-import numpy as np
-import itertools
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class ShapConditionalTestCase(pyAgrumTestCase):

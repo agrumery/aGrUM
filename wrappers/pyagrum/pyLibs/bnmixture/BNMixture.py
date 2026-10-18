@@ -1,6 +1,3 @@
-from tempfile import TemporaryDirectory
-from zipfile import ZipFile
-
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
@@ -44,6 +41,9 @@ from zipfile import ZipFile
 import json
 import math
 import os
+from tempfile import TemporaryDirectory
+from zipfile import ZipFile
+
 import pyagrum
 
 

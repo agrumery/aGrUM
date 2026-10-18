@@ -39,6 +39,7 @@
 ############################################################################
 
 from typing import Any
+
 from ._utils import MisspecifiedLearnerError
 
 

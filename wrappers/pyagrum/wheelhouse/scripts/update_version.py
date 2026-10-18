@@ -1,5 +1,5 @@
-import sys
 import os.path
+import sys
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
 
   build = sys.argv[2]
   with open(agrum_version_file, "a") as f:
-    f.write('set(AGRUM_VERSION_TWEAK "{0}")'.format(build))
+    f.write(f'set(AGRUM_VERSION_TWEAK "{build}")')
 
 
 if __name__ == "__main__":

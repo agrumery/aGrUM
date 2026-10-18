@@ -40,7 +40,6 @@
 
 from typing import Any
 
-
 from .configuration import cfg
 from .utils import *
 
@@ -88,9 +87,9 @@ def get_invocation(current: dict[str, str | bool], colored: bool = False) -> str
     invocation += _(current["target"], c_warning)
     invocation += _(current["mode"], c_warning)
 
-  for opt in current.keys():
+  for opt in current:
     if opt not in ["action", "mode", "target"] and not opt.startswith("_"):
-      if opt not in cfg.non_persistent and opt not in cfg.swapOptions.keys() and opt in current.keys():
+      if opt not in cfg.non_persistent and opt not in cfg.swapOptions.keys() and opt in current:
         invocation += _get_val_param(opt, current[opt], c_value, c_error, c_end)
 
   for opt in cfg.swapOptions.keys():

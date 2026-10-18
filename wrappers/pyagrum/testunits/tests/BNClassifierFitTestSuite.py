@@ -47,10 +47,10 @@ import pandas as pd
 import sklearn
 import sklearn.datasets
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum
-import pyagrum.skbn as skbn
+from pyagrum import skbn
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _make_binary(n_samples=80, n_features=4):

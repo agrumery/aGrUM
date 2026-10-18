@@ -41,16 +41,17 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class LBPTestCase(pyAgrumTestCase):
   def setUp(self):
     self.bn = gum.BayesNet()
 
-    self.c, self.r = [self.bn.add(gum.LabelizedVariable(name, name, 2)) for name in "c r".split()]
+    self.c, self.r = [self.bn.add(gum.LabelizedVariable(name, name, 2)) for name in ["c", "r"]]
     self.s, self.w = [
-      self.bn.add(gum.LabelizedVariable(name, name, 0).addLabel("no").addLabel("yes")) for name in "s w".split()
+      self.bn.add(gum.LabelizedVariable(name, name, 0).addLabel("no").addLabel("yes")) for name in ["s", "w"]
     ]
 
     for link in [(self.c, self.s), (self.c, self.r), (self.s, self.w), (self.r, self.w)]:
@@ -66,7 +67,7 @@ class LBPTestCase(pyAgrumTestCase):
 
     self.bni = gum.BayesNet()
 
-    self.ci, self.si = [self.bni.add(gum.LabelizedVariable(name, name, 2)) for name in "ci si".split()]
+    self.ci, self.si = [self.bni.add(gum.LabelizedVariable(name, name, 2)) for name in ["ci", "si"]]
     self.ri = self.bni.add(gum.RangeVariable("ri", "", 5, 6))
 
     vwi = gum.DiscretizedVariable("wi", "")
@@ -86,7 +87,7 @@ class LBPTestCase(pyAgrumTestCase):
 
     self.bn2 = gum.BayesNet()
 
-    self.s2, self.r2, self.w2 = [self.bn2.add(gum.LabelizedVariable(name, name, 2)) for name in "s2 r2 w2".split()]
+    self.s2, self.r2, self.w2 = [self.bn2.add(gum.LabelizedVariable(name, name, 2)) for name in ["s2", "r2", "w2"]]
 
     for link in [(self.r2, self.s2), (self.s2, self.w2), (self.r2, self.w2)]:
       self.bn2.addArc(*link)

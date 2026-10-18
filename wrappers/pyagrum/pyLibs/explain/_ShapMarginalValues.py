@@ -38,20 +38,19 @@
 #                                                                          #
 ############################################################################
 
-from pyagrum.explain._ShapleyValues import ShapleyValues
-from pyagrum.explain._ComputationMarginal import MarginalComputation
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
-from pyagrum.explain._FIFOCache import FIFOCache
+import warnings
+
+import numpy as np
 
 # Calculations
 import pandas as pd
-import numpy as np
 
 # aGrUM
 import pyagrum
-
-# GL
-import warnings
+from pyagrum.explain._ComputationMarginal import MarginalComputation
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._FIFOCache import FIFOCache
+from pyagrum.explain._ShapleyValues import ShapleyValues
 
 
 class MarginalShapValues(ShapleyValues, MarginalComputation):

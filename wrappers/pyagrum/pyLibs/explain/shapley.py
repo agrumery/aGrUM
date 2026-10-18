@@ -40,16 +40,15 @@
 
 import warnings
 
+# Plots
+import matplotlib.pyplot as plt
 import pandas
-
-# ShapValues
-from pyagrum.explain import CausalShapValues, ConditionalShapValues, Explanation, MarginalShapValues
 
 # Calculations
 import pyagrum
 
-# Plots
-import matplotlib.pyplot as plt
+# ShapValues
+from pyagrum.explain import CausalShapValues, ConditionalShapValues, Explanation, MarginalShapValues
 from pyagrum.explain.notebook import bar, beeswarm, waterfall
 
 

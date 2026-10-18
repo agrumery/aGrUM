@@ -45,7 +45,9 @@ This module implements the inference algorithms for CLG.
 import math
 
 import numpy as np
+
 from pyagrum import JunctionTreeGenerator
+
 from .canonicalForm import CanonicalForm
 from .CLG import CLG
 from .GaussianVariable import GaussianVariable
@@ -207,7 +209,7 @@ class CLGVariableElimination:
     """
 
     # Converting from dict[str, float] to dict[int, float]
-    evidence = {self._clg.idFromName(name): evidence[name] for name in evidence.keys()}
+    evidence = {self._clg.idFromName(name): evidence[name] for name in evidence}
 
     # Reducing the canonical forms containing observed variables
     if len(evidence) != 0:

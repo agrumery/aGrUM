@@ -40,11 +40,11 @@
 
 import csv
 import math
-import matplotlib.pyplot as plt
-import pyagrum
 
-from pyagrum.ctbn import CIM
-from pyagrum.ctbn import CTBN
+import matplotlib.pyplot as plt
+
+import pyagrum
+from pyagrum.ctbn import CIM, CTBN
 
 """
 Contains Trajectory Class and functions to compute stats from samples and tools for trajectory plotting.
@@ -73,7 +73,7 @@ def readTrajectoryCSV(filename: str) -> dict[int, list[tuple[float, str, str]]]:
     for row in reader:
       IdSample, time, var, state = (row["IdSample"], row["time"], row["var"], row["state"])
       IdSample = int(IdSample)
-      if IdSample not in data.keys():
+      if IdSample not in data:
         data[IdSample] = list()
       data[IdSample].append((float(time), var, state))
   return data
@@ -235,7 +235,7 @@ def CTBNFromData(data: dict[int, list[tuple[float, str, str]]]) -> CTBN:
   for i in range(len(data.keys())):
     for t, var, state in data[i]:
       names.add(var)
-      if var not in labels.keys():
+      if var not in labels:
         labels[var] = set()
       labels[var].add(state)
 
@@ -384,7 +384,7 @@ class Trajectory:
           break
         if var == X:
           X_value = state
-        elif var in inst_u.keys():
+        elif var in inst_u:
           u_values[var] = state
 
       # loop over the transitions
@@ -415,7 +415,7 @@ class Trajectory:
 
         if time < self.timeHorizon and var == X:
           X_value = findNextValue(X, traj, l)
-        elif time < self.timeHorizon and var in inst_u.keys():
+        elif time < self.timeHorizon and var in inst_u:
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStats(self, X: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor]:
@@ -531,7 +531,7 @@ class Trajectory:
           X_value = state
         elif var == Y:
           Y_value = state
-        elif var in inst_u.keys():
+        elif var in inst_u:
           u_values[var] = state
 
       # loop over the transitions
@@ -569,7 +569,7 @@ class Trajectory:
           X_value = findNextValue(X, traj, l)
         elif time < self.timeHorizon and var == Y:
           Y_value = findNextValue(Y, traj, l)
-        elif time < self.timeHorizon and var in inst_u.keys():
+        elif time < self.timeHorizon and var in inst_u:
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStatsForTests(self, X: str, Y: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:

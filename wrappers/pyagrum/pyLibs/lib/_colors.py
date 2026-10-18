@@ -50,4 +50,5 @@ warnings.warn(
   stacklevel=2,
 )
 
+# noinspection PyUnresolvedReferences
 from pyagrum.lib.dotstyle import *

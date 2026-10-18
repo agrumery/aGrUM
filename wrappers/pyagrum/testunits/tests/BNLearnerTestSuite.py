@@ -41,11 +41,12 @@
 import os
 import tempfile
 import unittest
+
 import numpy as np
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 SMOKING = "smoking?"
 LUNG = "lung_cancer?"

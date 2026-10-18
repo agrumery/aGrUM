@@ -43,9 +43,10 @@ import unittest
 import warnings
 
 import pandas as pd
+
 from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class DiscreteTypeProcessorTestCase(pyAgrumTestCase):

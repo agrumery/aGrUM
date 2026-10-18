@@ -52,20 +52,19 @@ import matplotlib.colors
 import matplotlib.pyplot as plt
 import numpy as np
 import pydot as dot
-
-from matplotlib_inline.backend_inline import set_matplotlib_formats
 from IPython.display import Image, display
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 
 import pyagrum
 from pyagrum.lib.bn2graph import BN2dot
+from pyagrum.lib.bn_vs_bn import GraphicalBNComparator
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
-from pyagrum.lib.bn_vs_bn import GraphicalBNComparator
-from pyagrum.lib.utils import setDarkTheme, showApproximationScheme, animApproximationScheme
-from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
 from pyagrum.lib.image import prepareShowInference
-from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr
+from pyagrum.lib.jt2graph import _junctionTreeDotStr, _junctionTreeMapDot
+from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRF2UGdot
+from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
+from pyagrum.lib.utils import animApproximationScheme, setDarkTheme, showApproximationScheme
 
 # check if an instance of ipython exists
 try:
@@ -103,9 +102,8 @@ def configuration() -> None:
   """
   Display the collection of dependance and versions
   """
-  from collections import OrderedDict
   import sys
-  import os
+  from collections import OrderedDict
 
   packages = OrderedDict()
   packages["OS"] = f"{os.name} [{sys.platform}]"

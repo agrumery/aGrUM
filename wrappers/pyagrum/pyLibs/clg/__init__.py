@@ -52,12 +52,12 @@ from .learning import CLGLearner
 from .SEM import SEM
 
 __all__ = [
-  "CanonicalForm",
   "CLG",
-  "randomCLG",
+  "SEM",
+  "CLGLearner",
+  "CLGVariableElimination",
+  "CanonicalForm",
   "ForwardSampling",
   "GaussianVariable",
-  "CLGVariableElimination",
-  "CLGLearner",
-  "SEM",
+  "randomCLG",
 ]

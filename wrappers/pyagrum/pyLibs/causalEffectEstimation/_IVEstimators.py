@@ -38,19 +38,17 @@
 #                                                                          #
 ############################################################################
 
-import pandas as pd
-import numpy as np
-
 from typing import Any
 
-from pyagrum import MatrixLike, ArrayLike
-
+import numpy as np
+import pandas as pd
+from scipy.optimize import minimize
+from scipy.special import expit
 from sklearn.base import clone
 
-from ._learners import learnerFromString
+from pyagrum import ArrayLike, MatrixLike
 
-from scipy.special import expit
-from scipy.optimize import minimize
+from ._learners import learnerFromString
 
 
 class Wald:
@@ -642,8 +640,6 @@ class _ICSW:
         ) * self.link_func(x @ theta_AC)
         return -np.log(p**t * (1 - p) ** (1 - t))
         ## NOT FINISHED
-
-      return
 
     print(Likelihood(np.zeros(2 * X.shape[1])))
 

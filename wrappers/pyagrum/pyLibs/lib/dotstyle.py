@@ -47,8 +47,9 @@ import warnings
 
 import matplotlib as mpl
 import matplotlib.colors
-import pyagrum
 import pydot as dot
+
+import pyagrum
 from pyagrum.lib.utils import getBlackInTheme
 
 

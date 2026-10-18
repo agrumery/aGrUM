@@ -43,15 +43,15 @@ collection of utilities for pyagrum.lib
 """
 
 import csv
-import pydot as dot
+from collections import namedtuple
 
 import IPython.display
 import matplotlib.pyplot as plt
-from matplotlib_inline.backend_inline import set_matplotlib_formats
 import numpy as np
+import pydot as dot
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 
 import pyagrum
-from collections import namedtuple
 
 
 def setDarkTheme() -> None:
@@ -188,6 +188,7 @@ async def async_html2image(htmlcontent: str, filename: str):
   """
   import os
   import tempfile
+
   from PIL import Image, ImageChops
   from playwright.async_api import async_playwright
 
@@ -238,6 +239,7 @@ def html2image(htmlcontent: str, filename: str) -> None:
   """
   import asyncio
   import concurrent.futures
+
   import pyagrum.lib.utils as gumutils
 
   coro = gumutils.async_html2image(htmlcontent, filename)

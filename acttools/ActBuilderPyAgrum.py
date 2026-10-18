@@ -38,16 +38,15 @@
 #                                                                          #
 ############################################################################
 
-import os
 import glob
 import importlib.util
+import os
 import platform
 import time
 
+from .ActBuilder import ActBuilder, cmake_compiler_flags
 from .configuration import cfg
 from .utils import *
-
-from .ActBuilder import ActBuilder, cmake_compiler_flags
 
 
 def _load_pyagrum_test_modules() -> set[str]:

@@ -38,8 +38,8 @@
 #                                                                          #
 ############################################################################
 
-from .configuration import cfg
 from .ActBuilder import ActBuilder, notif
+from .configuration import cfg
 
 
 class ActBuilderShowConfig(ActBuilder):
@@ -63,7 +63,7 @@ class ActBuilderShowConfig(ActBuilder):
     for k in self.current.keys():
       if k not in cfg.mains and k not in cfg.non_persistent and not k.startswith("_"):
         aff_key(k)
-    print("")
+    print()
 
     for k in cfg.non_persistent:
       aff_key(k)

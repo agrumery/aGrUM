@@ -39,18 +39,17 @@
 ############################################################################
 
 import argparse
+import logging
 import os
 import platform
 import sys
 from pathlib import Path
 from sys import platform as os_platform
 
-import logging
-
 _thisdir = os.path.dirname(os.path.abspath(__file__))
 if _thisdir not in sys.path:
   sys.path.insert(0, _thisdir)
-from utils.gumTestOutput import notif, warn, error
+from utils.gumTestOutput import error, notif, warn
 
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
 # This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'
@@ -145,14 +144,14 @@ def go():
 
   total_errs = 0
 
-  log.info("on Python {0} - {1}".format(platform.python_version(), os_platform))
-  log.info("path : {}".format(gum.__file__))
+  log.info(f"on Python {platform.python_version()} - {os_platform}")
+  log.info(f"path : {gum.__file__}")
 
   notif("*****************")
   notif("Python Test Suite")
   notif("*****************")
 
-  import utils.testsOnPython as testsOnPython
+  from utils import testsOnPython
 
   if not notebooksOnly:
     total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
@@ -178,7 +177,7 @@ def go():
   notif("-" * 70)
   notif(" log file ")
   notif("-" * 70)
-  with open(logfilename, "r") as logfile:
+  with open(logfilename) as logfile:
     for f in logfile:
       if "[pyAgrum]" in f:
         notif(f.rstrip())

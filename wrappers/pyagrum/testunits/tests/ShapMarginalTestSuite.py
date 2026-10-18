@@ -39,11 +39,13 @@
 ############################################################################
 
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+import pandas as pd
 
 import pyagrum as gum
-import pandas as pd
 from pyagrum.explain import MarginalShapValues
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class ShapMarginalTestCase(pyAgrumTestCase):

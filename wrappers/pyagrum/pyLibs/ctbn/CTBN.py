@@ -39,10 +39,8 @@
 ############################################################################
 
 import pyagrum
-
-from pyagrum.ctbn import CIM
-
 import pyagrum.ctbn
+from pyagrum.ctbn import CIM
 
 """
 This file contains the CTBN class.

@@ -43,7 +43,8 @@ import tempfile
 import unittest
 
 import pyagrum.ktbn as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 AT = gum.KTBN.ATEMPORAL
 

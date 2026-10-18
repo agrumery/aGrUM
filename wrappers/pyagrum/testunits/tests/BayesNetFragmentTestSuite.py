@@ -38,11 +38,12 @@
 #                                                                          #
 ############################################################################
 
+import math
 import unittest
 
-import math
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class BayesNetFragmentTestCase(pyAgrumTestCase):
@@ -238,7 +239,7 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
 
     for n in frag.names():
       for x1, x2 in zip(ie2.posterior(n).tolist(), ie.posterior(n).tolist()):
-        self.assertAlmostEqual(x1, x2, delta=1e-5, msg="For variable '{}'".format(n))
+        self.assertAlmostEqual(x1, x2, delta=1e-5, msg=f"For variable '{n}'")
 
   def testCopyToBN(self):
     bn = gum.fastBN("A->B->C->D;E<-C<-F")

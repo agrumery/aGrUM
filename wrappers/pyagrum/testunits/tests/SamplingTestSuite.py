@@ -41,7 +41,8 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class SamplingTestCase(pyAgrumTestCase):
@@ -61,7 +62,7 @@ class SamplingTestCase(pyAgrumTestCase):
       if min > diff:
         min = diff
 
-    return "Approximations always bad : on {} tests, {:1.7}>{:1.7}".format(nbr, min, seuil)
+    return f"Approximations always bad : on {nbr} tests, {min:1.7}>{seuil:1.7}"
 
   def unsharpen(self, bn):
     for nod in bn.nodes():
@@ -199,8 +200,8 @@ class TestInferenceResults(SamplingTestCase):
       self.fail(msg)
 
     protoie = gum.LazyPropagation(self.bn)
+    protoie.setEvidence({"s": 0, "c": 0})
     protoie.makeInference()
-    ie.setEvidence({"s": 0, "c": 0})
     proto = protoie.posterior(self.w)
 
     ie = gum.LoopyGibbsSampling(self.bn)

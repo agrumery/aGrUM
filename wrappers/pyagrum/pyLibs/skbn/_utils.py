@@ -41,11 +41,11 @@
 from typing import Any
 
 import pandas
-import sklearn
 import pandas as pd
+import sklearn
 
 import pyagrum
-import pyagrum.lib.bn2roc as bn2roc
+from pyagrum.lib import bn2roc
 
 
 def _CalculateThreshold(

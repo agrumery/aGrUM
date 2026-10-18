@@ -66,16 +66,16 @@ from ._explGeneralizedMarkovBlanket import generalizedMarkovBlanket
 from ._explInformationGraph import getInformationGraph, getInformation, showInformation
 
 __all__ = [
-  "ConditionalShapValues",
-  "MarginalShapValues",
+  "CausalShallValues",
   "CausalShapValues",
   "ConditionalShallValues",
-  "MarginalShallValues",
-  "CausalShallValues",
+  "ConditionalShapValues",
   "Explanation",
-  "independenceListForPairs",
+  "MarginalShallValues",
+  "MarginalShapValues",
   "generalizedMarkovBlanket",
-  "getInformationGraph",
   "getInformation",
+  "getInformationGraph",
+  "independenceListForPairs",
   "showInformation",
 ]

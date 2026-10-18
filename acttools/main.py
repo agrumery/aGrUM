@@ -38,16 +38,13 @@
 #                                                                          #
 ############################################################################
 
-import platform
-import pickle
 import argparse
+import pickle
+import platform
 
-
-from .configuration import cfg
-from .utils import *
-from .configuration import init_params, configure_cli_options
-from .configuration import configure_colors
+from .configuration import cfg, configure_cli_options, configure_colors, init_params
 from .invocation import show_invocation
+from .utils import *
 
 
 def extract_cmd_from_args(current: dict[str, str | bool], args: set[str]) -> None:

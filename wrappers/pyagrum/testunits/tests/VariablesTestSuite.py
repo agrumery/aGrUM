@@ -41,7 +41,8 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class VariablesTestCase(pyAgrumTestCase):
@@ -171,8 +172,8 @@ class LabelizedVariableTestCase(VariablesTestCase):
     _ = gum.LabelizedVariable(self.varL1)
 
   def testPythonListComprehension(self):
-    c, s, r, w = [gum.LabelizedVariable(name, name, 2) for name in "c s r w".split()]
-    for var, name in zip([c, s, r, w], "c s r w".split()):
+    c, s, r, w = [gum.LabelizedVariable(name, name, 2) for name in ["c", "s", "r", "w"]]
+    for var, name in zip([c, s, r, w], ["c", "s", "r", "w"]):
       self.assertEqual(var.name(), name)
       self.assertEqual(var.description(), name)
       self.assertEqual(var.domainSize(), 2)

@@ -43,8 +43,8 @@ The purpose of this module is to provide tools for mapping Markov random field (
 be displayed/saved as image.
 """
 
-import time
 import hashlib
+import time
 
 import matplotlib.colors
 import matplotlib.pyplot as plt

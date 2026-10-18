@@ -43,20 +43,20 @@ tools for exporting model and inference as image
 """
 
 import os
-import tempfile
 import re
+import tempfile
 from typing import Any
+
 import matplotlib.colors
 import matplotlib.image as mpimg
 import pydot as dot
 
 import pyagrum
+import pyagrum.lib.utils as gutils
 from pyagrum.lib.bn2graph import BN2dot, BNinference2dot
 from pyagrum.lib.cn2graph import CN2dot, CNinference2dot
 from pyagrum.lib.id2graph import ID2dot, LIMIDinference2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot, MRFinference2UGdot
-from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRFinference2FactorGraphdot
-import pyagrum.lib.utils as gutils
+from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRF2UGdot, MRFinference2FactorGraphdot, MRFinference2UGdot
 
 
 def export(obj: Any, filename: str | None = None, **kwargs) -> Any:

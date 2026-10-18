@@ -46,7 +46,6 @@ import os
 from typing import Any
 
 import numpy as np
-
 from matplotlib import pylab
 
 import pyagrum
@@ -78,7 +77,7 @@ def _lines_count(filename):
   numlines = 0
 
   with open(filename) as f:
-    for _ in f.readlines():
+    for _ in f:
       numlines += 1
 
   return numlines

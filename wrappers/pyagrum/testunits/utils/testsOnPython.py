@@ -45,7 +45,7 @@ import sys
 from importlib.util import find_spec
 from sys import platform as os_platform
 
-from .gumTestOutput import notif, warn, error, PrefixStream, ModuleAwareResult, notif_module_stats, Timer
+from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats, warn
 
 if __name__ == "__main__":
   print(
@@ -251,8 +251,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   notif()
   notif("using python unittest")
   notif()
-  notif("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform))
-  notif("pyAgrum path : {}".format(gum.__file__))
+  notif(f"pyAgrum on Python {platform.python_version()} - {os_platform}")
+  notif(f"pyAgrum path : {gum.__file__}")
   notif()
 
   runner = unittest.TextTestRunner(stream=PrefixStream(module_map), verbosity=2)
@@ -283,8 +283,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   (error if errs > 0 else notif)("Failed %d of %d tests" % (errs, result.testsRun))
   notif("Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun))
   notif()
-  notif("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform))
-  notif("pyAgrum path : {}".format(gum.__file__))
+  notif(f"pyAgrum on Python {platform.python_version()} - {os_platform}")
+  notif(f"pyAgrum path : {gum.__file__}")
   notif()
 
   return errs

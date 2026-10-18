@@ -1,12 +1,12 @@
-import sys
+import glob
+import json
 import os
 import re
-import glob
-import subprocess
-from datetime import datetime
-import json
-from pathlib import Path
 import shutil
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
 
 
 def notif(message: str) -> None:
@@ -21,7 +21,7 @@ def parse_notebooks_rst(filepath: str) -> dict[str, list[str]]:
   numsec = 1
 
   potential_section = ""
-  with open(filepath, "r") as f:
+  with open(filepath) as f:
     for n, line in enumerate(f):
       # Detect section titles (lines with '=' or '-' underlines)
       match = re.match(r"^=+$", line)
@@ -58,7 +58,7 @@ def parse_thumbnails_html(filepath: str) -> dict[str, str]:
   value = None
   res = dict()
 
-  with open(filepath, "r") as file:
+  with open(filepath) as file:
     for line in file:
       if '<div class="nbsphinx-gallery">' in line:
         start = True
@@ -101,11 +101,11 @@ def retrieveCiteTitles(rst_path: str, bib_path: str, json_path: str):
   The website needs it since :cite:t: roles are not resolved in notebooks_sections.json.
   """
   keys = set()
-  with open(rst_path, "r") as f:
+  with open(rst_path) as f:
     for line in f:
       keys.update(re.findall(r":cite:t:`([^`]+)`", line))
 
-  with open(bib_path, "r") as f:
+  with open(bib_path) as f:
     bib = f.read()
 
   titles: dict[str, str] = {}
@@ -205,13 +205,11 @@ def prepareSphinx(site_dir: str):
           sub_src = os.path.join(src_path, sub_item)
           sub_dest = os.path.join(dest_path, sub_item)
           if os.path.isfile(sub_src):
-            with open(sub_src, "rb") as fsrc:
-              with open(sub_dest, "wb") as fdest:
-                fdest.write(fsrc.read())
+            with open(sub_src, "rb") as fsrc, open(sub_dest, "wb") as fdest:
+              fdest.write(fsrc.read())
       else:
-        with open(src_path, "rb") as fsrc:
-          with open(dest_path, "wb") as fdest:
-            fdest.write(fsrc.read())
+        with open(src_path, "rb") as fsrc, open(dest_path, "wb") as fdest:
+          fdest.write(fsrc.read())
 
 
 def prepareNotebooks(site_dir: str):
@@ -231,7 +229,7 @@ def chgIndexForWeb(site_dir: str):
     return
 
   buffer = ""
-  with open(index_path, "r") as f:
+  with open(index_path) as f:
     skip = False
     for line in f:
       if line.startswith(".. SKIP WEBSITE"):
@@ -287,7 +285,7 @@ def updateMarkdownFiles(site_dir: str):
   # pour tous les fichiers *.md du répéertoire markdown
   markdown_dir = os.path.join(site_dir, "markdown")
   for md_file in glob.glob(os.path.join(markdown_dir, "*.md")):
-    with open(md_file, "r") as f:
+    with open(md_file) as f:
       content = f.read()
     # remplacer "```pycon" par "```python"
     content = content.replace("```pycon", "```python")

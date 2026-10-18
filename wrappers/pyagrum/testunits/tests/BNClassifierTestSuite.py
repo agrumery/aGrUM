@@ -42,16 +42,15 @@ import pickle
 import unittest
 import warnings
 
+import numpy as np
+import pandas as pd
 from sklearn.exceptions import SkipTestWarning
 from sklearn.utils.estimator_checks import check_estimator
 
-import numpy as np
-import pandas as pd
-
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from pyagrum import skbn
 
-import pyagrum.skbn as skbn
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _normalizeDiscretizerAudit(discretizer_audit):

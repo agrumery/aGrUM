@@ -38,15 +38,15 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-
-from pyagrum.explain._ShallValues import ShallValues
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
-from pyagrum.explain._FIFOCache import FIFOCache
-from pyagrum.explain._ComputationConditional import ConditionalComputation
+from warnings import warn
 
 import numpy as np
-from warnings import warn
+
+import pyagrum
+from pyagrum.explain._ComputationConditional import ConditionalComputation
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._FIFOCache import FIFOCache
+from pyagrum.explain._ShallValues import ShallValues
 
 
 class ConditionalShallValues(ShallValues, ConditionalComputation):

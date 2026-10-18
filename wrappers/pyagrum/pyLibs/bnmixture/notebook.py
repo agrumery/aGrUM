@@ -38,13 +38,13 @@
 #                                                                          #
 ############################################################################
 
-import hashlib
-import time
 import csv
+import hashlib
 import os
-from tempfile import TemporaryDirectory
+import time
 from base64 import encodebytes
 from math import ceil
+from tempfile import TemporaryDirectory
 
 import pyagrum
 import pyagrum.bnmixture as BNM
@@ -53,14 +53,15 @@ _colors = ["lightgreen", "lightseagreen", "green"]
 
 try:
   import IPython
-  import pydot as dot
-  import matplotlib.pyplot as plt
   import matplotlib as mpl
+  import matplotlib.pyplot as plt
   import numpy as np
-  import pyagrum.lib.notebook as gnb
-  import pyagrum.lib.dotstyle as gds
-  from matplotlib.colors import LinearSegmentedColormap
+  import pydot as dot
   from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+  from matplotlib.colors import LinearSegmentedColormap
+
+  import pyagrum.lib.dotstyle as gds
+  import pyagrum.lib.notebook as gnb
 
   _cmap1 = LinearSegmentedColormap.from_list("mycmap", _colors)
   _DISPLAY_AVAILABLE = True
@@ -150,7 +151,7 @@ def _compareBNinf(bnref: pyagrum.BayesNet, refdot: dot.Dot, cmpDot: dot.Dot, sca
   x_scale = 80 * scale * 1.5  # 50 * scale * 2
   y_scale = 60 * scale * 1.3  # 50 * scale * 1.5
   positions = {
-    l[1]: f"{str(float(l[2]) * x_scale)},{str(float(l[3]) * y_scale)}!"
+    l[1]: f"{float(l[2]) * x_scale!s},{float(l[3]) * y_scale!s}!"
     for l in csv.reader(refdot.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
     if len(l) > 3 and l[0] == "node"
   }
@@ -663,8 +664,7 @@ def _normalizedArcsWeight(bnm: BNM.BNMixture | BNM.BootstrapMixture):
       countArcs[n1][n2] = countArcs[n1][n2] / sum_weight
       if 0 != countArcs[n1][n2] < mi:
         mi = countArcs[n1][n2]
-      if countArcs[n1][n2] > ma:
-        ma = countArcs[n1][n2]
+      ma = max(ma, countArcs[n1][n2])
 
   return countArcs, mi, ma
 
@@ -676,7 +676,7 @@ def _compareArcs2dot(bnm: BNM.BNMixture | BNM.BootstrapMixture, size=None, refSt
   countArcs, mi, ma = _normalizedArcsWeight(bnm)
   g = gnb.BN2dot(bnm.refBN, size=size)
   positions = {
-    l[1]: f"{str(float(l[2]) * 2)},{str(float(l[3]) * 2)}!"
+    l[1]: f"{float(l[2]) * 2!s},{float(l[3]) * 2!s}!"
     for l in csv.reader(g.create(format="plain").decode("utf8").split("\n"), delimiter=" ", quotechar='"')
     if len(l) > 3 and l[0] == "node"
   }
@@ -778,8 +778,7 @@ def getArcsComparison(bnm, size=None, refStruct=False):
   width = (
     int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams["figure.dpi"]
   )  # pixel in inches
-  if width < 5:
-    width = 5
+  width = max(width, 5)
 
   fig = mpl.figure.Figure(figsize=(width, 1))
   fig.patch.set_alpha(0)

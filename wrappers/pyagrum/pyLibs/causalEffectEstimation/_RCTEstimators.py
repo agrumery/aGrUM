@@ -38,10 +38,10 @@
 #                                                                          #
 ############################################################################
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from pyagrum import MatrixLike, ArrayLike
+from pyagrum import ArrayLike, MatrixLike
 
 
 class DM:

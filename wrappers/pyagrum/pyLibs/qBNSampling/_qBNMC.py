@@ -99,7 +99,7 @@ class qBNMC:
         qubit_id += 1
     return res
 
-  def getWidth(self, node: Union[str, int]) -> int:
+  def getWidth(self, node: str | int) -> int:
     """Number of qubits needed to represent a variable.
 
     Parameters
@@ -126,8 +126,8 @@ class qBNMC:
 
   def getBinarizedParameters(
     self,
-    width_dict: dict[Union[str, int], int],
-    param_dict: dict[Union[str, int], int],
+    width_dict: dict[str | int, int],
+    param_dict: dict[str | int, int],
   ) -> dict[int, list[int]]:
     """Binary-encode variable states.
 
@@ -160,7 +160,7 @@ class qBNMC:
     """
     return {id for id in self.bn.nodes() if len(self.bn.parents(id)) == 0}
 
-  def getAllParentSates(self, node: Union[str, int]) -> list[dict[Union[str, int], int]]:
+  def getAllParentSates(self, node: str | int) -> list[dict[str | int, int]]:
     """All parent-state combinations for a given node.
 
     Parameters
@@ -224,10 +224,10 @@ class qBNMC:
   def getProbability(
     self,
     value: int,
-    node: Union[str, int],
+    node: str | int,
     qb_id: int,
     param_qbs: dict[int, int],
-    param_nodes: dict[Union[str, int], int] | None = None,
+    param_nodes: dict[str | int, int] | None = None,
     verbose: int = 0,
   ) -> float:
     """Conditional probability for one qubit given context (eq18/eq20).
@@ -270,7 +270,7 @@ class qBNMC:
       print(f"probability_list={probability_list}, binary_state_list={binary_state_list}")
       print(f"qb_id={qb_id}, qb_number={qb_number}, params_qb_number_dict={params_qb_number_dict}")
 
-    I_qb = self.indicatorFunction(binary_state_list, {**{qb_number: value}, **params_qb_number_dict}, verbose=verbose)
+    I_qb = self.indicatorFunction(binary_state_list, {qb_number: value, **params_qb_number_dict}, verbose=verbose)
 
     if verbose > 0:
       print(f"indicator={I_qb}")
@@ -280,10 +280,10 @@ class qBNMC:
   def multiQubitRotation(
     self,
     circuit: QuantumCircuit,
-    node: Union[str, int],
+    node: str | int,
     target_qbs: list[int],
     param_qbs: dict[int, int],
-    param_nodes: dict[Union[str, int], int] | None = None,
+    param_nodes: dict[str | int, int] | None = None,
     control_qbs: list[int] | None = None,
     verbose: int = 0,
   ) -> None:
@@ -346,11 +346,11 @@ class qBNMC:
       popped_qb = target_copy.pop(0)
 
       self.multiQubitRotation(
-        circuit, node, target_copy, {**param_qbs, **{popped_qb: 1}}, param_nodes, control_qbs, verbose=verbose
+        circuit, node, target_copy, {**param_qbs, popped_qb: 1}, param_nodes, control_qbs, verbose=verbose
       )
       circuit.append(X, qargs=control_qbs + params_qb_list + [popped_qb])
       self.multiQubitRotation(
-        circuit, node, target_copy, {**param_qbs, **{popped_qb: 0}}, param_nodes, control_qbs, verbose=verbose
+        circuit, node, target_copy, {**param_qbs, popped_qb: 0}, param_nodes, control_qbs, verbose=verbose
       )
       circuit.append(X, qargs=control_qbs + params_qb_list + [popped_qb])
 

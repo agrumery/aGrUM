@@ -38,14 +38,12 @@
 #                                                                          #
 ############################################################################
 
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import cm, colors
+
 import pyagrum
 from pyagrum.explain._Explanation import Explanation
-
-import numpy as np
-
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-from matplotlib import colors
 
 
 def beeswarm(

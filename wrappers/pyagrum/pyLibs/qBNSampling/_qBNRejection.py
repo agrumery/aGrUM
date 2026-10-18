@@ -226,7 +226,7 @@ class qBNRejection:
     self,
     A: QuantumCircuit,
     G: QuantumCircuit,
-    evidence: dict[Union[str, int], int],
+    evidence: dict[str | int, int],
     verbose: int = 0,
   ) -> dict[int, int]:
     """Draw one sample consistent with evidence using Algorithm 1.
@@ -316,7 +316,7 @@ class qBNRejection:
     self.inference_res = {self.qbn.bn.variable(k).name(): v for k, v in res.items()}
     return self.inference_res
 
-  def setEvidence(self, evidence: dict[Union[str, int], int]) -> None:
+  def setEvidence(self, evidence: dict[str | int, int]) -> None:
     """Set the evidence for subsequent inference calls.
 
     Parameters
@@ -336,7 +336,7 @@ class qBNRejection:
     """
     self.max_iter = max_iter
 
-  def posterior(self, node: Union[str, int]) -> Tensor:
+  def posterior(self, node: str | int) -> Tensor:
     """Return the posterior distribution of a variable as a Tensor.
 
     Calls :meth:`makeInference` if results are not yet available.
@@ -360,8 +360,8 @@ class qBNRejection:
 
   def useFragmentBN(
     self,
-    evidence: set[Union[str, int]] | None = None,
-    target: set[Union[str, int]] | None = None,
+    evidence: set[str | int] | None = None,
+    target: set[str | int] | None = None,
   ) -> None:
     """Restrict the network to the ancestors of target and evidence nodes.
 

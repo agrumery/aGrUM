@@ -40,11 +40,10 @@
 
 import unittest
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
-from pyagrum.clg import CLG
-from pyagrum.clg import GaussianVariable
+from pyagrum.clg import CLG, GaussianVariable
 from pyagrum.clg.CLG import randomCLG
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class CLGRandomTestCase(pyAgrumTestCase):

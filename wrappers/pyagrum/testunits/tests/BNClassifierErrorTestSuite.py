@@ -45,9 +45,9 @@ import pandas as pd
 import sklearn.datasets
 from sklearn.exceptions import NotFittedError
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from pyagrum import skbn
 
-import pyagrum.skbn as skbn
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _make_binary(n_samples=80, n_features=4):

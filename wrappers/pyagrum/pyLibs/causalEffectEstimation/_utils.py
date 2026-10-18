@@ -38,9 +38,9 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-
 from collections import deque
+
+import pyagrum
 
 EXCEPTION_TEXT = "\n(Call `.use[estimator_name]()` to select an estimator.)"
 

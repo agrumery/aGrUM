@@ -39,12 +39,13 @@
 ############################################################################
 
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+import pandas as pd
 
 import pyagrum as gum
 from pyagrum.explain import CausalShallValues
 
-import pandas as pd
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class ShallMarginalTestCase(pyAgrumTestCase):

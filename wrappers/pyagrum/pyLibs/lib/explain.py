@@ -51,7 +51,11 @@ warnings.warn(
   stacklevel=2,
 )
 
-from pyagrum.explain.shapley import ShapValues  # noqa: E402
-from pyagrum.explain.notebook import showShapValues  # noqa: E402
-from pyagrum.explain import independenceListForPairs  # noqa: E402
-from pyagrum.explain import showInformation, getInformation, getInformationGraph  # noqa: E402
+from pyagrum.explain import (
+  getInformation,
+  getInformationGraph,
+  independenceListForPairs,
+  showInformation,
+)
+from pyagrum.explain.notebook import showShapValues
+from pyagrum.explain.shapley import ShapValues

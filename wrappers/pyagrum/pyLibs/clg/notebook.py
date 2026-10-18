@@ -44,15 +44,14 @@ be displayed/saved as image.
 """
 
 import matplotlib.pyplot as plt
-import pyagrum
 import pydot as dot
 
+import pyagrum
+import pyagrum.clg.variableElimination as clginference
 import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.image as gimg
-
-import pyagrum.clg.CLG as CLG
-import pyagrum.clg.variableElimination as clginference
 import pyagrum.lib.notebook as gnb
+from pyagrum.clg import CLG
 
 
 def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cmapNode=None, cmapArc=None, showMsg=None):

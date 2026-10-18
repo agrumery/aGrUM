@@ -43,9 +43,8 @@ The purpose of this module is to provide tools for mapping credal Network (and i
 be displayed/saved as image.
 """
 
-import time
 import hashlib
-
+import time
 from tempfile import mkdtemp
 
 import matplotlib.colors

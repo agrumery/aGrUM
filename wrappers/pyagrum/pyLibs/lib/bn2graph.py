@@ -43,9 +43,8 @@ The purpose of this module is to provide tools for mapping Bayesian Network (and
 be displayed/saved as image.
 """
 
-import time
 import hashlib
-
+import time
 from tempfile import mkdtemp
 
 import matplotlib.colors
@@ -53,9 +52,8 @@ import matplotlib.pyplot as plt
 import pydot as dot
 
 import pyagrum
-
-from pyagrum.lib import proba_histogram
 import pyagrum.lib.dotstyle as gds
+from pyagrum.lib import proba_histogram
 from pyagrum.lib.utils import getBlackInTheme
 
 

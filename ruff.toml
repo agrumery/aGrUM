@@ -6,8 +6,7 @@ indent-width = 2
 
 extend-include = ["*.ipynb"]
 
-[format]
-exclude = [
+extend-exclude = [
   "**/testunits/generateTestExec.py",
   '**/apps/*',
   '**/notebooks-archives/*',
@@ -16,19 +15,27 @@ exclude = [
   "wrappers/pyagrum/cmake/*",
 ] # Skip certain files
 
+[format]
 quote-style = "double"
 indent-style = "space"
 docstring-code-format = true
 
 [lint]
 #extend-select = ["E501"]
-extend-select = ["UP"]
+extend-select = ["UP", "I"]
 # Avoid trying to fix flake8-bugbear (`B`) violations.
 unfixable = ["B","F401"]
 
 
 # E741 : ambiguous variable name (e.g. "l", "O", "I").
 ignore = ["E741"]
+
+[lint.per-file-ignores]
+# Package __init__ files import their submodules in dependency order (submodules import from the package itself).
+"**/__init__.py" = ["I001"]
+
+[lint.isort]
+known-first-party = ["pyagrum"]
 
 [lint.pydocstyle]
 convention = "numpy"

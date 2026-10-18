@@ -43,12 +43,12 @@ Using Rademacher Average to guarantee FWER (Family Wise Error Rate) in the indep
 (see "Bounding the Family-Wise Error Rate in Local Causal Discover using Rademacher Averages", Dario Simionato, Fabio Vandin, 2022)
 """
 
+import itertools
 import warnings
 from collections.abc import Generator
 
-import pandas as pd
 import numpy as np
-import itertools
+import pandas as pd
 from sklearn.linear_model import LinearRegression
 
 from .CLG import CLG
@@ -203,10 +203,8 @@ class CLGLearner:
     b = np.mean(list(self.r_XYZ.values())[0])
     a = np.mean(list(self.r_XYZ.values())[0])
     for r in self.r_XYZ.values():
-      if np.mean(r) >= b:
-        b = np.mean(r)
-      if np.mean(r) <= a:
-        a = np.mean(r)
+      b = max(np.mean(r), b)
+      a = min(np.mean(r), a)
 
     # calcul n-MCERA: n-samples Monte-Carlo Empirical Rademacher Average
     R = 0.0
@@ -217,8 +215,7 @@ class CLGLearner:
         for i in range(K):
           temp += sigma[j][i] * r[i]
         temp /= K
-        if sup < temp:
-          sup = temp
+        sup = max(sup, temp)
       R += sup
     R /= n_sample
 

@@ -41,7 +41,7 @@
 import multiprocessing
 import os
 import platform
-from subprocess import PIPE, Popen, STDOUT
+from subprocess import PIPE, STDOUT, Popen
 
 from .configuration import cfg
 from .utils import *
@@ -197,8 +197,7 @@ class ActBuilder:
       else:
         try:
           nbrJob = int(jobrequest)
-          if nbrJob < 1:
-            nbrJob = 1
+          nbrJob = max(nbrJob, 1)
           if nbrJob > nbrProc:
             return str(nbrProc)
           else:

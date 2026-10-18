@@ -45,7 +45,6 @@ This module implements the forward sampling algorithm for CLG
 from typing import Any
 
 import numpy as np
-
 import pandas as pd
 
 from .CLG import CLG

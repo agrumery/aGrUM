@@ -38,10 +38,9 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-
-# Calculations
 import numpy as np
+
+import pyagrum
 
 
 class CausalComputation:

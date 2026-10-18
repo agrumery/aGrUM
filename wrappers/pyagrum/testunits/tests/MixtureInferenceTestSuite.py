@@ -41,9 +41,9 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum.bnmixture as BNM
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestMixtureInference(pyAgrumTestCase):

@@ -40,11 +40,11 @@
 
 import unittest
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 from pyagrum.clg.CLG import CLG
 from pyagrum.clg.GaussianVariable import GaussianVariable
 from pyagrum.clg.learning import CLGLearner
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class CLGLearningTestCase(pyAgrumTestCase):

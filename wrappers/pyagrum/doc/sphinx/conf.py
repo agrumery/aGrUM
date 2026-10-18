@@ -40,6 +40,7 @@ master_doc = "index"
 project = "pyagrum "
 # get current year
 import datetime
+
 year = datetime.datetime.now().year
 copyright = f"2018-{year}, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re{pyagrum.__version__})"
 author = "Pierre-henri Wuillemin"

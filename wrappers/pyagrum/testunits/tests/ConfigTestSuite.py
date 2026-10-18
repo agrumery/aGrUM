@@ -49,7 +49,8 @@ import warnings
 
 import pyagrum as gum
 from pyagrum.pyagrumcpp import _Configuration
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 # The logic (parsing of the schema, validation, deprecations, ...) is the one of gum::Configuration and is
 # tested in C++ (ConfigurationTestSuite.h): this suite only tests the wrapper (conversions of types,

@@ -41,11 +41,13 @@
 import math
 import random
 import sys
+import unittest
 
 import numpy as np
+
 import pyagrum as gum
-import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TensorTestCase(pyAgrumTestCase):
@@ -1293,7 +1295,7 @@ class TestNumpyInterop(pyAgrumTestCase):
       I.inc()
 
   def testFillFromDistribution(self):
-    import scipy.stats as stats
+    from scipy import stats
 
     # B[5] <- A[3]: for each value of A, the CPT over B follows a normal
     A = gum.RangeVariable("A", "", 0, 2)  # 3 values: 0, 1, 2
@@ -1308,7 +1310,7 @@ class TestNumpyInterop(pyAgrumTestCase):
     np.testing.assert_allclose(arr.sum(axis=1), np.ones(3), atol=1e-6)
 
   def testFillFromDistributionReturnsSelf(self):
-    import scipy.stats as stats
+    from scipy import stats
 
     A = gum.RangeVariable("A", "", 0, 2)
     B = gum.RangeVariable("B", "", 0, 4)
@@ -1316,7 +1318,7 @@ class TestNumpyInterop(pyAgrumTestCase):
     self.assertIs(t.fillFromDistribution(stats.norm, loc="A", scale=1), t)
 
   def testFillFromDistributionNoParents(self):
-    import scipy.stats as stats
+    from scipy import stats
 
     # single-variable tensor: no parents, one column in the CPT
     B = gum.RangeVariable("B", "", 0, 4)

@@ -38,9 +38,8 @@
 #                                                                          #
 ############################################################################
 
-from .utils import *
-
 from .ActBuilder import ActBuilder
+from .utils import *
 
 
 class ActBuilderDocSphinx(ActBuilder):

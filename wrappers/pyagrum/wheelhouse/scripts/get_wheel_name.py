@@ -1,10 +1,11 @@
 #/bin/python3
 
-import sys
 import re
-from os.path import join, isfile
+import sys
 from os import listdir
+from os.path import isfile, join
 from subprocess import call
+
 
 def is_wheel_file(wheel_dir, f):
   return isfile(join(wheel_dir, f)) and f.endswith('.whl')
@@ -12,7 +13,7 @@ def is_wheel_file(wheel_dir, f):
 def getWheel(wheel_dir):
   onlyfiles = [f for f in listdir(wheel_dir) if is_wheel_file(wheel_dir, f)]
   if len(onlyfiles) != 1:
-    print('Did not found a single wheel in {0}'.format(wheel_dir))
+    print(f'Did not found a single wheel in {wheel_dir}')
     sys.exit(2)
   return join(wheel_dir, onlyfiles[0])
 

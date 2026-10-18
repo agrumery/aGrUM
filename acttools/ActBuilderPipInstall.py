@@ -40,10 +40,9 @@
 
 import subprocess
 
-from .utils import *
-
 from .ActBuilder import ActBuilder
 from .ActBuilderWheel import ActBuilderWheel
+from .utils import *
 
 
 class ActBuilderPipInstall(ActBuilder):

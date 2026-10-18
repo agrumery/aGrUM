@@ -38,21 +38,21 @@
 #                                                                          #
 ############################################################################
 
-from typing import List
-
-from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
 import concurrent.futures
+import glob
 import logging
-import nbformat
+import os
 import random
+import sys
 import time
 import traceback
-import os
-import glob
-import sys
 import warnings
+from typing import List
 
-from .gumTestOutput import notif, warn, error
+import nbformat
+from nbconvert.preprocessors.execute import CellExecutionError, ExecutePreprocessor
+
+from .gumTestOutput import error, notif, warn
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 

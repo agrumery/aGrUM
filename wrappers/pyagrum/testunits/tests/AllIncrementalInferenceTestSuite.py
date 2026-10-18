@@ -41,8 +41,8 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 # The graph used for the tests and the domain sizes:
 #

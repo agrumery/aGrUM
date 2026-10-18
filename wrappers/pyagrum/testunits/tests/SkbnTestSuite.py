@@ -39,12 +39,14 @@
 ############################################################################
 
 import unittest
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-import pyagrum as gum
-import pyagrum.skbn as skbn
 import pandas as pd
 from sklearn import datasets
+
+import pyagrum as gum
+from pyagrum import skbn
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class SkbnTestCase(pyAgrumTestCase):

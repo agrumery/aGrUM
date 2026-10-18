@@ -38,9 +38,10 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum.lib.dotstyle as gds
 import matplotlib.pyplot as plt
 import pydot as dot
+
+import pyagrum.lib.dotstyle as gds
 
 
 def _buildMB(model, x: int, k: int = 1):

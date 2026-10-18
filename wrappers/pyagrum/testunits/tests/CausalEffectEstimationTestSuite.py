@@ -40,15 +40,14 @@
 
 import unittest
 
+import numpy as np
+import pandas as pd
+from scipy.stats import logistic, norm
+
 import pyagrum.causal_model as gum
 import pyagrum.causalEffectEstimation as gcee
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
 
-
-import pandas as pd
-import numpy as np
-
-from scipy.stats import norm, logistic
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 def _getDiscretizedVariable(name, tick_start, tick_end, num_intervals):

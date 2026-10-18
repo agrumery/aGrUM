@@ -41,9 +41,7 @@
 from itertools import combinations
 
 import pyagrum
-
-from pyagrum.ctbn import CTBN
-from pyagrum.ctbn import Trajectory
+from pyagrum.ctbn import CTBN, Trajectory
 
 """
 This file contains the learning algorithm of a CTBN (i.e of its CIMs and dependency graph). 
@@ -154,7 +152,7 @@ class Learner:
               parents_done[Xj] = True
               break
 
-          parentsIdList = [var for var in parents_done.keys() if not parents_done[var]]
+          parentsIdList = [var for var in parents_done if not parents_done[var]]
 
     for arc in newGraph.arcs():
       newCtbn.addArc(arc[0], arc[1])

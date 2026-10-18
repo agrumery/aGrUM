@@ -41,9 +41,9 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum.ctbn as ct
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestCtbnCIM(pyAgrumTestCase):

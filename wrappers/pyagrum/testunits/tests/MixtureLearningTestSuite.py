@@ -41,9 +41,9 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
-
 import pyagrum.bnmixture as BNM
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestMixtureLearning(pyAgrumTestCase):
@@ -155,7 +155,8 @@ class TestMixtureLearning(pyAgrumTestCase):
     self.assertLessEqual(bnm.size(), 3)
 
   def testBNMLearner_withCSVSource(self):
-    import tempfile, os
+    import os
+    import tempfile
 
     bn_ref = gum.fastBN("A->C<-B")
     df1 = self._gen_df(bn_ref, n=200)

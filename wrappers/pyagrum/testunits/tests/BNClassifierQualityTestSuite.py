@@ -44,9 +44,9 @@ import sklearn
 import sklearn.datasets
 import sklearn.metrics
 
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+from pyagrum import skbn
 
-import pyagrum.skbn as skbn
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class BNClassifierQualityTestCase(pyAgrumTestCase):

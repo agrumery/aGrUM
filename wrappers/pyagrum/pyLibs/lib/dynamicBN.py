@@ -50,10 +50,9 @@ warnings.warn(
   stacklevel=2,
 )
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pydot as dot
-
-import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
 import pyagrum

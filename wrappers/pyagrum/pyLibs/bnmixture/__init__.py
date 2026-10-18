@@ -48,13 +48,13 @@ from .BNMInference import BNMixtureInference, BootstrapMixtureInference
 from .BNMLearning import BNMLearner, BNMBootstrapLearner
 
 __all__ = [
+  "BNMBootstrapLearner",
+  "BNMLearner",
   "BNMixture",
+  "BNMixtureInference",
   "BootstrapMixture",
-  "saveBNM",
+  "BootstrapMixtureInference",
   "loadBNM",
   "loadRetroCompatibleBNM",
-  "BNMixtureInference",
-  "BootstrapMixtureInference",
-  "BNMLearner",
-  "BNMBootstrapLearner",
+  "saveBNM",
 ]

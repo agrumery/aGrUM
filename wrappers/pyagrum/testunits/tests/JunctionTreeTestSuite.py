@@ -41,16 +41,17 @@
 import unittest
 
 import pyagrum as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class JunctionTreeTestCase(pyAgrumTestCase):
   def setUp(self):
     self.bn = gum.BayesNet()
 
-    self.c, self.r = [self.bn.add(gum.LabelizedVariable(name, name, 2)) for name in "c r".split()]
+    self.c, self.r = [self.bn.add(gum.LabelizedVariable(name, name, 2)) for name in ["c", "r"]]
     self.s, self.w = [
-      self.bn.add(gum.LabelizedVariable(name, name, 0).addLabel("no").addLabel("yes")) for name in "s w".split()
+      self.bn.add(gum.LabelizedVariable(name, name, 0).addLabel("no").addLabel("yes")) for name in ["s", "w"]
     ]
 
     for link in [(self.c, self.s), (self.c, self.r), (self.s, self.w), (self.r, self.w)]:
@@ -105,7 +106,7 @@ class JunctionTreeGeneratorTestCase(pyAgrumTestCase):
 
   def testSimpleBN(self):
     bn = gum.BayesNet()
-    c, r = [bn.add(gum.LabelizedVariable(name, name, 2)) for name in "c r".split()]
+    c, r = [bn.add(gum.LabelizedVariable(name, name, 2)) for name in ["c", "r"]]
     bn.addArc(c, r)
 
     jtg = gum.JunctionTreeGenerator()

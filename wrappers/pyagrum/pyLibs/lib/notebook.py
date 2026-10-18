@@ -42,20 +42,17 @@
 tools for BN in jupyter notebook
 """
 
+import base64
+import io
 import time
 import warnings
-
 from base64 import encodebytes
-
-import io
-import base64
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib_inline.backend_inline import set_matplotlib_formats
-
 import numpy as np
 import pydot as dot
+from matplotlib_inline.backend_inline import set_matplotlib_formats
 
 try:
   dot.call_graphviz("dot", ["--help"], ".")
@@ -69,19 +66,17 @@ import IPython.core.pylabtools
 import IPython.display
 
 import pyagrum
+import pyagrum.lib.dotstyle as gds
 from pyagrum.lib.bn2graph import BN2dot
+from pyagrum.lib.bn_vs_bn import graphDiff
 from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
-from pyagrum.lib.mrf2graph import MRF2UGdot, MRF2FactorGraphdot
-from pyagrum.lib.jt2graph import _junctionTreeMapDot, _junctionTreeDotStr, _junctionTreeDot, _mapDotString
+from pyagrum.lib.image import prepareLinksForSVG, prepareShowInference
+from pyagrum.lib.jt2graph import _junctionTreeDot, _junctionTreeDotStr, _junctionTreeMapDot, _mapDotString
 from pyagrum.lib.ktbn2graph import getFollowKTBN, plotFollowKTBN
-
-from pyagrum.lib.bn_vs_bn import graphDiff
+from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRF2UGdot
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
-from pyagrum.lib.image import prepareShowInference, prepareLinksForSVG
-from pyagrum.lib.utils import showApproximationScheme, animApproximationScheme
-
-import pyagrum.lib.dotstyle as gds
+from pyagrum.lib.utils import animApproximationScheme, showApproximationScheme
 
 
 class FlowLayout:
@@ -234,9 +229,9 @@ def configuration() -> None:
   """
   Display the collection of dependance and versions
   """
-  from collections import OrderedDict
-  import sys
   import os
+  import sys
+  from collections import OrderedDict
 
   packages = OrderedDict()
   packages["OS"] = f"{os.name} [{sys.platform}]"
@@ -1464,8 +1459,7 @@ def getSideBySide(*args, **kwargs) -> str:
   ncols = None
   if "ncols" in kwargs:
     ncols = int(kwargs["ncols"])
-    if ncols < 1:
-      ncols = 1
+    ncols = max(ncols, 1)
 
   def reprHTML(s):
     if isinstance(s, str):

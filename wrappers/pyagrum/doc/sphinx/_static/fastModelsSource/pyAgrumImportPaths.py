@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 LEAVES = ["markov_random_field", "influence_diagram", "credal_net", "causal_model", "prm", "ktbn"]
 

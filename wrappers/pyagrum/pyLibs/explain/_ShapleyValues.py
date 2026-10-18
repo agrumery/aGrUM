@@ -38,19 +38,15 @@
 #                                                                          #
 ############################################################################
 
-from pyagrum.explain._Explainer import Explainer
-from abc import abstractmethod
-from pyagrum.explain._Explanation import Explanation
-
-# Calculations
-import pandas as pd
-import numpy as np
-
-# aGrUM
-import pyagrum
-
-# GL
 import warnings
+from abc import abstractmethod
+
+import numpy as np
+import pandas as pd
+
+import pyagrum
+from pyagrum.explain._Explainer import Explainer
+from pyagrum.explain._Explanation import Explanation
 
 
 class ShapleyValues(Explainer):

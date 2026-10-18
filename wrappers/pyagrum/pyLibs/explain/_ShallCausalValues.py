@@ -38,13 +38,13 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-from pyagrum.explain._ShallValues import ShallValues
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
-from pyagrum.explain._ComputationCausal import CausalComputation
-from pyagrum.explain._FIFOCache import FIFOCache
-
 import numpy as np
+
+import pyagrum
+from pyagrum.explain._ComputationCausal import CausalComputation
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._FIFOCache import FIFOCache
+from pyagrum.explain._ShallValues import ShallValues
 
 
 class CausalShallValues(ShallValues, CausalComputation):

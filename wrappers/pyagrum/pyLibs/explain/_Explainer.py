@@ -38,16 +38,17 @@
 #                                                                          #
 ############################################################################
 
+import math
 from abc import ABC, abstractmethod
+from collections.abc import Callable
+from itertools import combinations
 from typing import Any
-import pyagrum
-from pyagrum.explain._FIFOCache import FIFOCache
 
 # Calculations
 import numpy as np
-import math
-from itertools import combinations
-from collections.abc import Callable
+
+import pyagrum
+from pyagrum.explain._FIFOCache import FIFOCache
 
 
 class Explainer(ABC):

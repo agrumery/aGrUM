@@ -42,15 +42,14 @@
 The purpose of this module is to provide tools for comaring different BNs.
 """
 
-import os
 import math
+import os
 
 import pydot as dot
 
 import pyagrum
 import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.utils as gutils
-
 
 STRUCTURAL_HAMMING = "structural hamming"
 PURE_HAMMING = "hamming"

@@ -38,14 +38,13 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-from pyagrum.lib.bn2graph import BN2dot
+import warnings
 
 # Matplotlib
 import matplotlib as mpl
 
-# GL
-import warnings
+import pyagrum
+from pyagrum.lib.bn2graph import BN2dot
 
 _cdict = {
   "red": ((0.0, 0.1, 0.3), (1.0, 0.6, 1.0)),
@@ -170,11 +169,12 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False, sh
   str|None
     return the HTML string or directly display it.
   """
-  import IPython.display
-  import IPython.core.pylabtools
   from base64 import encodebytes
-  from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
+
+  import IPython.core.pylabtools
+  import IPython.display
   import matplotlib.lines as mlines
+  from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
   if size is None:
     size = pyagrum.config["notebook", "graphSize"]
@@ -197,8 +197,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False, sh
   width = (
     int(gsvg.data.split("width=")[1].split('"')[1].split("pt")[0]) / mpl.pyplot.rcParams["figure.dpi"]
   )  # pixel in inches
-  if width < 5:
-    width = 5
+  width = max(width, 5)
 
   fig = mpl.figure.Figure(figsize=(width, 1.0))
   fig.patch.set_alpha(0)

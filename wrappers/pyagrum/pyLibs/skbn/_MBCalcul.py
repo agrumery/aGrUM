@@ -39,6 +39,7 @@
 ############################################################################
 
 import pyagrum
+
 from ._utils import _listIdtoName as listIdtoName
 
 

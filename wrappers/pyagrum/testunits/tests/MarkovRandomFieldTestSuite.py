@@ -41,7 +41,8 @@
 import unittest
 
 import pyagrum.markov_random_field as gum
-from .pyAgrumTestSuite import pyAgrumTestCase, addTests
+
+from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class MarkovRandomFieldTestCase(pyAgrumTestCase):

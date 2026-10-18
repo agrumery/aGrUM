@@ -38,11 +38,10 @@
 #                                                                          #
 ############################################################################
 
-from pyagrum.explain._ShapleyValues import ShapleyValues
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
-
-# Calculations
 import numpy as np
+
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._ShapleyValues import ShapleyValues
 
 
 class ConditionalShapValues(ShapleyValues):

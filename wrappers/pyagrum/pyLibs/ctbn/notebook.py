@@ -42,20 +42,19 @@
 This file defines some helpers for handling CTBNs in notebooks
 """
 
-from tempfile import mkdtemp
-import matplotlib.pyplot as plt
-import IPython
-import time
 import hashlib
+import time
+from tempfile import mkdtemp
 
-import pyagrum
-from pyagrum.lib import proba_histogram
-import pyagrum.lib.dotstyle as gds
-import pyagrum.lib.notebook as gnb
+import IPython
+import matplotlib.pyplot as plt
 import pydot as dot
 
-from pyagrum.ctbn import CTBN
-from pyagrum.ctbn import ForwardSamplingInference
+import pyagrum
+import pyagrum.lib.dotstyle as gds
+import pyagrum.lib.notebook as gnb
+from pyagrum.ctbn import CTBN, ForwardSamplingInference
+from pyagrum.lib import proba_histogram
 
 
 def getCtbnGraph(ctbn: CTBN, size=None):

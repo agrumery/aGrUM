@@ -43,9 +43,9 @@ The purpose of this module is to provide tools for mapping Influcence Diagram (a
 be displayed/saved as image.
 """
 
-import time
-import math
 import hashlib
+import math
+import time
 from tempfile import mkdtemp
 
 import pydot as dot

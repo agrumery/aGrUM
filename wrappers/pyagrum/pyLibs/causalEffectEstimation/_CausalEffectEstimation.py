@@ -38,39 +38,36 @@
 #                                                                          #
 ############################################################################
 
-import pandas as pd
-import numpy as np
-
 from typing import Any
 
-import pyagrum
+import numpy as np
+import pandas as pd
 from numpy.f2py.f90mod_rules import fgetdims2
+
+import pyagrum
 from pyagrum import causalImpact
 
+from ._backdoorEstimators import IPW, PStratification, SLearner, TLearner, XLearner
+from ._causalBNEstimator import CausalBNEstimator
+from ._frontdoorEstimators import GeneralizedPlugIn, SimplePlugIn
+from ._IVEstimators import TSLS, NormalizedWaldIPW, Wald, WaldIPW
+from ._RCTEstimators import DM
 from ._utils import (
-  MisspecifiedAdjustmentError,
-  EmptyConditionError,
-  InvalidConditionError,
-  RCTError,
-  BackdoorError,
-  FrontdoorError,
-  IVError,
-  RCT,
-  generalizedFrontDoor,
-  instrumentalVariable,
-  RCT_ESTIMATORS_LIST,
   BACKDOOR_ESTIMATORS_LIST,
   FRONTDOOR_ESTIMATORS_LIST,
   IV_ESTIMATORS_LIST,
+  RCT,
+  RCT_ESTIMATORS_LIST,
+  BackdoorError,
+  EmptyConditionError,
+  FrontdoorError,
+  InvalidConditionError,
+  IVError,
+  MisspecifiedAdjustmentError,
+  RCTError,
+  generalizedFrontDoor,
+  instrumentalVariable,
 )
-
-from ._causalBNEstimator import CausalBNEstimator
-
-from ._RCTEstimators import DM
-
-from ._backdoorEstimators import SLearner, TLearner, XLearner, PStratification, IPW
-from ._frontdoorEstimators import SimplePlugIn, GeneralizedPlugIn
-from ._IVEstimators import Wald, WaldIPW, NormalizedWaldIPW, TSLS
 
 
 class CausalEffectEstimation:

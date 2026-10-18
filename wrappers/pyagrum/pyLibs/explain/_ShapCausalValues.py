@@ -38,18 +38,17 @@
 #                                                                          #
 ############################################################################
 
-import pyagrum
-from pyagrum.explain._ShapleyValues import ShapleyValues
-from pyagrum.explain._ComputationCausal import CausalComputation
-from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
-from pyagrum.explain._FIFOCache import FIFOCache
+import warnings
 
 # Calculus
 import numpy as np
 import pandas as pd
 
-# GL
-import warnings
+import pyagrum
+from pyagrum.explain._ComputationCausal import CausalComputation
+from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
+from pyagrum.explain._FIFOCache import FIFOCache
+from pyagrum.explain._ShapleyValues import ShapleyValues
 
 
 class CausalShapValues(ShapleyValues, CausalComputation):
