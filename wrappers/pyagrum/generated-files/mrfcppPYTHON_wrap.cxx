@@ -353,8 +353,8 @@
 /* Errors < -200 are generic runtime specific errors */
 #define SWIG_ERROR_RELEASE_NOT_OWNED (-200)
 
-#define SWIG_IsOK(r)               (r >= 0)
-#define SWIG_ArgError(r)           ((r != SWIG_ERROR) ? r : SWIG_TypeError)
+#define SWIG_IsOK(r)               ((r) >= 0)
+#define SWIG_ArgError(r)           (((r) != SWIG_ERROR) ? (r) : SWIG_TypeError)
 
 /* The CastRankLimit says how many bits are used for the cast rank */
 #define SWIG_CASTRANKLIMIT         (1 << 8)
@@ -371,15 +371,15 @@
 #define SWIG_TMPOBJ                (SWIG_OK | SWIG_TMPOBJMASK)
 #define SWIG_BINARYSTR             (SWIG_OK | SWIG_BINARYSTRMASK)
 /* Check, add and del object mask methods */
-#define SWIG_AddNewMask(r)         (SWIG_IsOK(r) ? (r | SWIG_NEWOBJMASK) : r)
-#define SWIG_DelNewMask(r)         (SWIG_IsOK(r) ? (r & ~SWIG_NEWOBJMASK) : r)
-#define SWIG_IsNewObj(r)           (SWIG_IsOK(r) && (r & SWIG_NEWOBJMASK))
-#define SWIG_AddTmpMask(r)         (SWIG_IsOK(r) ? (r | SWIG_TMPOBJMASK) : r)
-#define SWIG_DelTmpMask(r)         (SWIG_IsOK(r) ? (r & ~SWIG_TMPOBJMASK) : r)
-#define SWIG_IsTmpObj(r)           (SWIG_IsOK(r) && (r & SWIG_TMPOBJMASK))
-#define SWIG_AddBinaryStrMask(r)   (SWIG_IsOK(r) ? (r | SWIG_BINARYSTRMASK) : r)
-#define SWIG_DelBinaryStrMask(r)   (SWIG_IsOK(r) ? (r & ~SWIG_BINARYSTRMASK) : r)
-#define SWIG_IsBinaryStr(r)        (SWIG_IsOK(r) && (r & SWIG_BINARYSTRMASK))
+#define SWIG_AddNewMask(r)         (SWIG_IsOK(r) ? ((r) | SWIG_NEWOBJMASK) : (r))
+#define SWIG_DelNewMask(r)         (SWIG_IsOK(r) ? ((r) & ~SWIG_NEWOBJMASK) : (r))
+#define SWIG_IsNewObj(r)           (SWIG_IsOK(r) && ((r) & SWIG_NEWOBJMASK))
+#define SWIG_AddTmpMask(r)         (SWIG_IsOK(r) ? ((r) | SWIG_TMPOBJMASK) : (r))
+#define SWIG_DelTmpMask(r)         (SWIG_IsOK(r) ? ((r) & ~SWIG_TMPOBJMASK) : (r))
+#define SWIG_IsTmpObj(r)           (SWIG_IsOK(r) && ((r) & SWIG_TMPOBJMASK))
+#define SWIG_AddBinaryStrMask(r)   (SWIG_IsOK(r) ? ((r) | SWIG_BINARYSTRMASK) : (r))
+#define SWIG_DelBinaryStrMask(r)   (SWIG_IsOK(r) ? ((r) & ~SWIG_BINARYSTRMASK) : (r))
+#define SWIG_IsBinaryStr(r)        (SWIG_IsOK(r) && ((r) & SWIG_BINARYSTRMASK))
 
 /* Cast-Rank Mode */
 #if defined(SWIG_CASTRANK_MODE)
@@ -390,7 +390,7 @@
 #    define SWIG_MAXCASTRANK          (2)
 #  endif
 #  define SWIG_CASTRANKMASK          ((SWIG_CASTRANKLIMIT) -1)
-#  define SWIG_CastRank(r)           (r & SWIG_CASTRANKMASK)
+#  define SWIG_CastRank(r)           ((r) & SWIG_CASTRANKMASK)
 SWIGINTERNINLINE int SWIG_AddCast(int r) {
   return SWIG_IsOK(r) ? ((SWIG_CastRank(r) < SWIG_MAXCASTRANK) ? (r + 1) : SWIG_ERROR) : r;
 }
@@ -3201,10 +3201,29 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 
 
-#define SWIG_exception_fail(code, msg) do { SWIG_Error(code, msg); SWIG_fail; } while(0) 
+#define SWIG_exception(code, msg) do { SWIG_Error(code, msg); SWIG_fail; } while(0) 
 
 #define SWIG_contract_assert(expr, msg) do { if (!(expr)) { SWIG_Error(SWIG_RuntimeError, msg); SWIG_fail; } } while (0) 
 
+
+/* SWIG Errors applicable to all language modules, values are reserved from -1 to -99 */
+#define  SWIG_UnknownError    	   -1
+#define  SWIG_IOError        	   -2
+#define  SWIG_RuntimeError   	   -3
+#define  SWIG_IndexError     	   -4
+#define  SWIG_TypeError      	   -5
+#define  SWIG_DivisionByZero 	   -6
+#define  SWIG_OverflowError  	   -7
+#define  SWIG_SyntaxError    	   -8
+#define  SWIG_ValueError     	   -9
+#define  SWIG_SystemError    	   -10
+#define  SWIG_AttributeError 	   -11
+#define  SWIG_MemoryError    	   -12
+#define  SWIG_NullReferenceError   -13
+
+
+
+#define SWIG_exception_fail(code, msg) SWIG_exception(code, msg)
 
 /* -----------------------------------------------------------------------------
  * director_common.swg
@@ -3854,7 +3873,11 @@ template <typename T> T SwigValueInit() {
 #define SWIG_as_voidptrptr(a) ((void)SWIG_as_voidptr(*a),reinterpret_cast< void** >(a)) 
 
 
+
 #include <stdexcept>
+
+
+#include <typeinfo>
 
 
 namespace swig {

@@ -33,7 +33,7 @@ def _swig_setattr_nondynamic_instance_variable(set):
             set(self, name, value)
         elif name == "thisown":
             self.this.own(value)
-        elif hasattr(self, name) and isinstance(getattr(type(self), name), property):
+        elif isinstance(getattr(type(self), name, None), property):
             set(self, name, value)
         else:
             raise AttributeError("You cannot add instance attributes to %s" % self)
@@ -106,7 +106,7 @@ class SwigPyIterator(object):
     def __add__(self, n: "ptrdiff_t") -> "swig::SwigPyIterator *":
         return _pyagrumcpp.SwigPyIterator___add__(self, n)
 
-    def __sub__(self, *args) -> "ptrdiff_t":
+    def __sub__(self, *args):
         return _pyagrumcpp.SwigPyIterator___sub__(self, *args)
     def __iter__(self):
         return self
@@ -7118,7 +7118,7 @@ class PAG(UndiGraph):
         """
         return _pyagrumcpp.PAG_addEdge(self, *args)
 
-    def markAt(self, *args) -> int:
+    def markAt(self, *args):
         r"""
 
         Return the endpoint mark on the dst side of edge (src, dst).
@@ -8905,7 +8905,7 @@ class DAGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.DAGmodel_existsArc(self, *args)
 
-    def parents(self, *args) -> list[int]:
+    def parents(self, *args):
         return _pyagrumcpp.DAGmodel_parents(self, *args)
 
     def family(self, *args) -> list[int]:
@@ -8926,7 +8926,7 @@ class DAGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.DAGmodel_family(self, *args)
 
-    def children(self, *args) -> list[int]:
+    def children(self, *args):
         return _pyagrumcpp.DAGmodel_children(self, *args)
 
     def descendants(self, *args) -> list[int]:
@@ -10289,10 +10289,10 @@ class MultiDimContainer(object):
     def extractFrom(self, src: "pyagrum.Tensor", mask: "pyagrum.Instantiation") -> None:
         return _pyagrumcpp.MultiDimContainer_extractFrom(self, src, mask)
 
-    def content(self, *args) -> "pyagrum.Tensor":
+    def content(self, *args):
         return _pyagrumcpp.MultiDimContainer_content(self, *args)
 
-    def getMasterRef(self, *args) -> "pyagrum.Tensor":
+    def getMasterRef(self, *args):
         return _pyagrumcpp.MultiDimContainer_getMasterRef(self, *args)
 
     def copy(self, src: "pyagrum.Tensor") -> None:
@@ -11220,7 +11220,7 @@ class Tensor(object):
     def __str__(self) -> str:
         return _pyagrumcpp.Tensor___str__(self)
 
-    def expectedValue(self, *args) -> float:
+    def expectedValue(self, *args):
         r"""
 
         Calculate the mathematical expected value of a (joint) random variable using the given function as an argument.
@@ -12169,7 +12169,7 @@ class Tensor(object):
         """
         return _pyagrumcpp.Tensor_domainSize(self)
 
-    def nbrDim(self, *args) -> int:
+    def nbrDim(self, *args):
         r"""
 
         Returns
@@ -29230,7 +29230,7 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_state(self)
 
-    def setPossibleEdges(self, *args) -> None:
+    def setPossibleEdges(self, *args):
         r"""
 
         Adds a constraint to the structure learning algorithm by fixing the set of possible edges.

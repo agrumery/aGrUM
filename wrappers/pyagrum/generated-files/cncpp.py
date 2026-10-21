@@ -33,7 +33,7 @@ def _swig_setattr_nondynamic_instance_variable(set):
             set(self, name, value)
         elif name == "thisown":
             self.this.own(value)
-        elif hasattr(self, name) and isinstance(getattr(type(self), name), property):
+        elif isinstance(getattr(type(self), name, None), property):
             set(self, name, value)
         else:
             raise AttributeError("You cannot add instance attributes to %s" % self)
@@ -1053,7 +1053,7 @@ class CNLoopyPropagation(object):
         """
         return _cncpp.CNLoopyPropagation_insertEvidenceFile(self, path)
 
-    def inferenceType(self, *args) -> int:
+    def inferenceType(self, *args):
         r"""
 
         Returns

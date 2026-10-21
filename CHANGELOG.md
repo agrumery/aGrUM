@@ -4,175 +4,38 @@
 
 - pyAgrum
 
-    - `pyagrum.config` is now the new C++ `gum::Configuration` itself (the Python class `PyAgrumConfiguration` and the module
-      `pyagrum/config.py` are removed; the Python glue is in the SWIG interface): same API, same `defaults.ini`
-      (`pyLibs/defaults.ini` now holds the keys specific to pyAgrum: cmake embeds it, next to the defaults of aGrUM,
-      in the library, which reads the two as sources of the same configuration) and same `pyagrum.ini` file, read when the library is loaded, which changes
-      values but never creates a section or a key.
-      `saveGUM(name)` / `saveBN(...)` use `core.jgumIndent` / `core.allowModificationWhenSaving` through
-      the C++ writers. The Python glue only converts types, exceptions and notices (as warnings): Python hooks are
-      registered in the C++ configuration, and `config.typed` uses `gum::Configuration::getValue`.
-    - **Renamed keys of the look of the graphs**: the keys of the sections `notebook`, `factorgraph`, `dynamicBN`,
-      `influenceDiagram`, `credalnet` and `causal` that give the colors, sizes, shapes, styles and layout of the graphs
-      drawn by graphviz are now defined in the defaults of aGrUM, in lowerCamelCase: `notebook.arcColor`, `nodeBgColor`,
-      `nodeFgColor`, `graphSize`, `graphRankDir`, `graphLayout`, `markovRandomFieldView`, `junctionTreeGraphSize`,
-      `junctionTreeWithNames`, `junctionTree{Separator,Clique}{BgColor,FgColor,FontSize}`, `junctionTreeMap{CliqueScale,
-      SepScale,EdgeLen,Size}`; `factorgraph.nodeBgColor`, `nodeFgColor`, `factorBgColor`, `edgeLength`, `graphLayout`;
-      `dynamicBN.graphSize`; `influenceDiagram.graphSize` (which merges `graph_size` and `id_size`), `chance|utility|decisionBgColor`,
-      `chance|utility|decisionFgColor`, `chance|utility|decisionShape`, `decisionArcStyle`, `utilityArcStyle`;
-      `credalnet.nodeBgColor`, `nodeFgColor`; `causal.showLatentNames`, `graphSize`, `nodeBgColor`, `nodeFgColor`,
-      `latentBgColor`, `latentFgColor`. The previous names (`node_bgcolor`, `graph_size`, `junctiontree_map_size`, ...)
-      and the `default_*` names are deprecated keys: they are still accepted and redirected to the new ones, with a
-      `DeprecationWarning`; so are `agrum.ini` / `pyagrum.ini` files written with them. The keys that need matplotlib
-      (color maps, `evidence_*`, inference graphs, `graph_format`, `tensor_*`, `histogram_*`, `flow_*`), the keys of
-      `graphDiff`, of `ctbn`, `clg` and `bnmixture` keep their names and stay in the defaults of pyAgrum.
-    - **Font colors `adaptive`**: the ten font colors of the graphs (`notebook.nodeFgColor`, `junctionTreeSeparatorFgColor`,
-      `junctionTreeCliqueFgColor`, `factorgraph.nodeFgColor`, `influenceDiagram.{chance,utility,decision}FgColor`,
-      `credalnet.nodeFgColor`, `causal.nodeFgColor` and `latentFgColor`) can take the value `adaptive`, which is now their
-      default: the text is black or white, according to the brightness of the background color it is drawn on (white up to
-      a brightness of 153; the color of the arcs, so the theme, if the background is not a color that can be interpreted).
-      This is what the notebooks already displayed for the nodes drawn with a color of the configuration, so there is no
-      visible change. New C++ `gum::dot::resolveFgColor`, `parseColor` and the table of the 146 HTML colors
-      (`agrum/base/core/dot/dotColor.h`).
-
-    - **`pyagrum.lib._colors` renamed `pyagrum.lib.dotstyle`**: the module deals with the look of the graphs drawn with
-      graphviz (colors, theme, completion of the dot graphs built in Python by pyAgrum), not only with colors.
-      `pyagrum.lib._colors` is kept as a deprecated relay (`DeprecationWarning`).
-
-    - **New `pyagrum.DotOptions` and `toDot(options)`**: the `toDot()` of the graphs (`DiGraph`, `UndiGraph`, `MixedGraph`, `DAG`,
-      `PDAG`, `PAG`, `CliqueGraph`), `EssentialGraph`, `MarkovBlanket`, `BayesNet`, `BayesNetFragment`, `MarkovRandomField`
-      (`toDot` and `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel` and `CredalNet` (new `toDot`) accept a
-      `pyagrum.DotOptions` giving, for this drawing, the size, direction, layout and label of the graph, and the labels,
-      tooltips, colors of some nodes and the labels, tooltips, colors and widths of some arcs (and the factors of a factor
-      graph, designated by the ids of their variables). `KTBN.toUnrolledDot(T, highlightReplicated, options)` takes it too.
-      `CliqueGraph.__map_str__()` (the map of a junction tree) can be called without argument: the values come from the
-      configuration.
-    - **The look of the raw `toDot()` is the one displayed in a notebook**: all the C++ `toDot()` listed above now write what
-      pyAgrum used to add afterwards (transparent background, `size`, `rankdir`, `layout`, colors of the nodes and of the arcs,
-      tooltips `(id) name`) from `pyagrum.config`, and follow it at each call (for instance the dark theme). An
-      undirected graph is now a `graph` (edges `--`) and not a `digraph` with `dir=none`; the nodes of a `BayesNet`,
-      `MarkovRandomField`, `InfluenceDiagram` and `CausalModel` are named after the variables; the junction tree is
-      drawn with cliques and separators in the colors of `junctionTree*`; the broken dot of `BayesNetFragment.toDot()`
-      is fixed, as are the doubled braces of `PDAG.toDot()`. `CausalModel.toDot()` finally reads the `causal` keys (the
-      latent variables have their own colors); its arguments `SHOW_LATENT_NAMES`, `NODE_BG`, `NODE_FG` and `EDGE_COL` are
-      deprecated. Code that parses the text of a `toDot()` has to be adapted (the arcs are written `"A" -> "B"` with
-      spaces, the identifiers of the junction tree nodes are `0` and `0~1`).
-    - **Graphs shown or exported as they are**: `showGraph`, `getGraph`, `showDot`, `export` and the display of a `pydot.Dot`
-      in a notebook only apply the size of the graph. The graphs built in Python by pyAgrum (inference graphs, `graphDiff`,
-      `CLG2dot`, `CTBN.toDot()`, `bnmixture`, `explain`...) are complete when they are built, like the ones of the C++
-      `toDot()`; a pydot graph or a dot string given by the user is no longer completed with the look of the configuration.
-      The workaround which removed a spurious `"\n"` node from the parsed graphs (pydot 1.x) is removed: pyAgrum requires
-      pydot>=2.
-    - The colors of the graphs (`color2rgb`, `rgb2brightness`, `configFgColor`) are computed by the C++ functions of
-      `agrum/base/core/dot/`; `hex2rgb` is deprecated (use `color2rgb`).
-    - Fixed: `proba2hex` (and `proba2color`, `proba2bgcolor`) wrote an invalid color (`#100100cc` for `#ffffcc`) when a component
-      of the color map was 1.0, for instance with the default `Pastel1`; `CLGInference2dot` failed without `evs`.
+    - **Configuration in C++**: `pyagrum.config` is now the C++ `gum::Configuration` (`PyAgrumConfiguration` and
+      `pyagrum/config.py` removed), with the same API and the same `defaults.ini` / `pyagrum.ini` files.
+    - **Renamed configuration keys**: the `default_` prefix is dropped and the keys of the look of the graphs
+      (`notebook`, `factorgraph`, `dynamicBN`, `influenceDiagram`, `credalnet`, `causal`) are now lowerCamelCase keys
+      defined in aGrUM. The old names are deprecated (still accepted, with a `DeprecationWarning`).
+    - **Graphs drawn by aGrUM**: the raw `toDot()` of graphs and models now gives the look displayed in notebooks, and
+      accepts a new `pyagrum.DotOptions` (size, layout, labels, colors of nodes and arcs). Font colors can be `adaptive`
+      (black or white according to the background, the new default). Graphs given by the user are shown as they are.
+      Code parsing the text of a `toDot()` may have to be adapted.
+    - `pyagrum.lib._colors` renamed `pyagrum.lib.dotstyle` (deprecated relay kept); `hex2rgb` deprecated (use
+      `color2rgb`); `CausalModel.toDot()` arguments `SHOW_LATENT_NAMES`, `NODE_BG`, `NODE_FG`, `EDGE_COL` deprecated.
+    - `skbn.BNClassifier`: `priorWeight` now defaults to the configuration.
+    - Fixed `proba2hex` (invalid colors) and `CLGInference2dot` (without evidence). pyAgrum requires `pydot>=2`.
 
 - aGrUM
 
-    - **New: `gum::Configuration`**, a thread-safe, typed and documented configuration singleton (sections, keys,
-      defaults with `### type :: doc` metadata, `push`/`pop`, hooks, diff/save/load). Its defaults (`defaults.ini`)
-      are embedded in the library; `agrum.ini` of the current directory (`pyagrum.ini` for pyAgrum) is read at
-      start-up. `core.maxNumberOfThreads` is applied at start-up (the default, -1, keeps the number of threads
-      provided by the machine). `load` is atomic: a malformed line changes nothing. `load` never rewrites
-      the file (`save` writes the new names of the deprecated keys). `set` restores the previous value if a hook throws.
-      A notice already waiting is not queued twice. Floats are parsed independently of the locale of the program
-      (new `gum::parseDecimal` in `utils_string.h`).
-    - **New `agrum/base/core/dot/`**: `gum::dot::DotStyle` (the look read from the configuration at each call:
-      `DotStyle`, `JunctionTreeDotStyle`, `FactorGraphDotStyle`, `InfluenceDiagramDotStyle`, `CausalDotStyle`,
-      `DynamicBNDotStyle`), `gum::dot::DotWriter` (quoting, escaping and checked attributes of the dot language),
-      `gum::dot::DotOptions` (what the caller gives to a `toDot`) and the colors (`dotColor.h`). The `toDot()` of
-      `DiGraph`, `UndiGraph`, `MixedGraph`, `PDAG`, `PAG`, `CliqueGraph` (and its `mapToDot()`, which reads the
-      configuration), `EssentialGraph`, `MarkovBlanket`, `IBayesNet`, `BayesNetFragment`, `IMarkovRandomField` (and
-      `toDotAsFactorGraph`), `InfluenceDiagram`, `CausalModel`, `KTBN` and the new `CredalNet::toDot` use them, and
-      most have a `toDot(const dot::DotOptions&)` overload. `NodeGraphPart::dotNodeLabel` is removed. See the
-      changes of the look of the dot in the entry of pyAgrum.
-    - New `gum::dot::configFgColor(section, key)`: the font color of a key `...FgColor` of the configuration, resolved
-      against the key `...BgColor` which goes with it (the value `adaptive` gives black or white).
-    - `GumBNWriter`, `GumIDWriter` and `GumMRFWriter` constructors: `Writer(binary)` uses `core.jgumIndent`,
-      `Writer(binary, indent)` uses the given indentation. `BNWriter` takes its default for `allowModification`
-      from `core.allowModificationWhenSaving`.
-    - The default parameters of the approximation schemes are now keys of `gum::Configuration` (same default values
-      as before): sections `approximation` (epsilon, minEpsilonRate, maxIter, maxTime, burnIn, periodSize, verbosity: base
-      of `ApproximationScheme`, hence of the learners, the credal inference engines, ...), `sampling` (Monte Carlo,
-      weighted, importance sampling), `gibbs`, `lbp`, `loopySampling`, `gibbsKL` and `mcKL`. The values are read when an
-      object is built. The macros that held these defaults (`DEFAULT_EPSILON`, `GIBBSKL_DEFAULT_*`, ...) are removed.
-      `ApproximationScheme(bool verbosity = false)` is split into `ApproximationScheme()` (verbosity read from the
-      configuration) and `explicit ApproximationScheme(bool verbosity)`.
-    - The default parameters of the learners are now keys of the new section `learning` of `gum::Configuration` (same
-      default values as before): `alpha` (0.05, significance level of PC and FCI), `priorWeight` (1.0, weight of the
-      BDeu, smoothing and Dirichlet priors), `emNoise` (0.1, noise of EM), `tabuListSize` (100) and `tabuNbDecrease`
-      (2) of the local search with tabu list. In `BNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` the default
-      arguments of `useEM*`, `useBDeuPrior`, `useSmoothingPrior`, `useDirichletPrior` and
-      `useLocalSearchWithTabuList` are replaced by overloads without these arguments, which read the configuration
-      (`IBNLearner::default_EM_noise` is removed). The weight of `Prior` itself (and so the ESS of the BDeu score) is
-      not concerned.
-    - New key `learning.BNLearnerPreferredAlgo` (`MIIC` by default, so no change of behavior): the structure-learning
-      algorithm used by `BNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` when none is selected with a `use*()` method
-      (`MIIC`, `PC`, `FCI`, `GreedyHillClimbing`, `ExtendedGreedyHillClimbing`, `LocalSearchWithTabuList` or
-      `GreedyThickThinning`; not `K2`, which needs an order). A learner takes it when it is constructed (like
-      the other keys of the configuration, it does not follow later changes), and an algorithm selected explicitly
-      always wins. The options of
-      the preferred algorithm (`setPCAlpha`, `useFCIG2Test`, ...) can be set without selecting it explicitly. New static
-      `IBNLearner::preferredAlgo()`.
-    - Fixed the copy and the move of `IBNLearner` (and so of `BNLearner`): they now keep the options of PC and FCI (alpha,
-      independence test, ...), the permissions on the arc changes and the state of the extended greedy hill climbing and
-      of the greedy thick-thinning, which were silently reset to their defaults.
-    - Fixed `BNLearner::copyState()`, which lost the weight of a Dirichlet prior built from a Bayesian network. Removed the
-      unused member `IBNLearner::noiseEM_`.
-    - `pyagrum.skbn.BNClassifier`: `priorWeight` now defaults to `None`, meaning `pyagrum.config['learning', 'priorWeight']` (read when the
-      classifier is fitted) instead of a fixed 1.
-    - `KTBNLearner` and `KTBNAdaptiveLearner` (and so `pyagrum.ktbn`) now have `usePC()`, `useFCI()` and
-      `useGreedyThickThinning()`, like `BNLearner`.
-    - The text display of a `Tensor` (`toString`, hence `operator<<` and `__str__`) is now driven by the new section
-      `tensor` of `gum::Configuration`: `maxRowsConsole` (6, number of rows kept at the beginning and at the end of a big
-      tensor, at least 1) and `columnWidthConsole` (9, width of the value columns, at least 6; the values have
-      `columnWidthConsole - 5` decimals). The keys are read at each call; a value out of range is refused by the configuration (see below).
-    - `BNLearner::state()` showed the number of consecutive decreasing changes under the label "Tabu list size": it now
-      shows two rows, "Tabu list size" and "Max consecutive decreasing changes". `BNLearner::copyState()` gave the number
-      of decreasing changes as the size of the tabu list: it now copies both.
-    - `LoopySamplingInference` (and the `Hybrid*Sampling` inference engines, `Loopy*Sampling` in pyAgrum) has a new accessor
-      `virtualLBPSize()`. The members `current_step_`, `current_epsilon_`, `last_epsilon_` and `current_rate_` of
-      `ApproximationScheme` are now initialized by the constructor (they were not before `initApproximationScheme()`).
-    - **Domains of validity**: the `###` metadata line of an `int` or a `float` key may give its domain, `int[1,10]`,
-      `float]0,1[`, `int[1,]` (a bracket turned toward a bound includes it, turned away excludes it, an omitted bound is
-      unbounded). A value out of the domain is refused by `set()` and `load()` (`InvalidArgument`, `ValueError` in Python),
-      and `Configuration::meta()` gives it in `Meta::domain`.
-    - **Numerical tolerances**: three keys of `[core]`, `epsilonCoarse` (1e-2), `epsilonStandard` (1e-6) and `epsilonFine`
-      (1e-10), in the non-overlapping domains `[1e-3,1e-1]`, `[1e-8,1e-5]` and `[1e-11,1e-9]` (a value out of its domain is refused), read without lock by `gum::config().epsilonCoarse()` and so on
-      (atomics updated by `set`, `reset`, `pop` and `load`). `gum::config()` is a short name for `Configuration::instance()`.
-      They replace the literals of: the credal networks (redundancy, Farey, sums to one, vertices), `isCloseToZero` and
-      `isCloseToOne` (default 1e-9, now `epsilonFine`), the default precision of `Rational::farey` and
-      `continuedFracFirst`, the ticks of `DiscretizedVariable`, the comparison of the `==` of `InfluenceDiagram` and
-      `MarkovRandomField`, the Chi2 critical value, the threshold of the corrected mutual information, the O3PRM warning
-      and error on the sum of a CPT and `AlmostDifferent` (the `==` of tensors and Bayesian networks). Changes of behavior:
-      `IBayesNet::check()` tolerance 1e-8 becomes 1e-6 and its limit of "normalization problem" 1e-1 becomes 1e-2 ;
-      `AlmostDifferent` tolerance 1e-5 becomes 1e-6 ; the O3PRM error on the sum of a CPT, 1e-3, becomes `epsilonCoarse` (1e-2) ; `isCloseToZero`/`isCloseToOne` default 1e-9 becomes 1e-10.
-      The macros `GUM_CHI_EPSILON` and `GUM_LEARNING_CONFIDENCE_PROBA` and `ChiSquare::_CHI_EPSILON_` are removed.
-    - `Configuration::getTyped<T>()` is renamed `Configuration::typed<T>()` (the Python `getTyped` is unchanged).
-    - `GibbsBNdistance(const BNdistance&)` no longer forces the variables to be drawn at random: like the other
-      constructor, it uses `gibbsKL.drawnAtRandom`, whose default is `True`. The constructor `GibbsBNdistance(P, Q)`, which
-      used to draw the variables in turn, now draws them at random by default.
-    - The number of threads is now stored in an atomic, initialized on first use.
-    - The keys of `defaults.ini` no longer start with `default_` (`core.maxNumberOfThreads`, `core.jgumIndent`,
-      `notebook.nodeBgColor`, ...) and `core.allow_modification_when_saving` becomes
-      `core.allowModificationWhenSaving`. The old names (last used in aGrUM 3.2.1) are deprecated keys: they are still accepted
-      and redirected to the new ones, with a deprecation notice (`DeprecationWarning` in pyAgrum).
-    - **`gum::Configuration` can read several sources of defaults**, each one a text with its own name in the error
-      messages (`Configuration(std::initializer_list< DefaultsSource >)`): a section may be opened by several sources
-      (the keys of the later ones are added after those of the earlier ones), but a section may be opened only once inside
-      a source and a key may be defined only once. pyAgrum uses it to add its keys to sections of the defaults of aGrUM.
-    - New keys in the defaults of aGrUM for the look of the graphs (colors, sizes, shapes, layout of the notebook,
-      factor graph, dynamic BN, influence diagram, credal network and causal model; same default values as pyAgrum had,
-      see the list of the renamed keys of pyAgrum), and three new colors for the clusters of a k-TBN:
-      `dynamicBN.timeSliceBgColor` (`#DDDDDD`), `replicatedSliceBgColor` (`lightcyan`) and `atemporalBgColor` (`lightyellow`).
-      They are not read by aGrUM yet.
-    - **Much faster reading of models with clang (libc++) and MSVC**: the CoCo/R parsers (BIF, DSL, NET, UAI, O3PRM, ...)
-      built a new `std::locale("C")` for every number they read, which is very slow with libc++ (the C++ library used
-      with clang on macOS) and with the MSVC library. They now use `std::locale::classic()`: with clang, reading a large
-      BIF file such as Diabetes goes from about 8 s to 0.1 s and the whole C++ test suite from 86 s to 36 s; with MSVC
-      2022 and 2019, the `BIFReader` tests go from 24-26 s to 2.7-2.8 s and the `DSLReader` tests from 11-12 s to
-      1.4-1.9 s. With gcc (libstdc++, MinGW), where this construction is already cheap, there is no change.
+    - **New: `gum::Configuration`**: thread-safe, typed and documented configuration singleton (defaults embedded in
+      the library from several sources, `agrum.ini` read at start-up, domains of validity, hooks, `push`/`pop`,
+      `save`/`load`).
+    - **Defaults from the configuration**: approximation schemes, sampling/Gibbs/LBP inferences, KL distances, learners
+      (new key `learning.BNLearnerPreferredAlgo`), jgum writers and the text display of tensors read their defaults from
+      the configuration. The corresponding macros (`DEFAULT_EPSILON`, `GIBBSKL_DEFAULT_*`, `GUM_CHI_EPSILON`, ...) are
+      removed.
+    - **Numerical tolerances**: `core.epsilonCoarse`, `epsilonStandard` and `epsilonFine` replace hard-coded literals
+      (some tolerances change slightly, e.g. in `IBayesNet::check()` and `AlmostDifferent`).
+    - **New `gum::dot`** (`DotStyle`, `DotWriter`, `DotOptions`, colors): all the `toDot()` share the same writer, read
+      the configuration and accept `DotOptions`; new `CredalNet::toDot()`; several malformed dot outputs fixed.
+    - `KTBNLearner` and `KTBNAdaptiveLearner` gain `usePC()`, `useFCI()` and `useGreedyThickThinning()`.
+    - Fixed the copy/move of `IBNLearner` and `BNLearner::copyState()`, which lost some options.
+    - `GibbsBNdistance` now draws the variables at random by default (`gibbsKL.drawnAtRandom`).
+    - **Much faster reading of models with clang and MSVC** (BIF, DSL, NET, UAI, O3PRM...): e.g. a large BIF file from
+      8 s to 0.1 s with clang.
 
 ## Changelog for 3.2.1
 

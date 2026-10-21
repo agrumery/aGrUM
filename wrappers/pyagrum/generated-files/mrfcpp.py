@@ -33,7 +33,7 @@ def _swig_setattr_nondynamic_instance_variable(set):
             set(self, name, value)
         elif name == "thisown":
             self.this.own(value)
-        elif hasattr(self, name) and isinstance(getattr(type(self), name), property):
+        elif isinstance(getattr(type(self), name, None), property):
             set(self, name, value)
         else:
             raise AttributeError("You cannot add instance attributes to %s" % self)
@@ -284,7 +284,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
     def edges(self) -> set[tuple[int,int]]:
         return _mrfcpp.IMarkovRandomField_edges(self)
 
-    def minimalCondSet(self, *args) -> set[int]:
+    def minimalCondSet(self, *args):
         return _mrfcpp.IMarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":

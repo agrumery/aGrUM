@@ -33,7 +33,7 @@ def _swig_setattr_nondynamic_instance_variable(set):
             set(self, name, value)
         elif name == "thisown":
             self.this.own(value)
-        elif hasattr(self, name) and isinstance(getattr(type(self), name), property):
+        elif isinstance(getattr(type(self), name, None), property):
             set(self, name, value)
         else:
             raise AttributeError("You cannot add instance attributes to %s" % self)
@@ -1470,7 +1470,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
 
-    def MEU(self, *args) -> dict[str, float]:
+    def MEU(self, *args):
         r"""
 
         Returns maximum expected utility obtained from inference.
@@ -1483,7 +1483,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_MEU(self, *args)
 
-    def meanVar(self, *args) -> dict[str, float]:
+    def meanVar(self, *args):
         r"""
 
         Parameters
@@ -1509,7 +1509,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_makeInference(self)
 
-    def posterior(self, *args) -> "pyagrum.Tensor":
+    def posterior(self, *args):
         r"""
 
         Returns the posterior of a chance or a decision node (after optimisation).
