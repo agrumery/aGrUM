@@ -106,6 +106,15 @@ namespace gum {
      */
     GUM_SCALAR confidence();
 
+    /// returns true if the generated samples outnumber the virtual ones of the prior (if any)
+    /**
+     * When the estimator is initialized from a prior (e.g. by setFromLBP), this prior counts as
+     * virtual samples, each with the mean weight of the generated samples. As long as they
+     * outnumber the generated samples, the estimation hardly moves and the convergence criteria are
+     * meaningless.
+     */
+    bool isPriorOutweighed() const;
+
     /// updates the estimator with a given sample
     /**
      * @param I the sample used to update the estimators
@@ -135,14 +144,20 @@ namespace gum {
 
     private:
     /// estimator represented by hashtable between each variable name and a vector
-    /// of cumulative sample weights
+    /// of cumulative sample weights (generated samples only)
     HashTable< std::string, std::vector< GUM_SCALAR > > estimator_;
 
-    /// cumulated weights of all samples
+    /// prior distribution of each variable (e.g. LBP posteriors), if any
+    HashTable< std::string, std::vector< GUM_SCALAR > > prior_;
+
+    /// cumulated weights of the generated samples
     GUM_SCALAR wtotal_;
 
     /// number of generated samples
     Size ntotal_;
+
+    /// size of the prior as a number of virtual samples (0 if no prior)
+    GUM_SCALAR nvirtual_;
 
     /// Bayesian network on which approximation is done
     const IBayesNet< GUM_SCALAR >* bn_;

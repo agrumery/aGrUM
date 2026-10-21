@@ -55,9 +55,10 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   Estimator< GUM_SCALAR >::Estimator() {
     GUM_CONSTRUCTOR(Estimator);
-    wtotal_ = (GUM_SCALAR)0.;
-    ntotal_ = (Size)0;
-    bn_     = nullptr;
+    wtotal_   = (GUM_SCALAR)0.;
+    ntotal_   = (Size)0;
+    nvirtual_ = (GUM_SCALAR)0.;
+    bn_       = nullptr;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -83,6 +84,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromBN(const IBayesNet< GUM_SCALAR >* bn,
                                           const NodeSet&                 hardEvidence) {
+    prior_.clear();
+    nvirtual_ = (GUM_SCALAR)0;
     for (gum::NodeGraphPartIterator iter = bn->nodes().begin(); iter != bn->nodes().end(); ++iter) {
       auto v = bn->variable(*iter).name();
 
@@ -98,8 +101,8 @@ namespace gum {
     }
   }
 
-  // we multiply the posteriors obtained by LoopyBeliefPropagation by the it's
-  // number of iterations
+  // the posteriors obtained by LoopyBeliefPropagation are used as a prior worth virtualLBPSize
+  // samples (see EV)
   template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
                                            const NodeSet&                        hardEvidence,
@@ -111,14 +114,22 @@ namespace gum {
         gum::Instantiation        inst(p);
 
         for (inst.setFirst(); !inst.end(); ++inst) {
-          v.push_back(p[inst] * virtualLBPSize);
+          v.push_back(p[inst]);
         }
 
-        estimator_.insert(lbp->BN().variable(node).name(), v);
+        const auto& name = lbp->BN().variable(node).name();
+        estimator_.insert(name, std::vector< GUM_SCALAR >(v.size(), (GUM_SCALAR)0.0));
+        prior_.insert(name, std::move(v));
       }
     }
-    ntotal_ = (Size)virtualLBPSize;
-    wtotal_ = virtualLBPSize;
+    ntotal_   = (Size)0;
+    nvirtual_ = virtualLBPSize;
+    wtotal_   = (GUM_SCALAR)0.;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  bool Estimator< GUM_SCALAR >::isPriorOutweighed() const {
+    return (GUM_SCALAR)ntotal_ >= nvirtual_;
   }
 
   /*update the Estimator given an instantiation I with weight bias w*/
@@ -150,7 +161,14 @@ namespace gum {
       _target_posteriors_.insert(var.name(), p);
     }
 
-    p->fillWith(estimator_[var.name()]);
+    if (nvirtual_ > (GUM_SCALAR)0 && prior_.exists(var.name())) {
+      std::vector< GUM_SCALAR > v(var.domainSize());
+      for (Idx i = 0; i < v.size(); ++i)
+        v[i] = EV(var.name(), i);
+      p->fillWith(v);
+    } else {
+      p->fillWith(estimator_[var.name()]);
+    }
     p->normalize();
     return *p;
   }
@@ -159,6 +177,17 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string_view name, Idx val) {
+    if (nvirtual_ > (GUM_SCALAR)0) {
+      if (const auto prior = prior_.tryGet(name)) {
+        // The prior is worth nvirtual_ samples of the mean weight of the generated samples: the
+        // weights of the generated samples (e.g. likelihood or importance weights) may be far from
+        // 1, the prior must be expressed in the same unit to be balanced against them.
+        const auto n = (GUM_SCALAR)ntotal_;
+        const auto sampled
+            = (wtotal_ > (GUM_SCALAR)0) ? estimator_[name][val] / wtotal_ : (GUM_SCALAR)0;
+        return (nvirtual_ * (*prior)[val] + n * sampled) / (nvirtual_ + n);
+      }
+    }
     return estimator_[name][val] / wtotal_;
   }
 
@@ -179,7 +208,9 @@ namespace gum {
 
     for (auto iter = estimator_.begin(); iter != estimator_.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
-        GUM_SCALAR ic = GUM_SCALAR(2 * 1.96 * std::sqrt(variance(iter.key(), i) / (ntotal_ - 1)));
+        // the virtual samples of the prior (if any) count in the size of the sample
+        GUM_SCALAR ic = GUM_SCALAR(
+            2 * 1.96 * std::sqrt(variance(iter.key(), i) / (nvirtual_ + (GUM_SCALAR)ntotal_ - 1)));
         if (ic > ic_max) ic_max = ic;
       }
     }
@@ -190,8 +221,10 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::clear() {
     estimator_.clear();
-    wtotal_ = (GUM_SCALAR)0;
-    ntotal_ = Size(0);
+    prior_.clear();
+    wtotal_   = (GUM_SCALAR)0;
+    ntotal_   = Size(0);
+    nvirtual_ = (GUM_SCALAR)0;
     for (const auto& pot: _target_posteriors_)
       delete pot.second;
     _target_posteriors_.clear();

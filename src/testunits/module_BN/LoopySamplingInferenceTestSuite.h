@@ -375,6 +375,36 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(HybridWeightedSamplingWithUnlikelyEvidence) {
+    // With an unlikely evidence (P(e)~0.02), the weights of the samples are far below 1. If the LBP
+    // prior was worth virtualLBPSize samples of weight 1, it would outweigh thousands of samples
+    // and the estimation would stay close to the (wrong) LBP posterior.
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B;A->C;B->D;C->D");
+    bn.cpt("A").fillWith({0.1, 0.9});
+    bn.cpt("B").fillWith({0.5, 0.5, 0.01, 0.99});
+    bn.cpt("C").fillWith({0.01, 0.99, 0.99, 0.01});
+    bn.cpt("D").fillWith({0.1, 0.9, 0.99, 0.01, 0.99, 0.01, 0.95, 0.05});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("D", 1);
+    lazy.makeInference();
+
+    // the premise of the test: LBP is far from the exact posterior (0.835 vs 0.577)
+    gum::LoopyBeliefPropagation< double > lbp(&bn);
+    lbp.addEvidence("D", 1);
+    lbp.makeInference();
+    gum::Instantiation a1(lazy.posterior("A"));
+    a1.chgVal(0, 1);
+    CHECK_GT(std::abs(lazy.posterior("A")[a1] - lbp.posterior("A")[a1]), 0.2);
+
+    GUM_APPROX_TEST_BEGIN_ITERATION
+      gum::LoopySamplingInference< double, gum::WeightedSampling > inf(&bn);
+      inf.addEvidence("D", 1);
+      inf.setVerbosity(false);
+      inf.makeInference();
+    GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID)
+  }
+
   GUM_TEST(HybridAlarm) {
     gum::BayesNet< double >  bn;
     gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/alarm.bif"));

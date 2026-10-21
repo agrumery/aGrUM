@@ -170,12 +170,41 @@ namespace gum {
     gum::Instantiation Ip;
     GUM_SCALAR         w = .0;   //
 
+    // The estimator may start from a prior counted as virtual samples (e.g. LBP posteriors). As
+    // long as the prior outweighs the samples, the estimation hardly moves: the convergence
+    // criteria (epsilon and rate) would stop the sampling and return the prior. They are suspended
+    // until the samples outnumber the virtual ones (the limits on time and iterations still apply).
+    struct CriteriaSuspension {
+      SamplingInference< GUM_SCALAR >* inference;
+      const bool                       epsilon;
+      const bool                       rate;
+      bool                             suspended = false;
+
+      void suspend() {
+        inference->disableEpsilon();
+        inference->disableMinEpsilonRate();
+        suspended = true;
+      }
+
+      void restore() {
+        if (!suspended) return;
+        if (epsilon) inference->enableEpsilon();
+        if (rate) inference->enableMinEpsilonRate();
+        suspended = false;
+      }
+
+      ~CriteriaSuspension() { restore(); }
+    } criteria{this, this->isEnabledEpsilon(), this->isEnabledMinEpsilonRate()};
+
+    if (!_estimator_.isPriorOutweighed()) criteria.suspend();
+
     // Burn in
     Ip = this->burnIn_();
     do {
       Ip = this->draw_(&w, Ip);
       _estimator_.update(Ip, w);
       this->updateApproximationScheme();
+      if (criteria.suspended && _estimator_.isPriorOutweighed()) criteria.restore();
     } while (this->continueApproximationScheme(_estimator_.confidence()));
 
     this->isSetEstimator = false;
