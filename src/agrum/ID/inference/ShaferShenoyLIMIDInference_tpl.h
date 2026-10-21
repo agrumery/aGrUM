@@ -261,17 +261,132 @@ namespace gum {
     if (!this->isInferenceDone()) GUM_ERROR(OperationNotAllowed, "Call MakeInference first")
 
     const InfluenceDiagram< GUM_SCALAR >& infdiag = this->influenceDiagram();
+    const auto&                           jt      = *junctionTree();
 
-    GUM_SCALAR resmean = 0;
-    GUM_SCALAR resvar  = 0;
-    for (auto node: infdiag.nodes()) {
-      if (infdiag.isUtilityNode(node)) {
-        auto p = meanVar(node);
-        resmean += p.first;
-        resvar += p.second;
+    // the factors of the ID with the optimal strategies, as moments, in their cliques
+    NodeProperty< _UtilityMoments_ > moments;
+    for (const auto clique: jt.nodes())
+      moments.insert(clique, _UtilityMoments_());
+    auto addProba = [&](NodeId node, const Tensor< GUM_SCALAR >& p) {
+      _UtilityMoments_ m;
+      m.proba    = p;
+      m.hasProba = true;
+      _combineMoments_(moments[node_to_clique_[node]], m);
+    };
+    for (const auto node: infdiag.nodes()) {
+      if (this->hasEvidence(node)) addProba(node, *(this->evidence()[node]));
+
+      if (infdiag.isChanceNode(node)) addProba(node, infdiag.cpt(node));
+      else if (infdiag.isDecisionNode(node)) addProba(node, strategies_[node]);
+      else if (infdiag.isUtilityNode(node)) {
+        _UtilityMoments_ m;
+        m.util       = infdiag.utility(node);
+        m.util2      = m.util * m.util;
+        m.hasUtility = true;
+        _combineMoments_(moments[node_to_clique_[node]], m);
       }
     }
-    return std::pair< GUM_SCALAR, GUM_SCALAR >(resmean, resvar);
+
+    // collect in each connected component of the junction tree. The traversal is iterative (no
+    // recursion depth bounded by the diameter of the junction tree): the cliques are listed in
+    // pre-order, then each clique, in reverse pre-order (its children come first), sends its
+    // message to its parent
+    _UtilityMoments_       total;
+    NodeProperty< NodeId > parent;   // also the set of the visited cliques
+    std::vector< NodeId >  order;
+    std::vector< NodeId >  stack;
+    for (const auto root: jt.nodes()) {
+      if (parent.exists(root)) continue;
+      order.clear();
+      parent.insert(root, root);
+      stack.push_back(root);
+      while (!stack.empty()) {
+        const NodeId clique = stack.back();
+        stack.pop_back();
+        order.push_back(clique);
+        for (const auto nei: jt.neighbours(clique))
+          if (!parent.exists(nei)) {
+            parent.insert(nei, clique);
+            stack.push_back(nei);
+          }
+      }
+
+      for (auto iter = order.rbegin(); iter != order.rend(); ++iter) {
+        const NodeId clique = *iter;
+        const NodeId father = parent[clique];
+        if (clique == father) {
+          _combineMoments_(total, _marginalizeMoments_(moments[clique], SetOfVars()));
+        } else {
+          _combineMoments_(
+              moments[father],
+              _marginalizeMoments_(moments[clique], varsSeparator_[Edge(clique, father)]));
+        }
+      }
+    }
+
+    const GUM_SCALAR phi   = total.hasProba ? total.proba.sum() : GUM_SCALAR(1);
+    const GUM_SCALAR mean  = total.hasUtility ? total.util.sum() / phi : GUM_SCALAR(0);
+    const GUM_SCALAR mean2 = total.hasUtility ? total.util2.sum() / phi : GUM_SCALAR(0);
+    GUM_SCALAR       var   = mean2 - mean * mean;
+    if (var < 0) var = 0;   // var is a small negative number due to rounding errors
+    return std::pair< GUM_SCALAR, GUM_SCALAR >(mean, var);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void ShaferShenoyLIMIDInference< GUM_SCALAR >::_combineMoments_(
+      _UtilityMoments_&       moments,
+      const _UtilityMoments_& other) const {
+    if (!other.hasProba && !other.hasUtility) return;
+    if (!moments.hasProba && !moments.hasUtility) {
+      moments = other;
+      return;
+    }
+
+    // (p1, a1, b1) x (p2, a2, b2) = (p1.p2, p1.a2 + p2.a1, p1.b2 + p2.b1 + 2.a1.a2)
+    auto times = [](const _UtilityMoments_& m, const Tensor< GUM_SCALAR >& t) {
+      return m.hasProba ? m.proba * t : t;
+    };
+    _UtilityMoments_ res;
+    if (moments.hasUtility && other.hasUtility) {
+      res.util  = times(moments, other.util) + times(other, moments.util);
+      res.util2 = times(moments, other.util2) + times(other, moments.util2)
+                + (moments.util * other.util).scale(2);
+    } else if (moments.hasUtility) {
+      res.util  = times(other, moments.util);
+      res.util2 = times(other, moments.util2);
+    } else if (other.hasUtility) {
+      res.util  = times(moments, other.util);
+      res.util2 = times(moments, other.util2);
+    }
+    res.hasUtility = moments.hasUtility || other.hasUtility;
+
+    if (other.hasProba) res.proba = times(moments, other.proba);
+    else if (moments.hasProba) res.proba = moments.proba;
+    res.hasProba = moments.hasProba || other.hasProba;
+
+    moments = std::move(res);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  typename ShaferShenoyLIMIDInference< GUM_SCALAR >::_UtilityMoments_
+      ShaferShenoyLIMIDInference< GUM_SCALAR >::_marginalizeMoments_(
+          const _UtilityMoments_& moments,
+          const SetOfVars&        kept) const {
+    auto marginalize = [&kept](const Tensor< GUM_SCALAR >& t) {
+      SetOfVars del;
+      for (const auto var: t.variablesSequence())
+        if (!kept.contains(var)) del.insert(var);
+      return t.sumOut(del);
+    };
+    _UtilityMoments_ res;
+    res.hasProba   = moments.hasProba;
+    res.hasUtility = moments.hasUtility;
+    if (res.hasProba) res.proba = marginalize(moments.proba);
+    if (res.hasUtility) {
+      res.util  = marginalize(moments.util);
+      res.util2 = marginalize(moments.util2);
+    }
+    return res;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -797,7 +912,7 @@ namespace gum {
         sev.insert(&infdiag.variable(node));
         SetOfVars family = sev;
         for (const auto par: reduced_.parents(node)) {
-          if (infdiag.isChanceNode(par)) family.insert(&infdiag.variable(par));
+          family.insert(&infdiag.variable(par));
         }
         // GCC 16 false positive: deep inlining confuses heap-allocated internals
         // of DecisionTensor with the stack object bounds

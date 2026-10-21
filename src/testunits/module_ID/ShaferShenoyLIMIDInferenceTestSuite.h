@@ -845,4 +845,78 @@ namespace gum_tests {
     const auto [m3, v3] = iediag.meanVar("U");
     CHECK_EQ(v3, 0.0);
   }
+
+  GUM_TEST(OptimalDecisionKeepsDecisionParents) {
+    // Matching game: U = 10 iff D2 == D1. D1 is requisite for D2, so the optimal policy of D2
+    // must be a function of D1.
+    auto               diag = gum::InfluenceDiagram< double >::fastPrototype("*D1->*D2->$U<-*D1");
+    auto&              u    = diag.utility("U");
+    const auto&        d1   = diag.variableFromName("D1");
+    const auto&        d2   = diag.variableFromName("D2");
+    gum::Instantiation I(u);
+    for (I.setFirst(); !I.end(); I.inc())
+      u.set(I, (I.val(d1) == I.val(d2)) ? 10.0 : 0.0);
+
+    gum::ShaferShenoyLIMIDInference< double > ie(&diag);
+    ie.addNoForgettingAssumption(std::vector< std::string >{"D1", "D2"});
+    ie.makeInference();
+
+    CHECK_EQ(ie.MEU().first, doctest::Approx(10.0));
+
+    const auto pol = ie.optimalDecision("D2");
+    CHECK(pol.contains(d1));
+    CHECK(pol.contains(d2));
+
+    // on the reachable configuration of D1, the policy of D2 plays D1
+    const auto         pol1 = ie.optimalDecision("D1");
+    gum::Instantiation J(pol1);
+    J.setFirst();
+    while (!J.end() && pol1[J] != 1.0)
+      J.inc();
+    REQUIRE(!J.end());
+    gum::Instantiation K(pol);
+    K.chgVal(d1, J.val(d1));
+    K.chgVal(d2, J.val(d1));
+    CHECK_EQ(pol[K], 1.0);
+  }
+
+  GUM_TEST(MEUVarianceOfTheTotalUtility) {
+    // the variance of MEU is the one of the sum of the utilities: Var(U1 + U2) includes 2.Cov
+    auto fill = [](gum::InfluenceDiagram< double >& diag,
+                   const std::string&               uname,
+                   const std::string&               cname) {
+      const auto&        u = diag.utility(uname);
+      const auto&        c = diag.variableFromName(cname);
+      gum::Instantiation I(u);
+      for (I.setFirst(); !I.end(); I.inc())
+        u.set(I, (I.val(c) == 1) ? 10.0 : 0.0);
+    };
+    {
+      // U1 = U2 = 10.C with C a fair coin: Var(U1) = Var(U2) = 25 but Var(U1 + U2) = 100
+      auto diag = gum::InfluenceDiagram< double >::fastPrototype("C->*D->$U1<-C;D->$U2<-C");
+      diag.cpt("C").fillWith({0.5, 0.5});
+      fill(diag, "U1", "C");
+      fill(diag, "U2", "C");
+
+      gum::ShaferShenoyLIMIDInference< double > ie(&diag);
+      ie.makeInference();
+      const auto [mean, var] = ie.MEU();
+      CHECK_EQ(mean, doctest::Approx(10.0));
+      CHECK_EQ(var, doctest::Approx(100.0));
+    }
+    {
+      // U1 = 10.C1 and U2 = 10.C2 with independent fair coins: Var(U1 + U2) = 25 + 25
+      auto diag = gum::InfluenceDiagram< double >::fastPrototype("C1->*D->$U1<-C1;D->$U2<-C2");
+      diag.cpt("C1").fillWith({0.5, 0.5});
+      diag.cpt("C2").fillWith({0.5, 0.5});
+      fill(diag, "U1", "C1");
+      fill(diag, "U2", "C2");
+
+      gum::ShaferShenoyLIMIDInference< double > ie(&diag);
+      ie.makeInference();
+      const auto [mean, var] = ie.MEU();
+      CHECK_EQ(mean, doctest::Approx(10.0));
+      CHECK_EQ(var, doctest::Approx(50.0));
+    }
+  }
 }   // namespace gum_tests

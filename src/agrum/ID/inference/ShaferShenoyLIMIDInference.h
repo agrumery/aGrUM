@@ -159,6 +159,11 @@ namespace gum {
     /**
      * Return the pair (mean,variance) for the total utility (MEU)
      *
+     * The variance is the one of the sum of all the utilities (covariances included). It is
+     * computed by a collect of the junction tree in the second-order expectation semiring (Li and
+     * Eisner, EMNLP 2009), using the optimal strategies: each factor is a triple
+     * \f$(\phi, \phi U, \phi U^2)\f$ and the cost is about one additional message passing.
+     *
      * @return the pair (mean,variance) for MEU
      */
     std::pair< GUM_SCALAR, GUM_SCALAR > MEU() final;
@@ -191,6 +196,23 @@ namespace gum {
     std::vector< NodeId >  noForgettingOrder_;
 
     private:
+    /// unnormalized moments of the total utility U: (phi, phi.U, phi.U^2). A missing proba means 1,
+    /// a missing utility means 0.
+    struct _UtilityMoments_ {
+      Tensor< GUM_SCALAR > proba;
+      Tensor< GUM_SCALAR > util;
+      Tensor< GUM_SCALAR > util2;
+      bool                 hasProba   = false;
+      bool                 hasUtility = false;
+    };
+
+    /// combines other into moments (product in the second-order expectation semiring)
+    void _combineMoments_(_UtilityMoments_& moments, const _UtilityMoments_& other) const;
+
+    /// sums out all the variables that do not belong to kept
+    _UtilityMoments_ _marginalizeMoments_(const _UtilityMoments_& moments,
+                                          const SetOfVars&        kept) const;
+
     void _completingNoForgettingAssumption_();
     void _reducingLIMID_();
     void _creatingPartialOrder_(const NodeSet& utilities);
