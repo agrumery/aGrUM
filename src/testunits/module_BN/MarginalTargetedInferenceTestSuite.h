@@ -91,4 +91,38 @@ namespace gum_tests {
     ve.addTarget("B");
     CHECK_EQ(ve.targets(), gum::NodeSet({0, 1}));
   }
+
+  GUM_TEST(ImpactsKeepTheTargetsAndTheEvidence) {
+    // evidenceImpact, evidenceJointImpact and jointMutualInformation run their own inferences: the
+    // targets and the evidence of the user must be restored afterwards
+    auto                           bn = gum::BayesNet< double >::fastPrototype("A->B->C;A->D");
+    gum::LazyPropagation< double > ie(&bn);
+    ie.addTarget("A");
+    ie.addJointTarget(bn.nodeset({"A", "D"}));
+    ie.addEvidence("C", 1);
+    ie.addEvidence("D", std::vector< double >{0.2, 0.6});
+    ie.makeInference();
+    const auto posterior = gum::Tensor< double >(ie.posterior("A"));
+
+    auto check = [&]() {
+      CHECK_EQ(ie.targets(), gum::NodeSet{bn.idFromName("A")});
+      CHECK(ie.isJointTarget(bn.nodeset({"A", "D"})));
+      CHECK_EQ(ie.hardEvidenceNodes(), gum::NodeSet{bn.idFromName("C")});
+      CHECK_EQ(ie.softEvidenceNodes(), gum::NodeSet{bn.idFromName("D")});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior("A"), posterior);
+    };
+
+    ie.evidenceImpact("A", std::vector< std::string >{"B"});
+    check();
+    ie.evidenceJointImpact(std::vector< std::string >{"A", "D"}, std::vector< std::string >{"B"});
+    check();
+    ie.jointMutualInformation(bn.nodeset({"A", "B"}));
+    check();
+
+    // without any target given by the user, all the nodes remain targets
+    gum::LazyPropagation< double > ie2(&bn);
+    ie2.evidenceImpact("A", std::vector< std::string >{"B"});
+    CHECK_EQ(ie2.targets(), bn.nodes().asNodeSet());
+    CHECK(ie2.evidence().empty());
+  }
 }   // namespace gum_tests

@@ -49,6 +49,7 @@
  * @author Christophe GONZALES(_at_AMU) and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <agrum/base/graphicalModels/inference/junctionTreeRoots.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>   // to ease IDE parser
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #  include <algorithm>
@@ -1222,7 +1223,10 @@ namespace gum {
     for (auto iter = _joint_target_posteriors_.beginSafe();
          iter != _joint_target_posteriors_.endSafe();
          ++iter) {
-      if (invalidated_cliques.exists(_joint_target_to_clique_[iter.key()])) {
+      // a posterior without clique (e.g. its declared target has no clique) is computed again on
+      // demand
+      const auto clique = _joint_target_to_clique_.tryGet(iter.key());
+      if (!clique || invalidated_cliques.exists(*clique)) {
         delete iter.val();
         _joint_target_posteriors_.erase(iter);
       } else {
@@ -1437,45 +1441,9 @@ namespace gum {
       }
     }
 
-    // put in a vector these cliques and their sizes
-    std::vector< std::pair< NodeId, Size > > possible_roots(clique_targets.size());
-    const auto&                              bn = this->BN();
-    std::size_t                              i  = 0;
-    for (const auto clique_id: clique_targets) {
-      const auto& clique   = _JT_->clique(clique_id);
-      Size        dom_size = 1;
-      for (const auto node: clique) {
-        dom_size *= bn.variable(node).domainSize();
-      }
-      possible_roots[i] = std::pair< NodeId, Size >(clique_id, dom_size);
-      ++i;
-    }
-
-    // sort the cliques by increasing domain size
-    std::sort(possible_roots.begin(),
-              possible_roots.end(),
-              [](const std::pair< NodeId, Size >& a, const std::pair< NodeId, Size >& b) -> bool {
-                return a.second < b.second;
-              });
-
-    // pick up the clique with the smallest size in each connected component
-    NodeProperty< bool >                  marked = _JT_->nodesPropertyFromVal(false);
-    std::function< void(NodeId, NodeId) > diffuse_marks
-        = [&marked, &diffuse_marks, this](NodeId node, NodeId from) {
-            if (!marked[node]) {
-              marked[node] = true;
-              for (const auto neigh: _JT_->neighbours(node))
-                if ((neigh != from) && !marked[neigh]) diffuse_marks(neigh, node);
-            }
-          };
-    _roots_.clear();
-    for (const auto& xclique: possible_roots) {
-      NodeId clique = xclique.first;
-      if (!marked[clique]) {
-        _roots_.insert(clique);
-        diffuse_marks(clique, clique);
-      }
-    }
+    // one root per connected component (every component needs one: its mass is required by
+    // evidenceProbability), the cliques containing targets being preferred
+    _roots_ = junctionTreeRoots(*_JT_, this->BN(), clique_targets);
   }
 
   // find the tensors d-connected to a set of variables
@@ -2589,8 +2557,14 @@ namespace gum {
     auto pot
         = new Tensor< GUM_SCALAR >(_joint_target_posteriors_[declared_target]->sumOut(del_vars));
 
-    // save the result into the cache
+    // save the result into the cache. wanted_target is a subset of declared_target: it belongs to
+    // the same clique, which tells when the cached posterior is outdated
     _joint_target_posteriors_.insert(wanted_target, pot);
+    if (auto clique = _joint_target_to_clique_.tryGet(declared_target)) {
+      const NodeId clique_id = *clique;   // copied: the insertion may resize the table
+      if (!_joint_target_to_clique_.exists(wanted_target))
+        _joint_target_to_clique_.insert(wanted_target, clique_id);
+    }
 
     return *pot;
   }

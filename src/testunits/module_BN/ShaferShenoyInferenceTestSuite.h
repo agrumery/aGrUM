@@ -1545,4 +1545,54 @@ namespace gum_tests {
                          bn_joint.sumIn(set).normalize()));
     } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
   }
+
+  GUM_TEST(EvidenceProbabilityInComponentWithoutTarget) {
+    // two connected components; the only target (A) is not in the component with evidence (C)
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B;C->D");
+    bn.cpt("C").fillWith({0.5, 0.5});
+    const auto   likelihood = std::vector< double >{0.2, 0.4};
+    const double expected   = 0.5 * 0.2 + 0.5 * 0.4;
+
+    {
+      gum::LazyPropagation< double > ie(&bn);
+      ie.addTarget("A");
+      ie.addEvidence("C", likelihood);
+      CHECK_EQ(ie.evidenceProbability(), doctest::Approx(expected));
+    }
+    {
+      gum::ShaferShenoyInference< double > ie(&bn);
+      ie.addTarget("A");
+      ie.addEvidence("C", likelihood);
+      CHECK_EQ(ie.evidenceProbability(), doctest::Approx(expected));
+    }
+  }
+
+  GUM_TEST(ChangeEvidenceAfterJointPosteriorOfSubset) {
+    // the joint posterior of a subset of a declared joint target is cached: changing the evidence
+    // afterwards must invalidate it (the subset has no clique of its own)
+    auto bn    = gum::BayesNet< double >::fastPrototype("A->B->C->D;A->C");
+    auto check = [&bn](auto& ie) {
+      ie.addJointTarget(bn.nodeset({"A", "B", "C"}));
+      ie.addEvidence("D", std::vector< double >{0.2, 0.6});
+      ie.makeInference();
+      ie.jointPosterior(bn.nodeset({"A", "B"}));
+      ie.chgEvidence("D", std::vector< double >{0.7, 0.1});
+      GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference());
+
+      gum::LazyPropagation< double > lazy(&bn);
+      lazy.addJointTarget(bn.nodeset({"A", "B"}));
+      lazy.addEvidence("D", std::vector< double >{0.7, 0.1});
+      lazy.makeInference();
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.jointPosterior(bn.nodeset({"A", "B"})),
+                                     lazy.jointPosterior(bn.nodeset({"A", "B"})));
+    };
+    {
+      gum::LazyPropagation< double > ie(&bn);
+      check(ie);
+    }
+    {
+      gum::ShaferShenoyInference< double > ie(&bn);
+      check(ie);
+    }
+  }
 }   // namespace gum_tests

@@ -227,7 +227,8 @@ namespace gum {
 
     if (!this->isInferenceDone()) { this->makeInference(); }
 
-    if (found_exact_target) return jointPosterior_(real_nodes);
+    // the superset may be real_nodes itself (e.g. the scope of a factor)
+    if (found_exact_target || (super_target == real_nodes)) return jointPosterior_(real_nodes);
     else { return jointPosterior_(real_nodes, super_target); }
   }
 
@@ -259,6 +260,8 @@ namespace gum {
     }
     auto condset = this->MRF().minimalCondSet(targets, evs);
 
+    // the targets and the evidence of the user are restored when leaving
+    const typename GraphicalModelInference< GUM_SCALAR >::StateGuard_ guard(*this);
     this->eraseAllTargets();
     this->eraseAllEvidence();
 
@@ -309,6 +312,8 @@ namespace gum {
                 "jointMutualInformation needs at least 2 variables (targets=" << targets << ")");
     }
 
+    // the targets and the evidence of the user are restored when leaving
+    const typename GraphicalModelInference< GUM_SCALAR >::StateGuard_ guard(*this);
     this->eraseAllTargets();
     this->eraseAllEvidence();
     this->addJointTarget(targets);
@@ -373,6 +378,18 @@ namespace gum {
     }
 
     return NodeSet();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::function< void() > JointTargetedMRFInference< GUM_SCALAR >::stateRestorer_() {
+    return [this,
+            marginal = MarginalTargetedMRFInference< GUM_SCALAR >::stateRestorer_(),
+            joints   = _joint_targets_]() {
+      eraseAllJointTargets();
+      marginal();
+      for (const auto& joint: joints)
+        addJointTarget(joint);
+    };
   }
 
 } /* namespace gum */

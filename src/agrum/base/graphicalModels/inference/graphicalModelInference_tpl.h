@@ -644,4 +644,33 @@ namespace gum {
     return _model_ == nullptr;
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  std::function< void() > GraphicalModelInference< GUM_SCALAR >::stateRestorer_() {
+    NodeProperty< Tensor< GUM_SCALAR > > evidence;
+    for (const auto& ev: this->evidence())
+      evidence.insert(ev.first, *(ev.second));
+    return [this, evidence]() {
+      this->eraseAllEvidence();
+      for (const auto& ev: evidence)
+        this->addEvidence(ev.second);
+    };
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  GraphicalModelInference< GUM_SCALAR >::StateGuard_::StateGuard_(
+      GraphicalModelInference< GUM_SCALAR >& inference) :
+      _restore_(inference.stateRestorer_()), _uncaught_exceptions_(std::uncaught_exceptions()) {}
+
+  template < GUM_Numeric GUM_SCALAR >
+  GraphicalModelInference< GUM_SCALAR >::StateGuard_::~StateGuard_() noexcept(false) {
+    if (std::uncaught_exceptions() > _uncaught_exceptions_) {
+      // stack unwinding: a second exception would call std::terminate, the original one wins
+      try {
+        _restore_();
+      } catch (...) {}
+    } else {
+      _restore_();
+    }
+  }
+
 } /* namespace gum */

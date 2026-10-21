@@ -429,4 +429,74 @@ namespace gum_tests {
     }
     GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(phard, psoft);
   }
+
+  GUM_TEST(JointPosteriorOfSubsetOfFactorScope) {
+    // {A} is not a declared joint target: it is computed from the scope {A,B} of a factor, which
+    // must be marginalized down to {A}.
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+    mn.factor(std::vector< std::string >{"A", "B"}).fillWith({0.8, 0.2, 0.2, 0.8});
+    mn.factor(std::vector< std::string >{"B", "C"}).fillWith({0.8, 0.2, 0.2, 0.8});
+
+    gum::ShaferShenoyMRFInference< double > ie(&mn);
+    ie.makeInference();
+
+    const auto& joint = ie.jointPosterior(gum::NodeSet{mn.idFromName("A")});
+    CHECK_EQ(joint.nbrDim(), static_cast< gum::Size >(1));
+    CHECK(joint.contains(mn.variable("A")));
+    GUM_CHECK_TENSOR_ALMOST_EQUALS(joint, ie.posterior("A"));
+  }
+
+  GUM_TEST(EvidenceProbabilityIsNormalizedOverAllComponents) {
+    // two connected components; the only target (A) is not in the component with evidence (C).
+    // P(e) = Z(e) / Z with Z = 2 * 2 and Z(e) = 2 * (0.2 + 0.4) (both factors have rows summing
+    // to 1).
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B;C--D");
+    mn.factor(std::vector< std::string >{"A", "B"}).fillWith({0.8, 0.2, 0.2, 0.8});
+    mn.factor(std::vector< std::string >{"C", "D"}).fillWith({0.6, 0.4, 0.4, 0.6});
+
+    gum::ShaferShenoyMRFInference< double > ie(&mn);
+    ie.eraseAllTargets();
+    ie.addTarget("A");
+    ie.addEvidence("C", std::vector< double >{0.2, 0.4});
+    CHECK_EQ(ie.evidenceProbability(), doctest::Approx(0.3));
+
+    // Z is kept by the engine: changing the evidence still gives the right P(e) = 2 * 0.8 / 4
+    ie.chgEvidence("C", std::vector< double >{0.4, 0.4});
+    CHECK_EQ(ie.evidenceProbability(), doctest::Approx(0.4));
+
+    // without evidence, P(e) = 1
+    gum::ShaferShenoyMRFInference< double > ie2(&mn);
+    CHECK_EQ(ie2.evidenceProbability(), doctest::Approx(1.0));
+  }
+
+  GUM_TEST(ImpactsKeepTheTargetsAndTheEvidence) {
+    // evidenceImpact, evidenceJointImpact and jointMutualInformation run their own inferences: the
+    // targets and the evidence of the user must be restored afterwards. ({B,D} is not covered by a
+    // factor, hence it is a true joint target)
+    auto mn = gum::MarkovRandomField< double >::fastPrototype("A--B--C;A--D");
+    gum::ShaferShenoyMRFInference< double > ie(&mn);
+    ie.addTarget("A");
+    ie.addJointTarget(mn.nodeset({"B", "D"}));
+    ie.addEvidence("C", 1);
+    ie.addEvidence("D", std::vector< double >{0.2, 0.6});
+    ie.makeInference();
+    const auto posterior = gum::Tensor< double >(ie.posterior("A"));
+
+    auto check = [&]() {
+      CHECK_EQ(ie.targets(), gum::NodeSet{mn.idFromName("A")});
+      CHECK(ie.isJointTarget(mn.nodeset({"B", "D"})));
+      CHECK_EQ(ie.hardEvidenceNodes(), gum::NodeSet{mn.idFromName("C")});
+      CHECK_EQ(ie.softEvidenceNodes(), gum::NodeSet{mn.idFromName("D")});
+      GUM_CHECK_TENSOR_ALMOST_EQUALS(ie.posterior("A"), posterior);
+    };
+    check();
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ie.evidenceImpact("A", std::vector< std::string >{"B"}));
+    check();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ie.evidenceJointImpact(std::vector< std::string >{"A", "B"},
+                                                           std::vector< std::string >{"D"}));
+    check();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ie.jointMutualInformation(mn.nodeset({"A", "B"})));
+    check();
+  }
 }   // namespace gum_tests

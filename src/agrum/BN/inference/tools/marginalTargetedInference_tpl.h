@@ -292,6 +292,8 @@ namespace gum {
     auto condset = this->BN().minimalCondSet(target, evs);
 
     Tensor< GUM_SCALAR > res;
+    // the targets and the evidence of the user are restored when leaving
+    const typename GraphicalModelInference< GUM_SCALAR >::StateGuard_ guard(*this);
     this->eraseAllTargets();
     this->eraseAllEvidence();
     res.add(this->BN().variable(target));
@@ -338,4 +340,24 @@ namespace gum {
       _targeted_mode_ = true;
     }
   }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::function< void() > MarginalTargetedInference< GUM_SCALAR >::stateRestorer_() {
+    return [this,
+            evidence     = GraphicalModelInference< GUM_SCALAR >::stateRestorer_(),
+            targetedMode = _targeted_mode_,
+            targets      = _targets_]() {
+      // only the marginal targets (eraseAllTargets may also erase other kinds of targets)
+      MarginalTargetedInference< GUM_SCALAR >::eraseAllTargets();
+      if (targetedMode) {
+        for (const auto target: targets)
+          addTarget(target);
+      } else {   // all the nodes are targets
+        _targeted_mode_ = false;
+        _setAllMarginalTargets_();
+      }
+      evidence();
+    };
+  }
+
 } /* namespace gum */

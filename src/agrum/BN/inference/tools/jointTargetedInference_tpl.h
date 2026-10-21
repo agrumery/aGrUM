@@ -258,6 +258,8 @@ namespace gum {
     }
     auto condset = this->BN().minimalCondSet(targets, evs);
 
+    // the targets and the evidence of the user are restored when leaving
+    const typename GraphicalModelInference< GUM_SCALAR >::StateGuard_ guard(*this);
     this->eraseAllTargets();
     this->eraseAllEvidence();
 
@@ -307,6 +309,8 @@ namespace gum {
                 "jointMutualInformation needs at least 2 variables (targets=" << targets << ")");
     }
 
+    // the targets and the evidence of the user are restored when leaving
+    const typename GraphicalModelInference< GUM_SCALAR >::StateGuard_ guard(*this);
     this->eraseAllTargets();
     this->eraseAllEvidence();
     this->addJointTarget(targets);
@@ -352,6 +356,18 @@ namespace gum {
   GUM_SCALAR JointTargetedInference< GUM_SCALAR >::jointMutualInformation(
       const std::vector< std::string >& targets) {
     return jointMutualInformation(this->BN().ids(targets));
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::function< void() > JointTargetedInference< GUM_SCALAR >::stateRestorer_() {
+    return [this,
+            marginal = MarginalTargetedInference< GUM_SCALAR >::stateRestorer_(),
+            joints   = _joint_targets_]() {
+      eraseAllJointTargets();
+      marginal();
+      for (const auto& joint: joints)
+        addJointTarget(joint);
+    };
   }
 
 } /* namespace gum */

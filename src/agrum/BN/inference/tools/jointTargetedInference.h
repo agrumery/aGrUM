@@ -276,6 +276,9 @@ namespace gum {
 
 
     protected:
+    /// returns a function restoring the current marginal and joint targets and evidence
+    std::function< void() > stateRestorer_() override;
+
     /// fired after a new Bayes net has been assigned to the engine
     void onModelChanged_(const GraphicalModel* bn) override;
 

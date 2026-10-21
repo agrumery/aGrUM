@@ -257,6 +257,9 @@ namespace gum {
     void setTargetedMode_();
     bool isTargetedMode_() const;
 
+    /// returns a function restoring the current marginal targets and evidence
+    std::function< void() > stateRestorer_() override;
+
     private:
     /// whether the actual targets are default
     bool _targeted_mode_;

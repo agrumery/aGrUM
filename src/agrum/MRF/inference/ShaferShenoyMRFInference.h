@@ -49,6 +49,7 @@
 #ifndef GUM_SHAFER_SHENOY_MN_INFERENCE_H
 #define GUM_SHAFER_SHENOY_MN_INFERENCE_H
 
+#include <optional>
 #include <utility>
 
 #include <agrum/agrum.h>
@@ -121,6 +122,11 @@ namespace gum {
     const JunctionTree* junctionTree();
 
     /// returns the probability of evidence
+    /**
+     * P(e) = Z(e) / Z. The partition function Z is computed (by an inference without evidence) at
+     * the first call and kept until the MRF assigned to the engine changes.
+     * @warning modifying in place the values of a factor of the MRF is not detected by the engine.
+     */
     GUM_SCALAR evidenceProbability() final;
 
     /// @}
@@ -231,6 +237,12 @@ namespace gum {
 
 
     private:
+    /// returns the unnormalized mass Z(e) of the evidence (the partition function without evidence)
+    GUM_SCALAR _evidenceMass_();
+
+    /// the partition function Z of the MRF (cache for evidenceProbability)
+    std::optional< GUM_SCALAR > _partition_function_;
+
     using _TensorSet_           = Set< const Tensor< GUM_SCALAR >* >;
     using _ScheduleMultiDimSet_ = Set< const IScheduleMultiDim* >;
     using _TensorSetIterator_   = SetIteratorSafe< const Tensor< GUM_SCALAR >* >;

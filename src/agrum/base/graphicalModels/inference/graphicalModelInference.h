@@ -50,6 +50,9 @@
 #define GUM_GRAPHICALMODELINFERENCE_H
 
 
+#include <exception>
+#include <functional>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/graphicalModel.h>
@@ -421,6 +424,35 @@ namespace gum {
 
 
     protected:
+    /**
+     * @brief Returns a function restoring the current state of the inference engine.
+     *
+     * The state is the evidence. Derived classes add their own state (e.g. the targets).
+     */
+    virtual std::function< void() > stateRestorer_();
+
+    /// restores the state of the inference engine (see stateRestorer_) when destroyed
+    /**
+     * If the restoration throws while no exception is propagating, this exception is propagated.
+     * If the guard is destroyed during stack unwinding, the restoration is still attempted but its
+     * own exception (if any) is discarded: the original exception is propagated (a second
+     * exception would call std::terminate).
+     */
+    class StateGuard_ {
+      public:
+      explicit StateGuard_(GraphicalModelInference< GUM_SCALAR >& inference);
+      ~StateGuard_() noexcept(false);
+
+      StateGuard_(const StateGuard_&)            = delete;
+      StateGuard_& operator=(const StateGuard_&) = delete;
+
+      private:
+      std::function< void() > _restore_;
+
+      /// number of uncaught exceptions when the guard was created
+      int _uncaught_exceptions_;
+    };
+
     /// fired when the stage is changed
     virtual void onStateChanged_() = 0;
 

@@ -242,6 +242,9 @@ namespace gum {
 
 
     protected:
+    /// returns a function restoring the current marginal and joint targets and evidence
+    std::function< void() > stateRestorer_() override;
+
     /// check if the vars form a possible computable joint (can be redefined by
     /// subclass)
     virtual bool    isExactJointComputable_(const NodeSet& vars);
