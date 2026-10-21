@@ -50,6 +50,9 @@
 #ifndef GUM_GIBBS_OPERATOR_H
 #define GUM_GIBBS_OPERATOR_H
 
+#include <array>
+#include <vector>
+
 #include <agrum/BN/IBayesNet.h>
 
 namespace gum {
@@ -103,7 +106,32 @@ namespace gum {
 
     void setDrawnAtRandom(bool atRandom);
 
-    /// draws a Monte Carlo sample
+    /// draws a first sample with a positive probability (starting point of a Gibbs chain)
+    /**
+     * From a sample with a null probability, every Gibbs move may have a null mass: the chain
+     * would never leave it. Hence the search for a sample with a positive probability, which is a
+     * constraint satisfaction problem (NP-hard in general). The search is heuristic:
+     *
+     * 0. the domains are pruned by generalized arc consistency on the null probabilities of the
+     *    CPTs, starting from the hard evidence. An empty domain proves that the evidence is
+     *    incompatible with the model;
+     * 1. up to _nbrRejectionTries_ forward samples are drawn in the pruned domains;
+     * 2. then, Gibbs moves are performed in a smoothed model (a null probability is replaced by
+     *    epsilon times the smallest positive probability of its CPT), with growing smoothing levels
+     *    (_smoothingLevels_, _nbrSweepsBySmoothingLevel_ sweeps each) and _nbrSmoothingRestarts_
+     *    restarts from new forward samples.
+     *
+     * Limits: arc consistency is not complete (it may not detect an incompatibility involving
+     * several CPTs together, e.g. a parity constraint over a chain of XOR), and the search is
+     * stochastic and bounded. Hence, when the compatible samples are very rare (long chains of
+     * deterministic constraints, several deterministic plateaus), the search may fail even though
+     * such a sample exists, and the result may depend on the random seed. OperationNotAllowed
+     * then means "not found", not "does not exist". An exact inference (e.g. LazyPropagation) can
+     * decide whether the evidence is compatible (evidence probability > 0).
+     *
+     * @throw IncompatibleEvidence if the pruning proves that the evidence has a null probability
+     * @throw OperationNotAllowed if no sample with a positive probability is found
+     */
     Instantiation monteCarloSample();
 
     /// draws next sample of Gibbs sampling
@@ -121,8 +149,44 @@ namespace gum {
     void updateSamplingNodes_();
 
     private:
+    /// number of forward samples drawn before searching a compatible sample by smoothed Gibbs moves
+    static constexpr Size _nbrRejectionTries_ = 100;
+
+    /// number of restarts (from a new forward sample) of the smoothed Gibbs moves
+    static constexpr Size _nbrSmoothingRestarts_ = 10;
+
+    /// growing smoothing levels: a null probability is replaced by epsilon times the smallest
+    /// positive probability of its CPT
+    static constexpr std::array< double, 4 > _smoothingLevels_ = {1e-3, 1e-2, 1e-1, 0.5};
+
+    /// maximal number of sweeps (over the non-evidence nodes) for each smoothing level
+    static constexpr Size _nbrSweepsBySmoothingLevel_ = 50;
+
+    /// the values of each node that may belong to a sample with a positive probability
+    NodeProperty< std::vector< bool > > _allowed_;
+
+    /// the smallest positive probability of the CPT of each node (for the smoothed Gibbs moves)
+    NodeProperty< GUM_SCALAR > _minNonZero_;
+
+    // computes _allowed_ by generalized arc consistency on the null probabilities of the CPTs,
+    // starting from the hard evidence. Returns false if a domain becomes empty.
+    bool _pruneDomains_();
+
+    // sets to 0 the probabilities of the values of node that are not allowed
+    void _mask_(NodeId node, Tensor< GUM_SCALAR >& p) const;
+
+    // draws a forward sample (hard evidence clamped, values restricted to the allowed ones)
+    Instantiation _forwardSample_();
+
     // adds a node to current instantiation
     void _drawVarMonteCarlo_(NodeId nod, Instantiation* I);
+
+    // checks that the sample has a positive probability
+    bool _isCompatible_(const Instantiation& I) const;
+
+    // Gibbs move of node id in the model where the null probabilities are replaced by epsilon times
+    // _minNonZero_ (which must be computed beforehand)
+    void _smoothedGibbsSample_(NodeId id, Instantiation* I, GUM_SCALAR epsilon);
 
     void _GibbsSample_(NodeId id, Instantiation* I);
   };

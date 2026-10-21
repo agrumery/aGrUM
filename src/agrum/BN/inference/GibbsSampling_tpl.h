@@ -85,12 +85,10 @@ namespace gum {
     // hypothesis : burnIn_ is called at the beginning of makeInference
     this->updateSamplingNodes_();
 
-    gum::Instantiation Ip;
-    if (this->burnIn() == 0) return Ip;
-
-    GUM_SCALAR w = 1.0f;
-    Ip           = monteCarloSample_();
-    for (Size i = 1; i < this->burnIn(); i++)
+    // the chain always starts from a sample, followed by exactly burnIn() transitions
+    GUM_SCALAR         w  = 1.0f;
+    gum::Instantiation Ip = monteCarloSample_();
+    for (Size i = 0; i < this->burnIn(); i++)
       Ip = this->draw_(&w, Ip);
 
     return Ip;

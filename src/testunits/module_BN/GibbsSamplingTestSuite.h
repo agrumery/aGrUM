@@ -520,4 +520,163 @@ namespace gum_tests {
       CHECK_LT(err, RELEVANT_ERR);
     }
   }
+
+  GUM_TEST(GibbsStartsFromACompatibleState) {
+    // C = A AND B (deterministic) with evidence C = 1: the only compatible state is A = B = 1.
+    // A chain started in a state incompatible with the evidence (e.g. A = B = 0, probability
+    // 0.25 for a forward sample) has only zero-mass moves and would stay there forever.
+    auto bn = gum::BayesNet< double >::fastPrototype("A->C<-B");
+    bn.cpt("A").fillWith({0.5, 0.5});
+    bn.cpt("B").fillWith({0.5, 0.5});
+    gum::Instantiation I(bn.cpt("C"));
+    for (I.setFirst(); !I.end(); I.inc())
+      bn.cpt("C").set(I,
+                      (I.val(bn.variable("C"))
+                       == ((I.val(bn.variable("A")) == 1 && I.val(bn.variable("B")) == 1) ? 1 : 0))
+                          ? 1.0
+                          : 0.0);
+
+    // with a buggy initialisation, 20 chains all avoid the absorbing state with prob. 0.75^20
+    for (int i = 0; i < 20; ++i) {
+      gum::GibbsSampling< double > inf(&bn);
+      inf.addEvidence("C", 1);
+      inf.setEpsilon(1e-2);
+      inf.setVerbosity(false);
+      inf.makeInference();
+      for (const auto name: {"A", "B"}) {
+        const auto&        post = inf.posterior(name);
+        gum::Instantiation J(post);
+        J.chgVal(bn.variable(name), 1);
+        CHECK_EQ(post[J], doctest::Approx(1.0));
+      }
+    }
+  }
+
+  GUM_TEST(GibbsFindsACompatibleStateForUnlikelyEvidence) {
+    // C = AND(X0..X9) with evidence C = 1: a forward sample is compatible with probability 2^-10,
+    // the pruning (C = 1 forces every Xi = 1) finds the compatible start.
+    std::string proto = "C";
+    for (int i = 0; i < 10; ++i)
+      proto += "<-X" + std::to_string(i) + ";C";
+    auto bn = gum::BayesNet< double >::fastPrototype(proto);
+    for (int i = 0; i < 10; ++i)
+      bn.cpt("X" + std::to_string(i)).fillWith({0.5, 0.5});
+    const auto&        c = bn.variable("C");
+    gum::Instantiation I(bn.cpt("C"));
+    for (I.setFirst(); !I.end(); I.inc()) {
+      bool all = true;
+      for (int i = 0; i < 10; ++i)
+        all = all && (I.val(bn.variable("X" + std::to_string(i))) == 1);
+      bn.cpt("C").set(I, (I.val(c) == (all ? 1u : 0u)) ? 1.0 : 0.0);
+    }
+
+    for (int k = 0; k < 5; ++k) {
+      gum::GibbsSampling< double > inf(&bn);
+      inf.addEvidence("C", 1);
+      inf.setEpsilon(1e-2);
+      inf.setVerbosity(false);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+      for (int i = 0; i < 10; ++i) {
+        const auto         name = "X" + std::to_string(i);
+        const auto&        post = inf.posterior(name);
+        gum::Instantiation J(post);
+        J.chgVal(bn.variable(name), 1);
+        CHECK_EQ(post[J], doctest::Approx(1.0));
+      }
+    }
+  }
+
+  GUM_TEST(GibbsWithIncompatibleEvidence) {
+    // C = A AND B with evidence C = 1 and A = 0: no sample has a positive probability
+    auto               bn = gum::BayesNet< double >::fastPrototype("A->C<-B");
+    gum::Instantiation I(bn.cpt("C"));
+    for (I.setFirst(); !I.end(); I.inc())
+      bn.cpt("C").set(I,
+                      (I.val(bn.variable("C"))
+                       == ((I.val(bn.variable("A")) == 1 && I.val(bn.variable("B")) == 1) ? 1 : 0))
+                          ? 1.0
+                          : 0.0);
+    gum::GibbsSampling< double > inf(&bn);
+    inf.addEvidence("C", 1);
+    inf.addEvidence("A", 0);
+    inf.setVerbosity(false);
+    CHECK_THROWS_AS(inf.makeInference(), const gum::IncompatibleEvidence&);
+  }
+
+  GUM_TEST(GibbsFindsACompatibleStateBySmoothing) {
+    // Y_j = X_j XOR X_{j+1} with evidence Y_j = 1 for all j: no value can be pruned and a forward
+    // sample is compatible with probability 2^-20, so the compatible start is found by the smoothed
+    // Gibbs moves. The two solutions alternate the values of the X's. Single-site Gibbs moves
+    // cannot go from one solution to the other: each chain stays in one of them.
+    const int   n = 20;
+    std::string proto;
+    for (int j = 0; j < n; ++j)
+      proto += "X" + std::to_string(j) + "->Y" + std::to_string(j) + "<-X" + std::to_string(j + 1)
+             + ";";
+    auto bn = gum::BayesNet< double >::fastPrototype(proto);
+    for (int j = 0; j <= n; ++j)
+      bn.cpt("X" + std::to_string(j)).fillWith({0.5, 0.5});
+    for (int j = 0; j < n; ++j) {
+      const auto&        y   = bn.variable("Y" + std::to_string(j));
+      const auto&        x1  = bn.variable("X" + std::to_string(j));
+      const auto&        x2  = bn.variable("X" + std::to_string(j + 1));
+      const auto&        cpt = bn.cpt("Y" + std::to_string(j));
+      gum::Instantiation I(cpt);
+      for (I.setFirst(); !I.end(); I.inc())
+        cpt.set(I, (I.val(y) == (I.val(x1) ^ I.val(x2))) ? 1.0 : 0.0);
+    }
+
+    gum::GibbsSampling< double > inf(&bn);
+    for (int j = 0; j < n; ++j)
+      inf.addEvidence("Y" + std::to_string(j), 1);
+    inf.setEpsilon(1e-2);
+    inf.setVerbosity(false);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+
+    auto p1 = [&](int j) {
+      const auto&        post = inf.posterior("X" + std::to_string(j));
+      gum::Instantiation J(post);
+      J.chgVal(post.variable(0), 1);
+      return post[J];
+    };
+    for (int j = 0; j < n; ++j)
+      CHECK_EQ(p1(j + 1), doctest::Approx(1.0 - p1(j)));
+  }
+
+  GUM_TEST(GibbsStartsOnDiabetesWithEvidence) {
+    // a large model with many null and tiny probabilities: the search of a compatible first sample
+    // must not prefer null probabilities to tiny positive ones
+    gum::BayesNet< double >  bn;
+    gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("bif/Diabetes.bif"));
+    gum::Size                nbrErr = static_cast< gum::Size >(0);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+    CHECK_EQ(nbrErr, static_cast< gum::Size >(0));
+
+    // about 2.6% of the forward samples are compatible with this evidence
+    for (int k = 0; k < 8; ++k) {
+      gum::GibbsSampling< double > inf(&bn);
+      inf.addEvidence("bg_24", 0);
+      inf.addEvidence("ins_indep_util_23", 1);
+      inf.addEvidence("renal_cl_14", 1);
+      inf.setMaxIter(10);
+      inf.setVerbosity(false);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+    }
+  }
+
+  GUM_TEST(GibbsWithoutBurnIn) {
+    // burnIn(0) is a legal value: the chain starts from the first sample
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    bn.cpt("A").fillWith({0.5, 0.5});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.1, 0.9});
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.makeInference();
+
+    gum::GibbsSampling< double > inf(&bn);
+    inf.setBurnIn(0);
+    inf.setEpsilon(1e-2);
+    inf.setVerbosity(false);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(inf.posterior("B"), lazy.posterior("B"), 0.1);
+  }
 }   // namespace gum_tests
