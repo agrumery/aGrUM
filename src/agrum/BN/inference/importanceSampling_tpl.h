@@ -92,7 +92,7 @@ namespace gum {
         if ((probaP == 0) || (probaQ == 0)) {
           pSurQ = 0;
         } else {
-          pSurQ = probaP / probaQ;
+          pSurQ *= probaP / probaQ;
         }
       }
       if (pSurQ > 0.0) {

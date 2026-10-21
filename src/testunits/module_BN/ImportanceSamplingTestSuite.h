@@ -465,4 +465,44 @@ namespace gum_tests {
     CHECK_EQ(agsl.getNbr() * inf.periodSize(), inf.nbrIterations());
     CHECK_NE(agsl.getMess(), std::string(""));
   }
+
+  GUM_TEST(ImportanceWeightWithEvidenceNotLastInTopologicalOrder) {
+    // The importance weight of a sample is the product of P/Q over all the nodes. With evidence
+    // on B (not the last node in topological order), keeping only the last ratio would drop the
+    // likelihood of the evidence and the estimate of P(A|B=1) would collapse onto the prior P(A).
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.2, 0.8});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.1, 0.9});
+    bn.cpt("C").fillWith({0.9, 0.1, 0.1, 0.9});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("B", 1);
+    lazy.makeInference();
+
+    gum::ImportanceSampling< double > inf(&bn);
+    inf.addEvidence("B", 1);
+    inf.setEpsilon(1e-3);
+    inf.setVerbosity(false);
+    inf.makeInference();
+
+    // exact P(A=1|B=1) = 0.72/0.74 ~ 0.973, prior P(A=1) = 0.8
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
+  }
+
+  GUM_TEST(ApproxTestMacroDetectsFailure) {
+    // the approximation loop must detect that none of the tries is close enough to the exact
+    // inference: with a null tolerance, a sampled posterior never matches the exact one.
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.makeInference();
+
+    GUM_APPROX_TEST_BEGIN_ITERATION
+      gum::ImportanceSampling< double > inf(&bn);
+      inf.setMaxIter(10);
+      inf.setVerbosity(false);
+      inf.makeInference();
+    GUM_APPROX_TEST_END_ITERATION_NO_FAIL(0.0)
+    CHECK_FALSE(res);
+  }
 }   // namespace gum_tests

@@ -81,14 +81,20 @@ bool compareInference(const std::string&                       file,
 
 #define GUM_APPROX_TEST_BEGIN_ITERATION \
   bool res = false;                     \
-  (void)res;                            \
   for (int ii = 0; ii < 10; ii++) {
-#define GUM_APPROX_TEST_END_ITERATION(ERRMAX)                        \
+// one try: leaves the loop with res = true if the approximation is close enough
+#define GUM_APPROX_TEST_TRY_(ERRMAX)                                 \
   if (compareInference(__FILE__, __LINE__, bn, lazy, inf, ERRMAX)) { \
     res = true;                                                      \
     break;                                                           \
-  }                                                                  \
-  std::cout << "![" << __LINE__ << "]" << std::flush;                \
-  if (ii == 10) FAIL("even with 10 tries.");                         \
+  }
+#define GUM_APPROX_TEST_END_ITERATION(ERRMAX)         \
+  GUM_APPROX_TEST_TRY_(ERRMAX)                        \
+  std::cout << "![" << __LINE__ << "]" << std::flush; \
+  }                                                   \
+  if (!res) FAIL("even with 10 tries.");
+// same loop, silent and without failure: the caller checks res itself
+#define GUM_APPROX_TEST_END_ITERATION_NO_FAIL(ERRMAX) \
+  GUM_APPROX_TEST_TRY_(ERRMAX)                        \
   }
 #endif   // AGRUM_AGRUMAPPROXIMATIONUTILS_H_H
