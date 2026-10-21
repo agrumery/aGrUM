@@ -157,15 +157,21 @@ namespace gum {
       InternalNode* eraseNode = _functionGraph_->_internalNodeMap_[eraseId];
 
       if (updateParents) {
+        // setSon removes the current link from the parents of eraseNode
         Link< Parent >* picle = eraseNode->parents();
         while (picle != nullptr) {
-          setSon(picle->element().parentId, picle->element().modality, replacingId);
-          picle = picle->nextLink();
+          const Parent parent = picle->element();
+          picle               = picle->nextLink();
+          setSon(parent.parentId, parent.modality, replacingId);
         }
       }
 
-      _functionGraph_->_var2NodeIdMap_[_functionGraph_->_internalNodeMap_[eraseId]->nodeVar()]
-          ->searchAndRemoveLink(eraseId);
+      // the sons of eraseNode must not consider it as a parent anymore
+      for (Idx i = 0; i < eraseNode->nbSons(); ++i)
+        if (_functionGraph_->isInternalNode(eraseNode->son(i)))
+          _functionGraph_->_internalNodeMap_[eraseNode->son(i)]->removeParent(eraseId, i);
+
+      _functionGraph_->_var2NodeIdMap_[eraseNode->nodeVar()]->searchAndRemoveLink(eraseId);
 
       delete _functionGraph_->_internalNodeMap_[eraseId];
       _functionGraph_->_internalNodeMap_.erase(eraseId);
@@ -214,7 +220,15 @@ namespace gum {
                             << _functionGraph_->_internalNodeMap_[sonNode]->nodeVar()
                             << "in Function Graph order.")
 
-    _functionGraph_->_internalNodeMap_[node]->setSon(modality, sonNode);
+    InternalNode* parentNode = _functionGraph_->_internalNodeMap_[node];
+    const NodeId  oldSonNode = parentNode->son(modality);
+    if (oldSonNode == sonNode) return;
+
+    // the old son is no longer a child of node for this modality
+    if (_functionGraph_->isInternalNode(oldSonNode))
+      _functionGraph_->_internalNodeMap_[oldSonNode]->removeParent(node, modality);
+
+    parentNode->setSon(modality, sonNode);
     if (sonNode && !_functionGraph_->isTerminalNode(sonNode))
       _functionGraph_->_internalNodeMap_[sonNode]->addParent(node, modality);
   }
@@ -414,10 +428,12 @@ namespace gum {
       const NodeId& destination) {
     InternalNode* org = _functionGraph_->_internalNodeMap_[origin];
     // Upating parents after the change
+    // setSon removes the current link from the parents of org
     Link< Parent >* picle = org->parents();
     while (picle != nullptr) {
-      setSon(picle->element().parentId, picle->element().modality, destination);
-      picle = picle->nextLink();
+      const Parent parent = picle->element();
+      picle               = picle->nextLink();
+      setSon(parent.parentId, parent.modality, destination);
     }
 
     // Updating sons after the change

@@ -45,6 +45,7 @@
 #include <cstdio>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <vector>
 // =========================================================================
@@ -851,5 +852,100 @@ namespace gum_tests {
       delete functionGraph;
       delete phantomvar;
     } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
+
+  GUM_TEST(SetSonKeepsParentLinksConsistent) {
+    gum::LabelizedVariable x("x", "", 2);
+    gum::LabelizedVariable y("y", "", 2);
+    auto                   fg = std::unique_ptr< gum::MultiDimFunctionGraph< double > >(
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
+    fg->add(x);
+    fg->add(y);
+    auto* manager = fg->manager();
+
+    auto nbParents = [&fg](gum::NodeId n) {
+      gum::Size nb = 0;
+      for (auto link = fg->node(n)->parents(); link != nullptr; link = link->nextLink())
+        ++nb;
+      return nb;
+    };
+    auto newYNode = [&]() {
+      const auto n = manager->addInternalNode(&y);
+      manager->setSon(n, 0, manager->addTerminalNode(0.0));
+      manager->setSon(n, 1, manager->addTerminalNode(1.0));
+      return n;
+    };
+
+    const auto zero = manager->addTerminalNode(0.0);
+    const auto one  = manager->addTerminalNode(1.0);
+    const auto root = manager->addInternalNode(&x);
+    manager->setRootNode(root);
+    const auto s = newYNode();
+    manager->setSon(root, 0, s);
+    manager->setSon(root, 1, one);
+    CHECK_EQ(nbParents(s), static_cast< gum::Size >(1));
+
+    // rewiring root:0 away from s must remove (root,0) from the parents of s
+    manager->setSon(root, 0, zero);
+    CHECK_EQ(nbParents(s), static_cast< gum::Size >(0));
+
+    // setting the same son twice must not duplicate the parent link
+    manager->setSon(root, 0, s);
+    manager->setSon(root, 0, s);
+    CHECK_EQ(nbParents(s), static_cast< gum::Size >(1));
+
+    // erasing a detached node must not reroute the live sons of its former parents
+    const auto detached = newYNode();
+    manager->setSon(root, 1, detached);
+    manager->setSon(root, 1, one);
+    manager->eraseNode(detached, zero);
+    CHECK_EQ(fg->node(root)->son(0), s);
+    CHECK_EQ(fg->node(root)->son(1), one);
+
+    // erasing a node with several parent links reroutes all of them
+    manager->setSon(root, 1, s);
+    CHECK_EQ(nbParents(s), static_cast< gum::Size >(2));
+    manager->eraseNode(s, one);
+    CHECK_EQ(fg->node(root)->son(0), one);
+    CHECK_EQ(fg->node(root)->son(1), one);
+  }
+
+  GUM_TEST(EraseNodeUnregistersItselfFromItsSons) {
+    gum::LabelizedVariable x("x", "", 2);
+    gum::LabelizedVariable y("y", "", 2);
+    gum::LabelizedVariable z("z", "", 2);
+    auto                   fg = std::unique_ptr< gum::MultiDimFunctionGraph< double > >(
+        gum::MultiDimFunctionGraph< double >::getReducedAndOrderedInstance());
+    fg->add(x);
+    fg->add(y);
+    fg->add(z);
+    auto* manager = fg->manager();
+
+    auto nbParents = [&fg](gum::NodeId n) {
+      gum::Size nb = 0;
+      for (auto link = fg->node(n)->parents(); link != nullptr; link = link->nextLink())
+        ++nb;
+      return nb;
+    };
+
+    // root(x) --0--> n(y) --0--> m(z)
+    const auto zero = manager->addTerminalNode(0.0);
+    const auto one  = manager->addTerminalNode(1.0);
+    const auto root = manager->addInternalNode(&x);
+    manager->setRootNode(root);
+    const auto n = manager->addInternalNode(&y);
+    const auto m = manager->addInternalNode(&z);
+    manager->setSon(m, 0, zero);
+    manager->setSon(m, 1, one);
+    manager->setSon(n, 0, m);
+    manager->setSon(n, 1, one);
+    manager->setSon(root, 0, n);
+    manager->setSon(root, 1, zero);
+    CHECK_EQ(nbParents(m), static_cast< gum::Size >(1));
+
+    // once n is erased, it must not remain a parent of m
+    manager->eraseNode(n, zero);
+    CHECK_EQ(fg->node(root)->son(0), zero);
+    CHECK_EQ(nbParents(m), static_cast< gum::Size >(0));
   }
 }   // namespace gum_tests
