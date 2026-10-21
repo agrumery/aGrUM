@@ -227,6 +227,7 @@ namespace gum {
 
     GUM_SCALAR error = 0.0;
     do {
+      error = 0.0;   // error of the current sweep only
       std::shuffle(std::begin(shuffleIds), std::end(shuffleIds), engine);
       this->updateApproximationScheme();
       for (const auto& node: shuffleIds) {

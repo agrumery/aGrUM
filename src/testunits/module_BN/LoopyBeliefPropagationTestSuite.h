@@ -674,4 +674,32 @@ namespace gum_tests {
     gum::LoopyBeliefPropagation< double > ie(&bn);
     GUM_CHECK_ASSERT_THROWS_NOTHING(ie.makeInference(););
   }
+
+  GUM_TEST(LBPIteratesUntilConvergence) {
+    // On a polytree, LBP is exact once converged. The stopping criterion must use the error of
+    // the current sweep only: a max over all the sweeps never decreases and stops the loop after
+    // two sweeps (null improvement rate), long before the evidence has crossed the whole chain.
+    auto bn = gum::BayesNet< double >::fastPrototype("X0->X1->X2->X3->X4->X5->X6->X7->X8->X9");
+    bn.cpt("X0").fillWith({0.5, 0.5});
+    for (int i = 1; i < 10; ++i)
+      bn.cpt("X" + std::to_string(i)).fillWith({0.95, 0.05, 0.05, 0.95});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("X9", 1);
+    lazy.makeInference();
+
+    gum::LoopyBeliefPropagation< double > lbp(&bn);
+    lbp.addEvidence("X9", 1);
+    lbp.setEpsilon(1e-10);
+    lbp.setMinEpsilonRate(1e-10);
+    lbp.setMaxIter(100);
+    lbp.setVerbosity(false);
+    lbp.makeInference();
+
+    CHECK_GT(lbp.nbrIterations(), static_cast< gum::Size >(2));
+    for (const auto node: bn.nodes())
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior(node),
+                                                    lbp.posterior(node),
+                                                    1e-6);
+  }
 }   // namespace gum_tests
