@@ -210,4 +210,43 @@ namespace gum_tests {
       CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
     }
   }
+
+  GUM_TEST(CausalWeightLowerThanLeakIsRejected) {
+    // Henrion's parametrization: a causal weight is P(C | only this cause), leak included, hence it
+    // cannot be lower than the leak (otherwise P(C=0|...) may exceed 1).
+    gum::LabelizedVariable c("C", "", 2), x1("X1", "", 2), x2("X2", "", 2);
+
+    CHECK_THROWS_AS(gum::MultiDimNoisyORCompound< double >(0.5, 0.3), const gum::OutOfBounds&);
+
+    gum::MultiDimNoisyORCompound< double > noisy(0.1);
+    noisy << c << x1 << x2;
+    CHECK_THROWS_AS(noisy.causalWeight(x1, 0.05), const gum::OutOfBounds&);
+    noisy.causalWeight(x1, 0.1);
+    noisy.causalWeight(x2, 0.5);
+    CHECK_THROWS_AS(noisy.externalWeight(0.2), const gum::OutOfBounds&);
+    CHECK_EQ(noisy.externalWeight(), 0.1);
+
+    // valid weights (>= leak) give valid probabilities
+    gum::Instantiation I(noisy);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      CHECK_GE(noisy.get(I), 0.0);
+      CHECK_LE(noisy.get(I), 1.0);
+    }
+  }
+
+  GUM_TEST(UnusedDefaultWeightIsNotCheckedAgainstLeak) {
+    gum::LabelizedVariable c("C", "", 2), x1("X1", "", 2), x2("X2", "", 2), x3("X3", "", 2);
+
+    gum::MultiDimNoisyORCompound< double > noisy(0.1, 0.5);
+    noisy << c << x1 << x2;
+    noisy.causalWeight(x1, 0.9);
+    noisy.causalWeight(x2, 0.9);
+    // every cause has an explicit weight: the default weight (0.5) is not used
+    CHECK_NOTHROW(noisy.externalWeight(0.6));
+    CHECK_EQ(noisy.externalWeight(), 0.6);
+
+    // a new cause would use the default weight (0.5 < 0.6)
+    CHECK_THROWS_AS(noisy << x3, const gum::OutOfBounds&);
+    CHECK_EQ(noisy.nbrDim(), static_cast< gum::Size >(3));
+  }
 }   // namespace gum_tests

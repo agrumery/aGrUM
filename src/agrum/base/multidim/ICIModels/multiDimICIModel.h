@@ -146,6 +146,14 @@ namespace gum {
     void copyFrom(const MultiDimContainer< GUM_ELEMENT >& src) const override;
 
     /**
+     * @brief Adds a new variable: the first one is the effect, the next ones are causes.
+     *
+     * A new cause without an explicit causal weight uses the default weight.
+     * @throw OutOfBounds if the default weight is not compatible with the external weight
+     */
+    void add(const DiscreteVariable& v) override;
+
+    /**
      * @return the real number of parameters used for this table. This function
      * is used for compute @see compressionRatio()
      */
@@ -175,6 +183,15 @@ namespace gum {
     /// @}
 
     protected:
+    /**
+     * @brief Checks that a causal weight is compatible with the external weight (the leak).
+     *
+     * Called each time a causal weight or the external weight is set. Nothing is checked by
+     * default.
+     * @throw OutOfBounds if the weights are not compatible
+     */
+    virtual void checkCausalWeight_(GUM_ELEMENT external_weight, GUM_ELEMENT causal_weight) const;
+
     /// \f$ p_0 \f$ in Henrion (89).
     mutable GUM_ELEMENT _external_weight_;
 

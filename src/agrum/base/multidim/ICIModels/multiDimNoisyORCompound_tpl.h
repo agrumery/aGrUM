@@ -57,7 +57,20 @@ namespace gum {
   MultiDimNoisyORCompound< GUM_SCALAR >::MultiDimNoisyORCompound(GUM_SCALAR external_weight,
                                                                  GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
+    // virtual calls are not dispatched in the base constructor
+    checkCausalWeight_(external_weight, default_weight);
     GUM_CONSTRUCTOR(MultiDimNoisyORCompound);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void MultiDimNoisyORCompound< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR external_weight,
+                                                                 GUM_SCALAR causal_weight) const {
+    if (causal_weight < external_weight) {
+      GUM_ERROR(OutOfBounds,
+                "In a NoisyOR compound (Henrion), a causal weight ("
+                    << causal_weight << ") cannot be lower than the leak (" << external_weight
+                    << ")")
+    }
   }
 
   /// Default constructor

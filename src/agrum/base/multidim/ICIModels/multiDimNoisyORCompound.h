@@ -144,6 +144,14 @@ namespace gum {
     const std::string& name() const override;
 
     /// @}
+
+    protected:
+    /**
+     * @brief In Henrion's parametrization, a causal weight is the probability of the effect when
+     * only this cause is active, leak included: it cannot be lower than the leak.
+     * @throw OutOfBounds if causal_weight < external_weight
+     */
+    void checkCausalWeight_(GUM_SCALAR external_weight, GUM_SCALAR causal_weight) const override;
   };
 
 

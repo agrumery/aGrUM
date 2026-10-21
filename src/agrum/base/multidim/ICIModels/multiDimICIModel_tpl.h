@@ -116,6 +116,7 @@ namespace gum {
     }
 
     if (w == (GUM_SCALAR)0) { GUM_ERROR(gum::OutOfBounds, "causal weight in CI Model>0") }
+    checkCausalWeight_(_external_weight_, w);
 
     _causal_weights_.set(&v, w);
   }
@@ -127,8 +128,23 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::externalWeight(GUM_SCALAR w) const {
+    // the default weight is checked only if a cause actually uses it (see also add())
+    for (Idx i = 1; i < this->nbrDim(); i++)
+      checkCausalWeight_(w, causalWeight(this->variable(i)));
     _external_weight_ = w;
   }
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::add(const DiscreteVariable& v) {
+    // every variable but the first one is a cause: without an explicit weight, it uses the default
+    // weight
+    if (this->nbrDim() > 0 && !_causal_weights_.exists(&v))
+      checkCausalWeight_(_external_weight_, _default_weight_);
+    MultiDimReadOnly< GUM_SCALAR >::add(v);
+  }
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR, GUM_SCALAR) const {}
 
   template < typename GUM_SCALAR >
   std::string MultiDimICIModel< GUM_SCALAR >::toString() const {
@@ -148,6 +164,8 @@ namespace gum {
       if (src.domainSize() != this->domainSize()) {
         GUM_ERROR(OperationNotAllowed, "Domain sizes do not fit")
       }
+      for (Idx i = 1; i < this->nbrDim(); i++)
+        checkCausalWeight_(p->_external_weight_, p->causalWeight(this->variable(i)));
       _external_weight_ = p->_external_weight_;
       _default_weight_  = p->_default_weight_;
       for (Idx i = 1; i < this->nbrDim(); i++) {
