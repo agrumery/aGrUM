@@ -52,6 +52,7 @@
 
 // =========================================================================
 #include <algorithm>
+#include <memory>
 #include <queue>
 #include <utility>
 #include <vector>
@@ -121,12 +122,20 @@ namespace gum {
     // Creating a copy of last Vfunction to deduce from the new Qaction
     // And finding the first var to eleminate (the one at the end)
     Bijection< const DiscreteVariable*, const MultiDimFunctionGraph< GUM_ELEMENT >* > pxi;
+    // the transitions of the frame variables (without transition: they keep their values)
+    std::vector< std::unique_ptr< MultiDimFunctionGraph< GUM_ELEMENT > > > frames;
     for (SequenceIteratorSafe< const DiscreteVariable* > varIter
          = Vold->variablesSequence().beginSafe();
          varIter != Vold->variablesSequence().endSafe();
          ++varIter) {
-      pxi.insert(*varIter,
-                 RECAST(fmdp->transition(actionId, fmdp->mapMainPrime().first(*varIter))));
+      const DiscreteVariable*                     xi = fmdp->mapMainPrime().first(*varIter);
+      const MultiDimFunctionGraph< GUM_ELEMENT >* transition
+          = RECAST(fmdp->transition(actionId, xi));
+      if (transition == nullptr) {
+        frames.emplace_back(this->frameTransition_(xi, *varIter));
+        transition = frames.back().get();
+      }
+      pxi.insert(*varIter, transition);
     }
 
     TreeRegress< GUM_ELEMENT, std::multiplies, std::plus > tr(

@@ -51,6 +51,7 @@
 
 // =========================================================================
 #include <algorithm>
+#include <memory>
 #include <queue>
 #include <thread>
 #include <utility>
@@ -125,8 +126,14 @@ namespace gum {
     const DiscreteVariable* xip = this->lastVar_(qAction);
 
     while (this->shouldEleminateVar_(xip, fmdp)) {
-      const MultiDimFunctionGraph< GUM_ELEMENT >* pxi
-          = RECAST(fmdp->transition(actionId, fmdp->mapMainPrime().first(xip)));
+      const DiscreteVariable*                     xi  = fmdp->mapMainPrime().first(xip);
+      const MultiDimFunctionGraph< GUM_ELEMENT >* pxi = RECAST(fmdp->transition(actionId, xi));
+      // a frame variable (without transition) keeps its value
+      std::unique_ptr< MultiDimFunctionGraph< GUM_ELEMENT > > frame;
+      if (pxi == nullptr) {
+        frame.reset(this->frameTransition_(xi, xip));
+        pxi = frame.get();
+      }
       Regress< GUM_ELEMENT, std::multiplies, std::plus > r(qAction,
                                                            pxi,
                                                            &elVarSeq,

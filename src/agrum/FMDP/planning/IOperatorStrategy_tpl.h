@@ -44,6 +44,26 @@
 
 namespace gum {
 
+  template < typename GUM_ELEMENT >
+  MultiDimFunctionGraph< GUM_ELEMENT >*
+      IOperatorStrategy< GUM_ELEMENT >::frameTransition_(const DiscreteVariable* x,
+                                                         const DiscreteVariable* xp) {
+    MultiDimFunctionGraph< GUM_ELEMENT >* transition = this->getFunctionInstance();
+    transition->add(*x);
+    transition->add(*xp);
+    auto*      manager = transition->manager();
+    const auto root    = manager->addInternalNode(x);
+    manager->setRootNode(root);
+    const auto zero = manager->addTerminalNode(GUM_ELEMENT(0));
+    const auto one  = manager->addTerminalNode(GUM_ELEMENT(1));
+    for (Idx i = 0; i < x->domainSize(); ++i) {
+      const auto node = manager->addInternalNode(xp);
+      manager->setSon(root, i, node);
+      for (Idx ip = 0; ip < xp->domainSize(); ++ip)
+        manager->setSon(node, ip, (i == ip) ? one : zero);
+    }
+    return transition;
+  }
 
   template < typename GUM_ELEMENT >
   void IOperatorStrategy< GUM_ELEMENT >::deleteFunctionGraph_(

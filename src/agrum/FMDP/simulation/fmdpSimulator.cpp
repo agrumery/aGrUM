@@ -100,6 +100,11 @@ namespace gum {
     Instantiation newState;
     for (auto varIter = this->beginVariables(); varIter != this->endVariables(); ++varIter) {
       newState.add(**varIter);
+      if (_fmdp_->transition(actionId, *varIter) == nullptr) {
+        // no transition: a frame variable keeps its value
+        newState.chgVal(**varIter, currentState_.val(**varIter));
+        continue;
+      }
       Instantiation transit(currentState_);
       transit.add(*(this->primeVar(*varIter)));
 

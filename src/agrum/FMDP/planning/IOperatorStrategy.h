@@ -167,6 +167,17 @@ namespace gum {
     /// @}
 
     protected:
+    /**
+     * @brief Returns a new function graph P(x'|x) = [x' == x].
+     *
+     * It is the transition of a frame variable x, i.e., a variable with no transition for a given
+     * action: it keeps its value. The caller owns the returned function graph.
+     * @param x the main variable
+     * @param xp its primed version
+     */
+    MultiDimFunctionGraph< GUM_ELEMENT >* frameTransition_(const DiscreteVariable* x,
+                                                           const DiscreteVariable* xp);
+
     void deleteFunctionGraph_(const MultiDimFunctionGraph< GUM_ELEMENT >* f1,
                               const MultiDimFunctionGraph< GUM_ELEMENT >* f2,
                               Idx                                         del);

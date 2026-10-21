@@ -306,7 +306,15 @@ namespace gum {
   // ===========================================================================
   template < typename GUM_ELEMENT >
   void StructuredPlaner< GUM_ELEMENT >::initVFunction_() {
-    vFunction_->copy(*(RECAST(fmdp_->reward())));
+    // V0(s) = max_a R(s,a) (i.e. R(s) when the reward does not depend on the action)
+    std::vector< MultiDimFunctionGraph< GUM_ELEMENT >* > rewards;
+    for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
+      MultiDimFunctionGraph< GUM_ELEMENT >* reward = operator_->getFunctionInstance();
+      reward->copy(*(RECAST(fmdp_->reward(*actionIter))));
+      rewards.push_back(reward);
+    }
+    delete vFunction_;
+    vFunction_ = this->maximiseQactions_(rewards);
   }
 
   /* **************************************************************************************************
@@ -332,6 +340,9 @@ namespace gum {
     std::vector< MultiDimFunctionGraph< GUM_ELEMENT >* > qActionsSet;
     for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
       MultiDimFunctionGraph< GUM_ELEMENT >* qAction = this->evalQaction_(newVFunction, *actionIter);
+      // Q(s,a) = R(s,a) + gamma * E[V(s')|s,a]: the reward depends on the action, hence it must
+      // be added before maximising over the actions
+      qAction = this->addReward_(qAction, *actionIter);
       qActionsSet.push_back(qAction);
     }
     delete newVFunction;
@@ -340,10 +351,6 @@ namespace gum {
     // Next to evaluate main value function, we take maximise over all action
     // value, ...
     newVFunction = this->maximiseQactions_(qActionsSet);
-
-    // *******************************************************************************************
-    // Next, we eval the new function value
-    newVFunction = this->addReward_(newVFunction);
 
     return newVFunction;
   }
@@ -444,7 +451,7 @@ namespace gum {
     for (auto actionIter = fmdp_->beginActions(); actionIter != fmdp_->endActions(); ++actionIter) {
       MultiDimFunctionGraph< GUM_ELEMENT >* qAction = this->evalQaction_(newVFunction, *actionIter);
 
-      qAction = this->addReward_(qAction);
+      qAction = this->addReward_(qAction, *actionIter);
 
       argMaxQActionsSet.push_back(makeArgMax_(qAction, *actionIter));
     }
