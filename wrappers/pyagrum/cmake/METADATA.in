@@ -37,7 +37,7 @@ Classifier: Intended Audience :: Science/Research
 Requires-Python: >=3.10
 Requires-Dist: numpy
 Requires-Dist: matplotlib
-Requires-Dist: pydot
+Requires-Dist: pydot >= 2
 Requires-Dist: scikit-learn >= 1.7
 
 
