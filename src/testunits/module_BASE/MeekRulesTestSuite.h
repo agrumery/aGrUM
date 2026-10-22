@@ -442,4 +442,28 @@ namespace gum_tests {
     CHECK_EQ(cpdag.edges().size(), 0u);
     CHECK(mr.choices().empty());
   }
+
+  GUM_TEST(MeekRuleR4_classical) {
+    // Classical Meek R4: edges 1-0, 1-3, 1-2; arcs 0->3, 3->2; 0 not adjacent to 2.
+    // R1/R2/R3 cannot orient 1-2; R4 fires (xk=0, xl=3) -> orient 1->2.
+    gum::MixedGraph mg;
+    for (unsigned int i = 0; i < 4; ++i)
+      mg.addNodeWithId(i);
+    mg.addArc(0, 3);
+    mg.addArc(3, 2);
+    mg.addEdge(0, 1);
+    mg.addEdge(1, 2);
+    mg.addEdge(1, 3);
+
+    gum::MeekRules mr;
+    const auto     res = mr.propagate(mg);
+
+    CHECK_EQ(res.arcs().size(), 3u);
+    CHECK_EQ(res.edges().size(), 2u);
+    CHECK(res.existsArc(0, 3));
+    CHECK(res.existsArc(3, 2));
+    CHECK(res.existsArc(1, 2));
+    CHECK(res.existsEdge(0, 1));
+    CHECK(res.existsEdge(1, 3));
+  }
 }   // namespace gum_tests

@@ -37,14 +37,14 @@
     - **Much faster reading of models with clang and MSVC** (BIF, DSL, NET, UAI, O3PRM...): e.g. a large BIF file from
       8 s to 0.1 s with clang.
 
-- Bug fixes (aGrUM and pyAgrum)
+- Bug fixes (aGrUM and pyAgrum), thanks to @jschueller for issues #181 to #194
 
     - `ImportanceSampling`: the weight of a sample kept only the ratio of the last node (#181).
     - Hybrid samplers (`LoopySamplingInference`, `Loopy*Sampling` in pyAgrum): they stopped too early, while the LBP
       prior still outweighed the samples, and the prior was weighted in the wrong units with weighted samplers (#181).
     - `LoopyBeliefPropagation`: the error of a sweep was never reset, so LBP stopped after two sweeps (#182).
     - `ShaferShenoyLIMIDInference`: the optimal policy of a decision now keeps its decision parents (#183), and the
-      variance of `MEU()` includes the covariances between utilities (#188).
+      variance of `MEU()` includes the covariances between utilities (#188, thanks to Mathias Alerini, Equinor).
     - `StructuredPlaner`: action-dependent rewards are taken into account (#184); `FMDPSimulator` and the planners no
       longer crash on a variable without transition for an action, which now keeps its value (#187).
     - `ShaferShenoyMRFInference::jointPosterior(wanted, declared)` returned the joint of the declared target, not of
@@ -59,6 +59,8 @@
     - `GibbsSampling`: the chain could freeze on a starting state of null probability; it now starts from a state of
       positive probability (or raises `IncompatibleEvidence`/`OperationNotAllowed`) (#189); exactly `burnIn()`
       transitions are done and `burnIn(0)` is allowed (#194).
+    - `MeekRules`: rule R4 was not Meek's R4, so some compelled edges stayed undirected (#195, thanks to
+      @ldesreumaux).
 
 ## Changelog for 3.2.1
 

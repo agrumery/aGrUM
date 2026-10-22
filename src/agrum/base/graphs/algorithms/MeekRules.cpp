@@ -285,14 +285,19 @@ namespace gum {
             return true;
           }
     }
-    // R4: orient xi-xj if there is a purely directed path from xi to some node xk,
-    //     xk is an undirected neighbor of xj, and xi is not adjacent to xk
-    for (const auto xk: graph.neighbours(xj)) {
-      if (graph.boundary(xi).contains(xk)) continue;
-      if (graph.existsArc(xi, xk) || graph.existsArc(xk, xi)) continue;
-      if (_existsDirectedPath_(graph, xi, xk)) {
-        // GUM_TRACE("R4(" << xi << "-" << xj << ")")
-        return true;
+    // R4: orient xi-xj if there are xk, xl such that xi-xk, xk->xl, xl->xj, xi is adjacent
+    //     to xl and xk is not adjacent to xj (classical Meek R4)
+    {
+      const auto bi = graph.boundary(xi);
+      const auto bj = graph.boundary(xj);
+      for (const auto xl: graph.parents(xj)) {
+        if (!bi.contains(xl)) continue;
+        for (const auto xk: graph.parents(xl)) {
+          if (graph.existsEdge(xi, xk) && !bj.contains(xk)) {
+            // GUM_TRACE("R4(" << xi << "-" << xj << ")")
+            return true;
+          }
+        }
       }
     }
     return false;
