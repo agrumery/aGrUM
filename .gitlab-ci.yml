@@ -48,17 +48,46 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "web"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-# Windows-only: unlike mac_win_main_template, runs on every branch push, not
-# just master -- Windows-only link errors (dllexport/dllimport mismatches, see
-# config.h.in) have repeatedly slipped through macOS/Linux push CI.
+# Windows retry policy: only retry on infrastructure failures. A genuine
+# compile/link error (e.g. LNK2019) would fail again and just burn another
+# full build on the small shared gumwin pool.
+.windows_retry: &windows_retry
+  max: 1
+  when:
+    - runner_system_failure
+    - stuck_or_timeout_failure
+    - scheduler_failure
+
+# Windows, every branch push: the small set of jobs covering the two Windows
+# configurations actually shipped (PyPI wheel = MSVC 2022 static,
+# conda-forge = MSVC 2022 BUILD_SHARED_LIBS=ON) plus C++ aGrUM.
+# Windows-only link errors (dllexport/dllimport mismatches, see config.h.in)
+# have repeatedly slipped through macOS/Linux push CI.
 .windows_main_template: &windows_main_template
   stage: aGrUM
-  retry: 1
+  retry: *windows_retry
+  interruptible: true
   rules:
     - if: '$WHEELS_ONLY == "true"'
       when: never
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# Windows, MR / master / tags / web / schedule only: other compilers
+# (MSVC 2019, MinGW), other Python versions, conda-forge static variant.
+# Kept off plain branch pushes so the gumwin pool is not saturated.
+.windows_mr_template: &windows_mr_template
+  stage: aGrUM
+  retry: *windows_retry
+  interruptible: true
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 .wheel_rules: &wheel_rules
@@ -147,6 +176,9 @@ stages:
 
 .windows_64_test_script: &windows_64_test_script
   - powershell -File $WINDOWS_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
+
+.windows_conda_forge_script: &windows_conda_forge_script
+  - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -BUILD_SHARED_LIBS $BUILD_SHARED_LIBS
 
 ################################################################################
 #                               ON PUSH                                        #
@@ -253,27 +285,33 @@ macos_arm_pyagrum_py314:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
 # --- Windows ---
-# All three windows_pyagrum_* jobs run in their own stage
-# (windows-pyagrum-priority, declared before aGrUM in the top-level `stages:`
-# list) even though they need nothing from it: all Windows jobs share the
-# same small "gumwin" runner pool, and GitLab assigns job IDs -- and with
-# them, FIFO pickup priority on a shared runner pool -- by STAGE INDEX first,
-# not by a job's textual position within the YAML file: reordering jobs
-# within the same stage has no effect on pickup order, only a genuinely
-# earlier stage index does (GitLab assigns job IDs, and with them runner
-# pickup priority, by stage index, not by YAML declaration order).
+# The pyAgrum Windows jobs run in their own stage (windows-pyagrum-priority,
+# declared before aGrUM in the top-level `stages:` list) even though they need
+# nothing from it: all Windows jobs share the same small "gumwin" runner pool,
+# and GitLab assigns job IDs -- and with them, FIFO pickup priority on a shared
+# runner pool -- by STAGE INDEX first, not by a job's textual position within
+# the YAML file: reordering jobs within the same stage has no effect on pickup
+# order, only a genuinely earlier stage index does.
 # `needs: []` only affects readiness (lets these jobs start without waiting
 # for the aGrUM stage to finish), not this ID-assignment/pickup ordering.
-# windows_pyagrum jobs are the ones sensitive to Windows link/DLL ordering
-# under BUILD_SHARED_LIBS=ON, so they get their own stage ahead of aGrUM's.
-windows_pyagrum_mingw_py314:
+#
+# BUILD_SHARED_LIBS=ON is a SUPPORTED Windows configuration: the conda-forge
+# feedstock ships aGrUM as shared libraries (agrumBASE.dll, agrumBN.dll, ...)
+# because downstream projects link against them. Every symbol used across a
+# DLL boundary (including from SWIG %extend helpers) must therefore carry the
+# right GUM_PUBLIC_<MODULE> export macro. windows_conda_forge_dynamic checks
+# this on every push.
+
+# ---- Every branch push ----
+
+windows_conda_forge_dynamic:
   <<: *windows_main_template
   stage: windows-pyagrum-priority
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
+  variables: { PATH: $PATH_MVSC22_GUMWIN, BUILD_SHARED_LIBS: "ON" }
   script:
-    - *windows_build_script
+    - *windows_conda_forge_script
 
 windows_pyagrum_2022_py310:
   <<: *windows_main_template
@@ -284,16 +322,7 @@ windows_pyagrum_2022_py310:
   script:
     - *windows_build_script
 
-windows_pyagrum_2022_py314:
-  <<: *windows_main_template
-  stage: windows-pyagrum-priority
-  needs: []
-  tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py314", TARGET: "pyAgrum", COMPILER: "mvsc22" }
-  script:
-    - *windows_build_script
-
-windows_agrum_2019:
+windows_agrum_2022:
   <<: *windows_main_template
   stage: aGrUM
   # needs: [] so this job doesn't get skipped when windows-pyagrum-priority
@@ -302,62 +331,59 @@ windows_agrum_2019:
   # earlier stage fails.
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC19_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc19" }
-  script:
-    - *windows_build_script
-
-windows_agrum_2022:
-  <<: *windows_main_template
-  stage: aGrUM
-  needs: []
-  tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc22" }
   script:
     - *windows_build_script
 
-# aGrUM does not support BUILD_SHARED_LIBS=ON under Windows: act itself now
-# refuses it (ActBuilderAgrum.check_consistency, md_docs/GUM_PUBLIC.md #17.2) --
-# every attempt to actually exercise the 8-separate-shared-libraries topology
-# GUM_PUBLIC_<MODULE> was designed for hit LNK2019/LNK2005 failures that only
-# a full, zero-gap Phase 6 tagging pass across every module would resolve, on
-# top of pyAgrum's own always-static requirement making that goal moot in
-# practice. This job now validates plain static aGrUM under mingw64 instead
-# (build_windows.ps1 passes --static_lib), the same coverage as
-# windows_agrum_2019/2022 but on a different compiler/toolchain.
+# ---- MR / master / tags / web / schedule only ----
+
+windows_conda_forge_static:
+  <<: *windows_mr_template
+  stage: windows-pyagrum-priority
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC22_GUMWIN, BUILD_SHARED_LIBS: "OFF" }
+  script:
+    - *windows_conda_forge_script
+
+windows_pyagrum_2022_py314:
+  <<: *windows_mr_template
+  stage: windows-pyagrum-priority
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py314", TARGET: "pyAgrum", COMPILER: "mvsc22" }
+  script:
+    - *windows_build_script
+
+windows_pyagrum_mingw_py314:
+  <<: *windows_mr_template
+  stage: windows-pyagrum-priority
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
+  script:
+    - *windows_build_script
+
+windows_agrum_2019:
+  <<: *windows_mr_template
+  stage: aGrUM
+  needs: []
+  tags: ["gumwin", "conda"]
+  variables: { PATH: $PATH_MVSC19_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc19" }
+  script:
+    - *windows_build_script
+
+# Static aGrUM under mingw64 (build_windows.ps1 passes --static_lib): same
+# coverage as windows_agrum_2019/2022 but on a different compiler/toolchain.
+# Shared-library coverage on Windows is provided by windows_conda_forge_dynamic.
 windows_agrum_mingw:
-  <<: *windows_main_template
+  <<: *windows_mr_template
   stage: aGrUM
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "aGrUM", COMPILER: "mingw64" }
   script:
     - *windows_build_script
-
-.windows_conda_forge_base:
-  stage: windows-pyagrum-priority
-  needs: []
-  tags: ["gumwin", "conda"]
-  retry: 1
-  variables:
-    PATH: $PATH_MVSC22_GUMWIN
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_PIPELINE_SOURCE == "web"'
-    - if: '$CI_COMMIT_TAG'
-  script:
-    - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -BUILD_SHARED_LIBS $BUILD_SHARED_LIBS
-
-windows_conda_forge_static:
-  extends: .windows_conda_forge_base
-  variables:
-    BUILD_SHARED_LIBS: "OFF"
-
-windows_conda_forge_dynamic:
-  extends: .windows_conda_forge_base
-  variables:
-    BUILD_SHARED_LIBS: "ON"
 
 ################################################################################
 #                            BUILD WHEELS                                      #
@@ -439,7 +465,7 @@ linux_pyagrum_wheel_x86_64_tests:
   image: $LINUX_64_IMAGE
   tags: ["linux", "docker", "manylinux1"]
   retry: 1
-  needs: 
+  needs:
     - job: linux_x86_64_wheel_py310
       artifacts: true
   parallel:
@@ -454,7 +480,7 @@ linux_pyagrum_wheel_aarch64_tests:
   image: $LINUX_AARCH_IMAGE
   tags: ["aarch", "docker", "linux"]
   retry: 1
-  needs: 
+  needs:
     - job: linux_aarch64_wheel_py310
       artifacts: true
   parallel:
