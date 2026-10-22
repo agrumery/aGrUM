@@ -333,7 +333,7 @@ windows_agrum_mingw:
   script:
     - *windows_build_script
 
-windows_conda_forge:
+.windows_conda_forge_base:
   stage: windows-pyagrum-priority
   needs: []
   tags: ["gumwin", "conda"]
@@ -347,7 +347,17 @@ windows_conda_forge:
     - if: '$CI_PIPELINE_SOURCE == "web"'
     - if: '$CI_COMMIT_TAG'
   script:
-    - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR
+    - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -BUILD_SHARED_LIBS $BUILD_SHARED_LIBS
+
+windows_conda_forge_static:
+  extends: .windows_conda_forge_base
+  variables:
+    BUILD_SHARED_LIBS: "OFF"
+
+windows_conda_forge_dynamic:
+  extends: .windows_conda_forge_base
+  variables:
+    BUILD_SHARED_LIBS: "ON"
 
 ################################################################################
 #                            BUILD WHEELS                                      #

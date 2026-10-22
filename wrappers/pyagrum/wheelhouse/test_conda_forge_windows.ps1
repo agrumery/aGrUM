@@ -4,6 +4,9 @@ param(
 
     [Parameter(Mandatory = $true)]
     [string]$CI_PROJECT_DIR
+
+    [ValidateSet("ON", "OFF")]
+    [string]$BUILD_SHARED_LIBS = "OFF"
 )
 
 $ErrorActionPreference = "Stop"
@@ -68,6 +71,7 @@ Write-Host "============================================================"
 Write-Host "Project:      $CI_PROJECT_DIR"
 Write-Host "Conda prefix: $CONDA_PREFIX_CI"
 Write-Host "Build dir:    $BUILD_DIR"
+Write-Host "Shared libs:  $BUILD_SHARED_LIBS"
 
 
 # ---------------------------------------------------------------------------
@@ -100,14 +104,14 @@ try {
             --prefix $CONDA_PREFIX_CI `
             --override-channels `
             --channel conda-forge `
-            "python=3.10" `
+            "python=3.11" `
             "numpy=2" `
-            "python-abi3=3.10.*" `
+            "python-abi3=3.11.*" `
             cmake `
             ninja `
             swig `
             vs2022_win-64 `
-            pydot `
+            "pydot>=2" `
             six `
             matplotlib-base `
             ipython `
@@ -173,13 +177,8 @@ try {
     # Configure
     #
     # Keep this intentionally close to conda-forge's recipe/build.bat: every
-    # -D flag below, including -DBUILD_SHARED_LIBS=OFF, matches it
-    # flag-for-flag, in the same order (conda-forge/pyagrum-feedstock,
-    # recipe/build.bat).
-    # Unlike recipe/build.sh (Linux/macOS), which never sets
-    # BUILD_SHARED_LIBS at all (relies on aGrUM's own CMakeLists.txt
-    # default, ON), build.bat really does force static on Windows -- see
-    # agrum-conda-test's README ("feedstock" mode) for the Linux/macOS side.
+    # -D flag below, matches it flag-for-flag, in the same order
+    # (conda-forge/pyagrum-feedstock,recipe/build.bat).
     # -----------------------------------------------------------------------
 
     Write-Host ""
@@ -196,7 +195,7 @@ try {
             "-DCMAKE_INSTALL_PREFIX=$LIBRARY_PREFIX_CMAKE" `
             -DCMAKE_UNITY_BUILD=ON `
             -DBUILD_PYTHON=ON `
-            -DBUILD_SHARED_LIBS=OFF `
+            "-DBUILD_SHARED_LIBS=$BUILD_SHARED_LIBS" `
             -DPython_FIND_STRATEGY=LOCATION `
             "-DPython_ROOT_DIR=$CONDA_PREFIX_CMAKE" `
             "-DINSTALL_PYTHONDIR=$SITE_PACKAGES_CMAKE" `
