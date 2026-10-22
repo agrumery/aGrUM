@@ -3,7 +3,7 @@ param(
     [string]$CI_JOB_ID,
 
     [Parameter(Mandatory = $true)]
-    [string]$CI_PROJECT_DIR
+    [string]$CI_PROJECT_DIR,
 
     [ValidateSet("ON", "OFF")]
     [string]$BUILD_SHARED_LIBS = "OFF"
