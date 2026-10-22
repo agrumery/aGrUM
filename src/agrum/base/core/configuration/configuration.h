@@ -108,11 +108,11 @@ namespace gum {
     enum class Kind : unsigned char { INT, FLOAT, BOOL, STR, ENUM, DEPRECATED };
 
     /// metadata attached to a key by a `###` line
-    struct Meta {
+    struct GUM_SHARED_PUBLIC Meta {
       /// domain of validity of an int or float key, written after the type in the `###` line:
       /// `float]0,1[`, `int[1,]`, `int[0,100]`. A bracket turned toward the bound includes it,
       /// turned away excludes it ; an omitted bound is unbounded.
-      struct Domain {
+      struct GUM_SHARED_PUBLIC Domain {
         bool   hasLower{false};
         bool   hasUpper{false};
         bool   lowerIncluded{true};

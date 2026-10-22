@@ -150,8 +150,9 @@ class ActBuilderAgrum(ActBuilder):
 
     if platform.system() == "Windows" and not self.current["static_lib"]:
       critic(
-        "aGrUM does not support BUILD_SHARED_LIBS=ON under Windows: dllexport/dllimport "
-        "correctness across separate module DLLs is not maintained there. Pass --static_lib."
+        "act does not build aGrUM with BUILD_SHARED_LIBS=ON under Windows: that topology (one DLL "
+        "per module) is only built by conda-forge's pyAgrum recipe and checked by the "
+        "windows_conda_forge_dynamic CI job. Pass --static_lib."
       )
       return False
 
