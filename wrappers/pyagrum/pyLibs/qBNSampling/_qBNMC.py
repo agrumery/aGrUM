@@ -46,7 +46,7 @@ from qiskit.circuit.library import RYGate, XGate
 from qiskit_aer import AerSimulator
 from qiskit_ibm_runtime import SamplerV2
 
-from pyagrum import BayesNet, Instantiation
+from pyagrum import BayesNet, Instantiation, OperationNotAllowed
 from pyagrum import Tensor as Tensor
 
 
@@ -65,6 +65,11 @@ class qBNMC:
   bn : BayesNet
       pyAgrum Bayesian network to encode.
 
+  Raises
+  ------
+  OperationNotAllowed
+      If a variable of the network has a single state.
+
   Attributes
   ----------
   bn : BayesNet
@@ -74,6 +79,9 @@ class qBNMC:
   """
 
   def __init__(self, bn: BayesNet) -> None:
+    for n_id in bn.nodes():
+      if bn.variable(n_id).domainSize() < 2:
+        raise OperationNotAllowed(f"{bn.variable(n_id).name()} has a domain size <2")
     self.bn = bn
     self.n_qb_map = self.mapNodeToQBit(self.bn.nodes())
 
@@ -193,7 +201,8 @@ class qBNMC:
     dict[int, QuantumRegister]
         Node ID → QuantumRegister sized to hold the variable.
     """
-    return {n_id: QuantumRegister(self.getWidth(n_id), str(n_id)) for n_id in self.bn.nodes()}
+    # sorted order, as in mapNodeToQBit: the qubit ids of n_qb_map are positions in the circuit
+    return {n_id: QuantumRegister(self.getWidth(n_id), str(n_id)) for n_id in sorted(self.bn.nodes())}
 
   def indicatorFunction(self, binary_list: list[list[int]], targets: dict[int, int], verbose: int = 0) -> list[bool]:
     """Match binary strings against target conditions (eq17/eq19).
@@ -398,7 +407,9 @@ class qBNMC:
 
         circuit.barrier()
 
-        zero_qbs = np.array(parent_qbit_list)[np.where(np.hstack(list(bin_params.values())) == 0)]
+        # bits in the order of parent_qbit_list (CPT order), whatever the order of the dict
+        parent_bits = np.hstack([bin_params[p_id] for p_id in parent_id_list])
+        zero_qbs = np.array(parent_qbit_list)[np.where(parent_bits == 0)]
         for ctrl_qb_id in zero_qbs:
           circuit.append(XGate(), qargs=[ctrl_qb_id])
 

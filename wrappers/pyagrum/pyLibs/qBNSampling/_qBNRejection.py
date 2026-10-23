@@ -325,6 +325,13 @@ class qBNRejection:
         Variable name → observed state index.
     """
     self.evidence = evidence
+    self._invalidate()
+
+  def _invalidate(self) -> None:
+    """Forget the cached operators and results (evidence or network changed)."""
+    self.A = None
+    self.G = None
+    self.inference_res = None
 
   def setMaxIter(self, max_iter: int = 1000) -> None:
     """Set the maximum number of rejection-sampling iterations.
@@ -388,3 +395,4 @@ class qBNRejection:
     self.qbn = qBNMC(fbn.toBN())
     self.q_registers = self.qbn.getQuantumRegisters()
     self.all_qbits = np.hstack(list(self.qbn.n_qb_map.values())).tolist()
+    self._invalidate()

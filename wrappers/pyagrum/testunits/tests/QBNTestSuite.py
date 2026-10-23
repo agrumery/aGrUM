@@ -203,6 +203,72 @@ class QBNMCTestCase(pyAgrumTestCase):
     self.assertIn("Variable0", res)
     self.assertAlmostEqual(sum(res["Variable0"]), 1.0)
 
+  @staticmethod
+  def _assertMarginalsClose(testcase, bn, run, delta):
+    exact = gum.LazyPropagation(bn)
+    exact.makeInference()
+    for n in bn.nodes():
+      name = bn.variable(n).name()
+      got = run[name].tolist()
+      ref = exact.posterior(name).tolist()
+      for g, r in zip(got, ref):
+        testcase.assertAlmostEqual(g, r, delta=delta, msg=name)
+
+  def test_getQuantumRegistersFollowsQubitMap(self):
+    # issue #200: the circuit is built from the registers in dict order, while the qubit ids of
+    # n_qb_map are assigned in sorted node order: both orders must agree
+    bn = gum.BayesNet()
+    for i in range(10):
+      bn.add(gum.LabelizedVariable(f"V{i}", "", 2))
+    for i in range(1, 9):
+      bn.erase(f"V{i}")
+    bn.add(gum.LabelizedVariable("X", "", 2))  # reuses a freed id: ids {0, 3, 9}
+    bn.addArc("V0", "X")
+    bn.addArc("X", "V9")
+    bn.cpt("V0").fillWith([0.2, 0.8])
+    bn.cpt("X").fillWith([0.9, 0.1, 0.3, 0.7])
+    bn.cpt("V9").fillWith([0.6, 0.4, 0.1, 0.9])
+    # precondition: the iteration order of the nodes is not the sorted one
+    self.assertNotEqual(list(bn.nodes()), sorted(bn.nodes()))
+
+    qbn = qBNMC(bn)
+    self.assertEqual(list(qbn.getQuantumRegisters().keys()), sorted(qbn.n_qb_map.keys()))
+    self._assertMarginalsClose(self, bn, qbn.runBN(shots=8000), 0.05)
+
+  def test_singleStateVariableIsRejected(self):
+    # issue #203: a variable with a single state is not a random variable
+    bn = gum.BayesNet()
+    bn.add(gum.LabelizedVariable("A", "", 2))
+    bn.add(gum.LabelizedVariable("D", "", 1))
+    bn.add(gum.LabelizedVariable("C", "", 2))
+    bn.addArc("A", "C")
+    bn.addArc("D", "C")
+    with self.assertRaises(gum.OperationNotAllowed):
+      qBNMC(bn)
+
+  def test_xFlipMaskFollowsCPTOrder(self):
+    # issue #204: the binarized parent states must be matched to the parent qubits in CPT order,
+    # whatever the iteration order of the dict returned by getBinarizedParameters
+    bn = gum.BayesNet()
+    bn.add(gum.LabelizedVariable("P", "", 3))
+    bn.add(gum.LabelizedVariable("Q", "", 2))
+    bn.add(gum.LabelizedVariable("C", "", 2))
+    bn.addArc("P", "C")
+    bn.addArc("Q", "C")
+    bn.cpt("P").fillWith([0.5, 0.3, 0.2])
+    bn.cpt("Q").fillWith([0.4, 0.6])
+    for p, q, v in [(0, 0, 0.9), (0, 1, 0.2), (1, 0, 0.7), (1, 1, 0.4), (2, 0, 0.5), (2, 1, 0.1)]:
+      bn.cpt("C")[{"P": p, "Q": q}] = [v, 1 - v]
+
+    qbn = qBNMC(bn)
+    original = qbn.getBinarizedParameters
+
+    def reversedOrder(width_dict, param_dict):
+      return dict(reversed(list(original(width_dict, param_dict).items())))
+
+    qbn.getBinarizedParameters = reversedOrder
+    self._assertMarginalsClose(self, bn, qbn.runBN(shots=8000), 0.05)
+
 
 class QBNRejectionTestCase(pyAgrumTestCase):
   def _make_simple(self):
@@ -270,6 +336,63 @@ class QBNRejectionTestCase(pyAgrumTestCase):
     epsilon = 0.1
     self.assertLess(abs(exact_A[0] - quantum_A[0]), epsilon)
     self.assertLess(abs(exact_A[1] - quantum_A[1]), epsilon)
+
+  @staticmethod
+  def _xorBN():
+    bn = gum.BayesNet()
+    for name in "ABC":
+      bn.add(gum.LabelizedVariable(name, "", 2))
+    bn.addArc("A", "C")
+    bn.addArc("B", "C")
+    bn.cpt("A").fillWith([0.5, 0.5])
+    bn.cpt("B").fillWith([0.5, 0.5])
+    for a, b, v in [(0, 0, 0.95), (0, 1, 0.05), (1, 0, 0.95), (1, 1, 0.05)]:
+      bn.cpt("C")[{"A": a, "B": b}] = [v, 1 - v]
+    return bn
+
+  def test_setEvidenceInvalidatesPreviousInference(self):
+    # issue #197: after setEvidence, the posterior must answer the new evidence
+    bn = self._xorBN()
+    qr = qBNRejection(qBNMC(bn))
+    qr.setMaxIter(50)
+    qr.setEvidence({"C": 0})
+    qr.makeInference()
+    qr.setEvidence({"C": 1})
+    post = qr.posterior("B").tolist()
+
+    ie = gum.LazyPropagation(bn)
+    ie.setEvidence({"C": 1})
+    ie.makeInference()
+    for g, r in zip(post, ie.posterior("B").tolist()):
+      self.assertAlmostEqual(g, r, delta=0.2)
+
+  def test_useFragmentBNInvalidatesGates(self):
+    # issue #197: after useFragmentBN, the gates must be rebuilt for the new circuit layout
+    bn = gum.fastBN("Y<-X0->X1->X2")
+    qr = qBNRejection(qBNMC(bn))
+    qr.setMaxIter(20)
+    qr.setEvidence({"X2": 1})
+    qr.getGates()
+    qr.useFragmentBN(target={"X1"})
+    qr.makeInference()
+    self.assertEqual(qr.A.num_qubits, qr.qbn.getTotNumQBits())
+
+  def test_useFragmentBNKeepsIntKeyedEvidence(self):
+    # issue #202: useFragmentBN rebuilds the network; an int-keyed evidence must still refer to the
+    # same variable afterwards
+    bn = gum.BayesNet()
+    bn.add(gum.LabelizedVariable("Y", "", 2))
+    for i in range(4):
+      bn.add(gum.LabelizedVariable(f"X{i}", "", 2))
+    for i in range(3):
+      bn.addArc(f"X{i}", f"X{i + 1}")
+    bn.addArc("X0", "Y")
+    x3 = bn.idFromName("X3")
+
+    qr = qBNRejection(qBNMC(bn))
+    qr.setEvidence({x3: 1})
+    qr.useFragmentBN(target={"X2"})
+    self.assertEqual({qr.qbn.bn.variable(k).name(): v for k, v in qr.evidence.items()}, {"X3": 1})
 
 
 ts = unittest.TestSuite()
