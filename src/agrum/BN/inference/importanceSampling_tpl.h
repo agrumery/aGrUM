@@ -109,6 +109,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::unsharpenBN_(BayesNetFragment< GUM_SCALAR >* bn,
                                                       float                           epsilon) {
+    // lifts the non-zero parameters (the tiny ones become ~epsilon) to bound the weights P/Q. The
+    // null parameters are kept: Q only needs to be positive where P is, and mass on impossible
+    // states would only produce samples with a null weight.
     for (const auto nod: bn->nodes().asNodeSet()) {
       auto p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
       p.normalizeAsCPT();

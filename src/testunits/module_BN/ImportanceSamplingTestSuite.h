@@ -505,4 +505,26 @@ namespace gum_tests {
     GUM_APPROX_TEST_END_ITERATION_NO_FAIL(0.0)
     CHECK_FALSE(res);
   }
+
+  GUM_TEST(ImportanceWithSharpAndNullParameters) {
+    // issue #196: a tiny parameter (< epsilon/maxDomainSize) triggers the unsharpening of the
+    // proposal; the estimate must stay consistent with the exact inference
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B[3]->C");
+    bn.cpt("A").fillWith({0.5, 0.5});
+    bn.cpt("B").fillWith({1.0, 0.0, 0.0, 0.4999995, 1e-6, 0.4999995});
+    bn.cpt("C").fillWith({0.9, 0.1, 0.01, 0.99, 0.5, 0.5});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("C", 1);
+    lazy.makeInference();
+
+    gum::ImportanceSampling< double > inf(&bn);
+    inf.addEvidence("C", 1);
+    inf.setEpsilon(1e-2);
+    inf.setVerbosity(false);
+    inf.makeInference();
+
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("B"), inf.posterior("B"), 0.05);
+  }
 }   // namespace gum_tests
