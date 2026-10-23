@@ -395,7 +395,7 @@ def load(self):
   """
   try:
     self._run("_load", self.userFileName())
-  except IOError as e:  # IOError of aGrUM (this module shadows the builtin one)
+  except GumIOError as e:
     raise FileNotFoundError(str(e)) from None
 
 def grep(self, search):

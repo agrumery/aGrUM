@@ -295,7 +295,7 @@ int
 
 Raises
 ------
-gum.NotImplementedYet
+pyagrum.NotImplementedYet
   if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
 "
 

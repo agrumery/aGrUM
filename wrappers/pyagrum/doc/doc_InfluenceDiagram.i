@@ -407,7 +407,7 @@ name : str
 
 Raises
 ------
-pyagrum.IOError
+pyagrum.GumIOError
     If file not found
 pyagrum.FatalError
     If file is not valid
@@ -604,7 +604,7 @@ binary : bool
 
 Raises
 ------
-pyagrum.IOError
+pyagrum.GumIOError
     If file not found
 pyagrum.FatalError
     If file content is not valid

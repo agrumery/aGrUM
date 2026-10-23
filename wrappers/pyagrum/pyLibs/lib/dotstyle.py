@@ -164,7 +164,7 @@ def configFgColor(section: str, key: str) -> str:
   ------
   pyagrum.InvalidArgument
     if key does not end with FgColor
-  pyagrum.SyntaxError
+  SyntaxError
     if the font color or the background color is not a key of the configuration
   """
   return pyagrum.pyagrumcpp._configFgColor(section, key)

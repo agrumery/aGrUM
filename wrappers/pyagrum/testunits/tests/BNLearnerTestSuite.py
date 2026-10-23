@@ -65,7 +65,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     bn = learner.learnBN()
     self.assertEqual(bn.size(), 8)
 
-    with self.assertRaises(gum.IOError):
+    with self.assertRaises(gum.GumIOError):
       gum.BNLearner("shouldNotExist.csv")
 
   def testHillClimbingAccurate(self):
@@ -127,7 +127,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
 
   def testLocalSearchWithTabu(self):
-    with self.assertRaises(gum.IOError):
+    with self.assertRaises(gum.GumIOError):
       gum.BNLearner("shouldNotExist.csv")
 
   def testLocalSearchWithTabuAccurate(self):

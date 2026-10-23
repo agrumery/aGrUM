@@ -162,12 +162,12 @@ class KTBNAdaptiveLearnerTestCase(pyAgrumTestCase):
     # at construction (only trajectory 1's header is read), only at learnKTBN().
     missing = gum.KTBNAdaptiveLearner(self._dir, "kad_alt", 5, 3, NO_ATEMPORAL)
     missing.kMax()
-    with self.assertRaises(gum.IOError):
+    with self.assertRaises(gum.GumIOError):
       missing.learnKTBN()
 
     # inferring constructor, general case: a missing trajectory is normally
     # caught at construction, since testing constancy means opening every file.
-    with self.assertRaises(gum.IOError):
+    with self.assertRaises(gum.GumIOError):
       gum.KTBNAdaptiveLearner(self._writeSolo(), "kad_solo", 9, 2)
 
   def testInferAtemporalVars(self):

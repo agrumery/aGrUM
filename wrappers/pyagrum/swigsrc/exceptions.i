@@ -45,6 +45,13 @@
 
 
 
+/* gum::TypeError and gum::IOError would shadow the Python builtins (in the generated modules, and in
+   user code with "from pyagrum import *"). gum::SyntaxError is not wrapped: it is always raised as the
+   builtin SyntaxError (see extensions/pyagrumExceptionHandling.h). */
+%rename(GumTypeError) gum::TypeError;
+%rename(GumIOError) gum::IOError;
+%ignore gum::SyntaxError;
+
  /* EXCEPTION HANDLING */
 %{
 #include "extensions/pyagrumExceptionHandling.h"

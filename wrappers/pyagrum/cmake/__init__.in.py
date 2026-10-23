@@ -60,33 +60,39 @@ pyAgrum includes :
 # e.g. importing pyagrum.markov_random_field would end up also importing
 # credal_net/influence_diagram/causal_model.
 __all__ = [
-  "ApproximationScheme", "Arc", "ArcSet", "ArgumentError", "ArrayLike", "BNDatabaseGenerator",
-  "BNGenerator", "BNInference", "BNLearner", "BayesNet", "BayesNetFragment", "CPTError",
-  "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel", "DiGraph", "DiscreteVariable",
-  "DiscretizedVariable", "DotOptions", "DuplicateElement", "DuplicateLabel", "Edge", "EdgeMark_Arrowhead",
-  "EdgeMark_Circle", "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FatalError",
-  "FormatNotFound", "GibbsBNdistance", "GibbsSampling", "Graph", "GraphError", "GumException",
-  "HedgeException", "IOError", "ImportanceSampling", "InformationTheory", "Instantiation",
+  "AbstractScheduleMultiDim", "ApproximationScheme", "Arc", "ArcSet", "ArgumentError",
+  "ArrayLike", "BNDatabaseGenerator", "BNGenerator", "BNInference", "BNLearner", "BayesNet",
+  "BayesNetFragment", "CPTError", "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel",
+  "DiGraph", "DiscreteVariable", "DiscretizedVariable", "DotOptions", "DuplicateElement",
+  "DuplicateLabel", "DuplicateScheduleMultiDim", "Edge", "EdgeMark_Arrowhead", "EdgeMark_Circle",
+  "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FactoryError", "FactoryInvalidState",
+  "FatalError", "FormatNotFound", "GibbsBNdistance", "GibbsSampling", "Graph", "GraphError",
+  "GumException", "GumIOError", "GumTypeError", "HedgeException", "ImportanceSampling",
+  "IncompatibleEvidence", "IncompatibleScorePrior", "InformationTheory", "Instantiation",
   "IntegerVariable", "InvalidArc", "InvalidArgument", "InvalidArgumentsNumber",
-  "InvalidDirectedCycle", "InvalidEdge", "InvalidNode", "JunctionTreeGenerator",
-  "LabelizedVariable", "LatentDescriptor", "LatentDescriptorList", "LazyPropagation",
-  "LoopyBeliefPropagation", "LoopyGibbsSampling", "LoopyImportanceSampling",
-  "LoopyMonteCarloSampling", "LoopyWeightedSampling", "MCBNDistance", "MarkovBlanket",
-  "MatrixLike", "MeekRules", "MissingValueInDatabase", "MissingVariableInDatabase", "MixedGraph",
-  "MonteCarloSampling", "NameSet", "NoChild", "NoNeighbour", "NoParent", "NodeId", "NodeList",
-  "NodeSet", "NotFound", "NullElement", "NumericalDiscreteVariable", "OperationNotAllowed",
-  "OutOfBounds", "PAG", "PDAG", "PythonApproximationListener", "PythonBNListener",
-  "PythonDatabaseGeneratorListener", "PythonLoadListener", "RangeVariable",
-  "ShaferShenoyInference", "SizeError", "StructuralMetrics", "SyntaxError", "Tensor",
-  "UndefinedElement", "UndefinedIteratorKey", "UndefinedIteratorValue", "UndiGraph",
-  "UnknownLabelInDatabase", "VarType_DISCRETIZED", "VarType_INTEGER", "VarType_LABELIZED",
-  "VarType_NUMERICAL", "VarType_RANGE", "VariableElimination", "WeightedSampling", "about",
-  "availableBNExts", "common", "config", "deprecated", "deprecatedCausalBN", "fastBN", "fastDAG",
-  "fastDiGraph", "fastGraph", "fastMixedGraph", "fastPDAG", "fastUndiGraph", "fastVariable",
-  "generateSample", "getMaxNumberOfThreads", "getNumberOfLogicalProcessors",
-  "getNumberOfThreads", "getPosterior", "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrumcpp",
-  "randomBN", "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue",
-  "saveBN", "setNumberOfThreads", "statsObj",
+  "InvalidDirectedCycle", "InvalidEdge", "InvalidNode", "InvalidPartiallyDirectedCycle",
+  "IteratorError", "JunctionTreeGenerator", "LabelizedVariable", "LatentDescriptor",
+  "LatentDescriptorList", "LazyPropagation", "LearningError", "LoopyBeliefPropagation",
+  "LoopyGibbsSampling", "LoopyImportanceSampling", "LoopyMonteCarloSampling",
+  "LoopyWeightedSampling", "MCBNDistance", "MarkovBlanket", "MatrixLike", "MeekRules",
+  "MissingValueInDatabase", "MissingVariableInDatabase", "MixedGraph", "MonteCarloSampling",
+  "NameSet", "NoChild", "NoNeighbour", "NoParent", "NodeId", "NodeList", "NodeSet", "NotFound",
+  "NotImplementedYet", "NullElement", "NumericalDiscreteVariable", "OperationNotAllowed",
+  "OutOfBounds", "PAG", "PDAG", "PRMTypeError", "PossiblyIncompatibleScorePrior",
+  "PythonApproximationListener", "PythonBNListener", "PythonDatabaseGeneratorListener",
+  "PythonLoadListener", "RangeVariable", "ScheduleMultiDimError", "ScheduleOperationError",
+  "ShaferShenoyInference", "SizeError", "StructuralMetrics", "Tensor",
+  "UnavailableScheduleOperation", "UndefinedElement", "UndefinedIteratorKey",
+  "UndefinedIteratorValue", "UndiGraph", "UnexecutedScheduleOperation", "UnknownLabelInDatabase",
+  "UnknownScheduleMultiDim", "UnknownScheduleOperation", "VarType_DISCRETIZED", "VarType_INTEGER",
+  "VarType_LABELIZED", "VarType_NUMERICAL", "VarType_RANGE", "VariableElimination",
+  "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "common", "config",
+  "deprecated", "deprecatedCausalBN", "fastBN", "fastDAG", "fastDiGraph", "fastGraph",
+  "fastMixedGraph", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
+  "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior",
+  "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
+  "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue", "saveBN",
+  "setNumberOfThreads", "statsObj",
 ]
 
 # Windows has no RPATH mechanism: a DLL's search path must be extended explicitly,
@@ -242,7 +248,7 @@ from .pyagrumcpp import (
   FatalError,
   FormatNotFound,
   GraphError,
-  IOError,
+  GumIOError,
   InvalidArc,
   InvalidArgument,
   InvalidArgumentsNumber,
@@ -261,13 +267,32 @@ from .pyagrumcpp import (
   OutOfBounds,
   ArgumentError,
   SizeError,
-  SyntaxError,
   UndefinedElement,
   UndefinedIteratorKey,
   UndefinedIteratorValue,
   UnknownLabelInDatabase,
   CPTError,
   HedgeException,
+  GumTypeError,
+  NotImplementedYet,
+  IteratorError,
+  InvalidPartiallyDirectedCycle,
+  ScheduleMultiDimError,
+  ScheduleOperationError,
+  FactoryError,
+  FactoryInvalidState,
+  WrongClassElement,
+  PRMTypeError,
+  LearningError,
+  IncompatibleScorePrior,
+  AbstractScheduleMultiDim,
+  DuplicateScheduleMultiDim,
+  IncompatibleEvidence,
+  PossiblyIncompatibleScorePrior,
+  UnavailableScheduleOperation,
+  UnexecutedScheduleOperation,
+  UnknownScheduleMultiDim,
+  UnknownScheduleOperation,
 )
 
 # submodule BN
@@ -404,7 +429,29 @@ _LAZY_COMPOSITE_TYPE_ALIASES = {
 }
 
 
+# deprecated module attributes: name -> (replacement, value)
+# - IOError shadowed the Python builtin (e.g. with "from pyagrum import *")
+# - SyntaxError: a syntax error is raised as the Python builtin SyntaxError (with its location), the
+#   class pyagrum.SyntaxError was never raised
+_DEPRECATED_ATTRS = {
+  "IOError": ("GumIOError", GumIOError),
+  "SyntaxError": ("the builtin SyntaxError", SyntaxError),
+}
+
+
 def __getattr__(name):
+  deprecated_attr = _DEPRECATED_ATTRS.get(name)
+  if deprecated_attr is not None:
+    import warnings
+
+    replacement, value = deprecated_attr
+    warnings.warn(
+      f"pyagrum.{name} is deprecated after 3.2.1, use {replacement} instead",
+      DeprecationWarning,
+      stacklevel=2,
+    )
+    return value  # not cached: the warning is emitted at each access
+
   submodule_name = _LAZY_SUBMODULE_ATTRS.get(name)
   if submodule_name is not None:
     submodule = _lazy_import_submodule(submodule_name)

@@ -113,6 +113,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("DotOptionsTestSuite", True),
         ("EssentialGraphTestSuite", True),
         ("EvidenceTestSuite", True),
+        ("ExceptionNamesTestSuite", True),
         ("ExceptionTracebackTestSuite", True),
         ("GraphTestSuite", True),
         ("GumFormatTestSuite", True),

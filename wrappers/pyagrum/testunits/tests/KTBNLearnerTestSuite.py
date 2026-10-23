@@ -198,7 +198,7 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
       gum.KTBNLearner(self._dir, "ktbnl_std", 4, 1, bn)
     with self.assertRaises(gum.InvalidArgument):
       gum.KTBNLearner(self._dir, "ktbnl_std", 0, 2)  # 0 trajectories
-    with self.assertRaises(gum.IOError):
+    with self.assertRaises(gum.GumIOError):
       gum.KTBNLearner(self._dir, "ktbnl_std", 5, 2, bn)  # trajectory 5 absent
 
     with self.assertRaises(gum.InvalidArgument):
