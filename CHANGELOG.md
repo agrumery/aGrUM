@@ -17,6 +17,12 @@
       `color2rgb`); `CausalModel.toDot()` arguments `SHOW_LATENT_NAMES`, `NODE_BG`, `NODE_FG`, `EDGE_COL` deprecated.
     - `skbn.BNClassifier`: `priorWeight` now defaults to the configuration.
     - Fixed `proba2hex` (invalid colors) and `CLGInference2dot` (without evidence). pyAgrum requires `pydot>=2`.
+    - **Exceptions**: all the aGrUM exceptions are now exported by `pyagrum` (`FactoryError`, `NotImplementedYet`,
+      `IncompatibleEvidence`, `LearningError`, ...). `TypeError` and `IOError` are renamed `GumTypeError` and
+      `GumIOError` so that `from pyagrum import *` no longer shadows the Python builtins. `pyagrum.IOError` is deprecated
+      (use `GumIOError`), as `pyagrum.SyntaxError`: syntax errors are raised as the builtin `SyntaxError` (the aGrUM
+      class is no longer wrapped). A few checks of Python arguments (e.g. `setEvidence` or `setTargets` with a wrong
+      type) and `del pyagrum.config[...]` now raise the builtin `TypeError` or `SyntaxError` instead of the aGrUM ones.
 
 - aGrUM
 
@@ -36,8 +42,19 @@
     - `GibbsBNdistance` now draws the variables at random by default (`gibbsKL.drawnAtRandom`).
     - **Much faster reading of models with clang and MSVC** (BIF, DSL, NET, UAI, O3PRM...): e.g. a large BIF file from
       8 s to 0.1 s with clang.
+    - **Aggregators `min`, `max`, `median`, `amplitude`, `sum` on values**: they worked on the indices of the
+      parents, which was wrong for ranges not starting at 0 and for parents with different domains. They now work on
+      the values of the parents and give the closest value of the aggregator (saturated at both bounds). `sum` and
+      `amplitude` need numerical variables (use `count` to count the true parents), `min`, `max` and `median` accept
+      labelized variables (order of the labels) or numerical ones, but not both: an incompatible variable is rejected
+      with `TypeError` (`GumTypeError` in pyAgrum). The decomposition of aggregators now gives the right domains to the
+      intermediate nodes (#198, #201). The aggregators derive from `MultiDimFoldAggregator` (`count`, `exists`,
+      `forall`, `and`, `or`: `neutralElt_()` and `fold_()` on the indices of the parents) or from
+      `MultiDimValueAggregator` (`min`, `max`, `median`, `amplitude`, `sum`: `buildValue_()` on their values).
+    - O3PRM: the error of a system that cannot be instantiated gives the reason (e.g. an unassigned reference slot or a
+      parent refused by an aggregator) instead of an unknown error.
 
-- Bug fixes (aGrUM and pyAgrum), thanks to @jschueller for issues #181 to #194
+- Bug fixes (aGrUM and pyAgrum), thanks to @jschueller for issues #181 to #205
 
     - `ImportanceSampling`: the weight of a sample kept only the ratio of the last node (#181).
     - Hybrid samplers (`LoopySamplingInference`, `Loopy*Sampling` in pyAgrum): they stopped too early, while the LBP
@@ -61,6 +78,13 @@
       transitions are done and `burnIn(0)` is allowed (#194).
     - `MeekRules`: rule R4 was not Meek's R4, so some compelled edges stayed undirected (#195, thanks to
       @ldesreumaux).
+    - `MultiDimNoisyORCompound`, `MultiDimNoisyORNet`, `MultiDimNoisyAND`: weights outside [0,1] or NaN (and a null
+      leak for `NoisyAND`, also through its setter) are rejected (#205). `BayesNet::addArc` and `addWeightedArc` no
+      longer leave an arc in the graph when the CPT refuses it.
+    - PRM: the CPT of a cast descendant (`setAsCastDescendant`) ignored the label map (#199).
+    - `qBNSampling`: `qBNRejection` reused stale operators after `setEvidence`/`useFragmentBN` (#197); the quantum
+      registers are created in the order of the qubit map (#200); the binarized parent states follow the CPT order
+      (#204); a variable with a single state is rejected with `OperationNotAllowed` instead of crashing (#203).
 
 ## Changelog for 3.2.1
 

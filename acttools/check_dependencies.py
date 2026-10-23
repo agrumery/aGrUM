@@ -282,7 +282,9 @@ def draw_gum_summary(deps: dict[str, list[str]], svg: bool = False):
 
   for th in _COLORS:
     if th in nb_headers:
-      nod = _get_node(pdp, th, f"{th.removeprefix('base/')}\\n({nb_headers[th]} header{'s' if nb_headers[th] > 1 else ''})", th)
+      nod = _get_node(
+        pdp, th, f"{th.removeprefix('base/')}\\n({nb_headers[th]} header{'s' if nb_headers[th] > 1 else ''})", th
+      )
       nod.set("fontsize", 10)
       nod.set("margin", 0.1)
       summary.add_node(nod)
