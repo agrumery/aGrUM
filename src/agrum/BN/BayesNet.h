@@ -381,6 +381,8 @@ namespace gum {
      * @param tail as NodeId
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
      * @throw DuplicateElement if the arc already exists
+     * @throw TypeError (or OutOfBounds for a noisy model) if the CPT of head refuses tail as a new
+     * parent (e.g. a labelized parent for a SUM aggregator). The arc is not added then.
      */
     void addArc(NodeId tail, NodeId head);
 
@@ -568,7 +570,14 @@ namespace gum {
     NodeId addAND(const DiscreteVariable& var);
 
     /**
-     * Others aggregators
+     * Others aggregators.
+     *
+     * MIN, MAX, MEDIAN, AMPLITUDE and SUM are computed on the values of the parents
+     * (DiscreteVariable::numerical()), and the result is mapped onto the closest value of the
+     * aggregator (DiscreteVariable::closestIndex(), saturated at both bounds). AMPLITUDE and SUM
+     * need numerical variables; MIN, MAX and MEDIAN accept labelized variables (order of the
+     * labels) or numerical ones, but not both. An incompatible variable is rejected (TypeError)
+     * when it is added (here or by addArc()).
      * @{
      */
     NodeId addAMPLITUDE(const DiscreteVariable& var);

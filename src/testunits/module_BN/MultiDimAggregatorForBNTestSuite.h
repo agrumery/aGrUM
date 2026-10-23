@@ -452,4 +452,23 @@ namespace gum_tests {
     }
     // if (joint->sum()!=1)  // hard test for ReadOnly CPT (as aggregator)
   }
+
+  GUM_TEST(RefusedParentLeavesTheBNConsistent) {
+    // a parent refused by the CPT of the child must not leave a dangling arc
+    gum::BayesNet< double > bn;
+    const auto              s = bn.addSUM(gum::RangeVariable("S", "", 0, 4));
+    const auto              l = bn.add(gum::LabelizedVariable("L", "", 2));
+    CHECK_THROWS_AS(bn.addArc(l, s), const gum::TypeError&);
+    CHECK_FALSE(bn.dag().existsArc(l, s));
+    CHECK_EQ(bn.cpt(s).nbrDim(), gum::Size(1));
+  }
+
+  GUM_TEST(RefusedWeightLeavesTheBNConsistent) {
+    gum::BayesNet< double > bn;
+    const auto              y = bn.addNoisyOR(gum::LabelizedVariable("Y", "", 2), 0.2);
+    const auto              a = bn.add(gum::LabelizedVariable("A", "", 2));
+    CHECK_THROWS_AS(bn.addWeightedArc(a, y, 1.5), const gum::OutOfBounds&);
+    CHECK_FALSE(bn.dag().existsArc(a, y));
+    CHECK_EQ(bn.cpt(y).nbrDim(), gum::Size(1));
+  }
 }   // namespace gum_tests

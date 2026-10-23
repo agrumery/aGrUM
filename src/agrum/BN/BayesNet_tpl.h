@@ -283,8 +283,13 @@ namespace gum {
     }
 
     this->dag_.addArc(tail, head);
-    // Add parent in the child's CPT
-    (*(_probaMap_[head])) << variable(tail);
+    // Add parent in the child's CPT (it may be refused, e.g. by an aggregator or a noisy model)
+    try {
+      (*(_probaMap_[head])) << variable(tail);
+    } catch (Exception const&) {
+      this->dag_.eraseArc(Arc(tail, head));
+      throw;
+    }
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -545,7 +550,12 @@ namespace gum {
       // or is OK
       addArc(tail, head);
 
-      CImodel->causalWeight(variable(tail), causalWeight);
+      try {
+        CImodel->causalWeight(variable(tail), causalWeight);
+      } catch (Exception const&) {
+        eraseArc(tail, head);
+        throw;
+      }
     } else {
       GUM_ERROR(InvalidArc,
                 "Head variable (" << variable(head).name() << ") is not a CIModel variable !")
