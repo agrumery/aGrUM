@@ -48,12 +48,46 @@
  * @author Gaspard Ducamp
  *
  */
+#include <algorithm>
+#include <cmath>
+#include <limits>
 #include <list>
 #include <typeinfo>
 
 #include <agrum/BN/inference/tools/aggregatorDecomposition.h>
 
 namespace gum {
+
+  template < GUM_Numeric GUM_SCALAR >
+  void AggregatorDecomposition< GUM_SCALAR >::_resetBounds_(const std::string& aggType,
+                                                            long&              minVal,
+                                                            long&              maxVal) {
+    if (aggType == "min") minVal = maxVal = std::numeric_limits< long >::max();
+    else if (aggType == "max") minVal = maxVal = std::numeric_limits< long >::min();
+    else minVal = maxVal = 0;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void AggregatorDecomposition< GUM_SCALAR >::_accumulateBounds_(const std::string&      aggType,
+                                                                 const DiscreteVariable& v,
+                                                                 long&                   minVal,
+                                                                 long&                   maxVal) {
+    if (!v.isNumerical()) return;
+    const double first = v.numerical(0);
+    const double last  = v.numerical(v.domainSize() - 1);
+    const auto   lo    = static_cast< long >(std::floor(std::min(first, last)));
+    const auto   hi    = static_cast< long >(std::ceil(std::max(first, last)));
+    if (aggType == "min") {
+      minVal = std::min(minVal, lo);
+      maxVal = std::min(maxVal, hi);
+    } else if (aggType == "max") {
+      minVal = std::max(minVal, lo);
+      maxVal = std::max(maxVal, hi);
+    } else {
+      minVal += lo;
+      maxVal += hi;
+    }
+  }
 
   template < GUM_Numeric GUM_SCALAR >
   AggregatorDecomposition< GUM_SCALAR >::AggregatorDecomposition() {
@@ -120,6 +154,7 @@ namespace gum {
     std::string newName
         = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
     const std::string aggType = p->aggregatorName();
+    _resetBounds_(aggType, minVal, maxVal);
 
     for (auto parent: parents) {
       bn.eraseArc(parent, initialAggregator);
@@ -164,8 +199,7 @@ namespace gum {
 
           newAggParents.clear();
 
-          minVal = 0;
-          maxVal = 0;
+          _resetBounds_(aggType, minVal, maxVal);
 
           newName = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
@@ -173,23 +207,11 @@ namespace gum {
           newAgg = bn.variable(initialAggregator).clone();
           newAgg->setName(newName);
           newAgg->setDescription(aggType);
-
-          if (bn.variable(parent).varType() == VarType::RANGE) {
-            minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
-            maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
-          }
-
-          newAggParents.push_back(parent);
-          i++;
-        } else {
-          if (bn.variable(parent).varType() == VarType::RANGE) {
-            minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
-            maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
-          }
-
-          newAggParents.push_back(parent);
-          i++;
         }
+
+        _accumulateBounds_(aggType, bn.variable(parent), minVal, maxVal);
+        newAggParents.push_back(parent);
+        i++;
       } else {
         newAggs.insert(parent);
       }
@@ -252,6 +274,7 @@ namespace gum {
       gum::Size q      = 0;
       long      minVal = 0;
       long      maxVal = 0;
+      _resetBounds_(aggType, minVal, maxVal);
 
       j++;
 
@@ -287,8 +310,7 @@ namespace gum {
 
             newAggParents.clear();
 
-            minVal = 0;
-            maxVal = 0;
+            _resetBounds_(aggType, minVal, maxVal);
 
             newName = std::string(bn.variable(initialAggregator).name()) + "_" + std::to_string(j);
 
@@ -296,23 +318,11 @@ namespace gum {
             newAgg = bn.variable(initialAggregator).clone();
             newAgg->setName(newName);
             newAgg->setDescription(aggType);
-
-            if (bn.variable(parent).varType() == VarType::RANGE) {
-              minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
-              maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
-            }
-
-            newAggParents.push_back(parent);
-            i++;
-          } else {
-            if (bn.variable(parent).varType() == VarType::RANGE) {
-              minVal += static_cast< const RangeVariable& >(bn.variable(parent)).minVal();
-              maxVal += static_cast< const RangeVariable& >(bn.variable(parent)).maxVal();
-            }
-
-            newAggParents.push_back(parent);
-            i++;
           }
+
+          _accumulateBounds_(aggType, bn.variable(parent), minVal, maxVal);
+          newAggParents.push_back(parent);
+          i++;
         } else {
           newAggs.insert(parent);
         }

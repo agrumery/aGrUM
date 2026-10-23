@@ -56,13 +56,14 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Or< GUM_SCALAR >::Or() : MultiDimAggregator< GUM_SCALAR >() {
+    Or< GUM_SCALAR >::Or() : MultiDimFoldAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Or);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
+    Or< GUM_SCALAR >::Or(const Or< GUM_SCALAR >& from) :
+        MultiDimFoldAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Or);
     }
 

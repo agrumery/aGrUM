@@ -52,14 +52,14 @@
 
 namespace gum::aggregator {
   template < GUM_Numeric GUM_SCALAR >
-  Sum< GUM_SCALAR >::Sum() : MultiDimAggregator< GUM_SCALAR >() {
+  Sum< GUM_SCALAR >::Sum() : MultiDimValueAggregator< GUM_SCALAR >() {
     this->decomposable_ = true;
-    this->_value_       = this->neutralElt_();
     GUM_CONSTRUCTOR(Sum);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
+  Sum< GUM_SCALAR >::Sum(const Sum< GUM_SCALAR >& from) :
+      MultiDimValueAggregator< GUM_SCALAR >(from) {
     GUM_CONS_CPY(Sum);
   }
 
@@ -69,21 +69,16 @@ namespace gum::aggregator {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Idx Sum< GUM_SCALAR >::neutralElt_() const {
-    return (Idx)0;
+  Idx Sum< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
+    double res = 0.0;
+    for (Idx j = 1; j < this->nbrDim(); j++)
+      res += this->parentValue_(i, j);
+    return this->valueToIndex_(res);
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  Idx Sum< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                               Idx                     i1,
-                               Idx                     i2,
-                               bool&                   stop_iteration) const {
-    if (auto max_val = this->variable((Idx)0).numerical(this->variable((Idx)0).domainSize() - 1);
-        i1 + i2 > max_val) {
-      stop_iteration = true;
-      return (Idx)max_val;
-    }
-    return i1 + i2;
+  void Sum< GUM_SCALAR >::checkVariable_(const DiscreteVariable& v) const {
+    this->checkNumericalVariable_(v);
   }
 
   template < GUM_Numeric GUM_SCALAR >

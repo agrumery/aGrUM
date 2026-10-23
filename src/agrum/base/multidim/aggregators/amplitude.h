@@ -49,7 +49,7 @@
 #ifndef GUM_AMPLITUDE_AGGREGATOR_H
 #define GUM_AMPLITUDE_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/aggregators/multiDimValueAggregator.h>
 
 namespace gum {
 
@@ -65,13 +65,13 @@ namespace gum {
      *
      * @brief amplitude aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimValueAggregator for more details of implementations
      *
      * Amplitude may be truncated since the amplitude has not the same type as
      * its parents.
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Amplitude final: public MultiDimAggregator< GUM_SCALAR > {
+    class Amplitude final: public MultiDimValueAggregator< GUM_SCALAR > {
       public:
       Amplitude();
 
@@ -101,15 +101,11 @@ namespace gum {
       [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
       protected:
+      /// computed on the values of the parents (see MultiDimValueAggregator::valueToIndex_())
       Idx buildValue_(const gum::Instantiation& i) const override;
 
-      // fold scheme is not used, these methods are neutralized
-      Idx neutralElt_() const override;
-
-      Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const override;
-
-      private:
-      Idx _value_;
+      /// @throw TypeError if the variable is not numerical
+      void checkVariable_(const DiscreteVariable& v) const override;
     };
 
 

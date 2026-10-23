@@ -49,7 +49,10 @@
 #ifndef GUM_MEDIAN_AGGREGATOR_H
 #define GUM_MEDIAN_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <algorithm>
+#include <vector>
+
+#include <agrum/base/multidim/aggregators/multiDimValueAggregator.h>
 
 namespace gum {
 
@@ -65,7 +68,7 @@ namespace gum {
      *
      * @brief median aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimValueAggregator for more details of implementations
      *
      * Median needs to have the same domain than its parent.
      *
@@ -76,7 +79,7 @@ namespace gum {
      * (arbitrarilly by excess) the value 2.
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Median final: public MultiDimAggregator< GUM_SCALAR > {
+    class Median final: public MultiDimValueAggregator< GUM_SCALAR > {
       public:
       Median();
       Median(const Median< GUM_SCALAR >& from);
@@ -104,15 +107,11 @@ namespace gum {
       [[nodiscard]] MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
       protected:
+      /// computed on the values of the parents (see MultiDimValueAggregator::valueToIndex_())
       Idx buildValue_(const gum::Instantiation& i) const override;
 
-      // fold scheme is not used, these methods are neutralized
-      Idx neutralElt_() const override;
-
-      Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const override;
-
-      private:
-      Idx _value_;
+      /// @throw TypeError if labelized and numerical variables are mixed
+      void checkVariable_(const DiscreteVariable& v) const override;
     };
 
 

@@ -1,7 +1,10 @@
 type t_color labels(red, blue, green, yellow);
+type t_level int(0,2);
+type t_total int(0,4);
 
 class SomeClass {
    t_color color { [ 0.1, 0.2, 0.3, 0.4 ] };
+   t_level level { [ 0.2, 0.3, 0.5 ] };
 
 }
 
@@ -16,17 +19,17 @@ class HappyClass {
   t_color infrared = min( [ has_red, has_blue, has_green, has_yellow ]);  
   t_color ultra_violet = max( [ has_red, has_blue, has_green, has_yellow ]);  
   t_color median = median( [ has_red, has_blue, has_green, has_yellow ]);  
-  t_color amp = amplitude( [ has_red, has_blue, has_green, has_yellow ]);
-  t_color sum = sum( [ has_red, has_blue, has_green, has_yellow ]);
+  t_level amp = amplitude( [A.level] );
+  t_total sum = sum( [A.level] );
 
   boolean yolo dependson infrared, ultra_violet, median, amp {
     *, *, *, *: 0.99, 0.01;
-    green, green, green, green : 0.01, 0.99;
+    green, green, green, 0 : 0.01, 0.99;
   };
 
   boolean yolo2 dependson infrared, ultra_violet, median, sum {
       *, *, *, *: 0.99, 0.01;
-      green, green, green, green : 0.01, 0.99;
+      green, green, green, 4 : 0.01, 0.99;
   };
 
   boolean happy dependson all_colors, any_colors, yolo {

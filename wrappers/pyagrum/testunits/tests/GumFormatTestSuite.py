@@ -112,13 +112,18 @@ class TestGumFormat(pyAgrumTestCase):
     idAnd = bn.addAND(self._labelizedVar("And", labels))
     idOr = bn.addOR(self._labelizedVar("Or", labels))
     idForall = bn.addFORALL(self._labelizedVar("Forall", labels), 1)
-    idSum = bn.addSUM(self._labelizedVar("Sum", labels))
+    # sum needs numerical variables
+    idN1 = bn.add(gum.RangeVariable("N1", "", 0, 2))
+    idN2 = bn.add(gum.RangeVariable("N2", "", 0, 2))
+    idSum = bn.addSUM(gum.RangeVariable("Sum", "", 0, 4))
     idNoisyOR = bn.addNoisyOR(self._labelizedVar("NoisyOR", labels), 0.1)
     idLogit = bn.addLogit(self._labelizedVar("Logit", labels), 0.1)
 
-    for nid in (idAnd, idOr, idForall, idSum):
+    for nid in (idAnd, idOr, idForall):
       bn.addArc(idP1, nid)
       bn.addArc(idP2, nid)
+    bn.addArc(idN1, idSum)
+    bn.addArc(idN2, idSum)
     for nid in (idNoisyOR, idLogit):
       bn.addWeightedArc(idP1, nid, 0.3)
       bn.addWeightedArc(idP2, nid, 0.6)
@@ -149,13 +154,12 @@ class TestGumFormat(pyAgrumTestCase):
     # a dense encoding of a 4-parent, 10-modality aggregator CPT would need 10^4
     # doubles (~80KB in JSON); the compact "kind":"aggregator" encoding keeps the
     # whole file well under 1KB.
-    labels = [str(i) for i in range(10)]
     bn = gum.BayesNet()
-    idP1 = bn.add(self._labelizedVar("P1", labels))
-    idP2 = bn.add(self._labelizedVar("P2", labels))
-    idP3 = bn.add(self._labelizedVar("P3", labels))
-    idP4 = bn.add(self._labelizedVar("P4", labels))
-    idSum = bn.addSUM(self._labelizedVar("Sum", labels))
+    idP1 = bn.add(gum.RangeVariable("P1", "", 0, 9))
+    idP2 = bn.add(gum.RangeVariable("P2", "", 0, 9))
+    idP3 = bn.add(gum.RangeVariable("P3", "", 0, 9))
+    idP4 = bn.add(gum.RangeVariable("P4", "", 0, 9))
+    idSum = bn.addSUM(gum.RangeVariable("Sum", "", 0, 9))
     for pid in (idP1, idP2, idP3, idP4):
       bn.addArc(pid, idSum)
 

@@ -49,7 +49,7 @@
 #ifndef GUM_OR_AGGREGATOR_H
 #define GUM_OR_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/aggregators/multiDimFoldAggregator.h>
 
 namespace gum {
 
@@ -66,13 +66,13 @@ namespace gum {
      *
      * @brief or aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimFoldAggregator for more details of implementations
      *
      * Note that a <tt>Or(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Or final: public MultiDimAggregator< GUM_SCALAR > {
+    class Or final: public MultiDimFoldAggregator< GUM_SCALAR > {
       public:
       Or();
       Or(const Or< GUM_SCALAR >& from);
@@ -102,9 +102,6 @@ namespace gum {
       protected:
       Idx neutralElt_() const override;
       Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const override;
-
-      private:
-      Idx _value_;
     };
 
 

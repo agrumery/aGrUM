@@ -55,13 +55,14 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Forall< GUM_SCALAR >::Forall(Idx value) : MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
+    Forall< GUM_SCALAR >::Forall(Idx value) :
+        MultiDimFoldAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Forall);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Forall< GUM_SCALAR >::Forall(const Forall< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+        MultiDimFoldAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Forall);
     }

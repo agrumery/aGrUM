@@ -49,7 +49,9 @@
 #ifndef GUM_MIN_AGGREGATOR_H
 #define GUM_MIN_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <algorithm>
+
+#include <agrum/base/multidim/aggregators/multiDimValueAggregator.h>
 
 namespace gum {
 
@@ -66,10 +68,10 @@ namespace gum {
      *
      * @brief min aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimValueAggregator for more details of implementations
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Min final: public MultiDimAggregator< GUM_SCALAR > {
+    class Min final: public MultiDimValueAggregator< GUM_SCALAR > {
       public:
       Min();
       Min(const Min< GUM_SCALAR >& from);
@@ -97,8 +99,11 @@ namespace gum {
       std::string aggregatorName() const override;
 
       protected:
-      Idx neutralElt_() const override;
-      Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const override;
+      /// computed on the values of the parents (see MultiDimValueAggregator::valueToIndex_())
+      Idx buildValue_(const gum::Instantiation& i) const override;
+
+      /// @throw TypeError if labelized and numerical variables are mixed
+      void checkVariable_(const DiscreteVariable& v) const override;
     };
 
 

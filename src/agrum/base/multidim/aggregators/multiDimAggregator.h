@@ -68,18 +68,18 @@ namespace gum {
      * @brief Abstract base class for all multi dimensionnal aggregator.
      *
      * The principle of a deterministic aggregator is that
-     * \f$P[i,J_1,\cdots,J_n]=1 \iff
-     * i==f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ and 0 otherwise.
-     * f is a virtual function called the folder function (like folder_left or
-     * folder_right in OCaml).  NeutralElement is an Idx
+     * \f$P[i,J_1,\cdots,J_n]=1 \iff i==buildValue_(J_1,\cdots,J_n)\f$ and 0 otherwise. The
+     * concrete aggregators derive from one of two families:
+     *  - @ref MultiDimFoldAggregator: a "fold" on the indices of the parents (@ref Count,
+     *  @ref Exists, @ref Forall, @ref And, @ref Or);
+     *  - @ref MultiDimValueAggregator: a computation on the values of the parents (@ref Min,
+     *  @ref Max, @ref Median, @ref Amplitude, @ref Sum).
      *
      * @warning
      *  - the way aggregators are implemented assumed that the FIRST variable
      *  in the multiDim is the aggregator variable.
-     *  - the way aggregators are implemented does not check types and domain
-     *  size (e.g domain(folder function)==domain(aggregator variable)).
-     *  However, \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is
-     *  truncated in order to fit in domain(aggregator variable).
+     *  - the result of buildValue_() is truncated in order to fit in domain(aggregator
+     *  variable).
      */
     template < typename GUM_ELEMENT >
     class MultiDimAggregator: public MultiDimReadOnly< GUM_ELEMENT > {
@@ -132,6 +132,14 @@ namespace gum {
 
       public:
       GUM_ELEMENT get(const Instantiation& i) const override;
+
+      /**
+       * @brief Adds a variable: the first one is the aggregator, the next ones are its parents.
+       *
+       * @throw TypeError if the type of the variable is not compatible with this aggregator (see
+       * checkVariable_()).
+       */
+      void add(const DiscreteVariable& v) override;
 
       virtual std::string aggregatorName() const = 0;
 
@@ -202,22 +210,20 @@ namespace gum {
       /// @}
 
       protected:
-      /// by default, buildValue_ uses a "fold" scheme and the user has to
-      /// implement neutralElt_ and fold_
-      /// but if necessary (as for @ref Median), buildValue_ can be
-      /// reimplemented.
-      virtual Idx buildValue_(const gum::Instantiation& i) const;
+      /// @return the index of the aggregator for the parents in i (truncated by get() if out of
+      /// its domain). See @ref MultiDimFoldAggregator and @ref MultiDimValueAggregator.
+      virtual Idx buildValue_(const gum::Instantiation& i) const = 0;
 
       /// decomposable_ indicates if the aggregator can be decomposed
       bool decomposable_;
 
-      /// neutralElt_() is the result value for the first application of fold_
-      virtual Idx neutralElt_() const = 0;
-
-      /// fold_ is applied on value i1 for variable v. the actual result for
-      /// precedent applications is i2.
-      /// @return the new result for applications up to v.
-      virtual Idx fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const = 0;
+      /**
+       * @brief Checks that a variable can be added to this aggregator (nothing by default).
+       *
+       * Called by add() before the variable is added (if nbrDim()==0, v is the aggregator itself).
+       * @throw TypeError if the variable is not compatible
+       */
+      virtual void checkVariable_(const DiscreteVariable& v) const;
     };
 
 

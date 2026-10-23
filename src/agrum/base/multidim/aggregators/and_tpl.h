@@ -56,13 +56,14 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    And< GUM_SCALAR >::And() : MultiDimAggregator< GUM_SCALAR >() {
+    And< GUM_SCALAR >::And() : MultiDimFoldAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(And);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    And< GUM_SCALAR >::And(const And< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
+    And< GUM_SCALAR >::And(const And< GUM_SCALAR >& from) :
+        MultiDimFoldAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(And);
     }
 

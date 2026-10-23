@@ -41,7 +41,10 @@
 #pragma once
 
 
+#include <algorithm>
 #include <sstream>
+#include <utility>
+#include <vector>
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
@@ -55,6 +58,7 @@
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/aggregators/sum.h>
 #include <agrum/base/multidim/tensor.h>
+#include <agrum/base/variables/integerVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/base/variables/rangeVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -421,13 +425,14 @@ namespace gum_tests {
   }
 
   GUM_TEST(CreationAmplitude) {
-    gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4), d("d", "", 4),
-        e("e", "", 4);
+    // amplitude needs numerical variables
+    gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3), d("d", "", 0, 3),
+        e("e", "", 0, 3);
     gum::aggregator::Amplitude< double > p;
     GUM_CHECK_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
     CHECK((p.toString())
-          == ("a:Labelized({0|1|2|3})=amplitude(b:Labelized({0|1|2|3}),c:Labelized({0|1|2|"
-              "3}),d:Labelized({0|1|2|3}),e:Labelized({0|1|2|3}))"));
+          == ("a:Range([0,3])=amplitude(b:Range([0,3]),c:Range([0,3]),d:Range([0,3]),"
+              "e:Range([0,3]))"));
 
     gum::Instantiation i(p);
 
@@ -629,7 +634,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(Amplitude_ZeroParent) {
-    gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
+    gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 1);
 
     std::string                          res0 = "1-0-0-0";
     std::string                          res1 = "1-0-0-0-1-0-0-0";
@@ -670,5 +675,123 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(p.toString());
     GUM_CHECK_ASSERT_THROWS_NOTHING(s = pot2arr_(p));
     CHECK_EQ(s, res1);
+  }
+
+  GUM_TEST(SumOnValuesWithOffsetRanges) {
+    // issue #201: Sum adds the values of the parents (not their indices) and saturates at both
+    // bounds of the aggregator
+    for (const auto& [lo, hi]: {std::pair< long, long >{-5, 5}, {-10, -5}, {5, 7}, {0, 4}}) {
+      gum::RangeVariable             s("S", "", lo, hi), a("A", "", lo, hi), b("B", "", lo, hi);
+      gum::aggregator::Sum< double > agg;
+      agg << s << a << b;
+      gum::Instantiation I(agg);
+      for (I.setFirst(); !I.end(); I.inc()) {
+        const double expected
+            = std::clamp(a.numerical(I.val(a)) + b.numerical(I.val(b)), double(lo), double(hi));
+        CHECK_MESSAGE(agg.get(I) == ((s.numerical(I.val(s)) == expected) ? 1.0 : 0.0),
+                      "[" << lo << "," << hi << "] " << I);
+      }
+    }
+  }
+
+  GUM_TEST(SumOnValuesWithIntegerVariables) {
+    gum::IntegerVariable s("S", "", {0, 5, 10, 15, 20}), a("A", "", {0, 5, 10}),
+        b("B", "", {0, 5, 10});
+    gum::aggregator::Sum< double > agg;
+    agg << s << a << b;
+    gum::Instantiation I(agg);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      const double expected = a.numerical(I.val(a)) + b.numerical(I.val(b));
+      CHECK_MESSAGE(agg.get(I) == ((s.numerical(I.val(s)) == expected) ? 1.0 : 0.0), I);
+    }
+  }
+
+  GUM_TEST(MinMaxOnValuesWithHeterogeneousRanges) {
+    // issue #198: with parents in [0,1] and [10,11], MIN(A=1, C=10) is 1 (and not the min of the
+    // indices, 0)
+    gum::RangeVariable             y("Y", "", 0, 11), a("A", "", 0, 1), c("C", "", 10, 11);
+    gum::aggregator::Min< double > min;
+    min << y << a << c;
+    gum::aggregator::Max< double > max;
+    max << y << a << c;
+    gum::Instantiation I(min);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      const double va = a.numerical(I.val(a)), vc = c.numerical(I.val(c)),
+                   vy = y.numerical(I.val(y));
+      CHECK_MESSAGE(min.get(I) == ((vy == std::min(va, vc)) ? 1.0 : 0.0), I);
+      CHECK_MESSAGE(max.get(I) == ((vy == std::max(va, vc)) ? 1.0 : 0.0), I);
+    }
+  }
+
+  GUM_TEST(MedianAndAmplitudeOnValues) {
+    gum::RangeVariable a("A", "", 10, 12), b("B", "", 10, 12), c("C", "", 10, 12),
+        m("M", "", 10, 12), w("W", "", 0, 2);
+    gum::aggregator::Median< double > median;
+    median << m << a << b << c;
+    gum::aggregator::Amplitude< double > amplitude;
+    amplitude << w << a << b << c;
+    gum::Instantiation I(median);
+    gum::Instantiation J(amplitude);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      std::vector< double > v
+          = {a.numerical(I.val(a)), b.numerical(I.val(b)), c.numerical(I.val(c))};
+      std::sort(v.begin(), v.end());
+      CHECK_MESSAGE(median.get(I) == ((m.numerical(I.val(m)) == v[1]) ? 1.0 : 0.0), I);
+    }
+    for (J.setFirst(); !J.end(); J.inc()) {
+      std::vector< double > v
+          = {a.numerical(J.val(a)), b.numerical(J.val(b)), c.numerical(J.val(c))};
+      std::sort(v.begin(), v.end());
+      CHECK_MESSAGE(amplitude.get(J) == ((w.numerical(J.val(w)) == v[2] - v[0]) ? 1.0 : 0.0), J);
+    }
+  }
+
+  GUM_TEST(MinMaxOnLabelsFollowTheirOrder) {
+    // labelized variables: the order of the labels is used (ordinal aggregation)
+    gum::LabelizedVariable y("Y", "", {"low", "medium", "high"}),
+        a("A", "", {"low", "medium", "high"}), b("B", "", {"low", "medium", "high"});
+    gum::aggregator::Min< double > min;
+    min << y << a << b;
+    gum::Instantiation I(min);
+    for (I.setFirst(); !I.end(); I.inc())
+      CHECK_EQ(min.get(I), (I.val(y) == std::min(I.val(a), I.val(b))) ? 1.0 : 0.0);
+  }
+
+  GUM_TEST(NumericalAggregatorsRejectIncompatibleVariables) {
+    gum::RangeVariable     r("R", "", 0, 4), r2("R2", "", 0, 4);
+    gum::LabelizedVariable l("L", "", 2), l2("L2", "", 2);
+
+    // sum and amplitude: numerical variables only (aggregator and parents)
+    {
+      gum::aggregator::Sum< double > sum;
+      sum << r;
+      CHECK_THROWS_AS(sum << l, const gum::TypeError&);
+      CHECK_EQ(sum.nbrDim(), gum::Size(1));
+    }
+    {
+      gum::aggregator::Sum< double > sum;
+      CHECK_THROWS_AS(sum << l, const gum::TypeError&);
+    }
+    {
+      gum::aggregator::Amplitude< double > amplitude;
+      amplitude << r;
+      CHECK_THROWS_AS(amplitude << l, const gum::TypeError&);
+    }
+    // min, max, median: labelized or numerical, but not both
+    {
+      gum::aggregator::Min< double > min;
+      min << r << r2;
+      CHECK_THROWS_AS(min << l, const gum::TypeError&);
+    }
+    {
+      gum::aggregator::Max< double > max;
+      max << l << l2;
+      CHECK_THROWS_AS(max << r, const gum::TypeError&);
+    }
+    {
+      gum::aggregator::Median< double > median;
+      median << l;
+      CHECK_THROWS_AS(median << r, const gum::TypeError&);
+    }
   }
 }   // namespace gum_tests

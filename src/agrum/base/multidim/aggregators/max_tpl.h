@@ -55,13 +55,14 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Max< GUM_SCALAR >::Max() : MultiDimAggregator< GUM_SCALAR >() {
+    Max< GUM_SCALAR >::Max() : MultiDimValueAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Max);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
+    Max< GUM_SCALAR >::Max(const Max< GUM_SCALAR >& from) :
+        MultiDimValueAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Max);
     }
 
@@ -71,16 +72,18 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Max< GUM_SCALAR >::neutralElt_() const {
-      return (Idx)0;
+    Idx Max< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
+      // without parent: the first index
+      if (this->nbrDim() < 2) return 0;
+      double res = this->parentValue_(i, 1);
+      for (Idx j = 2; j < this->nbrDim(); j++)
+        res = std::max(res, this->parentValue_(i, j));
+      return this->valueToIndex_(res);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Max< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                 Idx                     i1,
-                                 Idx                     i2,
-                                 bool&                   stop_iteration) const {
-      return (i1 > i2) ? i1 : i2;
+    void Max< GUM_SCALAR >::checkVariable_(const DiscreteVariable& v) const {
+      this->checkHomogeneousVariable_(v);
     }
 
     template < GUM_Numeric GUM_SCALAR >

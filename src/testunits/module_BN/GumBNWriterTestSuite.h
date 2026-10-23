@@ -169,14 +169,17 @@ namespace gum_tests {
 
       gum::LabelizedVariable vAnd("And", "", labels);
       gum::LabelizedVariable vOr("Or", "", labels);
-      gum::LabelizedVariable vAmplitude("Amplitude", "", labels);
+      // amplitude and sum need numerical variables
+      const gum::NodeId      idN1 = bn.add(gum::RangeVariable("N1", "", 0, 2));
+      const gum::NodeId      idN2 = bn.add(gum::RangeVariable("N2", "", 0, 2));
+      gum::RangeVariable     vAmplitude("Amplitude", "", 0, 2);
       gum::LabelizedVariable vCount("Count", "", labels);
       gum::LabelizedVariable vExists("Exists", "", labels);
       gum::LabelizedVariable vForall("Forall", "", labels);
       gum::LabelizedVariable vMax("Max", "", labels);
       gum::LabelizedVariable vMedian("Median", "", labels);
       gum::LabelizedVariable vMin("Min", "", labels);
-      gum::LabelizedVariable vSum("Sum", "", labels);
+      gum::RangeVariable     vSum("Sum", "", 0, 4);
       gum::LabelizedVariable vNoisyORCompound("NoisyORCompound", "", labels);
       gum::LabelizedVariable vNoisyORNet("NoisyORNet", "", labels);
       gum::LabelizedVariable vNoisyAND("NoisyAND", "", labels);
@@ -198,9 +201,13 @@ namespace gum_tests {
       const gum::NodeId idLogit           = bn.addLogit(vLogit, 0.1);
 
       for (const gum::NodeId id:
-           {idAnd, idOr, idAmplitude, idCount, idExists, idForall, idMax, idMedian, idMin, idSum}) {
+           {idAnd, idOr, idCount, idExists, idForall, idMax, idMedian, idMin}) {
         bn.addArc(idP1, id);
         bn.addArc(idP2, id);
+      }
+      for (const gum::NodeId id: {idAmplitude, idSum}) {
+        bn.addArc(idN1, id);
+        bn.addArc(idN2, id);
       }
       for (const gum::NodeId id: {idNoisyORCompound, idNoisyORNet, idNoisyAND, idLogit}) {
         bn.addWeightedArc(idP1, id, 0.3);
@@ -257,11 +264,11 @@ namespace gum_tests {
       // doubles (~80KB in JSON); the compact "kind":"aggregator" encoding keeps the
       // whole file well under 1KB.
       gum::BayesNet< double > bn;
-      gum::LabelizedVariable  p1("P1", "", 10);
-      gum::LabelizedVariable  p2("P2", "", 10);
-      gum::LabelizedVariable  p3("P3", "", 10);
-      gum::LabelizedVariable  p4("P4", "", 10);
-      gum::LabelizedVariable  vSum("Sum", "", 10);
+      gum::RangeVariable      p1("P1", "", 0, 9);
+      gum::RangeVariable      p2("P2", "", 0, 9);
+      gum::RangeVariable      p3("P3", "", 0, 9);
+      gum::RangeVariable      p4("P4", "", 0, 9);
+      gum::RangeVariable      vSum("Sum", "", 0, 9);
 
       const gum::NodeId idP1  = bn.add(p1);
       const gum::NodeId idP2  = bn.add(p2);

@@ -58,13 +58,13 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Amplitude< GUM_SCALAR >::Amplitude() : MultiDimAggregator< GUM_SCALAR >() {
+    Amplitude< GUM_SCALAR >::Amplitude() : MultiDimValueAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Amplitude);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Amplitude< GUM_SCALAR >::Amplitude(const Amplitude< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+        MultiDimValueAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Amplitude);
     }
 
@@ -85,31 +85,20 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Amplitude< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
-      // we assume that every (parent) variable has the same domainSize
-      if (i.nbrDim() < 2) return 0;
-
-      Idx min = i.val(1);
-      Idx max = i.val(1);
-
+      if (this->nbrDim() < 2) return this->valueToIndex_(0.0);
+      double min = this->parentValue_(i, 1);
+      double max = min;
       for (Idx j = 2; j < this->nbrDim(); j++) {
-        Idx m = i.val(j);
-        if (m < min) min = m;
-        if (m > max) max = m;
+        const double v = this->parentValue_(i, j);
+        if (v < min) min = v;
+        if (v > max) max = v;
       }
-      return max - min;   // multiDimAggregator::get will truncate if needed.
+      return this->valueToIndex_(max - min);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Amplitude< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                       Idx                     i1,
-                                       Idx                     i2,
-                                       bool&                   stop_iteration) const {
-      return 0;
-    }
-
-    template < GUM_Numeric GUM_SCALAR >
-    Idx Amplitude< GUM_SCALAR >::neutralElt_() const {
-      return 0;
+    void Amplitude< GUM_SCALAR >::checkVariable_(const DiscreteVariable& v) const {
+      this->checkNumericalVariable_(v);
     }
 
   }   // namespace aggregator

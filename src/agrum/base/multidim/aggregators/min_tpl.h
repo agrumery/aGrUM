@@ -58,14 +58,15 @@ namespace gum {
 
     // Default constructor
     template < GUM_Numeric GUM_SCALAR >
-    Min< GUM_SCALAR >::Min() : MultiDimAggregator< GUM_SCALAR >() {
+    Min< GUM_SCALAR >::Min() : MultiDimValueAggregator< GUM_SCALAR >() {
       this->decomposable_ = true;
       GUM_CONSTRUCTOR(Min);
     }
 
     // Default constructor
     template < GUM_Numeric GUM_SCALAR >
-    Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from) : MultiDimAggregator< GUM_SCALAR >(from) {
+    Min< GUM_SCALAR >::Min(const Min< GUM_SCALAR >& from) :
+        MultiDimValueAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Min);
     }
 
@@ -76,16 +77,18 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Min< GUM_SCALAR >::neutralElt_() const {
-      return std::numeric_limits< Idx >::max();
+    Idx Min< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
+      // without parent: the last index
+      if (this->nbrDim() < 2) return this->variable((Idx)0).domainSize() - 1;
+      double res = this->parentValue_(i, 1);
+      for (Idx j = 2; j < this->nbrDim(); j++)
+        res = std::min(res, this->parentValue_(i, j));
+      return this->valueToIndex_(res);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Min< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                 Idx                     i1,
-                                 Idx                     i2,
-                                 bool&                   stop_iteration) const {
-      return (i1 < i2) ? i1 : i2;
+    void Min< GUM_SCALAR >::checkVariable_(const DiscreteVariable& v) const {
+      this->checkHomogeneousVariable_(v);
     }
 
     template < GUM_Numeric GUM_SCALAR >

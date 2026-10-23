@@ -49,7 +49,7 @@
 #ifndef GUM_SUM_AGGREGATOR_H
 #define GUM_SUM_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/aggregators/multiDimValueAggregator.h>
 
 namespace gum::aggregator {
   // =========================================================================
@@ -63,10 +63,10 @@ namespace gum::aggregator {
    *
    * @brief Sum aggregator
    *
-   * @see MultiDimAggregator for more details of implementations
+   * @see MultiDimValueAggregator for more details of implementations
    */
   template < GUM_Numeric GUM_SCALAR >
-  class Sum final: public MultiDimAggregator< GUM_SCALAR > {
+  class Sum final: public MultiDimValueAggregator< GUM_SCALAR > {
     public:
     Sum();
     Sum(const Sum< GUM_SCALAR >& from);
@@ -94,12 +94,11 @@ namespace gum::aggregator {
     std::string aggregatorName() const final;
 
     protected:
-    Idx neutralElt_() const final;
-    [[nodiscard]] Idx
-        fold_(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const final;
+    /// computed on the values of the parents (see MultiDimValueAggregator::valueToIndex_())
+    Idx buildValue_(const gum::Instantiation& i) const final;
 
-    private:
-    Idx _value_;
+    /// @throw TypeError if the variable is not numerical
+    void checkVariable_(const DiscreteVariable& v) const final;
   };
 
 

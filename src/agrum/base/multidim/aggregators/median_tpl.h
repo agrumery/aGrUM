@@ -58,13 +58,13 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Median< GUM_SCALAR >::Median() : MultiDimAggregator< GUM_SCALAR >() {
+    Median< GUM_SCALAR >::Median() : MultiDimValueAggregator< GUM_SCALAR >() {
       GUM_CONSTRUCTOR(Median);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Median< GUM_SCALAR >::Median(const Median< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+        MultiDimValueAggregator< GUM_SCALAR >(from) {
       GUM_CONS_CPY(Median);
     }
 
@@ -85,46 +85,23 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     Idx Median< GUM_SCALAR >::buildValue_(const gum::Instantiation& i) const {
-      if (i.nbrDim() < 2) return i.nbrDim() / 2;   // arbitrary. Guess = (max-min)/2 .
+      if (this->nbrDim() < 2) return 0;
 
-      // we assume that every (parent) variable has the same domainSize
-      Idx maxVal = i.variable(1).domainSize();
-
-      std::vector< Idx > cum(maxVal, 0);
-
+      // buffer reused between calls (get() is called for every configuration)
+      thread_local std::vector< double > values;
+      values.clear();
       for (Idx j = 1; j < this->nbrDim(); j++)
-        cum[i.val(j)]++;
+        values.push_back(this->parentValue_(i, j));
+      std::sort(values.begin(), values.end());
 
-      Idx half = (this->nbrDim() + 1) / 2;   // 50% of the population
-
-      Idx max = maxVal;
-      for (Idx j = 0, sumcum = 0; j < maxVal; j++)
-        if ((sumcum += cum[j]) >= half) {
-          max = j;
-          break;
-        }
-      Idx maxR = maxVal;
-      for (Idx j = maxVal - 1, jj = 0, sumcum = 0; jj < maxVal; jj++, j--)
-        if ((sumcum += cum[j]) >= half) {
-          maxR = j;
-          break;
-        }
-
-      // multiDimAggregator::get will truncate if needed.
-      return (maxR + max) / 2;
+      // for an even number of parents: the middle of the two medians (rounded half down)
+      const auto n = values.size();
+      return this->valueToIndex_((values[(n - 1) / 2] + values[n / 2]) / 2.0);
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    Idx Median< GUM_SCALAR >::fold_(const DiscreteVariable& v,
-                                    Idx                     i1,
-                                    Idx                     i2,
-                                    bool&                   stop_iteration) const {
-      return 0;
-    }
-
-    template < GUM_Numeric GUM_SCALAR >
-    Idx Median< GUM_SCALAR >::neutralElt_() const {
-      return 0;
+    void Median< GUM_SCALAR >::checkVariable_(const DiscreteVariable& v) const {
+      this->checkHomogeneousVariable_(v);
     }
 
   }   // namespace aggregator

@@ -55,13 +55,14 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Exists< GUM_SCALAR >::Exists(Idx value) : MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
+    Exists< GUM_SCALAR >::Exists(Idx value) :
+        MultiDimFoldAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Exists);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Exists< GUM_SCALAR >::Exists(const Exists< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+        MultiDimFoldAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Exists);
     }

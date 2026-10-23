@@ -54,13 +54,13 @@ namespace gum {
 
   namespace aggregator {
     template < GUM_Numeric GUM_SCALAR >
-    Count< GUM_SCALAR >::Count(Idx value) : MultiDimAggregator< GUM_SCALAR >(), _value_(value) {
+    Count< GUM_SCALAR >::Count(Idx value) : MultiDimFoldAggregator< GUM_SCALAR >(), _value_(value) {
       GUM_CONSTRUCTOR(Count);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     Count< GUM_SCALAR >::Count(const Count< GUM_SCALAR >& from) :
-        MultiDimAggregator< GUM_SCALAR >(from) {
+        MultiDimFoldAggregator< GUM_SCALAR >(from) {
       _value_ = from._value_;
       GUM_CONS_CPY(Count);
     }

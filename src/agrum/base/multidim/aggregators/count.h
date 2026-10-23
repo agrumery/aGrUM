@@ -49,7 +49,7 @@
 #ifndef GUM_COUNT_AGGREGATOR_H
 #define GUM_COUNT_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/aggregators/multiDimFoldAggregator.h>
 
 namespace gum {
 
@@ -65,7 +65,7 @@ namespace gum {
      *
      * @brief count aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimFoldAggregator for more details of implementations
      *
      * Note that a <tt>Count(i)</tt> aggregator with a binary aggregator
      * variable is the \f$ \exists i \f$ aggregator.  If the aggregator
@@ -73,7 +73,7 @@ namespace gum {
      * \exists \f$ at least \f$ n\ times\ i \f$ aggregator.
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Count final: public MultiDimAggregator< GUM_SCALAR > {
+    class Count final: public MultiDimFoldAggregator< GUM_SCALAR > {
       public:
       Count(Idx value);
       Count(const Count< GUM_SCALAR >& from);

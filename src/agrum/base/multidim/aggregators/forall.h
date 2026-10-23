@@ -49,7 +49,7 @@
 #ifndef GUM_FORALL_AGGREGATOR_H
 #define GUM_FORALL_AGGREGATOR_H
 
-#include <agrum/base/multidim/aggregators/multiDimAggregator.h>
+#include <agrum/base/multidim/aggregators/multiDimFoldAggregator.h>
 
 namespace gum {
 
@@ -65,13 +65,13 @@ namespace gum {
      *
      * @brief forall aggregator
      *
-     * @see MultiDimAggregator for more details of implementations
+     * @see MultiDimFoldAggregator for more details of implementations
      *
      * Note that a <tt>Forall(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
     template < GUM_Numeric GUM_SCALAR >
-    class Forall: public MultiDimAggregator< GUM_SCALAR > {
+    class Forall final: public MultiDimFoldAggregator< GUM_SCALAR > {
       public:
       Forall(Idx value);
       Forall(const Forall< GUM_SCALAR >& from);

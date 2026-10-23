@@ -109,6 +109,17 @@ namespace gum {
 
     private:
     Size _arity_ = Size(2);
+
+    /// bounds of a RANGE intermediate aggregator without parent: the identity element of aggType
+    /// (+infinity for min, -infinity for max, 0 otherwise)
+    static void _resetBounds_(const std::string& aggType, long& minVal, long& maxVal);
+
+    /// updates the bounds of a RANGE intermediate aggregator with those of a new (numerical) parent
+    /// v, according to aggType (min/max of the bounds for min/max, sum of the bounds otherwise)
+    static void _accumulateBounds_(const std::string&      aggType,
+                                   const DiscreteVariable& v,
+                                   long&                   minVal,
+                                   long&                   maxVal);
   };
 
 
