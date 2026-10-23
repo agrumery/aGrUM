@@ -274,7 +274,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_satisfiesBackdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def _enumerateBackdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+    def _enumerateBackdoorSets(*args) -> list[set[int]]:
         return _cmcpp.DoorCriteria__enumerateBackdoorSets(*args)
 
     @staticmethod
@@ -338,7 +338,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_satisfiesFrontdoorCriterion(dag, X, Y, Z)
 
     @staticmethod
-    def _enumerateFrontdoorSets(*args) -> "pyagrum.DoorCriteria::NodeSetVec":
+    def _enumerateFrontdoorSets(*args) -> list[set[int]]:
         return _cmcpp.DoorCriteria__enumerateFrontdoorSets(*args)
 
     @staticmethod

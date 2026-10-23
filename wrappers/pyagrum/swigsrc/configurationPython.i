@@ -53,6 +53,7 @@
 %}
 
 // the methods completed by the Python code below are hidden behind a leading underscore
+%rename("_%s") gum::Configuration::instance;
 %rename("_%s") gum::Configuration::get;
 %rename("_%s") gum::Configuration::set;
 %rename("_%s") gum::Configuration::doc;

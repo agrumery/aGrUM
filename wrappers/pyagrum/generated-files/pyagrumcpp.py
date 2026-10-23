@@ -67,19 +67,19 @@ class SwigPyIterator(object):
     def value(self) -> object:
         return _pyagrumcpp.SwigPyIterator_value(self)
 
-    def incr(self, n: int=1) -> "swig::SwigPyIterator *":
+    def incr(self, n: int=1) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator_incr(self, n)
 
-    def decr(self, n: int=1) -> "swig::SwigPyIterator *":
+    def decr(self, n: int=1) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator_decr(self, n)
 
-    def distance(self, x: "SwigPyIterator") -> "ptrdiff_t":
+    def distance(self, x: "SwigPyIterator") -> int:
         return _pyagrumcpp.SwigPyIterator_distance(self, x)
 
     def equal(self, x: "SwigPyIterator") -> bool:
         return _pyagrumcpp.SwigPyIterator_equal(self, x)
 
-    def copy(self) -> "swig::SwigPyIterator *":
+    def copy(self) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator_copy(self)
 
     def __next__(self) -> object:
@@ -88,7 +88,7 @@ class SwigPyIterator(object):
     def previous(self) -> object:
         return _pyagrumcpp.SwigPyIterator_previous(self)
 
-    def advance(self, n: "ptrdiff_t") -> "swig::SwigPyIterator *":
+    def advance(self, n: int) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator_advance(self, n)
 
     def __eq__(self, x: "SwigPyIterator") -> bool:
@@ -97,13 +97,13 @@ class SwigPyIterator(object):
     def __ne__(self, x: "SwigPyIterator") -> bool:
         return _pyagrumcpp.SwigPyIterator___ne__(self, x)
 
-    def __iadd__(self, n: "ptrdiff_t") -> "swig::SwigPyIterator &":
+    def __iadd__(self, n: int) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator___iadd__(self, n)
 
-    def __isub__(self, n: "ptrdiff_t") -> "swig::SwigPyIterator &":
+    def __isub__(self, n: int) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator___isub__(self, n)
 
-    def __add__(self, n: "ptrdiff_t") -> "swig::SwigPyIterator *":
+    def __add__(self, n: int) -> "pyagrum.pyagrumcpp.SwigPyIterator":
         return _pyagrumcpp.SwigPyIterator___add__(self, n)
 
     def __sub__(self, *args):
@@ -922,8 +922,8 @@ class _Configuration(object):
         _pyagrumcpp._Configuration_swiginit(self, _pyagrumcpp.new__Configuration(*args))
 
     @staticmethod
-    def instance() -> "pyagrum.Configuration &":
-        return _pyagrumcpp._Configuration_instance()
+    def _instance() -> "pyagrum.pyagrumcpp._Configuration":
+        return _pyagrumcpp._Configuration__instance()
 
     @staticmethod
     def userFileName() -> str:
@@ -10259,10 +10259,10 @@ class MultiDimContainer(object):
     def __eq__(self, p: "pyagrum.Tensor") -> bool:
         return _pyagrumcpp.MultiDimContainer___eq__(self, p)
 
-    def apply(self, f: "std::function< float (float) >") -> None:
+    def apply(self, f: object) -> None:
         return _pyagrumcpp.MultiDimContainer_apply(self, f)
 
-    def reduce(self, f: "std::function< float (float,float) >", base: float) -> float:
+    def reduce(self, f: object, base: float) -> float:
         return _pyagrumcpp.MultiDimContainer_reduce(self, f, base)
 
     def beginMultipleChanges(self) -> None:
@@ -12222,7 +12222,7 @@ initRandom(0)
 
 # configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
 # current directory (if any), and applied the parameters that act on the library (number of threads, ...)
-config = _Configuration.instance()
+config = _Configuration._instance()
 # warnings for the notices queued when the library loaded pyagrum.ini
 config._emitNotices()
 
@@ -12507,7 +12507,7 @@ class PythonLoadListener(object):
 # Register PythonLoadListener in _pyagrumcpp:
 _pyagrumcpp.PythonLoadListener_swigregister(PythonLoadListener)
 
-def _fillLoadListeners_(py_listener: "std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &", l: object) -> int:
+def _fillLoadListeners_(py_listener: list[object], l: object) -> int:
     return _pyagrumcpp._fillLoadListeners_(py_listener, l)
 class PythonApproximationListener(object):
     r"""

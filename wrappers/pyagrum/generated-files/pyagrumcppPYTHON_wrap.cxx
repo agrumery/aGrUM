@@ -22060,12 +22060,12 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__Configuration_instance(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap__Configuration__instance(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::Configuration *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_Configuration_instance", 0, 0, 0)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "_Configuration__instance", 0, 0, 0)) SWIG_fail;
   {
     try {
       result = (gum::Configuration *) &gum::Configuration::instance();
@@ -133084,7 +133084,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { "new__Configuration", _wrap_new__Configuration, METH_VARARGS, NULL},
-	 { "_Configuration_instance", _wrap__Configuration_instance, METH_NOARGS, NULL},
+	 { "_Configuration__instance", _wrap__Configuration__instance, METH_NOARGS, NULL},
 	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, NULL},
 	 { "_Configuration__get", _wrap__Configuration__get, METH_VARARGS, NULL},
 	 { "_Configuration_has", _wrap__Configuration_has, METH_VARARGS, NULL},

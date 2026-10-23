@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import ast
 import inspect
 import os
 import re
@@ -106,10 +107,7 @@ class PyAgrumDocCoverage:
     if msg.count("\n") < 3:
       return True
 
-    if "'PyObject *'" in msg:
-      return True
-
-    return False
+    return "'PyObject *'" in msg
 
   def _check_function_oc(self, name: str, func: str):
     res = "check"
@@ -182,10 +180,9 @@ class PyAgrumDocCoverage:
         instance_entity = eval(complete_entity_name)
         if type(instance_entity) is types.FunctionType:
           self._check_function_oc(complete_entity_name, instance_entity)
-        elif inspect.isclass(instance_entity):
-          if not self._ignored_class(instance_entity.__name__):
-            self._check_class_doc(complete_entity_name, instance_entity.__name__)
-            self._traversal(dir(instance_entity), complete_entity_name)
+        elif inspect.isclass(instance_entity) and not self._ignored_class(instance_entity.__name__):
+          self._check_class_doc(complete_entity_name, instance_entity.__name__)
+          self._traversal(dir(instance_entity), complete_entity_name)
 
   def check_missing_doc(self):
     if gumPath not in sys.path:
@@ -377,7 +374,7 @@ class ActBuilderGuideline(ActBuilder):
 
 
 _GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
-  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline", "pygum"}
+  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline", "pygum", "pyannot"}
 )
 # tidy/inline need build/aGrUM/<mode>/compile_commands.json (act lib release aGrUM first);
 # pygum needs wrappers/pyagrum/generated-files/*.cxx (act install pyAgrum first) -- all three
@@ -442,6 +439,7 @@ def guideline(
   run_pureheader = "pureheader" in active
   run_inline = "inline" in active
   run_pygum = "pygum" in active
+  run_pyannot = "pyannot" in active
 
   effective_correction = correction and not dry_run
   active_checks_label = checks if checks is not None else "default"
@@ -541,6 +539,12 @@ def guideline(
     nbrError += _aff_errors(_check_pygum_export(details, effective_correction), "missing/wrong export tag")
   else:
     notif("  (11-pygum) pass")
+
+  if run_pyannot:
+    notif("  [[(12-pyannot) check type annotations of the generated SWIG ]]*.py[[ files]]")
+    nbrError += _aff_errors(_check_py_annotations(details), "invalid type annotation")
+  else:
+    notif("  (12-pyannot) pass")
 
   return nbrError
 
@@ -748,7 +752,7 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
         continue
 
       if state == "before":
-        if line.startswith("%feature") or line.startswith("/*!"):
+        if line.startswith(("%feature", "/*!")):
           state = "after"
           code += line
         elif not line.startswith("/**"):
@@ -986,8 +990,8 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
   probe = subprocess_run(
     "pyrefly --version",
     shell=True,
-    stdout=PIPE,
-    stderr=PIPE,
+    check=False,
+    capture_output=True,
   )
   if probe.returncode != 0:
     warn("[[pyrefly]] not installed in current Python environment. Skipping.")
@@ -996,8 +1000,8 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
   result = subprocess_run(
     f"{pyrefly_cmd} {cfg.pymodulesPath}",
     shell=True,
-    stdout=PIPE,
-    stderr=PIPE,
+    check=False,
+    capture_output=True,
     text=True,
   )
 
@@ -1079,6 +1083,49 @@ _PH_SKIP_DIRS = frozenset(
     f"{os.sep}patterns{os.sep}",  # code-pattern fragments included via macros
   ]
 )
+
+
+def _check_py_annotations(details: bool) -> int:
+  """Check that the string annotations of wrappers/pyagrum/generated-files/*.py are Python expressions.
+
+  typing.get_type_hints (used by sphinx-autodoc-typehints) compiles each string annotation as a
+  forward reference: a C++ spelling left by SWIG and not translated by cmake/passForPyType.py
+  ("gum::Foo &", "std::function< ... >") breaks the documentation build (before Python 3.14, even
+  for an annotation that is never resolved). The fix is a new rule in passForPyType.py.
+  """
+  gen_dir = os.path.join("wrappers", "pyagrum", "generated-files")
+  files = []
+  if os.path.isdir(gen_dir):
+    files = sorted(f for f in os.listdir(gen_dir) if f.endswith(".py") and ".backup" not in f)
+  if not files:
+    warn("No generated SWIG python files in wrappers/pyagrum/generated-files/. Run 'act install pyAgrum' first.")
+    return 0
+
+  nbrError = 0
+  for filename in files:
+    path = os.path.join(gen_dir, filename)
+    with open(path, encoding="utf-8") as f:
+      tree = ast.parse(f.read(), path)
+    for node in ast.walk(tree):
+      if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        continue
+      args = node.args
+      params = args.posonlyargs + args.args + args.kwonlyargs + [args.vararg, args.kwarg]
+      for annotation in [a.annotation for a in params if a is not None] + [node.returns]:
+        if not (isinstance(annotation, ast.Constant) and isinstance(annotation.value, str)):
+          continue
+        try:
+          compile(annotation.value, "<annotation>", "eval")
+        except SyntaxError:
+          nbrError += 1
+          if details:
+            notif(f"  err [[{path}:{annotation.lineno}]] {node.name}: {annotation.value!r}")
+          else:
+            notif(f"  err [[{path}:{annotation.lineno}]]")
+
+  if nbrError == 0:
+    notif("    pyannot: [[(✓)]]")
+  return nbrError
 
 
 def _check_pure_headers(details: bool, source: str | None = None) -> int:

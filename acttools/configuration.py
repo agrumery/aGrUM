@@ -109,7 +109,7 @@ def is_tool(prog: str, longpath=False) -> str | None:
 def check_tools() -> tuple[str, str, str, str, str, str, str, str]:
   exe_py = f'"{sys.executable}"'
   res = cmdline(exe_py + ' -c "import platform;print(platform.python_version())"')
-  version, subversion, patch = res.strip().split(".")
+  version, subversion, _patch = res.strip().split(".")
 
   if int(version) < 3 or int(subversion) < 10:
     config_critic("python<3.10 is not supported anymore.")
@@ -191,7 +191,7 @@ cfg.act_version_major = "3"
 cfg.act_version_minor = "0"
 cfg.act_version = cfg.act_version_major + "." + cfg.act_version_minor
 
-res = dict()
+res = {}
 with open("VERSION.txt") as version_file:
   for line in version_file:
     if line.startswith("#"):
@@ -272,23 +272,21 @@ def init_params() -> None:
   else:
     cfg.default["compiler"] = "gcc"
 
-  cfg.actions = set(
-    [
-      "lib",
-      "test",
-      "install",
-      "doc",
-      "clean",
-      "purge",
-      "show",
-      "package",
-      "guideline",
-      "pipinstall",
-      "wheel",
-      "nightly_wheel",
-    ]
-  )
-  cfg.modes = set(["debug", "release"])
+  cfg.actions = {
+    "lib",
+    "test",
+    "install",
+    "doc",
+    "clean",
+    "purge",
+    "show",
+    "package",
+    "guideline",
+    "pipinstall",
+    "wheel",
+    "nightly_wheel",
+  }
+  cfg.modes = {"debug", "release"}
   cfg.targets = {"agrum", "pyagrum"}  # lowercase for relaxing constraints
   cfg.modules = parse_modules_txt()
   cfg.pyagrum_leaf_modules = parse_pymodules_txt()
@@ -542,7 +540,7 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     "--check",
     help=(
       "act guideline: select checks using +/- syntax "
-      "(checks: cpp,python,header,coverage,deps,tidy,pyrefly,pureheader,inline,pygum,all). "
+      "(checks: cpp,python,header,coverage,deps,tidy,pyrefly,pureheader,inline,pygum,pyannot,all). "
       "Default: all checks except tidy, inline and pygum (slow, or require a prior build: "
       "compile_commands.json for tidy/inline, generated SWIG wrap files for pygum). "
       "Examples: --check tidy  --check all  --check all-cpp  --check inline+tidy+pygum"
