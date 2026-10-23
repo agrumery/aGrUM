@@ -378,4 +378,21 @@ namespace gum_tests {
     CHECK_EQ(before, after);
   }
 
+  GUM_TEST(SetAsCastDescendantFollowsLabelMap) {
+    // issue #199: the cast CPT must map each label of the subtype onto its label in the supertype
+    // (with the fixture's label map {1, 0}: OK -> true, NOK -> false)
+    PRMAttribute boolean("boolean", *_boolean_);
+    PRMAttribute state("state", *_state_);
+    state.setAsCastDescendant(&boolean);
+
+    const auto&        cpf       = boolean.cpf();
+    const auto&        sup_var   = boolean.type().variable();
+    const auto&        sub_var   = state.type().variable();
+    const auto&        label_map = state.type().label_map();
+    gum::Instantiation inst(cpf);
+    for (inst.setFirst(); !inst.end(); inst.inc()) {
+      const double expected = (label_map[inst.val(sub_var)] == inst.val(sup_var)) ? 1.0 : 0.0;
+      CHECK_EQ(cpf.get(inst), expected);
+    }
+  }
 }   // namespace gum_tests

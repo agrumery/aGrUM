@@ -219,8 +219,7 @@ namespace gum {
       Instantiation inst(*_cpf_);
 
       for (inst.setFirst(); !inst.end(); inst.inc()) {
-        auto my_pos = inst.pos(subtype.variable());
-        if (subtype.label_map()[my_pos] == inst.pos(type().variable())) {
+        if (subtype.label_map()[inst.val(subtype.variable())] == inst.val(type().variable())) {
           _cpf_->set(inst, 1);
         } else {
           _cpf_->set(inst, 0);
