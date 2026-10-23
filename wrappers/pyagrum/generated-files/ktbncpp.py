@@ -668,7 +668,7 @@ class KTBN(object):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             if the file cannot be read or is not valid
 
         """

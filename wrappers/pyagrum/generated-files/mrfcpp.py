@@ -935,7 +935,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file content is not valid
@@ -1030,7 +1030,7 @@ class MarkovRandomField(IMarkovRandomField):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid

@@ -25184,7 +25184,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    if the file cannot be read or is not valid\n"
 		"\n"
 		""},

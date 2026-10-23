@@ -4753,6 +4753,22 @@ SWIG_AsPtr_std_string (PyObject * obj, std::string **val)
 }
 
 
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > UINT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< unsigned int >(v);
+    }
+  }  
+  return res;
+}
+
+
 SWIGINTERNINLINE PyObject* 
 SWIG_From_unsigned_SS_long  (unsigned long value)
 {
@@ -4784,22 +4800,6 @@ SWIG_From_size_t  (size_t value)
     return SWIG_From_unsigned_SS_long_SS_long  (static_cast< unsigned long long >(value));
   }
 #endif
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
-{
-  unsigned long v;
-  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if ((v > UINT_MAX)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = static_cast< unsigned int >(v);
-    }
-  }  
-  return res;
 }
 
 
@@ -13585,7 +13585,7 @@ SWIGINTERN PyObject *InvalidArgument_swiginit(PyObject *SWIGUNUSEDPARM(self), Py
   return SWIG_Python_InitShadowInstance(args);
 }
 
-SWIGINTERN PyObject *_wrap_new_IOError__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumIOError__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::string *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -13599,10 +13599,10 @@ SWIGINTERN PyObject *_wrap_new_IOError__SWIG_0(PyObject *self, Py_ssize_t nobjs,
     std::string *ptr = (std::string *)0;
     res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_IOError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumIOError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IOError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumIOError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     arg1 = ptr;
   }
@@ -13610,10 +13610,10 @@ SWIGINTERN PyObject *_wrap_new_IOError__SWIG_0(PyObject *self, Py_ssize_t nobjs,
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_IOError" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GumIOError" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IOError" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumIOError" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -13636,7 +13636,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_IOError__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumIOError__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::string *arg1 = 0 ;
   int res1 = SWIG_OLDOBJ ;
@@ -13648,10 +13648,10 @@ SWIGINTERN PyObject *_wrap_new_IOError__SWIG_1(PyObject *self, Py_ssize_t nobjs,
     std::string *ptr = (std::string *)0;
     res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_IOError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumIOError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IOError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumIOError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     arg1 = ptr;
   }
@@ -13672,7 +13672,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_IOError__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumIOError__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IOError *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -13683,10 +13683,10 @@ SWIGINTERN PyObject *_wrap_new_IOError__SWIG_2(PyObject *self, Py_ssize_t nobjs,
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__IOError,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_IOError" "', argument " "1"" of type '" "gum::IOError const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumIOError" "', argument " "1"" of type '" "gum::IOError const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_IOError" "', argument " "1"" of type '" "gum::IOError const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumIOError" "', argument " "1"" of type '" "gum::IOError const &""'"); 
   }
   arg1 = reinterpret_cast< gum::IOError * >(argp1);
   {
@@ -13704,13 +13704,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_IOError(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_GumIOError(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "new_IOError", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_GumIOError", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
     int _v = 0;
@@ -13719,23 +13719,23 @@ SWIGINTERN PyObject *_wrap_new_IOError(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_new_IOError__SWIG_2(self, argc, argv);
+    return _wrap_new_GumIOError__SWIG_2(self, argc, argv);
   }
 check_1:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_IOError__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_new_GumIOError__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_new_IOError__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_new_GumIOError__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_IOError'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_GumIOError'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::IOError::IOError(std::string const &,std::string const &)\n"
     "    gum::IOError::IOError(std::string const &)\n"
@@ -13744,7 +13744,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_IOError(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_GumIOError(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::IOError *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -13756,7 +13756,7 @@ SWIGINTERN PyObject *_wrap_delete_IOError(PyObject *self, PyObject *args) {
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IOError, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_IOError" "', argument " "1"" of type '" "gum::IOError *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GumIOError" "', argument " "1"" of type '" "gum::IOError *""'"); 
   }
   arg1 = reinterpret_cast< gum::IOError * >(argp1);
   {
@@ -13774,14 +13774,14 @@ fail:
 }
 
 
-SWIGINTERN PyObject *IOError_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GumIOError_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_gum__IOError, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *IOError_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GumIOError_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -19585,7 +19585,7 @@ SWIGINTERN PyObject *FactoryInvalidState_swiginit(PyObject *SWIGUNUSEDPARM(self)
   return SWIG_Python_InitShadowInstance(args);
 }
 
-SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumTypeError__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::string *arg1 = 0 ;
   std::string *arg2 = 0 ;
@@ -19599,10 +19599,10 @@ SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_0(PyObject *self, Py_ssize_t nobj
     std::string *ptr = (std::string *)0;
     res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_TypeError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumTypeError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_TypeError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumTypeError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     arg1 = ptr;
   }
@@ -19610,10 +19610,10 @@ SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_0(PyObject *self, Py_ssize_t nobj
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_TypeError" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_GumTypeError" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_TypeError" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumTypeError" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -19636,7 +19636,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumTypeError__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::string *arg1 = 0 ;
   int res1 = SWIG_OLDOBJ ;
@@ -19648,10 +19648,10 @@ SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_1(PyObject *self, Py_ssize_t nobj
     std::string *ptr = (std::string *)0;
     res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
     if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_TypeError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumTypeError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_TypeError" "', argument " "1"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumTypeError" "', argument " "1"" of type '" "std::string const &""'"); 
     }
     arg1 = ptr;
   }
@@ -19672,7 +19672,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_GumTypeError__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::TypeError *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -19683,10 +19683,10 @@ SWIGINTERN PyObject *_wrap_new_TypeError__SWIG_2(PyObject *self, Py_ssize_t nobj
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__TypeError,  0  | 0);
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_TypeError" "', argument " "1"" of type '" "gum::TypeError const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GumTypeError" "', argument " "1"" of type '" "gum::TypeError const &""'"); 
   }
   if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_TypeError" "', argument " "1"" of type '" "gum::TypeError const &""'"); 
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_GumTypeError" "', argument " "1"" of type '" "gum::TypeError const &""'"); 
   }
   arg1 = reinterpret_cast< gum::TypeError * >(argp1);
   {
@@ -19704,13 +19704,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_TypeError(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_GumTypeError(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "new_TypeError", 0, 2, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_GumTypeError", 0, 2, argv))) SWIG_fail;
   --argc;
   if (argc == 1) {
     int _v = 0;
@@ -19719,23 +19719,23 @@ SWIGINTERN PyObject *_wrap_new_TypeError(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_1;
-    return _wrap_new_TypeError__SWIG_2(self, argc, argv);
+    return _wrap_new_GumTypeError__SWIG_2(self, argc, argv);
   }
 check_1:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_TypeError__SWIG_1(self, argc, argv);
+    PyObject *retobj = _wrap_new_GumTypeError__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
-    PyObject *retobj = _wrap_new_TypeError__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_new_GumTypeError__SWIG_0(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   
 fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_TypeError'.\n"
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_GumTypeError'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::TypeError::TypeError(std::string const &,std::string const &)\n"
     "    gum::TypeError::TypeError(std::string const &)\n"
@@ -19744,7 +19744,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_TypeError(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_GumTypeError(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::TypeError *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -19756,7 +19756,7 @@ SWIGINTERN PyObject *_wrap_delete_TypeError(PyObject *self, PyObject *args) {
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TypeError, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_TypeError" "', argument " "1"" of type '" "gum::TypeError *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GumTypeError" "', argument " "1"" of type '" "gum::TypeError *""'"); 
   }
   arg1 = reinterpret_cast< gum::TypeError * >(argp1);
   {
@@ -19774,14 +19774,14 @@ fail:
 }
 
 
-SWIGINTERN PyObject *TypeError_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GumTypeError_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_gum__TypeError, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *TypeError_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GumTypeError_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -21582,307 +21582,6 @@ SWIGINTERN PyObject *UnknownLabelInDatabase_swigregister(PyObject *SWIGUNUSEDPAR
 }
 
 SWIGINTERN PyObject *UnknownLabelInDatabase_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  return SWIG_Python_InitShadowInstance(args);
-}
-
-SWIGINTERN PyObject *_wrap_new_SyntaxError__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  std::string *arg1 = 0 ;
-  std::string arg2 ;
-  gum::Size arg3 ;
-  gum::Size arg4 ;
-  std::string *arg5 = 0 ;
-  int res1 = SWIG_OLDOBJ ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  size_t val4 ;
-  int ecode4 = 0 ;
-  int res5 = SWIG_OLDOBJ ;
-  gum::SyntaxError *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
-  {
-    std::string *ptr = (std::string *)0;
-    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_SyntaxError" "', argument " "1"" of type '" "std::string const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_SyntaxError" "', argument " "1"" of type '" "std::string const &""'"); 
-    }
-    arg1 = ptr;
-  }
-  {
-    std::string *ptr = (std::string *)0;
-    int res = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
-    if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_SyntaxError" "', argument " "2"" of type '" "std::string""'"); 
-    }
-    arg2 = *ptr;
-    if (SWIG_IsNewObj(res)) delete ptr;
-  }
-  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_SyntaxError" "', argument " "3"" of type '" "gum::Size""'");
-  } 
-  arg3 = static_cast< gum::Size >(val3);
-  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_SyntaxError" "', argument " "4"" of type '" "gum::Size""'");
-  } 
-  arg4 = static_cast< gum::Size >(val4);
-  {
-    std::string *ptr = (std::string *)0;
-    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
-    if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "new_SyntaxError" "', argument " "5"" of type '" "std::string const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_SyntaxError" "', argument " "5"" of type '" "std::string const &""'"); 
-    }
-    arg5 = ptr;
-  }
-  {
-    try {
-      result = (gum::SyntaxError *)new gum::SyntaxError((std::string const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::string const &)*arg5);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SyntaxError, SWIG_POINTER_NEW |  0 );
-  if (SWIG_IsNewObj(res1)) delete arg1;
-  if (SWIG_IsNewObj(res5)) delete arg5;
-  return resultobj;
-fail:
-  if (SWIG_IsNewObj(res1)) delete arg1;
-  if (SWIG_IsNewObj(res5)) delete arg5;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_SyntaxError__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  std::string *arg1 = 0 ;
-  std::string arg2 ;
-  gum::Size arg3 ;
-  gum::Size arg4 ;
-  int res1 = SWIG_OLDOBJ ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  size_t val4 ;
-  int ecode4 = 0 ;
-  gum::SyntaxError *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  {
-    std::string *ptr = (std::string *)0;
-    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
-    if (!SWIG_IsOK(res1)) {
-      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_SyntaxError" "', argument " "1"" of type '" "std::string const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_SyntaxError" "', argument " "1"" of type '" "std::string const &""'"); 
-    }
-    arg1 = ptr;
-  }
-  {
-    std::string *ptr = (std::string *)0;
-    int res = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
-    if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "new_SyntaxError" "', argument " "2"" of type '" "std::string""'"); 
-    }
-    arg2 = *ptr;
-    if (SWIG_IsNewObj(res)) delete ptr;
-  }
-  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_SyntaxError" "', argument " "3"" of type '" "gum::Size""'");
-  } 
-  arg3 = static_cast< gum::Size >(val3);
-  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_SyntaxError" "', argument " "4"" of type '" "gum::Size""'");
-  } 
-  arg4 = static_cast< gum::Size >(val4);
-  {
-    try {
-      result = (gum::SyntaxError *)new gum::SyntaxError((std::string const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SyntaxError, SWIG_POINTER_NEW |  0 );
-  if (SWIG_IsNewObj(res1)) delete arg1;
-  return resultobj;
-fail:
-  if (SWIG_IsNewObj(res1)) delete arg1;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_SyntaxError(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[6] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "new_SyntaxError", 0, 5, argv))) SWIG_fail;
-  --argc;
-  if (argc == 4) {
-    PyObject *retobj = _wrap_new_SyntaxError__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 5) {
-    PyObject *retobj = _wrap_new_SyntaxError__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_SyntaxError'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::SyntaxError::SyntaxError(std::string const &,std::string,gum::Size,gum::Size,std::string const &)\n"
-    "    gum::SyntaxError::SyntaxError(std::string const &,std::string,gum::Size,gum::Size)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_SyntaxError_col(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::SyntaxError *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::Size result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__SyntaxError, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SyntaxError_col" "', argument " "1"" of type '" "gum::SyntaxError const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::SyntaxError * >(argp1);
-  {
-    try {
-      result = ((gum::SyntaxError const *)arg1)->col();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_SyntaxError_line(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::SyntaxError *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::Size result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__SyntaxError, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SyntaxError_line" "', argument " "1"" of type '" "gum::SyntaxError const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::SyntaxError * >(argp1);
-  {
-    try {
-      result = ((gum::SyntaxError const *)arg1)->line();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_SyntaxError_filename(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::SyntaxError *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  std::string result;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__SyntaxError, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "SyntaxError_filename" "', argument " "1"" of type '" "gum::SyntaxError const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::SyntaxError * >(argp1);
-  {
-    try {
-      result = ((gum::SyntaxError const *)arg1)->filename();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_delete_SyntaxError(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::SyntaxError *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__SyntaxError, SWIG_POINTER_DISOWN |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_SyntaxError" "', argument " "1"" of type '" "gum::SyntaxError *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::SyntaxError * >(argp1);
-  {
-    try {
-      delete arg1;
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *SyntaxError_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *obj = NULL;
-  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_gum__SyntaxError, SWIG_NewClientData(obj));
-  return SWIG_Py_Void();
-}
-
-SWIGINTERN PyObject *SyntaxError_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -133170,10 +132869,10 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_InvalidArgument", _wrap_delete_InvalidArgument, METH_O, NULL},
 	 { "InvalidArgument_swigregister", InvalidArgument_swigregister, METH_O, NULL},
 	 { "InvalidArgument_swiginit", InvalidArgument_swiginit, METH_VARARGS, NULL},
-	 { "new_IOError", _wrap_new_IOError, METH_VARARGS, NULL},
-	 { "delete_IOError", _wrap_delete_IOError, METH_O, NULL},
-	 { "IOError_swigregister", IOError_swigregister, METH_O, NULL},
-	 { "IOError_swiginit", IOError_swiginit, METH_VARARGS, NULL},
+	 { "new_GumIOError", _wrap_new_GumIOError, METH_VARARGS, NULL},
+	 { "delete_GumIOError", _wrap_delete_GumIOError, METH_O, NULL},
+	 { "GumIOError_swigregister", GumIOError_swigregister, METH_O, NULL},
+	 { "GumIOError_swiginit", GumIOError_swiginit, METH_VARARGS, NULL},
 	 { "new_FormatNotFound", _wrap_new_FormatNotFound, METH_VARARGS, NULL},
 	 { "delete_FormatNotFound", _wrap_delete_FormatNotFound, METH_O, NULL},
 	 { "FormatNotFound_swigregister", FormatNotFound_swigregister, METH_O, NULL},
@@ -133290,10 +132989,10 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_FactoryInvalidState", _wrap_delete_FactoryInvalidState, METH_O, NULL},
 	 { "FactoryInvalidState_swigregister", FactoryInvalidState_swigregister, METH_O, NULL},
 	 { "FactoryInvalidState_swiginit", FactoryInvalidState_swiginit, METH_VARARGS, NULL},
-	 { "new_TypeError", _wrap_new_TypeError, METH_VARARGS, NULL},
-	 { "delete_TypeError", _wrap_delete_TypeError, METH_O, NULL},
-	 { "TypeError_swigregister", TypeError_swigregister, METH_O, NULL},
-	 { "TypeError_swiginit", TypeError_swiginit, METH_VARARGS, NULL},
+	 { "new_GumTypeError", _wrap_new_GumTypeError, METH_VARARGS, NULL},
+	 { "delete_GumTypeError", _wrap_delete_GumTypeError, METH_O, NULL},
+	 { "GumTypeError_swigregister", GumTypeError_swigregister, METH_O, NULL},
+	 { "GumTypeError_swiginit", GumTypeError_swiginit, METH_VARARGS, NULL},
 	 { "new_WrongClassElement", _wrap_new_WrongClassElement, METH_VARARGS, NULL},
 	 { "delete_WrongClassElement", _wrap_delete_WrongClassElement, METH_O, NULL},
 	 { "WrongClassElement_swigregister", WrongClassElement_swigregister, METH_O, NULL},
@@ -133330,36 +133029,6 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_UnknownLabelInDatabase", _wrap_delete_UnknownLabelInDatabase, METH_O, NULL},
 	 { "UnknownLabelInDatabase_swigregister", UnknownLabelInDatabase_swigregister, METH_O, NULL},
 	 { "UnknownLabelInDatabase_swiginit", UnknownLabelInDatabase_swiginit, METH_VARARGS, NULL},
-	 { "new_SyntaxError", _wrap_new_SyntaxError, METH_VARARGS, NULL},
-	 { "SyntaxError_col", _wrap_SyntaxError_col, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"int\n"
-		"    the indice of the colonne of the error\n"
-		"\n"
-		""},
-	 { "SyntaxError_line", _wrap_SyntaxError_line, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"int\n"
-		"    the indice of the line of the error\n"
-		"\n"
-		""},
-	 { "SyntaxError_filename", _wrap_SyntaxError_filename, METH_O, "\n"
-		"\n"
-		"Return the name of the file in which the syntax error occurred.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"str\n"
-		"    the name of the file containing the syntax error\n"
-		"\n"
-		""},
-	 { "delete_SyntaxError", _wrap_delete_SyntaxError, METH_O, NULL},
-	 { "SyntaxError_swigregister", SyntaxError_swigregister, METH_O, NULL},
-	 { "SyntaxError_swiginit", SyntaxError_swiginit, METH_VARARGS, NULL},
 	 { "setNumberOfThreads", _wrap_setNumberOfThreads, METH_O, "\n"
 		"\n"
 		"To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value).\n"
@@ -133832,7 +133501,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -134134,7 +133803,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -134344,7 +134013,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -134436,7 +134105,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -134624,7 +134293,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -139423,7 +139092,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"gum.NotImplementedYet\n"
+		"pyagrum.NotImplementedYet\n"
 		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
 		"\n"
 		""},
@@ -142262,17 +141931,39 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_addAMPLITUDE", _wrap_BayesNet_addAMPLITUDE, METH_VARARGS, "\n"
 		"\n"
-		"Others aggregators\n"
+		"Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its\n"
+		"parents.\n"
+		"\n"
+		"The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,\n"
+		"`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.\n"
+		"\n"
+		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
+		"(in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"variable : pyagrum.DiscreteVariable\n"
-		"    the variable to be added\n"
+		"    the variable to be added. Its domain is the set of values the aggregator can take.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"    the id of the added value\n"
+		"    the id of the added variable\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.GumTypeError\n"
+		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
+		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
+		"    and the arc is not added.\n"
+		"\n"
+		"Examples\n"
+		"--------\n"
+		">>> import pyagrum as gum\n"
+		">>> bn = gum.BayesNet()\n"
+		">>> w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))\n"
+		">>> for name in 'ABC':\n"
+		"...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)\n"
 		"\n"
 		""},
 	 { "BayesNet_addCOUNT", _wrap_BayesNet_addCOUNT, METH_VARARGS, "\n"
@@ -142322,62 +142013,157 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_addMAX", _wrap_BayesNet_addMAX, METH_VARARGS, "\n"
 		"\n"
-		"Others aggregators\n"
+		"Add a deterministic variable whose value is the maximum of the values of its parents.\n"
+		"\n"
+		"The variables can be numerical (their values are compared) or labelized (the order of the labels\n"
+		"is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the\n"
+		"same kind.\n"
+		"\n"
+		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
+		"(in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its smallest value.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"variable : pyagrum.DiscreteVariable\n"
-		"    the variable to be added\n"
+		"    the variable to be added. Its domain is the set of values the aggregator can take.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"    the id of the added value\n"
+		"    the id of the added variable\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.GumTypeError\n"
+		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
+		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
+		"    and the arc is not added.\n"
+		"\n"
+		"Examples\n"
+		"--------\n"
+		">>> import pyagrum as gum\n"
+		">>> bn = gum.BayesNet()\n"
+		">>> levels = ['low', 'medium', 'high']\n"
+		">>> a = bn.add(gum.LabelizedVariable('A', '', levels))\n"
+		">>> b = bn.add(gum.LabelizedVariable('B', '', levels))\n"
+		">>> m = bn.addMAX(gum.LabelizedVariable('M', '', levels))\n"
+		">>> bn.addArc(a, m)\n"
+		">>> bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high\n"
 		"\n"
 		""},
 	 { "BayesNet_addMEDIAN", _wrap_BayesNet_addMEDIAN, METH_VARARGS, "\n"
 		"\n"
-		"Others aggregators\n"
+		"Add a deterministic variable whose value is the median of the values of its parents.\n"
+		"\n"
+		"For an even number of parents, the median is the middle of the two central values (rounded down to\n"
+		"the closest value of the aggregator in case of a tie).\n"
+		"\n"
+		"The variables can be numerical (their values are compared) or labelized (the order of the labels\n"
+		"is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the\n"
+		"same kind.\n"
+		"\n"
+		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
+		"(in particular, the result is saturated at both bounds of the domain).\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"variable : pyagrum.DiscreteVariable\n"
-		"    the variable to be added\n"
+		"    the variable to be added. Its domain is the set of values the aggregator can take.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"    the id of the added value\n"
+		"    the id of the added variable\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.GumTypeError\n"
+		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
+		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
+		"    and the arc is not added.\n"
+		"\n"
+		"Examples\n"
+		"--------\n"
+		">>> import pyagrum as gum\n"
+		">>> bn = gum.BayesNet()\n"
+		">>> m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))\n"
+		">>> for name in 'ABC':\n"
+		"...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)\n"
 		"\n"
 		""},
 	 { "BayesNet_addMIN", _wrap_BayesNet_addMIN, METH_VARARGS, "\n"
 		"\n"
-		"Others aggregators\n"
+		"Add a deterministic variable whose value is the minimum of the values of its parents.\n"
+		"\n"
+		"The variables can be numerical (their values are compared) or labelized (the order of the labels\n"
+		"is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the\n"
+		"same kind.\n"
+		"\n"
+		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
+		"(in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its largest value.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"variable : pyagrum.DiscreteVariable\n"
-		"    the variable to be added\n"
+		"    the variable to be added. Its domain is the set of values the aggregator can take.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"    the id of the added value\n"
+		"    the id of the added variable\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.GumTypeError\n"
+		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
+		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
+		"    and the arc is not added.\n"
+		"\n"
+		"Examples\n"
+		"--------\n"
+		">>> import pyagrum as gum\n"
+		">>> bn = gum.BayesNet()\n"
+		">>> a = bn.add(gum.RangeVariable('A', '', 0, 1))\n"
+		">>> c = bn.add(gum.RangeVariable('C', '', 10, 11))\n"
+		">>> m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))\n"
+		">>> bn.addArc(a, m)\n"
+		">>> bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10\n"
 		"\n"
 		""},
 	 { "BayesNet_addSUM", _wrap_BayesNet_addSUM, METH_VARARGS, "\n"
 		"\n"
-		"Others aggregators\n"
+		"Add a deterministic variable whose value is the sum of the values of its parents.\n"
+		"\n"
+		"The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,\n"
+		"`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.\n"
+		"\n"
+		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
+		"(in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"variable : pyagrum.DiscreteVariable\n"
-		"        the variable to be added\n"
+		"    the variable to be added. Its domain is the set of values the aggregator can take.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"        the id of the added value\n"
+		"    the id of the added variable\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.GumTypeError\n"
+		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
+		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
+		"    and the arc is not added.\n"
+		"\n"
+		"Examples\n"
+		"--------\n"
+		">>> import pyagrum as gum\n"
+		">>> bn = gum.BayesNet()\n"
+		">>> s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))\n"
+		">>> for name in 'AB':\n"
+		"...   bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)\n"
 		"\n"
 		""},
 	 { "BayesNet_addWeightedArc", _wrap_BayesNet_addWeightedArc, METH_VARARGS, "\n"
@@ -142751,7 +142537,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file content is not valid\n"
@@ -142834,7 +142620,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -142866,7 +142652,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -142885,7 +142671,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -142930,7 +142716,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -142962,7 +142748,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -142994,7 +142780,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IOError\n"
+		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
 		"    If file is not valid\n"
@@ -153572,6 +153358,7 @@ static swig_type_info _swigt__p_gum__EdgeGraphPart = {"_p_gum__EdgeGraphPart", "
 static swig_type_info _swigt__p_gum__EssentialGraph = {"_p_gum__EssentialGraph", "gum::EssentialGraph *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ExactBNdistanceT_double_t = {"_p_gum__ExactBNdistanceT_double_t", "gum::ExactBNdistance< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Exception = {"_p_gum__Exception", "gum::Exception *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__SyntaxError = {"_p_gum__SyntaxError", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__FactoryError = {"_p_gum__FactoryError", "gum::FactoryError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FactoryInvalidState = {"_p_gum__FactoryInvalidState", "gum::FactoryInvalidState *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FatalError = {"_p_gum__FatalError", "gum::FatalError *", 0, 0, (void*)0, 0};
@@ -153658,7 +153445,6 @@ static swig_type_info _swigt__p_gum__ShaferShenoyInferenceT_double_t = {"_p_gum_
 static swig_type_info _swigt__p_gum__ShaferShenoyMRFInferenceT_double_t = {"_p_gum__ShaferShenoyMRFInferenceT_double_t", "gum::ShaferShenoyMRFInference< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SizeError = {"_p_gum__SizeError", "gum::SizeError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__StructuralMetrics = {"_p_gum__StructuralMetrics", "gum::StructuralMetrics *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__SyntaxError = {"_p_gum__SyntaxError", "gum::SyntaxError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ThreadNumberManager = {"_p_gum__ThreadNumberManager", "gum::ThreadNumberManager *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Triangulation = {"_p_gum__Triangulation", "gum::Triangulation *", 0, 0, (void*)0, 0};
@@ -153945,6 +153731,7 @@ static swig_cast_info _swigc__p_gum__Edge[] = {  {&_swigt__p_gum__Edge, 0, 0, 0}
 static swig_cast_info _swigc__p_gum__EdgeGraphPart[] = {  {&_swigt__p_gum__EdgeGraphPart, 0, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__PAG, _p_gum__PAGTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__PDAG, _p_gum__PDAGTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__UndiGraph, _p_gum__UndiGraphTo_p_gum__EdgeGraphPart, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__EssentialGraph[] = {  {&_swigt__p_gum__EssentialGraph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ExactBNdistanceT_double_t[] = {  {&_swigt__p_gum__ExactBNdistanceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__SyntaxError[] = {{&_swigt__p_gum__SyntaxError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Exception[] = {  {&_swigt__p_gum__Exception, 0, 0, 0},  {&_swigt__p_gum__AbstractScheduleMultiDim, _p_gum__AbstractScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ArgumentError, _p_gum__ArgumentErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__CPTError, _p_gum__CPTErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DatabaseError, _p_gum__DatabaseErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DefaultInLabel, _p_gum__DefaultInLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateElement, _p_gum__DuplicateElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateLabel, _p_gum__DuplicateLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateScheduleMultiDim, _p_gum__DuplicateScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryError, _p_gum__FactoryErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FatalError, _p_gum__FatalErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__GraphError, _p_gum__GraphErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__HedgeException, _p_gum__HedgeExceptionTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IOError, _p_gum__IOErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleEvidence, _p_gum__IncompatibleEvidenceTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleScorePrior, _p_gum__IncompatibleScorePriorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArc, _p_gum__InvalidArcTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArgument, _p_gum__InvalidArgumentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArgumentsNumber, _p_gum__InvalidArgumentsNumberTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidDirectedCycle, _p_gum__InvalidDirectedCycleTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidEdge, _p_gum__InvalidEdgeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidNode, _p_gum__InvalidNodeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidPartiallyDirectedCycle, _p_gum__InvalidPartiallyDirectedCycleTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IteratorError, _p_gum__IteratorErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__LearningError, _p_gum__LearningErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__MissingValueInDatabase, _p_gum__MissingValueInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__MissingVariableInDatabase, _p_gum__MissingVariableInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoChild, _p_gum__NoChildTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoNeighbour, _p_gum__NoNeighbourTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoParent, _p_gum__NoParentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NotFound, _p_gum__NotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NotImplementedYet, _p_gum__NotImplementedYetTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NullElement, _p_gum__NullElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OperationNotAllowed, _p_gum__OperationNotAllowedTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OutOfBounds, _p_gum__OutOfBoundsTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__PRMTypeError, _p_gum__PRMTypeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__PossiblyIncompatibleScorePrior, _p_gum__PossiblyIncompatibleScorePriorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ScheduleMultiDimError, _p_gum__ScheduleMultiDimErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ScheduleOperationError, _p_gum__ScheduleOperationErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SizeError, _p_gum__SizeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnavailableScheduleOperation, _p_gum__UnavailableScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedElement, _p_gum__UndefinedElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorKey, _p_gum__UndefinedIteratorKeyTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorValue, _p_gum__UndefinedIteratorValueTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnexecutedScheduleOperation, _p_gum__UnexecutedScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownLabelInDatabase, _p_gum__UnknownLabelInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownScheduleMultiDim, _p_gum__UnknownScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownScheduleOperation, _p_gum__UnknownScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__Exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryError[] = {  {&_swigt__p_gum__FactoryError, 0, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__PRMTypeError, _p_gum__PRMTypeErrorTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__FactoryError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryInvalidState[] = {  {&_swigt__p_gum__FactoryInvalidState, 0, 0, 0},{0, 0, 0, 0}};
@@ -154032,7 +153819,6 @@ static swig_cast_info _swigc__p_gum__ShaferShenoyInferenceT_double_t[] = {  {&_s
 static swig_cast_info _swigc__p_gum__ShaferShenoyMRFInferenceT_double_t[] = {  {&_swigt__p_gum__ShaferShenoyMRFInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SizeError[] = {  {&_swigt__p_gum__SizeError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__StructuralMetrics[] = {  {&_swigt__p_gum__StructuralMetrics, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__SyntaxError[] = {  {&_swigt__p_gum__SyntaxError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ThreadNumberManager[] = {  {&_swigt__p_gum__ThreadNumberManager, 0, 0, 0},  {&_swigt__p_gum__LazyPropagationT_double_t, _p_gum__LazyPropagationT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__ScheduledInference, _p_gum__ScheduledInferenceTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__ShaferShenoyInferenceT_double_t, _p_gum__ShaferShenoyInferenceT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__VariableEliminationT_double_t, _p_gum__VariableEliminationT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__ThreadNumberManager, 0, 0},  {&_swigt__p_gum__learning__IBNLearner, _p_gum__learning__IBNLearnerTo_p_gum__ThreadNumberManager, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Triangulation[] = {  {&_swigt__p_gum__Triangulation, 0, 0, 0},{0, 0, 0, 0}};

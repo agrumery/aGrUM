@@ -408,17 +408,17 @@ class InvalidArgument(ArgumentError):
 
 # Register InvalidArgument in _pyagrumcpp:
 _pyagrumcpp.InvalidArgument_swigregister(InvalidArgument)
-class IOError(GumException):
+class GumIOError(GumException):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _pyagrumcpp.IOError_swiginit(self, _pyagrumcpp.new_IOError(*args))
-    __swig_destroy__ = _pyagrumcpp.delete_IOError
+        _pyagrumcpp.GumIOError_swiginit(self, _pyagrumcpp.new_GumIOError(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_GumIOError
 
-# Register IOError in _pyagrumcpp:
-_pyagrumcpp.IOError_swigregister(IOError)
-class FormatNotFound(IOError):
+# Register GumIOError in _pyagrumcpp:
+_pyagrumcpp.GumIOError_swigregister(GumIOError)
+class FormatNotFound(GumIOError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
@@ -708,16 +708,16 @@ class FactoryInvalidState(FactoryError):
 
 # Register FactoryInvalidState in _pyagrumcpp:
 _pyagrumcpp.FactoryInvalidState_swigregister(FactoryInvalidState)
-class TypeError(FactoryError):
+class GumTypeError(FactoryError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _pyagrumcpp.TypeError_swiginit(self, _pyagrumcpp.new_TypeError(*args))
-    __swig_destroy__ = _pyagrumcpp.delete_TypeError
+        _pyagrumcpp.GumTypeError_swiginit(self, _pyagrumcpp.new_GumTypeError(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_GumTypeError
 
-# Register TypeError in _pyagrumcpp:
-_pyagrumcpp.TypeError_swigregister(TypeError)
+# Register GumTypeError in _pyagrumcpp:
+_pyagrumcpp.GumTypeError_swigregister(GumTypeError)
 class WrongClassElement(FactoryError):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -808,51 +808,6 @@ class UnknownLabelInDatabase(LearningError):
 
 # Register UnknownLabelInDatabase in _pyagrumcpp:
 _pyagrumcpp.UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
-class SyntaxError(IOError):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __init__(self, *args):
-        _pyagrumcpp.SyntaxError_swiginit(self, _pyagrumcpp.new_SyntaxError(*args))
-
-    def col(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the indice of the colonne of the error
-
-        """
-        return _pyagrumcpp.SyntaxError_col(self)
-
-    def line(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the indice of the line of the error
-
-        """
-        return _pyagrumcpp.SyntaxError_line(self)
-
-    def filename(self) -> str:
-        r"""
-
-        Return the name of the file in which the syntax error occurred.
-
-        Returns
-        -------
-        str
-            the name of the file containing the syntax error
-
-        """
-        return _pyagrumcpp.SyntaxError_filename(self)
-    __swig_destroy__ = _pyagrumcpp.delete_SyntaxError
-
-# Register SyntaxError in _pyagrumcpp:
-_pyagrumcpp.SyntaxError_swigregister(SyntaxError)
 
 def setNumberOfThreads(number: int) -> None:
     r"""
@@ -1264,7 +1219,7 @@ class _Configuration(object):
       """
       try:
         self._run("_load", self.userFileName())
-      except IOError as e:  # IOError of aGrUM (this module shadows the builtin one)
+      except GumIOError as e:
         raise FileNotFoundError(str(e)) from None
 
     def grep(self, search):
@@ -15055,17 +15010,39 @@ class BayesNet(IBayesNet):
     def addAMPLITUDE(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
 
-        Others aggregators
+        Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its
+        parents.
+
+        The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
+        `NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.
+
+        If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+        (in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-            the variable to be added
+            the variable to be added. Its domain is the set of values the aggregator can take.
 
         Returns
         -------
         int
-            the id of the added value
+            the id of the added variable
+
+        Raises
+        ------
+        pyagrum.GumTypeError
+            If the variable cannot be used for this aggregator. The parents, added afterwards with
+            :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+            and the arc is not added.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet()
+        >>> w = bn.addAMPLITUDE(pyagrum.RangeVariable('W', '', 0, 2))
+        >>> for name in 'ABC':
+        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 10, 12)), w)
 
         """
         return _pyagrumcpp.BayesNet_addAMPLITUDE(self, var)
@@ -15127,17 +15104,42 @@ class BayesNet(IBayesNet):
     def addMAX(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
 
-        Others aggregators
+        Add a deterministic variable whose value is the maximum of the values of its parents.
+
+        The variables can be numerical (their values are compared) or labelized (the order of the labels
+        is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+        same kind.
+
+        If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+        (in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its smallest value.
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-            the variable to be added
+            the variable to be added. Its domain is the set of values the aggregator can take.
 
         Returns
         -------
         int
-            the id of the added value
+            the id of the added variable
+
+        Raises
+        ------
+        pyagrum.GumTypeError
+            If the variable cannot be used for this aggregator. The parents, added afterwards with
+            :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+            and the arc is not added.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet()
+        >>> levels = ['low', 'medium', 'high']
+        >>> a = bn.add(pyagrum.LabelizedVariable('A', '', levels))
+        >>> b = bn.add(pyagrum.LabelizedVariable('B', '', levels))
+        >>> m = bn.addMAX(pyagrum.LabelizedVariable('M', '', levels))
+        >>> bn.addArc(a, m)
+        >>> bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
 
         """
         return _pyagrumcpp.BayesNet_addMAX(self, var)
@@ -15145,17 +15147,42 @@ class BayesNet(IBayesNet):
     def addMEDIAN(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
 
-        Others aggregators
+        Add a deterministic variable whose value is the median of the values of its parents.
+
+        For an even number of parents, the median is the middle of the two central values (rounded down to
+        the closest value of the aggregator in case of a tie).
+
+        The variables can be numerical (their values are compared) or labelized (the order of the labels
+        is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+        same kind.
+
+        If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+        (in particular, the result is saturated at both bounds of the domain).
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-            the variable to be added
+            the variable to be added. Its domain is the set of values the aggregator can take.
 
         Returns
         -------
         int
-            the id of the added value
+            the id of the added variable
+
+        Raises
+        ------
+        pyagrum.GumTypeError
+            If the variable cannot be used for this aggregator. The parents, added afterwards with
+            :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+            and the arc is not added.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet()
+        >>> m = bn.addMEDIAN(pyagrum.RangeVariable('M', '', 10, 12))
+        >>> for name in 'ABC':
+        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 10, 12)), m)
 
         """
         return _pyagrumcpp.BayesNet_addMEDIAN(self, var)
@@ -15163,17 +15190,41 @@ class BayesNet(IBayesNet):
     def addMIN(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
 
-        Others aggregators
+        Add a deterministic variable whose value is the minimum of the values of its parents.
+
+        The variables can be numerical (their values are compared) or labelized (the order of the labels
+        is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+        same kind.
+
+        If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+        (in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its largest value.
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-            the variable to be added
+            the variable to be added. Its domain is the set of values the aggregator can take.
 
         Returns
         -------
         int
-            the id of the added value
+            the id of the added variable
+
+        Raises
+        ------
+        pyagrum.GumTypeError
+            If the variable cannot be used for this aggregator. The parents, added afterwards with
+            :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+            and the arc is not added.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet()
+        >>> a = bn.add(pyagrum.RangeVariable('A', '', 0, 1))
+        >>> c = bn.add(pyagrum.RangeVariable('C', '', 10, 11))
+        >>> m = bn.addMIN(pyagrum.RangeVariable('M', '', 0, 11))
+        >>> bn.addArc(a, m)
+        >>> bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
 
         """
         return _pyagrumcpp.BayesNet_addMIN(self, var)
@@ -15181,17 +15232,38 @@ class BayesNet(IBayesNet):
     def addSUM(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
 
-        Others aggregators
+        Add a deterministic variable whose value is the sum of the values of its parents.
+
+        The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
+        `NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
+
+        If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+        (in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.
 
         Parameters
         ----------
         variable : pyagrum.DiscreteVariable
-                the variable to be added
+            the variable to be added. Its domain is the set of values the aggregator can take.
 
         Returns
         -------
         int
-                the id of the added value
+            the id of the added variable
+
+        Raises
+        ------
+        pyagrum.GumTypeError
+            If the variable cannot be used for this aggregator. The parents, added afterwards with
+            :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+            and the arc is not added.
+
+        Examples
+        --------
+        >>> import pyagrum as gum
+        >>> bn = pyagrum.BayesNet()
+        >>> s = bn.addSUM(pyagrum.RangeVariable('S', '', 0, 4))
+        >>> for name in 'AB':
+        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 0, 2)), s)
 
         """
         return _pyagrumcpp.BayesNet_addSUM(self, var)
@@ -15792,7 +15864,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file content is not valid
@@ -15887,7 +15959,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid
@@ -15925,7 +15997,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid
@@ -15947,7 +16019,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid
@@ -16001,7 +16073,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid
@@ -16039,7 +16111,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid
@@ -16077,7 +16149,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IOError
+        pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
             If file is not valid

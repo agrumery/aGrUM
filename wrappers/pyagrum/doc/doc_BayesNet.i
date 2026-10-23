@@ -87,17 +87,39 @@ pyagrum.NotAllowed
 
 %feature("docstring") gum::BayesNet::addAMPLITUDE
 "
-Others aggregators
+Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its
+parents.
+
+The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
+`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.
+
+If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+(in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-    the variable to be added
+    the variable to be added. Its domain is the set of values the aggregator can take.
 
 Returns
 -------
 int
-    the id of the added value
+    the id of the added variable
+
+Raises
+------
+pyagrum.GumTypeError
+    If the variable cannot be used for this aggregator. The parents, added afterwards with
+    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+    and the arc is not added.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet()
+>>> w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
+>>> for name in 'ABC':
+...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
 "
 
 %feature("docstring") gum::BayesNet::addAND
@@ -213,62 +235,157 @@ pyagrum.DuplicateElement
 
 %feature("docstring") gum::BayesNet::addMAX
 "
-Others aggregators
+Add a deterministic variable whose value is the maximum of the values of its parents.
+
+The variables can be numerical (their values are compared) or labelized (the order of the labels
+is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+same kind.
+
+If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+(in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its smallest value.
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-    the variable to be added
+    the variable to be added. Its domain is the set of values the aggregator can take.
 
 Returns
 -------
 int
-    the id of the added value
+    the id of the added variable
+
+Raises
+------
+pyagrum.GumTypeError
+    If the variable cannot be used for this aggregator. The parents, added afterwards with
+    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+    and the arc is not added.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet()
+>>> levels = ['low', 'medium', 'high']
+>>> a = bn.add(gum.LabelizedVariable('A', '', levels))
+>>> b = bn.add(gum.LabelizedVariable('B', '', levels))
+>>> m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
+>>> bn.addArc(a, m)
+>>> bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
 "
 
 %feature("docstring") gum::BayesNet::addMEDIAN
 "
-Others aggregators
+Add a deterministic variable whose value is the median of the values of its parents.
+
+For an even number of parents, the median is the middle of the two central values (rounded down to
+the closest value of the aggregator in case of a tie).
+
+The variables can be numerical (their values are compared) or labelized (the order of the labels
+is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+same kind.
+
+If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+(in particular, the result is saturated at both bounds of the domain).
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-    the variable to be added
+    the variable to be added. Its domain is the set of values the aggregator can take.
 
 Returns
 -------
 int
-    the id of the added value
+    the id of the added variable
+
+Raises
+------
+pyagrum.GumTypeError
+    If the variable cannot be used for this aggregator. The parents, added afterwards with
+    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+    and the arc is not added.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet()
+>>> m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
+>>> for name in 'ABC':
+...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
 "
 
 %feature("docstring") gum::BayesNet::addMIN
 "
-Others aggregators
+Add a deterministic variable whose value is the minimum of the values of its parents.
+
+The variables can be numerical (their values are compared) or labelized (the order of the labels
+is used, as for an ordinal scale), but not both: all the variables of the aggregator must be of the
+same kind.
+
+If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+(in particular, the result is saturated at both bounds of the domain). Without parent, the aggregator takes its largest value.
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-    the variable to be added
+    the variable to be added. Its domain is the set of values the aggregator can take.
 
 Returns
 -------
 int
-    the id of the added value
+    the id of the added variable
+
+Raises
+------
+pyagrum.GumTypeError
+    If the variable cannot be used for this aggregator. The parents, added afterwards with
+    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+    and the arc is not added.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet()
+>>> a = bn.add(gum.RangeVariable('A', '', 0, 1))
+>>> c = bn.add(gum.RangeVariable('C', '', 10, 11))
+>>> m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
+>>> bn.addArc(a, m)
+>>> bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
 "
 
 %feature("docstring") gum::BayesNet::addSUM
 "
-Others aggregators
+Add a deterministic variable whose value is the sum of the values of its parents.
+
+The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
+`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
+
+If the computed value is not in the domain of the aggregator, the closest value of the domain is used
+(in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.
 
 Parameters
 ----------
 variable : pyagrum.DiscreteVariable
-        the variable to be added
+    the variable to be added. Its domain is the set of values the aggregator can take.
 
 Returns
 -------
 int
-        the id of the added value
+    the id of the added variable
+
+Raises
+------
+pyagrum.GumTypeError
+    If the variable cannot be used for this aggregator. The parents, added afterwards with
+    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
+    and the arc is not added.
+
+Examples
+--------
+>>> import pyagrum as gum
+>>> bn = gum.BayesNet()
+>>> s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
+>>> for name in 'AB':
+...   bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
 "
 
 %feature("docstring") gum::BayesNet::addNoisyAND
