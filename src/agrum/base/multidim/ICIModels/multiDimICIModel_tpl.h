@@ -131,6 +131,9 @@ namespace gum {
     // the default weight is checked only if a cause actually uses it (see also add())
     for (Idx i = 1; i < this->nbrDim(); i++)
       checkCausalWeight_(w, causalWeight(this->variable(i)));
+    // without any cause, the external weight is checked alone (a causal weight equal to the leak
+    // is compatible with it)
+    if (this->nbrDim() <= 1) checkCausalWeight_(w, w);
     _external_weight_ = w;
   }
 
@@ -145,6 +148,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void MultiDimICIModel< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR, GUM_SCALAR) const {}
+
+  template < typename GUM_SCALAR >
+  void MultiDimICIModel< GUM_SCALAR >::checkWeightsAreProbabilities_(GUM_SCALAR external_weight,
+                                                                     GUM_SCALAR causal_weight) {
+    if (!(external_weight >= (GUM_SCALAR)0 && external_weight <= (GUM_SCALAR)1)) {
+      GUM_ERROR(OutOfBounds, "The external weight (" << external_weight << ") must be in [0,1]")
+    }
+    if (!(causal_weight >= (GUM_SCALAR)0 && causal_weight <= (GUM_SCALAR)1)) {
+      GUM_ERROR(OutOfBounds, "A causal weight (" << causal_weight << ") must be in [0,1]")
+    }
+  }
 
   template < typename GUM_SCALAR >
   std::string MultiDimICIModel< GUM_SCALAR >::toString() const {

@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <limits>
 #include <sstream>
 
 #include <agrum/base/multidim/ICIModels/multiDimNoisyORNet.h>
@@ -209,6 +210,39 @@ namespace gum_tests {
 
     for (i.setFirst(); !i.end(); ++i, j++) {
       CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
+    }
+  }
+
+  GUM_TEST(WeightsOutsideUnitIntervalAreRejected) {
+    // issue #205: leak and causal weights are probabilities
+    gum::LabelizedVariable c("C", "", 2), x1("X1", "", 2);
+
+    CHECK_THROWS_AS(gum::MultiDimNoisyORNet< double >(1.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::MultiDimNoisyORNet< double >(-0.1), const gum::OutOfBounds&);
+    // an invalid default weight is rejected at the latest when a cause uses it
+    CHECK_THROWS_AS(([&] {
+                      gum::MultiDimNoisyORNet< double > n(0.2, 1.5);
+                      n << c << x1;
+                    })(),
+                    const gum::OutOfBounds&);
+
+    gum::MultiDimNoisyORNet< double > noisy(0.2);
+    noisy << c << x1;
+    CHECK_THROWS_AS(noisy.causalWeight(x1, 1.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(noisy.causalWeight(x1, -0.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(noisy.causalWeight(x1, std::numeric_limits< double >::quiet_NaN()),
+                    const gum::OutOfBounds&);
+    CHECK_THROWS_AS(noisy.externalWeight(1.5), const gum::OutOfBounds&);
+
+    // without any cause, the external weight is checked alone
+    gum::MultiDimNoisyORNet< double > lonely(0.5);
+    lonely << c;
+    CHECK_THROWS_AS(lonely.externalWeight(1.5), const gum::OutOfBounds&);
+
+    gum::Instantiation I(noisy);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      CHECK_GE(noisy.get(I), 0.0);
+      CHECK_LE(noisy.get(I), 1.0);
     }
   }
 }   // namespace gum_tests

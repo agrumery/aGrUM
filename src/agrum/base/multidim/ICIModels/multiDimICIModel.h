@@ -192,6 +192,16 @@ namespace gum {
      */
     virtual void checkCausalWeight_(GUM_ELEMENT external_weight, GUM_ELEMENT causal_weight) const;
 
+    /**
+     * @brief Checks that both weights are probabilities (in [0,1]).
+     *
+     * Helper for the models whose weights are probabilities (noisy-OR, noisy-AND), to be called
+     * by their checkCausalWeight_().
+     * @throw OutOfBounds if a weight is not in [0,1]
+     */
+    static void checkWeightsAreProbabilities_(GUM_ELEMENT external_weight,
+                                              GUM_ELEMENT causal_weight);
+
     /// \f$ p_0 \f$ in Henrion (89).
     mutable GUM_ELEMENT _external_weight_;
 

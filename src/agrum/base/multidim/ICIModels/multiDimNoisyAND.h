@@ -146,6 +146,14 @@ namespace gum {
     const std::string& name() const override;
 
     /// @}
+
+    protected:
+    /**
+     * @brief The leak and the causal weights are probabilities, and the leak cannot be null.
+     * @throw InvalidArgument if external_weight is null
+     * @throw OutOfBounds if a weight is not in [0,1]
+     */
+    void checkCausalWeight_(GUM_SCALAR external_weight, GUM_SCALAR causal_weight) const override;
   };
 
 

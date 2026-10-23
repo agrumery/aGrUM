@@ -217,4 +217,37 @@ namespace gum_tests {
       CHECK((q[i]) == doctest::Approx(witness[j]).epsilon(1e-6));
     }
   }
+
+  GUM_TEST(WeightsOutsideUnitIntervalAreRejected) {
+    // issue #205: leak and causal weights are probabilities, and the leak cannot be null
+    gum::LabelizedVariable c("C", "", 2), x1("X1", "", 2), x2("X2", "", 2);
+
+    CHECK_THROWS_AS(gum::MultiDimNoisyAND< double >(1.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::MultiDimNoisyAND< double >(-0.5), const gum::OutOfBounds&);
+    // an invalid default weight is rejected at the latest when a cause uses it
+    CHECK_THROWS_AS(([&] {
+                      gum::MultiDimNoisyAND< double > n(0.5, 1.5);
+                      n << c << x1;
+                    })(),
+                    const gum::OutOfBounds&);
+
+    gum::MultiDimNoisyAND< double > noisy(0.5);
+    noisy << c << x1 << x2;
+    CHECK_THROWS_AS(noisy.causalWeight(x1, 1.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(noisy.externalWeight(1.5), const gum::OutOfBounds&);
+    // same invariant as the constructor
+    CHECK_THROWS_AS(noisy.externalWeight(0.0), const gum::InvalidArgument&);
+    CHECK_EQ(noisy.externalWeight(), 0.5);
+
+    // without any cause, the external weight is checked alone
+    gum::MultiDimNoisyAND< double > lonely(0.5);
+    lonely << c;
+    CHECK_THROWS_AS(lonely.externalWeight(0.0), const gum::InvalidArgument&);
+
+    gum::Instantiation I(noisy);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      CHECK_GE(noisy.get(I), 0.0);
+      CHECK_LE(noisy.get(I), 1.0);
+    }
+  }
 }   // namespace gum_tests

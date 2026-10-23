@@ -65,6 +65,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void MultiDimNoisyORCompound< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR external_weight,
                                                                  GUM_SCALAR causal_weight) const {
+    this->checkWeightsAreProbabilities_(external_weight, causal_weight);
     if (causal_weight < external_weight) {
       GUM_ERROR(OutOfBounds,
                 "In a NoisyOR compound (Henrion), a causal weight ("

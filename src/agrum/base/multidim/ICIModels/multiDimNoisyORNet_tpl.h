@@ -57,7 +57,15 @@ namespace gum {
   MultiDimNoisyORNet< GUM_SCALAR >::MultiDimNoisyORNet(GUM_SCALAR external_weight,
                                                        GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
+    // virtual calls are not dispatched in the base constructor
+    checkCausalWeight_(external_weight, default_weight);
     GUM_CONSTRUCTOR(MultiDimNoisyORNet);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void MultiDimNoisyORNet< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR external_weight,
+                                                            GUM_SCALAR causal_weight) const {
+    this->checkWeightsAreProbabilities_(external_weight, causal_weight);
   }
 
   // Default constructor

@@ -58,11 +58,18 @@ namespace gum {
   MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(GUM_SCALAR external_weight,
                                                    GUM_SCALAR default_weight) :
       MultiDimICIModel< GUM_SCALAR >(external_weight, default_weight) {
-    if (external_weight == 0) {
+    // virtual calls are not dispatched in the base constructor
+    checkCausalWeight_(external_weight, default_weight);
+    GUM_CONSTRUCTOR(MultiDimNoisyAND);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void MultiDimNoisyAND< GUM_SCALAR >::checkCausalWeight_(GUM_SCALAR external_weight,
+                                                          GUM_SCALAR causal_weight) const {
+    if (external_weight == (GUM_SCALAR)0) {
       GUM_ERROR(InvalidArgument, "external weight can not be null for a NoisyAND")
     }
-
-    GUM_CONSTRUCTOR(MultiDimNoisyAND);
+    this->checkWeightsAreProbabilities_(external_weight, causal_weight);
   }
 
   // Default constructor

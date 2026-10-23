@@ -142,6 +142,13 @@ namespace gum {
     const std::string& name() const final;
 
     /// @}
+
+    protected:
+    /**
+     * @brief The leak and the causal weights are probabilities.
+     * @throw OutOfBounds if a weight is not in [0,1]
+     */
+    void checkCausalWeight_(GUM_SCALAR external_weight, GUM_SCALAR causal_weight) const override;
   };
 
 

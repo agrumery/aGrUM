@@ -249,4 +249,28 @@ namespace gum_tests {
     CHECK_THROWS_AS(noisy << x3, const gum::OutOfBounds&);
     CHECK_EQ(noisy.nbrDim(), static_cast< gum::Size >(3));
   }
+
+  GUM_TEST(WeightsOutsideUnitIntervalAreRejected) {
+    // issue #205: leak and causal weights are probabilities
+    gum::LabelizedVariable c("C", "", 2), x1("X1", "", 2);
+
+    CHECK_THROWS_AS(gum::MultiDimNoisyORCompound< double >(-0.1, 0.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::MultiDimNoisyORCompound< double >(1.5, 2.0), const gum::OutOfBounds&);
+
+    gum::MultiDimNoisyORCompound< double > noisy(0.2);
+    noisy << c << x1;
+    CHECK_THROWS_AS(noisy.causalWeight(x1, 1.5), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(noisy.externalWeight(-0.1), const gum::OutOfBounds&);
+
+    // without any cause, the external weight is checked alone
+    gum::MultiDimNoisyORCompound< double > lonely(0.5);
+    lonely << c;
+    CHECK_THROWS_AS(lonely.externalWeight(1.5), const gum::OutOfBounds&);
+
+    gum::Instantiation I(noisy);
+    for (I.setFirst(); !I.end(); I.inc()) {
+      CHECK_GE(noisy.get(I), 0.0);
+      CHECK_LE(noisy.get(I), 1.0);
+    }
+  }
 }   // namespace gum_tests
