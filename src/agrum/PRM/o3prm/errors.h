@@ -52,6 +52,7 @@
 #include <vector>
 
 #include <agrum/base/core/errorsContainer.h>
+#include <agrum/base/core/exceptions.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 
 #include <string_view>
@@ -227,7 +228,13 @@ namespace gum {
                                                     const std::vector< std::string >& matches,
                                                     ErrorsContainer&                  errors);
 
+      /// @return the innermost message of a (possibly nested) aGrUM exception, without the
+      /// location added by GUM_ERROR
+      std::string GUM_PUBLIC_PRM O3PRM_EXCEPTION_MESSAGE(const Exception& e);
+
+      /// @param reason the message of the exception raised by the instantiation
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System&  sys,
+                                                            std::string_view reason,
                                                             ErrorsContainer& errors);
 
       void GUM_PUBLIC_PRM O3PRM_SYSTEM_NOT_A_CLASS(const O3Instance& i, ErrorsContainer& errors);

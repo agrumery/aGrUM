@@ -776,7 +776,8 @@ namespace gum {
 
       /**
        * Tells the factory that we finished declaring a model.
-       * @throw OperationNotAllowed Raised if the given operation is illegal.
+       * @throw FatalError Raised if the system cannot be instantiated (the message contains the
+       * original exception).
        */
       void endSystem() override;
 

@@ -1582,7 +1582,9 @@ namespace gum {
             = static_cast< PRMSystem< GUM_SCALAR >* >(_checkStack_(1, PRMObject::prm_type::SYSTEM));
         _stack_.pop_back();
         model->instantiate();
-      } catch (Exception const&) { GUM_ERROR(FatalError, "could not create system") }
+      } catch (Exception const& e) {
+        GUM_ERROR(FatalError, "could not create system: " << e.what())
+      }
     }
 
     template < GUM_Numeric GUM_SCALAR >

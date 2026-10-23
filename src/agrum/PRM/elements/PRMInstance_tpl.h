@@ -134,8 +134,16 @@ namespace gum {
       for (Size idx = 1; idx < sc->chain().size() - 1; ++idx) {
         auto temp = new Set< PRMInstance< GUM_SCALAR >* >();
         for (auto current: *set) {
-          auto& ref = current->type().get(sc->chain()[idx]->name());
-          for (auto next: *(current->_referenceMap_[ref.id()])) {
+          auto& ref    = current->type().get(sc->chain()[idx]->name());
+          auto  p_next = current->_referenceMap_.tryGet(ref.id());
+          if (!p_next) {
+            delete temp;
+            delete set;
+            GUM_ERROR(NotFound,
+                      "the reference slot " << ref.name() << " of " << current->name()
+                                            << " is not assigned")
+          }
+          for (auto next: *(*p_next)) {
             temp->insert(next);
           }
         }
@@ -569,7 +577,15 @@ namespace gum {
     void PRMInstance< GUM_SCALAR >::_copyAttributeCPF_(PRMAttribute< GUM_SCALAR >* attr) {
       const auto& type_attr
           = static_cast< const PRMAttribute< GUM_SCALAR >& >(type().get(attr->safeName()));
-      attr->copyCpf(bijection(), type_attr);
+      try {
+        attr->copyCpf(bijection(), type_attr);
+      } catch (NotFound const&) {
+        // a parent reached through a reference slot is missing from the bijection
+        GUM_ERROR(NotFound,
+                  "cannot build the CPT of " << name() << "." << attr->name()
+                                             << ": a reference slot of " << name()
+                                             << " is probably not assigned")
+      }
       GUM_ASSERT(attr->cpf().contains(attr->type().variable()));
     }
 

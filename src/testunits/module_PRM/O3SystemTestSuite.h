@@ -266,10 +266,37 @@ namespace gum_tests {
     std::string line;
     std::getline(output, line);
     std::stringstream msg;
-    msg << "|1 col 8| Error : Could not instantiate the system, some "
-           "reference slots must be unassigned";
+    msg << "|1 col 8| Error : Could not instantiate the system: cannot build the CPT of "
+           "c.equipState: a reference slot of c is probably not assigned";
     CHECK_EQ(line, msg.str());
     CHECK_EQ(simple_printers->systems().size(), static_cast< gum::Size >(1));
+  }
+
+  GUM_TEST(UnassignedReferenceSlotInsideASlotChain) {
+    // the slot chain b.a.x goes through the reference slot a of b1, which is not assigned
+    std::stringstream input;
+    input << "class A { boolean x {[0.2, 0.8]}; }" << std::endl
+          << "class B { A a; }" << std::endl
+          << "class C {" << std::endl
+          << "B b;" << std::endl
+          << "boolean y dependson b.a.x {[0.1, 0.7, 0.9, 0.3]};" << std::endl
+          << "}" << std::endl
+          << "system S {" << std::endl
+          << "B b1;" << std::endl
+          << "C c;" << std::endl
+          << "c.b = b1;" << std::endl
+          << "}" << std::endl;
+    std::stringstream       output;
+    gum::prm::PRM< double > prm;
+    auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    CHECK_GE(factory.errors(), gum::Size(1));
+    std::string line;
+    std::getline(output, line);
+    CHECK_MESSAGE(line.find("Error : Could not instantiate the system: the reference slot a of b1 "
+                            "is not assigned")
+                      != std::string::npos,
+                  line);
   }
 
   GUM_TEST(MicroSystemWithError7) {

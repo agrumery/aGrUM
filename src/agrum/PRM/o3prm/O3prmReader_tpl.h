@@ -462,8 +462,9 @@ namespace gum {
             class_factory.completeAggregates();
             class_factory.completeAttributes();
             system_factory.build();
-          } catch (Exception const&) {
-            if (_errors_.count() == 0) { _errors_.addException("an unknown error occured", file); }
+          } catch (Exception const& e) {
+            // keep the message of the exception (e.g. a TypeError from an aggregator)
+            if (_errors_.count() == 0) { _errors_.addException(O3PRM_EXCEPTION_MESSAGE(e), file); }
           } catch (...) { _errors_.addException("an unknown exception occured", file); }
         }
       }

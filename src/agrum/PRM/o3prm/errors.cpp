@@ -552,14 +552,29 @@ namespace gum {
                         pos.column());
       }
 
-      void O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System& sys, ErrorsContainer& errors) {
+      std::string O3PRM_EXCEPTION_MESSAGE(const Exception& e) {
+        // GUM_ERROR formats the message as "...\n! <message>\n-----..." (nested exceptions
+        // repeat this pattern): the innermost message is after the last "! "
+        const std::string msg   = e.errorContent();
+        const auto        start = msg.rfind("! ");
+        if (start == std::string::npos) {
+          const auto first = msg.find_first_not_of(" \n");
+          const auto last  = msg.find_last_not_of(" \n");
+          return (first == std::string::npos) ? msg : msg.substr(first, last - first + 1);
+        }
+        const auto end = msg.find('\n', start);
+        return msg.substr(start + 2,
+                          (end == std::string::npos) ? std::string::npos : end - start - 2);
+      }
+
+      void O3PRM_SYSTEM_INSTANTIATION_FAILED(const O3System&  sys,
+                                             std::string_view reason,
+                                             ErrorsContainer& errors) {
         const auto& pos = sys.name().position();
-        errors.addError(
-            std::format("Error : Could not instantiate the system, some reference slots must be "
-                        "unassigned"),
-            pos.file(),
-            pos.line(),
-            pos.column());
+        errors.addError(std::format("Error : Could not instantiate the system: {}", reason),
+                        pos.file(),
+                        pos.line(),
+                        pos.column());
       }
 
       void O3PRM_SYSTEM_NOT_A_CLASS(const O3Instance& i, ErrorsContainer& errors) {

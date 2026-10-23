@@ -2364,6 +2364,34 @@ namespace gum_tests {
     CHECK_EQ(line, msg.str());
   }
 
+  GUM_TEST(AggregateSumOnLabelizedParentsIsReported) {
+    // sum needs numerical parents: the reader must report the TypeError raised by the aggregator
+    // (and not an "unknown error")
+    std::stringstream input;
+    input << "type t_total int(0,4);" << std::endl;
+    input << "class Foo { " << std::endl
+          << "boolean state {[0.2, 0.8]};" << std::endl
+          << "}" << std::endl;
+    input << "class Bar { " << std::endl
+          << "Foo[] myFoos;" << std::endl
+          << "t_total total = sum([myFoos.state]);" << std::endl
+          << "}" << std::endl;
+    input << "system S { " << std::endl
+          << "Foo[2] foos;" << std::endl
+          << "Bar bar;" << std::endl
+          << "bar.myFoos += foos[0];" << std::endl
+          << "bar.myFoos += foos[1];" << std::endl
+          << "}" << std::endl;
+    std::stringstream       output;
+    gum::prm::PRM< double > prm;
+    auto                    factory = gum::prm::o3prm::O3prmReader< double >(prm);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+    CHECK_GE(factory.errors(), gum::Size(1));
+    const auto msg = output.str();
+    CHECK_MESSAGE(msg.find("unknown") == std::string::npos, msg);
+    CHECK_MESSAGE(msg.find("numerical") != std::string::npos, msg);
+  }
+
   GUM_TEST(AnonymousType1) {
     // Arrange
     std::stringstream input;
