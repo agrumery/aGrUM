@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 3.3.1
+
+- pyAgrum
+
+    - **Static typing**: pyAgrum is marked as typed (`py.typed`), the entry points written in Python are annotated and
+      the remaining C++ types in the annotations are translated (sets of node ids are now `set[int]`).
+    - `CredalNet` CPT accessors and `ShaferShenoyLIMIDInference.reversePartialOrder()` return Python lists instead of
+      unusable SWIG objects.
+    - Fixed `NameError` in `loadMRF`/`saveMRF`/`loadID`/`saveID` for an unknown extension, and missing imports in two
+      tutorials.
+
+- aGrUM
+
+    - `act guideline`: clearer output and new checks `lint` (ruff), `pyannot` and `pytyping` (mypy).
+    - `ruff.toml` selects its rules explicitly; the whole repository is clean for them.
+
 ## Changelog for 3.3.0
 
 - pyAgrum
