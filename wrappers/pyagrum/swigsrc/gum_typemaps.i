@@ -227,10 +227,10 @@ typedef PyObject PyAgrumDict;
   }
 }
 
-// gum::DoorCriteria::NodeSetVec -> Python list[set[int]]
+// gum::DoorCriteria::NodeSetVec, std::vector<gum::NodeSet> -> Python list[set[int]]
 // SwigValueWrapper<T> only exposes operator T&&(), not T&. Move-construct a
 // local lvalue so we can iterate safely.
-%typemap(out) gum::DoorCriteria::NodeSetVec {
+%typemap(out) gum::DoorCriteria::NodeSetVec, std::vector< gum::NodeSet > {
   using _VecT = std::vector< gum::NodeSet >;
   _VecT _vec = std::move($1);
   $result = PyList_New(static_cast< Py_ssize_t >(_vec.size()));

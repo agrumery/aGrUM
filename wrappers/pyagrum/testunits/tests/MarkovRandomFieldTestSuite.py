@@ -355,6 +355,12 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(len(ccl2), 1)
     self.assertEqual(set(list(ccl2.values())[0]), set(mrf2.nodes()))
 
+  def testUnknownExtension(self):
+    with self.assertRaises(gum.InvalidArgument):
+      gum.loadMRF("model.foo")
+    with self.assertRaises(gum.InvalidArgument):
+      gum.saveMRF(gum.fastMRF("A--B"), "model.foo")
+
 
 ts = unittest.TestSuite()
 addTests(ts, MarkovRandomFieldTestCase)

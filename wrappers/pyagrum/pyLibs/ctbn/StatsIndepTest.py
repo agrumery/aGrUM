@@ -45,8 +45,10 @@ from abc import abstractmethod
 from scipy.stats import chi2, f
 
 import pyagrum
-from pyagrum.ctbn import CIM, CTBN, Stats, Trajectory
+from pyagrum.ctbn import Stats, Trajectory
+from pyagrum.ctbn.CIM import CIM
 from pyagrum.ctbn.constants import ALPHA, FAIL_TO_REJECT, REJECT
+from pyagrum.ctbn.CTBN import CTBN
 
 
 class IndepTest:

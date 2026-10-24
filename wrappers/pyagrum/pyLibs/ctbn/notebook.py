@@ -53,7 +53,8 @@ import pydot as dot
 import pyagrum
 import pyagrum.lib.dotstyle as gds
 import pyagrum.lib.notebook as gnb
-from pyagrum.ctbn import CTBN, ForwardSamplingInference
+from pyagrum.ctbn import ForwardSamplingInference
+from pyagrum.ctbn.CTBN import CTBN
 from pyagrum.lib import proba_histogram
 
 

@@ -45,7 +45,8 @@ from numpy.random import choice, default_rng
 from scipy.linalg import expm
 
 import pyagrum
-from pyagrum.ctbn import CIM, CTBN
+from pyagrum.ctbn.CIM import CIM
+from pyagrum.ctbn.CTBN import CTBN
 
 """
 This file contains inference tools for CTBNs

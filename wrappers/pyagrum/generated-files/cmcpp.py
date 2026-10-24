@@ -243,7 +243,7 @@ class DoorCriteria(object):
     __repr__ = _swig_repr
 
     @staticmethod
-    def satisfiesBackdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+    def satisfiesBackdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: set[int] | list[int]) -> bool:
         r"""
 
         Test whether Z satisfies the backdoor criterion for the effect of X on Y.
@@ -278,7 +278,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria__enumerateBackdoorSets(*args)
 
     @staticmethod
-    def firstBackdoor(*args) -> list[int] | None:
+    def firstBackdoor(*args) -> set[int] | None:
         r"""
 
         Return the first valid backdoor adjustment set for the causal effect of X on Y.
@@ -307,7 +307,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_firstBackdoor(*args)
 
     @staticmethod
-    def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+    def satisfiesFrontdoorCriterion(dag: "pyagrum.DAG", X: int, Y: int, Z: set[int] | list[int]) -> bool:
         r"""
 
         Test whether Z satisfies the frontdoor criterion for the effect of X on Y.
@@ -342,7 +342,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria__enumerateFrontdoorSets(*args)
 
     @staticmethod
-    def firstFrontdoor(*args) -> list[int] | None:
+    def firstFrontdoor(*args) -> set[int] | None:
         r"""
 
         Return the first valid frontdoor adjustment set for the causal effect of X on Y.
@@ -371,7 +371,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_firstFrontdoor(*args)
 
     @staticmethod
-    def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+    def existsUnblockedDirectedPath(dag: "pyagrum.DAG", X: int, Y: int, Z: set[int] | list[int]) -> bool:
         r"""
 
         Test whether a directed path from X to Y exists that is not blocked by Z.
@@ -397,7 +397,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_existsUnblockedDirectedPath(dag, X, Y, Z)
 
     @staticmethod
-    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> list[int] | None:
+    def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> set[int] | None:
         r"""
 
         Return the set of nodes lying on any directed path from X to Y.
@@ -421,7 +421,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
 
     @staticmethod
-    def backdoorReach(dag: "pyagrum.DAG", X: int) -> list[int]:
+    def backdoorReach(dag: "pyagrum.DAG", X: int) -> set[int]:
         r"""
 
         Return all nodes reachable from X via a backdoor path.
@@ -445,7 +445,7 @@ class DoorCriteria(object):
         return _cmcpp.DoorCriteria_backdoorReach(dag, X)
 
     @staticmethod
-    def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: list[int]) -> bool:
+    def hasBackdoorPath(dag: "pyagrum.DAG", X: int, Y: int, Z: set[int] | list[int]) -> bool:
         r"""
 
         Test whether an open backdoor path from X to Y exists given evidence on Z.
@@ -710,7 +710,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_isAssumedSpurious(self, *args)
 
-    def backDoor(self, *args) -> list[int] | None:
+    def backDoor(self, *args) -> set[int] | None:
         r"""
 
         Find a backdoor adjustment set between cause and effect.
@@ -742,7 +742,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_backDoor(self, *args)
 
-    def frontDoor(self, *args) -> list[int] | None:
+    def frontDoor(self, *args) -> set[int] | None:
         r"""
 
         Find a frontdoor adjustment set between cause and effect.
@@ -773,7 +773,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_frontDoor(self, *args)
 
-    def inducedCausalSubModel(self, cm: "CausalModel", subset: list[int]) -> "pyagrum.CausalModel":
+    def inducedCausalSubModel(self, cm: "CausalModel", subset: set[int] | list[int]) -> "pyagrum.CausalModel":
         r"""
 
         Return the causal sub-model induced by a subset of observed nodes.
@@ -953,7 +953,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_nameFromId(self, id)
 
-    def latentVariablesIds(self) -> list[int]:
+    def latentVariablesIds(self) -> set[int]:
         r"""
 
         Return the NodeIds of all latent (hidden) variables in the causal model.
@@ -979,7 +979,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_latentVariablesNames(self)
 
-    def parents(self, *args) -> list[int]:
+    def parents(self, *args) -> set[int]:
         r"""
 
         Return the parents of a variable in the causal DAG.
@@ -997,7 +997,7 @@ class CausalModel(object):
         """
         return _cmcpp.CausalModel_parents(self, *args)
 
-    def children(self, *args) -> list[int]:
+    def children(self, *args) -> set[int]:
         r"""
 
         Return the children of a variable in the causal DAG.
@@ -1246,7 +1246,7 @@ class CausalImpact(object):
         """
         return _cmcpp.CausalImpact_cm(self)
 
-    def on(self) -> list[int]:
+    def on(self) -> set[int]:
         r"""
 
         Return the NodeIds of the target variables.
@@ -1259,7 +1259,7 @@ class CausalImpact(object):
         """
         return _cmcpp.CausalImpact_on(self)
 
-    def doing(self) -> list[int]:
+    def doing(self) -> set[int]:
         r"""
 
         Return the NodeIds of the intervened variables.
@@ -1272,7 +1272,7 @@ class CausalImpact(object):
         """
         return _cmcpp.CausalImpact_doing(self)
 
-    def knowing(self) -> list[int]:
+    def knowing(self) -> set[int]:
         r"""
 
         Return the NodeIds of the observed variables.

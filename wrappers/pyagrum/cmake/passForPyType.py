@@ -59,18 +59,36 @@ def notif(s):
 _INPLACE = "inplace"
 
 
+# --- options of a rule (optional extra fields of a rule tuple) ---
+# Which lines a rule applies to:
+ANY_LINE = "AnyLine"  # (default) every line, docstrings included
+TYPE_ONLY = "TypeOnly"  # only lines with type annotation markers (-> or def): avoids replacing English words
+# Which use of the type a rule applies to:
+ANY_USE = "AnyUse"  # (default) parameters and return types
+# only the annotation of a parameter ("name: ..."), not a return type ("-> ..."); implies TYPE_ONLY
+ARG_ONLY = "ArgOnly"
+
+_LINE_OPTIONS = {ANY_LINE, TYPE_ONLY}
+_USE_OPTIONS = {ANY_USE, ARG_ONLY}
+
+
 @dataclass
 class _Rule:
   pattern_str: str  # original pattern string, used for reporting
   replacement: str
-  type_only: bool  # if True, only applied on lines that contain type annotation markers
+  lines: str  # ANY_LINE or TYPE_ONLY
   regex: re.Pattern = field(repr=False)
   triggered: int = field(default=0, repr=False)
 
 
-def _make_rule(pattern: str, replacement: str, type_only: bool = False) -> _Rule:
-  regex = re.compile(rf'("?)(?:const\s*)?{pattern}(?:\s*const)?(?:\s*[*&])?(?:\s*const)?\1')
-  return _Rule(pattern_str=pattern, replacement=replacement, type_only=type_only, regex=regex)
+def _make_rule(pattern: str, replacement: str, *options: str) -> _Rule:
+  unknown = set(options) - _LINE_OPTIONS - _USE_OPTIONS
+  if unknown:
+    raise ValueError(f"passForPyType: unknown option(s) {unknown} for rule {pattern!r}")
+  lines = TYPE_ONLY if TYPE_ONLY in options or ARG_ONLY in options else ANY_LINE
+  prefix = r"(?<=: )" if ARG_ONLY in options else ""
+  regex = re.compile(rf'{prefix}("?)(?:const\s*)?{pattern}(?:\s*const)?(?:\s*[*&])?(?:\s*const)?\1')
+  return _Rule(pattern_str=pattern, replacement=replacement, lines=lines, regex=regex)
 
 
 # --- std::vector<T> member-type rules (generated to avoid repetition) ---
@@ -86,41 +104,41 @@ _VEC_RULES: list[tuple] = (
 )
 
 # --- Python rules: replace C++ types with Python equivalents ---
-# Each entry is (cpp_pattern, python_type) or (cpp_pattern, python_type, type_only).
-# type_only=True restricts the rule to lines containing type annotation markers (-> or def)
-# to avoid replacing English words that happen to match a C++ type name.
+# Each entry is (cpp_pattern, python_type, *options), options among TYPE_ONLY/ANY_LINE and ARG_ONLY/ANY_USE
+# (see above). The rules are applied in order: a specific rule must come before a more general one.
 
 _RULES_PYTHON_RAW: list[tuple] = [
-  # not wrapped
+  # CredalNet CPTs (typemaps in swigsrc/CNinference.i)
   (
     "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > >",
-    "pyagrum.YetUnWrapped",
+    "dict[int, list[list[list[float]]]]",
   ),
   (
     "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > >",
-    "pyagrum.YetUnWrapped",
+    "list[list[list[float]]]",
   ),
   (
     "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >",
-    "pyagrum.YetUnWrapped",
+    "list[list[float]]",
   ),
   # (
   #  "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >",
   #  "pyagrum.YetUnWrapped"),
   ("gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE", "int"),
-  # type_only=True: these names also appear in docstrings, which keep the C++ spelling
-  ("gum::Configuration\\b(?!::)", "pyagrum.pyagrumcpp._Configuration", True),
-  ("swig::SwigPyIterator", "pyagrum.pyagrumcpp.SwigPyIterator", True),
-  ("gum::DoorCriteria::NodeSetVec", "list[set[int]]", True),
+  # TYPE_ONLY: these names also appear in docstrings, which keep the C++ spelling
+  ("gum::Configuration\\b(?!::)", "pyagrum.pyagrumcpp._Configuration", TYPE_ONLY),
+  ("swig::SwigPyIterator", "pyagrum.pyagrumcpp.SwigPyIterator", TYPE_ONLY),
+  ("gum::DoorCriteria::NodeSetVec", "list[set[int]]", TYPE_ONLY),
   # std::function and the internal listener vector have no Python type: plain object
   ("std::function< double \\(double\\) >", "object"),
   ("std::function< double \\(double,double\\) >", "object"),
   ("std::vector< PythonLoadListener,std::allocator< PythonLoadListener > >", "list[object]"),
-  ("gum::IApproximationSchemeConfiguration", "pyagrum.YetUnWrapped"),
+  # opaque on purpose: only passed back to PythonApproximationListener
+  ("gum::IApproximationSchemeConfiguration", "object"),
   # ("gum::learning::DatabaseTable", "pyagrum.YetUnWrapped"),
   (
     "std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >",
-    "pyagrum.YetUnWrapped",
+    "list[set[int]]",
   ),
   # complicated std types (generated from _VEC_RULES)
   *_VEC_RULES,
@@ -172,7 +190,6 @@ _RULES_PYTHON_RAW: list[tuple] = [
     "std::vector< PythonLoadlistener,std::allocator< PythonLoadlistener > >",
     'list["pyagrum.PythonLoadlistener"]',
   ),
-  ("HashTable< gum::NodeId,gum::NodeSet >", "dict[int, list[int]]"),
   ("HashTable< std::string,std::string >", "dict[str, str]"),
   (
     "HashTable< gum::Counterfactual< double >::VarName,gum::Counterfactual< double >::ValName > const &",
@@ -185,10 +202,12 @@ _RULES_PYTHON_RAW: list[tuple] = [
     'tuple["pyagrum.CausalImpact","pyagrum.Tensor",str]',
   ),
   ("gum::NodeProperty< gum::NodeId >", "dict[int,int]"),
-  ("std::optional< gum::NodeSet >", "list[int] | None"),
+  # NodeSet arguments also accept lists of node ids; NodeSet results are Python sets
+  ("gum::NodeSet", "set[int] | list[int]", ARG_ONLY),
+  ("std::optional< gum::NodeSet >", "set[int] | None"),
   ("std::optional< gum::NodeId >", "int | None"),
   ("std::optional< int >", "int | None"),
-  ("gum::NodeSet", "list[int]"),
+  ("gum::NodeSet", "set[int]"),
   ("gum::Set< gum::Instantiation >", "list[dict[str,int]]"),
   ("gum::Sequence< gum::DiscreteVariable const \\* >", "list[object]"),
   ("gum::Sequence< int >", "list[int]"),
@@ -295,16 +314,16 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("std::size_t", "int"),
   ("object_type", "object"),
   # remove type decorators (const, &, etc.) ... to be treated as complete word : \b
-  # type_only=True: avoid consuming RST emphasis closing * in docstring text (e.g. (*bool*))
-  ("\\bbool\\b", "bool", True),
-  ("\\bsize_t\\b", "int", True),
-  ("\\bptrdiff_t\\b", "int", True),
-  ("\\bint\\b", "int", True),
-  ("\\bunsigned int\\b", "int", True),
-  # type_only=True: only apply on lines with type annotation markers (-> or def)
+  # TYPE_ONLY: avoid consuming RST emphasis closing * in docstring text (e.g. (*bool*))
+  ("\\bbool\\b", "bool", TYPE_ONLY),
+  ("\\bsize_t\\b", "int", TYPE_ONLY),
+  ("\\bptrdiff_t\\b", "int", TYPE_ONLY),
+  ("\\bint\\b", "int", TYPE_ONLY),
+  ("\\bunsigned int\\b", "int", TYPE_ONLY),
+  # TYPE_ONLY: only apply on lines with type annotation markers (-> or def)
   # to avoid replacing English words ("as long as", "double the size", etc.)
-  ("\\blong\\b", "int", True),
-  ("\\bdouble\\b", "float", True),
+  ("\\blong\\b", "int", TYPE_ONLY),
+  ("\\bdouble\\b", "float", TYPE_ONLY),
   # keep correct comment with template
   # ("< float >", "< double >"),
   ("gum::BayesNet", "pyagrum.BayesNet"),
@@ -331,11 +350,10 @@ def _build_rules(raw_rules: list[tuple], is_python: bool) -> list[_Rule]:
   """Compile raw rule tuples into _Rule objects, applying Python-mode quoting if needed."""
   rules = []
   for raw in raw_rules:
-    pattern, replacement = raw[0], raw[1]
-    type_only = raw[2] if len(raw) > 2 else False
+    pattern, replacement, *options = raw
     if is_python and replacement.startswith("pyagrum.") and replacement != "pyagrum.":
       replacement = f'"{replacement}"'
-    rules.append(_make_rule(pattern, replacement, type_only))
+    rules.append(_make_rule(pattern, replacement, *options))
   return rules
 
 
@@ -349,7 +367,7 @@ def process_filters(src_filename: str, is_python: bool, debug_mode: bool) -> tup
 
   commentstr = "# ##" if is_python else "// ## "
 
-  # Lines without type annotation markers skip type_only rules, preventing replacement
+  # Lines without type annotation markers skip TYPE_ONLY rules, preventing replacement
   # of English words that match a C++ primitive type name (e.g. "as long as").
   _type_annotation_line = re.compile(r"(?:->|\bdef\s+\w)")
 
@@ -360,7 +378,7 @@ def process_filters(src_filename: str, is_python: bool, debug_mode: bool) -> tup
       originalline = line
       has_annotation = bool(_type_annotation_line.search(line))
       for rule in rules:
-        if rule.type_only and not has_annotation:
+        if rule.lines == TYPE_ONLY and not has_annotation:
           continue
         if rule.regex.search(line):
           line = rule.regex.sub(rule.replacement, line)

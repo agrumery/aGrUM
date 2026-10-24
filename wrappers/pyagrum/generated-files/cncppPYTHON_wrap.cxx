@@ -3758,39 +3758,37 @@ namespace Swig {
 #define SWIGTYPE_p_gum__IntegerVariable swig_types[24]
 #define SWIGTYPE_p_gum__LabelizedVariable swig_types[25]
 #define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[26]
-#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[27]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[28]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[29]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[30]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[31]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[32]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[33]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[34]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[35]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[36]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[37]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[38]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t swig_types[39]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[40]
-#define SWIGTYPE_p_gum__dot__DotOptions swig_types[41]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[42]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[43]
-#define SWIGTYPE_p_iterator swig_types[44]
-#define SWIGTYPE_p_iterator_category swig_types[45]
-#define SWIGTYPE_p_iterator_safe swig_types[46]
-#define SWIGTYPE_p_msg swig_types[47]
-#define SWIGTYPE_p_node_const_iterator swig_types[48]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[49]
-#define SWIGTYPE_p_node_iterator swig_types[50]
-#define SWIGTYPE_p_node_iterator_safe swig_types[51]
-#define SWIGTYPE_p_second_type swig_types[52]
-#define SWIGTYPE_p_size_type swig_types[53]
-#define SWIGTYPE_p_std__size_t swig_types[54]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[55]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[56]
-#define SWIGTYPE_p_value_type swig_types[57]
-static swig_type_info *swig_types[59];
-static swig_module_info swig_module = {swig_types, 58, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[27]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[28]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[29]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[30]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[31]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[32]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[33]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[34]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[35]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[36]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[37]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t swig_types[38]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[39]
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[40]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[41]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[42]
+#define SWIGTYPE_p_iterator swig_types[43]
+#define SWIGTYPE_p_iterator_category swig_types[44]
+#define SWIGTYPE_p_iterator_safe swig_types[45]
+#define SWIGTYPE_p_msg swig_types[46]
+#define SWIGTYPE_p_node_const_iterator swig_types[47]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[48]
+#define SWIGTYPE_p_node_iterator swig_types[49]
+#define SWIGTYPE_p_node_iterator_safe swig_types[50]
+#define SWIGTYPE_p_second_type swig_types[51]
+#define SWIGTYPE_p_size_type swig_types[52]
+#define SWIGTYPE_p_std__size_t swig_types[53]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[54]
+#define SWIGTYPE_p_value_type swig_types[55]
+static swig_type_info *swig_types[57];
+static swig_module_info swig_module = {swig_types, 56, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5005,8 +5003,7 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPTs(PyObject *self, PyObject *args) {
   gum::NodeId temp2 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  std::vector< std::vector< std::vector< double > > > _tmp_cpt3 ;
   PyObject *swig_obj[3] ;
   
   (void)self;
@@ -5022,14 +5019,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPTs(PyObject *self, PyObject *args) {
   } 
   temp2 = static_cast< gum::NodeId >(val2);
   arg2 = &temp2;
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "CredalNet_setCPTs" "', argument " "3"" of type '" "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &""'"); 
+  {
+    if (!PyAgrumHelper::NestedVectorFromPyObject(swig_obj[2], _tmp_cpt3)) SWIG_fail;
+    arg3 = &_tmp_cpt3;
   }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CredalNet_setCPTs" "', argument " "3"" of type '" "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &""'"); 
-  }
-  arg3 = reinterpret_cast< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > * >(argp3);
   {
     try {
       (arg1)->setCPTs((gum::NodeId const &)*arg2,(std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &)*arg3);
@@ -6258,7 +6251,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_credalNet_currentCpt(PyObject *self, PyObje
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
+  {
+    resultobj = PyAgrumHelper::PyDictFromNodePropertyNestedVector(*result);
+    if (resultobj == nullptr) SWIG_fail;
+  }
   return resultobj;
 fail:
   return NULL;
@@ -6289,7 +6285,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_credalNet_srcCpt(PyObject *self, PyObject *
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
+  {
+    resultobj = PyAgrumHelper::PyDictFromNodePropertyNestedVector(*result);
+    if (resultobj == nullptr) SWIG_fail;
+  }
   return resultobj;
 fail:
   return NULL;
@@ -6555,7 +6554,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_get_binaryCPT_min(PyObject *self, PyObject 
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t, 0 |  0 );
+  {
+    resultobj = PyAgrumHelper::PyListFromNestedVector(*result);
+    if (resultobj == nullptr) SWIG_fail;
+  }
   return resultobj;
 fail:
   return NULL;
@@ -6586,7 +6588,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_get_binaryCPT_max(PyObject *self, PyObject 
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t, 0 |  0 );
+  {
+    resultobj = PyAgrumHelper::PyListFromNestedVector(*result);
+    if (resultobj == nullptr) SWIG_fail;
+  }
   return resultobj;
 fail:
   return NULL;
@@ -11240,7 +11245,6 @@ static swig_type_info _swigt__p_gum__MCBNDistanceT_double_t = {"_p_gum__MCBNDist
 static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__learning__BNLearnerT_double_t", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__learning__IBNLearner = {"_p_gum__learning__IBNLearner", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__Instantiation = {"_p_gum__Instantiation", "gum::Instantiation *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t = {"_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t", "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__Arc_t = {"_p_gum__SetT_gum__Arc_t", "gum::ArcSet *|gum::Set< gum::Arc > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__Arc_t__const_iterator = {"_p_gum__SetT_gum__Arc_t__const_iterator", "gum::ArcSetIterator *|gum::Set< gum::Arc >::const_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__SetT_gum__DiscreteVariable_const_p_t = {"_p_gum__SetT_gum__DiscreteVariable_const_p_t", "gum::VariableSet *|gum::Set< gum::DiscreteVariable const * > *", 0, 0, (void*)0, 0};
@@ -11265,7 +11269,6 @@ static swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *"
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "gum::Idx *|gum::NodeId *|gum::Size *|std::size_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t = {"_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t = {"_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t", "std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -11296,7 +11299,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__IntegerVariable,
   &_swigt__p_gum__LabelizedVariable,
   &_swigt__p_gum__MCBNDistanceT_double_t,
-  &_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
   &_swigt__p_gum__NumericalDiscreteVariable,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__SetT_gum__Arc_t,
@@ -11325,7 +11327,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_size_type,
   &_swigt__p_std__size_t,
   &_swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,
-  &_swigt__p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t,
   &_swigt__p_value_type,
 };
 
@@ -11360,7 +11361,6 @@ static swig_cast_info _swigc__p_gum__learning__BNLearnerT_double_t[] = {{&_swigt
 static swig_cast_info _swigc__p_gum__learning__IBNLearner[] = {{&_swigt__p_gum__learning__IBNLearner, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsBNdistanceT_double_t, _p_gum__GibbsBNdistanceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__MCBNDistanceT_double_t, _p_gum__MCBNDistanceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__IBNLearner, _p_gum__learning__IBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Instantiation[] = {  {&_swigt__p_gum__Instantiation, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t[] = {  {&_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__Arc_t[] = {  {&_swigt__p_gum__SetT_gum__Arc_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__Arc_t__const_iterator[] = {  {&_swigt__p_gum__SetT_gum__Arc_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__SetT_gum__DiscreteVariable_const_p_t[] = {  {&_swigt__p_gum__SetT_gum__DiscreteVariable_const_p_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -11385,7 +11385,6 @@ static swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -11416,7 +11415,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__IntegerVariable,
   _swigc__p_gum__LabelizedVariable,
   _swigc__p_gum__MCBNDistanceT_double_t,
-  _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
   _swigc__p_gum__NumericalDiscreteVariable,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__SetT_gum__Arc_t,
@@ -11445,7 +11443,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_size_type,
   _swigc__p_std__size_t,
   _swigc__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,
-  _swigc__p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t,
   _swigc__p_value_type,
 };
 

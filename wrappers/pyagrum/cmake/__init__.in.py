@@ -552,11 +552,25 @@ Graph: TypeAlias = DiGraph | DAG | UndiGraph | MixedGraph
 # union here; at runtime, the *same* real union (not a placeholder -- code
 # does `isinstance`/`is` checks against these) is built lazily by
 # __getattr__ below, via _LAZY_COMPOSITE_TYPE_ALIASES.
+#
+# This block also imports every name of _LAZY_SUBMODULE_ATTRS (kept in sync by ImportTestSuite), so that
+# static type checkers see pyagrum.fastMRF, pyagrum.KTBN, ... with their real types instead of Any.
 if TYPE_CHECKING:
-  from .markov_random_field import MarkovRandomField, ShaferShenoyMRFInference
-  from .credal_net import CredalNet, CNLoopyPropagation, CNMonteCarloSampling
-  from .influence_diagram import InfluenceDiagram, ShaferShenoyLIMIDInference
-  from .causal_model import CausalModel
+  from .markov_random_field import (
+    availableMRFExts, loadMRF, saveMRF, fastMRF, MarkovRandomField, ShaferShenoyMRFInference,
+  )
+  from .credal_net import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+  from .influence_diagram import (
+    IDGenerator, availableIDExts, loadID, saveID, fastID, InfluenceDiagram, ShaferShenoyLIMIDInference,
+  )
+  from .causal_model import (
+    DoorCriteria, CausalModel, CausalImpact, Counterfactual, causalImpact, counterfactual, counterfactualModel,
+  )
+  from .prm import PRMexplorer
+  from .ktbn import (
+    KTBNModality, KTBN, KTBNGenerator, KTBNInference, KTBNDatabaseGenerator, KTBNLearner, KTBNAdaptiveLearner,
+    availableKTBNExts, loadKTBN, saveKTBN,
+  )
 
   #: Any directed probabilistic model: BayesNet, DAG, CausalModel or InfluenceDiagram.
   DirectedModel: TypeAlias = BayesNet | DAG | CausalModel | InfluenceDiagram

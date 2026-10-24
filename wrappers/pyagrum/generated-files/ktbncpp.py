@@ -3574,7 +3574,7 @@ class KTBNAdaptiveLearner(object):
 # Register KTBNAdaptiveLearner in _ktbncpp:
 _ktbncpp.KTBNAdaptiveLearner_swigregister(KTBNAdaptiveLearner)
 
-def availableKTBNExts():
+def availableKTBNExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a k-TBN.
 
   Returns
@@ -3585,7 +3585,7 @@ def availableKTBNExts():
   return "jgum|bgum"
 
 
-def loadKTBN(filename):
+def loadKTBN(filename: str) -> KTBN:
   """
   Load a k-TBN from a GUM file (.jgum text or .bgum binary, selected by extension).
 
@@ -3602,7 +3602,7 @@ def loadKTBN(filename):
   return KTBN.load(filename)
 
 
-def saveKTBN(ktbn, filename):
+def saveKTBN(ktbn: KTBN, filename: str) -> None:
   """
   Save a k-TBN into a GUM file (.jgum text or .bgum binary, selected by extension).
 

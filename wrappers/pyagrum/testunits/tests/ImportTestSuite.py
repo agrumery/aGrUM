@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import ast
 import importlib.util
 import inspect
 import os
@@ -140,6 +141,19 @@ class TestLazySubmodules(pyAgrumTestCase):
         listed = {n for n, s in gum._LAZY_SUBMODULE_ATTRS.items() if s == submodule}
         missing = owned - listed - self.UNLISTED_ON_PURPOSE.get(submodule, set())
         self.assertEqual(missing, set(), f"public names of pyagrum.{submodule} missing from _LAZY_SUBMODULE_ATTRS")
+
+  def testTypeCheckingBlockImportsEveryListedName(self):
+    # static type checkers do not run __getattr__: they only see the names imported in the
+    # `if TYPE_CHECKING:` block of pyagrum/__init__.py, a lazy name missing there is typed Any
+    with open(gum.__file__, encoding="utf-8") as f:
+      tree = ast.parse(f.read())
+    imported = set()
+    for node in ast.walk(tree):
+      if isinstance(node, ast.If) and isinstance(node.test, ast.Name) and node.test.id == "TYPE_CHECKING":
+        for stmt in node.body:
+          if isinstance(stmt, ast.ImportFrom) and stmt.level == 1:
+            imported |= {(alias.name, stmt.module) for alias in stmt.names}
+    self.assertEqual(imported, set(gum._LAZY_SUBMODULE_ATTRS.items()))
 
 
 ts = unittest.TestSuite()

@@ -47,7 +47,7 @@
 %pythoncode %{
 import warnings
 
-def availableBNExts():
+def availableBNExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a Bayesian network.
 
   :return: a string which lists all suffixes for supported BN file formats.
@@ -55,7 +55,12 @@ def availableBNExts():
   return "bif|dsl|net|bifxml|o3prm|uai|xdsl|pkl|jgum|bgum"
 
 
-def loadBN(filename, listeners=None, verbose=False, **opts):
+def loadBN(
+  filename: str,
+  listeners: list[typing.Callable[[int], typing.Any]] | None = None,
+  verbose: bool = False,
+  **opts,
+) -> BayesNet:
   """load a BN from a file with optional listeners and arguments
 
   Parameters
@@ -150,7 +155,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
 
 
 
-def saveBN(bn, filename, allowModificationWhenSaving=None):
+def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None = None) -> None:
   """
   save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
 
@@ -200,7 +205,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
 
-def fastBN(structure:str, domain="[2]"):
+def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
@@ -281,7 +286,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
     return genere.to_pandas(with_labels), ll
 
 
-def randomBN(*, n: int = 5, names: list[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
+def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
   """
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
@@ -454,7 +459,13 @@ def mutilateBN(bn, intervention=None, observation=None):
   return (inter_bn, evidence)
 
 
-def getPosterior(model, *, target, evs=None):
+def getPosterior(
+  # quoted: MarkovRandomField lives in a lazily imported submodule
+  model: "BayesNet | pyagrum.MarkovRandomField",
+  *,
+  target: str | int,
+  evs: dict[typing.Any, typing.Any] | None = None,
+) -> Tensor:
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -477,6 +488,8 @@ def getPosterior(model, *, target, evs=None):
   -------
     posterior (pyagrum.Tensor or other)
   """
+  # local annotation: never evaluated at runtime
+  inf: VariableElimination | pyagrum.ShaferShenoyMRFInference
   if isinstance(model, pyagrum.BayesNet):
     inf = pyagrum.VariableElimination(model)
   else:
@@ -496,7 +509,7 @@ def getPosterior(model, *, target, evs=None):
   posterior = pyagrum.Tensor(inf.posterior(target))
   # the Tensor holds raw pointers to the variables owned by the model: keep the model alive as long as the
   # Tensor is (otherwise gum.getPosterior(gum.fastBN(...), target=...) returns a dangling Tensor)
-  posterior._model = model
+  posterior._model = model  # type: ignore[attr-defined]  # dynamic attribute, keeps the model alive
   return posterior
 
 %}

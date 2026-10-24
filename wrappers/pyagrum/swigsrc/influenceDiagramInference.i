@@ -47,7 +47,7 @@
 
 %define IMPROVE_LIMID_INFERENCE_API(classname)
 %feature("shadow") gum::classname<double>::setEvidence %{
-def setEvidence(self, evidces):
+def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
     """
     Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -75,7 +75,7 @@ def setEvidence(self, evidces):
 %}
 
 %feature("shadow") gum::classname<double>::updateEvidence %{
-def updateEvidence(self, evidces):
+def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
     """
     Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 

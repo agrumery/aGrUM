@@ -73,7 +73,9 @@ def log2(p):
   return Tensor(p).log2()
 
 
-def fastGraph(desc: str):
+def fastGraph(
+  desc: str,
+) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
   graph type from a quick read of `desc`.

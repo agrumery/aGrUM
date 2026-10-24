@@ -44,7 +44,8 @@ import math
 import matplotlib.pyplot as plt
 
 import pyagrum
-from pyagrum.ctbn import CIM, CTBN
+from pyagrum.ctbn.CIM import CIM
+from pyagrum.ctbn.CTBN import CTBN
 
 """
 Contains Trajectory Class and functions to compute stats from samples and tools for trajectory plotting.

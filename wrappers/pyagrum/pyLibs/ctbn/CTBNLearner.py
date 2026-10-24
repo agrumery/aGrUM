@@ -41,7 +41,8 @@
 from itertools import combinations
 
 import pyagrum
-from pyagrum.ctbn import CTBN, Trajectory
+from pyagrum.ctbn import Trajectory
+from pyagrum.ctbn.CTBN import CTBN
 
 """
 This file contains the learning algorithm of a CTBN (i.e of its CIMs and dependency graph). 

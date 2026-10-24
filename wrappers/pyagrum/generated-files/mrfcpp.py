@@ -64,7 +64,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __swig_destroy__ = _mrfcpp.delete_IMarkovRandomField
 
-    def smallestFactorFromNode(self, *args) -> list[int]:
+    def smallestFactorFromNode(self, *args) -> set[int]:
         return _mrfcpp.IMarkovRandomField_smallestFactorFromNode(self, *args)
 
     def factors(self) -> list[set[int]]:
@@ -393,7 +393,7 @@ class MarkovRandomField(IMarkovRandomField):
     def __init__(self, *args):
         _mrfcpp.MarkovRandomField_swiginit(self, _mrfcpp.new_MarkovRandomField(*args))
 
-    def smallestFactorFromNode(self, node: int) -> list[int]:
+    def smallestFactorFromNode(self, node: int) -> set[int]:
         r"""
 
         Return the id set of the smallest factor that contains the given node.
@@ -541,7 +541,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrfcpp.MarkovRandomField_generateFactors(self)
 
-    def generateFactor(self, vars: list[int]) -> None:
+    def generateFactor(self, vars: set[int] | list[int]) -> None:
         r"""
 
         Randomly generate factor parameters for a given factor in a given structure.
@@ -1301,7 +1301,7 @@ class ShaferShenoyMRFInference(object):
         """
         return _mrfcpp.ShaferShenoyMRFInference_evidenceProbability(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -1329,7 +1329,7 @@ class ShaferShenoyMRFInference(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -2030,9 +2030,11 @@ _mrfcpp.ShaferShenoyMRFInference_swigregister(ShaferShenoyMRFInference)
 # -- %import does not carry %pythoncode content across modules, only
 # re-declaring them here would duplicate them, so pull the same functions in
 # instead.
-from pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+import warnings
 
-def availableMRFExts():
+from pyagrum import InvalidArgument, _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+
+def availableMRFExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns
@@ -2043,7 +2045,9 @@ def availableMRFExts():
   return "uai|jgum|bgum|pkl"
 
 
-def loadMRF(filename, listeners=None, verbose=False):
+def loadMRF(
+  filename: str, listeners: list[typing.Callable[[int], typing.Any]] | None = None, verbose: bool = False
+) -> MarkovRandomField:
   """load a MRF from a file with optional listeners and arguments
 
   Parameters
@@ -2115,7 +2119,7 @@ def loadMRF(filename, listeners=None, verbose=False):
   return mn
 
 
-def saveMRF(mn, filename):
+def saveMRF(mn: MarkovRandomField, filename: str) -> None:
   """
   save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
 
@@ -2145,7 +2149,7 @@ def saveMRF(mn, filename):
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
 
-def fastMRF(structure, domain="[2]"):
+def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
   """
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,

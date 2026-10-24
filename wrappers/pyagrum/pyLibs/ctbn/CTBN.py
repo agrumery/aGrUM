@@ -40,7 +40,7 @@
 
 import pyagrum
 import pyagrum.ctbn
-from pyagrum.ctbn import CIM
+from pyagrum.ctbn.CIM import CIM
 
 """
 This file contains the CTBN class.

@@ -1575,7 +1575,7 @@ class DotOptions(object):
         """
         return _pyagrumcpp.DotOptions_empty(self)
 
-    def setFactorBgColor(self, variables: list[int], color: str) -> None:
+    def setFactorBgColor(self, variables: set[int] | list[int], color: str) -> None:
         r"""
 
         Parameters
@@ -1588,7 +1588,7 @@ class DotOptions(object):
         """
         return _pyagrumcpp.DotOptions_setFactorBgColor(self, variables, color)
 
-    def setFactorFgColor(self, variables: list[int], color: str) -> None:
+    def setFactorFgColor(self, variables: set[int] | list[int], color: str) -> None:
         r"""
 
         Parameters
@@ -1601,7 +1601,7 @@ class DotOptions(object):
         """
         return _pyagrumcpp.DotOptions_setFactorFgColor(self, variables, color)
 
-    def setFactorLabel(self, variables: list[int], label: str) -> None:
+    def setFactorLabel(self, variables: set[int] | list[int], label: str) -> None:
         r"""
 
         Parameters
@@ -1614,7 +1614,7 @@ class DotOptions(object):
         """
         return _pyagrumcpp.DotOptions_setFactorLabel(self, variables, label)
 
-    def setFactorTooltip(self, variables: list[int], tooltip: str) -> None:
+    def setFactorTooltip(self, variables: set[int] | list[int], tooltip: str) -> None:
         r"""
 
         Parameters
@@ -1627,7 +1627,7 @@ class DotOptions(object):
         """
         return _pyagrumcpp.DotOptions_setFactorTooltip(self, variables, tooltip)
 
-    def setFactorAttribute(self, variables: list[int], key: str, value: str, verbatim: bool=False) -> None:
+    def setFactorAttribute(self, variables: set[int] | list[int], key: str, value: str, verbatim: bool=False) -> None:
         r"""
 
         Parameters
@@ -3866,7 +3866,7 @@ class UndiGraph(object):
         """
         return _pyagrumcpp.UndiGraph_hasUndirectedCycle(self)
 
-    def partialUndiGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
+    def partialUndiGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
         r"""
 
         Parameters
@@ -4176,7 +4176,7 @@ class UndiGraph(object):
         """
         return _pyagrumcpp.UndiGraph_edges(self)
 
-    def neighbours(self, id: int) -> list[int]:
+    def neighbours(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -4514,7 +4514,7 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_directedUnorientedPath(self, node1, node2)
 
-    def family(self, *args) -> list[int]:
+    def family(self, *args) -> set[int]:
         r"""
 
         Return the family of a node: the node itself plus all its parents.
@@ -4773,7 +4773,7 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -4789,7 +4789,7 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -4805,7 +4805,7 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_children(self, id)
 
-    def descendants(self, *args) -> list[int]:
+    def descendants(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -4823,7 +4823,7 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_descendants(self, *args)
 
-    def ancestors(self, *args) -> list[int]:
+    def ancestors(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -5052,7 +5052,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_moralGraph(self)
 
-    def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
+    def moralizedAncestralGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
         r"""
 
         Compute the moralized ancestral graph of the nodes from the DAG.
@@ -5069,7 +5069,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_moralizedAncestralGraph(self, nodes)
 
-    def minimalCondSet(self, *args) -> list[int]:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Return a minimal conditioning set of a target given source nodes in the DAG.
@@ -5186,7 +5186,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -5202,7 +5202,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -5218,7 +5218,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_children(self, id)
 
-    def descendants(self, id: int) -> list[int]:
+    def descendants(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -5236,7 +5236,7 @@ class DAG(DiGraph):
         """
         return _pyagrumcpp.DAG_descendants(self, id)
 
-    def ancestors(self, id: int) -> list[int]:
+    def ancestors(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -5444,7 +5444,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_toDot(self, *args)
 
-    def chainComponent(self, node: int) -> list[int]:
+    def chainComponent(self, node: int) -> set[int]:
         r"""
 
         Return the chain component containing a given node.
@@ -5577,7 +5577,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -5593,7 +5593,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -5609,7 +5609,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_children(self, id)
 
-    def descendants(self, id: int) -> list[int]:
+    def descendants(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -5627,7 +5627,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_descendants(self, id)
 
-    def ancestors(self, id: int) -> list[int]:
+    def ancestors(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -5656,7 +5656,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_edges(self)
 
-    def neighbours(self, id: int) -> list[int]:
+    def neighbours(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -5672,7 +5672,7 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_neighbours(self, id)
 
-    def boundary(self, id: int) -> list[int]:
+    def boundary(self, id: int) -> set[int]:
         r"""
 
         Boundary are neighbours (not oriented), children and parents
@@ -6059,7 +6059,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_moralGraph(self)
 
-    def moralizedAncestralGraph(self, nodes: list[int]) -> "pyagrum.UndiGraph":
+    def moralizedAncestralGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
         r"""
 
         Compute the moralized ancestral graph of the nodes from the DAG.
@@ -6204,7 +6204,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -6220,7 +6220,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -6236,7 +6236,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_children(self, id)
 
-    def descendants(self, id: int) -> list[int]:
+    def descendants(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -6254,7 +6254,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_descendants(self, id)
 
-    def ancestors(self, id: int) -> list[int]:
+    def ancestors(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -6283,7 +6283,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_edges(self)
 
-    def neighbours(self, id: int) -> list[int]:
+    def neighbours(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -6299,7 +6299,7 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_neighbours(self, id)
 
-    def boundary(self, id: int) -> list[int]:
+    def boundary(self, id: int) -> set[int]:
         r"""
 
         Boundary of a node: neighbours (via edges), children, and parents.
@@ -7245,7 +7245,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrumcpp.CliqueGraph_container(self, idNode)
 
-    def setClique(self, idClique: int, new_clique: list[int]) -> None:
+    def setClique(self, idClique: int, new_clique: set[int] | list[int]) -> None:
         r"""
 
         changes the set of nodes included into a given clique
@@ -7376,7 +7376,7 @@ class CliqueGraph(UndiGraph):
     def __eq__(self, _from: "CliqueGraph") -> bool:
         return _pyagrumcpp.CliqueGraph___eq__(self, _from)
 
-    def clique(self, clique: int) -> list[int]:
+    def clique(self, clique: int) -> set[int]:
         r"""
 
         Parameters
@@ -7397,7 +7397,7 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrumcpp.CliqueGraph_clique(self, clique)
 
-    def separator(self, cliq1: int, cliq2: int) -> list[int]:
+    def separator(self, cliq1: int, cliq2: int) -> set[int]:
         r"""
 
         Parameters
@@ -8453,7 +8453,7 @@ class GraphicalModel(object):
         """
         return _pyagrumcpp.GraphicalModel_ids(self, names)
 
-    def nodeset(self, names: tuple[str, ...]) -> list[int]:
+    def nodeset(self, names: tuple[str, ...]) -> set[int]:
         r"""
 
         Set of ids for a list of names of variables in the model
@@ -8640,7 +8640,7 @@ class GraphicalModel(object):
         """
         return _pyagrumcpp.GraphicalModel_spaceCplxToString(dSize, dim, usedMem)
 
-    def family(self, *args) -> list[int]:
+    def family(self, *args) -> set[int]:
         return _pyagrumcpp.GraphicalModel_family(self, *args)
 
 # Register GraphicalModel in _pyagrumcpp:
@@ -8863,7 +8863,7 @@ class DAGmodel(DiscreteGraphicalModel):
     def parents(self, *args):
         return _pyagrumcpp.DAGmodel_parents(self, *args)
 
-    def family(self, *args) -> list[int]:
+    def family(self, *args) -> set[int]:
         r"""
 
         give the set of parents of a node and the node
@@ -8884,7 +8884,7 @@ class DAGmodel(DiscreteGraphicalModel):
     def children(self, *args):
         return _pyagrumcpp.DAGmodel_children(self, *args)
 
-    def descendants(self, *args) -> list[int]:
+    def descendants(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -8902,7 +8902,7 @@ class DAGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.DAGmodel_descendants(self, *args)
 
-    def ancestors(self, *args) -> list[int]:
+    def ancestors(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -9034,7 +9034,7 @@ class DAGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.DAGmodel_hasSameStructure(self, other)
 
-    def minimalCondSet(self, *args) -> list[int]:
+    def minimalCondSet(self, *args) -> set[int]:
         r"""
 
         Return a minimal conditioning set of a target node (or set of nodes) given a set of source nodes in the DAG model.
@@ -9149,7 +9149,7 @@ class UGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.UGmodel_existsEdge(self, *args)
 
-    def neighbours(self, *args) -> list[int]:
+    def neighbours(self, *args) -> set[int]:
         return _pyagrumcpp.UGmodel_neighbours(self, *args)
 
     def isIndependent(self, *args) -> bool:
@@ -9212,7 +9212,7 @@ class UGmodel(DiscreteGraphicalModel):
         """
         return _pyagrumcpp.UGmodel_connectedComponents(self)
 
-    def family(self, *args) -> list[int]:
+    def family(self, *args) -> set[int]:
         r"""
 
         Return the family of a node: the node itself plus all its neighbours.
@@ -12242,7 +12242,9 @@ def log2(p):
   return Tensor(p).log2()
 
 
-def fastGraph(desc: str):
+def fastGraph(
+  desc: str,
+) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
   graph type from a quick read of `desc`.
@@ -13113,7 +13115,7 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -13129,7 +13131,7 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -13145,7 +13147,7 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_children(self, id)
 
-    def descendants(self, *args) -> list[int]:
+    def descendants(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -13163,7 +13165,7 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_descendants(self, *args)
 
-    def ancestors(self, *args) -> list[int]:
+    def ancestors(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -13192,7 +13194,7 @@ class EssentialGraph(object):
         """
         return _pyagrumcpp.EssentialGraph_edges(self)
 
-    def neighbours(self, id: int) -> list[int]:
+    def neighbours(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -13440,7 +13442,7 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_arcs(self)
 
-    def parents(self, id: int) -> list[int]:
+    def parents(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -13456,7 +13458,7 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_parents(self, id)
 
-    def children(self, id: int) -> list[int]:
+    def children(self, id: int) -> set[int]:
         r"""
 
         Parameters
@@ -13472,7 +13474,7 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_children(self, id)
 
-    def descendants(self, *args) -> list[int]:
+    def descendants(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -13490,7 +13492,7 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_descendants(self, *args)
 
-    def ancestors(self, *args) -> list[int]:
+    def ancestors(self, *args) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -17223,7 +17225,7 @@ class LazyPropagation(object):
         """
         return _pyagrumcpp.LazyPropagation_mpeLog2Posterior(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -17257,7 +17259,7 @@ class LazyPropagation(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -18089,7 +18091,7 @@ class ShaferShenoyInference(object):
         """
         return _pyagrumcpp.ShaferShenoyInference_evidenceProbability(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -18123,7 +18125,7 @@ class ShaferShenoyInference(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -18937,7 +18939,7 @@ class VariableElimination(object):
         return val
 
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -18971,7 +18973,7 @@ class VariableElimination(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -19714,7 +19716,7 @@ class GibbsSampling(object):
         """
         return _pyagrumcpp.GibbsSampling_burnIn(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -19748,7 +19750,7 @@ class GibbsSampling(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -20074,7 +20076,7 @@ class GibbsSampling(object):
         """
         return _pyagrumcpp.GibbsSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.GibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -20533,7 +20535,7 @@ class ImportanceSampling(object):
 
     __swig_destroy__ = _pyagrumcpp.delete_ImportanceSampling
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -20567,7 +20569,7 @@ class ImportanceSampling(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -20893,7 +20895,7 @@ class ImportanceSampling(object):
         """
         return _pyagrumcpp.ImportanceSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.ImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -21308,7 +21310,7 @@ class WeightedSampling(object):
 
     __swig_destroy__ = _pyagrumcpp.delete_WeightedSampling
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -21342,7 +21344,7 @@ class WeightedSampling(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -21668,7 +21670,7 @@ class WeightedSampling(object):
         """
         return _pyagrumcpp.WeightedSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.WeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -22083,7 +22085,7 @@ class MonteCarloSampling(object):
 
     __swig_destroy__ = _pyagrumcpp.delete_MonteCarloSampling
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -22117,7 +22119,7 @@ class MonteCarloSampling(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -22443,7 +22445,7 @@ class MonteCarloSampling(object):
         """
         return _pyagrumcpp.MonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.MonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -22890,7 +22892,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrumcpp.LoopyImportanceSampling_virtualLBPSize(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -22924,7 +22926,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -23250,7 +23252,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrumcpp.LoopyImportanceSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.LoopyImportanceSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -23697,7 +23699,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrumcpp.LoopyWeightedSampling_virtualLBPSize(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -23731,7 +23733,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -24057,7 +24059,7 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrumcpp.LoopyWeightedSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.LoopyWeightedSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -24504,7 +24506,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrumcpp.LoopyGibbsSampling_virtualLBPSize(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -24538,7 +24540,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -24864,7 +24866,7 @@ class LoopyGibbsSampling(GibbsSampling):
         """
         return _pyagrumcpp.LoopyGibbsSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.LoopyGibbsSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -25377,7 +25379,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_virtualLBPSize(self)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -25411,7 +25413,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -25737,7 +25739,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.LoopyMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -26152,7 +26154,7 @@ class LoopyBeliefPropagation(object):
 
     __swig_destroy__ = _pyagrumcpp.delete_LoopyBeliefPropagation
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -26186,7 +26188,7 @@ class LoopyBeliefPropagation(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -26512,7 +26514,7 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrumcpp.LoopyBeliefPropagation_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.LoopyBeliefPropagation__asIApproximationSchemeConfiguration(self)
 
     def makeInference(self) -> None:
@@ -27191,7 +27193,7 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrumcpp.GibbsBNdistance_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.GibbsBNdistance__asIApproximationSchemeConfiguration(self)
 
     def nbrDrawnVar(self) -> int:
@@ -27487,7 +27489,7 @@ class MCBNDistance(ApproximationScheme):
         """
         return _pyagrumcpp.MCBNDistance_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.MCBNDistance__asIApproximationSchemeConfiguration(self)
 
 # Register MCBNDistance in _pyagrumcpp:
@@ -29822,7 +29824,7 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _pyagrumcpp.BNLearner__asIApproximationSchemeConfiguration(self)
 
     def learnDAG(self) -> "pyagrum.DAG":
@@ -30395,7 +30397,7 @@ _pyagrumcpp.BNLearner_swigregister(BNLearner)
 
 import warnings
 
-def availableBNExts():
+def availableBNExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a Bayesian network.
 
   :return: a string which lists all suffixes for supported BN file formats.
@@ -30403,7 +30405,12 @@ def availableBNExts():
   return "bif|dsl|net|bifxml|o3prm|uai|xdsl|pkl|jgum|bgum"
 
 
-def loadBN(filename, listeners=None, verbose=False, **opts):
+def loadBN(
+  filename: str,
+  listeners: list[typing.Callable[[int], typing.Any]] | None = None,
+  verbose: bool = False,
+  **opts,
+) -> BayesNet:
   """load a BN from a file with optional listeners and arguments
 
   Parameters
@@ -30498,7 +30505,7 @@ def loadBN(filename, listeners=None, verbose=False, **opts):
 
 
 
-def saveBN(bn, filename, allowModificationWhenSaving=None):
+def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None = None) -> None:
   """
   save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
 
@@ -30548,7 +30555,7 @@ def saveBN(bn, filename, allowModificationWhenSaving=None):
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
 
-def fastBN(structure:str, domain="[2]"):
+def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
@@ -30629,7 +30636,7 @@ def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True
     return genere.to_pandas(with_labels), ll
 
 
-def randomBN(*, n: int = 5, names: list[str] = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
+def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1.2, domain_size: int = 2) -> BayesNet:
   """
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
@@ -30802,7 +30809,13 @@ def mutilateBN(bn, intervention=None, observation=None):
   return (inter_bn, evidence)
 
 
-def getPosterior(model, *, target, evs=None):
+def getPosterior(
+# quoted: MarkovRandomField lives in a lazily imported submodule
+  model: "BayesNet | pyagrum.MarkovRandomField",
+  *,
+  target: str | int,
+  evs: dict[typing.Any, typing.Any] | None = None,
+) -> Tensor:
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -30825,6 +30838,8 @@ def getPosterior(model, *, target, evs=None):
   -------
     posterior (pyagrum.Tensor or other)
   """
+# local annotation: never evaluated at runtime
+  inf: VariableElimination | pyagrum.ShaferShenoyMRFInference
   if isinstance(model, pyagrum.BayesNet):
     inf = pyagrum.VariableElimination(model)
   else:
@@ -30844,7 +30859,7 @@ def getPosterior(model, *, target, evs=None):
   posterior = pyagrum.Tensor(inf.posterior(target))
 # the Tensor holds raw pointers to the variables owned by the model: keep the model alive as long as the
 # Tensor is (otherwise pyagrum.getPosterior(pyagrum.fastBN(...), target=...) returns a dangling Tensor)
-  posterior._model = model
+  posterior._model = model  # type: ignore[attr-defined]  # dynamic attribute, keeps the model alive
   return posterior
 
 

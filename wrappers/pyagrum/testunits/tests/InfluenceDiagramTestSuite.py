@@ -245,6 +245,23 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     self.assertEqual(len(ccl2), 1)
     self.assertEqual(set(list(ccl2.values())[0]), set(id2.nodes()))
 
+  def testReversePartialOrder(self):
+    # two decisions with no order between them: same level
+    id_ = gum.fastID("c1<-c->$u<-*d;*e->$u")
+    ie = gum.ShaferShenoyLIMIDInference(id_)
+    self.assertEqual(ie.reversePartialOrder(), [{id_.idFromName("d"), id_.idFromName("e")}])
+
+    # d1 is observed before d2: d2 comes first in the reverse order
+    id_ = gum.fastID("*d1->c->*d2->$u<-c")
+    ie = gum.ShaferShenoyLIMIDInference(id_)
+    self.assertEqual(ie.reversePartialOrder(), [{id_.idFromName("d2")}, {id_.idFromName("d1")}])
+
+  def testUnknownExtension(self):
+    with self.assertRaises(gum.InvalidArgument):
+      gum.loadID("model.foo")
+    with self.assertRaises(gum.InvalidArgument):
+      gum.saveID(gum.fastID("A->*D->$U"), "model.foo")
+
 
 ts = unittest.TestSuite()
 addTests(ts, InfluenceDiagramTestCase)

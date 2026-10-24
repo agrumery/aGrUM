@@ -3792,11 +3792,10 @@ namespace Swig {
 #define SWIGTYPE_p_second_type swig_types[58]
 #define SWIGTYPE_p_size_type swig_types[59]
 #define SWIGTYPE_p_std__size_t swig_types[60]
-#define SWIGTYPE_p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t swig_types[61]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[62]
-#define SWIGTYPE_p_value_type swig_types[63]
-static swig_type_info *swig_types[65];
-static swig_module_info swig_module = {swig_types, 64, 0, 0, 0, 0};
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[61]
+#define SWIGTYPE_p_value_type swig_types[62]
+static swig_type_info *swig_types[64];
+static swig_module_info swig_module = {swig_types, 63, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -10188,7 +10187,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_reversePartialOrder(PyObje
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new std::vector< gum::NodeSet,std::allocator< gum::NodeSet > >(result)), SWIGTYPE_p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t, SWIG_POINTER_OWN |  0 );
+  {
+    using _VecT = std::vector< gum::NodeSet >;
+    _VecT _vec = std::move(result);
+    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
+    Py_ssize_t _i = 0;
+    for (const auto& _ns : _vec)
+    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+  }
   return resultobj;
 fail:
   return NULL;
@@ -13948,7 +13954,6 @@ static swig_type_info _swigt__p_node_iterator_safe = {"_p_node_iterator_safe", "
 static swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "gum::Idx *|gum::NodeId *|gum::Size *|std::size_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t = {"_p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t", "std::vector< gum::NodeSet,std::allocator< gum::NodeSet > > *|std::vector< gum::Set< std::size_t >,std::allocator< gum::Set< std::size_t > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t = {"_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t", "std::vector< gum::NodeId,std::allocator< gum::NodeId > > *|std::vector< std::size_t,std::allocator< std::size_t > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
@@ -14014,7 +14019,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_second_type,
   &_swigt__p_size_type,
   &_swigt__p_std__size_t,
-  &_swigt__p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t,
   &_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   &_swigt__p_value_type,
 };
@@ -14080,7 +14084,6 @@ static swig_cast_info _swigc__p_node_iterator_safe[] = {  {&_swigt__p_node_itera
 static swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t[] = {  {&_swigt__p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
@@ -14146,7 +14149,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_second_type,
   _swigc__p_size_type,
   _swigc__p_std__size_t,
-  _swigc__p_std__vectorT_gum__SetT_std__size_t_t_std__allocatorT_gum__SetT_std__size_t_t_t_t,
   _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   _swigc__p_value_type,
 };

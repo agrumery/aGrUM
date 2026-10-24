@@ -44,9 +44,11 @@
 # -- %import does not carry %pythoncode content across modules, only
 # re-declaring them here would duplicate them, so pull the same functions in
 # instead.
-from pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+import warnings
 
-def availableMRFExts():
+from pyagrum import InvalidArgument, _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+
+def availableMRFExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a Markov random field.
 
   Returns
@@ -57,7 +59,9 @@ def availableMRFExts():
   return "uai|jgum|bgum|pkl"
 
 
-def loadMRF(filename, listeners=None, verbose=False):
+def loadMRF(
+  filename: str, listeners: list[typing.Callable[[int], typing.Any]] | None = None, verbose: bool = False
+) -> MarkovRandomField:
   """load a MRF from a file with optional listeners and arguments
 
   Parameters
@@ -129,7 +133,7 @@ def loadMRF(filename, listeners=None, verbose=False):
   return mn
 
 
-def saveMRF(mn, filename):
+def saveMRF(mn: MarkovRandomField, filename: str) -> None:
   """
   save a MRF into a file using the format corresponding to one of the availableWriteMNExts() suffixes.
 
@@ -159,7 +163,7 @@ def saveMRF(mn, filename):
   else:
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableMRFExts())
 
-def fastMRF(structure, domain="[2]"):
+def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
   """
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,

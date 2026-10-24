@@ -792,5 +792,70 @@ namespace PyAgrumHelper {
     return q;
   }
 
+  // nested std::vector< double > (any depth) -> nested Python list of floats.
+  // Returns nullptr (Python error set) on failure.
+  inline PyObject* PyListFromNestedVector(double val) { return PyFloat_FromDouble(val); }
+
+  template < typename T >
+  PyObject* PyListFromNestedVector(const std::vector< T >& vec) {
+    PyObject* q = PyList_New(static_cast< Py_ssize_t >(vec.size()));
+    if (q == nullptr) return nullptr;
+    Py_ssize_t i = 0;
+    for (const auto& elt: vec) {
+      PyObject* item = PyListFromNestedVector(elt);
+      if (item == nullptr || PyList_SetItem(q, i++, item) != 0) {   // PyList_SetItem steals item
+        Py_DecRef(q);
+        return nullptr;
+      }
+    }
+    return q;
+  }
+
+  // nested Python sequences of numbers -> nested std::vector< double > (any depth).
+  // Returns false (Python TypeError set) on failure.
+  inline bool NestedVectorFromPyObject(PyObject* obj, double& val) {
+    val = PyFloat_AsDouble(obj);
+    return !(val == -1.0 && PyErr_Occurred());
+  }
+
+  template < typename T >
+  bool NestedVectorFromPyObject(PyObject* obj, std::vector< T >& vec) {
+    if (!PySequence_Check(obj) || PyUnicode_Check(obj)) {
+      PyErr_SetString(PyExc_TypeError, "expected a (nested) sequence of floats");
+      return false;
+    }
+    const Py_ssize_t n = PySequence_Size(obj);
+    if (n < 0) return false;
+    vec.assign(static_cast< std::size_t >(n), T{});
+    for (Py_ssize_t i = 0; i < n; ++i) {
+      PyObject* item = PySequence_GetItem(obj, i);
+      if (item == nullptr) return false;
+      const bool ok = NestedVectorFromPyObject(item, vec[static_cast< std::size_t >(i)]);
+      Py_DecRef(item);
+      if (!ok) return false;
+    }
+    return true;
+  }
+
+  // NodeProperty< nested std::vector< double > > -> Python dict {node id: nested list of floats}.
+  // Returns nullptr (Python error set) on failure.
+  template < typename T >
+  PyObject* PyDictFromNodePropertyNestedVector(const gum::NodeProperty< T >& prop) {
+    PyObject* q = PyDict_New();
+    if (q == nullptr) return nullptr;
+    for (const auto& [node, val]: prop) {
+      PyObject* key   = PyLong_FromSize_t(node);
+      PyObject* value = PyListFromNestedVector(val);
+      const int err   = (key == nullptr || value == nullptr) ? -1 : PyDict_SetItem(q, key, value);
+      Py_XDECREF(key);
+      Py_XDECREF(value);
+      if (err != 0) {
+        Py_DecRef(q);
+        return nullptr;
+      }
+    }
+    return q;
+  }
+
 }   // namespace PyAgrumHelper
 #endif   // PYAGRUM_HELPER

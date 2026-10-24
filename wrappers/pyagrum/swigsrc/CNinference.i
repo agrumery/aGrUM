@@ -46,6 +46,23 @@
 
 
 
+// CredalNet CPTs (vertices of the credal sets) <-> nested Python lists of floats
+%typemap(out) const std::vector< std::vector< double > >& {
+  $result = PyAgrumHelper::PyListFromNestedVector(*$1);
+  if ($result == nullptr) SWIG_fail;
+}
+%typemap(out) const gum::NodeProperty< std::vector< std::vector< std::vector< double > > > >& {
+  $result = PyAgrumHelper::PyDictFromNodePropertyNestedVector(*$1);
+  if ($result == nullptr) SWIG_fail;
+}
+%typemap(in) const std::vector< std::vector< std::vector< double > > >& (std::vector< std::vector< std::vector< double > > > _tmp_cpt) {
+  if (!PyAgrumHelper::NestedVectorFromPyObject($input, _tmp_cpt)) SWIG_fail;
+  $1 = &_tmp_cpt;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_DOUBLE_ARRAY) const std::vector< std::vector< std::vector< double > > >& {
+  $1 = (PySequence_Check($input) && !PyUnicode_Check($input)) ? 1 : 0;
+}
+
 %define IMPROVE_CN_INFERENCE_API(classname)
 
 %pythonappend gum::credal::classname<double>::classname %{
@@ -53,7 +70,7 @@
               %}
 %extend gum::credal::classname<double> {
   %pythoncode %{
-def setEvidence(self, evidces):
+def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
   """
   Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 

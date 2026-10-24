@@ -1306,7 +1306,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_reducedGraph(self)
 
-    def reversePartialOrder(self) -> "pyagrum.YetUnWrapped":
+    def reversePartialOrder(self) -> list[set[int]]:
         r"""
 
         Return the reversed partial order of decision nodes used internally.
@@ -1387,7 +1387,7 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -1415,7 +1415,7 @@ class ShaferShenoyLIMIDInference(object):
 
 
 
-    def updateEvidence(self, evidces):
+    def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
         """
         Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
 
@@ -1746,9 +1746,9 @@ _idcpp.ShaferShenoyLIMIDInference_swigregister(ShaferShenoyLIMIDInference)
 # -- %import does not carry %pythoncode content across modules, only
 # re-declaring them here would duplicate them, so pull the same functions in
 # instead.
-from pyagrum import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
+from pyagrum import InvalidArgument, _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
 
-def availableIDExts():
+def availableIDExts() -> str:
   """ Give the list of all formats known by pyAgrum to save a influence diagram.
 
   Returns
@@ -1759,7 +1759,7 @@ def availableIDExts():
   return "xmlbif|bifxml|xml|jgum|bgum|pkl"
 
 
-def loadID(filename):
+def loadID(filename: str) -> InfluenceDiagram:
   """
   read a pyagrum.InfluenceDiagram from a ID file
 
@@ -1803,7 +1803,7 @@ def loadID(filename):
   return diag
 
 
-def saveID(infdiag, filename):
+def saveID(infdiag: InfluenceDiagram, filename: str) -> None:
   """
   save an ID into a file using the format corresponding to one of the availableWriteIDExts() suffixes.
 
@@ -1834,7 +1834,7 @@ def saveID(infdiag, filename):
     raise InvalidArgument("extension " + filename.split('.')[-1] + " unknown. Please use among " + availableIDExts())
 
 
-def fastID(structure, domain="[2]"):
+def fastID(structure: str, domain: int | str = "[2]") -> InfluenceDiagram:
   """
   Create an Influence Diagram with a modified dot-like syntax which specifies:
       - the structure and the type of the variables following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`,

@@ -41,7 +41,8 @@
 import random
 
 import pyagrum
-from pyagrum.ctbn import CIM, CTBN
+from pyagrum.ctbn.CIM import CIM
+from pyagrum.ctbn.CTBN import CTBN
 
 """
 This file is used to generate random CTBNs using Prufer code

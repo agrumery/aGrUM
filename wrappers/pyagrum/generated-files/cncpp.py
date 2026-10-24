@@ -129,7 +129,7 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_addArc(self, tail, head)
 
-    def setCPTs(self, id: int, cpt: "pyagrum.YetUnWrapped") -> None:
+    def setCPTs(self, id: int, cpt: list[list[list[float]]]) -> None:
         r"""
 
         Warnings
@@ -422,7 +422,7 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_current_bn(self)
 
-    def credalNet_currentCpt(self) -> "pyagrum.YetUnWrapped":
+    def credalNet_currentCpt(self) -> dict[int, list[list[list[float]]]]:
         r"""
 
         Warnings
@@ -437,7 +437,7 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_credalNet_currentCpt(self)
 
-    def credalNet_srcCpt(self) -> "pyagrum.YetUnWrapped":
+    def credalNet_srcCpt(self) -> dict[int, list[list[list[float]]]]:
         r"""
 
         Warnings
@@ -541,7 +541,7 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_hasComputedBinaryCPTMinMax(self)
 
-    def get_binaryCPT_min(self) -> "pyagrum.YetUnWrapped":
+    def get_binaryCPT_min(self) -> list[list[float]]:
         r"""
 
         Warnings
@@ -556,7 +556,7 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_get_binaryCPT_min(self)
 
-    def get_binaryCPT_max(self) -> "pyagrum.YetUnWrapped":
+    def get_binaryCPT_max(self) -> list[list[float]]:
         r"""
 
         Warnings
@@ -623,7 +623,7 @@ class CNMonteCarloSampling(object):
         """
         return _cncpp.CNMonteCarloSampling_insertEvidenceFile(self, path)
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
       """
       Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -862,7 +862,7 @@ class CNMonteCarloSampling(object):
         """
         return _cncpp.CNMonteCarloSampling_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _cncpp.CNMonteCarloSampling__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:
@@ -1086,7 +1086,7 @@ class CNLoopyPropagation(object):
 
     __swig_destroy__ = _cncpp.delete_CNLoopyPropagation
 
-    def setEvidence(self, evidces):
+    def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
       """
       Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
 
@@ -1325,7 +1325,7 @@ class CNLoopyPropagation(object):
         """
         return _cncpp.CNLoopyPropagation_history(self)
 
-    def _asIApproximationSchemeConfiguration(self) -> "pyagrum.YetUnWrapped":
+    def _asIApproximationSchemeConfiguration(self) -> object:
         return _cncpp.CNLoopyPropagation__asIApproximationSchemeConfiguration(self)
 
     def setRepetitiveInd(self, flag: bool) -> None:

@@ -45,7 +45,7 @@ import sys
 from importlib.util import find_spec
 from sys import platform as os_platform
 
-from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats, warn
+from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats
 
 if __name__ == "__main__":
   print(
@@ -109,6 +109,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("BNLearnerTestSuite", True),
         ("BNListenerTestSuite", True),
         ("ConfigTestSuite", True),
+        ("CredalNetTestSuite", True),
         ("DiscreteTypeProcessorTestSuite", _pd, "[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas"),
         ("DotOptionsTestSuite", True),
         ("EssentialGraphTestSuite", True),
@@ -281,8 +282,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
   if result.testsRun == 0:
     error(f"No test matched (module='{test_module or 'all'}', suite='{test_suite or 'all'}')")
     return 1
-  (error if errs > 0 else notif)("Failed %d of %d tests" % (errs, result.testsRun))
-  notif("Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun))
+  (error if errs > 0 else notif)(f"Failed {errs} of {result.testsRun} tests")
+  notif(f"Success rate: {int((result.testsRun - errs) * 100 / result.testsRun)}%")
   notif()
   notif(f"pyAgrum on Python {platform.python_version()} - {os_platform}")
   notif(f"pyAgrum path : {gum.__file__}")
