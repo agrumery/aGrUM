@@ -43,6 +43,11 @@
 
 %module(package="pyagrum.causal_model", docstring="pyagrum.causal_model module") cmcpp
 
+// the annotations of the %pythoncode functions use typing: SWIG >= 4.4 imports it in the proxy, SWIG 4.3 does not
+%pythonbegin %{
+import typing
+%}
+
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- these must be re-declared
 // here too (see mrf.i for the long-form explanation).

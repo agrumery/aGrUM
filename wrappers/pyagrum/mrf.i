@@ -43,6 +43,11 @@
 
 %module(package="pyagrum.markov_random_field", docstring="pyagrum.markov_random_field module") mrfcpp
 
+// the annotations of the %pythoncode functions use typing: SWIG >= 4.4 imports it in the proxy, SWIG 4.3 does not
+%pythonbegin %{
+import typing
+%}
+
 // %import only carries typemap/type declarations into this module's own
 // generated .cxx, not raw %{ %} code blocks -- PyAgrumHelper and the
 // PyAgrumSetOf*/PyAgrumList*/... sentinel typedefs (used by typemaps

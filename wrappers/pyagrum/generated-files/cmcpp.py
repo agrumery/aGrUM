@@ -6,6 +6,11 @@
 
 """pyagrum.causal_model module"""
 
+
+import typing
+
+
+
 import typing
 # ## recursive import for typehints annotation
 import pyagrum

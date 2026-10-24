@@ -6,6 +6,11 @@
 
 """pyagrum.markov_random_field module"""
 
+
+import typing
+
+
+
 import typing
 # ## recursive import for typehints annotation
 import pyagrum

@@ -6,6 +6,11 @@
 
 """pyagrum.influence_diagram module"""
 
+
+import typing
+
+
+
 import typing
 # ## recursive import for typehints annotation
 import pyagrum

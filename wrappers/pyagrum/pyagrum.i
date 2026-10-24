@@ -43,6 +43,11 @@
 
 %module(package="pyagrum", docstring="pyagrum module", directors="1") pyagrumcpp
 
+// the annotations of the %pythoncode functions use typing: SWIG >= 4.4 imports it in the proxy, SWIG 4.3 does not
+%pythonbegin %{
+import typing
+%}
+
 /////////////////////////////////
 /////// Documentation ///////////
 /////////////////////////////////
