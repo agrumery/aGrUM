@@ -42,7 +42,8 @@ import platform
 import time
 
 from .ActBuilderAgrum import ActBuilderAgrum
-from .utils import *
+from .configuration import cfg
+from .utils import error, safe_cd, warn
 
 
 class ActBuilderDocDoxygen(ActBuilderAgrum):

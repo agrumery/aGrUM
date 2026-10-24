@@ -6,6 +6,9 @@ indent-width = 2
 
 extend-include = ["*.ipynb"]
 
+# Names injected at runtime by IPython/Jupyter (ipython.py, binder/jupyter_notebook_config.py)
+builtins = ["get_ipython", "get_config"]
+
 extend-exclude = [
   "**/testunits/generateTestExec.py",
   '**/apps/*',
@@ -13,6 +16,7 @@ extend-exclude = [
   '**/generated-files/*',
   "**/Untitled*.ipynb",
   "wrappers/pyagrum/cmake/*",
+  "src/testunits/ressources/*",  # test data (incl. scratch notebooks), not code
 ] # Skip certain files
 
 [format]
@@ -21,8 +25,9 @@ indent-style = "space"
 docstring-code-format = true
 
 [lint]
-#extend-select = ["E501"]
-extend-select = ["UP", "I"]
+# Explicit rule set: ruff's classic defaults (E4, E7, E9, F) + pyupgrade (UP) + isort (I).
+# `select` (not `extend-select`) so that the checked rules do not change with the defaults of a new ruff version.
+select = ["E4", "E7", "E9", "F", "UP", "I"]
 # Avoid trying to fix flake8-bugbear (`B`) violations.
 unfixable = ["B","F401"]
 
@@ -32,8 +37,11 @@ unfixable = ["B","F401"]
 ignore = ["E741", "N999"]
 
 [lint.per-file-ignores]
-# Package __init__ files import their submodules in dependency order (submodules import from the package itself).
-"**/__init__.py" = ["I001"]
+# Package __init__ files import their submodules in dependency order (submodules import from the package itself),
+# and import names only to re-export them.
+"**/__init__.py" = ["I001", "F401"]
+# Notebooks: `from ... import *` and imports in later cells are presentation choices of the tutorials.
+"*.ipynb" = ["F403", "F405", "E402"]
 
 [lint.isort]
 known-first-party = ["pyagrum"]

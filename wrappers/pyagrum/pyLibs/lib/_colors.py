@@ -44,11 +44,12 @@ Deprecated module: use pyagrum.lib.dotstyle instead.
 
 import warnings
 
+# deprecated relay: re-exports everything from pyagrum.lib.dotstyle
+# noinspection PyUnresolvedReferences
+from pyagrum.lib.dotstyle import *  # noqa: F403
+
 warnings.warn(
   "The module 'pyagrum.lib._colors' is deprecated after 3.2.1, use 'pyagrum.lib.dotstyle' instead.",
   DeprecationWarning,
   stacklevel=2,
 )
-
-# noinspection PyUnresolvedReferences
-from pyagrum.lib.dotstyle import *

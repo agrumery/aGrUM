@@ -46,7 +46,7 @@ import time
 
 from .ActBuilder import ActBuilder, cmake_compiler_flags
 from .configuration import cfg
-from .utils import *
+from .utils import critic, error, notif, safe_cd
 
 
 def _load_pyagrum_test_modules() -> set[str]:

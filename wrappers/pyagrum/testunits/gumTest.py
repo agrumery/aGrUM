@@ -49,7 +49,7 @@ from sys import platform as os_platform
 _thisdir = os.path.dirname(os.path.abspath(__file__))
 if _thisdir not in sys.path:
   sys.path.insert(0, _thisdir)
-from utils.gumTestOutput import error, notif, warn
+from utils.gumTestOutput import error, notif  # noqa: E402 (after the sys.path setup)
 
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
 # This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'

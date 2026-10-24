@@ -41,7 +41,7 @@
 from typing import Any
 
 from .configuration import cfg
-from .utils import *
+from .utils import printutf8
 
 
 def get_invocation(current: dict[str, str | bool], colored: bool = False) -> str:

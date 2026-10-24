@@ -47,12 +47,11 @@ import sys
 import time
 import traceback
 import warnings
-from typing import List
 
 import nbformat
 from nbconvert.preprocessors.execute import CellExecutionError, ExecutePreprocessor
 
-from .gumTestOutput import error, notif, warn
+from .gumTestOutput import error, notif
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 

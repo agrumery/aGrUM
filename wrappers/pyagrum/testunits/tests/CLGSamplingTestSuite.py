@@ -95,8 +95,8 @@ class CLGSamplingTestCase(pyAgrumTestCase):
 
   def test_seed_reproducible(self):
     clg = CLG()
-    idX = clg.add(GaussianVariable(mu=4.5, sigma=2, name="X"))
-    idY = clg.add(GaussianVariable(mu=3, sigma=2, name="Y"))
+    clg.add(GaussianVariable(mu=4.5, sigma=2, name="X"))
+    clg.add(GaussianVariable(mu=3, sigma=2, name="Y"))
     fs1 = ForwardSampling(clg)
     fs1.makeSample(100, seed=42)
     fs2 = ForwardSampling(clg)
@@ -135,7 +135,6 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     fs = ForwardSampling(clg)
     fs.makeSample(100)
     cov = fs.covariance_sample()
-    import numpy as np
 
     self.assertEqual(cov.shape, (3, 3))
 

@@ -40,8 +40,6 @@
 
 import unittest
 
-import pandas as pd
-
 import pyagrum as gum
 from pyagrum.explain._CustomShapleyCache import CustomShapleyCache
 

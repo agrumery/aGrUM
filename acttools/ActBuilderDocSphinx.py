@@ -39,7 +39,7 @@
 ############################################################################
 
 from .ActBuilder import ActBuilder
-from .utils import *
+from .utils import safe_cd
 
 
 class ActBuilderDocSphinx(ActBuilder):

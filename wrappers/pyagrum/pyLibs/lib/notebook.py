@@ -73,10 +73,12 @@ from pyagrum.lib.cn2graph import CN2dot
 from pyagrum.lib.id2graph import ID2dot
 from pyagrum.lib.image import prepareLinksForSVG, prepareShowInference
 from pyagrum.lib.jt2graph import _junctionTreeDot, _junctionTreeDotStr, _junctionTreeMapDot, _mapDotString
-from pyagrum.lib.ktbn2graph import getFollowKTBN, plotFollowKTBN
+from pyagrum.lib.ktbn2graph import getFollowKTBN as getFollowKTBN  # re-exported
+from pyagrum.lib.ktbn2graph import plotFollowKTBN as plotFollowKTBN  # re-exported
 from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRF2UGdot
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
-from pyagrum.lib.utils import animApproximationScheme, showApproximationScheme
+from pyagrum.lib.utils import animApproximationScheme as animApproximationScheme  # re-exported
+from pyagrum.lib.utils import showApproximationScheme as showApproximationScheme  # re-exported
 
 
 class FlowLayout:

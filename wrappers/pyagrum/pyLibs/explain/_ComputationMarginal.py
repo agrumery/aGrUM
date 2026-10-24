@@ -38,8 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import numpy as np
-
 
 class MarginalComputation:
   @staticmethod

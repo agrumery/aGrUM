@@ -44,7 +44,7 @@ import platform
 
 from .configuration import cfg, configure_cli_options, configure_colors, init_params
 from .invocation import show_invocation
-from .utils import *
+from .utils import about, critic, error, notif
 
 
 def extract_cmd_from_args(current: dict[str, str | bool], args: set[str]) -> None:

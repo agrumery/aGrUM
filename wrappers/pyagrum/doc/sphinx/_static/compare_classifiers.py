@@ -125,7 +125,7 @@ for ds_cnt, ds in enumerate(datasets):
     ax.set_yticks(())
     if ds_cnt == 0:
       ax.set_title(name, fontsize=fs)
-    ax.text(xx.max() - 0.3, yy.min() + 0.3, ("%.2f" % score).lstrip("0"), size=15, horizontalalignment="right")
+    ax.text(xx.max() - 0.3, yy.min() + 0.3, (f"{score:.2f}").lstrip("0"), size=15, horizontalalignment="right")
     i += 1
 plt.tight_layout()
 # plt.show()

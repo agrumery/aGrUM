@@ -44,7 +44,7 @@ import platform
 from subprocess import PIPE, STDOUT, Popen
 
 from .configuration import cfg
-from .utils import *
+from .utils import error, notif, warn
 
 _MSVC_FLAGS: dict[str, str] = {
   "mvsc22": '-G "Visual Studio 17 2022" -A x64',

@@ -38,11 +38,13 @@
 #                                                                          #
 ############################################################################
 
+import os
 import subprocess
+import sys
 
 from .ActBuilder import ActBuilder
 from .ActBuilderWheel import ActBuilderWheel
-from .utils import *
+from .utils import safe_cd
 
 
 class ActBuilderPipInstall(ActBuilder):

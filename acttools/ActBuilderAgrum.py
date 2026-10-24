@@ -47,7 +47,8 @@ import sys
 import time
 
 from .ActBuilder import ActBuilder, cmake_compiler_flags
-from .utils import *
+from .configuration import cfg
+from .utils import critic, cross_platform_rel_path, error, notif, safe_cd, setifyString
 
 
 def test_name(filename: str) -> str:

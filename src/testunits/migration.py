@@ -147,7 +147,7 @@ def run_git_show(filepath, base_dir):
     )
     if result.returncode == 0:
       return result.stdout
-  except:
+  except Exception:
     pass
   return None
 
@@ -662,7 +662,7 @@ def migrate_file(filepath, base_dir=None):
     try:
       rel_path = filepath.relative_to(base_dir)
       git_original = run_git_show(str(rel_path), str(base_dir))
-    except:
+    except Exception:
       pass
 
   # Step 1: Convert class to struct

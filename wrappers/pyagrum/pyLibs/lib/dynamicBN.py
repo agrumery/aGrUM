@@ -44,12 +44,6 @@ This module is deprecated. Please use "import pyagrum.ktbn"
 
 import warnings
 
-warnings.warn(
-  "This module is deprecated since pyAgrum>=3.2. Please use the new c++ enhanced module : 'import pyagrum.ktbn' instead.",
-  FutureWarning,
-  stacklevel=2,
-)
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pydot as dot
@@ -57,6 +51,12 @@ from matplotlib.patches import Rectangle
 
 import pyagrum
 import pyagrum.lib.dotstyle as gds
+
+warnings.warn(
+  "This module is deprecated since pyAgrum>=3.2. Please use the new c++ enhanced module : 'import pyagrum.ktbn' instead.",
+  FutureWarning,
+  stacklevel=2,
+)
 
 noTimeCluster = "void"
 

@@ -64,7 +64,9 @@ from pyagrum.lib.image import prepareShowInference
 from pyagrum.lib.jt2graph import _junctionTreeDotStr, _junctionTreeMapDot
 from pyagrum.lib.mrf2graph import MRF2FactorGraphdot, MRF2UGdot
 from pyagrum.lib.proba_histogram import proba2histo, probaMinMaxH
-from pyagrum.lib.utils import animApproximationScheme, setDarkTheme, showApproximationScheme
+from pyagrum.lib.utils import animApproximationScheme as animApproximationScheme  # re-exported
+from pyagrum.lib.utils import setDarkTheme
+from pyagrum.lib.utils import showApproximationScheme as showApproximationScheme  # re-exported
 
 # check if an instance of ipython exists
 try:

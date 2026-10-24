@@ -38,7 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from typing import Union
 
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister, transpile

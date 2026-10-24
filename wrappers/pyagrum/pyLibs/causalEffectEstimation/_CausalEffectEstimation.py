@@ -42,10 +42,8 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from numpy.f2py.f90mod_rules import fgetdims2
 
 import pyagrum
-from pyagrum import causalImpact
 
 from ._backdoorEstimators import IPW, PStratification, SLearner, TLearner, XLearner
 from ._causalBNEstimator import CausalBNEstimator

@@ -57,8 +57,7 @@ from tempfile import mkdtemp, mkstemp
 from .ActBuilder import ActBuilder
 from .ActBuilderPyAgrum import ActBuilderPyAgrum
 from .configuration import cfg
-from .utils import *
-from .utils import critic, warn
+from .utils import critic, error, notif, warn
 
 
 def _git_commit_timestamp() -> str:

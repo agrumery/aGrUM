@@ -103,7 +103,7 @@ class Explainer(ABC):
     for i in elements:
       try:
         val = self.bn.variable(i).posLabel(x[i])
-      except:
+      except Exception:
         val = int(x[i])
       y[i] = val
     return y

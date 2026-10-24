@@ -342,7 +342,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     # relaunch EM with diff stopping criterion
     learner.useEMWithDiffCriterion(0.05, 0.0)
-    bn3 = learner.learnParameters(bn2, False)
+    learner.learnParameters(bn2, False)
 
     learner.fitParameters(bn1, False)
     for i in range(bn1.size()):

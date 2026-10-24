@@ -38,10 +38,9 @@
 #                                                                          #
 ############################################################################
 
-from typing import Union
 
 import numpy as np
-from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister, transpile
+from qiskit import ClassicalRegister, QuantumCircuit, transpile
 from qiskit.circuit.library import XGate, ZGate
 
 from pyagrum import BayesNetFragment

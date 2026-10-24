@@ -45,17 +45,15 @@ This file defines some helpers for handling causal concepts in notebooks
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
 __copyright__ = "(c) 2019-2026 PARIS"
 
-"""
-Deprecated for older pyAgrum (since >2.3.2)
-"""
+# Deprecated for older pyAgrum (since >2.3.2)
 
 import warnings
+
+# deprecated relay: re-exports everything from pyagrum.lib.notebook
+from pyagrum.lib.notebook import *  # noqa: F403
 
 warnings.warn(
   "import 'causal.notebook' is deprecated in pyAgrum >2.3.2. Use directly : 'pyagrum.notebook' instead.",
   DeprecationWarning,
   stacklevel=2,
 )
-
-# pylint: disable=unused-import
-from pyagrum.lib.notebook import *

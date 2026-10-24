@@ -87,7 +87,6 @@ class CLGSEMTestCase(pyAgrumTestCase):
     self.assertEqual(model, model2)
 
   def test_negative_coef_roundtrip(self):
-    import warnings
 
     sem = """
 A=4.5[0.3]

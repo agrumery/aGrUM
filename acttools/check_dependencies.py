@@ -42,7 +42,7 @@ import re
 from collections.abc import Sequence
 from pathlib import Path
 
-from .utils import *
+from .utils import notif, notif_oneline, warn
 
 
 def _header_filter(split_filename: Sequence[str]) -> bool:

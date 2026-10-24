@@ -21,8 +21,12 @@
 #
 # sys.path.insert(0,os.path.abspath('../../../../build/pyAgrum/release/wrappers/'))
 
+import datetime
 import os
 import sys
+
+import matplotlib
+from sphinx.errors import ExtensionError
 
 import pyagrum
 
@@ -30,7 +34,7 @@ import pyagrum
 # (sphinx does not put the conf.py directory on sys.path, so add it explicitly)
 _confdir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _confdir)
-import gen_config_reference
+import gen_config_reference  # noqa: E402 (needs the sys.path setup above)
 
 gen_config_reference.generate(os.path.join(_confdir, "generated"))
 
@@ -39,13 +43,9 @@ master_doc = "index"
 # General information about the project.
 project = "pyagrum "
 # get current year
-import datetime
-
 year = datetime.datetime.now().year
 copyright = f"2018-{year}, aGrUM/pyAgrum Team <info_at_agrum_dot_org> (pyAgrum re{pyagrum.__version__})"
 author = "Pierre-henri Wuillemin"
-
-import matplotlib
 
 matplotlib.use("agg")  # work around for tkinter.file_dialog not found
 
@@ -591,25 +591,24 @@ nbsphinx_thumbnails = {
 
 ############################ Google Analytics #############
 
-from sphinx.errors import ExtensionError
-
 
 def add_ga_javascript(app, pagename, templatename, context, doctree):
     if not app.config.googleanalytics_enabled:
         return
 
     metatags = context.get("metatags", "")
-    metatags += """
+    gid = app.config.googleanalytics_id
+    metatags += f"""
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={gid}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){{dataLayer.push(arguments);}}
   gtag('js', new Date());
 
-  gtag('config', '%s');
+  gtag('config', '{gid}');
 </script>
-    """ % (app.config.googleanalytics_id, app.config.googleanalytics_id)
+    """
     context["metatags"] = metatags
 
 

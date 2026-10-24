@@ -95,7 +95,9 @@ def _checkAgainstOracle(tc, ktbn, dos, targets, T, evs=None):
   ie.makeInference(T)
 
   oracle, pe = _oracleMarginals(ktbn, dos, evs, T)
-  wanted = lambda b: (not targets) or b in targets
+
+  def wanted(b):
+    return (not targets) or b in targets
 
   for b in ktbn.temporalVarNames():
     if wanted(b):

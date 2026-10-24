@@ -45,7 +45,7 @@ import shutil
 import time
 
 from .ActBuilder import ActBuilder, warn
-from .utils import *
+from .utils import notif
 
 
 class ActBuilderCleaning(ActBuilder):

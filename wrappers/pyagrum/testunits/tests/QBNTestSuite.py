@@ -43,10 +43,9 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister
-from qiskit.circuit.library import RYGate, XGate
 
 import pyagrum as gum
-from pyagrum import BayesNet, DiscreteVariable, LabelizedVariable, Tensor, qBNSampling
+from pyagrum import BayesNet, DiscreteVariable, LabelizedVariable
 from pyagrum.qBNSampling import qBNMC, qBNRejection
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase

@@ -39,13 +39,15 @@
 ############################################################################
 
 import ast
+import importlib.util
 import inspect
 import os
 import re
 import sys
 import types
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime
+from pathlib import Path
 from subprocess import PIPE, STDOUT, Popen, call
 from subprocess import run as subprocess_run
 
@@ -54,7 +56,23 @@ import pyagrum as gum
 from .ActBuilder import ActBuilder
 from .check_dependencies import build_gum_dependencies_graph, check_gum_dependencies
 from .configuration import cfg
-from .utils import *
+from .utils import (
+  critic,
+  error,
+  filterSources,
+  notif,
+  notif_oneline,
+  printutf8,
+  recglob,
+  reset_source_filter_match_count,
+  source_filter_match_count,
+  srcAgrum,
+  srcCmakeAgrum,
+  srcGeneratorAgrum,
+  srcPyAgrum,
+  srcPyIpynbAgrum,
+  warn,
+)
 
 gumPath = os.path.join(os.path.dirname(sys.argv[0]), f"build/pyAgrum/{cfg.buildPath['Release']}/wrappers")
 
@@ -374,13 +392,28 @@ class ActBuilderGuideline(ActBuilder):
 
 
 _GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
-  {"cpp", "python", "header", "coverage", "deps", "tidy", "pyrefly", "pureheader", "inline", "pygum", "pyannot"}
+  {
+    "cpp",
+    "python",
+    "lint",
+    "header",
+    "coverage",
+    "deps",
+    "tidy",
+    "pyrefly",
+    "pureheader",
+    "inline",
+    "pygum",
+    "pyannot",
+    "pytyping",
+  }
 )
 # tidy/inline need build/aGrUM/<mode>/compile_commands.json (act lib release aGrUM first);
 # pygum needs wrappers/pyagrum/generated-files/*.cxx (act install pyAgrum first) -- all three
 # skip themselves with a warning if their prerequisite build artifact is missing, but are left
 # out of the default set since a plain `act guideline` shouldn't silently require a prior build.
-_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy", "inline", "pygum"}
+# pytyping checks the *installed* pyagrum with mypy (act pipinstall pyAgrum first): same reason.
+_GUIDELINE_DEFAULT_CHECKS: frozenset[str] = _GUIDELINE_ALL_CHECKS - {"tidy", "inline", "pygum", "pytyping"}
 
 
 def _parse_checks(spec: str) -> frozenset[str]:
@@ -413,12 +446,6 @@ def guideline(
   checks: str | None = None,
   source: str | None = None,
 ) -> int:
-  def _aff_errors(nb: int, typ: str) -> int:
-    if nb > 0:
-      # spaces to remove others possible characters
-      error(f"{nb} {typ} error{'s' if nb > 1 else ''}{' ' * 40}")
-    return nb
-
   if current["build_graph"] or current["build_summary"]:
     notif("[[aGrUM guideline: dependency graphs only (--build_graph/--build_summary), all checks are off]]")
     build_gum_dependencies_graph(
@@ -429,122 +456,136 @@ def guideline(
     return 0
 
   active = _parse_checks(checks) if checks is not None else _GUIDELINE_DEFAULT_CHECKS
-  run_cpp = "cpp" in active
-  run_python = "python" in active
-  run_header = "header" in active
-  run_coverage = "coverage" in active
-  run_deps = "deps" in active
-  run_tidy = "tidy" in active
-  run_pyrefly = "pyrefly" in active
-  run_pureheader = "pureheader" in active
-  run_inline = "inline" in active
-  run_pygum = "pygum" in active
-  run_pyannot = "pyannot" in active
+  corr = correction and not dry_run
 
-  effective_correction = correction and not dry_run
+  # (key, title, runner): the runner returns a list of (number of errors, kind of error)
+  steps = [
+    (
+      "cpp",
+      "a .cpp file for every .h file",
+      lambda: [(_check_cpp_file_exists(details, corr, source), "missing cpp file")],
+    ),
+    (
+      "header",
+      "LGPL+MIT license headers",
+      lambda: [
+        (_check_LGPL_MIT_license_CPP(details, corr, source), "missing LGPL+MIT cpp licence"),
+        (_check_LGPL_MIT_license_py(details, corr, source), "missing LGPL+MIT python licence"),
+      ],
+    ),
+    ("coverage", "missing documentation in pyAgrum", lambda: [(_check_missing_docs(details), "missing documentation")]),
+    (
+      "deps",
+      "dependencies between headers",
+      lambda: [(check_gum_dependencies(details=details, correction=corr), "redundant dependency")],
+    ),
+    ("tidy", "clang-tidy fixes", lambda: [(_check_clang_tidy(details, corr, dry_run), "clang-tidy")]),
+    ("cpp", "C++ format (clang-format)", lambda: [(_check_clang_format(details, corr, dry_run, source), "format")]),
+    ("python", "Python format (ruff)", lambda: [(_check_ruff_format(details, corr, dry_run, source), "format")]),
+    (
+      "lint",
+      "Python lint (ruff check, rules of ruff.toml)",
+      lambda: [(_check_ruff_lint(details, corr, dry_run), "lint")],
+    ),
+    (
+      "pyrefly",
+      "pyrefly type annotations in pyLibs",
+      lambda: [(_check_pyrefly(details, corr, dry_run), "pyrefly type (unrecorded in coverage)")],
+    ),
+    (
+      "pureheader",
+      "no function body in .h declaration headers",
+      lambda: [(_check_pure_headers(details, source), "body in declaration header")],
+    ),
+    (
+      "inline",
+      "oversized functions in _inl.h files (readability-function-size)",
+      lambda: [(_check_inline_size(details, dry_run), "oversized inline function")],
+    ),
+    (
+      "pygum",
+      "export tags of the symbols used by the leaf pyAgrum modules",
+      lambda: [(_check_pygum_export(details, corr), "missing/wrong export tag")],
+    ),
+    (
+      "pyannot",
+      "type annotations of the generated SWIG .py files",
+      lambda: [(_check_py_annotations(details), "invalid type annotation")],
+    ),
+    (
+      "pytyping",
+      "static typing of the user API of the installed pyagrum (mypy)",
+      lambda: [(_check_py_typing(details, dry_run), "typing error")],
+    ),
+  ]
+  dim = "\033[2m" if cfg.C_END else ""
+  bar = "━" * 72
+
+  def line(icon: str, text: str, col: str = "") -> None:
+    printutf8(f"\r\033[K{cfg.prefix_line}{icon + ' ' if icon else ''}{col}{text}{cfg.C_END}")
+
+  def tag(idx: int, key: str) -> str:
+    return f"[{idx:>2}/{len(steps)}] {key:<10}"
+
   active_checks_label = checks if checks is not None else "default"
-  notif(
-    f"[[aGrUM {'detailed ' if details else ''}guideline "
-    f"[{active_checks_label}]"
-    f"{' (with correction)' if effective_correction else ''}"
-    f"{' (dry-run)' if dry_run else ''}]]"
+  options = "".join(
+    [
+      " · detailed" if details else "",
+      " · with correction" if corr else "",
+      " · dry-run" if dry_run else "",
+    ]
   )
+  line("", bar, cfg.C_MSG)
+  line("🧹", f"aGrUM guideline  [{active_checks_label}]{options}", cfg.C_MSG)
+  line("", bar, cfg.C_MSG)
   if source:
-    notif(f"  [[--source]] filter: '{source}'")
+    notif(f"[[--source]] filter: '{source}'")
     reset_source_filter_match_count()
 
-  nbrError = 0
+  results: list[tuple[int, str, int]] = []  # (index, key, number of errors) for the checks that ran
+  skipped: list[str] = []
+  for idx, (key, title, runner) in enumerate(steps, start=1):
+    if key not in active:
+      skipped.append(key)
+      line("⏭️ ", f"{tag(idx, key)} skipped", dim)
+      continue
 
-  if run_cpp:
-    notif("  [[(1-cpp) ]]*.cpp[[ file for every ]]*.h[[ file]]")
-    nbrError += _aff_errors(_check_cpp_file_exists(details, effective_correction, source), "missing cpp file")
-  else:
-    notif("  (1-cpp) pass")
-
-  if run_header:
-    notif("  [[(2-header) check for ]]LGPL+MIT[[ license]]")
-    nbrError += _aff_errors(
-      _check_LGPL_MIT_license_CPP(details, effective_correction, source),
-      "missing LGPL+MIT cpp licence",
-    )
-    nbrError += _aff_errors(
-      _check_LGPL_MIT_license_py(details, effective_correction, source),
-      "missing LGPL+MIT python licence",
-    )
-  else:
-    notif("  (2-header) pass")
-
-  if run_coverage:
-    notif("  [[(3-coverage) check for missing documentation in pyAgrum]]")
-    nbrError += _aff_errors(_check_missing_docs(details), "missing documentation")
-  else:
-    notif("  (3-coverage) pass")
-
-  if run_deps:
-    notif("  [[(4-deps) check for deps]]")
-    nbrError += _aff_errors(
-      check_gum_dependencies(
-        details=details,
-        correction=effective_correction,
-      ),
-      "redundant dependency",
-    )
-  else:
-    notif("  (4-deps) pass")
-
-  if run_tidy:
-    notif("  [[(5-tidy) check clang-tidy fixes]]")
-    nbrError += _aff_errors(_check_clang_tidy(details, effective_correction, dry_run), "clang-tidy")
-  else:
-    notif("  (5-tidy) pass")
-
-  if run_cpp:
-    notif("  [[(6-cpp) check for cpp format]]")
-    nbrError += _aff_errors(_check_clang_format(details, effective_correction, dry_run, source), "format")
-  else:
-    notif("  (6-cpp) pass")
-
-  if run_python:
-    notif("  [[(7-python) check for py format]]")
-    nbrError += _aff_errors(_check_ruff_format(details, effective_correction, dry_run, source), "format")
-  else:
-    notif("  (7-python) pass")
-
-  if run_pyrefly:
-    notif("  [[(8-pyrefly) check pyrefly type annotations in pyLibs]]")
-    nbrError += _aff_errors(
-      _check_pyrefly(details, effective_correction, dry_run),
-      "pyrefly type (unrecorded in coverage)",
-    )
-  else:
-    notif("  (8-pyrefly) pass")
-
-  if run_pureheader:
-    notif("  [[(9-pureheader) check for function bodies in ]]*.h[[ declaration headers]]")
-    nbrError += _aff_errors(_check_pure_headers(details, source), "body in declaration header")
-  else:
-    notif("  (9-pureheader) pass")
-
-  if run_inline:
-    notif("  [[(10-inline) check for oversized functions in ]]*.h_inl[[ files (readability-function-size)]]")
-    nbrError += _aff_errors(_check_inline_size(details, dry_run), "oversized inline function")
-  else:
-    notif("  (10-inline) pass")
+    printutf8("")
+    line("🔎", f"{tag(idx, key)} {cfg.C_END}{cfg.C_MSG}{title}", cfg.C_VALUE)
+    errs = [(nb, typ) for nb, typ in runner() if nb > 0]
+    nb_errors = sum(nb for nb, _ in errs)
+    results.append((idx, key, nb_errors))
+    if nb_errors == 0:
+      line("✅", f"{tag(idx, key)} OK", cfg.C_VALUE)
+    else:
+      detail = ", ".join(f"{nb} {typ} error{'s' if nb > 1 else ''}" for nb, typ in errs)
+      line("❌", f"{tag(idx, key)} {detail}", cfg.C_ERROR)
 
   if source and source_filter_match_count() == 0:
     warn(f"--source pattern '{source}' matched no file: no check actually inspected anything.")
 
-  if run_pygum:
-    notif("  [[(11-pygum) check export tags of symbols used by leaf pyAgrum modules (BASE/BN + own module)]]")
-    nbrError += _aff_errors(_check_pygum_export(details, effective_correction), "missing/wrong export tag")
+  nbrError = sum(nb for _, _, nb in results)
+  failed = [(idx, key, nb) for idx, key, nb in results if nb > 0]
+  printutf8("")
+  line("", bar, cfg.C_MSG)
+  line("📋", "guideline summary", cfg.C_MSG)
+  for idx, key, nb in results:
+    if nb == 0:
+      line("  ✅", f"{tag(idx, key)} OK", cfg.C_VALUE)
+    else:
+      line("  ❌", f"{tag(idx, key)} {nb} error{'s' if nb > 1 else ''}", cfg.C_ERROR)
+  if skipped:
+    line("  ⏭️ ", f"skipped: {', '.join(dict.fromkeys(skipped))}", dim)
+  if failed:
+    line(
+      "💥",
+      f"{nbrError} error{'s' if nbrError > 1 else ''} in {len(failed)} check{'s' if len(failed) > 1 else ''}"
+      f" out of {len(results)}",
+      cfg.C_ERROR,
+    )
   else:
-    notif("  (11-pygum) pass")
-
-  if run_pyannot:
-    notif("  [[(12-pyannot) check type annotations of the generated SWIG ]]*.py[[ files]]")
-    nbrError += _aff_errors(_check_py_annotations(details), "invalid type annotation")
-  else:
-    notif("  (12-pyannot) pass")
+    line("🎉", f"all {len(results)} checks passed", cfg.C_VALUE)
+  line("", bar, cfg.C_MSG)
 
   return nbrError
 
@@ -626,6 +667,43 @@ def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False, s
   )
 
 
+def _check_ruff_lint(details: bool, correction: bool, dry_run: bool = False) -> int:
+  """Run `ruff check` on the whole repository with the rules and exclusions of ruff.toml.
+
+  With correction, the safe fixes of ruff are applied. Returns the number of remaining violations.
+  """
+  if cfg.ruff is None:
+    warn("No [[ruff]] tool found. Skipping lint check.")
+    return 0
+
+  cmd = [cfg.ruff, "check", "--output-format", "concise", "--no-cache"]
+  if correction:
+    cmd.append("--fix")
+  cmd.append(".")
+
+  if dry_run:
+    notif("  " + " ".join(cmd))
+    return 0
+
+  return _run_report_tool(cmd, lambda line: re.match(r"^\S+:(\d+|cell \d+):", line) is not None, details)
+
+
+def _run_report_tool(cmd: list[str], is_error: Callable[[str], bool], details: bool) -> int:
+  """Run a tool that reports one error per output line; return the number of errors (1 if the tool itself failed)."""
+  result = subprocess_run(cmd, check=False, capture_output=True, text=True)
+  errors = [line for line in result.stdout.splitlines() if is_error(line)]
+  if result.returncode != 0 and not errors:  # crash or invocation error of the tool
+    warn(result.stdout + result.stderr)
+    return 1
+
+  if details:
+    for line in errors:
+      notif(f"  err [[{line}]]")
+  elif errors:
+    notif("  (--verbose for the list of errors)")
+  return len(errors)
+
+
 _TIDY_PROGRESS_RE = re.compile(r"^\[(\d+)/(\d+)\].*? (\S+\.cpp)$")
 
 
@@ -678,9 +756,6 @@ def _check_clang_tidy(details: bool, correction: bool, dry_run: bool = False) ->
   elif nbrError > 0:
     notif(f"  {nbrError} clang-tidy warning{'s' if nbrError > 1 else ''}")
 
-  if nbrError == 0:
-    notif("    clang-tidy: [[(✓)]]")
-
   return nbrError
 
 
@@ -708,9 +783,6 @@ def _check_inline_size(details: bool, dry_run: bool = False) -> int:
       notif(f"  err [[{fname}]] ({count} warning{'s' if count > 1 else ''})")
   elif nbrError > 0:
     notif(f"  {nbrError} oversized inline function{'s' if nbrError > 1 else ''}")
-
-  if nbrError == 0:
-    notif("    inline size: [[(✓)]]")
 
   return nbrError
 
@@ -1016,8 +1088,8 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
   suppressed = int(suppressed_match.group(1)) if suppressed_match else 0
 
   if nbrError == 0:
-    suffix = f" ({suppressed} suppressed)" if suppressed else ""
-    notif(f"    pyrefly: [[(✓)]]{suffix}")
+    if suppressed:
+      notif(f"    [[{suppressed}]] suppressed")
   elif details:
     for line in result.stdout.splitlines():
       notif(line)
@@ -1123,9 +1195,40 @@ def _check_py_annotations(details: bool) -> int:
           else:
             notif(f"  err [[{path}:{annotation.lineno}]]")
 
-  if nbrError == 0:
-    notif("    pyannot: [[(✓)]]")
   return nbrError
+
+
+# never imported: only read by mypy
+_PYTYPING_SAMPLE = os.path.join("acttools", "pyagrumUserAPITyping.py")
+
+
+def _check_py_typing(details: bool, dry_run: bool = False) -> int:
+  """Check with mypy the typing of the user entry points of the installed pyagrum.
+
+  The sample file uses assert_type on the main entry points (fastBN, loadBN, getPosterior, fastMRF, ...)
+  and `# type: ignore[...]` on expected errors (with --warn-unused-ignores). --follow-imports=silent: errors
+  inside pyagrum itself are not reported, only the ones of the sample. Skipped if mypy is not installed.
+  """
+  cmd = [
+    sys.executable,
+    "-m",
+    "mypy",
+    "--follow-imports=silent",
+    "--warn-unused-ignores",
+    "--cache-dir",
+    os.path.join("build", "mypy_cache"),
+    _PYTYPING_SAMPLE,
+  ]
+
+  if dry_run:
+    notif("  " + " ".join(cmd))
+    return 0
+
+  if importlib.util.find_spec("mypy") is None:
+    warn("[[mypy]] not installed in current Python environment. Skipping.")
+    return 0
+
+  return _run_report_tool(cmd, lambda line: ": error:" in line, details)
 
 
 def _check_pure_headers(details: bool, source: str | None = None) -> int:
@@ -1243,8 +1346,6 @@ def _check_pure_headers(details: bool, source: str | None = None) -> int:
       else:
         notif(f"  err [[{header}]] ({len(violations)} violation{'s' if len(violations) > 1 else ''})")
 
-  if nbrError == 0:
-    notif("    pureheader: [[(✓)]]")
   return nbrError
 
 
@@ -1468,8 +1569,6 @@ def _check_pygum_export(details: bool, correction: bool) -> int:
     if details or correction or is_template:
       notif(res)
 
-  if not violations:
-    notif("    pygum: [[(✓)]]")
   return len(violations)
 
 

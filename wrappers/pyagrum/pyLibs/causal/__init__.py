@@ -47,17 +47,15 @@ do-calculus the causal impact in such a model.
 __author__ = "Pierre-Henri Wuillemin, Paul Alam, Ibrahim Merad"
 __copyright__ = "(c) 2019-2026 PARIS"
 
-"""
-Deprecated for older pyAgrum (since >2.3.2)
-"""
+# Deprecated for older pyAgrum (since >2.3.2)
 
 import warnings
+
+# pylint: disable=unused-import
+from pyagrum import causalImpact, counterfactualModel, counterfactual, CausalModel
 
 warnings.warn(
   "Module 'causal' is deprecated in pyAgrum >2.3.2. Use 'pyagrum.CausalModel' (and so on) instead.",
   DeprecationWarning,
   stacklevel=2,
 )
-
-# pylint: disable=unused-import
-from pyagrum import causalImpact, counterfactualModel, counterfactual, CausalModel

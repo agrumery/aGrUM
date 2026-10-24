@@ -62,52 +62,52 @@ class PythonBNListenerTestCase(pyAgrumTestCase):
 class TestMessagesSetting(PythonBNListenerTestCase):
   def testMessagesInsertion(self):
     self.bn.addStructureListener(
-      whenNodeAdded=lambda i, s: self.bufferize("ajout d'un noeud %s (%d)\n" % (s, i)),
-      whenArcAdded=lambda i, j: self.bufferize("ajout d'un arc (%d->%d)\n" % (i, j)),
-      whenNodeDeleted=lambda i: self.bufferize("suppression du noeud %d\n" % i),
-      whenArcDeleted=lambda i, j: self.bufferize("suppression de l'arc (%d->%d)\n" % (i, j)),
+      whenNodeAdded=lambda i, s: self.bufferize(f"ajout d'un noeud {s} ({i})\n"),
+      whenArcAdded=lambda i, j: self.bufferize(f"ajout d'un arc ({i}->{j})\n"),
+      whenNodeDeleted=lambda i: self.bufferize(f"suppression du noeud {i}\n"),
+      whenArcDeleted=lambda i, j: self.bufferize(f"suppression de l'arc ({i}->{j})\n"),
     )
 
   def testMessagesChange(self):
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("ajout d'un noeud %s (%d)\n" % (s, i)))
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("noeud++ %s (%d) ... OK\n" % (s, i)))
+    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize(f"ajout d'un noeud {s} ({i})\n"))
+    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize(f"noeud++ {s} ({i}) ... OK\n"))
 
 
 class TestListeners(PythonBNListenerTestCase):
   def test1Listener(self):
     self.bn.addStructureListener(
-      whenNodeAdded=lambda i, s: self.bufferize("Noeud++ %s (%d)\n" % (s, i)),
-      whenArcAdded=lambda i, j: self.bufferize("Arc++ (%d->%d)\n" % (i, j)),
-      whenNodeDeleted=lambda i: self.bufferize("Noeud-- %d\n" % i),
-      whenArcDeleted=lambda i, j: self.bufferize("Arc-- (%d->%d)\n" % (i, j)),
+      whenNodeAdded=lambda i, s: self.bufferize(f"Noeud++ {s} ({i})\n"),
+      whenArcAdded=lambda i, j: self.bufferize(f"Arc++ ({i}->{j})\n"),
+      whenNodeDeleted=lambda i: self.bufferize(f"Noeud-- {i}\n"),
+      whenArcDeleted=lambda i, j: self.bufferize(f"Arc-- ({i}->{j})\n"),
     )
 
     a = self.bn.add(self.var1)
-    self.assertEqual(self.buffer0, "Noeud++ a (%d)\n" % a)
+    self.assertEqual(self.buffer0, f"Noeud++ a ({a})\n")
     b = self.bn.add(self.var2)
-    self.assertEqual(self.buffer0, "Noeud++ b (%d)\n" % b)
+    self.assertEqual(self.buffer0, f"Noeud++ b ({b})\n")
     c = self.bn.add(self.var3)
-    self.assertEqual(self.buffer0, "Noeud++ c (%d)\n" % c)
+    self.assertEqual(self.buffer0, f"Noeud++ c ({c})\n")
 
     self.bn.addArc(a, b)
-    self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n" % (a, b))
+    self.assertEqual(self.buffer0, f"Arc++ ({a}->{b})\n")
     self.bn.addArc(b, c)
-    self.assertEqual(self.buffer0, "Arc++ (%d->%d)\n" % (b, c))
+    self.assertEqual(self.buffer0, f"Arc++ ({b}->{c})\n")
 
     self.assertRaises(gum.InvalidDirectedCycle, self.bn.addArc, c, a)
 
     self.buffer1 = ""
     self.bn.erase(b)
-    self.assertEqual(self.buffer1, "Arc-- (%d->%d)\nArc-- (%d->%d)\nNoeud-- %d\n" % (a, b, b, c, b))
+    self.assertEqual(self.buffer1, f"Arc-- ({a}->{b})\nArc-- ({b}->{c})\nNoeud-- {b}\n")
 
   def test2Listeners(self):
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("Node++ %s (%d)\n" % (s, i)))
-    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize("Noeud++ %s (%d)\n" % (s, i)))
+    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize(f"Node++ {s} ({i})\n"))
+    self.bn.addStructureListener(whenNodeAdded=lambda i, s: self.bufferize(f"Noeud++ {s} ({i})\n"))
 
     self.buffer1 = ""
     a = self.bn.add(self.var1)
-    self.assertTrue("Node++ a (%d)\n" % a in self.buffer1)
-    self.assertTrue("Noeud++ a (%d)\n" % a in self.buffer1)
+    self.assertTrue(f"Node++ a ({a})\n" in self.buffer1)
+    self.assertTrue(f"Noeud++ a ({a})\n" in self.buffer1)
 
 
 ts = unittest.TestSuite()
