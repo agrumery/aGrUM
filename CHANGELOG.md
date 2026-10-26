@@ -18,6 +18,7 @@
     - Leaf modules (CM, CN, ID, PRM): explicit template instantiations tagged `GUM_PUBLIC_<MODULE>` for shared builds.
     - `DAGmodel` (BN, ID, CausalModel): `parents`, `children`, `family`, `ancestors` and `descendants` of a missing
       node id raise `NotFound` (they returned an empty set, or `{id}` for `family`).
+    - Removed `gum::learning::SimpleMiic` (legacy, unused since `Miic` replaced it).
 
 ## Changelog for 3.3.1
 

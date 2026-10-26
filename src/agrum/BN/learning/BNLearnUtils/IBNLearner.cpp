@@ -227,7 +227,7 @@ namespace gum::learning {
       selectedAlgo_(from.selectedAlgo_), allowArcAdditions_(from.allowArcAdditions_),
       allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
       allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(from.algoK2_),
-      algoSimpleMiic_(from.algoSimpleMiic_), algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_),
+      algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_),
       indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_), stablePc_(from.stablePc_),
       maxCondSetSizePc_(from.maxCondSetSizePc_), sortedUCPc_(from.sortedUCPc_),
       indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
@@ -258,13 +258,12 @@ namespace gum::learning {
       selectedAlgo_(from.selectedAlgo_), allowArcAdditions_(from.allowArcAdditions_),
       allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
       allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(std::move(from.algoK2_)),
-      algoSimpleMiic_(std::move(from.algoSimpleMiic_)), algoMiic_(std::move(from.algoMiic_)),
-      kmodeMiic_(from.kmodeMiic_), indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_),
-      stablePc_(from.stablePc_), maxCondSetSizePc_(from.maxCondSetSizePc_),
-      sortedUCPc_(from.sortedUCPc_), indepTestTypeFCI_(from.indepTestTypeFCI_),
-      alphaFci_(from.alphaFci_), maxPathLengthFci_(from.maxPathLengthFci_),
-      exhaustiveSepSetFci_(from.exhaustiveSepSetFci_), dag2BN_(std::move(from.dag2BN_)),
-      greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
+      algoMiic_(std::move(from.algoMiic_)), kmodeMiic_(from.kmodeMiic_),
+      indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_), stablePc_(from.stablePc_),
+      maxCondSetSizePc_(from.maxCondSetSizePc_), sortedUCPc_(from.sortedUCPc_),
+      indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
+      maxPathLengthFci_(from.maxPathLengthFci_), exhaustiveSepSetFci_(from.exhaustiveSepSetFci_),
+      dag2BN_(std::move(from.dag2BN_)), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       extendedGreedyHillClimbing_(std::move(from.extendedGreedyHillClimbing_)),
       greedyThickThinning_(std::move(from.greedyThickThinning_)),
       localSearchWithTabuList_(std::move(from.localSearchWithTabuList_)),
@@ -336,7 +335,6 @@ namespace gum::learning {
       allowArcReversals_          = from.allowArcReversals_;
       allowArcTriangleDeletions_  = from.allowArcTriangleDeletions_;
       algoK2_                     = from.algoK2_;
-      algoSimpleMiic_             = from.algoSimpleMiic_;
       algoMiic_                   = from.algoMiic_;
       kmodeMiic_                  = from.kmodeMiic_;
       indepTestTypePC_            = from.indepTestTypePC_;
@@ -407,7 +405,6 @@ namespace gum::learning {
       allowArcReversals_          = from.allowArcReversals_;
       allowArcTriangleDeletions_  = from.allowArcTriangleDeletions_;
       algoK2_                     = from.algoK2_;
-      algoSimpleMiic_             = std::move(from.algoSimpleMiic_);
       algoMiic_                   = std::move(from.algoMiic_);
       kmodeMiic_                  = from.kmodeMiic_;
       indepTestTypePC_            = from.indepTestTypePC_;
@@ -626,34 +623,6 @@ namespace gum::learning {
 
     return param_estimator;
   }
-
-  /*  /// prepares the initial graph for miic
-    MixedGraph IBNLearner::prepareSimpleMiic_() {
-      // Initialize the mixed graph to the fully connected graph
-      MixedGraph mgraph;
-      for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
-        mgraph.addNodeWithId(i);
-        for (Size j = 0; j < i; ++j) {
-          mgraph.addEdge(j, i);
-        }
-      }
-
-      // translating the constraints for miic
-      HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
-      for (const auto& arc: constraintMandatoryArcs_.arcs()) {
-        initial_marks.insert({arc.tail(), arc.head()}, '>');
-      }
-
-      for (const auto& arc: constraintForbiddenArcs_.arcs()) {
-        initial_marks.insert({arc.tail(), arc.head()}, '-');
-      }
-      algoSimpleMiic_.addConstraints(initial_marks);
-
-      // create the mutual entropy object
-      createCorrectedMutualInformation_();
-
-      return mgraph;
-    }*/
 
   // prepares the initial graph for constraintMiic
   MixedGraph IBNLearner::prepareMiic_() {

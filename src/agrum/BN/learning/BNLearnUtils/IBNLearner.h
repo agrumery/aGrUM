@@ -79,6 +79,7 @@
 #include <agrum/BN/learning/greedyThickThinning.h>
 #include <agrum/BN/learning/K2.h>
 #include <agrum/BN/learning/localSearchWithTabuList.h>
+#include <agrum/BN/learning/Miic.h>
 #include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/BN/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/BN/learning/PC.h>
@@ -87,7 +88,6 @@
 #include <agrum/BN/learning/scores/scoreBDeu.h>
 #include <agrum/BN/learning/scores/scorefNML.h>
 #include <agrum/BN/learning/scores/scoreK2.h>
-#include <agrum/BN/learning/SimpleMiic.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4DiGraph.h>
 #include <agrum/BN/learning/structureUtils/graphChangesGenerator4K2.h>
 #include <agrum/BN/learning/structureUtils/graphChangesSelector4DiGraph.h>
@@ -1235,9 +1235,6 @@ namespace gum::learning {
     /// the K2 algorithm
     K2 algoK2_;
 
-    /// the MIIC algorithm
-    SimpleMiic algoSimpleMiic_;
-
     /// the Constraint MIIC algorithm
     Miic algoMiic_;
 
@@ -1338,9 +1335,6 @@ namespace gum::learning {
 
     /// returns the DAG learnt
     DAG learnDag_();
-
-    /// prepares the initial graph for Simple Miic
-    MixedGraph prepareSimpleMiic_();
 
     /// prepares the initial graph for miic
     MixedGraph prepareMiic_();

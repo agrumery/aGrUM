@@ -287,7 +287,6 @@
  * | gum::learning::ScorefNML | `src/agrum/BN/learning/scores/scorefNML.h:72` |
  * | gum::learning::ScoreK2 | `src/agrum/BN/learning/scores/scoreK2.h:79` |
  * | gum::learning::ScoreLog2Likelihood | `src/agrum/BN/learning/scores/scoreLog2Likelihood.h:70` |
- * | gum::learning::SimpleMiic | `src/agrum/BN/learning/SimpleMiic.h:83` |
  * | gum::learning::StructuralConstraintDAG | `src/agrum/BN/learning/constraints/structuralConstraintDAG.h:69` |
  * | gum::learning::StructuralConstraintDiGraph | `src/agrum/BN/learning/constraints/structuralConstraintDiGraph.h:68` |
  * | gum::learning::StructuralConstraintEmpty | `src/agrum/BN/learning/constraints/structuralConstraint.h:60` |
