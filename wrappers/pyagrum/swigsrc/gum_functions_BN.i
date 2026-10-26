@@ -231,7 +231,47 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   return BayesNet.fastPrototype(structure, domain)
 
 
-def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True, random_order=True):
+if typing.TYPE_CHECKING:
+  # optional dependency, only needed to annotate generateSample
+  import pandas
+
+
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  name_out: None = None,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> "tuple[pandas.DataFrame, float]": ...
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int,
+  name_out: str,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> float: ...
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  *,
+  name_out: str,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> float: ...
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  name_out: str | None = None,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> "float | tuple[pandas.DataFrame, float]":
   """
   generate a CSV file of samples from a bn.
 
@@ -338,7 +378,11 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   return bn
 
 
-def mutilateBN(bn, intervention=None, observation=None):
+def mutilateBN(
+  bn: BayesNet,
+  intervention: dict[typing.Any, list[typing.Any]] | None = None,
+  observation: dict[typing.Any, list[typing.Any]] | None = None,
+) -> tuple[BayesNet, dict[str, list[float]]]:
   """
   Modify the bayesian network bn to reflect the effect of interventions and/or observations on a set of variables.
   Due to the causal nature of interventions, we suppose the given bn to have a causal interpretation.

@@ -63,6 +63,15 @@ ie.makeInference()
 assert_type(ie.posterior("B"), gum.Tensor)
 assert_type(gum.getPosterior(bn, target="B", evs={"A": 0}), gum.Tensor)
 
+# sampling and mutilation: the return type of generateSample depends on name_out
+df, ll = gum.generateSample(bn, 100)
+assert_type(ll, float)
+assert_type(gum.generateSample(bn, 100, "sample.csv"), float)
+assert_type(gum.generateSample(bn, name_out="sample.csv"), float)
+inter_bn, evs = gum.mutilateBN(bn, intervention={"A": [0, 1]})
+assert_type(inter_bn, gum.BayesNet)
+assert_type(evs, dict[str, list[float]])
+
 learner = gum.BNLearner("data.csv")
 assert_type(learner.learnBN(), gum.BayesNet)
 
