@@ -157,14 +157,14 @@ def setTargets(self, targets):
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
 
-    PyAgrumSetOfInt* hardEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+    const gum::NodeSet& hardEvidenceNodes() {
+      return self->hardEvidenceNodes();
     }
-    PyAgrumSetOfInt* softEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+    const gum::NodeSet& softEvidenceNodes() {
+      return self->softEvidenceNodes();
     }
-    PyAgrumSetOfInt* targets() const {
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+    const gum::NodeSet& targets() const {
+      return self->targets();
     }
 
     Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
@@ -241,8 +241,8 @@ IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 
-    PyAgrumListOfSetOfInt* jointTargets() const {
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedInference<double>::jointTargets());
+    const gum::Set< gum::NodeSet >& jointTargets() const {
+      return self->JointTargetedInference<double>::jointTargets();
     }
 }
 %enddef

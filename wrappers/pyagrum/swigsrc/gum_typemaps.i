@@ -106,7 +106,8 @@ typedef PyObject PyAgrumDict;
   $result = PyAgrumHelper::PySeqFromSetOfInstantiation($1);
 }
 
-%typemap(out) std::pair<double,double> {
+// (mean, variance) of the influence diagram inferences only: any other pair of doubles stays a tuple
+%typemap(out) std::pair<double,double> MEU, std::pair<double,double> meanVar {
   $result=PyAgrumHelper::PyDictFromPairMeanVar($1) ;
 }
 
@@ -225,6 +226,11 @@ typedef PyObject PyAgrumDict;
   } else {
     $1 = 0;
   }
+}
+
+// gum::Set<gum::NodeSet> (joint targets) -> Python list[set[int]]
+%typemap(out) const gum::Set< gum::NodeSet >& {
+  $result = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*$1);
 }
 
 // gum::DoorCriteria::NodeSetVec, std::vector<gum::NodeSet> -> Python list[set[int]]

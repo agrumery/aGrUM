@@ -414,7 +414,7 @@ Begin a sequence of structural modifications (factor additions/deletions).
 Structural changes are batched until endTopologyTransformation is called, which then adjusts all factor dimensions.
 "
 
-%feature("docstring") gum::MarkovRandomField::edges
+%feature("docstring") gum::UGmodel::edges
 "
 Returns
 -------
@@ -484,14 +484,14 @@ set[int]
     the minimal conditioning set (as node ids)
 "
 
-%feature("docstring") gum::MarkovRandomField::neighbours
+%feature("docstring") gum::UGmodel::neighbours
 "
 Return the set of neighbours of a node.
 
 Parameters
 ----------
-id : int
-    the node id
+norid : str|int
+    the name or the id of the node
 
 Returns
 -------

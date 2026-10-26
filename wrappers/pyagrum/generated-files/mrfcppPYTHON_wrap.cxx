@@ -4247,39 +4247,26 @@ SWIG_From_std_string  (const std::string& s)
   return SWIG_FromCharPtrAndSize(s.data(), s.size());
 }
 
-SWIGINTERN PyAgrumSetOfStr *gum_IMarkovRandomField_Sl_double_Sg__names(gum::IMarkovRandomField< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_IMarkovRandomField_Sl_double_Sg__names(gum::IMarkovRandomField< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_IMarkovRandomField_Sl_double_Sg__nodes(gum::IMarkovRandomField< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfInt *gum_IMarkovRandomField_Sl_double_Sg__neighbours(gum::IMarkovRandomField< double > const *self,PyObject *norid){
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(
-       PyAgrumHelper::nodeIdFromNameOrIndex(norid, self->variableNodeMap())));
-  }
-SWIGINTERN PyAgrumSetOfEdge *gum_IMarkovRandomField_Sl_double_Sg__edges(gum::IMarkovRandomField< double > const *self){
-    return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_2(gum::IMarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN gum::NodeSet gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_2(gum::IMarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   }
-SWIGINTERN PyAgrumSetOfInt *gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_3(gum::IMarkovRandomField< double > const *self,PyObject *targets,PyObject *list){
+SWIGINTERN gum::NodeSet gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_3(gum::IMarkovRandomField< double > const *self,PyObject *targets,PyObject *list){
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   }
 SWIGINTERN gum::Tensor< double > const &gum_IMarkovRandomField_Sl_double_Sg__factor__SWIG_1(gum::IMarkovRandomField< double > const *self,PyObject *nodeseq){
     gum::NodeSet idx;
@@ -4322,39 +4309,26 @@ SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
   return res;
 }
 
-SWIGINTERN PyAgrumSetOfStr *gum_MarkovRandomField_Sl_double_Sg__names(gum::MarkovRandomField< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_MarkovRandomField_Sl_double_Sg__names(gum::MarkovRandomField< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_MarkovRandomField_Sl_double_Sg__nodes(gum::MarkovRandomField< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfInt *gum_MarkovRandomField_Sl_double_Sg__neighbours(gum::MarkovRandomField< double > const *self,PyObject *norid){
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(
-       PyAgrumHelper::nodeIdFromNameOrIndex(norid, self->variableNodeMap())));
-  }
-SWIGINTERN PyAgrumSetOfEdge *gum_MarkovRandomField_Sl_double_Sg__edges(gum::MarkovRandomField< double > const *self){
-    return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_0(gum::MarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN gum::NodeSet gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_0(gum::MarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   }
-SWIGINTERN PyAgrumSetOfInt *gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_1(gum::MarkovRandomField< double > const *self,PyObject *targets,PyObject *list){
+SWIGINTERN gum::NodeSet gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_1(gum::MarkovRandomField< double > const *self,PyObject *targets,PyObject *list){
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   }
 SWIGINTERN gum::Tensor< double > const &gum_MarkovRandomField_Sl_double_Sg__factor__SWIG_2(gum::MarkovRandomField< double > const *self,PyObject *nodeseq){
     gum::NodeSet idx;
@@ -4630,14 +4604,14 @@ SWIGINTERN void gum_MarkovRandomField_Sl_double_Sg__eraseFactor__SWIG_2(gum::Mar
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__setEvidence(gum::ShaferShenoyMRFInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__updateEvidence(gum::ShaferShenoyMRFInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__setTargets(gum::ShaferShenoyMRFInference< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyMRFInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyMRFInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyMRFInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyMRFInference< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyMRFInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyMRFInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyMRFInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyMRFInference< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyMRFInference_Sl_double_Sg__targets(gum::ShaferShenoyMRFInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyMRFInference_Sl_double_Sg__targets(gum::ShaferShenoyMRFInference< double > *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_ShaferShenoyMRFInference_Sl_double_Sg__evidenceImpact(gum::ShaferShenoyMRFInference< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->MRF().variableNodeMap());
@@ -4690,8 +4664,8 @@ SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__isJointTarget(gum::Sh
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->MRF().variableNodeMap());
       return self->gum::JointTargetedMRFInference<double>::isJointTarget(nodeset);
     }
-SWIGINTERN PyAgrumListOfSetOfInt *gum_ShaferShenoyMRFInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyMRFInference< double > const *self){
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedMRFInference<double>::jointTargets());
+SWIGINTERN gum::Set< gum::NodeSet > const &gum_ShaferShenoyMRFInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyMRFInference< double > const *self){
+      return self->JointTargetedMRFInference<double>::jointTargets();
     }
 SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__setNumberOfThreads(gum::ShaferShenoyMRFInference< double > *self,int nb){
     self->setNumberOfThreads(nb);
@@ -5674,7 +5648,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_names(PyObject *self, PyObject *ar
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -5686,14 +5660,15 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_names(PyObject *self, PyObject *ar
   arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_IMarkovRandomField_Sl_double_Sg__names((gum::IMarkovRandomField< double > const *)arg1);
+      result = gum_IMarkovRandomField_Sl_double_Sg__names((gum::IMarkovRandomField< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -5733,71 +5708,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IMarkovRandomField_neighbours(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IMarkovRandomField< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IMarkovRandomField_neighbours", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_neighbours" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IMarkovRandomField_Sl_double_Sg__neighbours((gum::IMarkovRandomField< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IMarkovRandomField_edges(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IMarkovRandomField< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfEdge *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_edges" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfEdge *)gum_IMarkovRandomField_Sl_double_Sg__edges((gum::IMarkovRandomField< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IMarkovRandomField< double > *arg1 = 0 ;
@@ -5807,7 +5717,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_2(PyObject *s
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -5824,14 +5734,15 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_2(PyObject *s
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_2((gum::IMarkovRandomField< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+      result = gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_2((gum::IMarkovRandomField< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -5845,7 +5756,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_3(PyObject *s
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -5858,14 +5769,15 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_3(PyObject *s
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_3((gum::IMarkovRandomField< double > const *)arg1,arg2,arg3);
+      result = gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_3((gum::IMarkovRandomField< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8521,7 +8433,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_names(PyObject *self, PyObject *arg
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -8533,14 +8445,15 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_names(PyObject *self, PyObject *arg
   arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_MarkovRandomField_Sl_double_Sg__names((gum::MarkovRandomField< double > const *)arg1);
+      result = gum_MarkovRandomField_Sl_double_Sg__names((gum::MarkovRandomField< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8580,71 +8493,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MarkovRandomField_neighbours(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::MarkovRandomField< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "MarkovRandomField_neighbours", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_neighbours" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_MarkovRandomField_Sl_double_Sg__neighbours((gum::MarkovRandomField< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MarkovRandomField_edges(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::MarkovRandomField< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfEdge *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_edges" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfEdge *)gum_MarkovRandomField_Sl_double_Sg__edges((gum::MarkovRandomField< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MarkovRandomField< double > *arg1 = 0 ;
@@ -8654,7 +8502,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_0(PyObject *se
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -8671,14 +8519,15 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_0(PyObject *se
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_0((gum::MarkovRandomField< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+      result = gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_0((gum::MarkovRandomField< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8692,7 +8541,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_1(PyObject *se
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -8705,14 +8554,15 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_1(PyObject *se
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_1((gum::MarkovRandomField< double > const *)arg1,arg2,arg3);
+      result = gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_1((gum::MarkovRandomField< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10186,7 +10036,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hardEvidenceNodes(PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10198,14 +10048,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hardEvidenceNodes(PyObject *
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyMRFInference_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyMRFInference_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10218,7 +10069,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_softEvidenceNodes(PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10230,14 +10081,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_softEvidenceNodes(PyObject *
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyMRFInference_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyMRFInference_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10250,7 +10102,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_targets(PyObject *self, PyOb
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10262,14 +10114,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_targets(PyObject *self, PyOb
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyMRFInference_Sl_double_Sg__targets(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyMRFInference_Sl_double_Sg__targets(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10507,7 +10360,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_jointTargets(PyObject *self,
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumListOfSetOfInt *result = 0 ;
+  gum::Set< gum::NodeSet > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10519,14 +10372,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_jointTargets(PyObject *self,
   arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumListOfSetOfInt *)gum_ShaferShenoyMRFInference_Sl_double_Sg__jointTargets((gum::ShaferShenoyMRFInference< double > const *)arg1);
+      result = (gum::Set< gum::NodeSet > *) &gum_ShaferShenoyMRFInference_Sl_double_Sg__jointTargets((gum::ShaferShenoyMRFInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -13252,8 +13106,6 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { "IMarkovRandomField_nodes", _wrap_IMarkovRandomField_nodes, METH_O, NULL},
-	 { "IMarkovRandomField_neighbours", _wrap_IMarkovRandomField_neighbours, METH_VARARGS, NULL},
-	 { "IMarkovRandomField_edges", _wrap_IMarkovRandomField_edges, METH_O, NULL},
 	 { "IMarkovRandomField_minimalCondSet", _wrap_IMarkovRandomField_minimalCondSet, METH_VARARGS, NULL},
 	 { "IMarkovRandomField_factor", _wrap_IMarkovRandomField_factor, METH_VARARGS, NULL},
 	 { "IMarkovRandomField_isIndependent", _wrap_IMarkovRandomField_isIndependent, METH_VARARGS, "\n"
@@ -13613,29 +13465,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set[int]\n"
 		"    the set of node ids\n"
-		"\n"
-		""},
-	 { "MarkovRandomField_neighbours", _wrap_MarkovRandomField_neighbours, METH_VARARGS, "\n"
-		"\n"
-		"Return the set of neighbours of a node.\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id : int\n"
-		"    the node id\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set[int]\n"
-		"    the set of neighbour node ids\n"
-		"\n"
-		""},
-	 { "MarkovRandomField_edges", _wrap_MarkovRandomField_edges, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"    the set of edges in the Markov random field\n"
 		"\n"
 		""},
 	 { "MarkovRandomField_minimalCondSet", _wrap_MarkovRandomField_minimalCondSet, METH_VARARGS, "\n"

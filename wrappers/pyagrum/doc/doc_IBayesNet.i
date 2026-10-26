@@ -154,19 +154,6 @@ list
     The lisf of arcs in the IBayesNet
 "
 
-%feature("docstring") gum::IBayesNet::children
-"
-Parameters
-----------
-id : int
-  the id of the parent
-
-Returns
--------
-Set
-    the set of all the children
-"
-
 %feature("docstring") gum::IBayesNet::cpt
 "
 Returns the CPT of a variable.
@@ -187,19 +174,6 @@ Raises
 ------
 pyagrum.NotFound
     If no variable's id matches varId.
-"
-
-%feature("docstring") gum::IBayesNet::parents
-"
-Parameters
-----------
-id :
-    The id of the child node
-
-Returns
--------
-Set
-    the set of the parents ids.
 "
 
 %feature("docstring") gum::IBayesNet::nodes

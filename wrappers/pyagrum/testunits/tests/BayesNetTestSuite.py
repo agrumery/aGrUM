@@ -873,6 +873,22 @@ class TestGraphicalConcepts(BayesNetTestCase):
     self.assertEqual(bn.children(1), {2})
     self.assertEqual(bn.children("A"), {1, 6})
 
+  def testFamilyRelations(self):
+    bn = gum.fastBN("A->B->C<-D->E;D->F->G<-A")
+    self.assertEqual(bn.parents("C"), {1, 3})
+    self.assertEqual(bn.parents(2), {1, 3})
+    self.assertEqual(bn.parents({2, 6}), {0, 1, 3, 5})
+    self.assertEqual(bn.children(["A", "D"]), {1, 2, 4, 5, 6})
+    self.assertEqual(bn.family("B"), {0, 1})
+    self.assertEqual(bn.ancestors("G"), {0, 3, 5})
+    self.assertEqual(bn.descendants("D"), {2, 4, 5, 6})
+    with self.assertRaises(gum.NotFound):
+      bn.parents("Z")
+    with self.assertRaises(TypeError):
+      bn.parents(1.5)
+    with self.assertRaises(TypeError):
+      bn.parents(-1)
+
   def testConnectedComponents(self):
     # A isolated, B->C connected: 2 components
     bn = gum.fastBN("A;B->C")

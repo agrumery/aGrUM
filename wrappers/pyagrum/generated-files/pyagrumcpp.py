@@ -6883,6 +6883,24 @@ class PAG(UndiGraph):
         """
         return _pyagrumcpp.PAG_toDot(self, *args)
 
+    def addNodes(self, n: int) -> set[int]:
+        r"""
+
+        Add n new nodes to the PAG.
+
+        Parameters
+        ----------
+        n : int
+            number of nodes to add
+
+        Returns
+        -------
+        set of int
+            the new NodeIds
+
+        """
+        return _pyagrumcpp.PAG_addNodes(self, n)
+
     def addNode(self) -> int:
         r"""
 
@@ -6895,24 +6913,6 @@ class PAG(UndiGraph):
 
         """
         return _pyagrumcpp.PAG_addNode(self)
-
-    def addNodes(self, n: int) -> list[int]:
-        r"""
-
-        Add n new nodes to the PAG.
-
-        Parameters
-        ----------
-        n : int
-            number of nodes to add
-
-        Returns
-        -------
-        list of int
-            the new NodeIds
-
-        """
-        return _pyagrumcpp.PAG_addNodes(self, n)
 
     def addNodeWithId(self, id: int) -> None:
         r"""
@@ -8866,6 +8866,21 @@ class DAGmodel(DiscreteGraphicalModel):
         return _pyagrumcpp.DAGmodel_existsArc(self, *args)
 
     def parents(self, *args):
+        r"""
+
+        give the set of nodeid of the parents of a node (or of a set of nodes)
+
+        Parameters
+        ----------
+        norid : str|int|set[int]|list[str]
+          the name or the id of the node, or a set of ids or a list of names
+
+        Returns
+        -------
+        set
+          the set of ids of the parents.
+
+        """
         return _pyagrumcpp.DAGmodel_parents(self, *args)
 
     def family(self, *args) -> set[int]:
@@ -8887,6 +8902,21 @@ class DAGmodel(DiscreteGraphicalModel):
         return _pyagrumcpp.DAGmodel_family(self, *args)
 
     def children(self, *args):
+        r"""
+
+        give the set of nodeid of the children of a node (or of a set of nodes)
+
+        Parameters
+        ----------
+        norid : str|int|set[int]|list[str]
+          the name or the id of the node, or a set of ids or a list of names
+
+        Returns
+        -------
+        set
+          the set of ids of the children.
+
+        """
         return _pyagrumcpp.DAGmodel_children(self, *args)
 
     def descendants(self, *args) -> set[int]:
@@ -9132,6 +9162,14 @@ class UGmodel(DiscreteGraphicalModel):
         return _pyagrumcpp.UGmodel_exists(self, *args)
 
     def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set
+            the set of edges in the Markov random field
+
+        """
         return _pyagrumcpp.UGmodel_edges(self)
 
     def existsEdge(self, *args) -> bool:
@@ -9155,6 +9193,21 @@ class UGmodel(DiscreteGraphicalModel):
         return _pyagrumcpp.UGmodel_existsEdge(self, *args)
 
     def neighbours(self, *args) -> set[int]:
+        r"""
+
+        Return the set of neighbours of a node.
+
+        Parameters
+        ----------
+        norid : str|int
+            the name or the id of the node
+
+        Returns
+        -------
+        set[int]
+            the set of neighbour node ids
+
+        """
         return _pyagrumcpp.UGmodel_neighbours(self, *args)
 
     def isIndependent(self, *args) -> bool:
@@ -14225,42 +14278,6 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrumcpp.IBayesNet_memoryFootprint(self)
 
-    def ids(self, names: tuple[str, ...]) -> list[int]:
-        r"""
-
-        List of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        list of int
-            The ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.IBayesNet_ids(self, names)
-
-    def nodeset(self, names: tuple[str, ...]) -> set[int]:
-        r"""
-
-        Set of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        set
-            The set of ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.IBayesNet_nodeset(self, names)
-
     def minimalCondSet(self, *args) -> set[int]:
         r"""
 
@@ -14408,103 +14425,6 @@ class IBayesNet(DAGmodel):
                   am[node,neighbour]=1
       return am
 
-
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list
-            The lisf of arcs in the IBayesNet
-
-        """
-        return _pyagrumcpp.IBayesNet_arcs(self)
-
-    def parents(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id :
-            The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyagrumcpp.IBayesNet_parents(self, norid)
-
-    def children(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-            the set of all the children
-
-        """
-        return _pyagrumcpp.IBayesNet_children(self, norid)
-
-    def family(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of parents of a node and the node
-
-        Parameters
-        ----------
-        norid : str|int
-          the node
-
-        Returns
-        -------
-        set
-          the set of nodeId of the family of the node `norid`
-
-        """
-        return _pyagrumcpp.IBayesNet_family(self, norid)
-
-    def descendants(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of descendants of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the descendants of node `norid`.
-
-        """
-        return _pyagrumcpp.IBayesNet_descendants(self, norid)
-
-    def ancestors(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of ancestors of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the ancestors of node `norid`.
-
-        """
-        return _pyagrumcpp.IBayesNet_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
@@ -15487,42 +15407,6 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_variableFromName(self, name)
 
-    def ids(self, names: tuple[str, ...]) -> list[int]:
-        r"""
-
-        List of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        list of int
-            The ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.BayesNet_ids(self, names)
-
-    def nodeset(self, names: tuple[str, ...]) -> set[int]:
-        r"""
-
-        Set of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        set
-            The set of ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.BayesNet_nodeset(self, names)
-
     def minimalCondSet(self, *args) -> set[int]:
         r"""
 
@@ -15670,103 +15554,6 @@ class BayesNet(IBayesNet):
                   am[node,neighbour]=1
       return am
 
-
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list
-            The lisf of arcs in the IBayesNet
-
-        """
-        return _pyagrumcpp.BayesNet_arcs(self)
-
-    def parents(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id :
-            The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyagrumcpp.BayesNet_parents(self, norid)
-
-    def children(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-            the set of all the children
-
-        """
-        return _pyagrumcpp.BayesNet_children(self, norid)
-
-    def family(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of parents of a node and the node
-
-        Parameters
-        ----------
-        norid : str|int
-          the node
-
-        Returns
-        -------
-        set
-          the set of nodeId of the family of the node `norid`
-
-        """
-        return _pyagrumcpp.BayesNet_family(self, norid)
-
-    def descendants(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of descendants of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the descendants of node `norid`.
-
-        """
-        return _pyagrumcpp.BayesNet_descendants(self, norid)
-
-    def ancestors(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of ancestors of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the ancestors of node `norid`.
-
-        """
-        return _pyagrumcpp.BayesNet_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
@@ -16709,42 +16496,6 @@ class BayesNetFragment(IBayesNet, ):
         return val
 
 
-    def ids(self, names: tuple[str, ...]) -> list[int]:
-        r"""
-
-        List of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        list of int
-            The ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.BayesNetFragment_ids(self, names)
-
-    def nodeset(self, names: tuple[str, ...]) -> set[int]:
-        r"""
-
-        Set of ids for a list of names of variables in the model
-
-        Parameters
-        ----------
-        lov : list of str
-          List of variable names
-
-        Returns
-        -------
-        set
-            The set of ids for the list of names of the graph variables
-
-        """
-        return _pyagrumcpp.BayesNetFragment_nodeset(self, names)
-
     def minimalCondSet(self, *args) -> set[int]:
         r"""
 
@@ -16892,103 +16643,6 @@ class BayesNetFragment(IBayesNet, ):
                   am[node,neighbour]=1
       return am
 
-
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list
-            The lisf of arcs in the IBayesNet
-
-        """
-        return _pyagrumcpp.BayesNetFragment_arcs(self)
-
-    def parents(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id :
-            The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyagrumcpp.BayesNetFragment_parents(self, norid)
-
-    def children(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-            the set of all the children
-
-        """
-        return _pyagrumcpp.BayesNetFragment_children(self, norid)
-
-    def family(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of parents of a node and the node
-
-        Parameters
-        ----------
-        norid : str|int
-          the node
-
-        Returns
-        -------
-        set
-          the set of nodeId of the family of the node `norid`
-
-        """
-        return _pyagrumcpp.BayesNetFragment_family(self, norid)
-
-    def descendants(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of descendants of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the descendants of node `norid`.
-
-        """
-        return _pyagrumcpp.BayesNetFragment_descendants(self, norid)
-
-    def ancestors(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of ancestors of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the ancestors of node `norid`.
-
-        """
-        return _pyagrumcpp.BayesNetFragment_ancestors(self, norid)
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
@@ -30586,7 +30240,47 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   return BayesNet.fastPrototype(structure, domain)
 
 
-def generateSample(bn, n=1, name_out=None, show_progress=False, with_labels=True, random_order=True):
+if typing.TYPE_CHECKING:
+# optional dependency, only needed to annotate generateSample
+  import pandas
+
+
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  name_out: None = None,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> "tuple[pandas.DataFrame, float]": ...
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int,
+  name_out: str,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> float: ...
+@typing.overload
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  *,
+  name_out: str,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> float: ...
+def generateSample(
+  bn: BayesNet,
+  n: int = 1,
+  name_out: str | None = None,
+  show_progress: bool = False,
+  with_labels: bool = True,
+  random_order: bool = True,
+) -> "float | tuple[pandas.DataFrame, float]":
   """
   generate a CSV file of samples from a bn.
 
@@ -30693,7 +30387,11 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   return bn
 
 
-def mutilateBN(bn, intervention=None, observation=None):
+def mutilateBN(
+  bn: BayesNet,
+  intervention: dict[typing.Any, list[typing.Any]] | None = None,
+  observation: dict[typing.Any, list[typing.Any]] | None = None,
+) -> tuple[BayesNet, dict[str, list[float]]]:
   """
   Modify the bayesian network bn to reflect the effect of interventions and/or observations on a set of variables.
   Due to the causal nature of interventions, we suppose the given bn to have a causal interpretation.

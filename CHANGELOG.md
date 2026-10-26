@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for next version
+
+- pyAgrum
+
+    - `parents`, `children`, `family`, `descendants`, `ancestors` (BN, ID) and `neighbours` (MRF) are the C++ methods:
+      `parents`/`children` also accept a set of ids or a list of names, and a wrong argument (e.g. a float or a
+      negative id) raises `TypeError` instead of `pyagrum.InvalidArgument` (or of being silently accepted).
+    - `PAG.addNodes` returns a set of ids, as for the other graphs (it returned a list).
+    - `generateSample` (overloaded on `name_out`), `mutilateBN`, `MEU` and `meanVar` are annotated.
+    - Bug fixes: memory corruption in `BNDatabaseGenerator.varOrder()` for node ids above 256, reference counting in
+      `PRMexplorer`, memory leaks in `Tensor.argmin/argmax`, `MEU`/`meanVar` and when parsing Python sequences.
+
+- aGrUM
+
+    - Leaf modules (CM, CN, ID, PRM): explicit template instantiations tagged `GUM_PUBLIC_<MODULE>` for shared builds.
+
 ## Changelog for 3.3.1
 
 - pyAgrum

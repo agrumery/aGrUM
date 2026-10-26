@@ -183,12 +183,14 @@ if len(args)>1:
 
     PyAgrumArgMinMax* argmin() {
       const auto [argmi,mi] = self->argmin();
-      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),PyFloat_FromDouble(mi));
+      // "N" steals the reference to the new list
+      return Py_BuildValue("(Nd)",PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),mi);
     }
 
     PyAgrumArgMinMax* argmax() {
       const auto [argma,ma] = self->argmax();
-      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argma),PyFloat_FromDouble(ma));
+      // "N" steals the reference to the new list
+      return Py_BuildValue("(Nd)",PyAgrumHelper::PySeqFromSetOfInstantiation(argma),ma);
     }
 
     // equality

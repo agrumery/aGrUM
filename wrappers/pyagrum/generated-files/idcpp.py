@@ -796,103 +796,6 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       return am
 
 
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list:
-            the list of all the arcs in the Influence Diagram.
-
-        """
-        return _idcpp.InfluenceDiagram_arcs(self)
-
-    def parents(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        set
-            the set of the parents ids.
-
-        """
-        return _idcpp.InfluenceDiagram_parents(self, norid)
-
-    def children(self, norid: object) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        var : int | str
-            a variable's id (int) or name
-
-        Returns
-        -------
-        Set
-            the set of all the children
-
-        """
-        return _idcpp.InfluenceDiagram_children(self, norid)
-
-    def family(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of parents of a node and the node
-
-        Parameters
-        ----------
-        norid : str|int
-          the node
-
-        Returns
-        -------
-        set
-          the set of nodeId of the family of the node `norid`
-
-        """
-        return _idcpp.InfluenceDiagram_family(self, norid)
-
-    def descendants(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of descendants of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the descendants of node `norid`.
-
-        """
-        return _idcpp.InfluenceDiagram_descendants(self, norid)
-
-    def ancestors(self, norid: object) -> set[int]:
-        r"""
-
-        give the set of nodeid of ancestors of a node
-
-        Parameters
-        ----------
-        norid : str|int
-          the name or the id of the node
-
-        Returns
-        -------
-        set
-          the set of ids of the ancestors of node `norid`.
-
-        """
-        return _idcpp.InfluenceDiagram_ancestors(self, norid)
-
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
 
@@ -1392,6 +1295,37 @@ class ShaferShenoyLIMIDInference(object):
         """
         return _idcpp.ShaferShenoyLIMIDInference_posteriorUtility(self, *args)
 
+    def meanVar(self, *args) -> dict[str, float]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        dict[str, float]
+          a dictionary with the mean and variance of the node (after the inference)
+
+        """
+        return _idcpp.ShaferShenoyLIMIDInference_meanVar(self, *args)
+
+    def MEU(self) -> dict[str, float]:
+        r"""
+
+        Returns maximum expected utility obtained from inference.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If no inference have yet been made
+
+        """
+        return _idcpp.ShaferShenoyLIMIDInference_MEU(self)
+
     def setEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Tensor]) -> None:
         """
         Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
@@ -1474,37 +1408,6 @@ class ShaferShenoyLIMIDInference(object):
 
         """
         return _idcpp.ShaferShenoyLIMIDInference_softEvidenceNodes(self)
-
-    def MEU(self, *args):
-        r"""
-
-        Returns maximum expected utility obtained from inference.
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If no inference have yet been made
-
-        """
-        return _idcpp.ShaferShenoyLIMIDInference_MEU(self, *args)
-
-    def meanVar(self, *args):
-        r"""
-
-        Parameters
-        ----------
-        id : int
-          a node Id
-        nodeName : str
-          a node name
-
-        Returns
-        -------
-        dict[str, float]
-          a dictionary with the mean and variance of the node (after the inference)
-
-        """
-        return _idcpp.ShaferShenoyLIMIDInference_meanVar(self, *args)
 
     def makeInference(self) -> None:
         r"""

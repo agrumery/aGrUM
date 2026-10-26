@@ -270,6 +270,38 @@ pyagrum.variableNodeMap
 "
 
 
+%feature("docstring") gum::DAGmodel::parents
+"
+give the set of nodeid of the parents of a node (or of a set of nodes)
+
+Parameters
+----------
+norid : str|int|set[int]|list[str]
+  the name or the id of the node, or a set of ids or a list of names
+
+Returns
+-------
+set
+  the set of ids of the parents.
+"
+
+
+%feature("docstring") gum::DAGmodel::children
+"
+give the set of nodeid of the children of a node (or of a set of nodes)
+
+Parameters
+----------
+norid : str|int|set[int]|list[str]
+  the name or the id of the node, or a set of ids or a list of names
+
+Returns
+-------
+set
+  the set of ids of the children.
+"
+
+
 %feature("docstring") gum::DAGmodel::ancestors
 "
 give the set of nodeid of ancestors of a node

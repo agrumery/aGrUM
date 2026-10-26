@@ -302,7 +302,7 @@ n : int
 
 Returns
 -------
-list of int
+set of int
     the new NodeIds
 "
 

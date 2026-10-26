@@ -44,6 +44,9 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
+#include <memory>
+#include <vector>
+
 #include <agrum/config.h>
 
 #include <agrum/base/graphs/algorithms/binaryJoinTreeConverterDefault.h>
@@ -81,17 +84,18 @@ class JunctionTreeGenerator {
     return junctionTree_(mn.graph(), translatePartialOrder_(partial_order), mods);
   }
 
-  PyAgrumListOfInt* eliminationOrder(const gum::UndiGraph& g,
-                                     PyObject*             partial_order = nullptr) const {
+  std::vector< gum::NodeId > eliminationOrder(const gum::UndiGraph& g,
+                                              PyObject*             partial_order = nullptr) const {
     return eliminationOrder_(g, translatePartialOrder_(partial_order));
   }
 
-  PyAgrumListOfInt* eliminationOrder(const gum::DAG& dag, PyObject* partial_order = nullptr) const {
+  std::vector< gum::NodeId > eliminationOrder(const gum::DAG& dag,
+                                              PyObject*       partial_order = nullptr) const {
     return eliminationOrder_(dag.moralGraph(), translatePartialOrder_(partial_order));
   }
 
-  PyAgrumListOfInt* eliminationOrder(const gum::BayesNet< double >& bn,
-                                     PyObject*                      partial_order = nullptr) const {
+  std::vector< gum::NodeId > eliminationOrder(const gum::BayesNet< double >& bn,
+                                              PyObject* partial_order = nullptr) const {
     gum::NodeProperty< gum::Size > mods;
     for (const auto node: bn.internalDag().nodes())
       mods.insert(node, bn.variable(node).domainSize());
@@ -145,40 +149,37 @@ class JunctionTreeGenerator {
     return bjtc.convert(junctionTree_(g, partial_order, mods), mods, emptyset);
   }
 
-  PyObject* eliminationOrder_(const gum::UndiGraph&            g,
-                              const gum::List< gum::NodeSet >& partial_order,
-                              gum::NodeProperty< gum::Size >   mods
-                              = gum::NodeProperty< gum::Size >()) const {
+  // returned by value: the order is owned by the triangulation, destroyed on exit
+  std::vector< gum::NodeId > eliminationOrder_(const gum::UndiGraph&            g,
+                                               const gum::List< gum::NodeSet >& partial_order,
+                                               gum::NodeProperty< gum::Size >   mods
+                                               = gum::NodeProperty< gum::Size >()) const {
     if (mods.size() == 0) { mods = g.nodesPropertyFromVal(static_cast< gum::Size >(2)); }
-    gum::StaticTriangulation* triangulation;
+    std::unique_ptr< gum::StaticTriangulation > triangulation;
     if (partial_order.size() == 0) {
-      triangulation = new gum::DefaultTriangulation(&g, &mods);
+      triangulation = std::make_unique< gum::DefaultTriangulation >(&g, &mods);
     } else {
-      triangulation = new gum::PartialOrderedTriangulation(&g, &mods, &partial_order);
+      triangulation
+          = std::make_unique< gum::PartialOrderedTriangulation >(&g, &mods, &partial_order);
     }
-    auto res = PyAgrumHelper::PyListFromNodeVect(triangulation->eliminationOrder());
-    delete (triangulation);
-    return res;
+    return triangulation->eliminationOrder();
   }
 
   gum::List< gum::NodeSet > translatePartialOrder_(PyObject* p) const {
     gum::List< gum::NodeSet > res;
     if (p == nullptr) return res;
 
-    PyObject* item;
-    PyObject* item2;
-
-    PyObject* iter = PyObject_GetIter(p);
-    PyObject* iter2;
-
-    if (iter != NULL) {
-      while ((item = PyIter_Next(iter))) {
-        iter2 = PyObject_GetIter(item);
-        if (iter2 != NULL) {
+    PyAgrumHelper::PyOwnedRef iter(PyObject_GetIter(p));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyAgrumHelper::PyOwnedRef item(next);
+        PyAgrumHelper::PyOwnedRef iter2(PyObject_GetIter(item.get()));
+        if (iter2.get() != NULL) {
           gum::NodeSet se;
-          while ((item2 = PyIter_Next(iter2))) {
-            if (PyLong_Check(item2)) {
-              se.insert(PyLong_AsLong(item2));
+          while (PyObject* next2 = PyIter_Next(iter2.get())) {
+            PyAgrumHelper::PyOwnedRef item2(next2);
+            if (PyLong_Check(item2.get())) {
+              se.insert(PyLong_AsLong(item2.get()));
             } else {
               GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
             }

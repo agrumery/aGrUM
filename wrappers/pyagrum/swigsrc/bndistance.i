@@ -44,119 +44,28 @@
 
 
 
- %extend gum::ExactBNdistance {
+%define ADD_COMPUTE_TO_BNDISTANCE(classname)
+%extend classname {
 PyAgrumDict* compute(void) {
   PyObject* q=PyDict_New();
 
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
+  auto setItem=[q](const char* key, PyObject* val) {
+    PyDict_SetItemString(q,key,val);
+    Py_DecRef(val);
+  };
+  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
+  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
+  setItem("klQP",PyFloat_FromDouble(self->klQP()));
+  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
+  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
+  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }
-
 }
+%enddef
 
-%extend gum::GibbsBNdistance {
-PyAgrumDict* compute(void) {
-  PyObject* q=PyDict_New();
-
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
-
-  return q;
-}
-
-}
-
-%extend gum::MCBNDistance {
-PyAgrumDict* compute(void) {
-  PyObject* q=PyDict_New();
-
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
-
-  return q;
-}
-
-}
+ADD_COMPUTE_TO_BNDISTANCE(gum::ExactBNdistance)
+ADD_COMPUTE_TO_BNDISTANCE(gum::GibbsBNdistance)
+ADD_COMPUTE_TO_BNDISTANCE(gum::MCBNDistance)

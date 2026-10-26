@@ -166,38 +166,9 @@
 // ---------------------------------------------------------------------------
 %extend gum::CausalModel<double> {
   CausalModel(const gum::BayesNet<double>& bn, PyObject* latents, bool assumeNonSpurious=false) {
-    auto* cm = new gum::CausalModel<double>(bn);
-    if (latents == Py_None) return cm;
-    if (!PySequence_Check(latents)) {
-      delete cm;
-      PyErr_SetString(PyExc_TypeError, "CausalModel: latents must be a sequence of (name, children) pairs");
-      return nullptr;
-    }
-    Py_ssize_t n = PySequence_Size(latents);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      PyObject* item = PySequence_GetItem(latents, i);
-      if (!PySequence_Check(item) || PySequence_Size(item) != 2) {
-        Py_DecRef(item);
-        delete cm;
-        PyErr_SetString(PyExc_TypeError, "CausalModel: each latent descriptor must be a (name, children) pair");
-        return nullptr;
-      }
-      PyObject* pyname     = PySequence_GetItem(item, 0);
-      PyObject* pychildren = PySequence_GetItem(item, 1);
-      Py_DecRef(item);
-      std::string              name = PyAgrumHelper::stringFromPyObject(pyname);
-      Py_DecRef(pyname);
-      std::vector<std::string> childNames;
-      Py_ssize_t               nc = PySequence_Size(pychildren);
-      for (Py_ssize_t j = 0; j < nc; ++j) {
-        PyObject* child = PySequence_GetItem(pychildren, j);
-        childNames.push_back(PyAgrumHelper::stringFromPyObject(child));
-        Py_DecRef(child);
-      }
-      Py_DecRef(pychildren);
-      cm->addLatentVariable(name, childNames, assumeNonSpurious);
-    }
-    return cm;
+    auto cm = std::make_unique<gum::CausalModel<double>>(bn);
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    return cm.release();
   }
 }
 
@@ -207,38 +178,9 @@
 // ---------------------------------------------------------------------------
 %extend gum::CausalModel<double> {
   CausalModel(const gum::DAG& dag, PyObject* latents, bool assumeNonSpurious=false) {
-    auto* cm = new gum::CausalModel<double>(dag);
-    if (latents == Py_None) return cm;
-    if (!PySequence_Check(latents)) {
-      delete cm;
-      PyErr_SetString(PyExc_TypeError, "CausalModel: latents must be a sequence of (name, children) pairs");
-      return nullptr;
-    }
-    Py_ssize_t n = PySequence_Size(latents);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      PyObject* item = PySequence_GetItem(latents, i);
-      if (!PySequence_Check(item) || PySequence_Size(item) != 2) {
-        Py_DecRef(item);
-        delete cm;
-        PyErr_SetString(PyExc_TypeError, "CausalModel: each latent descriptor must be a (name, children) pair");
-        return nullptr;
-      }
-      PyObject* pyname     = PySequence_GetItem(item, 0);
-      PyObject* pychildren = PySequence_GetItem(item, 1);
-      Py_DecRef(item);
-      std::string              name = PyAgrumHelper::stringFromPyObject(pyname);
-      Py_DecRef(pyname);
-      std::vector<std::string> childNames;
-      Py_ssize_t               nc = PySequence_Size(pychildren);
-      for (Py_ssize_t j = 0; j < nc; ++j) {
-        PyObject* child = PySequence_GetItem(pychildren, j);
-        childNames.push_back(PyAgrumHelper::stringFromPyObject(child));
-        Py_DecRef(child);
-      }
-      Py_DecRef(pychildren);
-      cm->addLatentVariable(name, childNames, assumeNonSpurious);
-    }
-    return cm;
+    auto cm = std::make_unique<gum::CausalModel<double>>(dag);
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    return cm.release();
   }
 }
 

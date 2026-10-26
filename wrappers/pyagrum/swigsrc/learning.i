@@ -181,8 +181,8 @@ SETPROP_THEN_RETURN_SELF(setFCIExhaustiveSepSet);
     return *$self;
   }
 
-  PyAgrumListOfArc* latentVariables() {
-    return PyAgrumHelper::PyListFromArcVect(self->latentVariables());
+  std::vector<gum::Arc> latentVariables() {
+    return self->latentVariables();
   }
 
   PyAgrumDictState* state() {

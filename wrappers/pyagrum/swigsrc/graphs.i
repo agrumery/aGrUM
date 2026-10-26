@@ -156,6 +156,7 @@ ADD_NODENAME_METHODS(gum::UndiGraph)
 %define ADD_METHOD_TO_GRAPH_ONLY_CLASS(classname)
 %ignore classname::addNodes(gum::Size n);
 %extend classname {
+  // const on purpose: a non-const signature would match the %ignore above, which then hides this %extend too
   PyAgrumSetOfInt *addNodes(gum::Size n) const {
     return PyAgrumHelper::PySetFromNodeVect(const_cast<classname *>(self)->addNodes(n));
   };
@@ -207,8 +208,14 @@ ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::UndiGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::MixedGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PDAG);
-// automatically done for subclass
-//ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PAG);
+// PAG gets the other methods from UndiGraph, but its own addNodes (forUsing.i) would return a list
+%ignore gum::PAG::addNodes(gum::Size n);
+%extend gum::PAG {
+  // const on purpose, see ADD_METHOD_TO_GRAPH_ONLY_CLASS
+  PyAgrumSetOfInt *addNodes(gum::Size n) const {
+    return PyAgrumHelper::PySetFromNodeVect(const_cast<gum::PAG *>(self)->addNodes(n));
+  };
+};
 // automatically done for subclass
 //ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
 

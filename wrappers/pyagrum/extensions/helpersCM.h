@@ -51,8 +51,12 @@
  */
 #pragma once
 
+#include <memory>
 #include <Python.h>
+#include <string>
+#include <vector>
 
+#include <agrum/CM/causalModel.h>
 #include <agrum/CM/tools/doAST.h>
 
 #ifndef PYAGRUM_HELPER_CM
@@ -116,6 +120,45 @@ namespace PyAgrumHelper {
       setObj("term", PyDictFromASTtree(p->term()));
     }
     return d;
+  }
+
+  // Add to cm the latent variables described by latents, a sequence of (name, children) pairs
+  // (None means no latent variable). Returns false, with a Python TypeError set, if latents is
+  // malformed.
+  bool addLatentsFromPyObject(gum::CausalModel< double >& cm,
+                              PyObject*                   latents,
+                              bool                        assumeNonSpurious) {
+    if (latents == Py_None) return true;
+    if (!PySequence_Check(latents)) {
+      PyErr_SetString(PyExc_TypeError,
+                      "CausalModel: latents must be a sequence of (name, children) pairs");
+      return false;
+    }
+    const Py_ssize_t n = PySequence_Size(latents);
+    for (Py_ssize_t i = 0; i < n; ++i) {
+      PyOwnedRef item(PySequence_GetItem(latents, i));
+      if (!PySequence_Check(item.get()) || PySequence_Size(item.get()) != 2) {
+        PyErr_SetString(PyExc_TypeError,
+                        "CausalModel: each latent descriptor must be a (name, children) pair");
+        return false;
+      }
+      PyOwnedRef pyname(PySequence_GetItem(item.get(), 0));
+      PyOwnedRef pychildren(PySequence_GetItem(item.get(), 1));
+      if (!PySequence_Check(pychildren.get())) {
+        PyErr_SetString(
+            PyExc_TypeError,
+            "CausalModel: the children of a latent variable must be a sequence of names");
+        return false;
+      }
+      std::vector< std::string > childNames;
+      const Py_ssize_t           nc = PySequence_Size(pychildren.get());
+      for (Py_ssize_t j = 0; j < nc; ++j) {
+        PyOwnedRef child(PySequence_GetItem(pychildren.get(), j));
+        childNames.push_back(stringFromPyObject(child.get()));
+      }
+      cm.addLatentVariable(stringFromPyObject(pyname.get()), childNames, assumeNonSpurious);
+    }
+    return true;
   }
 
 }   // namespace PyAgrumHelper

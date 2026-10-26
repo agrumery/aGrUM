@@ -54,16 +54,10 @@
 
 %define IMPROVE_GRAPHICAL_MODEL_API(classname)
 %extend classname {
-  PyAgrumSetOfStr* names() const {
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+  gum::Set<std::string> names() const {
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   };
 
 
@@ -98,26 +92,6 @@ ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname);
 IMPROVE_GRAPHICAL_MODEL_API(classname);
 
 %extend classname {
-   PyAgrumSetOfArc *arcs() const {
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   };
-
-   PyAgrumSetOfInt *parents(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyAgrumSetOfInt *children(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyAgrumSetOfInt *family(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyAgrumSetOfInt *descendants(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-   PyAgrumSetOfInt *ancestors(PyObject* norid) const {
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   };
-
    gum::UndiGraph moralizedAncestralGraph(PyObject* nodes) {
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -130,15 +104,4 @@ IMPROVE_GRAPHICAL_MODEL_API(classname);
 %define IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
 
 IMPROVE_GRAPHICAL_MODEL_API(classname);
-
-%extend classname {
-  PyAgrumSetOfInt* neighbours(PyObject * norid) const {
-    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(
-       PyAgrumHelper::nodeIdFromNameOrIndex(norid, self->variableNodeMap())));
-  };
-
-  PyAgrumSetOfEdge* edges() const {
-    return PyAgrumHelper::PySetFromEdgeSet(self->graph().edges());
-  };
-}
 %enddef

@@ -283,13 +283,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
       return am
 
 
-    def neighbours(self, norid: object) -> set[int]:
-        return _mrfcpp.IMarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> set[tuple[int,int]]:
-        return _mrfcpp.IMarkovRandomField_edges(self)
-
-    def minimalCondSet(self, *args):
+    def minimalCondSet(self, *args) -> set[int]:
         return _mrfcpp.IMarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
@@ -826,35 +820,6 @@ class MarkovRandomField(IMarkovRandomField):
                   am[node,neighbour]=1
       return am
 
-
-    def neighbours(self, norid: object) -> set[int]:
-        r"""
-
-        Return the set of neighbours of a node.
-
-        Parameters
-        ----------
-        id : int
-            the node id
-
-        Returns
-        -------
-        set[int]
-            the set of neighbour node ids
-
-        """
-        return _mrfcpp.MarkovRandomField_neighbours(self, norid)
-
-    def edges(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        set
-            the set of edges in the Markov random field
-
-        """
-        return _mrfcpp.MarkovRandomField_edges(self)
 
     def minimalCondSet(self, *args) -> set[int]:
         r"""

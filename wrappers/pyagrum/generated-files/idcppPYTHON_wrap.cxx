@@ -4321,38 +4321,14 @@ SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
   return res;
 }
 
-SWIGINTERN PyAgrumSetOfStr *gum_InfluenceDiagram_Sl_double_Sg__names(gum::InfluenceDiagram< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_InfluenceDiagram_Sl_double_Sg__names(gum::InfluenceDiagram< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_InfluenceDiagram_Sl_double_Sg__nodes(gum::InfluenceDiagram< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfArc *gum_InfluenceDiagram_Sl_double_Sg__arcs(gum::InfluenceDiagram< double > const *self){
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_InfluenceDiagram_Sl_double_Sg__parents(gum::InfluenceDiagram< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_InfluenceDiagram_Sl_double_Sg__children(gum::InfluenceDiagram< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_InfluenceDiagram_Sl_double_Sg__family(gum::InfluenceDiagram< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_InfluenceDiagram_Sl_double_Sg__descendants(gum::InfluenceDiagram< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_InfluenceDiagram_Sl_double_Sg__ancestors(gum::InfluenceDiagram< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
 SWIGINTERN gum::UndiGraph gum_InfluenceDiagram_Sl_double_Sg__moralizedAncestralGraph(gum::InfluenceDiagram< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -4525,18 +4501,11 @@ SWIGINTERN std::string gum_InfluenceDiagram_Sl_double_Sg____repr__(gum::Influenc
 SWIGINTERN std::string gum_InfluenceDiagram_Sl_double_Sg____str__(gum::InfluenceDiagram< double > const *self){ return self->toString();}
 SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__setEvidence(gum::ShaferShenoyLIMIDInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__updateEvidence(gum::ShaferShenoyLIMIDInference< double > *self,PyObject *evidces){}
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyLIMIDInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyLIMIDInference< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyLIMIDInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyLIMIDInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
-    }
-SWIGINTERN PyAgrumDictSF *gum_ShaferShenoyLIMIDInference_Sl_double_Sg__MEU__SWIG_1(gum::ShaferShenoyLIMIDInference< double > *self){
-    std::cout<<"H"<<std::endl;
-      return PyAgrumHelper::PyDictFromPairMeanVar(self->MEU() ) ;
-    }
-SWIGINTERN PyAgrumDictSF *gum_ShaferShenoyLIMIDInference_Sl_double_Sg__meanVar__SWIG_2(gum::ShaferShenoyLIMIDInference< double > *self,gum::NodeId node){
-      return PyAgrumHelper::PyDictFromPairMeanVar(self->meanVar(node) ) ;
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyLIMIDInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyLIMIDInference< double > *self){
+      return self->softEvidenceNodes();
     }
 SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__makeInference(gum::ShaferShenoyLIMIDInference< double > *self){
     self->gum::ShaferShenoyLIMIDInference<double >::makeInference();
@@ -8931,7 +8900,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_names(PyObject *self, PyObject *args
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -8943,14 +8912,15 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_names(PyObject *self, PyObject *args
   arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_InfluenceDiagram_Sl_double_Sg__names((gum::InfluenceDiagram< double > const *)arg1);
+      result = gum_InfluenceDiagram_Sl_double_Sg__names((gum::InfluenceDiagram< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -8984,203 +8954,6 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_nodes(PyObject *self, PyObject *args
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_arcs(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfArc *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_arcs" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfArc *)gum_InfluenceDiagram_Sl_double_Sg__arcs((gum::InfluenceDiagram< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_parents(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_parents", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_parents" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_InfluenceDiagram_Sl_double_Sg__parents((gum::InfluenceDiagram< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_children(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_children", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_children" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_InfluenceDiagram_Sl_double_Sg__children((gum::InfluenceDiagram< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_family(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_family", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_family" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_InfluenceDiagram_Sl_double_Sg__family((gum::InfluenceDiagram< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_descendants(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_descendants", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_descendants" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_InfluenceDiagram_Sl_double_Sg__descendants((gum::InfluenceDiagram< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_ancestors(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_ancestors", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_ancestors" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_InfluenceDiagram_Sl_double_Sg__ancestors((gum::InfluenceDiagram< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -10711,15 +10484,53 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_MEU__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_meanVar(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyLIMIDInference_meanVar", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyLIMIDInference_meanVar'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ShaferShenoyLIMIDInference< double >::meanVar(gum::NodeId)\n"
+    "    gum::ShaferShenoyLIMIDInference< double >::meanVar(std::string_view)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_MEU(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
+  PyObject *swig_obj[1] ;
   SwigValueWrapper< std::pair< double,double > > result;
   
   (void)self;
-  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_MEU" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > *""'"); 
@@ -10810,7 +10621,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hardEvidenceNodes(PyObject
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10822,14 +10633,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hardEvidenceNodes(PyObject
   arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10842,7 +10654,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_softEvidenceNodes(PyObject
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -10854,163 +10666,18 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_softEvidenceNodes(PyObject
   arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyLIMIDInference_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_MEU__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyAgrumDictSF *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_MEU" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
   {
-    try {
-      result = (PyAgrumDictSF *)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__MEU__SWIG_1(arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_MEU(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[2] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyLIMIDInference_MEU", 0, 1, argv))) SWIG_fail;
-  --argc;
-  if (argc == 1) {
-    PyObject *retobj = _wrap_ShaferShenoyLIMIDInference_MEU__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 1) {
-    PyObject *retobj = _wrap_ShaferShenoyLIMIDInference_MEU__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyLIMIDInference_MEU'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::ShaferShenoyLIMIDInference< double >::MEU()\n"
-    "    gum::ShaferShenoyLIMIDInference< double >::MEU()\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
-  gum::NodeId arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  PyAgrumDictSF *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_meanVar" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShaferShenoyLIMIDInference_meanVar" "', argument " "2"" of type '" "gum::NodeId""'");
-  } 
-  arg2 = static_cast< gum::NodeId >(val2);
-  {
-    try {
-      result = (PyAgrumDictSF *)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__meanVar__SWIG_2(arg1,SWIG_STD_MOVE(*(&arg2)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_meanVar(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyLIMIDInference_meanVar", 0, 2, argv))) SWIG_fail;
-  --argc;
-  if (argc == 2) {
-    int _v = 0;
-    {
-      {
-        int res = SWIG_AsVal_size_t(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-    }
-    if (!_v) goto check_1;
-    return _wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_0(self, argc, argv);
-  }
-check_1:
-  
-  if (argc == 2) {
-    int _v = 0;
-    {
-      {
-        int res = SWIG_AsVal_size_t(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-    }
-    if (!_v) goto check_2;
-    return _wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_2(self, argc, argv);
-  }
-check_2:
-  
-  if (argc == 2) {
-    PyObject *retobj = _wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyLIMIDInference_meanVar'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::ShaferShenoyLIMIDInference< double >::meanVar(gum::NodeId)\n"
-    "    gum::ShaferShenoyLIMIDInference< double >::meanVar(std::string_view)\n"
-    "    gum::ShaferShenoyLIMIDInference< double >::meanVar(gum::NodeId)\n");
-  return 0;
 }
 
 
@@ -13224,85 +12891,6 @@ static PyMethodDef SwigMethods[] = {
 		"    the set of ids\n"
 		"\n"
 		""},
-	 { "InfluenceDiagram_arcs", _wrap_InfluenceDiagram_arcs, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list:\n"
-		"    the list of all the arcs in the Influence Diagram.\n"
-		"\n"
-		""},
-	 { "InfluenceDiagram_parents", _wrap_InfluenceDiagram_parents, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"var : int | str\n"
-		"    a variable's id (int) or name\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"    the set of the parents ids.\n"
-		"\n"
-		""},
-	 { "InfluenceDiagram_children", _wrap_InfluenceDiagram_children, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"var : int | str\n"
-		"    a variable's id (int) or name\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of all the children\n"
-		"\n"
-		""},
-	 { "InfluenceDiagram_family", _wrap_InfluenceDiagram_family, METH_VARARGS, "\n"
-		"\n"
-		"give the set of parents of a node and the node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of nodeId of the family of the node `norid`\n"
-		"\n"
-		""},
-	 { "InfluenceDiagram_descendants", _wrap_InfluenceDiagram_descendants, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of descendants of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
-		"\n"
-		""},
-	 { "InfluenceDiagram_ancestors", _wrap_InfluenceDiagram_ancestors, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of ancestors of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
-		"\n"
-		""},
 	 { "InfluenceDiagram_moralizedAncestralGraph", _wrap_InfluenceDiagram_moralizedAncestralGraph, METH_VARARGS, "\n"
 		"\n"
 		"build a UndiGraph by moralizing the Ancestral Graph of a list of nodes\n"
@@ -13555,6 +13143,31 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"\n"
 		""},
+	 { "ShaferShenoyLIMIDInference_meanVar", _wrap_ShaferShenoyLIMIDInference_meanVar, METH_VARARGS, "\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"  a node Id\n"
+		"nodeName : str\n"
+		"  a node name\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"dict[str, float]\n"
+		"  a dictionary with the mean and variance of the node (after the inference)\n"
+		"\n"
+		""},
+	 { "ShaferShenoyLIMIDInference_MEU", _wrap_ShaferShenoyLIMIDInference_MEU, METH_O, "\n"
+		"\n"
+		"Returns maximum expected utility obtained from inference.\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.OperationNotAllowed\n"
+		"    If no inference have yet been made\n"
+		"\n"
+		""},
 	 { "ShaferShenoyLIMIDInference_setEvidence", _wrap_ShaferShenoyLIMIDInference_setEvidence, METH_VARARGS, NULL},
 	 { "ShaferShenoyLIMIDInference_updateEvidence", _wrap_ShaferShenoyLIMIDInference_updateEvidence, METH_VARARGS, NULL},
 	 { "ShaferShenoyLIMIDInference_hardEvidenceNodes", _wrap_ShaferShenoyLIMIDInference_hardEvidenceNodes, METH_O, "\n"
@@ -13573,31 +13186,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set[int]\n"
 		"    the set of node ids with soft evidence\n"
-		"\n"
-		""},
-	 { "ShaferShenoyLIMIDInference_MEU", _wrap_ShaferShenoyLIMIDInference_MEU, METH_VARARGS, "\n"
-		"\n"
-		"Returns maximum expected utility obtained from inference.\n"
-		"\n"
-		"Raises\n"
-		"------\n"
-		"pyagrum.OperationNotAllowed\n"
-		"    If no inference have yet been made\n"
-		"\n"
-		""},
-	 { "ShaferShenoyLIMIDInference_meanVar", _wrap_ShaferShenoyLIMIDInference_meanVar, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id : int\n"
-		"  a node Id\n"
-		"nodeName : str\n"
-		"  a node name\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"dict[str, float]\n"
-		"  a dictionary with the mean and variance of the node (after the inference)\n"
 		"\n"
 		""},
 	 { "ShaferShenoyLIMIDInference_makeInference", _wrap_ShaferShenoyLIMIDInference_makeInference, METH_O, "\n"

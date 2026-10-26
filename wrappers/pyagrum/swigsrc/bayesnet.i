@@ -65,28 +65,20 @@
 
 %define IMPROVE_BAYESNET_API(classname)
 %extend classname {
-  PyAgrumListOfInt*ids(const std::vector<std::string>& names) {
-    return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
-  }
-
-  PyAgrumSetOfInt*nodeset(const std::vector<std::string>& names) {
-    return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
-  }
-
-  PyAgrumSetOfInt *minimalCondSet(gum::NodeId target,PyObject* list) const {
+  gum::NodeSet minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   };
 
 
-  PyAgrumSetOfInt *minimalCondSet(PyObject* targets,PyObject* list) const {
+  gum::NodeSet minimalCondSet(PyObject* targets,PyObject* list) const {
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   };
 
   bool isIndependent(PyObject* X,PyObject* Y,PyObject* Z) {

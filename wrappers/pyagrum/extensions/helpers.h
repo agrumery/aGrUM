@@ -108,61 +108,31 @@ namespace PyAgrumHelper {
     if (s.size() == 0) GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument")
   }
 
-  // filling a vector of DiscreteVariable* from a list of string, in the context of
-  // a tensor.
-  void fillDVVectorFromPyObject(const gum::Tensor< double >*                 pot,
-                                std::vector< const gum::DiscreteVariable* >& s,
-                                PyObject*                                    varnames) {
-    if (PyList_Check(varnames)) {
-      gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
-      for (gum::Idx i = 0; i < pot->nbrDim(); i++)
-        namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
+  // owns a new reference and releases it at scope exit, including when a GUM_ERROR is thrown
+  class PyOwnedRef {
+    public:
+    explicit PyOwnedRef(PyObject* obj) : obj_(obj) {}
 
-      auto siz = PyList_Size(varnames);
-      s.clear();
+    ~PyOwnedRef() { Py_XDECREF(obj_); }
 
-      for (int i = 0; i < siz; i++) {
-        std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
-        if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string") }
-        if (!namesToVars.exists(name)) {
-          GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this tensor");
-        }
-        s.push_back(namesToVars[name]);
-      }
-    } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a list")
-    }
-  }
+    PyOwnedRef(const PyOwnedRef&)            = delete;
+    PyOwnedRef& operator=(const PyOwnedRef&) = delete;
 
-  // filling a DiscreteVariable* from a string, in the context of a tensor.
-  void fillDVFromPyObject(const gum::Tensor< double >*  pot,
-                          const gum::DiscreteVariable*& pvar,
-                          PyObject*                     varname) {
-    const std::string name = stringFromPyObject(varname);
-    if (name == "") { GUM_ERROR(gum::InvalidArgument, "Argument is not a string") }
+    PyObject* get() const { return obj_; }
 
-    bool isOK = false;
-    for (gum::Idx i = 0; i < pot->nbrDim(); i++) {
-      if (pot->variable(i).name() == name) {
-        pvar = &(pot->variable(i));
-        isOK = true;
-        break;
-      }
-    }
-    if (!isOK) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a name of a variable in this tensor");
-    }
-  }
+    private:
+    PyObject* obj_;
+  };
 
   void fillEdgeSetFromPyObject(gum::EdgeSet& s, PyObject* sofedge) {
-    PyObject* iter = PyObject_GetIter(sofedge);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        if (PyTuple_Check(item)) {
-          if (PyTuple_Size(item) == 2) {
-            s.insert(gum::Edge(PyLong_AsLong(PyTuple_GetItem(item, 0)),
-                               PyLong_AsLong(PyTuple_GetItem(item, 1))));
+    PyOwnedRef iter(PyObject_GetIter(sofedge));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyOwnedRef item(next);
+        if (PyTuple_Check(item.get())) {
+          if (PyTuple_Size(item.get()) == 2) {
+            s.insert(gum::Edge(PyLong_AsLong(PyTuple_GetItem(item.get(), 0)),
+                               PyLong_AsLong(PyTuple_GetItem(item.get(), 1))));
           } else {
             GUM_ERROR(gum::InvalidArgument, "An element in the set is not a tuple of size 2")
           }
@@ -312,32 +282,11 @@ namespace PyAgrumHelper {
     }
 
     // seq really is a sequence
-    PyObject* iter = PyObject_GetIter(seq);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        names.push_back(nameFromNameOrIndex(item, map));
-      }
-    } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
-    }
-  }
-
-  void populateStrSetFromPySequenceOfString(gum::Set< std::string >& names, PyObject* seq) {
-    // if seq is just a string
-    const std::string name = stringFromPyObject(seq);
-    if (name != "") {
-      names.insert(name);
-      return;
-    }
-
-    // seq really is a sequence
-    PyObject* iter = PyObject_GetIter(seq);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        const std::string name = stringFromPyObject(seq);
-        if (name != "") { names.insert(name); }
+    PyOwnedRef iter(PyObject_GetIter(seq));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyOwnedRef item(next);
+        names.push_back(nameFromNameOrIndex(item.get(), map));
       }
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
@@ -388,12 +337,12 @@ namespace PyAgrumHelper {
     }
 
     // seq really is a sequence
-    PyObject* iter = PyObject_GetIter(seq);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        if (PyLong_Check(item)) {
-          nodeset.insert(gum::NodeId(PyLong_AsLong(item)));
+    PyOwnedRef iter(PyObject_GetIter(seq));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyOwnedRef item(next);
+        if (PyLong_Check(item.get())) {
+          nodeset.insert(gum::NodeId(PyLong_AsLong(item.get())));
         } else {
           GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
         }
@@ -420,11 +369,11 @@ namespace PyAgrumHelper {
     }
 
     // seq really is a sequence
-    PyObject* iter = PyObject_GetIter(seq);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        nodeset.insert(nodeIdFromNameOrIndex(item, map));
+    PyOwnedRef iter(PyObject_GetIter(seq));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyOwnedRef item(next);
+        nodeset.insert(nodeIdFromNameOrIndex(item.get(), map));
       }
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
@@ -444,19 +393,6 @@ namespace PyAgrumHelper {
     return q;
   }
 
-  PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
-    PyObject* q = PyList_New(0);
-
-    PyObject* pyval;
-    for (auto node: nodeset) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
-  }
-
   PyObject* PyTupleFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
     PyObject* q = PyTuple_New(nodevect.size());
 
@@ -464,23 +400,7 @@ namespace PyAgrumHelper {
     PyObject* pyval;
     for (auto node: nodevect) {
       pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PyTuple_SET_ITEM(q, i, pyval);
-      Py_DecRef(pyval);
-      i++;
-    }
-
-    return q;
-  }
-
-  PyObject* PyTupleFromNodeSet(const gum::NodeSet& nodeset) {
-    PyObject* q = PyTuple_New(nodeset.size());
-
-    int       i = 0;
-    PyObject* pyval;
-    for (auto node: nodeset) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PyTuple_SET_ITEM(q, i, pyval);
-      Py_DecRef(pyval);
+      PyTuple_SET_ITEM(q, i, pyval);   // steals the reference
       i++;
     }
 
@@ -532,51 +452,6 @@ namespace PyAgrumHelper {
     PyObject* pyval;
     for (const auto& arc: arcseq) {
       pyval = Py_BuildValue("(i,i)", arc.tail(), arc.head());
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
-  }
-
-  std::vector< gum::Arc > populateArcVectFromPyList(PyObject* arcseq) {
-    std::vector< gum::Arc > res;
-    if (PyList_Check(arcseq)) {
-      auto siz = PyList_Size(arcseq);
-      for (int i = 0; i < siz; i++) {
-        PyObject* item = PyList_GetItem(arcseq, i);
-        if (PyTuple_Check(item)) {
-          if (PyTuple_Size(item) == 2) {
-            res.push_back(gum::Arc(PyLong_AsLong(PyTuple_GetItem(item, 0)),
-                                   PyLong_AsLong(PyTuple_GetItem(item, 1))));
-          } else {
-            GUM_ERROR(gum::InvalidArgument, "An element in the list is not a tuple of size 2")
-          }
-        } else {
-          GUM_ERROR(gum::InvalidArgument, "An element in the list is not a tuple")
-        }
-      }
-    } else {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a list")
-    }
-    return res;
-  }
-
-  PyObject* PyListFromSequenceOfInt(const gum::Sequence< int >& seq) {
-    PyObject* q = PyList_New(0);
-    PyObject* pyval;
-    for (const auto& val: seq) {
-      pyval = PyLong_FromLong(val);
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
-  }
-
-  PyObject* PyListFromSequenceOfDouble(const gum::Sequence< double >& seq) {
-    PyObject* q = PyList_New(0);
-    PyObject* pyval;
-    for (const auto& val: seq) {
-      pyval = PyFloat_FromDouble(val);
       PyList_Append(q, pyval);
       Py_DecRef(pyval);
     }
@@ -664,11 +539,11 @@ namespace PyAgrumHelper {
     PyObject* pyval;
 
     pyval = PyFloat_FromDouble(mv.first);
-    PyDict_SetItemString(q, "mean", PyFloat_FromDouble(mv.first));
+    PyDict_SetItemString(q, "mean", pyval);
     Py_DecRef(pyval);
 
     pyval = PyFloat_FromDouble(mv.second);
-    PyDict_SetItemString(q, "variance", PyFloat_FromDouble(mv.second));
+    PyDict_SetItemString(q, "variance", pyval);
     Py_DecRef(pyval);
 
     return q;

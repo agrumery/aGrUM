@@ -221,19 +221,6 @@ pyagrum.NotFound
     If no nodes matches id.
 "
 
-%feature("docstring") gum::InfluenceDiagram::children
-"
-Parameters
-----------
-var : int | str
-    a variable's id (int) or name
-
-Returns
--------
-Set
-    the set of all the children
-"
-
 %feature("docstring") gum::InfluenceDiagram::cpt
 "
 Returns the CPT of a variable.
@@ -438,19 +425,6 @@ Raises
 ------
 pyagrum.IndexError
     If the InfluenceDiagram does not contain the variable
-"
-
-%feature("docstring") gum::InfluenceDiagram::parents
-"
-Parameters
-----------
-var : int | str
-    a variable's id (int) or name
-
-Returns
--------
-set
-    the set of the parents ids.
 "
 
 %feature("docstring") gum::InfluenceDiagram::saveBIFXML

@@ -110,18 +110,11 @@ def updateEvidence(self, evidces: dict[typing.Any, typing.Any] | list[pyagrum.Te
     void setEvidence(PyObject *evidces) {}
     void updateEvidence(PyObject *evidces) {}
 
-    PyAgrumSetOfInt* hardEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+    const gum::NodeSet& hardEvidenceNodes() {
+      return self->hardEvidenceNodes();
     }
-    PyAgrumSetOfInt* softEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
-    }
-    PyAgrumDictSF* MEU() {
-    std::cout<<"H"<<std::endl;
-      return PyAgrumHelper::PyDictFromPairMeanVar(self->MEU() ) ;
-    }
-    PyAgrumDictSF* meanVar(gum::NodeId node) {
-      return PyAgrumHelper::PyDictFromPairMeanVar(self->meanVar(node) ) ;
+    const gum::NodeSet& softEvidenceNodes() {
+      return self->softEvidenceNodes();
     }
 }
 

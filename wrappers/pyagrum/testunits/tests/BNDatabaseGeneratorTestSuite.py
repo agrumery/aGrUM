@@ -75,6 +75,15 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.NotFound):
       dbgen.setVarOrder(["A", "O", "R", "S", "T", "X"])
 
+  def testVarOrderWithLargeIds(self):
+    # ids above 256 are not cached by Python: an over-released element would corrupt memory
+    bn = gum.randomBN(n=300)
+    dbgen = gum.BNDatabaseGenerator(bn)
+    for _ in range(50):
+      order = dbgen.varOrder()
+      self.assertEqual(sorted(order), sorted(bn.nodes()))
+      del order
+
   def testDrawSamples(self):
     bn = gum.fastBN("A->B[4]->C;A->D->C;D->E[3];")
     dbgen = gum.BNDatabaseGenerator(bn)

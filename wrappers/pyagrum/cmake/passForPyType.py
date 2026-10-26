@@ -129,6 +129,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("gum::Configuration\\b(?!::)", "pyagrum.pyagrumcpp._Configuration", TYPE_ONLY),
   ("swig::SwigPyIterator", "pyagrum.pyagrumcpp.SwigPyIterator", TYPE_ONLY),
   ("gum::DoorCriteria::NodeSetVec", "list[set[int]]", TYPE_ONLY),
+  ("gum::Set< gum::NodeSet >", "list[set[int]]"),
   # std::function and the internal listener vector have no Python type: plain object
   ("std::function< double \\(double\\) >", "object"),
   ("std::function< double \\(double,double\\) >", "object"),
@@ -148,6 +149,8 @@ _RULES_PYTHON_RAW: list[tuple] = [
     "list[int] | None",
   ),
   ("std::pair< gum::Instantiation,double >", 'tuple["pyagrum.Instantiation",float]'),
+  # only MEU/meanVar return it, converted to {"mean","variance"} (out typemap in gum_typemaps.i)
+  ("std::pair< double,double >", "dict[str, float]"),
   ("std::unique_ptr< gum::DiscreteVariable >", "pyagrum.DiscreteVariable"),
   # ("std::vector< gum::Idx,std::allocator< gum::Idx > >", 'list[int]'),
   ("std::vector< gum::NodeId,std::allocator< gum::NodeId > >", "list[int]"),

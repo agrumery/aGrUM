@@ -5385,11 +5385,11 @@ SWIGINTERN gum::Size gum_PDAG_sizeArcs(gum::PDAG const *self){
 SWIGINTERN bool gum_PDAG_emptyArcs(gum::PDAG const *self){
     return self->emptyArcs();
   }
+SWIGINTERN PyAgrumSetOfInt *gum_PAG_addNodes(gum::PAG const *self,gum::Size n){
+    return PyAgrumHelper::PySetFromNodeVect(const_cast<gum::PAG *>(self)->addNodes(n));
+  }
 SWIGINTERN gum::NodeId gum_PAG_addNode(gum::PAG *self){
     return self->gum::NodeGraphPart::addNode();
-  }
-SWIGINTERN std::vector< gum::NodeId,std::allocator< gum::NodeId > > gum_PAG_addNodes(gum::PAG *self,gum::Size n){
-    return self->gum::NodeGraphPart::addNodes(n);
   }
 SWIGINTERN void gum_PAG_addNodeWithId(gum::PAG *self,gum::NodeId const id){
     self->gum::NodeGraphPart::addNodeWithId(id);
@@ -5575,11 +5575,13 @@ SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__minIn__SWIG_1(gum::Ten
     }
 SWIGINTERN PyAgrumArgMinMax *gum_Tensor_Sl_double_Sg__argmin(gum::Tensor< double > *self){
       const auto [argmi,mi] = self->argmin();
-      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),PyFloat_FromDouble(mi));
+      // "N" steals the reference to the new list
+      return Py_BuildValue("(Nd)",PyAgrumHelper::PySeqFromSetOfInstantiation(argmi),mi);
     }
 SWIGINTERN PyAgrumArgMinMax *gum_Tensor_Sl_double_Sg__argmax(gum::Tensor< double > *self){
       const auto [argma,ma] = self->argmax();
-      return PyTuple_Pack(2,PyAgrumHelper::PySeqFromSetOfInstantiation(argma),PyFloat_FromDouble(ma));
+      // "N" steals the reference to the new list
+      return Py_BuildValue("(Nd)",PyAgrumHelper::PySeqFromSetOfInstantiation(argma),ma);
     }
 SWIGINTERN bool gum_Tensor_Sl_double_Sg____eq____SWIG_1(gum::Tensor< double > *self,gum::Tensor< double > const &b){
       return *self==b;
@@ -6191,24 +6193,18 @@ SWIGINTERN void gum_StructuralMetrics_compare__SWIG_3(gum::StructuralMetrics *se
 SWIGINTERN double gum_StructuralMetrics_sid__SWIG_1(gum::StructuralMetrics const *self,gum::BayesNet< double > const &ref,gum::BayesNet< double > const &test){
     return self->sid< double, double >(ref, test);
   }
-SWIGINTERN PyAgrumListOfInt *gum_IBayesNet_Sl_double_Sg__ids(gum::IBayesNet< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__nodeset(gum::IBayesNet< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_0(gum::IBayesNet< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN gum::NodeSet gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_0(gum::IBayesNet< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::IBayesNet< double > const *self,PyObject *targets,PyObject *list){
+SWIGINTERN gum::NodeSet gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::IBayesNet< double > const *self,PyObject *targets,PyObject *list){
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   }
 SWIGINTERN bool gum_IBayesNet_Sl_double_Sg__isIndependent__SWIG_0(gum::IBayesNet< double > *self,PyObject *X,PyObject *Y,PyObject *Z){
     gum::NodeSet nx,ny,nz;
@@ -6223,38 +6219,14 @@ SWIGINTERN bool gum_IBayesNet_Sl_double_Sg__isIndependent__SWIG_1(gum::IBayesNet
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(ny,Y,self->variableNodeMap());
     return self->isIndependent(nx,ny,nz);
   }
-SWIGINTERN PyAgrumSetOfStr *gum_IBayesNet_Sl_double_Sg__names(gum::IBayesNet< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_IBayesNet_Sl_double_Sg__names(gum::IBayesNet< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_IBayesNet_Sl_double_Sg__nodes(gum::IBayesNet< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfArc *gum_IBayesNet_Sl_double_Sg__arcs(gum::IBayesNet< double > const *self){
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__parents(gum::IBayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__children(gum::IBayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__family(gum::IBayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__descendants(gum::IBayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_IBayesNet_Sl_double_Sg__ancestors(gum::IBayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
 SWIGINTERN gum::UndiGraph gum_IBayesNet_Sl_double_Sg__moralizedAncestralGraph(gum::IBayesNet< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -6266,24 +6238,18 @@ SWIGINTERN std::string gum_IBayesNet_Sl_double_Sg____repr__(gum::IBayesNet< doub
    return s.str();
   }
 SWIGINTERN std::string gum_IBayesNet_Sl_double_Sg____str__(gum::IBayesNet< double > const *self){ return self->toString();}
-SWIGINTERN PyAgrumListOfInt *gum_BayesNet_Sl_double_Sg__ids(gum::BayesNet< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__nodeset(gum::BayesNet< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0(gum::BayesNet< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN gum::NodeSet gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0(gum::BayesNet< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::BayesNet< double > const *self,PyObject *targets,PyObject *list){
+SWIGINTERN gum::NodeSet gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::BayesNet< double > const *self,PyObject *targets,PyObject *list){
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   }
 SWIGINTERN bool gum_BayesNet_Sl_double_Sg__isIndependent__SWIG_0(gum::BayesNet< double > *self,PyObject *X,PyObject *Y,PyObject *Z){
     gum::NodeSet nx,ny,nz;
@@ -6298,38 +6264,14 @@ SWIGINTERN bool gum_BayesNet_Sl_double_Sg__isIndependent__SWIG_1(gum::BayesNet< 
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(ny,Y,self->variableNodeMap());
     return self->isIndependent(nx,ny,nz);
   }
-SWIGINTERN PyAgrumSetOfStr *gum_BayesNet_Sl_double_Sg__names(gum::BayesNet< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_BayesNet_Sl_double_Sg__names(gum::BayesNet< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_BayesNet_Sl_double_Sg__nodes(gum::BayesNet< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfArc *gum_BayesNet_Sl_double_Sg__arcs(gum::BayesNet< double > const *self){
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__parents(gum::BayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__children(gum::BayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__family(gum::BayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__descendants(gum::BayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNet_Sl_double_Sg__ancestors(gum::BayesNet< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
 SWIGINTERN gum::UndiGraph gum_BayesNet_Sl_double_Sg__moralizedAncestralGraph(gum::BayesNet< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -6547,24 +6489,18 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg____repr__(gum::BayesNet< double
    return s.str();
   }
 SWIGINTERN std::string gum_BayesNet_Sl_double_Sg____str__(gum::BayesNet< double > const *self){ return self->toString();}
-SWIGINTERN PyAgrumListOfInt *gum_BayesNetFragment_Sl_double_Sg__ids(gum::BayesNetFragment< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PyListFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__nodeset(gum::BayesNetFragment< double > *self,std::vector< std::string,std::allocator< std::string > > const &names){
-    return PyAgrumHelper::PySetFromNodeVect(self->ids(names));
-  }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_0(gum::BayesNetFragment< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN gum::NodeSet gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_0(gum::BayesNetFragment< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+    return self->minimalCondSet(target, soids);
   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_1(gum::BayesNetFragment< double > const *self,PyObject *targets,PyObject *list){
+SWIGINTERN gum::NodeSet gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_1(gum::BayesNetFragment< double > const *self,PyObject *targets,PyObject *list){
     gum::NodeSet sotargets;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,self->variableNodeMap());
 
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
-    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
+    return self->minimalCondSet(sotargets, soids);
   }
 SWIGINTERN bool gum_BayesNetFragment_Sl_double_Sg__isIndependent__SWIG_0(gum::BayesNetFragment< double > *self,PyObject *X,PyObject *Y,PyObject *Z){
     gum::NodeSet nx,ny,nz;
@@ -6579,38 +6515,14 @@ SWIGINTERN bool gum_BayesNetFragment_Sl_double_Sg__isIndependent__SWIG_1(gum::Ba
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(ny,Y,self->variableNodeMap());
     return self->isIndependent(nx,ny,nz);
   }
-SWIGINTERN PyAgrumSetOfStr *gum_BayesNetFragment_Sl_double_Sg__names(gum::BayesNetFragment< double > const *self){
-     PyObject* q=PySet_New(0);
-
-     PyObject* pyval;
-     for ( auto node : self->nodes()) {
-       pyval=PyUnicode_FromString(self->variable(node).name().c_str());
-       PySet_Add(q,pyval);
-       Py_DecRef(pyval);
-     }
-     return q;
+SWIGINTERN gum::Set< std::string > gum_BayesNetFragment_Sl_double_Sg__names(gum::BayesNetFragment< double > const *self){
+     gum::Set<std::string> res;
+     for ( auto node : self->nodes()) res.insert(self->variable(node).name());
+     return res;
   }
 SWIGINTERN gum::NodeGraphPart const &gum_BayesNetFragment_Sl_double_Sg__nodes(gum::BayesNetFragment< double > const *self){
     return self->nodes();
   }
-SWIGINTERN PyAgrumSetOfArc *gum_BayesNetFragment_Sl_double_Sg__arcs(gum::BayesNetFragment< double > const *self){
-     return PyAgrumHelper::PySetFromArcSet(self->arcs());
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__parents(gum::BayesNetFragment< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->parents(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__children(gum::BayesNetFragment< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->children(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__family(gum::BayesNetFragment< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->family(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__descendants(gum::BayesNetFragment< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->descendants(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
-SWIGINTERN PyAgrumSetOfInt *gum_BayesNetFragment_Sl_double_Sg__ancestors(gum::BayesNetFragment< double > const *self,PyObject *norid){
-     return PyAgrumHelper::PySetFromNodeSet(self->ancestors(PyAgrumHelper::nodeIdFromNameOrIndex(norid,self->variableNodeMap())));
-   }
 SWIGINTERN gum::UndiGraph gum_BayesNetFragment_Sl_double_Sg__moralizedAncestralGraph(gum::BayesNetFragment< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -6619,14 +6531,14 @@ SWIGINTERN gum::UndiGraph gum_BayesNetFragment_Sl_double_Sg__moralizedAncestralG
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__updateEvidence(gum::LazyPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setTargets(gum::LazyPropagation< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LazyPropagation_Sl_double_Sg__hardEvidenceNodes(gum::LazyPropagation< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LazyPropagation_Sl_double_Sg__hardEvidenceNodes(gum::LazyPropagation< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LazyPropagation_Sl_double_Sg__softEvidenceNodes(gum::LazyPropagation< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LazyPropagation_Sl_double_Sg__softEvidenceNodes(gum::LazyPropagation< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LazyPropagation_Sl_double_Sg__targets(gum::LazyPropagation< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LazyPropagation_Sl_double_Sg__targets(gum::LazyPropagation< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LazyPropagation_Sl_double_Sg__evidenceImpact(gum::LazyPropagation< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -6679,8 +6591,8 @@ SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__isJointTarget(gum::LazyPropaga
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
-SWIGINTERN PyAgrumListOfSetOfInt *gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPropagation< double > const *self){
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedInference<double>::jointTargets());
+SWIGINTERN gum::Set< gum::NodeSet > const &gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPropagation< double > const *self){
+      return self->JointTargetedInference<double>::jointTargets();
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__makeInference(gum::LazyPropagation< double > *self){
     self->gum::MarginalTargetedInference<double>::makeInference();
@@ -6830,14 +6742,14 @@ SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__setMaxMemory(gum::LazyPropagat
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__setEvidence(gum::ShaferShenoyInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__updateEvidence(gum::ShaferShenoyInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__setTargets(gum::ShaferShenoyInference< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyInference_Sl_double_Sg__hardEvidenceNodes(gum::ShaferShenoyInference< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyInference< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyInference_Sl_double_Sg__softEvidenceNodes(gum::ShaferShenoyInference< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ShaferShenoyInference_Sl_double_Sg__targets(gum::ShaferShenoyInference< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_ShaferShenoyInference_Sl_double_Sg__targets(gum::ShaferShenoyInference< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_ShaferShenoyInference_Sl_double_Sg__evidenceImpact(gum::ShaferShenoyInference< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -6890,8 +6802,8 @@ SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__isJointTarget(gum::Shafe
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
-SWIGINTERN PyAgrumListOfSetOfInt *gum_ShaferShenoyInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyInference< double > const *self){
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedInference<double>::jointTargets());
+SWIGINTERN gum::Set< gum::NodeSet > const &gum_ShaferShenoyInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyInference< double > const *self){
+      return self->JointTargetedInference<double>::jointTargets();
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__makeInference(gum::ShaferShenoyInference< double > *self){
     self->gum::MarginalTargetedInference<double>::makeInference();
@@ -7041,14 +6953,14 @@ SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__setMaxMemory(gum::Shafer
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__updateEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setTargets(gum::VariableElimination< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_VariableElimination_Sl_double_Sg__hardEvidenceNodes(gum::VariableElimination< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_VariableElimination_Sl_double_Sg__hardEvidenceNodes(gum::VariableElimination< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_VariableElimination_Sl_double_Sg__softEvidenceNodes(gum::VariableElimination< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_VariableElimination_Sl_double_Sg__softEvidenceNodes(gum::VariableElimination< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_VariableElimination_Sl_double_Sg__targets(gum::VariableElimination< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_VariableElimination_Sl_double_Sg__targets(gum::VariableElimination< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_VariableElimination_Sl_double_Sg__evidenceImpact(gum::VariableElimination< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -7101,8 +7013,8 @@ SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isJointTarget(gum::Variabl
       PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,targets,self->BN().variableNodeMap());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
-SWIGINTERN PyAgrumListOfSetOfInt *gum_VariableElimination_Sl_double_Sg__jointTargets(gum::VariableElimination< double > const *self){
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedInference<double>::jointTargets());
+SWIGINTERN gum::Set< gum::NodeSet > const &gum_VariableElimination_Sl_double_Sg__jointTargets(gum::VariableElimination< double > const *self){
+      return self->JointTargetedInference<double>::jointTargets();
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__makeInference(gum::VariableElimination< double > *self){
     self->gum::MarginalTargetedInference<double>::makeInference();
@@ -7237,14 +7149,14 @@ SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setMaxMemory(gum::Variable
 SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setEvidence(gum::GibbsSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__updateEvidence(gum::GibbsSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setTargets(gum::GibbsSampling< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(gum::GibbsSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(gum::GibbsSampling< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(gum::GibbsSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(gum::GibbsSampling< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_GibbsSampling_Sl_double_Sg__targets(gum::GibbsSampling< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_GibbsSampling_Sl_double_Sg__targets(gum::GibbsSampling< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_GibbsSampling_Sl_double_Sg__evidenceImpact(gum::GibbsSampling< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -7398,14 +7310,14 @@ SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setDrawnAtRandom(gum::GibbsSampl
 SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setEvidence(gum::ImportanceSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__updateEvidence(gum::ImportanceSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setTargets(gum::ImportanceSampling< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(gum::ImportanceSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(gum::ImportanceSampling< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(gum::ImportanceSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(gum::ImportanceSampling< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_ImportanceSampling_Sl_double_Sg__targets(gum::ImportanceSampling< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_ImportanceSampling_Sl_double_Sg__targets(gum::ImportanceSampling< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_ImportanceSampling_Sl_double_Sg__evidenceImpact(gum::ImportanceSampling< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -7555,14 +7467,14 @@ SWIGINTERN gum::Tensor< double > const &gum_ImportanceSampling_Sl_double_Sg__cur
 SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setEvidence(gum::WeightedSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__updateEvidence(gum::WeightedSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setTargets(gum::WeightedSampling< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(gum::WeightedSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(gum::WeightedSampling< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(gum::WeightedSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(gum::WeightedSampling< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_WeightedSampling_Sl_double_Sg__targets(gum::WeightedSampling< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_WeightedSampling_Sl_double_Sg__targets(gum::WeightedSampling< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_WeightedSampling_Sl_double_Sg__evidenceImpact(gum::WeightedSampling< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -7712,14 +7624,14 @@ SWIGINTERN gum::Tensor< double > const &gum_WeightedSampling_Sl_double_Sg__curre
 SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setEvidence(gum::MonteCarloSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__updateEvidence(gum::MonteCarloSampling< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setTargets(gum::MonteCarloSampling< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(gum::MonteCarloSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(gum::MonteCarloSampling< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(gum::MonteCarloSampling< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(gum::MonteCarloSampling< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_MonteCarloSampling_Sl_double_Sg__targets(gum::MonteCarloSampling< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_MonteCarloSampling_Sl_double_Sg__targets(gum::MonteCarloSampling< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_MonteCarloSampling_Sl_double_Sg__evidenceImpact(gum::MonteCarloSampling< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -7869,14 +7781,14 @@ SWIGINTERN gum::Tensor< double > const &gum_MonteCarloSampling_Sl_double_Sg__cur
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__setEvidence(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__updateEvidence(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__setTargets(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__targets(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__targets(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__evidenceImpact(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -8026,14 +7938,14 @@ SWIGINTERN gum::Tensor< double > const &gum_LoopySamplingInference_Sl_double_Sc_
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__setEvidence(gum::LoopySamplingInference< double,gum::WeightedSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__updateEvidence(gum::LoopySamplingInference< double,gum::WeightedSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__setTargets(gum::LoopySamplingInference< double,gum::WeightedSampling > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__targets(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__targets(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__evidenceImpact(gum::LoopySamplingInference< double,gum::WeightedSampling > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -8183,14 +8095,14 @@ SWIGINTERN gum::Tensor< double > const &gum_LoopySamplingInference_Sl_double_Sc_
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__setEvidence(gum::LoopySamplingInference< double,gum::GibbsSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__updateEvidence(gum::LoopySamplingInference< double,gum::GibbsSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__setTargets(gum::LoopySamplingInference< double,gum::GibbsSampling > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__targets(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__targets(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__evidenceImpact(gum::LoopySamplingInference< double,gum::GibbsSampling > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -8346,14 +8258,14 @@ SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__se
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__setEvidence(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__updateEvidence(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__setTargets(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hardEvidenceNodes(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__softEvidenceNodes(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__targets(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__targets(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__evidenceImpact(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -8503,14 +8415,14 @@ SWIGINTERN gum::Tensor< double > const &gum_LoopySamplingInference_Sl_double_Sc_
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__updateEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setTargets(gum::LoopyBeliefPropagation< double > *self,PyObject *targets){}
-SWIGINTERN PyAgrumSetOfInt *gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceNodes(gum::LoopyBeliefPropagation< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceNodes(gum::LoopyBeliefPropagation< double > *self){
+      return self->hardEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceNodes(gum::LoopyBeliefPropagation< double > *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes());
+SWIGINTERN gum::NodeSet const &gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceNodes(gum::LoopyBeliefPropagation< double > *self){
+      return self->softEvidenceNodes();
     }
-SWIGINTERN PyAgrumSetOfInt *gum_LoopyBeliefPropagation_Sl_double_Sg__targets(gum::LoopyBeliefPropagation< double > const *self){
-      return PyAgrumHelper::PySetFromNodeSet(self->targets());
+SWIGINTERN gum::NodeSet const &gum_LoopyBeliefPropagation_Sl_double_Sg__targets(gum::LoopyBeliefPropagation< double > const *self){
+      return self->targets();
     }
 SWIGINTERN gum::Tensor< double > gum_LoopyBeliefPropagation_Sl_double_Sg__evidenceImpact(gum::LoopyBeliefPropagation< double > *self,PyObject *target,PyObject *evs){
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->BN().variableNodeMap());
@@ -8658,70 +8570,34 @@ SWIGINTERN gum::IBayesNet< double > const &gum_LoopyBeliefPropagation_Sl_double_
 SWIGINTERN PyAgrumDict *gum_ExactBNdistance_Sl_double_Sg__compute(gum::ExactBNdistance< double > *self){
   PyObject* q=PyDict_New();
 
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
+  auto setItem=[q](const char* key, PyObject* val) {
+    PyDict_SetItemString(q,key,val);
+    Py_DecRef(val);
+  };
+  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
+  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
+  setItem("klQP",PyFloat_FromDouble(self->klQP()));
+  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
+  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
+  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }
 SWIGINTERN PyAgrumDict *gum_GibbsBNdistance_Sl_double_Sg__compute(gum::GibbsBNdistance< double > *self){
   PyObject* q=PyDict_New();
 
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
+  auto setItem=[q](const char* key, PyObject* val) {
+    PyDict_SetItemString(q,key,val);
+    Py_DecRef(val);
+  };
+  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
+  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
+  setItem("klQP",PyFloat_FromDouble(self->klQP()));
+  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
+  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
+  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }
@@ -8751,35 +8627,17 @@ SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setDrawnAtRandom(gum::GibbsBNd
 SWIGINTERN PyAgrumDict *gum_MCBNDistance_Sl_double_Sg__compute(gum::MCBNDistance< double > *self){
   PyObject* q=PyDict_New();
 
-  PyObject* pyval;
-
-  pyval=PyFloat_FromDouble(self->klPQ());
-  PyDict_SetItemString(q,"klPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorPQ());
-  PyDict_SetItemString(q,"errorPQ",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->klQP());
-  PyDict_SetItemString(q,"klQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyLong_FromLong(self->errorQP());
-  PyDict_SetItemString(q,"errorQP",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->hellinger());
-  PyDict_SetItemString(q,"hellinger",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->bhattacharya());
-  PyDict_SetItemString(q,"bhattacharya",pyval);
-  Py_DecRef(pyval);
-
-  pyval=PyFloat_FromDouble(self->jsd());
-  PyDict_SetItemString(q,"jensen-shannon",pyval);
-  Py_DecRef(pyval);
+  auto setItem=[q](const char* key, PyObject* val) {
+    PyDict_SetItemString(q,key,val);
+    Py_DecRef(val);
+  };
+  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
+  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
+  setItem("klQP",PyFloat_FromDouble(self->klQP()));
+  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
+  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
+  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
+  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
 
   return q;
 }
@@ -8887,8 +8745,8 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
     self->useK2(v);
     return *self;
   }
-SWIGINTERN PyAgrumListOfArc *gum_learning_BNLearner_Sl_double_Sg__latentVariables(gum::learning::BNLearner< double > *self){
-    return PyAgrumHelper::PyListFromArcVect(self->latentVariables());
+SWIGINTERN std::vector< gum::Arc,std::allocator< gum::Arc > > gum_learning_BNLearner_Sl_double_Sg__latentVariables(gum::learning::BNLearner< double > *self){
+    return self->latentVariables();
   }
 SWIGINTERN PyAgrumDictState *gum_learning_BNLearner_Sl_double_Sg__state(gum::learning::BNLearner< double > *self){
     PyObject* res=PyDict_New();
@@ -10120,7 +9978,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_0(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -10140,14 +9998,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_0(PyObje
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::UndiGraph const &)*arg2,arg3);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::UndiGraph const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10162,7 +10021,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_1(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10181,14 +10040,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_1(PyObje
   arg2 = reinterpret_cast< gum::UndiGraph * >(argp2);
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::UndiGraph const &)*arg2);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::UndiGraph const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10204,7 +10064,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_2(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -10224,14 +10084,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_2(PyObje
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::DAG const &)*arg2,arg3);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::DAG const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10246,7 +10107,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_3(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10265,14 +10126,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_3(PyObje
   arg2 = reinterpret_cast< gum::DAG * >(argp2);
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::DAG const &)*arg2);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::DAG const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10288,7 +10150,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_4(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -10308,14 +10170,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_4(PyObje
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::BayesNet< double > const &)*arg2,arg3);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::BayesNet< double > const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -10330,7 +10193,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_5(PyObje
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  PyAgrumListOfInt *result = 0 ;
+  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -10349,14 +10212,15 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_5(PyObje
   arg2 = reinterpret_cast< gum::BayesNet< double > * >(argp2);
   {
     try {
-      result = (PyAgrumListOfInt *)((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::BayesNet< double > const &)*arg2);
+      result = ((JunctionTreeGenerator const *)arg1)->eliminationOrder((gum::BayesNet< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -43200,6 +43064,45 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_PAG_addNodes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::PAG *arg1 = 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyAgrumSetOfInt *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PAG_addNodes", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PAG_addNodes" "', argument " "1"" of type '" "gum::PAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PAG * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PAG_addNodes" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      result = (PyAgrumSetOfInt *)gum_PAG_addNodes((gum::PAG const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_PAG_addNode(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::PAG *arg1 = 0 ;
@@ -43225,46 +43128,6 @@ SWIGINTERN PyObject *_wrap_PAG_addNode(PyObject *self, PyObject *args) {
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_PAG_addNodes(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::PAG *arg1 = 0 ;
-  gum::Size arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  SwigValueWrapper< std::vector< std::size_t,std::allocator< std::size_t > > > result;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "PAG_addNodes", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__PAG, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PAG_addNodes" "', argument " "1"" of type '" "gum::PAG *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::PAG * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "PAG_addNodes" "', argument " "2"" of type '" "gum::Size""'");
-  } 
-  arg2 = static_cast< gum::Size >(val2);
-  {
-    try {
-      result = gum_PAG_addNodes(arg1,SWIG_STD_MOVE(*(&arg2)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  {
-    resultobj = PyAgrumHelper::PyListFromNodeVect(result);
-  }
   return resultobj;
 fail:
   return NULL;
@@ -69962,102 +69825,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IBayesNet_ids(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumListOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_ids", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_ids" "', argument " "1"" of type '" "gum::IBayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumListOfInt *)gum_IBayesNet_Sl_double_Sg__ids(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_nodeset(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_nodeset", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_nodeset" "', argument " "1"" of type '" "gum::IBayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__nodeset(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = 0 ;
@@ -70067,7 +69834,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_s
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -70084,14 +69851,15 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_s
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_0((gum::IBayesNet< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+      result = gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_0((gum::IBayesNet< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -70105,7 +69873,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_s
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -70118,14 +69886,15 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_s
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::IBayesNet< double > const *)arg1,arg2,arg3);
+      result = gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::IBayesNet< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -70272,7 +70041,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_names(PyObject *self, PyObject *args) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -70284,14 +70053,15 @@ SWIGINTERN PyObject *_wrap_IBayesNet_names(PyObject *self, PyObject *args) {
   arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_IBayesNet_Sl_double_Sg__names((gum::IBayesNet< double > const *)arg1);
+      result = gum_IBayesNet_Sl_double_Sg__names((gum::IBayesNet< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -70325,203 +70095,6 @@ SWIGINTERN PyObject *_wrap_IBayesNet_nodes(PyObject *self, PyObject *args) {
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_arcs(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfArc *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_arcs" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfArc *)gum_IBayesNet_Sl_double_Sg__arcs((gum::IBayesNet< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_parents(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_parents", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_parents" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__parents((gum::IBayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_children(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_children", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_children" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__children((gum::IBayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_family(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_family", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_family" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__family((gum::IBayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_descendants(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_descendants", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_descendants" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__descendants((gum::IBayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_IBayesNet_ancestors(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::IBayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_ancestors", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_ancestors" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_IBayesNet_Sl_double_Sg__ancestors((gum::IBayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -75124,102 +74697,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_ids(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumListOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_ids", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_ids" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumListOfInt *)gum_BayesNet_Sl_double_Sg__ids(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_nodeset(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_nodeset", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_nodeset" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__nodeset(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
@@ -75229,7 +74706,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_ss
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -75246,14 +74723,15 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_ss
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0((gum::BayesNet< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+      result = gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0((gum::BayesNet< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -75267,7 +74745,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_ss
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -75280,14 +74758,15 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_ss
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::BayesNet< double > const *)arg1,arg2,arg3);
+      result = gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::BayesNet< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -75434,7 +74913,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_names(PyObject *self, PyObject *args) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -75446,14 +74925,15 @@ SWIGINTERN PyObject *_wrap_BayesNet_names(PyObject *self, PyObject *args) {
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_BayesNet_Sl_double_Sg__names((gum::BayesNet< double > const *)arg1);
+      result = gum_BayesNet_Sl_double_Sg__names((gum::BayesNet< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -75487,203 +74967,6 @@ SWIGINTERN PyObject *_wrap_BayesNet_nodes(PyObject *self, PyObject *args) {
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_arcs(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfArc *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_arcs" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfArc *)gum_BayesNet_Sl_double_Sg__arcs((gum::BayesNet< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_parents(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_parents", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_parents" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__parents((gum::BayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_children(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_children", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_children" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__children((gum::BayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_family(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_family", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_family" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__family((gum::BayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_descendants(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_descendants", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_descendants" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__descendants((gum::BayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_ancestors(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNet_ancestors", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_ancestors" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNet_Sl_double_Sg__ancestors((gum::BayesNet< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -79615,102 +78898,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetFragment_ids(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumListOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_ids", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_ids" "', argument " "1"" of type '" "gum::BayesNetFragment< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumListOfInt *)gum_BayesNetFragment_Sl_double_Sg__ids(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_nodeset(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  std::vector< std::string > _tmp_vs2 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_nodeset", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_nodeset" "', argument " "1"" of type '" "gum::BayesNetFragment< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  {
-    if (!PySequence_Check(swig_obj[1]) || PyUnicode_Check(swig_obj[1])) {
-      PyErr_SetString(PyExc_TypeError, "expected a sequence of strings");
-      SWIG_fail;
-    }
-    Py_ssize_t _n = PySequence_Size(swig_obj[1]);
-    _tmp_vs2.reserve(static_cast<std::size_t>(_n));
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
-      if (!_item) SWIG_fail;
-      _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
-      Py_DECREF(_item);
-    }
-    arg2 = &_tmp_vs2;
-  }
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__nodeset(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNetFragment< double > *arg1 = 0 ;
@@ -79720,7 +78907,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_0(PyObject *sel
   int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -79737,14 +78924,15 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_0(PyObject *sel
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_0((gum::BayesNetFragment< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
+      result = gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_0((gum::BayesNetFragment< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -79758,7 +78946,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_1(PyObject *sel
   PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyAgrumSetOfInt *result = 0 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -79771,14 +78959,15 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_1(PyObject *sel
   arg3 = swig_obj[2];
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_1((gum::BayesNetFragment< double > const *)arg1,arg2,arg3);
+      result = gum_BayesNetFragment_Sl_double_Sg__minimalCondSet__SWIG_1((gum::BayesNetFragment< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -79925,7 +79114,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_names(PyObject *self, PyObject *args
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfStr *result = 0 ;
+  SwigValueWrapper< gum::Set< std::string > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -79937,14 +79126,15 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_names(PyObject *self, PyObject *args
   arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfStr *)gum_BayesNetFragment_Sl_double_Sg__names((gum::BayesNetFragment< double > const *)arg1);
+      result = gum_BayesNetFragment_Sl_double_Sg__names((gum::BayesNetFragment< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromStringSet(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -79978,203 +79168,6 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_nodes(PyObject *self, PyObject *args
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
   }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_arcs(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  PyAgrumSetOfArc *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_arcs" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  {
-    try {
-      result = (PyAgrumSetOfArc *)gum_BayesNetFragment_Sl_double_Sg__arcs((gum::BayesNetFragment< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_parents(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_parents", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_parents" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__parents((gum::BayesNetFragment< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_children(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_children", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_children" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__children((gum::BayesNetFragment< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_family(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_family", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_family" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__family((gum::BayesNetFragment< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_descendants(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_descendants", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_descendants" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__descendants((gum::BayesNetFragment< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNetFragment_ancestors(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNetFragment< double > *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[2] ;
-  PyAgrumSetOfInt *result = 0 ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_ancestors", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_ancestors" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
-  arg2 = swig_obj[1];
-  {
-    try {
-      result = (PyAgrumSetOfInt *)gum_BayesNetFragment_Sl_double_Sg__ancestors((gum::BayesNetFragment< double > const *)arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -80826,7 +79819,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_hardEvidenceNodes(PyObject *self, PyO
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -80838,14 +79831,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_hardEvidenceNodes(PyObject *self, PyO
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LazyPropagation_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LazyPropagation_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -80858,7 +79852,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_softEvidenceNodes(PyObject *self, PyO
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -80870,14 +79864,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_softEvidenceNodes(PyObject *self, PyO
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LazyPropagation_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LazyPropagation_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -80890,7 +79885,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_targets(PyObject *self, PyObject *arg
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -80902,14 +79897,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_targets(PyObject *self, PyObject *arg
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LazyPropagation_Sl_double_Sg__targets((gum::LazyPropagation< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_LazyPropagation_Sl_double_Sg__targets((gum::LazyPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -81147,7 +80143,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_jointTargets(PyObject *self, PyObject
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumListOfSetOfInt *result = 0 ;
+  gum::Set< gum::NodeSet > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -81159,14 +80155,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_jointTargets(PyObject *self, PyObject
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumListOfSetOfInt *)gum_LazyPropagation_Sl_double_Sg__jointTargets((gum::LazyPropagation< double > const *)arg1);
+      result = (gum::Set< gum::NodeSet > *) &gum_LazyPropagation_Sl_double_Sg__jointTargets((gum::LazyPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -84326,7 +83323,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hardEvidenceNodes(PyObject *sel
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -84338,14 +83335,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hardEvidenceNodes(PyObject *sel
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyInference_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyInference_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -84358,7 +83356,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_softEvidenceNodes(PyObject *sel
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -84370,14 +83368,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_softEvidenceNodes(PyObject *sel
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyInference_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyInference_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -84390,7 +83389,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_targets(PyObject *self, PyObjec
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -84402,14 +83401,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_targets(PyObject *self, PyObjec
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ShaferShenoyInference_Sl_double_Sg__targets((gum::ShaferShenoyInference< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_ShaferShenoyInference_Sl_double_Sg__targets((gum::ShaferShenoyInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -84647,7 +83647,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_jointTargets(PyObject *self, Py
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumListOfSetOfInt *result = 0 ;
+  gum::Set< gum::NodeSet > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -84659,14 +83659,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_jointTargets(PyObject *self, Py
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (PyAgrumListOfSetOfInt *)gum_ShaferShenoyInference_Sl_double_Sg__jointTargets((gum::ShaferShenoyInference< double > const *)arg1);
+      result = (gum::Set< gum::NodeSet > *) &gum_ShaferShenoyInference_Sl_double_Sg__jointTargets((gum::ShaferShenoyInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -87712,7 +86713,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_hardEvidenceNodes(PyObject *self,
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -87724,14 +86725,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_hardEvidenceNodes(PyObject *self,
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_VariableElimination_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_VariableElimination_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -87744,7 +86746,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_softEvidenceNodes(PyObject *self,
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -87756,14 +86758,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_softEvidenceNodes(PyObject *self,
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_VariableElimination_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_VariableElimination_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -87776,7 +86779,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_targets(PyObject *self, PyObject 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -87788,14 +86791,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_targets(PyObject *self, PyObject 
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_VariableElimination_Sl_double_Sg__targets((gum::VariableElimination< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_VariableElimination_Sl_double_Sg__targets((gum::VariableElimination< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -88034,7 +87038,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_jointTargets(PyObject *self, PyOb
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumListOfSetOfInt *result = 0 ;
+  gum::Set< gum::NodeSet > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -88046,14 +87050,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_jointTargets(PyObject *self, PyOb
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (PyAgrumListOfSetOfInt *)gum_VariableElimination_Sl_double_Sg__jointTargets((gum::VariableElimination< double > const *)arg1);
+      result = (gum::Set< gum::NodeSet > *) &gum_VariableElimination_Sl_double_Sg__jointTargets((gum::VariableElimination< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -90633,7 +89638,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_hardEvidenceNodes(PyObject *self, PyObj
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -90645,14 +89650,15 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_hardEvidenceNodes(PyObject *self, PyObj
   arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -90665,7 +89671,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_softEvidenceNodes(PyObject *self, PyObj
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -90677,14 +89683,15 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_softEvidenceNodes(PyObject *self, PyObj
   arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -90697,7 +89704,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_targets(PyObject *self, PyObject *args)
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -90709,14 +89716,15 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_targets(PyObject *self, PyObject *args)
   arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_GibbsSampling_Sl_double_Sg__targets((gum::GibbsSampling< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_GibbsSampling_Sl_double_Sg__targets((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -93947,7 +92955,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_hardEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -93959,14 +92967,15 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_hardEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -93979,7 +92988,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_softEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -93991,14 +93000,15 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_softEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -94011,7 +93021,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_targets(PyObject *self, PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -94023,14 +93033,15 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_targets(PyObject *self, PyObject *
   arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_ImportanceSampling_Sl_double_Sg__targets((gum::ImportanceSampling< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_ImportanceSampling_Sl_double_Sg__targets((gum::ImportanceSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -97125,7 +96136,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_hardEvidenceNodes(PyObject *self, Py
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -97137,14 +96148,15 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_hardEvidenceNodes(PyObject *self, Py
   arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -97157,7 +96169,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_softEvidenceNodes(PyObject *self, Py
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -97169,14 +96181,15 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_softEvidenceNodes(PyObject *self, Py
   arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -97189,7 +96202,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_targets(PyObject *self, PyObject *ar
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -97201,14 +96214,15 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_targets(PyObject *self, PyObject *ar
   arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_WeightedSampling_Sl_double_Sg__targets((gum::WeightedSampling< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_WeightedSampling_Sl_double_Sg__targets((gum::WeightedSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -100303,7 +99317,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_hardEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -100315,14 +99329,15 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_hardEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -100335,7 +99350,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_softEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -100347,14 +99362,15 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_softEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -100367,7 +99383,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_targets(PyObject *self, PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -100379,14 +99395,15 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_targets(PyObject *self, PyObject *
   arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_MonteCarloSampling_Sl_double_Sg__targets((gum::MonteCarloSampling< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_MonteCarloSampling_Sl_double_Sg__targets((gum::MonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -103579,7 +102596,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hardEvidenceNodes(PyObject *s
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -103591,14 +102608,15 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hardEvidenceNodes(PyObject *s
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -103611,7 +102629,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_softEvidenceNodes(PyObject *s
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -103623,14 +102641,15 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_softEvidenceNodes(PyObject *s
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -103643,7 +102662,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_targets(PyObject *self, PyObj
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -103655,14 +102674,15 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_targets(PyObject *self, PyObj
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__targets((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__targets((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -106855,7 +105875,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hardEvidenceNodes(PyObject *sel
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -106867,14 +105887,15 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hardEvidenceNodes(PyObject *sel
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -106887,7 +105908,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_softEvidenceNodes(PyObject *sel
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -106899,14 +105920,15 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_softEvidenceNodes(PyObject *sel
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -106919,7 +105941,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_targets(PyObject *self, PyObjec
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -106931,14 +105953,15 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_targets(PyObject *self, PyObjec
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__targets((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__targets((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -110131,7 +109154,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hardEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -110143,14 +109166,15 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hardEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -110163,7 +109187,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_softEvidenceNodes(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -110175,14 +109199,15 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_softEvidenceNodes(PyObject *self, 
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -110195,7 +109220,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_targets(PyObject *self, PyObject *
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -110207,14 +109232,15 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_targets(PyObject *self, PyObject *
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__targets((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__targets((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -113611,7 +112637,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hardEvidenceNodes(PyObject *s
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -113623,14 +112649,15 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hardEvidenceNodes(PyObject *s
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -113643,7 +112670,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_softEvidenceNodes(PyObject *s
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -113655,14 +112682,15 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_softEvidenceNodes(PyObject *s
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -113675,7 +112703,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_targets(PyObject *self, PyObj
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -113687,14 +112715,15 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_targets(PyObject *self, PyObj
   arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__targets((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
+      result = (gum::NodeSet *) &gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__targets((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -116789,7 +115818,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hardEvidenceNodes(PyObject *se
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -116801,14 +115830,15 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hardEvidenceNodes(PyObject *se
   arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -116821,7 +115851,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_softEvidenceNodes(PyObject *se
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -116833,14 +115863,15 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_softEvidenceNodes(PyObject *se
   arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (gum::NodeSet *) &gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -116853,7 +115884,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_targets(PyObject *self, PyObje
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumSetOfInt *result = 0 ;
+  gum::NodeSet *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -116865,14 +115896,15 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_targets(PyObject *self, PyObje
   arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
   {
     try {
-      result = (PyAgrumSetOfInt *)gum_LoopyBeliefPropagation_Sl_double_Sg__targets((gum::LoopyBeliefPropagation< double > const *)arg1);
+      result = (gum::NodeSet *) &gum_LoopyBeliefPropagation_Sl_double_Sg__targets((gum::LoopyBeliefPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -129469,7 +128501,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_latentVariables(PyObject *self, PyObject *a
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  PyAgrumListOfArc *result = 0 ;
+  SwigValueWrapper< std::vector< gum::Arc,std::allocator< gum::Arc > > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -129481,14 +128513,15 @@ SWIGINTERN PyObject *_wrap_BNLearner_latentVariables(PyObject *self, PyObject *a
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
   {
     try {
-      result = (PyAgrumListOfArc *)gum_learning_BNLearner_Sl_double_Sg__latentVariables(arg1);
+      result = gum_learning_BNLearner_Sl_double_Sg__latentVariables(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
-  if (!resultobj) SWIG_fail;
+  {
+    resultobj = PyAgrumHelper::PyListFromArcVect(result);
+  }
   return resultobj;
 fail:
   return NULL;
@@ -136651,16 +135684,6 @@ static PyMethodDef SwigMethods[] = {
 		"    dot-format string\n"
 		"\n"
 		""},
-	 { "PAG_addNode", _wrap_PAG_addNode, METH_O, "\n"
-		"\n"
-		"Add a new node to the PAG and return its id.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"int\n"
-		"    the new NodeId\n"
-		"\n"
-		""},
 	 { "PAG_addNodes", _wrap_PAG_addNodes, METH_VARARGS, "\n"
 		"\n"
 		"Add n new nodes to the PAG.\n"
@@ -136672,8 +135695,18 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"list of int\n"
+		"set of int\n"
 		"    the new NodeIds\n"
+		"\n"
+		""},
+	 { "PAG_addNode", _wrap_PAG_addNode, METH_O, "\n"
+		"\n"
+		"Add a new node to the PAG and return its id.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int\n"
+		"    the new NodeId\n"
 		"\n"
 		""},
 	 { "PAG_addNodeWithId", _wrap_PAG_addNodeWithId, METH_VARARGS, "\n"
@@ -138060,7 +137093,21 @@ static PyMethodDef SwigMethods[] = {
 		"  True if `tail->head` is an arc.\n"
 		"\n"
 		""},
-	 { "DAGmodel_parents", _wrap_DAGmodel_parents, METH_VARARGS, NULL},
+	 { "DAGmodel_parents", _wrap_DAGmodel_parents, METH_VARARGS, "\n"
+		"\n"
+		"give the set of nodeid of the parents of a node (or of a set of nodes)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"norid : str|int|set[int]|list[str]\n"
+		"  the name or the id of the node, or a set of ids or a list of names\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"set\n"
+		"  the set of ids of the parents.\n"
+		"\n"
+		""},
 	 { "DAGmodel_family", _wrap_DAGmodel_family, METH_VARARGS, "\n"
 		"\n"
 		"give the set of parents of a node and the node\n"
@@ -138076,7 +137123,21 @@ static PyMethodDef SwigMethods[] = {
 		"  the set of nodeId of the family of the node `norid`\n"
 		"\n"
 		""},
-	 { "DAGmodel_children", _wrap_DAGmodel_children, METH_VARARGS, NULL},
+	 { "DAGmodel_children", _wrap_DAGmodel_children, METH_VARARGS, "\n"
+		"\n"
+		"give the set of nodeid of the children of a node (or of a set of nodes)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"norid : str|int|set[int]|list[str]\n"
+		"  the name or the id of the node, or a set of ids or a list of names\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"set\n"
+		"  the set of ids of the children.\n"
+		"\n"
+		""},
 	 { "DAGmodel_descendants", _wrap_DAGmodel_descendants, METH_VARARGS, "\n"
 		"\n"
 		"give the set of nodeid of descendants of a node\n"
@@ -138272,7 +137333,14 @@ static PyMethodDef SwigMethods[] = {
 		"    True if there is a node with such a name or id\n"
 		"\n"
 		""},
-	 { "UGmodel_edges", _wrap_UGmodel_edges, METH_O, NULL},
+	 { "UGmodel_edges", _wrap_UGmodel_edges, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"set\n"
+		"    the set of edges in the Markov random field\n"
+		"\n"
+		""},
 	 { "UGmodel_existsEdge", _wrap_UGmodel_existsEdge, METH_VARARGS, "\n"
 		"\n"
 		"Check whether an edge exists between two nodes.\n"
@@ -138290,7 +137358,21 @@ static PyMethodDef SwigMethods[] = {
 		"    True if the edge exists\n"
 		"\n"
 		""},
-	 { "UGmodel_neighbours", _wrap_UGmodel_neighbours, METH_VARARGS, NULL},
+	 { "UGmodel_neighbours", _wrap_UGmodel_neighbours, METH_VARARGS, "\n"
+		"\n"
+		"Return the set of neighbours of a node.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"norid : str|int\n"
+		"    the name or the id of the node\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"set[int]\n"
+		"    the set of neighbour node ids\n"
+		"\n"
+		""},
 	 { "UGmodel_isIndependent", _wrap_UGmodel_isIndependent, METH_VARARGS, "\n"
 		"\n"
 		"check if nodes X and nodes Y are independent given nodes Z\n"
@@ -141336,36 +140418,6 @@ static PyMethodDef SwigMethods[] = {
 		"  the memory footprint in bytes of the Bayesian network\n"
 		"\n"
 		""},
-	 { "IBayesNet_ids", _wrap_IBayesNet_ids, METH_VARARGS, "\n"
-		"\n"
-		"List of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list of int\n"
-		"    The ids for the list of names of the graph variables\n"
-		"\n"
-		""},
-	 { "IBayesNet_nodeset", _wrap_IBayesNet_nodeset, METH_VARARGS, "\n"
-		"\n"
-		"Set of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"    The set of ids for the list of names of the graph variables\n"
-		"\n"
-		""},
 	 { "IBayesNet_minimalCondSet", _wrap_IBayesNet_minimalCondSet, METH_VARARGS, "\n"
 		"\n"
 		"Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.\n"
@@ -141425,85 +140477,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
-		"\n"
-		""},
-	 { "IBayesNet_arcs", _wrap_IBayesNet_arcs, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list\n"
-		"    The lisf of arcs in the IBayesNet\n"
-		"\n"
-		""},
-	 { "IBayesNet_parents", _wrap_IBayesNet_parents, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id :\n"
-		"    The id of the child node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of the parents ids.\n"
-		"\n"
-		""},
-	 { "IBayesNet_children", _wrap_IBayesNet_children, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id : int\n"
-		"  the id of the parent\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of all the children\n"
-		"\n"
-		""},
-	 { "IBayesNet_family", _wrap_IBayesNet_family, METH_VARARGS, "\n"
-		"\n"
-		"give the set of parents of a node and the node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of nodeId of the family of the node `norid`\n"
-		"\n"
-		""},
-	 { "IBayesNet_descendants", _wrap_IBayesNet_descendants, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of descendants of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
-		"\n"
-		""},
-	 { "IBayesNet_ancestors", _wrap_IBayesNet_ancestors, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of ancestors of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
 		"\n"
 		""},
 	 { "IBayesNet_moralizedAncestralGraph", _wrap_IBayesNet_moralizedAncestralGraph, METH_VARARGS, "\n"
@@ -142335,36 +141308,6 @@ static PyMethodDef SwigMethods[] = {
 		"    if no variable with this name exists in the model\n"
 		"\n"
 		""},
-	 { "BayesNet_ids", _wrap_BayesNet_ids, METH_VARARGS, "\n"
-		"\n"
-		"List of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list of int\n"
-		"    The ids for the list of names of the graph variables\n"
-		"\n"
-		""},
-	 { "BayesNet_nodeset", _wrap_BayesNet_nodeset, METH_VARARGS, "\n"
-		"\n"
-		"Set of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"    The set of ids for the list of names of the graph variables\n"
-		"\n"
-		""},
 	 { "BayesNet_minimalCondSet", _wrap_BayesNet_minimalCondSet, METH_VARARGS, "\n"
 		"\n"
 		"Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.\n"
@@ -142424,85 +141367,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
-		"\n"
-		""},
-	 { "BayesNet_arcs", _wrap_BayesNet_arcs, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list\n"
-		"    The lisf of arcs in the IBayesNet\n"
-		"\n"
-		""},
-	 { "BayesNet_parents", _wrap_BayesNet_parents, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id :\n"
-		"    The id of the child node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of the parents ids.\n"
-		"\n"
-		""},
-	 { "BayesNet_children", _wrap_BayesNet_children, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id : int\n"
-		"  the id of the parent\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of all the children\n"
-		"\n"
-		""},
-	 { "BayesNet_family", _wrap_BayesNet_family, METH_VARARGS, "\n"
-		"\n"
-		"give the set of parents of a node and the node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of nodeId of the family of the node `norid`\n"
-		"\n"
-		""},
-	 { "BayesNet_descendants", _wrap_BayesNet_descendants, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of descendants of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
-		"\n"
-		""},
-	 { "BayesNet_ancestors", _wrap_BayesNet_ancestors, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of ancestors of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
 		"\n"
 		""},
 	 { "BayesNet_moralizedAncestralGraph", _wrap_BayesNet_moralizedAncestralGraph, METH_VARARGS, "\n"
@@ -143146,36 +142010,6 @@ static PyMethodDef SwigMethods[] = {
 		"    a constant reference to the dag of this BayesNet.\n"
 		"\n"
 		""},
-	 { "BayesNetFragment_ids", _wrap_BayesNetFragment_ids, METH_VARARGS, "\n"
-		"\n"
-		"List of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list of int\n"
-		"    The ids for the list of names of the graph variables\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_nodeset", _wrap_BayesNetFragment_nodeset, METH_VARARGS, "\n"
-		"\n"
-		"Set of ids for a list of names of variables in the model\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"lov : list of str\n"
-		"  List of variable names\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"    The set of ids for the list of names of the graph variables\n"
-		"\n"
-		""},
 	 { "BayesNetFragment_minimalCondSet", _wrap_BayesNetFragment_minimalCondSet, METH_VARARGS, "\n"
 		"\n"
 		"Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.\n"
@@ -143235,85 +142069,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_arcs", _wrap_BayesNetFragment_arcs, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"list\n"
-		"    The lisf of arcs in the IBayesNet\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_parents", _wrap_BayesNetFragment_parents, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id :\n"
-		"    The id of the child node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of the parents ids.\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_children", _wrap_BayesNetFragment_children, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"id : int\n"
-		"  the id of the parent\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"Set\n"
-		"    the set of all the children\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_family", _wrap_BayesNetFragment_family, METH_VARARGS, "\n"
-		"\n"
-		"give the set of parents of a node and the node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of nodeId of the family of the node `norid`\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_descendants", _wrap_BayesNetFragment_descendants, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of descendants of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
-		"\n"
-		""},
-	 { "BayesNetFragment_ancestors", _wrap_BayesNetFragment_ancestors, METH_VARARGS, "\n"
-		"\n"
-		"give the set of nodeid of ancestors of a node\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"norid : str|int\n"
-		"  the name or the id of the node\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
 		"\n"
 		""},
 	 { "BayesNetFragment_moralizedAncestralGraph", _wrap_BayesNetFragment_moralizedAncestralGraph, METH_VARARGS, "\n"

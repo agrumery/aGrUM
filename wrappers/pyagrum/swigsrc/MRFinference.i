@@ -137,14 +137,14 @@ def setTargets(self, targets):
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
 
-    PyAgrumSetOfInt* hardEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+    const gum::NodeSet& hardEvidenceNodes() {
+      return self->hardEvidenceNodes();
     }
-    PyAgrumSetOfInt* softEvidenceNodes() {
-      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+    const gum::NodeSet& softEvidenceNodes() {
+      return self->softEvidenceNodes();
     }
-    PyAgrumSetOfInt* targets() {
-      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+    const gum::NodeSet& targets() {
+      return self->targets();
     }
     Tensor<double> evidenceImpact(PyObject* target,PyObject *evs) {
       gum::NodeId itarget=PyAgrumHelper::nodeIdFromNameOrIndex(target,self->MRF().variableNodeMap());
@@ -208,8 +208,8 @@ IMPROVE_MRF_INFERENCE_API(ShaferShenoyMRFInference<double>)
       return self->gum::JointTargetedMRFInference<double>::isJointTarget(nodeset);
     }
 
-    PyAgrumListOfSetOfInt* jointTargets() const {
-      return PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(self->JointTargetedMRFInference<double>::jointTargets());
+    const gum::Set< gum::NodeSet >& jointTargets() const {
+      return self->JointTargetedMRFInference<double>::jointTargets();
     }
 }
 %enddef

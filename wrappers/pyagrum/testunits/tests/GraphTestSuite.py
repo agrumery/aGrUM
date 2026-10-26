@@ -63,6 +63,8 @@ class TestGraph(pyAgrumTestCase):
     self._testAddNodes(gum.UndiGraph())
     self._testAddNodes(gum.MixedGraph())
     self._testAddNodes(gum.DAG())
+    self._testAddNodes(gum.PDAG())
+    self._testAddNodes(gum.PAG())
 
   def testConstructorFromUG(self):
     ug = gum.UndiGraph()
