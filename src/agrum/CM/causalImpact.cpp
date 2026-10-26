@@ -47,7 +47,7 @@
 #include <agrum/CM/causalImpact.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::CausalImpact< double >;
+template class GUM_PUBLIC_CM gum::CausalImpact< double >;
 
 template gum::Instantiation
     gum::makeInstantiationFromValues< double >(const gum::Tensor< double >&,

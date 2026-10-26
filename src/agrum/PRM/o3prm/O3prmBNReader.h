@@ -142,7 +142,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-extern template class gum::O3prmBNReader< double >;
+extern template class GUM_PUBLIC_PRM gum::O3prmBNReader< double >;
 #endif
 
 

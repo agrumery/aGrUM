@@ -108,7 +108,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumIDReader< double >;
+  extern template class GUM_PUBLIC_ID GumIDReader< double >;
 #endif
 } /* namespace gum */
 

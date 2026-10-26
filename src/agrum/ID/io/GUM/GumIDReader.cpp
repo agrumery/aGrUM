@@ -43,5 +43,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::GumIDReader< double >;
+template class GUM_PUBLIC_ID gum::GumIDReader< double >;
 #endif

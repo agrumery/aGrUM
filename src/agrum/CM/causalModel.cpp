@@ -42,5 +42,5 @@
 #include <agrum/CM/causalModel.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::CausalModel< double >;
+template class GUM_PUBLIC_CM gum::CausalModel< double >;
 #endif

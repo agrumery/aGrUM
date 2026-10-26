@@ -99,7 +99,7 @@ namespace gum {
    * @tparam GUM_ELEMENT Numeric type used in potentials (e.g., double).
    */
   template < GUM_Numeric GUM_ELEMENT >
-  class PYGUM_PUBLIC Counterfactual {
+  class Counterfactual {
     public:
     using VarName = std::string;
     using ValName = std::string;

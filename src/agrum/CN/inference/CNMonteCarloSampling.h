@@ -77,8 +77,7 @@ namespace gum {
      * the test is made once
      */
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
-    class PYGUM_PUBLIC CNMonteCarloSampling:
-        public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
+    class CNMonteCarloSampling: public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
@@ -150,9 +149,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class CNMonteCarloSampling< float, LazyPropagation< float > >;
+    extern template class GUM_PUBLIC_CN CNMonteCarloSampling< float, LazyPropagation< float > >;
 
-    extern template class CNMonteCarloSampling< double, LazyPropagation< double > >;
+    extern template class GUM_PUBLIC_CN CNMonteCarloSampling< double, LazyPropagation< double > >;
 #endif
 
 

@@ -71,7 +71,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < GUM_Numeric GUM_SCALAR >
-    class PYGUM_PUBLIC InferenceEngine: public ApproximationScheme, public ThreadNumberManager {
+    class InferenceEngine: public ApproximationScheme, public ThreadNumberManager {
       using credalSet = NodeProperty< std::vector< std::vector< GUM_SCALAR > > >;
       using margi     = NodeProperty< std::vector< GUM_SCALAR > >;
       using expe      = NodeProperty< GUM_SCALAR >;
@@ -604,7 +604,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class InferenceEngine< double >;
+    extern template class GUM_PUBLIC_CN InferenceEngine< double >;
 #endif
   }   // namespace credal
 }   // namespace gum

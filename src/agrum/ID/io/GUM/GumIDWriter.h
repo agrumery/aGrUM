@@ -140,7 +140,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class GumIDWriter< double >;
+  extern template class GUM_PUBLIC_ID GumIDWriter< double >;
 #endif
 } /* namespace gum */
 

@@ -50,5 +50,5 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-template class gum::credal::InferenceEngine< double >;
+template class GUM_PUBLIC_CN gum::credal::InferenceEngine< double >;
 #endif

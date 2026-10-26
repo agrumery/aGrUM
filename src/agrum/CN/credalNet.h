@@ -98,7 +98,7 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6)
      */
     template < GUM_Numeric GUM_SCALAR >
-    class PYGUM_PUBLIC CredalNet {
+    class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
       enum class NodeType : char { Precise, Credal, Vacuous, Indic };
@@ -727,7 +727,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-    extern template class CredalNet< double >;
+    extern template class GUM_PUBLIC_CN CredalNet< double >;
 #endif
   }   // namespace credal
 }   // namespace gum

@@ -79,7 +79,7 @@ namespace gum {
    * AST first and initialize `result` in the initializer list (single shot).
    */
   template < GUM_Numeric GUM_SCALAR >
-  class PYGUM_PUBLIC CausalImpact {
+  class CausalImpact {
     public:
     // --- Forwarded accessors for wrapping ---
     /// @brief Evaluates the formula's AST to compute the resulting probability distribution.
@@ -234,7 +234,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class CausalImpact< double >;
+  extern template class GUM_PUBLIC_CM CausalImpact< double >;
 #endif
 
 }   // namespace gum

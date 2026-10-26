@@ -93,7 +93,7 @@ namespace gum {
    *   those children are preserved or may be adjusted (implementation dependent).
    */
   template < GUM_Numeric GUM_SCALAR >
-  class PYGUM_PUBLIC CausalModel {
+  class CausalModel {
     private:
     /// the dot of the causal DAG, with a look and options
     std::string _toDot_(const dot::CausalDotStyle& style, const dot::DotOptions& options) const;
@@ -430,7 +430,7 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
-  extern template class CausalModel< double >;
+  extern template class GUM_PUBLIC_CM CausalModel< double >;
 #endif
 
 }   // namespace gum

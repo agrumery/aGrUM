@@ -44,7 +44,7 @@
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
 namespace gum {
 
-  template class Counterfactual< double >;
+  template class GUM_PUBLIC_CM Counterfactual< double >;
 
   template Tensor< double > counterfactual< double >(const CausalModel< double >&,
                                                      const Set< std::string >&,
