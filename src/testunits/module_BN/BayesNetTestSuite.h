@@ -1191,4 +1191,29 @@ namespace gum_tests {
       roots2.insert(root);
     CHECK_EQ(roots2.size(), gum::Size(1));
   }
+
+  GUM_TEST(FamilyRelationsOfMissingNode) {
+    auto       bn = gum::BayesNet< double >::fastPrototype("A->B->C;D");
+    const auto a  = bn.idFromName("A");
+    const auto d  = bn.idFromName("D");
+
+    // existing nodes, with or without relatives
+    CHECK_EQ(bn.parents(a).size(), gum::Size(0));
+    CHECK_EQ(bn.children(d).size(), gum::Size(0));
+    CHECK_EQ(bn.family(d), gum::NodeSet{d});
+    CHECK_EQ(bn.ancestors(a).size(), gum::Size(0));
+    CHECK_EQ(bn.descendants(d).size(), gum::Size(0));
+    CHECK_EQ(bn.parents("C"), gum::NodeSet{bn.idFromName("B")});
+
+    // a missing node
+    const gum::NodeId missing = 99;
+    CHECK_THROWS_AS(bn.parents(missing), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.children(missing), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.family(missing), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.ancestors(missing), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.descendants(missing), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.parents(gum::NodeSet{a, missing}), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.children(gum::NodeSet{missing}), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.parents("Z"), const gum::NotFound&);
+  }
 }   // namespace gum_tests

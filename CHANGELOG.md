@@ -11,10 +11,13 @@
     - `generateSample` (overloaded on `name_out`), `mutilateBN`, `MEU` and `meanVar` are annotated.
     - Bug fixes: memory corruption in `BNDatabaseGenerator.varOrder()` for node ids above 256, reference counting in
       `PRMexplorer`, memory leaks in `Tensor.argmin/argmax`, `MEU`/`meanVar` and when parsing Python sequences.
+      `BNLearner.useK2`/`setSliceOrder` with a wrong argument raise `TypeError` (instead of `SystemError`).
 
 - aGrUM
 
     - Leaf modules (CM, CN, ID, PRM): explicit template instantiations tagged `GUM_PUBLIC_<MODULE>` for shared builds.
+    - `DAGmodel` (BN, ID, CausalModel): `parents`, `children`, `family`, `ancestors` and `descendants` of a missing
+      node id raise `NotFound` (they returned an empty set, or `{id}` for `family`).
 
 ## Changelog for 3.3.1
 

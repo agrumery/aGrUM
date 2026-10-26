@@ -80,34 +80,62 @@ namespace gum {
     return existsArc(idFromName(nametail), idFromName(namehead));
   }
 
-  INLINE const NodeSet& DAGmodel::parents(const NodeId id) const { return dag_.parents(id); }
-
-  INLINE const NodeSet& DAGmodel::parents(std::string_view name) const {
-    return parents(idFromName(name));
+  INLINE void DAGmodel::_checkNodeExists_(NodeId id) const {
+    if (!dag_.exists(id)) GUM_ERROR(NotFound, "No node with id " << id << " in the model")
   }
 
-  INLINE NodeSet DAGmodel::family(const NodeId id) const { return dag_.family(id); }
+  // the arc part of the DAG stores no entry for a node without parents (or children): an empty
+  // result is the only case where the node may not exist, hence the only one to check
+  INLINE const NodeSet& DAGmodel::parents(const NodeId id) const {
+    const NodeSet& res = dag_.parents(id);
+    if (res.empty()) _checkNodeExists_(id);
+    return res;
+  }
+
+  // idFromName already checks that the node exists
+  INLINE const NodeSet& DAGmodel::parents(std::string_view name) const {
+    return dag_.parents(idFromName(name));
+  }
+
+  INLINE NodeSet DAGmodel::family(const NodeId id) const {
+    _checkNodeExists_(id);
+    return dag_.family(id);
+  }
 
   INLINE NodeSet DAGmodel::family(std::string_view name) const {
     return dag_.family(idFromName(name));
   }
 
-  INLINE const NodeSet& DAGmodel::children(const NodeId id) const { return dag_.children(id); }
+  INLINE const NodeSet& DAGmodel::children(const NodeId id) const {
+    const NodeSet& res = dag_.children(id);
+    if (res.empty()) _checkNodeExists_(id);
+    return res;
+  }
 
   INLINE const NodeSet& DAGmodel::children(std::string_view name) const {
     return dag_.children(idFromName(name));
   }
 
-  INLINE NodeSet DAGmodel::children(const NodeSet& ids) const { return dag_.children(ids); }
-
-  INLINE NodeSet DAGmodel::children(const std::vector< std::string >& names) const {
-    return children(nodeset(names));
+  INLINE NodeSet DAGmodel::children(const NodeSet& ids) const {
+    for (const auto id: ids)
+      _checkNodeExists_(id);
+    return dag_.children(ids);
   }
 
-  INLINE NodeSet DAGmodel::parents(const NodeSet& ids) const { return dag_.parents(ids); }
+  // nodeset already checks that the nodes exist
+  INLINE NodeSet DAGmodel::children(const std::vector< std::string >& names) const {
+    return dag_.children(nodeset(names));
+  }
 
+  INLINE NodeSet DAGmodel::parents(const NodeSet& ids) const {
+    for (const auto id: ids)
+      _checkNodeExists_(id);
+    return dag_.parents(ids);
+  }
+
+  // nodeset already checks that the nodes exist
   INLINE NodeSet DAGmodel::parents(const std::vector< std::string >& names) const {
-    return parents(nodeset(names));
+    return dag_.parents(nodeset(names));
   }
 
   INLINE bool DAGmodel::exists(NodeId node) const { return dag_.exists(node); }
@@ -126,16 +154,24 @@ namespace gum {
     return dag_.connectedComponents();
   }
 
-  INLINE NodeSet DAGmodel::descendants(const NodeId id) const { return dag_.descendants(id); }
-
-  INLINE NodeSet DAGmodel::descendants(std::string_view name) const {
-    return descendants(idFromName(name));
+  INLINE NodeSet DAGmodel::descendants(const NodeId id) const {
+    auto res = dag_.descendants(id);
+    if (res.empty()) _checkNodeExists_(id);
+    return res;
   }
 
-  INLINE NodeSet DAGmodel::ancestors(const NodeId id) const { return dag_.ancestors(id); }
+  INLINE NodeSet DAGmodel::descendants(std::string_view name) const {
+    return dag_.descendants(idFromName(name));
+  }
+
+  INLINE NodeSet DAGmodel::ancestors(const NodeId id) const {
+    auto res = dag_.ancestors(id);
+    if (res.empty()) _checkNodeExists_(id);
+    return res;
+  }
 
   INLINE NodeSet DAGmodel::ancestors(std::string_view name) const {
-    return ancestors(idFromName(name));
+    return dag_.ancestors(idFromName(name));
   }
 
   INLINE UndiGraph

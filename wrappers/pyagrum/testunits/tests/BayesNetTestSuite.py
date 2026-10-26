@@ -884,6 +884,13 @@ class TestGraphicalConcepts(BayesNetTestCase):
     self.assertEqual(bn.descendants("D"), {2, 4, 5, 6})
     with self.assertRaises(gum.NotFound):
       bn.parents("Z")
+    for relatives in (bn.parents, bn.children, bn.family, bn.ancestors, bn.descendants):
+      with self.assertRaises(gum.NotFound):
+        relatives(99)
+    with self.assertRaises(gum.NotFound):
+      bn.parents({0, 99})
+    with self.assertRaises(gum.NotFound):
+      bn.children({99})
     with self.assertRaises(TypeError):
       bn.parents(1.5)
     with self.assertRaises(TypeError):

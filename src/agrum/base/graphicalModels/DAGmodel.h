@@ -136,11 +136,13 @@ namespace gum {
      * ArcGraphPart is ingoing into the given node.
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
-     * the returned nodes*/
+     * the returned nodes
+     * @throws NotFound if the node does not exist in the model */
     const NodeSet& parents(const NodeId id) const;
     const NodeSet& parents(std::string_view name) const;
 
     /// returns the parents of a set of nodes
+    /** @throws NotFound if one of the nodes does not exist in the model */
     NodeSet parents(const NodeSet& ids) const;
     NodeSet parents(const std::vector< std::string >& names) const;
 
@@ -148,7 +150,8 @@ namespace gum {
     /**
      * @param id the node which is the head of an arc with the returned nodes
      * @param name the name of the node the node which is the head of an arc with
-     * the returned nodes*/
+     * the returned nodes
+     * @throws NotFound if the node does not exist in the model */
     NodeSet family(const NodeId id) const final;
     NodeSet family(std::string_view name) const final;
 
@@ -157,11 +160,13 @@ namespace gum {
      * is outgoing from the given node.
      * @param id the node which is the tail of an arc with the returned nodes
      * @param name the name of the node which is the tail of an arc with the
-     * returned nodes */
+     * returned nodes
+     * @throws NotFound if the node does not exist in the model */
     const NodeSet& children(const NodeId id) const;
     const NodeSet& children(std::string_view name) const;
 
     /// returns the children of a set of nodes
+    /** @throws NotFound if one of the nodes does not exist in the model */
     NodeSet children(const NodeSet& ids) const;
     NodeSet children(const std::vector< std::string >& names) const;
 
@@ -171,7 +176,8 @@ namespace gum {
      * @param id the node which is the tail of a directed path with the returned
      * nodes
      * @param name the name of the node which is the tail of a directed path with
-     * the returned nodes */
+     * the returned nodes
+     * @throws NotFound if the node does not exist in the model */
     NodeSet descendants(const NodeId id) const;
     NodeSet descendants(std::string_view name) const;
 
@@ -181,7 +187,8 @@ namespace gum {
      * @param id the node which is the head of a directed path with the returned
      * nodes
      * @param name the name of the node which is the head of a directed path with
-     * the returned nodes */
+     * the returned nodes
+     * @throws NotFound if the node does not exist in the model */
     NodeSet ancestors(const NodeId id) const;
     NodeSet ancestors(std::string_view name) const;
     /// @}
@@ -282,6 +289,10 @@ namespace gum {
 
     /// The DAG of this Directed Graphical Model.
     DAG dag_;
+
+    private:
+    /// @throws NotFound if id is not a node of the model
+    void _checkNodeExists_(NodeId id) const;
   };
 }   // namespace gum
 
