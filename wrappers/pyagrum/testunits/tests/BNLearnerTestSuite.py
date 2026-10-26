@@ -250,6 +250,19 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.MissingVariableInDatabase):
       learner.setSliceOrder([[SMOKING, LUNG], [BRONCHITIS, "CRUCRU?"], [TUBERCULOSIS]])
 
+  def test_wrong_argument_types_for_orders(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+    with self.assertRaises(TypeError):
+      learner.setSliceOrder(3)
+    with self.assertRaises(TypeError):
+      learner.setSliceOrder([SMOKING, LUNG])
+    with self.assertRaises(TypeError):
+      learner.setSliceOrder([[1.5]])
+    with self.assertRaises(TypeError):
+      learner.useK2("AB")
+    with self.assertRaises(TypeError):
+      learner.useK2([SMOKING])
+
   def test_totalOrder_with_names(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
     learner.setTotalOrder(

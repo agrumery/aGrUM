@@ -8693,16 +8693,16 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
 
     if (PyList_Check(l) == 0) {
       PyErr_SetString(PyExc_TypeError,
-                      "arg must be a sequence (of sequences of int or string)");
-      return  *self;
+                      "arg must be a list (of lists of int or string)");
+      throw PythonErrorAlreadySet();
     }
 
     for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
       PyObject* rows = PyList_GetItem(l, i);
       if (PyList_Check(rows) == 0) {
         PyErr_SetString(PyExc_TypeError,
-                        "arg must be a sequence of sequences (of int or string)");
-        return  *self;
+                        "arg must be a list of lists (of int or string)");
+        throw PythonErrorAlreadySet();
       }
 
       for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
@@ -8718,8 +8718,8 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
         }
 
         PyErr_SetString(PyExc_TypeError,
-                        "arg must be a sequence of sequence of int or string");
-        return  *self;
+                        "arg must be a list of lists of int or string");
+        throw PythonErrorAlreadySet();
       }
     }
     self->setSliceOrder(ranks);
@@ -8729,15 +8729,15 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
     std::vector< gum::NodeId > v;
 
     if (PyList_Check(l) == 0) {
-      PyErr_SetString(PyExc_TypeError, "arg must be a sequence");
-      return  *self;
+      PyErr_SetString(PyExc_TypeError, "arg must be a list");
+      throw PythonErrorAlreadySet();
     }
 
     for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
       PyObject* row = PyList_GetItem(l, i);
       if (PyLong_Check(row) == 0) {
-        PyErr_SetString(PyExc_TypeError, "arg must be a sequence of int");
-        return  *self;
+        PyErr_SetString(PyExc_TypeError, "arg must be a list of int");
+        throw PythonErrorAlreadySet();
       }
       v.push_back((gum::NodeId)PyLong_AsLong(row));
     }
