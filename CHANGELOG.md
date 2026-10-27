@@ -1,6 +1,6 @@
 # aGrUM Changelog
 
-## Changelog for next version
+## Changelog for 3.3.2
 
 - pyAgrum
 
