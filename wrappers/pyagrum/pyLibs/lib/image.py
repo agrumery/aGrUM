@@ -76,12 +76,12 @@ def export(obj: Any, filename: str | None = None, **kwargs) -> Any:
 
   Note
   ----
-    When exporting in pdf, you can adjust the margin with the config parameters `export_pdf_margin_x` and `export_pdf_margin_y` (in pixels, default 40 and 37 resp.). You can also adjust the size of the exported graph with the parameter `size` (default "8,5!").
+    When exporting in pdf, you can adjust the margin with the config parameters `notebook.exportPdfMarginX` and `notebook.exportPdfMarginY` (in pixels, default 50 and 37 resp.). You can also adjust the size of the exported graph with the parameter `size` (default "8,5!").
 
     pdf export with custom margin :
     ```
-    pyagrum.config.typed["notebook", "export_pdf_margin_x"] = 40
-    pyagrum.config.typed["notebook", "export_pdf_margin_y"] = 37
+    pyagrum.config.typed["notebook", "exportPdfMarginX"] = 40
+    pyagrum.config.typed["notebook", "exportPdfMarginY"] = 37
     ```
   """
   try:
@@ -161,7 +161,7 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   if isinstance(model, pyagrum.BayesNet):
     fig = BN2dot(model, **kwargs)
   elif isinstance(model, pyagrum.MarkovRandomField):
-    if pyagrum.config["notebook", "markovRandomFieldView"] == "graph":
+    if pyagrum.config["markovRandomField", "view"] == "graph":
       fig = MRF2UGdot(model, **kwargs)
     else:
       fig = MRF2FactorGraphdot(model, **kwargs)
@@ -251,7 +251,7 @@ def prepareShowInference(
       the obtained graph as a string
   """
   if size is None:
-    size = pyagrum.config["notebook", "graph_inference_size"]
+    size = pyagrum.config["notebook", "graphInferenceSize"]
 
   if evs is None:
     evs = {}
@@ -276,7 +276,7 @@ def prepareShowInference(
     )
   if isinstance(model, pyagrum.MarkovRandomField):
     if view is None:
-      view = pyagrum.config["notebook", "markovRandomFieldView"]
+      view = pyagrum.config["markovRandomField", "view"]
     if engine is None:
       engine = pyagrum.ShaferShenoyMRFInference(model)
 
@@ -453,7 +453,7 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "graph_inference_size"]
+    size = pyagrum.config["notebook", "graphInferenceSize"]
 
   svgtxt = dot_as_svg_string(prepareShowInference(model, **kwargs), size=size)
 

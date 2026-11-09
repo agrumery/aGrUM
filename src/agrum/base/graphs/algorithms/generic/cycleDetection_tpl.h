@@ -45,66 +45,47 @@
 
 namespace gum::graph {
 
+  namespace detail {
+    /// Kahn's algorithm: the nodes of g in a topological order, without the nodes of the directed
+    /// cycles and the nodes reachable from them (all the nodes iff g has no directed cycle)
+    template < GUM_DiGraphable G >
+    std::vector< NodeId > kahnOrder(const G& g) {
+      NodeProperty< Size >  indegree;
+      std::vector< NodeId > border;
+      for (const auto node: g.nodes()) {
+        const Size deg = g.parents(node).size();
+        indegree.insert(node, deg);
+        if (deg == 0) border.push_back(node);
+      }
+
+      std::vector< NodeId > order;
+      order.reserve(g.size());
+      while (!border.empty()) {
+        const NodeId node = border.back();
+        border.pop_back();
+        order.push_back(node);
+        for (const auto child: g.children(node))
+          if (--indegree[child] == 0) border.push_back(child);
+      }
+      return order;
+    }
+  }   // namespace detail
+
   template < GUM_DiGraphable G >
   Sequence< NodeId > topologicalOrder(const G& g) {
-    if (g.empty()) return {};
-
-    NodeProperty< Size >  indegree;
-    std::vector< NodeId > border;
-    border.reserve(g.size() / 2);
-
-    for (const auto node: g.nodes()) {
-      const auto& par = g.parents(node);
-      indegree.insert(node, par.size());
-      if (par.empty()) border.push_back(node);
-    }
-
-    if (border.empty())
-      GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
-
-    Sequence< NodeId > result;
-    while (!border.empty()) {
-      const NodeId root = border.back();
-      border.pop_back();
-
-      if (result.exists(root))
-        GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
-      result.insert(root);
-
-      for (const auto child: g.children(root)) {
-        const Size deg = indegree[child];
-        if (deg == 0)
-          GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
-        if (deg == 1) border.push_back(child);
-        indegree[child] = deg - 1;
-      }
-    }
-
+    const auto order = detail::kahnOrder(g);
     // the nodes of a cycle are never reached, even when there are nodes without parent elsewhere
-    if (result.size() != g.size())
+    if (order.size() != g.size())
       GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
+    Sequence< NodeId > result;
+    for (const auto node: order)
+      result.insert(node);
     return result;
   }
 
   template < GUM_DiGraphable G >
   bool hasDirectedCycle(const G& g) {
-    NodeProperty< Size >  indegree;
-    std::vector< NodeId > border;
-    for (const auto node: g.nodes()) {
-      const Size deg = g.parents(node).size();
-      indegree.insert(node, deg);
-      if (deg == 0) border.push_back(node);
-    }
-
-    Size nbRemoved = 0;
-    while (!border.empty()) {
-      const NodeId node = border.back();
-      border.pop_back();
-      ++nbRemoved;
-      for (const auto child: g.children(node))
-        if (--indegree[child] == 0) border.push_back(child);
-    }
-    return nbRemoved != g.size();
+    return detail::kahnOrder(g).size() != g.size();
   }
 
   template < GUM_MixedGraphable G >

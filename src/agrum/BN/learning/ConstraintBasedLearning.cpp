@@ -142,6 +142,11 @@ namespace gum {
       return meekRules_.propagateToDAG(learnMixedStructure(graph));
     }
 
+    DAG ConstraintBasedLearning::learnDAG(MixedGraph                  graph,
+                                          const NodeProperty< Size >& domainSizes) {
+      return meekRules_.propagateToDAG(learnMixedStructure(graph), domainSizes);
+    }
+
     // ##########################################################################
     // Constraint checks
     // ##########################################################################

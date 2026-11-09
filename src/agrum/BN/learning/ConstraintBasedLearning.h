@@ -61,6 +61,7 @@
 #include <agrum/config.h>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \
@@ -119,7 +120,22 @@ namespace gum {
 
       void setForbiddenGraph(const gum::DiGraph& forbidGraph);
       void setMandatoryGraph(const gum::DAG& mandaGraph);
+      /// set the maximum number of parents of a node of the learned DAG
+      /** The bound is used when orienting the v-structures, but the edges kept by the independence
+       * tests are never removed to satisfy it: when the DAG of learnDAG() or learnBN() exceeds it,
+       * OperationNotAllowed is raised or the DAG is returned (see setErrorOnExceededMaxIndegree).
+       * learnPDAG() does not check it. */
       void setMaxIndegree(gum::Size n);
+
+      /// when the learned DAG exceeds the maximum indegree: raise OperationNotAllowed (true) or
+      /// return it (false); initialized from the key `learning.errorOnExceededMaxIndegree`
+      void setErrorOnExceededMaxIndegree(bool error);
+
+      /// see setErrorOnExceededMaxIndegree
+      bool errorOnExceededMaxIndegree() const;
+
+      /// whether the last DAG learned by learnDAG() or learnBN() exceeds the maximum indegree
+      bool maxIndegreeExceeded() const;
       void addConstraints(const HashTable< std::pair< NodeId, NodeId >, char >& constraints);
       const std::vector< Arc > latentVariables() const;
 
@@ -131,10 +147,15 @@ namespace gum {
       /// @{
 
       /// learns the essential graph (CPDAG)
-      PDAG learnPDAG(MixedGraph graph);
+      virtual PDAG learnPDAG(MixedGraph graph);
 
       /// learns a DAG
-      DAG learnDAG(MixedGraph graph);
+      virtual DAG learnDAG(MixedGraph graph);
+
+      /// learns a DAG, looking for small CPTs when orienting the undirected edges
+      /** @param graph the initial graph
+       * @param domainSizes the domain size of each node (see MeekRules::propagateToDAG) */
+      virtual DAG learnDAG(MixedGraph graph, const NodeProperty< Size >& domainSizes);
 
       /// learns structure then estimates parameters
       template < GUM_Numeric GUM_SCALAR = double, typename PARAM_ESTIMATOR >
@@ -164,14 +185,21 @@ namespace gum {
       static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       static bool _existsNonTrivialDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       void        orientDoubleHeadedArcs_(MixedGraph& mg);
+
+      /// the unshielded triples (x, y, z), y < x: x and y are adjacent to z by an edge or by an arc
+      /// into z (e.g. a mandatory arc), and are not adjacent to each other
       std::vector< ThreePoints > unshieldedTriples_(const MixedGraph& graph);
 
       void applyStructuralConstraints_(MixedGraph& graph);
 
-      /// Builds a complete MixedGraph on the nodes of template_graph, minus edges
-      /// forbidden by structural constraints. Every constraint-based skeleton phase
-      /// must start from this graph so forbidden pairs are never tested by CI.
-      MixedGraph initGraph_(const MixedGraph& template_graph);
+      /// Builds a complete MixedGraph on the nodes of template_graph. The pairs forbidden in both
+      /// directions are removed unless keepForbiddenEdges is true: they are then tested like the
+      /// other pairs (so that they get a separating set) and must be removed at the end of the
+      /// skeleton phase by removeForbiddenEdges_().
+      MixedGraph initGraph_(const MixedGraph& template_graph, bool keepForbiddenEdges = false);
+
+      /// removes from graph the edges forbidden in both directions
+      void removeForbiddenEdges_(MixedGraph& graph);
 
       gum::MeekRules meekRules_;
 
@@ -186,6 +214,12 @@ namespace gum {
       bool isForbiddenEdge_(NodeId x, NodeId y) const;
       bool isMaxIndegree_(const MixedGraph& graph, NodeId x);
       bool isArcValid_(const MixedGraph& graph, NodeId x, NodeId y);
+
+      /// records whether dag exceeds the maximum indegree (see maxIndegreeExceeded())
+      /// @return dag
+      /// @throws OperationNotAllowed if a node of dag has more parents than the maximum indegree
+      /// and errorOnExceededMaxIndegree() is true
+      DAG checkMaxIndegree_(DAG dag);
 
       /// @}
 
@@ -202,6 +236,9 @@ namespace gum {
 
       private:
       gum::Size _maxIndegree_{std::numeric_limits< gum::Size >::max()};
+      bool      _errorOnExceededMaxIndegree_{
+          gum::config().typed< bool >("learning", "errorOnExceededMaxIndegree")};
+      bool _maxIndegreeExceeded_{false};
     };
 
   } /* namespace learning */

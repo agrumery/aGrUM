@@ -44,6 +44,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
+#include <utility>
+
 #include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/base/graphs/MPDAG.h>
 
@@ -56,9 +58,7 @@ namespace gum {
 
   MPDAG::MPDAG(const MPDAG& g) : ImmutableMixedGraph< PDAG >(g) { GUM_CONS_CPY(MPDAG); }
 
-  MPDAG::MPDAG(MPDAG&& g) noexcept : ImmutableMixedGraph< PDAG >(std::move(g)) {
-    GUM_CONS_MOV(MPDAG);
-  }
+  MPDAG::MPDAG(MPDAG&& g) : ImmutableMixedGraph< PDAG >(std::move(g)) { GUM_CONS_MOV(MPDAG); }
 
   MPDAG::~MPDAG() { GUM_DESTRUCTOR(MPDAG); }
 
@@ -70,7 +70,7 @@ namespace gum {
     return *this;
   }
 
-  MPDAG& MPDAG::operator=(MPDAG&& g) noexcept {
+  MPDAG& MPDAG::operator=(MPDAG&& g) {
     if (this != &g) {
       ImmutableMixedGraph< PDAG >::operator=(std::move(g));
       GUM_OP_MOV(MPDAG);
@@ -88,24 +88,27 @@ namespace gum {
   }
 
   MPDAG MPDAG::fromCPDAG(const CPDAG& cpdag, const ArcSet& arcs) {
-    PDAG pdag(cpdag.graph());
+    // built as a mixed graph then checked once by the PDAG constructor (PDAG::addArc would look for
+    // a directed path at each arc)
+    MixedGraph oriented(cpdag.graph());
     for (const auto& arc: arcs) {
-      if (pdag.existsArc(arc.tail(), arc.head())) continue;
-      if (!pdag.existsEdge(arc.tail(), arc.head()))
+      if (oriented.existsArc(arc.tail(), arc.head())) continue;
+      if (!oriented.existsEdge(arc.tail(), arc.head()))
         GUM_ERROR(InvalidArc, "The arc " << arc << " is not an orientation of an edge of the CPDAG")
-      pdag.eraseEdge(Edge(arc.tail(), arc.head()));
-      try {
-        pdag.addArc(arc.tail(), arc.head());
-      } catch (const InvalidDirectedCycle&) {
-        GUM_ERROR(InvalidArgument, "The background knowledge has a directed cycle through " << arc)
-      }
+      oriented.eraseEdge(Edge(arc.tail(), arc.head()));
+      oriented.addArc(arc.tail(), arc.head());
     }
-    // the knowledge must keep a DAG of the class: an extension with the v-structures of the CPDAG
-    auto extension = graph::consistentExtension(pdag);
-    if (!extension.has_value() || !(graph::cpdag(*extension) == cpdag.graph()))
-      GUM_ERROR(InvalidArgument, "The background knowledge is not consistent with the CPDAG")
-    auto closure = graph::meekClosure(pdag, *extension);
-    return MPDAG(std::move(closure), std::move(*extension));
+    try {
+      const PDAG pdag(oriented);
+      // the knowledge must keep a DAG of the class: an extension with the v-structures of the CPDAG
+      auto extension = graph::consistentExtension(pdag);
+      if (!extension.has_value() || !(graph::detail::cpdagGraph(*extension) == cpdag.graph()))
+        GUM_ERROR(InvalidArgument, "The background knowledge is not consistent with the CPDAG")
+      auto closure = graph::meekClosure(pdag, *extension);
+      return MPDAG(std::move(closure), std::move(*extension));
+    } catch (const InvalidDirectedCycle&) {
+      GUM_ERROR(InvalidArgument, "The background knowledge has a directed cycle")
+    }
   }
 
   MPDAG MPDAG::fromPDAG(const PDAG& pdag) {
@@ -127,7 +130,7 @@ namespace gum {
           && !dag.existsArc(edge.second(), edge.first()))
         return false;
     // the same v-structures as the class
-    return graph::cpdag(dag) == graph::cpdag(extension_);
+    return graph::detail::cpdagGraph(dag) == graph::detail::cpdagGraph(extension_);
   }
 
   CPDAG MPDAG::cpdag() const { return CPDAG::fromDAG(extension_); }

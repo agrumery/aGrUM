@@ -16,6 +16,8 @@
       `ctbn.latent_fgcolor`, no longer used, are deprecated after 3.3.2. The arcs of the drawings of `bnmixture` use
       `bnmixture.arcCmap` (it was read from `notebook.arcCmap`).
     - `showROC_PR(bgcolor=...)` now colors the background of the figure (it was ignored).
+    - The keys of the configuration are displayed as they are declared (`maxNumberOfThreads`, it was `maxnumberofthreads`),
+      in `print(pyagrum.config)`, `grep`, `diff`, `schema()` and in the messages; they are still found whatever their case.
     - The graphs have `saveGUM`/`saveGUMstring` and are pickled through the GUM format: the isolated nodes, the names
       and the marks were lost, and `CPDAG`, `MPDAG`, `MAG`, `EssentialGraph` could not be pickled. New
       `graphFromGUMString`, `loadGraph` and `saveGraph` (format given by the extension, as `loadBN`/`saveBN`: `.jgum`,
@@ -26,6 +28,15 @@
     - `saveGUM`/`loadGUM` of `BayesNet`, `InfluenceDiagram`, `MarkovRandomField` and of the graphs: by default
       (`binary=None`), the format is given by the extension, `.jgum` for the text format, `.bgum` or any other
       extension for the binary one; an explicit `binary` contradicting `.jgum`/`.bgum` raises `InvalidArgument`.
+    - New module `pyagrum.graph` (`import pyagrum.graph as gg`): the algorithms on graphs, one function per algorithm
+      whatever the kind of graph, each accepting a family of graphs given by what it reads (the arcs, the edges, both,
+      or the marked edges): `topologicalOrder`, `hasDirectedCycle`, `ancestors`, `descendants`, `directedPath`,
+      `hasDirectedPath`, `hasUndirectedCycle`, `isChordal`, `lexBFS`, `maximumCardinalitySearch`,
+      `isPerfectEliminationOrdering`, `undirectedPath`, `hasPartiallyDirectedCycle`, `mixedOrientedPath`,
+      `degeneracyOrdering`, `anteriors`, `isAncestral`, `isMaximal`, `cpdag`, `consistentExtension`, `meekClosure`,
+      `orientAsDAG`, and `separation` (d-, c- or m-separation according to the class of the graph). The immutable
+      graphs (`CPDAG`, `MPDAG`, `EssentialGraph`, `MAG`) are accepted as the other graphs. Nodes by id or by name. New
+      notebook `03-Tutorial_graphs`.
 
 - aGrUM
 
@@ -46,6 +57,17 @@
       `graph::ancestors`, `graph::anteriors`, `graph::isAncestral`, `graph::isMaximal`, `graph::circleComponent`,
       `graph::representativeGraph` (Zhang 2008, Theorem 2) and `graph::mSeparation` for
       marked graphs. Also in pyAgrum.
+    - New constructor `DAG(const DiGraph&)`: the nodes, names and arcs of a directed graph (only the arcs of a mixed
+      graph), the acyclicity being checked once (`InvalidDirectedCycle`). Also in pyAgrum (`pyagrum.DAG(digraph)`).
+    - `graph::cpdag` returns a `CPDAG` (same as `CPDAG::fromDAG`). New `graph::separation` (d-separation for `DAG`,
+      `CPDAG`, `MPDAG`, c-separation for `PDAG`, `ChainGraph`, m-separation for `MAG`), `graph::ancestors` and
+      `graph::descendants` of a set of nodes, `graph::anteriors` for mixed graphs, `graph::descendants` for marked
+      graphs, overloads of `graph::consistentExtension` and `graph::degeneracyOrdering` for `CPDAG`/`MPDAG` and of
+      `graph::ancestors`, `graph::descendants`, `graph::anteriors`, `graph::isAncestral`, `graph::isMaximal` for `MAG`.
+      The ancestors (descendants, anteriors) of nodes are reached by at least one arc (edge): a node of the set belongs
+      to the result only on a cycle or as an ancestor of another one (anteriors: going back and forth through the same
+      edge is not a cycle). New concept `GUM_MarkedGraphable`: the marked graphs (`MarkedGraph`, `PAG`, `MAG`) no longer
+      satisfy `GUM_UndiGraphable`, the undirected algorithms (`isChordal`...) are not defined on them.
     - FCI: `learnPDAG`/`learnDAG` go through the representative MAG of the learned PAG (Zhang 2008, Theorem 2)
       instead of applying the Meek rules to the PAG seen as a mixed graph; `PAG::toMixedGraph` is deprecated after
       3.3.2 (use `MAG::fromPAG`). If the learned PAG is not valid, the former approximation is used, or
@@ -128,6 +150,12 @@
       the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory
       and never removed (they now live in it and are removed with the graph); the colors of the factors of a factor
       graph were not quoted (invalid DOT) and its edges were directed.
+    - `CNinference2dot`: the observed nodes (`evs`) have the color of the evidence, as in the other inference graphs.
+    - Binary GUM files (`.bgum`): the announced size is little-endian on any host, as documented; a file whose size does
+      not match it (data after the payload included) is refused; the limit of 256 MB is removed (a larger file could be
+      saved but not read).
+    - `EMHistory()` could have one value less than `EMnbrIterations()` when EM stopped on consecutive decreases of the
+      log-likelihood or on the time limit: plotting one against the other could fail at random.
 
 ## Changelog for 3.3.2
 

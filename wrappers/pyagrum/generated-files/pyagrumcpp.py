@@ -4124,6 +4124,10 @@ class UndiGraph(object):
         bool
             True if the graph contains a cycle
 
+        See Also
+        --------
+        pyagrum.graph.hasUndirectedCycle : the same for every graph with edges
+
         """
         return _pyagrumcpp.UndiGraph_hasUndirectedCycle(self)
 
@@ -4751,6 +4755,10 @@ class DiGraph(object):
         pyagrum.InvalidDirectedCycle
           If this graph contains cycles
 
+        See Also
+        --------
+        pyagrum.graph.topologicalOrder : the same for every graph with arcs
+
         """
         return _pyagrumcpp.DiGraph_topologicalOrder(self)
 
@@ -5099,6 +5107,10 @@ class DiGraph(object):
         set
           the set of ids of the descendants of node `norid`.
 
+        See Also
+        --------
+        pyagrum.graph.descendants : the same for every graph with arcs, for one or several nodes
+
         """
         return _pyagrumcpp.DiGraph_descendants(self, *args)
 
@@ -5116,6 +5128,10 @@ class DiGraph(object):
         -------
         set
           the set of ids of the ancestors of node `norid`.
+
+        See Also
+        --------
+        pyagrum.graph.ancestors : the same for every graph with arcs, for one or several nodes
 
         """
         return _pyagrumcpp.DiGraph_ancestors(self, *args)
@@ -5370,6 +5386,13 @@ class DAG(DiGraph):
         Parameters:
             - **src** (*pyagrum.DAG*) -- the DAG to copy
 
+    DAG(src) -> DAG
+        Parameters:
+            - **src** (*pyagrum.DiGraph*) -- a directed graph without directed cycle (for a mixed graph, only its arcs are copied)
+
+        Raises:
+            - **pyagrum.InvalidDirectedCycle** -- if src has a directed cycle
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -5451,6 +5474,10 @@ class DAG(DiGraph):
         -------
         bool
           True if X and Y are d-separated (by Z if given), False otherwise.
+
+        See Also
+        --------
+        pyagrum.graph.separation : the separation criterion of each kind of graph
 
         """
         return _pyagrumcpp.DAG_dSeparation(self, *args)
@@ -7307,6 +7334,10 @@ class ChainGraph(PDAG):
         bool
           True if X and Y are c-separated (by Z if given), False otherwise.
 
+        See Also
+        --------
+        pyagrum.graph.separation : the separation criterion of each kind of graph
+
         """
         return _pyagrumcpp.ChainGraph_cSeparation(self, *args)
 
@@ -7684,6 +7715,10 @@ class _ImmutableMixedGraphChainGraph(_ImmutableGraphChainGraph):
           a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),
           kept from the construction of the graph
 
+        See Also
+        --------
+        pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG
+
         """
         return _pyagrumcpp._ImmutableMixedGraphChainGraph_consistentExtension(self)
 
@@ -8023,6 +8058,10 @@ class _ImmutableMixedGraphPDAG(_ImmutableGraphPDAG):
         pyagrum.DAG
           a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),
           kept from the construction of the graph
+
+        See Also
+        --------
+        pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG
 
         """
         return _pyagrumcpp._ImmutableMixedGraphPDAG_consistentExtension(self)
@@ -10078,6 +10117,10 @@ class MAG(_ImmutableGraphMarkedGraph):
         pyagrum.InvalidArgument
             if X and Y are not disjoint
 
+        See Also
+        --------
+        pyagrum.graph.separation : the separation criterion of each kind of graph
+
         """
         return _pyagrumcpp.MAG_mSeparation(self, *args)
 
@@ -10226,6 +10269,75 @@ class MAG(_ImmutableGraphMarkedGraph):
 
 # Register MAG in _pyagrumcpp:
 _pyagrumcpp.MAG_swigregister(MAG)
+
+def _graph_degeneracyOrdering(*args) -> list[int]:
+    return _pyagrumcpp._graph_degeneracyOrdering(*args)
+
+def _graph_isAncestral(*args) -> bool:
+    return _pyagrumcpp._graph_isAncestral(*args)
+
+def _graph_isMaximal(*args) -> bool:
+    return _pyagrumcpp._graph_isMaximal(*args)
+
+def _graph_cpdag(dag: "pyagrum.DAG") -> "pyagrum.CPDAG":
+    return _pyagrumcpp._graph_cpdag(dag)
+
+def _graph_consistentExtension(*args) -> "pyagrum.DAG | None":
+    return _pyagrumcpp._graph_consistentExtension(*args)
+
+def _graph_meekClosure(pdag: "PDAG") -> "pyagrum.PDAG | None":
+    return _pyagrumcpp._graph_meekClosure(pdag)
+
+def _graph_orientAsDAG(pdag: "PDAG", domainSizes: dict[int,int]) -> "pyagrum.DAG":
+    return _pyagrumcpp._graph_orientAsDAG(pdag, domainSizes)
+
+def _graph_separation(*args) -> bool:
+    return _pyagrumcpp._graph_separation(*args)
+
+def _graph_topologicalOrder(*args) -> list[int]:
+    return _pyagrumcpp._graph_topologicalOrder(*args)
+
+def _graph_hasDirectedCycle(*args) -> bool:
+    return _pyagrumcpp._graph_hasDirectedCycle(*args)
+
+def _graph_ancestors(*args) -> set[int]:
+    return _pyagrumcpp._graph_ancestors(*args)
+
+def _graph_descendants(*args) -> set[int]:
+    return _pyagrumcpp._graph_descendants(*args)
+
+def _graph_directedPath(*args) -> list[int] | None:
+    return _pyagrumcpp._graph_directedPath(*args)
+
+def _graph_hasDirectedPath(*args) -> bool:
+    return _pyagrumcpp._graph_hasDirectedPath(*args)
+
+def _graph_hasUndirectedCycle(*args) -> bool:
+    return _pyagrumcpp._graph_hasUndirectedCycle(*args)
+
+def _graph_isChordal(*args) -> bool:
+    return _pyagrumcpp._graph_isChordal(*args)
+
+def _graph_lexBFS(*args) -> list[int]:
+    return _pyagrumcpp._graph_lexBFS(*args)
+
+def _graph_maximumCardinalitySearch(*args) -> list[int]:
+    return _pyagrumcpp._graph_maximumCardinalitySearch(*args)
+
+def _graph_isPerfectEliminationOrdering(*args) -> bool:
+    return _pyagrumcpp._graph_isPerfectEliminationOrdering(*args)
+
+def _graph_undirectedPath(*args) -> list[int] | None:
+    return _pyagrumcpp._graph_undirectedPath(*args)
+
+def _graph_hasPartiallyDirectedCycle(*args) -> bool:
+    return _pyagrumcpp._graph_hasPartiallyDirectedCycle(*args)
+
+def _graph_mixedOrientedPath(*args) -> list[int] | None:
+    return _pyagrumcpp._graph_mixedOrientedPath(*args)
+
+def _graph_anteriors(*args) -> set[int]:
+    return _pyagrumcpp._graph_anteriors(*args)
 class CliqueGraph(UndiGraph):
     r"""
 
@@ -15135,7 +15247,7 @@ class Tensor(object):
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
-            arr.shape = tuple(reversed(self.shape))
+            arr = arr.reshape(tuple(reversed(self.shape)))
         return arr
 
     def as_nparray(self):
@@ -20046,11 +20158,11 @@ class LazyPropagation(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -20912,11 +21024,11 @@ class ShaferShenoyInference(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -21760,11 +21872,11 @@ class VariableElimination(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -22537,11 +22649,11 @@ class GibbsSampling(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -23356,11 +23468,11 @@ class ImportanceSampling(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -24131,11 +24243,11 @@ class WeightedSampling(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -24906,11 +25018,11 @@ class MonteCarloSampling(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -25713,11 +25825,11 @@ class LoopyImportanceSampling(ImportanceSampling):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -26520,11 +26632,11 @@ class LoopyWeightedSampling(WeightedSampling):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -27327,11 +27439,11 @@ class LoopyGibbsSampling(GibbsSampling):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -28200,11 +28312,11 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -28975,11 +29087,11 @@ class LoopyBeliefPropagation(object):
         ------
         pyagrum.InvalidArgument
             If one value is not a value for the node
-          pyagrum.InvalidArgument
+        pyagrum.InvalidArgument
             If the size of a value is different from the domain side of the node
-          pyagrum.FatalError
+        pyagrum.FatalError
             If one value is a vector of 0s
-          pyagrum.UndefinedElement
+        pyagrum.UndefinedElement
             If one node does not belong to the Bayesian network
         """
         if isinstance(evidces, dict):
@@ -32761,6 +32873,13 @@ class BNLearner(object):
           The learning method must be constraint-based (MIIC, etc.) and not score-based
           (K2, GreedyHillClimbing, etc.)
 
+        Notes
+        -----
+          With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs
+          are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o
+          become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).
+          Use `learnPAG` to get the learned structure with its uncertain marks.
+
         """
         return _pyagrumcpp.BNLearner_learnPDAG(self)
 
@@ -33263,17 +33382,22 @@ class BNLearner(object):
     def EMHistory(self) -> tuple[float, ...]:
         r"""
 
-        Returns a list containing the log-likelihoods recorded after each
-        expectation/maximization iteration of the EM parameter learning algorithm.
+        Returns a list containing the values recorded after each
+        expectation/maximization iteration of the EM parameter learning algorithm:
+        the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),
+        its variation with the difference criterion (`useEMWithDiffCriterion()`).
+
+        The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as
+        the period size is left at its default value of 1 (see `EMsetPeriodSize()`).
 
         Returns
         -------
         list of float
-                A list of all the log-likelihoods recorded during EM's execution
+                A list of all the values recorded during EM's execution
 
         Warnings
         --------
-        Recording log-likelihoods is enabled only when EM is executed in verbose
+        Recording these values is enabled only when EM is executed in verbose
         mode. See method `EMsetVerbosity()`.
 
         """

@@ -55,6 +55,11 @@
 
 #include <agrum/base/graphs/chainGraph.h>
 
+namespace gum {
+  class CPDAG;
+  class MPDAG;
+}   // namespace gum
+
 namespace gum::graph {
 
   /**
@@ -69,6 +74,12 @@ namespace gum::graph {
    * algorithms. Journal of the ACM 30(3):417-427, 1983. doi:10.1145/2402.322385.
    */
   GUM_SHARED_PUBLIC Sequence< NodeId > degeneracyOrdering(const MixedGraph& g);
+
+  /// degeneracyOrdering(const MixedGraph&) of the graph of @p g
+  GUM_SHARED_PUBLIC Sequence< NodeId > degeneracyOrdering(const CPDAG& g);
+
+  /// degeneracyOrdering(const MixedGraph&) of the graph of @p g
+  GUM_SHARED_PUBLIC Sequence< NodeId > degeneracyOrdering(const MPDAG& g);
 
   /**
    * @brief A consistent extension of the PDAG @p pdag, if any.
@@ -109,6 +120,12 @@ namespace gum::graph {
    */
   GUM_SHARED_PUBLIC std::optional< DAG > consistentExtension(const PDAG& pdag);
 
+  /// the consistent extension stored by @p cpdag (never std::nullopt)
+  GUM_SHARED_PUBLIC std::optional< DAG > consistentExtension(const CPDAG& cpdag);
+
+  /// the consistent extension stored by @p mpdag (never std::nullopt)
+  GUM_SHARED_PUBLIC std::optional< DAG > consistentExtension(const MPDAG& mpdag);
+
   /**
    * @brief A DAG orienting the PDAG @p pdag with small conditional probability tables: a consistent
    * extension if @p pdag is extendable, with a minimal total size of the CPTs (sum over the nodes
@@ -130,9 +147,9 @@ namespace gum::graph {
    * The overlaps between the orientations reached from several cliques, which the counting
    * algorithm has to correct, do not matter for a minimum; the nodes of K are ordered by increasing
    * domain size (then decreasing id), which minimizes the sum of the prefix products of their
-   * domain sizes (exchange argument). For a component H with n_H nodes and m_H edges, each of the
-   * at most 2|Π(H)| memoized components tries at most |Π(H)| cliques, each try costing a Meek
-   * closure (see meekClosure()) and O(n_H + d m_H) for the rest: polynomial in the size of H.
+   * domain sizes (exchange argument). For a component H with n_H nodes and m_H edges, each of these
+   * memoized components tries at most |Π(H)| cliques, each try costing a Meek
+   * closure (see meekClosure()) and O(n_H + m_H) for the rest: polynomial in the size of H.
    * The components with more nodes than the key @c orientAsDAGExactMaxSize of the section
    * @c graph of the configuration (100 by default) are oriented by the greedy heuristic below.
    *
@@ -204,8 +221,18 @@ namespace gum::graph {
    * - S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes
    *   for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
    *   doi:10.1214/aos/1031833662.
+   *
+   * @see CPDAG::fromDAG, which is the same function
    */
-  GUM_SHARED_PUBLIC ChainGraph cpdag(const DAG& dag);
+  GUM_SHARED_PUBLIC CPDAG cpdag(const DAG& dag);
+
+  namespace detail {
+    /**
+     * @brief The graph of graph::cpdag(@p dag), without the copy of @p dag that a CPDAG stores as
+     * its consistent extension.
+     */
+    GUM_SHARED_PUBLIC ChainGraph cpdagGraph(const DAG& dag);
+  }   // namespace detail
 
   /**
    * @brief The closure of the PDAG @p pdag under the orientation rules R1-R4 of Meek, if @p pdag is

@@ -49,36 +49,53 @@
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/ancestral.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
+#include <agrum/base/graphs/MAG.h>
 
 namespace gum::graph {
 
   namespace {
-    /// the nodes from which a node of x is reachable backwards through the edges accepted by follow
-    template < typename FOLLOW >
-    NodeSet backwardClosure(const MarkedGraph& g, const NodeSet& x, FOLLOW follow) {
-      NodeSet               result(x);
-      std::vector< NodeId > stack(x.begin(), x.end());
-      while (!stack.empty()) {
-        const NodeId v = stack.back();
-        stack.pop_back();
-        for (const auto w: g.neighbours(v))
-          if (!result.contains(w) && follow(w, v)) {
-            result.insert(w);
-            stack.push_back(w);
-          }
-      }
-      return result;
+    /// the nodes w with an edge w->v (parents of v)
+    NodeSet parentsOf(const MarkedGraph& g, NodeId v) {
+      NodeSet res;
+      for (const auto w: g.neighbours(v))
+        if (g.isDefinitelyDirected(w, v)) res.insert(w);
+      return res;
+    }
+
+    /// the nodes w with an edge v->w (children of v)
+    NodeSet childrenOf(const MarkedGraph& g, NodeId v) {
+      NodeSet res;
+      for (const auto w: g.neighbours(v))
+        if (g.isDefinitelyDirected(v, w)) res.insert(w);
+      return res;
+    }
+
+    /// the nodes w with an edge w->v or w-v (a step of an anterior path towards v)
+    NodeSet anteriorStepsTo(const MarkedGraph& g, NodeId v) {
+      NodeSet res;
+      for (const auto w: g.neighbours(v))
+        if (g.isDefinitelyDirected(w, v) || g.isUndirected(w, v)) res.insert(w);
+      return res;
+    }
+
+    /// the nodes with a walk of anterior steps to a node of x: ant(x) \ x, but the nodes of x
+    /// reached by a walk (enough for the internal uses, cheaper than anteriors)
+    NodeSet anteriorWalks(const MarkedGraph& g, const NodeSet& x) {
+      return detail::directedClosure(x, [&g](NodeId v) { return anteriorStepsTo(g, v); });
     }
   }   // namespace
 
   NodeSet ancestors(const MarkedGraph& g, const NodeSet& x) {
-    return backwardClosure(g, x, [&g](NodeId w, NodeId v) { return g.isDefinitelyDirected(w, v); });
+    return detail::directedClosure(x, [&g](NodeId v) { return parentsOf(g, v); });
+  }
+
+  NodeSet descendants(const MarkedGraph& g, const NodeSet& x) {
+    return detail::directedClosure(x, [&g](NodeId v) { return childrenOf(g, v); });
   }
 
   NodeSet anteriors(const MarkedGraph& g, const NodeSet& x) {
-    return backwardClosure(g, x, [&g](NodeId w, NodeId v) {
-      return g.isDefinitelyDirected(w, v) || g.isUndirected(w, v);
-    });
+    return detail::pathClosure(x, [&g](NodeId v) { return anteriorStepsTo(g, v); });
   }
 
   bool isAncestral(const MarkedGraph& g) {
@@ -92,7 +109,7 @@ namespace gum::graph {
       if (into.empty()) continue;
       if (!g.undirectedNeighbours(a).empty()) return false;
       // a must not be anterior to a node of into
-      if (anteriors(g, into).contains(a)) return false;
+      if (anteriorWalks(g, into).contains(a)) return false;   // a is not in into
     }
     return true;
   }
@@ -104,7 +121,7 @@ namespace gum::graph {
         const NodeId a = nodes[i];
         const NodeId b = nodes[j];
         if (g.existsEdge(a, b)) continue;
-        auto z = anteriors(g, NodeSet{a, b});
+        auto z = anteriorWalks(g, NodeSet{a, b});
         z.erase(a);
         z.erase(b);
         if (!mSeparation(g, NodeSet{a}, NodeSet{b}, z)) return false;
@@ -112,9 +129,19 @@ namespace gum::graph {
     return true;
   }
 
+  NodeSet ancestors(const MAG& g, const NodeSet& x) { return ancestors(g.graph(), x); }
+
+  NodeSet descendants(const MAG& g, const NodeSet& x) { return descendants(g.graph(), x); }
+
+  NodeSet anteriors(const MAG& g, const NodeSet& x) { return anteriors(g.graph(), x); }
+
+  bool isAncestral(const MAG& g) { return isAncestral(g.graph()); }
+
+  bool isMaximal(const MAG& g) { return isMaximal(g.graph()); }
+
   bool mSeparation(const MarkedGraph& g, const NodeSet& x, const NodeSet& y, const NodeSet& z) {
     if (!(x * y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
-    const auto anteriorToZ = anteriors(g, z);
+    const auto anteriorToZ = anteriorWalks(g, z) + z;   // ant(z) of Richardson and Spirtes
     // as graph::dSeparated: an observed node of x or y is separated from any node (it remains a
     // node of z on the paths between the other ones)
     const auto sources = x - z;

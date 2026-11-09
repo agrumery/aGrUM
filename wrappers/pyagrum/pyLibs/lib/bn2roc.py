@@ -511,10 +511,10 @@ def _basicDraw(
     [y[1] for y in points],
     "-",
     linewidth=3,
-    color=pyagrum.config["ROC", "draw_color"],
+    color=pyagrum.config["ROC", "drawColor"],
     zorder=3,
   )
-  ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=pyagrum.config["ROC", "fill_color"])
+  ax.fill_between([x[0] for x in points], [y[1] for y in points], 0, color=pyagrum.config["ROC", "fillColor"])
 
   ax.set_ylim((-0.01, 1.01))
   ax.set_xlim((-0.01, 1.01))
@@ -717,8 +717,26 @@ def showROC_PR(
       raise TypeError("first argument must be a string or a DataFrame")
 
   if bgcolor is not None:
-    oldcol = pyagrum.config["notebook", "figure_facecolor"]
-    pyagrum.config["notebook", "figure_facecolor"] = bgcolor
+    # the background color is set in the configuration for the drawing only, even if it fails
+    oldcol = pyagrum.config["notebook", "figureFaceColor"]
+    pyagrum.config["notebook", "figureFaceColor"] = bgcolor
+    try:
+      return showROC_PR(
+        bn,
+        datasrc,
+        target,
+        label,
+        beta=beta,
+        show_progress=show_progress,
+        show_fig=show_fig,
+        save_fig=save_fig,
+        with_labels=with_labels,
+        show_ROC=show_ROC,
+        show_PR=show_PR,
+        significant_digits=significant_digits,
+      )
+    finally:
+      pyagrum.config["notebook", "figureFaceColor"] = oldcol
 
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computePoints(
@@ -814,9 +832,6 @@ def showROC_PR(
 
   if show_fig:
     pylab.show()
-
-  if bgcolor is not None:
-    pyagrum.config["notebook", "figure_facecolor"] = oldcol
 
   return AUC_ROC, thresholdROC, AUC_PR, thresholdPR
 

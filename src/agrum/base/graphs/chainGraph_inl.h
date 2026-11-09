@@ -72,18 +72,24 @@ namespace gum {
 
   INLINE void ChainGraph::addArc(const NodeId tail, const NodeId head) {
     // the new arc tail->head closes a partially directed cycle with any path from head to tail
-    // following the arcs in their direction and the edges in either direction, even without arc
-    if (head != tail && !this->existsEdge(tail, head) && !this->hasDirectedPath(head, tail)
-        && this->hasMixedOrientedPath(head, tail)) {
+    // following the arcs in their direction and the edges in either direction, even without arc.
+    // Such a path includes the directed paths: without it, the checks of PDAG::addArc for a
+    // directed cycle are not needed, and the graph is scanned once
+    if (head == tail || this->existsEdge(tail, head)) {
+      PDAG::addArc(tail, head);   // raises the error of a PDAG
+    } else if (this->hasMixedOrientedPath(head, tail)) {
+      if (this->hasDirectedPath(head, tail)) PDAG::addArc(tail, head);   // a directed cycle
       GUM_ERROR(InvalidPartiallyDirectedCycle,
                 "Add a partially directed cycle in a chain graph : between " << head << " and "
                                                                              << tail)
+    } else {
+      MixedGraph::addArc(tail, head);
     }
-    PDAG::addArc(tail, head);
   }
 
   INLINE void ChainGraph::addEdge(const NodeId first, const NodeId second) {
-    if (first != second && !this->existsArc(first, second) && !this->existsArc(second, first)
+    if (first != second && !this->existsEdge(first, second) && !this->existsArc(first, second)
+        && !this->existsArc(second, first)
         && (this->hasMixedReallyOrientedPath(first, second)
             || this->hasMixedReallyOrientedPath(second, first))) {
       GUM_ERROR(InvalidPartiallyDirectedCycle,

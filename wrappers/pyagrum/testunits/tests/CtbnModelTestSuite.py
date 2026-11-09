@@ -153,6 +153,15 @@ class TestCtbnModel(pyAgrumTestCase):
     for v in ctbn2.variables():
       self.assertTrue(len(ctbn2.parents(v.name())) <= modal)
 
+  def testToDotResolvesAdaptiveFontColor(self):
+    ctbn = ct.randomCTBN((0.5, 1.5), 3, 2, 2)
+    gum.config.push()
+    try:
+      gum.config["ctbn", "nodeFgColor"] = "adaptive"
+      self.assertNotIn("adaptive", ctbn.toDot())
+    finally:
+      gum.config.pop()
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCtbnModel)

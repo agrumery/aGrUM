@@ -155,6 +155,10 @@ Raises
 ------
 pyagrum.InvalidArgument
     if X and Y are not disjoint
+
+See Also
+--------
+pyagrum.graph.separation : the separation criterion of each kind of graph
 "
 
 %feature("docstring") gum::ImmutableGraph< gum::MarkedGraph >::graph
@@ -167,6 +171,11 @@ pyagrum.MarkedGraph
 
 %feature("docstring") gum::MAG::toDot
 "
+Parameters
+----------
+options : pyagrum.DotOptions, optional
+    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and edges...)
+
 Returns
 -------
 str

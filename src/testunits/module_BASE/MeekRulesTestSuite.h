@@ -46,6 +46,7 @@
 
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 #include <agrum/base/graphs/algorithms/orientation.h>
+#include <agrum/base/graphs/CPDAG.h>
 #include <agrum/base/graphs/PDAG.h>
 
 #include <agrum/base/core/utils_random.h>
@@ -594,7 +595,7 @@ namespace gum_tests {
       for (const auto x: dag.parents(z))
         for (const auto y: dag.parents(z))
           if (x < y) CHECK(mg.existsEdge(x, y));
-    CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag)) == mg);
+    CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag).graph()) == mg);
 
     // random DAGs: the DAG of their CPDAG has the same CPDAG
     for (int i = 0; i < 500; ++i) {
@@ -603,9 +604,9 @@ namespace gum_tests {
       for (gum::NodeId x = 0; x < original.size(); ++x)
         for (gum::NodeId y = x + 1; y < original.size(); ++y)
           if (gum::randomProba() < 0.4) original.addArc(x, y);
-      const auto expected = gum::graph::cpdag(original);
+      const auto expected = gum::graph::cpdag(original).graph();
       const auto oriented = mr.propagateToDAG(expected);
-      CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(oriented))
+      CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(oriented).graph())
             == static_cast< const gum::MixedGraph& >(expected));
     }
   }

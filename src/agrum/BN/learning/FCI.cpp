@@ -59,25 +59,6 @@ namespace gum::learning {
   FCI::FCI()  = default;
   FCI::~FCI() = default;
 
-  FCI::FCI(FCI&& from) noexcept :
-      CIBasedLearning(std::move(from)), maxPathLength_(from.maxPathLength_) {}
-
-  FCI& FCI::operator=(const FCI& from) {
-    if (this != &from) {
-      CIBasedLearning::operator=(from);
-      maxPathLength_ = from.maxPathLength_;
-    }
-    return *this;
-  }
-
-  FCI& FCI::operator=(FCI&& from) noexcept {
-    if (this != &from) {
-      CIBasedLearning::operator=(std::move(from));
-      maxPathLength_ = from.maxPathLength_;
-    }
-    return *this;
-  }
-
   // ##########################################################################
   // Parameterisation
   // ##########################################################################
@@ -929,14 +910,15 @@ namespace gum::learning {
       else mag.addEdge(x, y);
     }
 
-    if (graph::hasDirectedCycle(mag)) {   // not a valid PAG
+    try {
+      return PDAG(mag);
+    } catch (const InvalidDirectedCycle&) {   // not a valid PAG
       if (errorOnInvalidPAG_)
         GUM_ERROR(InvalidArgument,
                   "FCI: the learned PAG is not valid (its representative graph has a directed "
                   "cycle)")
       return meekRules_.propagateToCPDAG(mixedGraphOf(pag));   // the former approximation
     }
-    return PDAG(mag);
   }
 
   PDAG FCI::learnPDAG(MixedGraph graph) {
@@ -945,9 +927,8 @@ namespace gum::learning {
   }
 
   DAG FCI::learnDAG(MixedGraph graph) {
-    const PAG  pag   = learnPAG(std::move(graph));
-    const auto sizes = equalDomains(pag);
-    return checkMaxIndegree_(graph::orientAsDAG(representativePDAG_(pag, sizes), sizes));
+    const auto sizes = equalDomains(graph);
+    return learnDAG(std::move(graph), sizes);
   }
 
   DAG FCI::learnDAG(MixedGraph graph, const NodeProperty< Size >& domainSizes) {

@@ -46,7 +46,9 @@
 #include <agrum/base/graphs/algorithms/generic/bayesBall.h>
 #include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/graphs/graphElements.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -161,6 +163,28 @@ namespace gum_tests {
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(gum::DAG copy2 = graph);
     GUM_CHECK_ASSERT_THROWS_NOTHING(gum::DAG copy3(graph));
+  }
+
+  GUM_TEST(ConstructorFromDiGraph) {
+    // the nodes (isolated ones and names included) and the arcs
+    auto           digraph = gum::fastGraph< gum::DiGraph >("A->B->C;D");
+    const gum::DAG dag(digraph);
+    CHECK_EQ(dag.nodes().asNodeSet(), digraph.nodes().asNodeSet());
+    CHECK_EQ(dag.arcs(), digraph.arcs());
+    for (const auto node: digraph.nodes())
+      CHECK_EQ(dag.nameFromId(node), digraph.nameFromId(node));
+    // the result is a DAG: a cycle cannot be added
+    gum::DAG copy(digraph);
+    CHECK_THROWS_AS(copy.addArc(digraph.idFromName("C").value(), digraph.idFromName("A").value()),
+                    const gum::InvalidDirectedCycle&);
+    // a directed cycle
+    CHECK_THROWS_AS(gum::DAG(gum::fastGraph< gum::DiGraph >("A->B->C->A")),
+                    const gum::InvalidDirectedCycle&);
+    // a mixed graph: its arcs only
+    const auto     pdag = gum::fastGraph< gum::PDAG >("A->B-C");
+    const gum::DAG fromPDAG(pdag);
+    CHECK_EQ(fromPDAG.arcs(), pdag.arcs());
+    CHECK_EQ(fromPDAG.size(), pdag.size());
   }
 
   GUM_TEST(EmptyNodes) {

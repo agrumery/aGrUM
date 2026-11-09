@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
 #include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
@@ -52,7 +53,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 
@@ -65,6 +66,19 @@ namespace gum {
 
   // diamond structure require to explicitly initialize NodeGraphPart
   DAG::DAG(const DAG& g) : NodeGraphPart(g), DiGraph(g) { GUM_CONS_CPY(DAG); }
+
+  namespace {
+    /// g, checked to be acyclic
+    const DiGraph& acyclic(const DiGraph& g) {
+      if (graph::hasDirectedCycle(g))
+        GUM_ERROR(InvalidDirectedCycle, "The graph has a directed cycle: it is not a DAG")
+      return g;
+    }
+  }   // namespace
+
+  // diamond structure require to explicitly initialize NodeGraphPart (initialized first, as a
+  // virtual base: the graph is checked before any part of the DAG is built)
+  DAG::DAG(const DiGraph& g) : NodeGraphPart(acyclic(g)), DiGraph(g) { GUM_CONSTRUCTOR(DAG); }
 
   // diamond structure require to explicitly initialize NodeGraphPart
   DAG::DAG(DAG&& g) : NodeGraphPart(std::move(g)), DiGraph(std::move(g)) { GUM_CONS_MOV(DAG); }

@@ -49,6 +49,20 @@ set[int]
   the set of the node ids of the graph
 "
 
+// nodes() is also redefined in each class by ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS (swigsrc/graphs.i)
+%define IMMUTABLE_NODES_DOC(classname)
+%feature("docstring") gum::classname::nodes
+"
+Returns
+-------
+set[int]
+  the set of the node ids of the graph
+"
+%enddef
+IMMUTABLE_NODES_DOC(CPDAG)
+IMMUTABLE_NODES_DOC(MPDAG)
+IMMUTABLE_NODES_DOC(MAG)
+
 %feature("docstring") gum::ImmutableGraph::edges
 "
 Returns
@@ -258,4 +272,8 @@ Returns
 pyagrum.DAG
   a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),
   kept from the construction of the graph
+
+See Also
+--------
+pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG
 "

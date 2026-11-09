@@ -439,14 +439,16 @@ class CTBN:
     """
 
     # the look comes from the configuration: the section ctbn for the nodes, the theme for the arcs
-    arcColor = pyagrum.config["notebook", "arcColor"]
+    import pyagrum.lib.dotstyle as gds
+
+    arcColor = pyagrum.config["dot", "arcColor"]
     chaine = f"""
         digraph  "ctbn" {{
         bgcolor=transparent;
-        rankdir="{pyagrum.config["notebook", "graphRankDir"]}";
-        layout="{pyagrum.config["notebook", "graphLayout"]}";
+        rankdir="{pyagrum.config["dot", "graphRankDir"]}";
+        layout="{pyagrum.config["dot", "graphLayout"]}";
         graph [label=""];
-        node [style=filled fillcolor="{pyagrum.config["ctbn", "node_bgcolor"]}" fontcolor="{pyagrum.config["ctbn", "node_fgcolor"]}" color="{arcColor}"];
+        node [style=filled fillcolor="{pyagrum.config["ctbn", "nodeBgColor"]}" fontcolor="{gds.configFgColor("ctbn", "nodeFgColor")}" color="{arcColor}"];
         edge [color="{arcColor}"];
 
         """

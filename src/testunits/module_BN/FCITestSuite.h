@@ -42,6 +42,7 @@
 
 #include <algorithm>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/base/database/DBInitializerFromCSV.h>
 #include <agrum/base/database/DBRowGeneratorIdentity.h>
@@ -394,6 +395,21 @@ namespace gum_tests {
     gum::DAG dag = fci.learnDAG(db.nodeOnlyGraph());
 
     CHECK(dag.size() == db.nb_vars);
+
+    // the DAG orients the representative MAG of the learned PAG (Zhang 2008, Theorem 2): an edge
+    // with an arrowhead at one end only, or a tail and a circle, is an arc ; the orientation of
+    // the edges o-o is free
+    gum::learning::FCI fci2;
+    fci2.setIndependenceTest(chi2);
+    const auto pag = fci2.learnPAG(db.nodeOnlyGraph());
+    CHECK_EQ(dag.sizeArcs(), pag.sizeEdges());
+    for (const auto& e: pag.edges()) {
+      const auto x = e.first();
+      const auto y = e.second();
+      CHECK((dag.existsArc(x, y) || dag.existsArc(y, x)));
+      if (pag.isArrowhead(x, y) && !pag.isArrowhead(y, x)) CHECK(dag.existsArc(x, y));
+      if (pag.isArrowhead(y, x) && !pag.isArrowhead(x, y)) CHECK(dag.existsArc(y, x));
+    }
   }
 
   GUM_TEST(_fci_learnPDAG_valid_) {
@@ -406,6 +422,80 @@ namespace gum_tests {
     gum::PDAG pdag = fci.learnPDAG(db.nodeOnlyGraph());
 
     CHECK(pdag.size() == db.nb_vars);
+
+    // the PDAG of the representative MAG: its arcs ->, its edges -- and <-> as edges
+    gum::learning::FCI fci2;
+    fci2.setIndependenceTest(chi2);
+    const auto pag = fci2.learnPAG(db.nodeOnlyGraph());
+    CHECK_EQ(pdag.sizeArcs() + pdag.sizeEdges(), pag.sizeEdges());
+    for (const auto& e: pag.edges()) {
+      const auto x = e.first();
+      const auto y = e.second();
+      if (pag.isBidirected(x, y) || (pag.isTail(x, y) && pag.isTail(y, x)))
+        CHECK(pdag.existsEdge(x, y));
+      else if (pag.isArrowhead(x, y) && !pag.isArrowhead(y, x)) CHECK(pdag.existsArc(x, y));
+      else if (pag.isArrowhead(y, x) && !pag.isArrowhead(x, y)) CHECK(pdag.existsArc(y, x));
+      else CHECK((pdag.existsArc(x, y) || pdag.existsArc(y, x)));
+    }
+  }
+
+  GUM_TEST(_fci_error_on_invalid_PAG_option_) {
+    {
+      ConfigurationGuard guard;
+      CHECK(!gum::learning::FCI().errorOnInvalidPAG());
+      gum::config().set("learning", "fciErrorOnInvalidPAG", "True");
+      gum::learning::FCI fci;
+      CHECK(fci.errorOnInvalidPAG());
+      fci.setErrorOnInvalidPAG(false);
+      CHECK(!fci.errorOnInvalidPAG());
+    }
+    // a valid PAG: no error even with the option
+    FCIAsiaDB                    db;
+    gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+    gum::learning::FCI           fci;
+    fci.setIndependenceTest(chi2);
+    fci.setErrorOnInvalidPAG(true);
+    CHECK_NOTHROW(fci.learnPDAG(db.nodeOnlyGraph()));
+  }
+
+  GUM_TEST(_fci_learning_through_the_base_class_) {
+    // learnPDAG/learnDAG of FCI are used through a ConstraintBasedLearning (as in learnBN)
+    FCIAsiaDB                    db;
+    gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(chi2);
+    gum::learning::FCI fci2;
+    fci2.setIndependenceTest(chi2);
+    gum::learning::ConstraintBasedLearning& base = fci2;
+
+    CHECK_EQ(base.learnPDAG(db.nodeOnlyGraph()), fci.learnPDAG(db.nodeOnlyGraph()));
+    CHECK_EQ(base.learnDAG(db.nodeOnlyGraph()), fci.learnDAG(db.nodeOnlyGraph()));
+  }
+
+  GUM_TEST(_fci_copy_and_move_keep_the_options_) {
+    gum::learning::FCI fci;
+    const bool         error = !fci.errorOnInvalidPAG();
+    fci.setErrorOnInvalidPAG(error);
+    fci.setMaxPathLength(3);
+
+    gum::learning::FCI copy(fci);
+    CHECK_EQ(copy.errorOnInvalidPAG(), error);
+    CHECK_EQ(copy.maxPathLength(), gum::Size(3));
+
+    gum::learning::FCI moved(std::move(copy));
+    CHECK_EQ(moved.errorOnInvalidPAG(), error);
+    CHECK_EQ(moved.maxPathLength(), gum::Size(3));
+
+    gum::learning::FCI assigned;
+    assigned = fci;
+    CHECK_EQ(assigned.errorOnInvalidPAG(), error);
+    CHECK_EQ(assigned.maxPathLength(), gum::Size(3));
+
+    gum::learning::FCI moveAssigned;
+    moveAssigned = std::move(moved);
+    CHECK_EQ(moveAssigned.errorOnInvalidPAG(), error);
+    CHECK_EQ(moveAssigned.maxPathLength(), gum::Size(3));
   }
 
   GUM_TEST(_fci_learnMixedStructure_valid_) {
@@ -434,15 +524,13 @@ namespace gum_tests {
   }
 
   // non-regression
-  GUM_TEST(_fci_alpha_one_complete_pag_) {
-    FCIAsiaDB                    db;
-    gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
-    gum::learning::FCI           fci;
-    fci.setIndependenceTest(chi2);
-    fci.setAlpha(1.0);
-    const auto pag = fci.learnPAG(db.nodeOnlyGraph());
-    const auto n   = static_cast< gum::Size >(db.nb_vars);
-    CHECK(pag.sizeEdges() == n * (n - 1) / 2);
+  GUM_TEST(_fci_alpha_bounds_refused_) {
+    // alpha must belong to ]0,1[: the degenerate thresholds 0 and 1 are refused
+    gum::learning::FCI fci;
+    const double       before = fci.alpha();
+    CHECK_THROWS_AS(fci.setAlpha(1.0), gum::OutOfBounds);
+    CHECK_THROWS_AS(fci.setAlpha(0.0), gum::OutOfBounds);
+    CHECK_EQ(fci.alpha(), before);
   }
 
   GUM_TEST(_fci_unstable_mode_valid_) {

@@ -293,6 +293,10 @@ Raises
 ------
 pyagrum.InvalidDirectedCycle
   If this graph contains cycles
+
+See Also
+--------
+pyagrum.graph.topologicalOrder : the same for every graph with arcs
 "
 
 %feature("docstring") gum::DiGraph::connectedComponents
@@ -407,6 +411,10 @@ Returns
 -------
 set
   the set of ids of the ancestors of node `norid`.
+
+See Also
+--------
+pyagrum.graph.ancestors : the same for every graph with arcs, for one or several nodes
 "
 
 %feature("docstring") gum::DiGraph::descendants
@@ -422,6 +430,10 @@ Returns
 -------
 set
   the set of ids of the descendants of node `norid`.
+
+See Also
+--------
+pyagrum.graph.descendants : the same for every graph with arcs, for one or several nodes
 "
 
 %feature("docstring") gum::DiGraph::nameFromId

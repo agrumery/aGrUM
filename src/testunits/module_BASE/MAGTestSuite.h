@@ -246,18 +246,21 @@ namespace gum_tests {
   }
 
   GUM_TEST(AncestorsAndAnteriors) {
-    // ancestors: directed paths only; anteriors: directed and undirected edges
+    // ancestors: directed paths only; anteriors: directed and undirected edges; a node of x belongs
+    // to the result only if it has such a path to a node of x
     const auto g  = gum::fastMarkedGraph("A-B->C<->D");
     const auto id = [&g](const std::string& name) { return g.idFromName(name).value(); };
-    CHECK_EQ(gum::graph::ancestors(g, gum::NodeSet{id("C")}), (gum::NodeSet{id("B"), id("C")}));
-    CHECK_EQ(gum::graph::anteriors(g, gum::NodeSet{id("C")}),
-             (gum::NodeSet{id("A"), id("B"), id("C")}));
+    CHECK_EQ(gum::graph::ancestors(g, gum::NodeSet{id("C")}), gum::NodeSet{id("B")});
+    CHECK_EQ(gum::graph::anteriors(g, gum::NodeSet{id("C")}), (gum::NodeSet{id("A"), id("B")}));
     // the bidirected edge is not followed
-    CHECK_EQ(gum::graph::ancestors(g, gum::NodeSet{id("D")}), gum::NodeSet{id("D")});
-    CHECK_EQ(gum::graph::anteriors(g, gum::NodeSet{id("D")}), gum::NodeSet{id("D")});
-    // a set of nodes: the union
+    CHECK(gum::graph::ancestors(g, gum::NodeSet{id("D")}).empty());
+    CHECK(gum::graph::anteriors(g, gum::NodeSet{id("D")}).empty());
+    // a set of nodes: the union; B is an ancestor of C, hence of {B, C}
     CHECK_EQ(gum::graph::anteriors(g, gum::NodeSet{id("C"), id("D")}),
-             (gum::NodeSet{id("A"), id("B"), id("C"), id("D")}));
+             (gum::NodeSet{id("A"), id("B")}));
+    CHECK_EQ(gum::graph::ancestors(g, gum::NodeSet{id("B"), id("C")}), gum::NodeSet{id("B")});
+    CHECK_EQ(gum::graph::anteriors(g, gum::NodeSet{id("B"), id("C")}),
+             (gum::NodeSet{id("A"), id("B")}));
     CHECK(gum::graph::anteriors(g, gum::NodeSet()).empty());
   }
 

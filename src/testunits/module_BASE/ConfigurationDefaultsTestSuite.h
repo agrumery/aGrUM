@@ -96,10 +96,11 @@ namespace gum_tests {
              {"mcKL", "periodSize", 200},
              {"learning", "tabuListSize", 100},
              {"learning", "tabuNbDecrease", 2},
+             {"graph", "orientAsDAGExactMaxSize", 100},
              {"tensor", "maxRowsConsole", 6},
              {"tensor", "columnWidthConsole", 9},
-             {"notebook", "junctionTreeSeparatorFontSize", 8},
-             {"notebook", "junctionTreeCliqueFontSize", 10},
+             {"junctionTree", "separatorFontSize", 8},
+             {"junctionTree", "cliqueFontSize", 10},
          }) {
       INFO(e.section << "." << e.key);
       CHECK_EQ(conf.typed< std::int64_t >(e.section, e.key), e.value);
@@ -128,9 +129,9 @@ namespace gum_tests {
              {"learning", "alpha", 0.05},
              {"learning", "priorWeight", 1.0},
              {"learning", "emNoise", 0.1},
-             {"notebook", "junctionTreeMapCliqueScale", 0.3},
-             {"notebook", "junctionTreeMapSepScale", 0.1},
-             {"notebook", "junctionTreeMapEdgeLen", 1.0},
+             {"junctionTree", "mapCliqueScale", 0.3},
+             {"junctionTree", "mapSepScale", 0.1},
+             {"junctionTree", "mapEdgeLen", 1.0},
              {"factorgraph", "edgeLength", 0.7},
          }) {
       INFO(e.section << "." << e.key);
@@ -147,7 +148,7 @@ namespace gum_tests {
              {"gibbsKL", "verbosity", false},
              {"gibbsKL", "drawnAtRandom", true},
              {"mcKL", "verbosity", false},
-             {"notebook", "junctionTreeWithNames", true},
+             {"junctionTree", "withNames", true},
              {"causal", "showLatentNames", false},
          }) {
       INFO(e.section << "." << e.key);
@@ -157,19 +158,19 @@ namespace gum_tests {
     for (const auto& e: std::vector< ConfigurationDefaultsTestSuite::Expected< std::string > >{
              {"learning", "BNLearnerPreferredAlgo", "MIIC"},
              // look of the graphs (toDot): the values that were in the defaults of pyAgrum
-             {"notebook", "arcColor", "#4A4A4A"},
-             {"notebook", "nodeBgColor", "#404040"},
-             {"notebook", "nodeFgColor", "adaptive"},
-             {"notebook", "graphSize", "5"},
-             {"notebook", "graphRankDir", "TB"},
-             {"notebook", "graphLayout", "dot"},
-             {"notebook", "markovRandomFieldView", "factorgraph"},
-             {"notebook", "junctionTreeGraphSize", "10"},
-             {"notebook", "junctionTreeSeparatorBgColor", "palegreen"},
-             {"notebook", "junctionTreeSeparatorFgColor", "adaptive"},
-             {"notebook", "junctionTreeCliqueBgColor", "burlywood"},
-             {"notebook", "junctionTreeCliqueFgColor", "adaptive"},
-             {"notebook", "junctionTreeMapSize", "10"},
+             {"dot", "arcColor", "#4A4A4A"},
+             {"dot", "nodeBgColor", "#404040"},
+             {"dot", "nodeFgColor", "adaptive"},
+             {"dot", "graphSize", "5"},
+             {"dot", "graphRankDir", "TB"},
+             {"dot", "graphLayout", "dot"},
+             {"markovRandomField", "view", "factorgraph"},
+             {"junctionTree", "graphSize", "10"},
+             {"junctionTree", "separatorBgColor", "palegreen"},
+             {"junctionTree", "separatorFgColor", "adaptive"},
+             {"junctionTree", "cliqueBgColor", "burlywood"},
+             {"junctionTree", "cliqueFgColor", "adaptive"},
+             {"junctionTree", "mapSize", "10"},
              {"factorgraph", "nodeBgColor", "coral"},
              {"factorgraph", "nodeFgColor", "adaptive"},
              {"factorgraph", "factorBgColor", "burlywood"},

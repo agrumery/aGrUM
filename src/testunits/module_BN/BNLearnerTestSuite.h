@@ -50,6 +50,7 @@
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/graphs/algorithms/orientation.h>
+#include <agrum/base/graphs/CPDAG.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 #include <agrum/BN/learning/BNLearner.h>
@@ -1270,6 +1271,59 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(_EM_historyHasOneEntryPerIteration) {
+    gum::DAG dag;
+    for (auto i = gum::NodeId(0); i < gum::NodeId(4); ++i) {
+      dag.addNodeWithId(i);
+    }
+    dag.addArc(gum::NodeId(1), gum::NodeId(0));
+    dag.addArc(gum::NodeId(2), gum::NodeId(1));
+    dag.addArc(gum::NodeId(3), gum::NodeId(2));
+
+    const auto check = [&dag](auto&& configure) {
+      // several runs: the initial CPTs are noised
+      for (int run = 0; run < 5; ++run) {
+        gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
+                                                   std::vector< std::string >{"?"});
+        configure(learner);
+        learner.useSmoothingPrior();
+        learner.EMsetVerbosity(true);
+        learner.learnParameters(dag, false);
+        CHECK_EQ(learner.EMHistory().size(), learner.EMnbrIterations());
+      }
+    };
+
+    check([](auto& learner) { learner.useEMWithRateCriterion(1e-3, 0.1); });
+    check([](auto& learner) { learner.useEMWithDiffCriterion(1e-3, 0.1); });
+    check([](auto& learner) {
+      learner.useEMWithRateCriterion(1e-12, 0.1);
+      learner.EMsetMaxIter(3);
+    });
+    check([](auto& learner) {
+      learner.useEMWithRateCriterion(1e-12, 0.1);
+      learner.EMsetMaxTime(1e-9);
+    });
+  }
+
+  GUM_TEST(_EM_historyHasOneEntryPerIterationWhenStoppedByDecreases) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A{0|1}->B{0|1}->C{0|1}");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.8, 0.2, 0.2, 0.8});
+    bn.cpt("C").fillWith({0.7, 0.3, 0.5, 0.5});
+
+    // no noise: the initial CPTs of EM are those of bn, so this run always stops on the decreases
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EMdecreasing.csv"),
+                                               bn,
+                                               std::vector< std::string >{"?"});
+    learner.useEMWithRateCriterion(1e-12, 0.0);
+    learner.EMsetMaxIter(500);
+    learner.EMsetVerbosity(true);
+    learner.learnParameters(bn, false);
+
+    CHECK_EQ(learner.EMState(), gum::learning::IBNLearner::ApproximationSchemeSTATE::Stopped);
+    CHECK_EQ(learner.EMHistory().size(), learner.EMnbrIterations());
+  }
+
   GUM_TEST(_EM) {
     gum::initRandom(42);   // fix seed for deterministic EM initialisation
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
@@ -2209,21 +2263,35 @@ namespace gum_tests {
     _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B->C->D", 3));
   }
 
+  GUM_TEST(MiicMandatoryArcWithForbiddenReverse) {
+    // a mandatory arc whose reverse is also forbidden (here by the user): DuplicateElement in MIIC
+    for (const bool miic: {true, false}) {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+      if (miic) learner.useMIIC();
+      else learner.usePC();
+      learner.addMandatoryArc("smoking", "lung_cancer");
+      learner.addForbiddenArc("lung_cancer", "smoking");
+      gum::BayesNet< double > bn;
+      CHECK_NOTHROW(bn = learner.learnBN());
+      CHECK(bn.dag().existsArc(bn.idFromName("smoking"), bn.idFromName("lung_cancer")));
+    }
+  }
+
   GUM_TEST(LearnEssentialGraph) {
-    {   // constraint-based: the learned PDAG
+    {   // constraint-based: also the CPDAG of the learned DAG (the learned PDAG is learnPDAG())
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
       learner.useMIIC();
-      const auto eg   = learner.learnEssentialGraph();
-      const auto pdag = learner.learnPDAG();
-      CHECK(eg.arcs() == pdag.arcs());
-      CHECK(eg.edges() == pdag.edges());
+      const auto eg = learner.learnEssentialGraph();
+      const auto cp = gum::graph::cpdag(learner.learnDAG()).graph();
+      CHECK(eg.arcs() == cp.arcs());
+      CHECK(eg.edges() == cp.edges());
       CHECK_EQ(eg.nameFromId(learner.idFromName("smoking")), "smoking");
     }
     {   // score-based: the CPDAG of the learned DAG
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
       learner.useGreedyHillClimbing();
       const auto eg = learner.learnEssentialGraph();
-      const auto cp = gum::graph::cpdag(learner.learnDAG());
+      const auto cp = gum::graph::cpdag(learner.learnDAG()).graph();
       CHECK(eg.arcs() == cp.arcs());
       CHECK(eg.edges() == cp.edges());
       CHECK(eg.cpdag().contains(learner.learnDAG()));

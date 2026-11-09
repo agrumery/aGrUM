@@ -48,41 +48,95 @@
 
 #pragma once
 
+#include <vector>
+
 // to ease IDE parser
 #include <agrum/base/graphs/algorithms/generic/reachability.h>
 
 namespace gum::graph {
 
-  template < GUM_DiGraphable G >
-  NodeSet ancestors(const G& g, NodeId id) {
-    NodeSet res;
-    NodeSet frontier = g.parents(id);
+  namespace detail {
+    /// the nodes reachable from the nodes of ids through at least one step of next (parents or
+    /// children): a node of ids belongs to the result only if it is reachable from a node of ids
+    template < typename NEXT >
+    NodeSet directedClosure(const NodeSet& ids, NEXT next) {
+      NodeSet res;
+      NodeSet frontier;
+      for (const auto id: ids)
+        frontier += next(id);
 
-    while (!frontier.empty()) {
-      const NodeId current = *frontier.begin();
-      frontier.erase(current);
-      res.insert(current);
-      for (const auto p: g.parents(current))
-        if (!res.contains(p)) frontier.insert(p);
+      while (!frontier.empty()) {
+        const NodeId current = *frontier.begin();
+        frontier.erase(current);
+        res.insert(current);
+        for (const auto n: next(current))
+          if (!res.contains(n)) frontier.insert(n);
+      }
+
+      return res;
     }
 
-    return res;
+    template < typename PREDECESSORS >
+    NodeSet pathClosure(const NodeSet& ids, PREDECESSORS predecessors) {
+      NodeSet res = directedClosure(ids, predecessors);
+
+      // true if a backward search from sources reaches target (which is not expanded); the
+      // direct step from forbiddenFrom to target is not followed
+      const auto reaches
+          = [&predecessors](const NodeSet& sources, NodeId target, NodeId forbiddenFrom) {
+              NodeSet               visited(sources);
+              std::vector< NodeId > stack(sources.begin(), sources.end());
+              while (!stack.empty()) {
+                const NodeId current = stack.back();
+                stack.pop_back();
+                for (const auto w: predecessors(current)) {
+                  if (w == target) {
+                    if (current != forbiddenFrom) return true;
+                  } else if (!visited.contains(w)) {
+                    visited.insert(w);
+                    stack.push_back(w);
+                  }
+                }
+              }
+              return false;
+            };
+
+      // a node of ids reached by a walk only: it must have a path to another node of ids, or lie
+      // on a cycle (a walk back through the same undirected edge is not a cycle)
+      for (const auto v: ids) {
+        if (!res.contains(v)) continue;
+        if (reaches(ids - NodeSet{v}, v, v)) continue;   // no forbidden step (v is not a source)
+        bool onCycle = false;
+        for (const auto u: predecessors(v))
+          if (reaches(NodeSet{u}, v, u)) {
+            onCycle = true;
+            break;
+          }
+        if (!onCycle) res.erase(v);
+      }
+
+      return res;
+    }
+  }   // namespace detail
+
+  template < GUM_DiGraphable G >
+  NodeSet ancestors(const G& g, NodeId id) {
+    return ancestors(g, NodeSet{id});
+  }
+
+  template < GUM_DiGraphable G >
+  NodeSet ancestors(const G& g, const NodeSet& ids) {
+    return detail::directedClosure(ids, [&g](NodeId n) -> const NodeSet& { return g.parents(n); });
   }
 
   template < GUM_DiGraphable G >
   NodeSet descendants(const G& g, NodeId id) {
-    NodeSet res;
-    NodeSet frontier = g.children(id);
+    return descendants(g, NodeSet{id});
+  }
 
-    while (!frontier.empty()) {
-      const NodeId current = *frontier.begin();
-      frontier.erase(current);
-      res.insert(current);
-      for (const auto c: g.children(current))
-        if (!res.contains(c)) frontier.insert(c);
-    }
-
-    return res;
+  template < GUM_DiGraphable G >
+  NodeSet descendants(const G& g, const NodeSet& ids) {
+    return detail::directedClosure(ids, [&g](NodeId n) -> const NodeSet& { return g.children(n); });
   }
 
   template < GUM_DiGraphable G >
@@ -144,6 +198,15 @@ namespace gum::graph {
         if constexpr (GUM_UndiGraphable< G >) {
           for (const auto n: g.neighbours(current))
             if (!res.exists(n)) frontier.insert(n);
+        } else if constexpr (GUM_MarkedGraphable< G >) {
+          // the adjacent nodes, whatever the marks (MAG::neighbours are the tail-tail ones only)
+          if constexpr (requires { g.adjacents(current); }) {
+            for (const auto n: g.adjacents(current))
+              if (!res.exists(n)) frontier.insert(n);
+          } else {
+            for (const auto n: g.neighbours(current))
+              if (!res.exists(n)) frontier.insert(n);
+          }
         }
       }
       ++numCC;
@@ -189,6 +252,11 @@ namespace gum::graph {
     }
 
     return res;
+  }
+
+  template < GUM_MixedGraphable G >
+  NodeSet anteriors(const G& g, const NodeSet& ids) {
+    return detail::pathClosure(ids, [&g](NodeId n) { return g.parents(n) + g.neighbours(n); });
   }
 
   template < GUM_MixedGraphable G >

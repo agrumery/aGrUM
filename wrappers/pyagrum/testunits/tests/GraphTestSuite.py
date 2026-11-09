@@ -230,6 +230,22 @@ class TestGraph(pyAgrumTestCase):
       add_edge=lambda g, u, v: g.addArc(u, v),
     )
 
+  def testDAGFromDiGraph(self):
+    digraph = gum.fastDiGraph("A->B->C;D")
+    dag = gum.DAG(digraph)
+    self.assertIsInstance(dag, gum.DAG)
+    self.assertEqual(dag.nodes(), digraph.nodes())
+    self.assertEqual(dag.arcs(), digraph.arcs())
+    self.assertEqual({dag.nameFromId(n) for n in dag.nodes()}, {"A", "B", "C", "D"})
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      dag.addArc(2, 0)
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      gum.DAG(gum.fastDiGraph("A->B->C->A"))
+    # a mixed graph: its arcs only
+    self.assertEqual(gum.DAG(gum.fastPDAG("A->B-C")).arcs(), {(0, 1)})
+    # still a copy of a DAG
+    self.assertEqual(gum.DAG(dag), dag)
+
   def testConnectedComponentsDAG(self):
     self._testConnectedComponents(
       gum.DAG(),

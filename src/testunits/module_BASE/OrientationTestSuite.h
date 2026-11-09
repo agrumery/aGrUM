@@ -50,9 +50,11 @@
 #include <agrum/base/graphs/algorithms/generic/chordality.h>
 #include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
 #include <agrum/base/graphs/algorithms/orientation.h>
+#include <agrum/base/graphs/CPDAG.h>
 
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/randomGraphs.h>
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
@@ -146,7 +148,7 @@ namespace gum_tests {
     /// random extendable PDAG: the arcs of the v-structures of a random DAG and some other arcs
     static gum::PDAG randomExtendablePDAG(gum::Size n, double density, double arcProba) {
       const auto dag = randomDAG(n, density);
-      gum::PDAG  pdag(gum::graph::cpdag(dag));
+      gum::PDAG  pdag(gum::graph::cpdag(dag).graph());
       for (const auto& edge: gum::EdgeSet(pdag.edges()))
         if (gum::randomProba() < arcProba) {
           pdag.eraseEdge(edge);
@@ -154,21 +156,6 @@ namespace gum_tests {
           else pdag.addArc(edge.second(), edge.first());
         }
       return pdag;
-    }
-
-    /// random DAG: the arcs follow a random order of the nodes
-    static gum::DAG randomDAG(gum::Size n, double density) {
-      std::vector< gum::NodeId > order;
-      for (gum::NodeId i = 0; i < n; ++i)
-        order.push_back(i);
-      for (gum::Size i = n; i > 1; --i)
-        std::swap(order[i - 1], order[gum::randomValue(i)]);
-      gum::DAG dag;
-      dag.addNodes(n);
-      for (gum::Size i = 0; i < n; ++i)
-        for (gum::Size j = i + 1; j < n; ++j)
-          if (gum::randomProba() < density) dag.addArc(order[i], order[j]);
-      return dag;
     }
 
     /// the total size of the CPTs of dag
@@ -215,13 +202,14 @@ namespace gum_tests {
 
     /// random PDAG (maybe not extendable): random skeleton, edges or arcs following an order
     static gum::PDAG randomPDAG(gum::Size n, double density, double arcProba) {
-      gum::PDAG g;
+      const auto order = randomOrder(n);
+      gum::PDAG  g;
       g.addNodes(n);
-      for (gum::NodeId i = 0; i < n; ++i)
-        for (gum::NodeId j = i + 1; j < n; ++j)
+      for (gum::Size i = 0; i < n; ++i)
+        for (gum::Size j = i + 1; j < n; ++j)
           if (gum::randomProba() < density) {
-            if (gum::randomProba() < arcProba) g.addArc(i, j);
-            else g.addEdge(i, j);
+            if (gum::randomProba() < arcProba) g.addArc(order[i], order[j]);
+            else g.addEdge(order[i], order[j]);
           }
       return g;
     }
@@ -337,7 +325,7 @@ namespace gum_tests {
     chain.addNodes(3);
     chain.addArc(0, 1);
     chain.addArc(1, 2);
-    auto cp = gum::graph::cpdag(chain);
+    auto cp = gum::graph::cpdag(chain).graph();
     CHECK_EQ(cp.sizeArcs(), gum::Size(0));
     CHECK_EQ(cp.sizeEdges(), gum::Size(2));
 
@@ -347,7 +335,7 @@ namespace gum_tests {
     v.addArc(0, 2);
     v.addArc(1, 2);
     v.addArc(2, 3);
-    cp = gum::graph::cpdag(v);
+    cp = gum::graph::cpdag(v).graph();
     CHECK_EQ(cp.sizeArcs(), gum::Size(3));
     CHECK_EQ(cp.sizeEdges(), gum::Size(0));
 
@@ -357,7 +345,7 @@ namespace gum_tests {
     complete.addArc(0, 1);
     complete.addArc(0, 2);
     complete.addArc(1, 2);
-    cp = gum::graph::cpdag(complete);
+    cp = gum::graph::cpdag(complete).graph();
     CHECK_EQ(cp.sizeArcs(), gum::Size(0));
     CHECK_EQ(cp.sizeEdges(), gum::Size(3));
   }
@@ -365,7 +353,7 @@ namespace gum_tests {
   GUM_TEST(CPDAGProperties) {
     for (int i = 0; i < 200; ++i) {
       const auto dag = randomDAG(3 + gum::randomValue(12), 0.3);
-      const auto cp  = gum::graph::cpdag(dag);
+      const auto cp  = gum::graph::cpdag(dag).graph();
 
       // a chain graph (checked by the constructor) whose chain components are chordal
       // (Andersson et al. 1997), with the skeleton of dag
@@ -382,7 +370,7 @@ namespace gum_tests {
       CHECK(ext.has_value());
       if (ext.has_value()) {
         CHECK(isConsistentExtension(pdag, *ext));
-        CHECK(gum::graph::cpdag(*ext) == cp);
+        CHECK(gum::graph::cpdag(*ext).graph() == cp);
       }
     }
   }
@@ -477,10 +465,10 @@ namespace gum_tests {
       CHECK(closure.has_value());
       if (closure.has_value())
         CHECK(static_cast< const gum::MixedGraph& >(*closure)
-              == static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag)));
+              == static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag).graph()));
       // dag is a consistent extension of pdag: the closure does not depend on the given extension
       CHECK(static_cast< const gum::MixedGraph& >(gum::graph::meekClosure(pdag, dag))
-            == static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag)));
+            == static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag).graph()));
     }
   }
 
@@ -562,6 +550,8 @@ namespace gum_tests {
       ConfigurationGuard guard;
       gum::config().set("graph", "orientAsDAGExactMaxSize", "2");
       CHECK_EQ(cptSize(gum::graph::orientAsDAG(path, sizes), sizes), 50.0);
+      gum::config().set("graph", "orientAsDAGExactMaxSize", "0");
+      CHECK_EQ(cptSize(gum::graph::orientAsDAG(path, sizes), sizes), 50.0);
       gum::config().set("graph", "orientAsDAGExactMaxSize", "3");
       CHECK_EQ(cptSize(gum::graph::orientAsDAG(path, sizes), sizes), 49.0);
     }
@@ -569,7 +559,7 @@ namespace gum_tests {
     // the CPDAGs of random DAGs: the minimum over all the consistent extensions
     for (int i = 0; i < 200; ++i) {
       const auto dag   = randomDAG(3 + gum::randomValue(5), 0.5);
-      const auto graph = gum::graph::cpdag(dag);
+      const auto graph = gum::graph::cpdag(dag).graph();
       gum::PDAG  pdag;
       for (const auto node: graph.nodes())
         pdag.addNodeWithId(node);
@@ -624,7 +614,7 @@ namespace gum_tests {
     const auto ext = gum::graph::consistentExtension(pdag);
     REQUIRE(ext.has_value());
     checkNames(*ext);
-    checkNames(gum::graph::cpdag(*ext));
+    checkNames(gum::graph::cpdag(*ext).graph());
     const auto closure = gum::graph::meekClosure(pdag);
     REQUIRE(closure.has_value());
     checkNames(*closure);

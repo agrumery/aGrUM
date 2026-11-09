@@ -55,6 +55,7 @@
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
+#include <agrum/base/io/GumBinaryIO.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
@@ -65,6 +66,13 @@
 #  define PYAGRUM_HELPER
 
 namespace PyAgrumHelper {
+
+  /// the format of a GUM file (gum::isBinaryGUMFile): binary is None (or absent) or a bool
+  bool isBinaryGUMFile(const std::string& path, PyObject* binary) {
+    if (binary == nullptr || binary == Py_None) return gum::isBinaryGUMFile(path);
+    if (!PyBool_Check(binary)) GUM_ERROR(gum::InvalidArgument, "binary must be a bool or None")
+    return gum::isBinaryGUMFile(path, binary == Py_True);
+  }
 
   std::string stringFromPyObject(PyObject* o) {
     std::string name = "";

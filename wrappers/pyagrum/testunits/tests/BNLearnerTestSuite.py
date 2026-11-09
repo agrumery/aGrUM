@@ -38,9 +38,11 @@
 #                                                                          #
 ############################################################################
 
+import inspect
 import os
 import tempfile
 import unittest
+import warnings
 
 import numpy as np
 
@@ -675,6 +677,26 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     self.assertEqual(bn.sizeArcs(), 3)
     self.assertTrue(testedarcs.issuperset(bn.arcs()))
 
+  def testLearnEssentialGraph(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useMIIC()
+    eg = learner.learnEssentialGraph()
+    pdag = learner.learnPDAG()
+    self.assertEqual(eg.arcs(), pdag.arcs())
+    self.assertEqual(eg.edges(), pdag.edges())
+    self.assertEqual(eg.nameFromId(learner.idFromName("smoking?")), "smoking?")
+
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useGreedyHillClimbing()
+    eg = learner.learnEssentialGraph()
+    self.assertTrue(eg.cpdag().contains(learner.learnDAG()))
+
+    # the errors are not hidden any more
+    learner = gum.BNLearner(self.agrumSrcDir("EM.csv"), ["?"])
+    learner.useMIIC()
+    with self.assertRaises(gum.MissingValueInDatabase):
+      learner.learnEssentialGraph()
+
   def testHybridLearning(self):
     learner = gum.BNLearner(self.agrumSrcDir("data1.csv"))
     learner.useMIIC()
@@ -685,8 +707,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setPossibleSkeleton(skel)
     bn = learner.learnBN()
 
+    # A--V is reversible: V->A gives the smaller CPTs (V has 3 values, A has 4)
     self.assertEqual(bn.sizeArcs(), 4)
-    self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
+    self.assertEqual(bn.parents(bn.idFromName("A")), {bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
@@ -700,8 +723,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setPossibleSkeleton(skel)
     bn = learner.learnBN()
 
+    # A--V is reversible: V->A gives the smaller CPTs (V has 3 values, A has 4)
     self.assertEqual(bn.sizeArcs(), 4)
-    self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
+    self.assertEqual(bn.parents(bn.idFromName("A")), {bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
@@ -709,8 +733,9 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.setPossibleEdges(skel.edges())
     bn = learner.learnBN()
 
+    # A--V is reversible: V->A gives the smaller CPTs (V has 3 values, A has 4)
     self.assertEqual(bn.sizeArcs(), 4)
-    self.assertEqual(bn.parents(bn.idFromName("V")), {bn.idFromName("A")})
+    self.assertEqual(bn.parents(bn.idFromName("A")), {bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Y")), {bn.idFromName("X"), bn.idFromName("V")})
     self.assertEqual(bn.parents(bn.idFromName("Z")), {bn.idFromName("Y")})
 
@@ -946,6 +971,22 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     pdag = learner.learnPDAG()
 
     self.assertEqual(pag.size(), pdag.size())
+    # the PDAG of the representative MAG of the PAG (Zhang 2008, Theorem 2)
+    self.assertEqual(pdag.sizeArcs() + pdag.sizeEdges(), pag.sizeEdges())
+    for x, y in pag.edges():
+      if pag.isArrowhead(x, y) and not pag.isArrowhead(y, x):
+        self.assertIn((x, y), pdag.arcs())
+      elif pag.isArrowhead(y, x) and not pag.isArrowhead(x, y):
+        self.assertIn((y, x), pdag.arcs())
+
+    # the DAG orients it, the latent couples are its edges <->
+    dag = learner.learnDAG()
+    self.assertEqual(dag.sizeArcs(), pag.sizeEdges())
+    with warnings.catch_warnings():
+      warnings.simplefilter("ignore", DeprecationWarning)
+      self.assertEqual(pag.toMixedGraph().size(), pag.size())
+    with self.assertWarns(DeprecationWarning):
+      pag.toMixedGraph()
 
   def testFCILearnPAGManualPAG(self):
     p = gum.PAG()
@@ -963,6 +1004,24 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     dot = p.toDot()
     self.assertIn("digraph", dot)
+
+  def testFCIErrorOnInvalidPAG(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.fciErrorOnInvalidPAG()
+    learner.useFCI()
+    self.assertFalse(learner.fciErrorOnInvalidPAG())
+    self.assertIs(learner.setFCIErrorOnInvalidPAG(True), learner)
+    self.assertTrue(learner.fciErrorOnInvalidPAG())
+    learner.learnDAG()  # a valid PAG: no error
+
+    gum.config.push()
+    try:
+      gum.config["learning", "fciErrorOnInvalidPAG"] = True
+      other = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+      self.assertTrue(other.useFCI().fciErrorOnInvalidPAG())
+    finally:
+      gum.config.pop()
 
   def testFCIExhaustiveSepSetDefaultFalse(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
@@ -1068,6 +1127,68 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.OutOfBounds):
       learner.useBDeuPrior(weight=-1)
 
+  def testConstraintBasedMaxIndegreeIsChecked(self):
+    template = gum.fastBN("smoking?{false|true};lung_cancer?{false|true}")
+    for algo in ("usePC", "useFCI", "useMIIC"):
+      learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"), template)
+      getattr(learner, algo)()
+      self.assertEqual(learner.learnDAG().sizeArcs(), 1)
+      self.assertFalse(learner.maxIndegreeExceeded())
+      learner.setMaxIndegree(0)
+      self.assertTrue(learner.errorOnExceededMaxIndegree())  # the default value
+      with self.assertRaises(gum.OperationNotAllowed):
+        learner.learnDAG()
+      with self.assertRaises(gum.OperationNotAllowed):
+        learner.learnBN()
+      self.assertEqual(learner.learnPDAG().sizeEdges() + learner.learnPDAG().sizeArcs(), 1)
+
+      self.assertIs(learner.setErrorOnExceededMaxIndegree(False), learner)
+      with self.assertWarns(UserWarning):
+        self.assertEqual(learner.learnDAG().sizeArcs(), 1)
+      self.assertTrue(learner.maxIndegreeExceeded())
+      with self.assertWarns(UserWarning):
+        learner.learnBN()
+
+    gum.config.push()
+    try:
+      gum.config["learning", "errorOnExceededMaxIndegree"] = False
+      self.assertFalse(gum.BNLearner(self.agrumSrcDir("asia3.csv"), template).errorOnExceededMaxIndegree())
+    finally:
+      gum.config.pop()
+
+  def testConstraintCompatibleWithAColliderKeepsIt(self):
+    # non-regression (#206)
+    L, T, E = "lung_cancer?", "tuberculosis?", "tuberculos_or_cancer?"
+
+    def mandatory(learner):
+      learner.addMandatoryArc(T, E)
+
+    def forbidden(learner):
+      learner.addForbiddenArc(L, T)
+      learner.addForbiddenArc(T, L)
+
+    for algo in ("usePC", "useFCI", "useMIIC"):
+      for constrain in (lambda learner: None, mandatory, forbidden):
+        learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+        getattr(learner, algo)()
+        constrain(learner)
+        pdag = learner.learnPDAG()
+        self.assertTrue(pdag.existsArc(learner.idFromName(L), learner.idFromName(E)))
+        self.assertTrue(pdag.existsArc(learner.idFromName(T), learner.idFromName(E)))
+
+  def testInvalidAlphaIsRefused(self):
+    pc = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    pc.usePC()
+    fci = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    fci.useFCI()
+    for alpha in (-0.1, 0.0, 1.0, 1.1, float("inf"), float("-inf"), float("nan")):
+      with self.assertRaises(gum.OutOfBounds):
+        pc.setPCAlpha(alpha)
+      with self.assertRaises(gum.OutOfBounds):
+        fci.setFCIAlpha(alpha)
+    pc.setPCAlpha(0.01)
+    fci.setFCIAlpha(0.99)
+
   def testDefaultParametersComeFromTheConfiguration(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
 
@@ -1144,5 +1265,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
         self.assertIn(key, doc, f"{name} does not document {key}")
 
 
+class BNLearnerDocumentationTestCase(pyAgrumTestCase):
+  def testEveryPublicMethodIsDocumented(self):
+    undocumented = sorted(
+      name
+      for name, member in inspect.getmembers(gum.BNLearner)
+      if not name.startswith("_") and callable(member) and not (member.__doc__ or "").strip()
+    )
+    self.assertEqual(undocumented, [])
+
+
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)
+addTests(ts, BNLearnerDocumentationTestCase)

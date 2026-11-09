@@ -217,6 +217,10 @@ Returns
 -------
 bool
     True if the graph contains a cycle
+
+See Also
+--------
+pyagrum.graph.hasUndirectedCycle : the same for every graph with edges
 "
 
 %feature("docstring") gum::UndiGraph::nodes

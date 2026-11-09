@@ -46,7 +46,7 @@
 
 %feature("docstring") gum::DAG
 "
-DAG represents a Directed Graph.
+DAG represents a Directed Acyclic Graph.
 
 DAG() -> DAG
     default constructor
@@ -54,6 +54,13 @@ DAG() -> DAG
 DAG(src) -> DAG
     Parameters:
         - **src** (*pyagrum.DAG*) -- the DAG to copy
+
+DAG(src) -> DAG
+    Parameters:
+        - **src** (*pyagrum.DiGraph*) -- a directed graph without directed cycle (for a mixed graph, only its arcs are copied)
+
+    Raises:
+        - **pyagrum.InvalidDirectedCycle** -- if src has a directed cycle
 "
 
 %feature("docstring") gum::DAG::addArc
@@ -331,6 +338,10 @@ Returns
 -------
 bool
   True if X and Y are d-separated (by Z if given), False otherwise.
+
+See Also
+--------
+pyagrum.graph.separation : the separation criterion of each kind of graph
 "
 
 
@@ -380,8 +391,8 @@ Compute the moralized ancestral graph of the nodes from the DAG.
 
 Parameters
 ----------
-nodes : int | sequence of int
-  a sequence of node ids (int) or a single node id (int)
+nodes : iterable of int
+  the node ids (a set, a list...; a single node id is given as ``{id}``)
 Returns
 -------
 pyagrum.UndiGraph

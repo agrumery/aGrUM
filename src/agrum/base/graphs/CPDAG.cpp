@@ -44,6 +44,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
+#include <utility>
+
 #include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/base/graphs/CPDAG.h>
 
@@ -76,13 +78,13 @@ namespace gum {
     return *this;
   }
 
-  CPDAG CPDAG::fromDAG(const DAG& dag) { return CPDAG(graph::cpdag(dag), DAG(dag)); }
+  CPDAG CPDAG::fromDAG(const DAG& dag) { return CPDAG(graph::detail::cpdagGraph(dag), DAG(dag)); }
 
   CPDAG CPDAG::fromPDAG(const PDAG& pdag) {
     auto extension = graph::consistentExtension(pdag);
     if (!extension.has_value())
       GUM_ERROR(InvalidArgument, "The PDAG is not a CPDAG: it has no consistent extension")
-    auto cpdag = graph::cpdag(*extension);
+    auto cpdag = graph::detail::cpdagGraph(*extension);
     if (!(static_cast< const MixedGraph& >(cpdag) == static_cast< const MixedGraph& >(pdag)))
       GUM_ERROR(InvalidArgument,
                 "The PDAG is not a CPDAG: it is not the CPDAG of its consistent extensions")
@@ -91,7 +93,7 @@ namespace gum {
 
   bool CPDAG::contains(const DAG& dag) const {
     if (dag.size() != size() || dag.sizeArcs() != sizeArcs() + sizeEdges()) return false;
-    return graph::cpdag(dag) == graph_;
+    return graph::detail::cpdagGraph(dag) == graph_;
   }
 
 }   // namespace gum

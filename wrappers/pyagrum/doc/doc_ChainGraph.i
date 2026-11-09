@@ -152,6 +152,10 @@ Returns
 -------
 bool
   True if X and Y are c-separated (by Z if given), False otherwise.
+
+See Also
+--------
+pyagrum.graph.separation : the separation criterion of each kind of graph
 "
 
 %feature("docstring") gum::ChainGraph::moralGraph

@@ -45,7 +45,7 @@ import sys
 from importlib.util import find_spec
 from sys import platform as os_platform
 
-from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats
+from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats, stdoutToFile
 
 if __name__ == "__main__":
   print(
@@ -67,6 +67,9 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     notif(f"Modules : {test_module if test_module != '' else 'all'}")
 
   import pyagrum as gum
+
+  # to replay a run: this value as core.randomSeed in the file pyagrum.ini of the current directory
+  notif(f"random seed: {gum.randomGeneratorSeed()}")
 
   pandasFound = find_spec("pandas") is not None
   sklearnFound = find_spec("sklearn") is not None
@@ -116,6 +119,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("EvidenceTestSuite", True),
         ("ExceptionNamesTestSuite", True),
         ("ExceptionTracebackTestSuite", True),
+        ("GraphAlgorithmsTestSuite", True),
         ("GraphTestSuite", True),
         ("GumFormatTestSuite", True),
         ("ICIModelsForBNTestSuite", True),
@@ -261,7 +265,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
 
   result = ModuleAwareResult(runner.stream, runner.descriptions, runner.verbosity, module_map)
 
-  with Timer() as t:
+  # what the tests and aGrUM write on the standard output only goes to the log file
+  with Timer() as t, stdoutToFile(log.handlers[0].stream):
     tests(result)
 
   result.printErrors()

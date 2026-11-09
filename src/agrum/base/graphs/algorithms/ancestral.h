@@ -54,18 +54,39 @@
 #include <agrum/base/graphs/markedGraph.h>
 #include <agrum/base/graphs/PDAG.h>
 
+namespace gum {
+  class MAG;
+}   // namespace gum
+
 namespace gum::graph {
 
   /**
-   * @brief The ancestors of the nodes of @p x in @p g, @p x included: the nodes with a directed
-   * path (made of edges ->) to a node of @p x (Richardson and Spirtes 2002, Sec. 2.4). O(n + m).
+   * @brief The ancestors of the nodes of @p x in @p g: the nodes with a directed path (at least
+   * one edge ->) to a node of @p x. O(n + m).
+   *
+   * As everywhere in aGrUM, a node of @p x belongs to the result only if it has such a path to a
+   * node of @p x; the set an(x) of Richardson and Spirtes (2002, Sec. 2.4), which contains @p x,
+   * is ancestors(g, x) + x.
    */
   GUM_SHARED_PUBLIC NodeSet ancestors(const MarkedGraph& g, const NodeSet& x);
 
   /**
-   * @brief The anterior nodes of the nodes of @p x in @p g, @p x included: the nodes with a path
-   * made of edges -- and -> (pointing towards @p x) to a node of @p x (Richardson and Spirtes 2002,
-   * Sec. 2.4). O(n + m).
+   * @brief The descendants of the nodes of @p x in @p g: the nodes with a directed path (at least
+   * one edge ->) from a node of @p x. O(n + m).
+   *
+   * As for ancestors, a node of @p x belongs to the result only if it has such a path from a node
+   * of @p x.
+   */
+  GUM_SHARED_PUBLIC NodeSet descendants(const MarkedGraph& g, const NodeSet& x);
+
+  /**
+   * @brief The anterior nodes of the nodes of @p x in @p g: the nodes with a path made of edges
+   * -- and -> (pointing towards @p x, at least one edge) to a node of @p x.
+   *
+   * As for ancestors, a node of @p x belongs to the result only if it has such a path to another
+   * node of @p x or lies on such a cycle (going back and forth through the same edge -- is not a
+   * cycle); the set ant(x) of Richardson and Spirtes (2002, Sec. 2.4), which contains @p x, is
+   * anteriors(g, x) + x. Complexity: see graph::detail::pathClosure.
    */
   GUM_SHARED_PUBLIC NodeSet anteriors(const MarkedGraph& g, const NodeSet& x);
 
@@ -83,6 +104,21 @@ namespace gum::graph {
    * @warning @p g is supposed ancestral.
    */
   GUM_SHARED_PUBLIC bool isMaximal(const MarkedGraph& g);
+
+  /// ancestors(const MarkedGraph&, const NodeSet&) of the graph of @p g
+  GUM_SHARED_PUBLIC NodeSet ancestors(const MAG& g, const NodeSet& x);
+
+  /// descendants(const MarkedGraph&, const NodeSet&) of the graph of @p g
+  GUM_SHARED_PUBLIC NodeSet descendants(const MAG& g, const NodeSet& x);
+
+  /// anteriors(const MarkedGraph&, const NodeSet&) of the graph of @p g
+  GUM_SHARED_PUBLIC NodeSet anteriors(const MAG& g, const NodeSet& x);
+
+  /// isAncestral(const MarkedGraph&) of the graph of @p g (always true)
+  GUM_SHARED_PUBLIC bool isAncestral(const MAG& g);
+
+  /// isMaximal(const MarkedGraph&) of the graph of @p g (always true)
+  GUM_SHARED_PUBLIC bool isMaximal(const MAG& g);
 
   /**
    * @brief True if @p x and @p y are m-separated by @p z in the ancestral graph @p g: no path

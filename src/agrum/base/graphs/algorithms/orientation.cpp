@@ -58,6 +58,7 @@
 #include <agrum/base/graphs/algorithms/generic/chordality.h>
 #include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
 #include <agrum/base/graphs/algorithms/orientation.h>
+#include <agrum/base/graphs/MPDAG.h>
 
 namespace gum::graph {
 
@@ -157,6 +158,133 @@ namespace gum::graph {
           visit(x);
       }
     };
+
+    /// the CPDAG of the DAG dag (Chickering 1995), given a topological order of dag
+    MixedGraph cpdagOf(const DiGraph& dag, const Sequence< NodeId >& topologicalRank) {
+      // Order-Edges: heads by increasing topological rank, then tails by decreasing rank
+      // Find-Compelled: when the first unknown arc x->y is handled, all the arcs into y are unknown
+      // (Lemma 5) and they are all labelled at the end of the step
+      ArcSet compelled;
+      // the compelled arcs into each visited node: scanning only them keeps the time linear (each
+      // one either ends the scan or labels a distinct arc into y)
+      NodeProperty< std::vector< NodeId > > compelledParents;
+      for (const auto y: topologicalRank) {
+        const auto& parents        = dag.parents(y);
+        auto&       compelledIntoY = compelledParents.insert(y, {}).second;
+        if (parents.empty()) continue;
+
+        NodeId x = *parents.begin();
+        for (const auto p: parents)
+          if (topologicalRank.pos(p) > topologicalRank.pos(x)) x = p;
+
+        bool allCompelled = false;
+        for (const auto w: compelledParents[x]) {
+          if (!dag.existsArc(w, y)) {
+            allCompelled = true;
+            break;
+          }
+          compelled.insert(Arc(w, y));
+        }
+
+        if (!allCompelled)
+          for (const auto z: parents)
+            if (z != x && !dag.existsArc(z, x)) {
+              allCompelled = true;
+              break;
+            }
+
+        // the arcs into y not already labelled get the label of x->y
+        for (const auto p: parents) {
+          const Arc arc(p, y);
+          if (allCompelled) compelled.insert(arc);
+          if (compelled.contains(arc)) compelledIntoY.push_back(p);
+        }
+      }
+
+      MixedGraph result;
+      for (const auto node: dag.nodes())
+        result.addNodeWithId(node);
+      copyNames(dag, result);
+      for (const auto& arc: dag.arcs()) {
+        if (compelled.contains(arc)) result.addArc(arc.tail(), arc.head());
+        else result.addEdge(arc.tail(), arc.head());
+      }
+      return result;
+    }
+
+    /// the Meek closure of the mixed graph closure (a PDAG), given a consistent extension of it and
+    /// a topological order of this extension
+    MixedGraph
+        closureOf(MixedGraph closure, const DiGraph& extension, const Sequence< NodeId >& order) {
+      // the arcs of the CPDAG are in every extension: only its chain components remain to orient.
+      // closure has the same skeleton as its extension, and keeps its node names
+      const MixedGraph compelled = cpdagOf(extension, order);
+      for (const auto& arc: compelled.arcs())
+        if (closure.existsEdge(arc.tail(), arc.head())) {
+          closure.eraseEdge(Edge(arc.tail(), arc.head()));
+          closure.addArc(arc.tail(), arc.head());
+        }
+
+      const auto orient = [&closure](NodeId tail, NodeId head) {
+        closure.eraseEdge(Edge(tail, head));
+        closure.addArc(tail, head);
+      };
+
+      // every edge into an already visited node has its final orientation: a rule can only orient
+      // an edge p-v into p->v, p before v in the topological order. These nodes p form a clique
+      // (the extension has no v-structure inside a chain component of its CPDAG): at most d of them
+      for (const auto v: order) {
+        std::vector< NodeId > before;
+        for (const auto p: closure.neighbours(v))
+          if (order.pos(p) < order.pos(v)) before.push_back(p);
+        if (before.empty()) continue;
+
+        // R1: a->p-v, a and v not adjacent. A scanned a adjacent to v is charged to the adjacency
+        // a-v, at most d times: O(dm) in all
+        for (const auto p: before)
+          for (const auto a: closure.parents(p))
+            if (!adjacent(closure, a, v)) {
+              orient(p, v);
+              break;
+            }
+
+        // R4: a-d, d->p->v, a-v, a and p adjacent, d and v not adjacent (p->v follows from R1). The
+        // candidates a are the remaining undirected neighbours of v before it (at most d)
+        std::vector< NodeId > r4;
+        for (const auto a: before) {
+          if (!closure.existsEdge(a, v)) continue;
+          bool found = false;
+          for (const auto p: closure.parents(v)) {
+            if (!adjacent(closure, a, p)) continue;
+            for (const auto d: closure.parents(p))
+              if (closure.existsEdge(a, d) && !adjacent(closure, d, v)) {
+                found = true;
+                break;
+              }
+            if (found) break;
+          }
+          if (found) r4.push_back(a);
+        }
+        for (const auto a: r4)
+          orient(a, v);
+
+        // R2: p->b->v, p-v; the closest p first, so that b->v is already oriented if it has to be.
+        // b is searched among the parents of v (at most d scans of them: O(dm) in all), not among
+        // the children of p, which are not bounded
+        std::sort(before.begin(), before.end(), [&order](NodeId x, NodeId y) {
+          return order.pos(x) > order.pos(y);
+        });
+        for (const auto p: before) {
+          if (!closure.existsEdge(p, v)) continue;
+          for (const auto b: closure.parents(v))
+            if (closure.existsArc(p, b)) {
+              orient(p, v);
+              break;
+            }
+        }
+      }
+      return closure;
+    }
 
   }   // namespace
 
@@ -344,7 +472,7 @@ namespace gum::graph {
     }
 
     /// the connected components of the undirected edges of g restricted to the nodes of `nodes`
-    std::vector< std::vector< NodeId > > undirectedComponents(const PDAG&                  g,
+    std::vector< std::vector< NodeId > > undirectedComponents(const MixedGraph&            g,
                                                               const std::vector< NodeId >& nodes) {
       NodeSet todo;
       for (const auto node: nodes)
@@ -395,28 +523,35 @@ namespace gum::graph {
 
       double size_(NodeId node) const { return double(domainSizes_[node]); }
 
-      /// the maximal cliques of the connected chordal graph h: the families {v} and its neighbours
-      /// visited before v by a LexBFS (cliques, the reverse being a perfect elimination ordering)
-      /// that are not included in another family, which then is the family of a later neighbour
+      /// the maximal cliques of the connected chordal graph h, in O(n + m): the families {v} and
+      /// its neighbours visited before v by a LexBFS (cliques, the reverse being a perfect
+      /// elimination ordering) that are not included in another family. The family of v is included
+      /// in another one iff it is in the family, one node larger, of a node w whose last visited
+      /// neighbour before it is v (Blair and Peyton 1993)
       static std::vector< std::vector< NodeId > > maximalCliques_(const UndiGraph& h) {
-        const auto              order = lexBFS(h);
-        NodeProperty< NodeSet > family;
-        for (const auto v: order) {
-          NodeSet f{v};
-          for (const auto u: h.neighbours(v))
-            if (order.pos(u) < order.pos(v)) f.insert(u);
-          family.insert(v, std::move(f));
+        const auto           order = lexBFS(h);
+        NodeProperty< Size > familySize;
+        NodeSet              included;
+        for (const auto w: order) {
+          const Idx pos  = order.pos(w);
+          Size      size = 1;
+          Idx       last = 0;   // 1 + the position of the last visited neighbour before w
+          for (const auto u: h.neighbours(w))
+            if (order.pos(u) < pos) {
+              ++size;
+              last = std::max(last, order.pos(u) + 1);
+            }
+          familySize.insert(w, size);
+          if (last > 0 && size == familySize[order[last - 1]] + 1) included.insert(order[last - 1]);
         }
+
         std::vector< std::vector< NodeId > > cliques;
         for (const auto v: order) {
-          bool maximal = true;
-          for (const auto w: h.neighbours(v))
-            if (order.pos(w) > order.pos(v) && family[w].size() > family[v].size()
-                && family[v].isSubsetOrEqual(family[w])) {
-              maximal = false;
-              break;
-            }
-          if (maximal) cliques.emplace_back(family[v].begin(), family[v].end());
+          if (included.contains(v)) continue;
+          std::vector< NodeId > clique{v};
+          for (const auto u: h.neighbours(v))
+            if (order.pos(u) < order.pos(v)) clique.push_back(u);
+          cliques.push_back(std::move(clique));
         }
         return cliques;
       }
@@ -452,8 +587,8 @@ namespace gum::graph {
           NodeProperty< Idx > posInClique;
           for (Idx i = 0; i < clique.size(); ++i)
             posInClique.insert(clique[i], i);
-          // built as a mixed graph then checked once by the PDAG constructor (PDAG::addArc would
-          // look for a directed path at each arc)
+          // built as a mixed graph, acyclic by construction (PDAG::addArc would look for a directed
+          // path at each arc)
           MixedGraph first;
           for (const auto node: component)
             first.addNodeWithId(node);
@@ -467,16 +602,26 @@ namespace gum::graph {
             else if (inY) first.addArc(y, x);
             else first.addEdge(x, y);
           }
-          // extendable: h is chordal, K is a clique
-          const auto closure = meekClosure(PDAG(first));
+          // h is chordal and K is a clique: a LexBFS visiting K first gives a consistent extension
+          // of first, known to be valid (no search for a cycle, no check of the closure)
+          const auto order = lexBFS(h, clique);
+          DiGraph    extension;
+          for (const auto node: component)
+            extension.addNodeWithId(node);
+          for (const auto& edge: h.edges()) {
+            const NodeId x = edge.first(), y = edge.second();
+            if (order.pos(x) < order.pos(y)) extension.addArc(x, y);
+            else extension.addArc(y, x);
+          }
+          const auto closure = closureOf(std::move(first), extension, order);
 
           std::vector< NodeId > rest;
           for (const auto node: component)
             if (!posInClique.exists(node)) rest.push_back(node);
-          auto components = undirectedComponents(*closure, rest);
+          auto components = undirectedComponents(closure, rest);
           for (const auto& sub: components) {
             double parentFactor = 1.0;   // the parents are common to all the nodes of sub
-            for (const auto p: closure->parents(sub.front()))
+            for (const auto p: closure.parents(sub.front()))
               parentFactor *= size_(p);
             cost += parentFactor * solve_(sub).cost;
             if (cost >= best.cost) break;
@@ -484,7 +629,7 @@ namespace gum::graph {
           // the first clique is always kept, even if all the costs overflow to infinity
           if (best.arcs.empty() || cost < best.cost) {
             best.cost = cost;
-            best.arcs.assign(closure->arcs().begin(), closure->arcs().end());
+            best.arcs.assign(closure.arcs().begin(), closure.arcs().end());
             best.components = std::move(components);
           }
         }
@@ -521,21 +666,13 @@ namespace gum::graph {
         arcs.insert(arcs.end(), greedy->arcs().begin(), greedy->arcs().end());
       }
 
-      // the arcs into a node are added before any arc out of it (topological order of the heads):
-      // the acyclicity checks of DAG::addArc remain trivial
       DiGraph digraph;
       for (const auto node: nodes)
         digraph.addNodeWithId(node);
+      copyNames(closure, digraph);
       for (const auto& arc: arcs)
         digraph.addArc(arc.tail(), arc.head());
-      DAG extension;
-      for (const auto node: nodes)
-        extension.addNodeWithId(node);
-      copyNames(closure, extension);
-      for (const auto node: digraph.topologicalOrder())
-        for (const auto parent: digraph.parents(node))
-          extension.addArc(parent, node);
-      return extension;
+      return DAG(digraph);   // acyclic by construction, checked once
     }
   }   // namespace
 
@@ -580,61 +717,25 @@ namespace gum::graph {
     }
   }   // namespace detail
 
-  ChainGraph cpdag(const DAG& dag) {
-    // Order-Edges: heads by increasing topological rank, then tails by decreasing rank
-    const auto topologicalRank = dag.topologicalOrder();
-
-    // Find-Compelled: when the first unknown arc x->y is handled, all the arcs into y are unknown
-    // (Lemma 5) and they are all labelled at the end of the step
-    ArcProperty< bool > compelled;
-    // the compelled arcs into each visited node: scanning only them keeps the time linear (each one
-    // either ends the scan or labels a distinct arc into y)
-    NodeProperty< std::vector< NodeId > > compelledParents;
-    for (const auto y: topologicalRank) {
-      const auto& parents        = dag.parents(y);
-      auto&       compelledIntoY = compelledParents.insert(y, {}).second;
-      if (parents.empty()) continue;
-
-      NodeId x = *parents.begin();
-      for (const auto p: parents)
-        if (topologicalRank.pos(p) > topologicalRank.pos(x)) x = p;
-
-      bool allCompelled = false;
-      for (const auto w: compelledParents[x]) {
-        if (!dag.existsArc(w, y)) {
-          allCompelled = true;
-          break;
-        }
-        compelled.insert(Arc(w, y), true);
-      }
-
-      if (!allCompelled)
-        for (const auto z: parents)
-          if (z != x && !dag.existsArc(z, x)) {
-            allCompelled = true;
-            break;
-          }
-
-      // the arcs into y not already labelled get the label of x->y
-      for (const auto p: parents)
-        if (!compelled.exists(Arc(p, y))) compelled.insert(Arc(p, y), allCompelled);
-      if (allCompelled)
-        for (const auto p: parents)
-          compelled[Arc(p, y)] = true;
-      for (const auto p: parents)
-        if (compelled[Arc(p, y)]) compelledIntoY.push_back(p);
+  namespace detail {
+    ChainGraph cpdagGraph(const DAG& dag) {
+      return ChainGraph(cpdagOf(dag, dag.topologicalOrder()));
     }
+  }   // namespace detail
 
-    MixedGraph result;
-    for (const auto node: dag.nodes())
-      result.addNodeWithId(node);
-    copyNames(dag, result);
-    for (const auto& arc: dag.arcs()) {
-      if (compelled[arc]) result.addArc(arc.tail(), arc.head());
-      else result.addEdge(arc.tail(), arc.head());
-    }
-    return ChainGraph(result);
+  CPDAG cpdag(const DAG& dag) { return CPDAG::fromDAG(dag); }
+
+  std::optional< DAG > consistentExtension(const CPDAG& cpdag) {
+    return cpdag.consistentExtension();
   }
+
+  std::optional< DAG > consistentExtension(const MPDAG& mpdag) {
+    return mpdag.consistentExtension();
+  }
+
+  Sequence< NodeId > degeneracyOrdering(const CPDAG& g) { return degeneracyOrdering(g.graph()); }
+
+  Sequence< NodeId > degeneracyOrdering(const MPDAG& g) { return degeneracyOrdering(g.graph()); }
 
   std::optional< PDAG > meekClosure(const PDAG& pdag) {
     if (pdag.sizeEdges() == 0) return pdag;   // a PDAG without edge is a DAG
@@ -645,77 +746,7 @@ namespace gum::graph {
   }
 
   PDAG meekClosure(const PDAG& pdag, const DAG& extension) {
-    const auto order = extension.topologicalOrder();
-
-    // the arcs of the CPDAG are in every extension: only its chain components remain to orient.
-    // Built from pdag (same skeleton as its extension), whose node names are kept
-    MixedGraph       closure(pdag);
-    const ChainGraph compelled = cpdag(extension);
-    for (const auto& arc: compelled.arcs())
-      if (closure.existsEdge(arc.tail(), arc.head())) {
-        closure.eraseEdge(Edge(arc.tail(), arc.head()));
-        closure.addArc(arc.tail(), arc.head());
-      }
-
-    const auto orient = [&closure](NodeId tail, NodeId head) {
-      closure.eraseEdge(Edge(tail, head));
-      closure.addArc(tail, head);
-    };
-
-    // every edge into an already visited node has its final orientation: a rule can only orient
-    // an edge p-v into p->v, p before v in the topological order. These nodes p form a clique (the
-    // extension has no v-structure inside a chain component of its CPDAG): at most d of them
-    for (const auto v: order) {
-      std::vector< NodeId > before;
-      for (const auto p: closure.neighbours(v))
-        if (order.pos(p) < order.pos(v)) before.push_back(p);
-      if (before.empty()) continue;
-
-      // R1: a->p-v, a and v not adjacent. A scanned a adjacent to v is charged to the adjacency
-      // a-v, at most d times: O(dm) in all
-      for (const auto p: before)
-        for (const auto a: closure.parents(p))
-          if (!adjacent(closure, a, v)) {
-            orient(p, v);
-            break;
-          }
-
-      // R4: a-d, d->p->v, a-v, a and p adjacent, d and v not adjacent (p->v follows from R1). The
-      // candidates a are the remaining undirected neighbours of v before it (at most d)
-      std::vector< NodeId > r4;
-      for (const auto a: before) {
-        if (!closure.existsEdge(a, v)) continue;
-        bool found = false;
-        for (const auto p: closure.parents(v)) {
-          if (!adjacent(closure, a, p)) continue;
-          for (const auto d: closure.parents(p))
-            if (closure.existsEdge(a, d) && !adjacent(closure, d, v)) {
-              found = true;
-              break;
-            }
-          if (found) break;
-        }
-        if (found) r4.push_back(a);
-      }
-      for (const auto a: r4)
-        orient(a, v);
-
-      // R2: p->b->v, p-v; the closest p first, so that b->v is already oriented if it has to be.
-      // b is searched among the parents of v (at most d scans of them: O(dm) in all), not among the
-      // children of p, which are not bounded
-      std::sort(before.begin(), before.end(), [&order](NodeId x, NodeId y) {
-        return order.pos(x) > order.pos(y);
-      });
-      for (const auto p: before) {
-        if (!closure.existsEdge(p, v)) continue;
-        for (const auto b: closure.parents(v))
-          if (closure.existsArc(p, b)) {
-            orient(p, v);
-            break;
-          }
-      }
-    }
-    return PDAG(closure);
+    return PDAG(closureOf(MixedGraph(pdag), extension, extension.topologicalOrder()));
   }
 
 }   // namespace gum::graph

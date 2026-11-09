@@ -91,16 +91,30 @@ namespace gum {
   };
 
   /**
+   * @brief Concept for marked graphs (edges with a mark at each end).
+   *
+   * Satisfied by MarkedGraph, PAG and MAG. Refines GUM_NodeGraphable.
+   */
+  template < typename T >
+  concept GUM_MarkedGraphable
+      = GUM_NodeGraphable< T > && requires(const T g, NodeId u, NodeId v) { g.markAt(u, v); };
+
+  /**
    * @brief Concept for undirected graphs (edges with neighbours).
    *
    * Satisfied by UndiGraph, CliqeGraph, and the undirected component of
    * MixedGraph / PDAG.  Refines GUM_NodeGraphable.
+   *
+   * A marked graph is not an undirected graph, although it has edges and
+   * neighbours: its edges carry marks (the undirected algorithms are not
+   * defined on it, in C++ as in Python).
    */
   template < typename T >
-  concept GUM_UndiGraphable = GUM_NodeGraphable< T > && requires(const T g, NodeId u, NodeId v) {
-    { g.existsEdge(u, v) } -> std::convertible_to< bool >;
-    { g.neighbours(u) } -> std::convertible_to< const NodeSet& >;
-  };
+  concept GUM_UndiGraphable = GUM_NodeGraphable< T > && !GUM_MarkedGraphable< T >
+                           && requires(const T g, NodeId u, NodeId v) {
+                                { g.existsEdge(u, v) } -> std::convertible_to< bool >;
+                                { g.neighbours(u) } -> std::convertible_to< const NodeSet& >;
+                              };
 
   /**
    * @brief Concept for mixed graphs (both arcs and edges).

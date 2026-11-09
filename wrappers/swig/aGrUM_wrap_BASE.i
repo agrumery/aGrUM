@@ -208,6 +208,7 @@
 %include <agrum/base/graphs/MAG.h>
 %include <agrum/base/graphs/fastGraph.h>
 %include <agrum/base/graphs/fastMarkedGraph.h>
+%include "aGrUM_wrap_graphAlgorithms.i"
 
 %include <agrum/base/graphs/cliqueGraph.h>
 %import <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>

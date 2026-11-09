@@ -5706,6 +5706,15 @@ SWIGINTERN std::string gum_MAG__saveGUMstring__SWIG_0(gum::MAG const *self,int i
 SWIGINTERN void gum_MAG__saveGUM__SWIG_0(gum::MAG const *self,std::string const &name,PyObject *binary,int indent=gum::defaultJgumIndent()){
     gum::saveGraphGUM(*self, name, PyAgrumHelper::isBinaryGUMFile(name, binary), indent);
   }
+
+#include <agrum/base/graphs/algorithms/ancestral.h>
+#include <agrum/base/graphs/algorithms/generic/chordality.h>
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
+#include <agrum/base/graphs/algorithms/separationCriteria.h>
+
 SWIGINTERN gum::NodeSet gum_CliqueGraph_clique(gum::CliqueGraph const *self,gum::NodeId const clique){
     return self->clique(clique);
   }
@@ -37708,6 +37717,38 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_DAG__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::DAG *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DAG" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_DAG" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  {
+    try {
+      result = (gum::DAG *)new gum::DAG((gum::DiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__DAG, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DAG__SWIG_7(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -37776,9 +37817,20 @@ check_2:
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_3;
-    return _wrap_new_DAG__SWIG_6(self, argc, argv);
+    return _wrap_new_DAG__SWIG_7(self, argc, argv);
   }
 check_3:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    return _wrap_new_DAG__SWIG_6(self, argc, argv);
+  }
+check_4:
   
   if (argc == 1) {
     PyObject *retobj = _wrap_new_DAG__SWIG_3(self, argc, argv);
@@ -37810,6 +37862,7 @@ fail:
     "    gum::DAG::DAG(gum::Size)\n"
     "    gum::DAG::DAG()\n"
     "    gum::DAG::DAG(gum::DAG const &)\n"
+    "    gum::DAG::DAG(gum::DiGraph const &)\n"
     "    gum::DAG::DAG(gum::DAG &&)\n");
   return 0;
 }
@@ -53646,6 +53699,4487 @@ SWIGINTERN PyObject *MAG_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *
 SWIGINTERN PyObject *MAG_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
+
+SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MixedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  {
+    try {
+      result = gum::graph::degeneracyOrdering((gum::MixedGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CPDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CPDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::degeneracyOrdering((gum::CPDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MPDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_degeneracyOrdering" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MPDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::degeneracyOrdering((gum::MPDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_degeneracyOrdering", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MixedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_degeneracyOrdering__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CPDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_degeneracyOrdering__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_degeneracyOrdering__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_degeneracyOrdering'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::degeneracyOrdering(gum::MixedGraph const &)\n"
+    "    gum::graph::degeneracyOrdering(gum::CPDAG const &)\n"
+    "    gum::graph::degeneracyOrdering(gum::MPDAG const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MarkedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::ancestors((gum::MarkedGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::ancestors((gum::MAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MarkedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::descendants((gum::MarkedGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::descendants((gum::MAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MarkedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::anteriors((gum::MarkedGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::anteriors((gum::MAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isAncestral__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MarkedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isAncestral" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isAncestral" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::isAncestral((gum::MarkedGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isAncestral__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isAncestral" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isAncestral" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::isAncestral((gum::MAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isAncestral(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_isAncestral", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MarkedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_isAncestral__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_isAncestral__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_isAncestral'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::isAncestral(gum::MarkedGraph const &)\n"
+    "    gum::graph::isAncestral(gum::MAG const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isMaximal__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MarkedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isMaximal" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isMaximal" "', argument " "1"" of type '" "gum::MarkedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::isMaximal((gum::MarkedGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isMaximal__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isMaximal" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isMaximal" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::isMaximal((gum::MAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isMaximal(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_isMaximal", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MarkedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_isMaximal__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_isMaximal__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_isMaximal'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::isMaximal(gum::MarkedGraph const &)\n"
+    "    gum::graph::isMaximal(gum::MAG const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_cpdag(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< gum::CPDAG > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_cpdag" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_cpdag" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  {
+    try {
+      result = gum::graph::cpdag((gum::DAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::CPDAG(result)), SWIGTYPE_p_gum__CPDAG, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_consistentExtension__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::PDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::optional< gum::DAG > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::consistentExtension((gum::PDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    // result may be a SwigValueWrapper, whose operator& gives the address of the optional
+    std::optional< gum::DAG >* _opt = &result;
+    if (_opt->has_value()) {
+      static swig_type_info* _type = SWIG_TypeQuery("gum::DAG" " *");
+      resultobj = SWIG_NewPointerObj(new gum::DAG(std::move(**_opt)), _type, SWIG_POINTER_OWN);
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_consistentExtension__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CPDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::optional< gum::DAG > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CPDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::consistentExtension((gum::CPDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    // result may be a SwigValueWrapper, whose operator& gives the address of the optional
+    std::optional< gum::DAG >* _opt = &result;
+    if (_opt->has_value()) {
+      static swig_type_info* _type = SWIG_TypeQuery("gum::DAG" " *");
+      resultobj = SWIG_NewPointerObj(new gum::DAG(std::move(**_opt)), _type, SWIG_POINTER_OWN);
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_consistentExtension__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MPDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< std::optional< gum::DAG > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_consistentExtension" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MPDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::consistentExtension((gum::MPDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    // result may be a SwigValueWrapper, whose operator& gives the address of the optional
+    std::optional< gum::DAG >* _opt = &result;
+    if (_opt->has_value()) {
+      static swig_type_info* _type = SWIG_TypeQuery("gum::DAG" " *");
+      resultobj = SWIG_NewPointerObj(new gum::DAG(std::move(**_opt)), _type, SWIG_POINTER_OWN);
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_consistentExtension(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_consistentExtension", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__PDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_consistentExtension__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CPDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_consistentExtension__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_consistentExtension__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_consistentExtension'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::consistentExtension(gum::PDAG const &)\n"
+    "    gum::graph::consistentExtension(gum::CPDAG const &)\n"
+    "    gum::graph::consistentExtension(gum::MPDAG const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_meekClosure(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::PDAG *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< std::optional< gum::PDAG > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_meekClosure" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_meekClosure" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PDAG * >(argp1);
+  {
+    try {
+      result = gum::graph::meekClosure((gum::PDAG const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    // result may be a SwigValueWrapper, whose operator& gives the address of the optional
+    std::optional< gum::PDAG >* _opt = &result;
+    if (_opt->has_value()) {
+      static swig_type_info* _type = SWIG_TypeQuery("gum::PDAG" " *");
+      resultobj = SWIG_NewPointerObj(new gum::PDAG(std::move(**_opt)), _type, SWIG_POINTER_OWN);
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_orientAsDAG(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::PDAG *arg1 = 0 ;
+  gum::NodeProperty< gum::Size > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeProperty< gum::Size > _tmp_ds2 ;
+  PyObject *swig_obj[2] ;
+  gum::DAG result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "_graph_orientAsDAG", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_orientAsDAG" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_orientAsDAG" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PDAG * >(argp1);
+  {
+    if (!PyDict_Check(swig_obj[1])) {
+      PyErr_SetString(PyExc_TypeError, "domainSizes must be a dict {node id: domain size}");
+      SWIG_fail;
+    }
+    PyObject*  _key;
+    PyObject*  _val;
+    Py_ssize_t _pos = 0;
+    while (PyDict_Next(swig_obj[1], &_pos, &_key, &_val)) {
+      const std::size_t _id = PyLong_AsSize_t(_key);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) SWIG_fail;
+      const std::size_t _ds = PyLong_AsSize_t(_val);
+      if (_ds == static_cast< std::size_t >(-1) && PyErr_Occurred()) SWIG_fail;
+      _tmp_ds2.set(static_cast< gum::NodeId >(_id), static_cast< gum::Size >(_ds));
+    }
+    arg2 = &_tmp_ds2;
+  }
+  {
+    try {
+      result = gum::graph::orientAsDAG((gum::PDAG const &)*arg1,(gum::NodeProperty< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::DAG(result)), SWIGTYPE_p_gum__DAG, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  gum::NodeSet *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  gum::NodeSet _ns_temp3 ;
+  gum::NodeSet _ns_temp4 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg4 = &_ns_temp4;
+  }
+  {
+    try {
+      result = (bool)gum::graph::separation((gum::DAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3,(gum::Set< std::size_t > const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::PDAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  gum::NodeSet *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  gum::NodeSet _ns_temp3 ;
+  gum::NodeSet _ns_temp4 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__PDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::PDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::PDAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg4 = &_ns_temp4;
+  }
+  {
+    try {
+      result = (bool)gum::graph::separation((gum::PDAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3,(gum::Set< std::size_t > const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CPDAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  gum::NodeSet *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  gum::NodeSet _ns_temp3 ;
+  gum::NodeSet _ns_temp4 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::CPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CPDAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg4 = &_ns_temp4;
+  }
+  {
+    try {
+      result = (bool)gum::graph::separation((gum::CPDAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3,(gum::Set< std::size_t > const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MPDAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  gum::NodeSet *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  gum::NodeSet _ns_temp3 ;
+  gum::NodeSet _ns_temp4 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MPDAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::MPDAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MPDAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg4 = &_ns_temp4;
+  }
+  {
+    try {
+      result = (bool)gum::graph::separation((gum::MPDAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3,(gum::Set< std::size_t > const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  gum::NodeSet *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  gum::NodeSet _ns_temp3 ;
+  gum::NodeSet _ns_temp4 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_separation" "', argument " "1"" of type '" "gum::MAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
+  }
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg4 = &_ns_temp4;
+  }
+  {
+    try {
+      result = (bool)gum::graph::separation((gum::MAG const &)*arg1,(gum::Set< std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3,(gum::Set< std::size_t > const &)*arg4);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_separation(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_separation", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_separation__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__PDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_separation__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CPDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_3;
+    PyObject *retobj = _wrap__graph_separation__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_3:
+  
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MPDAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    PyObject *retobj = _wrap__graph_separation__SWIG_3(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_4:
+  
+  if (argc == 4) {
+    PyObject *retobj = _wrap__graph_separation__SWIG_4(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_separation'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::separation(gum::DAG const &,gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &)\n"
+    "    gum::graph::separation(gum::PDAG const &,gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &)\n"
+    "    gum::graph::separation(gum::CPDAG const &,gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &)\n"
+    "    gum::graph::separation(gum::MPDAG const &,gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &)\n"
+    "    gum::graph::separation(gum::MAG const &,gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR topologicalOrder< gum::DiGraph >((gum::DiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedCycle__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedCycle< gum::DiGraph >((gum::DiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR ancestors< gum::DiGraph >((gum::DiGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR descendants< gum::DiGraph >((gum::DiGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_directedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_directedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR directedPath< gum::DiGraph >((gum::DiGraph const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedPath__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::DiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_hasDirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_hasDirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedPath< gum::DiGraph >((gum::DiGraph const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR topologicalOrder< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedCycle__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR ancestors< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR descendants< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_directedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_directedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR directedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedPath__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_hasDirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_hasDirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_topologicalOrder" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR topologicalOrder< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_topologicalOrder(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_topologicalOrder", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_topologicalOrder__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_topologicalOrder__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_topologicalOrder__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_topologicalOrder'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::topologicalOrder< gum::DiGraph >(gum::DiGraph const &)\n"
+    "    gum::graph::topologicalOrder< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::topologicalOrder< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedCycle__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedCycle(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_hasDirectedCycle", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_hasDirectedCycle__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_hasDirectedCycle__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_hasDirectedCycle__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_hasDirectedCycle'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::hasDirectedCycle< gum::DiGraph >(gum::DiGraph const &)\n"
+    "    gum::graph::hasDirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::hasDirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_ancestors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR ancestors< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_ancestors(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_ancestors", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MarkedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_ancestors__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_ancestors__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_3;
+    PyObject *retobj = _wrap__graph_ancestors__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_3:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    PyObject *retobj = _wrap__graph_ancestors__SWIG_3(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_4:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap__graph_ancestors__SWIG_4(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_ancestors'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::ancestors(gum::MarkedGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::ancestors(gum::MAG const &,gum::NodeSet const &)\n"
+    "    gum::graph::ancestors< gum::DiGraph >(gum::DiGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::ancestors< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeSet const &)\n"
+    "    gum::graph::ancestors< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeSet const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_descendants" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR descendants< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_descendants(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_descendants", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MarkedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_descendants__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_descendants__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_3;
+    PyObject *retobj = _wrap__graph_descendants__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_3:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    PyObject *retobj = _wrap__graph_descendants__SWIG_3(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_4:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap__graph_descendants__SWIG_4(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_descendants'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::descendants(gum::MarkedGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::descendants(gum::MAG const &,gum::NodeSet const &)\n"
+    "    gum::graph::descendants< gum::DiGraph >(gum::DiGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::descendants< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeSet const &)\n"
+    "    gum::graph::descendants< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeSet const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_directedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_directedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_directedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR directedPath< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_directedPath(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_directedPath", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_directedPath__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_directedPath__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap__graph_directedPath__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_directedPath'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::directedPath< gum::DiGraph >(gum::DiGraph const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::directedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::directedPath< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeId,gum::NodeId)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedPath__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasDirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_hasDirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_hasDirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasDirectedPath< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasDirectedPath(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_hasDirectedPath", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_hasDirectedPath__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_hasDirectedPath__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap__graph_hasDirectedPath__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_hasDirectedPath'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::hasDirectedPath< gum::DiGraph >(gum::DiGraph const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::hasDirectedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::hasDirectedPath< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeId,gum::NodeId)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasUndirectedCycle__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasUndirectedCycle< gum::UndiGraph >((gum::UndiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isChordal__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isChordal< gum::UndiGraph >((gum::UndiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< gum::NodeId > _tmp_first2 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      _tmp_first2.push_back(static_cast< gum::NodeId >(_id));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_first2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR lexBFS< gum::UndiGraph >((gum::UndiGraph const &)*arg1,(std::vector< std::size_t,std::allocator< std::size_t > > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR maximumCardinalitySearch< gum::UndiGraph >((gum::UndiGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isPerfectEliminationOrdering__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  gum::Sequence< gum::NodeId > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Sequence< gum::NodeId > _tmp_order2 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      try {
+        _tmp_order2.insert(static_cast< gum::NodeId >(_id));
+      } catch (const gum::DuplicateElement&) {
+        Py_DECREF(_iter);
+        PyErr_SetString(PyExc_ValueError, "the ordering contains a node twice");
+        SWIG_fail;
+      }
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_order2;
+  }
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isPerfectEliminationOrdering< gum::UndiGraph >((gum::UndiGraph const &)*arg1,(gum::Sequence< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__UndiGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::UndiGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_undirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_undirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR undirectedPath< gum::UndiGraph >((gum::UndiGraph const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasUndirectedCycle__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasUndirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isChordal__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isChordal< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< gum::NodeId > _tmp_first2 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      _tmp_first2.push_back(static_cast< gum::NodeId >(_id));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_first2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR lexBFS< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,(std::vector< std::size_t,std::allocator< std::size_t > > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR maximumCardinalitySearch< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isPerfectEliminationOrdering__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::Sequence< gum::NodeId > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Sequence< gum::NodeId > _tmp_order2 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      try {
+        _tmp_order2.insert(static_cast< gum::NodeId >(_id));
+      } catch (const gum::DuplicateElement&) {
+        Py_DECREF(_iter);
+        PyErr_SetString(PyExc_ValueError, "the ordering contains a node twice");
+        SWIG_fail;
+      }
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_order2;
+  }
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isPerfectEliminationOrdering< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,(gum::Sequence< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_undirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_undirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR undirectedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasUndirectedCycle__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasUndirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasUndirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasUndirectedCycle(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_hasUndirectedCycle", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_hasUndirectedCycle__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_hasUndirectedCycle__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_hasUndirectedCycle__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_hasUndirectedCycle'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::hasUndirectedCycle< gum::UndiGraph >(gum::UndiGraph const &)\n"
+    "    gum::graph::hasUndirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::hasUndirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isChordal__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isChordal" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isChordal< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isChordal(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_isChordal", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_isChordal__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_isChordal__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_isChordal__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_isChordal'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::isChordal< gum::UndiGraph >(gum::UndiGraph const &)\n"
+    "    gum::graph::isChordal< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::isChordal< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::vector< gum::NodeId > _tmp_first2 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_lexBFS" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      _tmp_first2.push_back(static_cast< gum::NodeId >(_id));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_first2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR lexBFS< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,(std::vector< std::size_t,std::allocator< std::size_t > > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_lexBFS(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_lexBFS", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_lexBFS__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_lexBFS__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap__graph_lexBFS__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_lexBFS'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::lexBFS< gum::UndiGraph >(gum::UndiGraph const &,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n"
+    "    gum::graph::lexBFS< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n"
+    "    gum::graph::lexBFS< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Sequence< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_maximumCardinalitySearch" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR maximumCardinalitySearch< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    PyObject *q=PyList_New(0);
+    
+    PyObject *pyval;
+    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
+      pyval=PyLong_FromLong(i);
+      PyList_Append(q,pyval);
+      Py_DecRef(pyval);
+    }
+    resultobj=q;
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_maximumCardinalitySearch", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_maximumCardinalitySearch__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_maximumCardinalitySearch__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_maximumCardinalitySearch__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_maximumCardinalitySearch'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::maximumCardinalitySearch< gum::UndiGraph >(gum::UndiGraph const &)\n"
+    "    gum::graph::maximumCardinalitySearch< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::maximumCardinalitySearch< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isPerfectEliminationOrdering__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::Sequence< gum::NodeId > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Sequence< gum::NodeId > _tmp_order2 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_isPerfectEliminationOrdering" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (_iter == nullptr) SWIG_fail;
+    while (PyObject* _item = PyIter_Next(_iter)) {
+      const std::size_t _id = PyLong_AsSize_t(_item);
+      Py_DECREF(_item);
+      if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) {
+        Py_DECREF(_iter);
+        SWIG_fail;
+      }
+      try {
+        _tmp_order2.insert(static_cast< gum::NodeId >(_id));
+      } catch (const gum::DuplicateElement&) {
+        Py_DECREF(_iter);
+        PyErr_SetString(PyExc_ValueError, "the ordering contains a node twice");
+        SWIG_fail;
+      }
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_tmp_order2;
+  }
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR isPerfectEliminationOrdering< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,(gum::Sequence< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_isPerfectEliminationOrdering(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_isPerfectEliminationOrdering", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_isPerfectEliminationOrdering__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_isPerfectEliminationOrdering__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap__graph_isPerfectEliminationOrdering__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_isPerfectEliminationOrdering'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::isPerfectEliminationOrdering< gum::UndiGraph >(gum::UndiGraph const &,gum::Sequence< gum::NodeId > const &)\n"
+    "    gum::graph::isPerfectEliminationOrdering< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::Sequence< gum::NodeId > const &)\n"
+    "    gum::graph::isPerfectEliminationOrdering< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::Sequence< gum::NodeId > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_undirectedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_undirectedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_undirectedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR undirectedPath< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_undirectedPath(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_undirectedPath", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__UndiGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_undirectedPath__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_undirectedPath__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap__graph_undirectedPath__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_undirectedPath'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::undirectedPath< gum::UndiGraph >(gum::UndiGraph const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::undirectedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::undirectedPath< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeId,gum::NodeId)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasPartiallyDirectedCycle__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MixedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasPartiallyDirectedCycle< gum::MixedGraph >((gum::MixedGraph const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MixedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_mixedOrientedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_mixedOrientedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR mixedOrientedPath< gum::MixedGraph >((gum::MixedGraph const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__MixedGraph,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::MixedGraph const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR anteriors< gum::MixedGraph >((gum::MixedGraph const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasPartiallyDirectedCycle__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasPartiallyDirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_mixedOrientedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_mixedOrientedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR mixedOrientedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR anteriors< gum::ImmutableMixedGraph< gum::ChainGraph > >((gum::ImmutableMixedGraph< gum::ChainGraph > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasPartiallyDirectedCycle__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_hasPartiallyDirectedCycle" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    try {
+      result = (bool)gum::graph::SWIGTEMPLATEDISAMBIGUATOR hasPartiallyDirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_hasPartiallyDirectedCycle(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_hasPartiallyDirectedCycle", 0, 1, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MixedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    return _wrap__graph_hasPartiallyDirectedCycle__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    return _wrap__graph_hasPartiallyDirectedCycle__SWIG_1(self, argc, argv);
+  }
+check_2:
+  
+  if (argc == 1) {
+    PyObject *retobj = _wrap__graph_hasPartiallyDirectedCycle__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_hasPartiallyDirectedCycle'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::hasPartiallyDirectedCycle< gum::MixedGraph >(gum::MixedGraph const &)\n"
+    "    gum::graph::hasPartiallyDirectedCycle< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &)\n"
+    "    gum::graph::hasPartiallyDirectedCycle< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_mixedOrientedPath" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_graph_mixedOrientedPath" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_graph_mixedOrientedPath" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR mixedOrientedPath< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    if ((&result)->has_value()) {
+      resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+    } else {
+      resultobj = Py_None;
+      Py_INCREF(Py_None);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_mixedOrientedPath", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MixedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_mixedOrientedPath__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_mixedOrientedPath__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap__graph_mixedOrientedPath__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_mixedOrientedPath'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::mixedOrientedPath< gum::MixedGraph >(gum::MixedGraph const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::mixedOrientedPath< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeId,gum::NodeId)\n"
+    "    gum::graph::mixedOrientedPath< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeId,gum::NodeId)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::NodeSet _ns_temp2 ;
+  SwigValueWrapper< gum::Set< std::size_t > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_graph_anteriors" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
+  {
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
+    }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
+  }
+  {
+    try {
+      result = gum::graph::SWIGTEMPLATEDISAMBIGUATOR anteriors< gum::ImmutableMixedGraph< gum::PDAG > >((gum::ImmutableMixedGraph< gum::PDAG > const &)*arg1,(gum::Set< std::size_t > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap__graph_anteriors(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "_graph_anteriors", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MarkedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_1;
+    PyObject *retobj = _wrap__graph_anteriors__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_1:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_2;
+    PyObject *retobj = _wrap__graph_anteriors__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_2:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__MixedGraph, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_3;
+    PyObject *retobj = _wrap__graph_anteriors__SWIG_2(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_3:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_4;
+    PyObject *retobj = _wrap__graph_anteriors__SWIG_3(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_4:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap__graph_anteriors__SWIG_4(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_graph_anteriors'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::graph::anteriors(gum::MarkedGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::anteriors(gum::MAG const &,gum::NodeSet const &)\n"
+    "    gum::graph::anteriors< gum::MixedGraph >(gum::MixedGraph const &,gum::NodeSet const &)\n"
+    "    gum::graph::anteriors< gum::ImmutableMixedGraph< gum::ChainGraph > >(gum::ImmutableMixedGraph< gum::ChainGraph > const &,gum::NodeSet const &)\n"
+    "    gum::graph::anteriors< gum::ImmutableMixedGraph< gum::PDAG > >(gum::ImmutableMixedGraph< gum::PDAG > const &,gum::NodeSet const &)\n");
+  return 0;
+}
+
 
 SWIGINTERN PyObject *_wrap_new_CliqueGraph__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
@@ -144523,6 +149057,10 @@ static PyMethodDef SwigMethods[] = {
 		"bool\n"
 		"    True if the graph contains a cycle\n"
 		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.hasUndirectedCycle : the same for every graph with edges\n"
+		"\n"
 		""},
 	 { "UndiGraph_partialUndiGraph", _wrap_UndiGraph_partialUndiGraph, METH_VARARGS, "\n"
 		"\n"
@@ -144906,6 +149444,10 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.InvalidDirectedCycle\n"
 		"  If this graph contains cycles\n"
 		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.topologicalOrder : the same for every graph with arcs\n"
+		"\n"
 		""},
 	 { "DiGraph_hasDirectedPath", _wrap_DiGraph_hasDirectedPath, METH_VARARGS, "\n"
 		"\n"
@@ -145133,6 +149675,10 @@ static PyMethodDef SwigMethods[] = {
 		"set\n"
 		"  the set of ids of the descendants of node `norid`.\n"
 		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.descendants : the same for every graph with arcs, for one or several nodes\n"
+		"\n"
 		""},
 	 { "DiGraph_ancestors", _wrap_DiGraph_ancestors, METH_VARARGS, "\n"
 		"\n"
@@ -145147,6 +149693,10 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"  the set of ids of the ancestors of node `norid`.\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.ancestors : the same for every graph with arcs, for one or several nodes\n"
 		"\n"
 		""},
 	 { "DiGraph__saveGUMstring", _wrap_DiGraph__saveGUMstring, METH_VARARGS, NULL},
@@ -145354,6 +149904,10 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"bool\n"
 		"  True if X and Y are d-separated (by Z if given), False otherwise.\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.separation : the separation criterion of each kind of graph\n"
 		"\n"
 		""},
 	 { "DAG_addNodes", _wrap_DAG_addNodes, METH_VARARGS, "\n"
@@ -146504,6 +151058,10 @@ static PyMethodDef SwigMethods[] = {
 		"bool\n"
 		"  True if X and Y are c-separated (by Z if given), False otherwise.\n"
 		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.separation : the separation criterion of each kind of graph\n"
+		"\n"
 		""},
 	 { "ChainGraph__saveGUMstring", _wrap_ChainGraph__saveGUMstring, METH_VARARGS, NULL},
 	 { "ChainGraph__saveGUM", _wrap_ChainGraph__saveGUM, METH_VARARGS, NULL},
@@ -146736,6 +151294,10 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.DAG\n"
 		"  a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),\n"
 		"  kept from the construction of the graph\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG\n"
 		"\n"
 		""},
 	 { "_ImmutableMixedGraphChainGraph_dSeparation", _wrap__ImmutableMixedGraphChainGraph_dSeparation, METH_VARARGS, NULL},
@@ -146984,6 +151546,10 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.DAG\n"
 		"  a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),\n"
 		"  kept from the construction of the graph\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG\n"
 		"\n"
 		""},
 	 { "_ImmutableMixedGraphPDAG_dSeparation", _wrap__ImmutableMixedGraphPDAG_dSeparation, METH_VARARGS, NULL},
@@ -148052,6 +152618,10 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.InvalidArgument\n"
 		"    if X and Y are not disjoint\n"
 		"\n"
+		"See Also\n"
+		"--------\n"
+		"pyagrum.graph.separation : the separation criterion of each kind of graph\n"
+		"\n"
 		""},
 	 { "MAG_nodes", _wrap_MAG_nodes, METH_O, "\n"
 		"\n"
@@ -148065,6 +152635,29 @@ static PyMethodDef SwigMethods[] = {
 	 { "MAG__saveGUM", _wrap_MAG__saveGUM, METH_VARARGS, NULL},
 	 { "MAG_swigregister", MAG_swigregister, METH_O, NULL},
 	 { "MAG_swiginit", MAG_swiginit, METH_VARARGS, NULL},
+	 { "_graph_degeneracyOrdering", _wrap__graph_degeneracyOrdering, METH_VARARGS, NULL},
+	 { "_graph_isAncestral", _wrap__graph_isAncestral, METH_VARARGS, NULL},
+	 { "_graph_isMaximal", _wrap__graph_isMaximal, METH_VARARGS, NULL},
+	 { "_graph_cpdag", _wrap__graph_cpdag, METH_O, NULL},
+	 { "_graph_consistentExtension", _wrap__graph_consistentExtension, METH_VARARGS, NULL},
+	 { "_graph_meekClosure", _wrap__graph_meekClosure, METH_O, NULL},
+	 { "_graph_orientAsDAG", _wrap__graph_orientAsDAG, METH_VARARGS, NULL},
+	 { "_graph_separation", _wrap__graph_separation, METH_VARARGS, NULL},
+	 { "_graph_topologicalOrder", _wrap__graph_topologicalOrder, METH_VARARGS, NULL},
+	 { "_graph_hasDirectedCycle", _wrap__graph_hasDirectedCycle, METH_VARARGS, NULL},
+	 { "_graph_ancestors", _wrap__graph_ancestors, METH_VARARGS, NULL},
+	 { "_graph_descendants", _wrap__graph_descendants, METH_VARARGS, NULL},
+	 { "_graph_directedPath", _wrap__graph_directedPath, METH_VARARGS, NULL},
+	 { "_graph_hasDirectedPath", _wrap__graph_hasDirectedPath, METH_VARARGS, NULL},
+	 { "_graph_hasUndirectedCycle", _wrap__graph_hasUndirectedCycle, METH_VARARGS, NULL},
+	 { "_graph_isChordal", _wrap__graph_isChordal, METH_VARARGS, NULL},
+	 { "_graph_lexBFS", _wrap__graph_lexBFS, METH_VARARGS, NULL},
+	 { "_graph_maximumCardinalitySearch", _wrap__graph_maximumCardinalitySearch, METH_VARARGS, NULL},
+	 { "_graph_isPerfectEliminationOrdering", _wrap__graph_isPerfectEliminationOrdering, METH_VARARGS, NULL},
+	 { "_graph_undirectedPath", _wrap__graph_undirectedPath, METH_VARARGS, NULL},
+	 { "_graph_hasPartiallyDirectedCycle", _wrap__graph_hasPartiallyDirectedCycle, METH_VARARGS, NULL},
+	 { "_graph_mixedOrientedPath", _wrap__graph_mixedOrientedPath, METH_VARARGS, NULL},
+	 { "_graph_anteriors", _wrap__graph_anteriors, METH_VARARGS, NULL},
 	 { "new_CliqueGraph", _wrap_new_CliqueGraph, METH_VARARGS, NULL},
 	 { "delete_CliqueGraph", _wrap_delete_CliqueGraph, METH_O, NULL},
 	 { "CliqueGraph_addEdge", _wrap_CliqueGraph_addEdge, METH_VARARGS, "\n"
@@ -163142,6 +167735,13 @@ static PyMethodDef SwigMethods[] = {
 		"  The learning method must be constraint-based (MIIC, etc.) and not score-based\n"
 		"  (K2, GreedyHillClimbing, etc.)\n"
 		"\n"
+		"Notes\n"
+		"-----\n"
+		"  With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs\n"
+		"  are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o\n"
+		"  become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).\n"
+		"  Use `learnPAG` to get the learned structure with its uncertain marks.\n"
+		"\n"
 		""},
 	 { "BNLearner_learnEssentialGraph", _wrap_BNLearner_learnEssentialGraph, METH_O, "\n"
 		"\n"
@@ -163548,17 +168148,22 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNLearner_EMHistory", _wrap_BNLearner_EMHistory, METH_O, "\n"
 		"\n"
-		"Returns a list containing the log-likelihoods recorded after each\n"
-		"expectation/maximization iteration of the EM parameter learning algorithm.\n"
+		"Returns a list containing the values recorded after each\n"
+		"expectation/maximization iteration of the EM parameter learning algorithm:\n"
+		"the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),\n"
+		"its variation with the difference criterion (`useEMWithDiffCriterion()`).\n"
+		"\n"
+		"The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as\n"
+		"the period size is left at its default value of 1 (see `EMsetPeriodSize()`).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"list of float\n"
-		"        A list of all the log-likelihoods recorded during EM's execution\n"
+		"        A list of all the values recorded during EM's execution\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"Recording log-likelihoods is enabled only when EM is executed in verbose\n"
+		"Recording these values is enabled only when EM is executed in verbose\n"
 		"mode. See method `EMsetVerbosity()`.\n"
 		"\n"
 		""},

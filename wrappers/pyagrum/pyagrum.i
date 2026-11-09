@@ -118,6 +118,7 @@ static int _pyagrum_import_numpy(void) {
 %include "tensor.i"
 
 %include "graphs.i"
+%include "graphAlgorithms.i"
 
 /* %rename of the configuration: before the declaration of its class */
 %include "configurationPython.i"
@@ -146,18 +147,11 @@ static int _pyagrum_import_numpy(void) {
 %include "extensions/PythonDatabaseGeneratorListener.h"
 
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
 
-ADD_DI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
-%ignore gum::EssentialGraph::arcs const;
-%ignore gum::EssentialGraph::parents const;
-%ignore gum::EssentialGraph::children const;
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::MarkovBlanket::arcs const;
 %ignore gum::MarkovBlanket::parents const;
 %ignore gum::MarkovBlanket::children const;
-
-ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 
 %include "bayesnet.i"
 %include "inference.i"

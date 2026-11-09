@@ -67,7 +67,7 @@ namespace gum {
    * @warning The assignment operators are not virtual: a DAG assigned through a reference to
    * gum::DiGraph is not checked and may then contain a directed cycle.
    *
-   * @par exemple de code
+   * @par Code example
    * @code
    * // creating empty graphs
    * gum::DAG g1,g2;
@@ -143,6 +143,15 @@ namespace gum {
     /// copy constructor
     /** @param g the DAG to copy */
     DAG(const DAG& g);
+
+    /// a DAG with the nodes (names included) and the arcs of a directed graph
+    /**
+     * The acyclicity is checked once, O(n + m). For a mixed graph (a DiGraph), only its arcs are
+     * copied, as by every algorithm on the arcs.
+     * @param g the directed graph to copy
+     * @throw InvalidDirectedCycle if g has a directed cycle
+     */
+    explicit DAG(const DiGraph& g);
 
     /// move constructor
     DAG(DAG&& g);
@@ -230,6 +239,6 @@ static_assert(gum::GUM_DiGraphable< gum::DAG >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/DAG_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #endif   /* GUM_DAG_H */
