@@ -82,10 +82,10 @@ The sections and keys are created by the defaults, in this order: ``defaults.ini
 value of some of these keys, but never creates a section or a key.
 
 Each key is described in ``defaults.ini`` by a metadata line ``### type :: documentation`` where type is
-``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation
-``deprecated -> section.key``. Setting a value that does not respect the declared type raises a
-``ValueError``. Accessing a deprecated key emits a ``DeprecationWarning`` and transparently uses the
-replacement key. While values are always stored as strings, ``config.typed[section, key]`` gives the
+``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation:
+``deprecated -> section.key``, or ``deprecated type`` for a key without replacement, no longer used.
+Setting a value that does not respect the declared type raises a ``ValueError``. Accessing a deprecated
+key emits a ``DeprecationWarning`` and transparently uses the replacement key, if any. While values are always stored as strings, ``config.typed[section, key]`` gives the
 value converted according to the declared type. Boolean and enumerated values are canonicalized when set:
 any accepted boolean spelling (``yes``/``on``/``1``/...) is stored as ``True`` or ``False``, an
 enumerated value is stored with the casing declared in ``defaults.ini``.
@@ -94,9 +94,11 @@ See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/noteb
 
 Examples
 --------
-  >>> import pyagrum
-  >>> pyagrum.config[\"dynamicBN\", \"graphSize\"] = 10
-  >>> pyagrum.config[\"dynamicBN\", \"graphSize\"]
+.. code-block:: python
+
+  import pyagrum
+  pyagrum.config[\"dynamicBN\", \"graphSize\"] = 10
+  pyagrum.config[\"dynamicBN\", \"graphSize\"]
   \"10\"
 "
 
@@ -153,7 +155,22 @@ from typing import NamedTuple
 
 
 class ConfigMetadata(NamedTuple):
-  """Metadata attached to a configuration key by a '###' line in ``defaults.ini``."""
+  """
+  Metadata attached to a configuration key by a '###' line in ``defaults.ini``.
+
+  Attributes
+  ----------
+  kind : str
+      "int", "float", "bool", "str", "enum", or "deprecated" for a key replaced by another one
+  values : tuple[str, ...]
+      the allowed values when kind is "enum"
+  doc : str
+      the one-line documentation
+  target : tuple[str, str] or None
+      the replacement (section, option) when kind is "deprecated"
+  deprecated : bool
+      True for a key deprecated without replacement: it keeps its kind and its value, but is no longer used
+  """
 
   kind: str  # "int" | "float" | "bool" | "str" | "enum" | "deprecated"
   values: tuple[str, ...]  # allowed values when kind == "enum"
@@ -248,8 +265,10 @@ def set(self, section, option, value, no_hook=False):
 
   Examples
   --------
-    >>> pyagrum.config["dynamicBN", "graphSize"] = 10
-    >>> pyagrum.config["dynamicBN", "graphSize"]
+  .. code-block:: python
+
+    pyagrum.config["dynamicBN", "graphSize"] = 10
+    pyagrum.config["dynamicBN", "graphSize"]
     "10"
 
   Parameters
@@ -277,8 +296,10 @@ def get(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config["dynamicBN", "graphSize"] = 10
-    >>> pyagrum.config["dynamicBN", "graphSize"]
+  .. code-block:: python
+
+    pyagrum.config["dynamicBN", "graphSize"] = 10
+    pyagrum.config["dynamicBN", "graphSize"]
     "10"
 
   Parameters
@@ -300,7 +321,9 @@ def doc(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config.doc("tensor", "visibleDigits")
+  .. code-block:: python
+
+    pyagrum.config.doc("tensor", "visibleDigits")
     "int :: number of visible digits when displaying a tensor"
 
   Parameters
@@ -314,7 +337,7 @@ def doc(self, section, option):
   -------
   str
       The metadata as ``type :: documentation`` (``deprecated -> section.key :: documentation``
-      for a deprecated key).
+      for a deprecated key, ``deprecated type :: documentation`` for one without replacement).
 
   Raises
   ------
@@ -330,9 +353,11 @@ def getTyped(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config.typed["tensor", "visibleDigits"]
+  .. code-block:: python
+
+    pyagrum.config.typed["tensor", "visibleDigits"]
     4
-    >>> pyagrum.config.typed["tensor", "withColors"]
+    pyagrum.config.typed["tensor", "withColors"]
     True
 
   Parameters
@@ -354,8 +379,10 @@ def schema(self):
 
   Examples
   --------
-    >>> for section, option, meta, default in pyagrum.config.schema():
-    ...   print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
+  .. code-block:: python
+
+    for section, option, meta, default in pyagrum.config.schema():
+      print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
 
   Yields
   ------

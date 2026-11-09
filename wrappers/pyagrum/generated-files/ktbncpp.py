@@ -707,21 +707,23 @@ class KTBN(object):
 
         Examples
         --------
-        Bracket-free convention (a plain, hand-built or foreign BN):
+        .. code-block:: python
 
-        >>> bn = pyagrum.BayesNet()
-        >>> bn.add(pyagrum.LabelizedVariable('X0', '', 2))
-        >>> bn.add(pyagrum.LabelizedVariable('X1', '', 2))
-        >>> bn.add(pyagrum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
-        >>> bn.addArc('X0', 'X1')
-        >>> bn.addArc('C', 'X1')
-        >>> ktbn = pyagrum.KTBN.fromBN(bn)
-        >>> ktbn.k()
-        2
+          # bracket-free convention (a plain, hand-built or foreign BN)
 
-        Bracket convention (round-tripping a KTBN's own storage BN):
+          bn = gum.BayesNet()
+          bn.add(gum.LabelizedVariable('X0', '', 2))
+          bn.add(gum.LabelizedVariable('X1', '', 2))
+          bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
+          bn.addArc('X0', 'X1')
+          bn.addArc('C', 'X1')
+          ktbn = gum.KTBN.fromBN(bn)
+          ktbn.k()
+          2
 
-        >>> ktbn2 = pyagrum.KTBN.fromBN(ktbn.toBN())
+          # bracket convention (round-tripping a KTBN's own storage BN)
+
+          ktbn2 = gum.KTBN.fromBN(ktbn.toBN())
 
         Parameters
         ----------
@@ -864,9 +866,11 @@ class KTBN(object):
 
         Examples
         --------
-        >>> m.fillCPT("C", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
-        >>> m.fillCPT("X", 1, {("X", 0): 1, ("C", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
-        >>> m.fillCPT("X[1]", {"X[0]": "1", "C": 0}, [0.6, 0.4])         # same, engine names
+        .. code-block:: python
+
+          m.fillCPT("C", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
+          m.fillCPT("X", 1, {("X", 0): 1, ("C", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
+          m.fillCPT("X[1]", {"X[0]": "1", "C": 0}, [0.6, 0.4])         # same, engine names
 
         Parameters
         ----------
@@ -916,12 +920,14 @@ class KTBNGenerator(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> import pyagrum.ktbn as ktbn
-    >>> pyagrum.initRandom(42)                          # reproducible
-    >>> gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
-    >>> gen.setDensity(0.15).setMaxParents(4)
-    >>> model = gen.generate()
+    .. code-block:: python
+
+      import pyagrum as gum
+      import pyagrum.ktbn as ktbn
+      gum.initRandom(42)                          # reproducible
+      gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
+      gen.setDensity(0.15).setMaxParents(4)
+      model = gen.generate()
 
     KTBNGenerator(k, nbTemporal, nbAtemporal=0, maxArcs=0, maxModality=2) -> KTBNGenerator
         Parameters:
@@ -1154,15 +1160,17 @@ class KTBNInference(object):
 
     Examples
     --------
-    >>> import pyagrum.ktbn as ktbn
-    >>> ie = ktbn.KTBNInference(model)
-    >>> ie.addObservation("Y", 3, 1)      # observe Y[3] = 1
-    >>> ie.addIntervention("X", 2, 1)     # do(X[2] = 1)
-    >>> ie.addTarget("X")                 # want the whole P(X[t] | ...) series
-    >>> ie.makeInference(10)               # compute slices 0..9
-    >>> p3 = ie.posterior("X", 3)
-    >>> px = ie.posteriors("X")
-    >>> logpe = ie.logObservationProbability()
+    .. code-block:: python
+
+      import pyagrum.ktbn as ktbn
+      ie = ktbn.KTBNInference(model)
+      ie.addObservation("Y", 3, 1)      # observe Y[3] = 1
+      ie.addIntervention("X", 2, 1)     # do(X[2] = 1)
+      ie.addTarget("X")                 # want the whole P(X[t] | ...) series
+      ie.makeInference(10)               # compute slices 0..9
+      p3 = ie.posterior("X", 3)
+      px = ie.posteriors("X")
+      logpe = ie.logObservationProbability()
 
     KTBNInference(ktbn) -> KTBNInference
         Parameters:
@@ -1503,10 +1511,12 @@ class KTBNInference(object):
 
         Examples
         --------
-        >>> ie.addIntervention("X", 5, 0)                       # by (base, slice), index
-        >>> ie.addIntervention("X", 5, "high")                  # by (base, slice), label
-        >>> ie.addIntervention("X[5]", 0)                        # by engine name
-        >>> ie.addIntervention({"X[5]": 0, ("Z", 2): "high"})    # batch
+        .. code-block:: python
+
+          ie.addIntervention("X", 5, 0)                       # by (base, slice), index
+          ie.addIntervention("X", 5, "high")                  # by (base, slice), label
+          ie.addIntervention("X[5]", 0)                        # by engine name
+          ie.addIntervention({"X[5]": 0, ("Z", 2): "high"})    # batch
 
         Parameters
         ----------
@@ -1548,10 +1558,12 @@ class KTBNInference(object):
 
         Examples
         --------
-        >>> ie.addObservation("X", 5, 0)                 # hard, by index
-        >>> ie.addObservation("X", 5, "high")            # hard, by label
-        >>> ie.addObservation("X", 5, [0.1, 0.9])         # soft (likelihoods)
-        >>> ie.addObservations({"X[5]": 0, ("Z", 2): 1})  # batch, hard only
+        .. code-block:: python
+
+          ie.addObservation("X", 5, 0)                 # hard, by index
+          ie.addObservation("X", 5, "high")            # hard, by label
+          ie.addObservation("X", 5, [0.1, 0.9])         # soft (likelihoods)
+          ie.addObservations({"X[5]": 0, ("Z", 2): 1})  # batch, hard only
 
         Parameters
         ----------
@@ -1621,11 +1633,13 @@ class KTBNDatabaseGenerator(object):
 
     Examples
     --------
-    >>> import pyagrum.ktbn as ktbn
-    >>> kdbn = ...                                          # a k-TBN
-    >>> gen = ktbn.KTBNDatabaseGenerator(kdbn)
-    >>> # 1000 trajectories of length 10 -> out_dir/traj1.csv ... out_dir/traj1000.csv
-    >>> ll = gen.drawSamples(1000, 10, "out_dir", "traj")
+    .. code-block:: python
+
+      import pyagrum.ktbn as ktbn
+      kdbn = ...                                          # a k-TBN
+      gen = ktbn.KTBNDatabaseGenerator(kdbn)
+      # 1000 trajectories of length 10 -> out_dir/traj1.csv ... out_dir/traj1000.csv
+      ll = gen.drawSamples(1000, 10, "out_dir", "traj")
 
     KTBNDatabaseGenerator(kdbn) -> KTBNDatabaseGenerator
         Parameters:
@@ -1694,8 +1708,10 @@ class KTBNDatabaseGenerator(object):
 
         Examples
         --------
-        >>> gen.drawSamples(100, 10, "out_dir", "traj")            # 100 trajectories, length 10
-        >>> gen.drawSamples([8, 10, 12], "out_dir", "traj")        # 3 trajectories, own lengths
+        .. code-block:: python
+
+          gen.drawSamples(100, 10, "out_dir", "traj")            # 100 trajectories, length 10
+          gen.drawSamples([8, 10, 12], "out_dir", "traj")        # 3 trajectories, own lengths
 
         Parameters
         ----------
@@ -1750,14 +1766,16 @@ class KTBNLearner(object):
 
     Examples
     --------
-    >>> import pyagrum.ktbn as ktbn
-    >>> # atemporal variables inferred from the data
-    >>> learner = ktbn.KTBNLearner("trajs/", "traj", 500, 2)
-    >>> learner.useScoreBIC().useGreedyHillClimbing()
-    >>> model = learner.learnKTBN()
-    >>>
-    >>> # or state the classification explicitly (pass an actual `set`, not a list)
-    >>> learner2 = ktbn.KTBNLearner("trajs/", "traj", 500, 2, {"C", "D"})
+    .. code-block:: python
+
+      import pyagrum.ktbn as ktbn
+      # atemporal variables inferred from the data
+      learner = ktbn.KTBNLearner("trajs/", "traj", 500, 2)
+      learner.useScoreBIC().useGreedyHillClimbing()
+      model = learner.learnKTBN()
+
+      # or state the classification explicitly (pass an actual `set`, not a list)
+      learner2 = ktbn.KTBNLearner("trajs/", "traj", 500, 2, {"C", "D"})
 
     KTBNLearner(dirPath, csvBaseName, nbSamples, k, atemporalVars, missingSymbols=['?'], induceTypes=True, ignoreMissingSymbols=False) -> KTBNLearner
         Structure-learning constructor with the temporal/atemporal classification
@@ -2859,12 +2877,14 @@ class KTBNAdaptiveLearner(object):
 
     Examples
     --------
-    >>> import pyagrum.ktbn as ktbn
-    >>> learner = ktbn.KTBNAdaptiveLearner("trajs/", "traj", 500, kMax=4)
-    >>> learner.useScoreBIC().useGreedyHillClimbing()
-    >>> model = learner.learnKTBN()
-    >>> learner.bestK()
-    >>> learner.scorePerCandidateK()
+    .. code-block:: python
+
+      import pyagrum.ktbn as ktbn
+      learner = ktbn.KTBNAdaptiveLearner("trajs/", "traj", 500, kMax=4)
+      learner.useScoreBIC().useGreedyHillClimbing()
+      model = learner.learnKTBN()
+      learner.bestK()
+      learner.scorePerCandidateK()
 
     KTBNAdaptiveLearner(dirPath, csvBaseName, nbSamples, kMax, atemporalVars, missingSymbols=['?'], induceTypes=True) -> KTBNAdaptiveLearner
         Parameters:

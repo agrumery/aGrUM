@@ -477,7 +477,7 @@ def useLocalSearchWithTabuList(self, tabu_size: int | None = None, nb_decrease: 
   if self.maxIndegreeExceeded():
       import warnings
       warnings.warn("the learned DAG has a node with more parents than the maximum indegree (a constraint-based "
-                    "algorithm does not remove the edges kept by its independence tests to satisfy it)", UserWarning)
+                    "algorithm does not remove the edges kept by its independence tests to satisfy it)", UserWarning, stacklevel=2)
 %}
 %enddef
 // learnDAG is a method of IBNLearner brought in BNLearner by a using declaration

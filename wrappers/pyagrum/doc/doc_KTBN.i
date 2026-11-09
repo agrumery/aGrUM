@@ -474,9 +474,11 @@ modality index (int) or its modality label (str).
 
 Examples
 --------
->>> m.fillCPT(\"C\", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
->>> m.fillCPT(\"X\", 1, {(\"X\", 0): 1, (\"C\", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
->>> m.fillCPT(\"X[1]\", {\"X[0]\": \"1\", \"C\": 0}, [0.6, 0.4])         # same, engine names
+.. code-block:: python
+
+  m.fillCPT(\"C\", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
+  m.fillCPT(\"X\", 1, {(\"X\", 0): 1, (\"C\", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
+  m.fillCPT(\"X[1]\", {\"X[0]\": \"1\", \"C\": 0}, [0.6, 0.4])         # same, engine names
 
 Parameters
 ----------
@@ -615,21 +617,23 @@ back to 1.
 
 Examples
 --------
-Bracket-free convention (a plain, hand-built or foreign BN):
+.. code-block:: python
 
->>> bn = gum.BayesNet()
->>> bn.add(gum.LabelizedVariable('X0', '', 2))
->>> bn.add(gum.LabelizedVariable('X1', '', 2))
->>> bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
->>> bn.addArc('X0', 'X1')
->>> bn.addArc('C', 'X1')
->>> ktbn = gum.KTBN.fromBN(bn)
->>> ktbn.k()
-2
+  # bracket-free convention (a plain, hand-built or foreign BN)
 
-Bracket convention (round-tripping a KTBN's own storage BN):
+  bn = gum.BayesNet()
+  bn.add(gum.LabelizedVariable('X0', '', 2))
+  bn.add(gum.LabelizedVariable('X1', '', 2))
+  bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
+  bn.addArc('X0', 'X1')
+  bn.addArc('C', 'X1')
+  ktbn = gum.KTBN.fromBN(bn)
+  ktbn.k()
+  2
 
->>> ktbn2 = gum.KTBN.fromBN(ktbn.toBN())
+  # bracket convention (round-tripping a KTBN's own storage BN)
+
+  ktbn2 = gum.KTBN.fromBN(ktbn.toBN())
 
 Parameters
 ----------

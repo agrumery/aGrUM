@@ -67,10 +67,10 @@ namespace gum::learning {
    * Phases:
    *  1. Skeleton discovery (inherited from CIBasedLearning)
    *  2. Initial PAG + unshielded colliders oriented as arrowheads
-   *  3. possibleDSep pruning (Phase 3 — to be added in later step)
-   *  4. Reset + re-orient colliders after possibleDSep (Phase 4 — later)
-   *  5. Orientation rules R1–R10 (Phase 5 — later)
-   *  6. Collect _latentCouples_ from final PAG (Phase 6 — later)
+   *  3. possibleDSep pruning
+   *  4. Reset + re-orient colliders after possibleDSep
+   *  5. Orientation rules R1–R10
+   *  6. Collect _latentCouples_ from final PAG
    *
    * learnPDAG() and learnDAG() do not apply the Meek rules (which are not defined on a PAG): the
    * learned PAG is turned into its representative MAG (Zhang 2008, Artificial Intelligence,

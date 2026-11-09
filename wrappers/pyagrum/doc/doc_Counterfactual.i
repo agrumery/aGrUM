@@ -78,11 +78,13 @@ Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = gum.CausalModel(bn)
->>> t = gum.counterfactual(cm, on='Z', whatif='X',
-...                        profile={'Y': 'True'}, values={'X': 'False'})
+.. code-block:: python
+
+  import pyagrum as gum
+  bn = gum.BayesNet.fastPrototype('X->Y->Z')
+  cm = gum.CausalModel(bn)
+  t = gum.counterfactual(cm, on='Z', whatif='X',
+                         profile={'Y': 'True'}, values={'X': 'False'})
 "
 
 %feature("docstring") gum::Counterfactual::counterFactualModel

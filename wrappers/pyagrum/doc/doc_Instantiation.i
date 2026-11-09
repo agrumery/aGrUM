@@ -66,10 +66,12 @@ Instantiation is subscriptable therefore values can be easily accessed/modified.
 
 Examples
 --------
->>> ## Access the value of A in an instantiation aI
->>> valueOfA = aI['A']
->>> ## Modify the value
->>> aI['A'] = newValueOfA
+.. code-block:: python
+
+  ## Access the value of A in an instantiation aI
+  valueOfA = aI['A']
+  ## Modify the value
+  aI['A'] = newValueOfA
 "
 
 %feature("docstring") gum::Instantiation::add

@@ -71,11 +71,13 @@ CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = gum.CausalModel(bn)
->>> formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
->>> print(expl)
+.. code-block:: python
+
+  import pyagrum as gum
+  bn = gum.BayesNet.fastPrototype('X->Y->Z')
+  cm = gum.CausalModel(bn)
+  formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
+  print(expl)
 "
 
 %feature("docstring") gum::CausalImpact::toDict
@@ -104,12 +106,14 @@ dict or None
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = gum.CausalModel(bn)
->>> ci = gum.CausalImpact(cm, on='Z', doing='X')
->>> import json
->>> print(json.dumps(ci.toDict(), indent=2))
+.. code-block:: python
+
+  import pyagrum as gum
+  bn = gum.BayesNet.fastPrototype('X->Y->Z')
+  cm = gum.CausalModel(bn)
+  ci = gum.CausalImpact(cm, on='Z', doing='X')
+  import json
+  print(json.dumps(ci.toDict(), indent=2))
 "
 
 %feature("docstring") gum::CausalImpact::isIdentified

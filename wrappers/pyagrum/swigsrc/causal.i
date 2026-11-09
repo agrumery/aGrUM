@@ -173,11 +173,13 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = gum.CausalModel(bn)
-    >>> formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
-    >>> print(expl)
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
+      print(expl)
     """
     if isinstance(on, str):
         on = {on}
@@ -230,11 +232,13 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = gum.CausalModel(bn)
-    >>> t = gum.counterfactual(cm, on='Z', whatif='X',
-    ...                        profile={'Y': 'True'}, values={'X': 'False'})
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      t = gum.counterfactual(cm, on='Z', whatif='X',
+                             profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
@@ -271,10 +275,12 @@ def counterfactualModel(cm, profile=None, whatif=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = gum.CausalModel(bn)
-    >>> twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},

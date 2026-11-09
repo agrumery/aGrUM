@@ -58,8 +58,8 @@ namespace gum {
    * Given a MixedGraph (containing both directed arcs and undirected edges, with no
    * double-headed arcs in the input), this class applies rules R1–R4 exhaustively to orient
    * as many undirected edges as possible without introducing new v-structures.  Three output
-   * flavours are available: MixedGraph (partial orientation), PDAG (completed PDAG / CPDAG),
-   * and DAG (fully oriented).
+   * flavours are available: MixedGraph (partial orientation), PDAG (the closure: a CPDAG without
+   * background knowledge, an MPDAG with it, if the input is extendable), and DAG (fully oriented).
    *
    * If the input is an extendable PDAG (Dor and Tarsi 1992), its closure under the rules is unique
    * (Meek 1995): propagate and propagateToCPDAG compute it with graph::meekClosure (Wienöbst,
@@ -109,12 +109,13 @@ namespace gum {
      */
     MixedGraph propagate(const MixedGraph& mg);
 
-    /// Applies Meek rules and returns a CPDAG (completed PDAG).
+    /// Applies Meek rules and returns a PDAG (a CPDAG or an MPDAG if mg is extendable).
     /** Meek rules R1–R4 are applied exhaustively, then any double-headed arcs are resolved
      *  using a min-parents heuristic to avoid cycles.  The result is a valid PDAG with no
      *  double-headed arcs.
      *  @param mg the mixed graph to orient
-     *  @return a PDAG representing the essential graph
+     *  @return if mg is extendable, its closure: the CPDAG of its Markov equivalence class without
+     *  background knowledge in its arcs, an MPDAG with it
      *  @throw InvalidDirectedCycle if mg contains a directed cycle of length 3 or more (the
      *  2-cycles, i.e. double-headed arcs, are resolved)
      */

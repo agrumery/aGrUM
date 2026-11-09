@@ -84,21 +84,23 @@ CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
->>> cm = gum.CausalModel(bn)
+.. code-block:: python
 
-Create a model with a latent confounder U between X and Y:
+  import pyagrum as gum
+  bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
+  cm = gum.CausalModel(bn)
 
->>> cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
+  # create a model with a latent confounder U between X and Y
 
-Build a causal model from a DAG only (no CPTs needed for structural queries):
+  cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
 
->>> dag = gum.fastDAG('X->Y->Z')
->>> cm = gum.CausalModel(dag)
->>> cm.hasObservationalBN()
-False
->>> cm.backDoor('X', 'Z')  # structural queries work without a BN
+  # build a causal model from a DAG only (no CPTs needed for structural queries)
+
+  dag = gum.fastDAG('X->Y->Z')
+  cm = gum.CausalModel(dag)
+  cm.hasObservationalBN()
+  False
+  cm.backDoor('X', 'Z')  # structural queries work without a BN
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable
@@ -430,7 +432,7 @@ Return a Graphviz dot string representing the causal model.
 
 The look is the one of the section ``causal`` of ``pyagrum.config``: observed nodes
 (``nodeBgColor``, ``nodeFgColor``), latent nodes (``latentBgColor``, ``latentFgColor``), whose
-names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``notebook.arcColor``).
+names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``dot.arcColor``).
 
 Parameters
 ----------
@@ -457,10 +459,12 @@ str
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet.fastPrototype('X->Y->Z')
->>> cm = gum.CausalModel(bn)
->>> print(cm.toDot())
+.. code-block:: python
+
+  import pyagrum as gum
+  bn = gum.BayesNet.fastPrototype('X->Y->Z')
+  cm = gum.CausalModel(bn)
+  print(cm.toDot())
 "
 
 %feature("docstring") gum::CausalModel::variable

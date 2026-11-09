@@ -256,12 +256,14 @@ if len(args)>1:
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
-      >>> for i in bn.cpt("B").loopIn():
-            print(i)
-            print(bn.cpt("B").get(i))
-            bn.cpt("B").set(i,0.3)
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN("A[3]->B[3]<-C[3]")
+        for i in bn.cpt("B").loopIn():
+              print(i)
+              print(bn.cpt("B").get(i))
+              bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -278,9 +280,11 @@ if len(args)>1:
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=pyagrum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(B+A+C)/2')
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn.cpt('B').fillFromFunction('(B+A+C)/2')
 
       Parameters
       ----------
@@ -325,9 +329,11 @@ if len(args)>1:
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=gum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn.cpt('B').fillFromFunction('(A+C)/2')
 
       Parameters
       ----------
@@ -352,7 +358,7 @@ if len(args)>1:
       import math
       forbidden=frozenset(['__import__','__class__'])
 
-      if self.variable(0).varType() == gum.VarType_LABELIZED:
+      if self.variable(0).varType() == VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
@@ -383,10 +389,12 @@ if len(args)>1:
 
       Examples
       --------
-      >>> import scipy.stats as stats
-      >>> import pyagrum as gum
-      >>> bn=gum.fastBN('A[10]->B[10]<-C[10]')
-      >>> bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
+      .. code-block:: python
+
+        import scipy.stats as stats
+        import pyagrum as gum
+        bn=gum.fastBN('A[10]->B[10]<-C[10]')
+        bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------
@@ -409,7 +417,7 @@ if len(args)>1:
 
       var=self.variable(0)
       var_ds=var.domainSize()
-      if var.varType() == gum.VarType_LABELIZED:
+      if var.varType() == VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
@@ -427,7 +435,7 @@ if len(args)>1:
 
       Xs=numpy.array([var.numerical(i) for i in range(var_ds)], dtype=numpy.float64)
 
-      I=gum.Instantiation()
+      I=Instantiation()
       for i in range(1,self.nbrDim()):
         I.add(self.variable(i))
 
@@ -458,18 +466,21 @@ if len(args)>1:
 
       Examples
       --------
-        >>> import pyagrum as gum
-        >>> bn1=gum.fastBN('A[3]->B[3]<-C[3]')
-        >>> bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
-        >>> # bn1.cpt('A')+bn2.cpt('A') # does not work since the vars 'A' in bn1 and bn2 are not the same.
-        >>> bn1.cpt('A').toVars(bn2)+bn2.cpt('A') # OK
+      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same:
+
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn1=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
+        bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A') # OK
 
       Returns
       -------
         pyagrum.Tensor
             a copy of the Potential with the same variables as p.
       """
-      res=pyagrum.Tensor()
+      res=Tensor()
       for i in self.names:
         res.add(p.variable(i))
       res.fillWith(self)
@@ -632,12 +643,14 @@ if len(args)>1:
 
         Examples
         --------
-        >>> t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-        >>> t.fillWith([1,2,3,4,5,6])
-        >>> t.toarray()          # shape (3, 2)
-        array([[1., 2.],
-               [3., 4.],
-               [5., 6.]])
+        .. code-block:: python
+
+          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+          t.fillWith([1,2,3,4,5,6])
+          t.toarray()          # shape (3, 2)
+          array([[1., 2.],
+                 [3., 4.],
+                 [5., 6.]])
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
@@ -661,12 +674,14 @@ if len(args)>1:
 
         Examples
         --------
-        >>> t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-        >>> t.fillWith([1,2,3,4,5,6])
-        >>> v = t.as_nparray()   # shape (3, 2), shares buffer with t
-        >>> v[0, 0] = 99
-        >>> t[{"a": 0, "b": 0}]  # 99.0
-        99.0
+        .. code-block:: python
+
+          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+          t.fillWith([1,2,3,4,5,6])
+          v = t.as_nparray()   # shape (3, 2), shares buffer with t
+          v[0, 0] = 99
+          t[{"a": 0, "b": 0}]  # 99.0
+          99.0
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:

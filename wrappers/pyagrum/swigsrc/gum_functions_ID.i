@@ -150,8 +150,10 @@ def fastID(structure: str, domain: int | str = "[2]") -> InfluenceDiagram:
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>> bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+  .. code-block:: python
+
+    import pyagrum as gum
+    bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------

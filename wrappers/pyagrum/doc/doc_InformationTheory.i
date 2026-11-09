@@ -62,14 +62,15 @@ Parameters
     Z :  : int or str or iterable[int or str] (optional)
       a third (an optional) nodeset
 
-Example-------
+Examples
+--------
       .. code:: python
 
           import pyagrum as gum
           bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
           ie=gum.LazyPropagation(bn)
           it=gum.InformationTheory(ie,'A',['B','G'],['C'])
-          print(f'Entropy(A)={it.entropyX()}'')
+          print(f'Entropy(A)={it.entropyX()}')
           print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
           print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
           print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')

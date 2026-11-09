@@ -86,37 +86,39 @@ The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
->>> g=gum.BNDatabaseGenerator(bn)
->>> g.setRandomVarOrder()
->>> g.drawSamples(5,
-...               {'B':'yes','E':'1'})
--122.98754206579288
->>> g.setDiscretizedLabelModeRandom() # By default
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes  2.802302  0  0  1  0
-1  yes  1.761605  0  0  1  0
-2  yes  2.507535  0  0  1  1
-3  yes  2.815282  0  1  1  0
-4  yes  5.548571  1  0  1  1
->>> g.setDiscretizedLabelModeMedian()
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes  2.250000  0  0  1  0
-1  yes  2.250000  0  0  1  0
-2  yes  2.250000  0  0  1  1
-3  yes  2.250000  0  1  1  0
-4  yes  6.600000  1  0  1  1
->>> g.setDiscretizedLabelModeInterval()
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes   [1.5;3[  0  0  1  0
-1  yes   [1.5;3[  0  0  1  0
-2  yes   [1.5;3[  0  0  1  1
-3  yes   [1.5;3[  0  1  1  0
-4  yes  [3;10.2]  1  0  1  1
+.. code-block:: python
+
+  import pyagrum as gum
+  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+  g=gum.BNDatabaseGenerator(bn)
+  g.setRandomVarOrder()
+  g.drawSamples(5,
+                {'B':'yes','E':'1'})
+  -122.98754206579288
+  g.setDiscretizedLabelModeRandom() # By default
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes  2.802302  0  0  1  0
+  1  yes  1.761605  0  0  1  0
+  2  yes  2.507535  0  0  1  1
+  3  yes  2.815282  0  1  1  0
+  4  yes  5.548571  1  0  1  1
+  g.setDiscretizedLabelModeMedian()
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes  2.250000  0  0  1  0
+  1  yes  2.250000  0  0  1  0
+  2  yes  2.250000  0  0  1  1
+  3  yes  2.250000  0  1  1  0
+  4  yes  6.600000  1  0  1  1
+  g.setDiscretizedLabelModeInterval()
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes   [1.5;3[  0  0  1  0
+  1  yes   [1.5;3[  0  0  1  0
+  2  yes   [1.5;3[  0  0  1  1
+  3  yes   [1.5;3[  0  1  1  0
+  4  yes  [3;10.2]  1  0  1  1
 "
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::toCSV
@@ -266,21 +268,23 @@ Set the discretized label mode to INTERVAL : sampling a `pyagrum.discretizedVari
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
->>> g=gum.BNDatabaseGenerator(bn)
->>> g.setRandomVarOrder()
->>> g.drawSamples(5,
-...               {'B':'yes','E':'1'})
--122.98754206579288
->>> g.setDiscretizedLabelModeInterval()
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes   [1.5;3[  0  0  1  0
-1  yes   [1.5;3[  0  0  1  0
-2  yes   [1.5;3[  0  0  1  1
-3  yes   [1.5;3[  0  1  1  0
-4  yes  [3;10.2]  1  0  1  1
+.. code-block:: python
+
+  import pyagrum as gum
+  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+  g=gum.BNDatabaseGenerator(bn)
+  g.setRandomVarOrder()
+  g.drawSamples(5,
+                {'B':'yes','E':'1'})
+  -122.98754206579288
+  g.setDiscretizedLabelModeInterval()
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes   [1.5;3[  0  0  1  0
+  1  yes   [1.5;3[  0  0  1  0
+  2  yes   [1.5;3[  0  0  1  1
+  3  yes   [1.5;3[  0  1  1  0
+  4  yes  [3;10.2]  1  0  1  1
 "
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::setDiscretizedLabelModeMedian
@@ -289,21 +293,23 @@ Set the discretized label mode to MEDIAN : sampling a `pyagrum.discretizedVariab
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
->>> g=gum.BNDatabaseGenerator(bn)
->>> g.setRandomVarOrder()
->>> g.drawSamples(5,
-...               {'B':'yes','E':'1'})
--122.98754206579288
->>> g.setDiscretizedLabelModeMedian()
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes  2.250000  0  0  1  0
-1  yes  2.250000  0  0  1  0
-2  yes  2.250000  0  0  1  1
-3  yes  2.250000  0  1  1  0
-4  yes  6.600000  1  0  1  1
+.. code-block:: python
+
+  import pyagrum as gum
+  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+  g=gum.BNDatabaseGenerator(bn)
+  g.setRandomVarOrder()
+  g.drawSamples(5,
+                {'B':'yes','E':'1'})
+  -122.98754206579288
+  g.setDiscretizedLabelModeMedian()
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes  2.250000  0  0  1  0
+  1  yes  2.250000  0  0  1  0
+  2  yes  2.250000  0  0  1  1
+  3  yes  2.250000  0  1  1  0
+  4  yes  6.600000  1  0  1  1
 "
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::setDiscretizedLabelModeRandom
@@ -312,21 +318,23 @@ Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.di
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
->>> g=gum.BNDatabaseGenerator(bn)
->>> g.setRandomVarOrder()
->>> g.drawSamples(5,
-...               {'B':'yes','E':'1'})
--122.98754206579288
->>> g.setDiscretizedLabelModeRandom() # By default
->>> g.to_pandas()
-     B         F  A  C  E  D
-0  yes  2.802302  0  0  1  0
-1  yes  1.761605  0  0  1  0
-2  yes  2.507535  0  0  1  1
-3  yes  2.815282  0  1  1  0
-4  yes  5.548571  1  0  1  1
+.. code-block:: python
+
+  import pyagrum as gum
+  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+  g=gum.BNDatabaseGenerator(bn)
+  g.setRandomVarOrder()
+  g.drawSamples(5,
+                {'B':'yes','E':'1'})
+  -122.98754206579288
+  g.setDiscretizedLabelModeRandom() # By default
+  g.to_pandas()
+       B         F  A  C  E  D
+  0  yes  2.802302  0  0  1  0
+  1  yes  1.761605  0  0  1  0
+  2  yes  2.507535  0  0  1  1
+  3  yes  2.815282  0  1  1  0
+  4  yes  5.548571  1  0  1  1
 "
 
 %feature("docstring") PythonDatabaseGeneratorListener::setWhenProgress

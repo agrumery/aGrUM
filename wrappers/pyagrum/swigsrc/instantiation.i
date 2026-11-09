@@ -167,15 +167,17 @@
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=gum.fastBN("A[3]->B[3]<-C[3]")
-      >>> I=gum.Instantiation(bn.cpt("B"))
-      >>> for i in I.loopIn():
-            print(i)
-            print(bn.cpt("B").get(i))
-            bn.cpt("B").set(i,0.3)
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN("A[3]->B[3]<-C[3]")
+        I=gum.Instantiation(bn.cpt("B"))
+        for i in I.loopIn():
+              print(i)
+              print(bn.cpt("B").get(i))
+              bn.cpt("B").set(i,0.3)
       """
-      J=gum.Instantiation(self)
+      J=Instantiation(self)
       J.setFirst()
       while not J.end():
           yield(J)

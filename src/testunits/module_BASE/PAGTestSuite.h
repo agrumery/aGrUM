@@ -331,6 +331,21 @@ namespace gum_tests {
     CHECK(mg.existsArc(1, 0));
   }
 
+  GUM_TEST(_toMixedGraph_keeps_the_names_) {
+    gum::PAG g;
+    g.addNodeWithId(0);
+    g.addNodeWithId(1);
+    g.addNodeWithId(2);
+    g.setName(0, "A");
+    g.setName(1, "B");
+    g.setName(2, "C");
+    g.addEdge(0, 1, gum::EdgeMark::Circle, gum::EdgeMark::Arrowhead);
+    g.addEdge(1, 2, gum::EdgeMark::Arrowhead, gum::EdgeMark::Arrowhead);
+    const auto mg = g.toMixedGraph();
+    for (const auto node: g.nodes())
+      CHECK_EQ(mg.nameFromId(node), g.nameFromId(node));
+  }
+
   GUM_TEST(_toMixedGraph_circle_circle_becomes_edge_) {
     gum::PAG g;
     g.addNodeWithId(0);

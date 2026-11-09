@@ -1072,12 +1072,14 @@ class DiscreteTypeProcessor:
         pyagrum.BayesNet or other graphical model:
           the discretized graphical model (only (discretized) random variables are created in the model)
 
-    Example
-    -------
-    >>> discretizer = DiscreteTypeProcessor(
-    ...   defaultDiscretizationMethod="uniform", defaultParamDiscretizationMethod=7, discretizationThreshold=10
-    ... )
-    >>> learner = pyagrum.BNLearner(data, discretizer.discretizedTemplate(data))
+    Examples
+    --------
+    .. code-block:: python
+
+      discretizer = DiscreteTypeProcessor(
+        defaultDiscretizationMethod="uniform", defaultParamDiscretizationMethod=7, discretizationThreshold=10
+      )
+      learner = pyagrum.BNLearner(data, discretizer.discretizedTemplate(data))
     """
     if template is None:
       template = pyagrum.BayesNet()

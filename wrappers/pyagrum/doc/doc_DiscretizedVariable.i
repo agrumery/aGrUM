@@ -63,17 +63,19 @@ DiscretizedVariable(aDDRV) -> DiscretizedVariable
 
 Examples
 --------
->>> import pyagrum as gum
->>> vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
->>> print(vX)
-X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
->>> vX.isTick(4)
-False
->>> vX.labels()
-('[1;2[', '[2;3[', '[3;3.1415]')
->>> # where is the real value 2.5 ?
->>> vX.index('2.5')
-1
+.. code-block:: python
+
+  import pyagrum as gum
+  vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
+  print(vX)
+  X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
+  vX.isTick(4)
+  False
+  vX.labels()
+  ('[1;2[', '[2;3[', '[3;3.1415]')
+  # where is the real value 2.5 ?
+  vX.index('2.5')
+  1
 "
 
 %feature("docstring") gum::DiscretizedVariable::domain

@@ -93,8 +93,8 @@ namespace gum {
 
     /// @}
 
-    /// approximate conversion: Tail-Arrowhead → arc; Arrowhead-Arrowhead → two arcs; anything
-    /// else → undirected edge
+    /// approximate conversion: one arrowhead (-> or o->) → arc; two arrowheads (<->) → two arcs;
+    /// no arrowhead → undirected edge
     /** @deprecated deprecated after 3.3.2: a PAG is not a mixed graph (the Meek rules do not apply
      * to it); use MAG::fromPAG for a representative MAG of the PAG. */
     [[deprecated("PAG::toMixedGraph is deprecated after 3.3.2, use MAG::fromPAG")]]

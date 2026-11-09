@@ -316,7 +316,7 @@ namespace gum {
      * The colors of the nodes are the ones of the section `causal` (`nodeBgColor`, `nodeFgColor`
      * for the observed variables, `latentBgColor`, `latentFgColor` for the latent ones), the latent
      * variables are drawn as points unless `causal.showLatentNames` is true, and the color of the
-     * arcs is `notebook.arcColor`.
+     * arcs is `dot.arcColor`.
      * @return A string containing a Graphviz/DOT graph.
      */
     std::string toDot() const;

@@ -45,6 +45,12 @@ Called by conf.py at the beginning of the Sphinx build; the result
 """
 
 import os
+import re
+
+
+def _rst(text):
+  """the text of a documentation in reStructuredText: a word ending with '_' is not a reference"""
+  return re.sub(r"(\w)_\b", r"\1\\_", text)
 
 
 def generate(outdir):
@@ -81,7 +87,7 @@ def generate(outdir):
         f"   * - ``{option}``",
         f"     - ``{kind}``",
         f"     - ``{default}``" if default != "" else "     - *(empty)*",
-        f"     - {meta.doc}",
+        f"     - {_rst(meta.doc)}",
       ]
     lines.append("")
 
@@ -101,7 +107,7 @@ def generate(outdir):
       lines += [
         f"   * - ``{section}.{option}``",
         f"     - ``{meta.target[0]}.{meta.target[1]}``" if meta.target else "     - *(none)*",
-        f"     - {meta.doc}",
+        f"     - {_rst(meta.doc)}",
       ]
   else:
     lines.append("*(none)*")

@@ -81,9 +81,9 @@ namespace gum::graph {
    *
    * At each step, the visited node is an unvisited node whose label (the decreasing list of the
    * visit steps of its visited neighbours) is lexicographically the largest, the ties being broken
-   * by the order of the nodes in g.nodes(). Partition refinement implementation in O(n + m)
-   * (Rose, Tarjan and Lueker 1976). The reverse of the returned sequence is a perfect elimination
-   * ordering iff @p g is chordal.
+   * in an unspecified way, deterministic for a given graph. Partition refinement implementation in
+   * O(n + m) (Rose, Tarjan and Lueker 1976). The reverse of the returned sequence is a perfect
+   * elimination ordering iff @p g is chordal.
    *
    * @param g the graph.
    * @param first a clique of @p g, whose nodes are visited first and in this order (always a valid

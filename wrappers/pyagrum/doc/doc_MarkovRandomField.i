@@ -190,8 +190,10 @@ Create a Markov random field with a modified dot-like syntax which specifies:
 
 Examples
 --------
-import pyagrum as gum
-bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+.. code-block:: python
+
+  import pyagrum as gum
+  bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
 Parameters
 ----------

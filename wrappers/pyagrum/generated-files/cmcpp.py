@@ -100,11 +100,13 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
-    >>> print(expl)
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
+      print(expl)
     """
     if isinstance(on, str):
         on = {on}
@@ -157,11 +159,13 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
-    ...                        profile={'Y': 'True'}, values={'X': 'False'})
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      t = gum.counterfactual(cm, on='Z', whatif='X',
+                             profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
@@ -198,10 +202,12 @@ def counterfactualModel(cm, profile=None, whatif=None):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> twin = pyagrum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},
@@ -233,14 +239,16 @@ class DoorCriteria(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Z->Y')
-    >>> dag = bn.dag()
-    >>> x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
-    >>> pyagrum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
-    True
-    >>> pyagrum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
-    [{z}]
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Z->Y')
+      dag = bn.dag()
+      x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
+      gum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
+      True
+      gum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
+      [{z}]
 
     """
 
@@ -597,21 +605,23 @@ class CausalModel(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
+    .. code-block:: python
 
-    Create a model with a latent confounder U between X and Y:
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
+      cm = gum.CausalModel(bn)
 
-    >>> cm = pyagrum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
+      # create a model with a latent confounder U between X and Y
 
-    Build a causal model from a DAG only (no CPTs needed for structural queries):
+      cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
 
-    >>> dag = pyagrum.fastDAG('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(dag)
-    >>> cm.hasObservationalBN()
-    False
-    >>> cm.backDoor('X', 'Z')  # structural queries work without a BN
+      # build a causal model from a DAG only (no CPTs needed for structural queries)
+
+      dag = gum.fastDAG('X->Y->Z')
+      cm = gum.CausalModel(dag)
+      cm.hasObservationalBN()
+      False
+      cm.backDoor('X', 'Z')  # structural queries work without a BN
 
     """
 
@@ -808,7 +818,7 @@ class CausalModel(object):
 
         The look is the one of the section ``causal`` of ``pyagrum.config``: observed nodes
         (``nodeBgColor``, ``nodeFgColor``), latent nodes (``latentBgColor``, ``latentFgColor``), whose
-        names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``notebook.arcColor``).
+        names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``dot.arcColor``).
 
         Parameters
         ----------
@@ -835,10 +845,12 @@ class CausalModel(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-        >>> cm = pyagrum.CausalModel(bn)
-        >>> print(cm.toDot())
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet.fastPrototype('X->Y->Z')
+          cm = gum.CausalModel(bn)
+          print(cm.toDot())
 
         """
         return _cmcpp.CausalModel_toDot(self, *args)
@@ -1133,11 +1145,13 @@ class CausalImpact(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> formula, tensor, expl = pyagrum.causalImpact(cm, on='Z', doing='X')
-    >>> print(expl)
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
+      print(expl)
 
     """
 
@@ -1429,12 +1443,14 @@ class CausalImpact(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-        >>> cm = pyagrum.CausalModel(bn)
-        >>> ci = pyagrum.CausalImpact(cm, on='Z', doing='X')
-        >>> import json
-        >>> print(json.dumps(ci.toDict(), indent=2))
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet.fastPrototype('X->Y->Z')
+          cm = gum.CausalModel(bn)
+          ci = gum.CausalImpact(cm, on='Z', doing='X')
+          import json
+          print(json.dumps(ci.toDict(), indent=2))
 
         """
         return _cmcpp.CausalImpact_toDict(self)
@@ -1482,11 +1498,13 @@ class Counterfactual(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> bn = pyagrum.BayesNet.fastPrototype('X->Y->Z')
-    >>> cm = pyagrum.CausalModel(bn)
-    >>> t = pyagrum.counterfactual(cm, on='Z', whatif='X',
-    ...                        profile={'Y': 'True'}, values={'X': 'False'})
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.BayesNet.fastPrototype('X->Y->Z')
+      cm = gum.CausalModel(bn)
+      t = gum.counterfactual(cm, on='Z', whatif='X',
+                             profile={'Y': 'True'}, values={'X': 'False'})
 
     """
 

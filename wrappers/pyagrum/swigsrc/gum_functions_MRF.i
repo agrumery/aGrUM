@@ -86,29 +86,31 @@ def loadMRF(
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>>
-  >>> # creating listeners
-  >>> def foo_listener(progress):
-  >>>    if progress==200:
-  >>>        print(' BN loaded ')
-  >>>        return
-  >>>    elif progress==100:
-  >>>        car='%'
-  >>>    elif progress%10==0:
-  >>>        car='#'
-  >>>    else:
-  >>>        car='.'
-  >>>    print(car,end='',flush=True)
-  >>>
-  >>> def bar_listener(progress):
-  >>>    if progress==50:
-  >>>        print('50%')
-  >>>
-  >>> # loadBN with list of listeners
-  >>> gum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
-  >>> # .........#.........#.........#.........#..50%
-  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
+  ``.........#.........#.........#.........#..50%`` then
+  ``.......#.........#.........#.........#.........#.........% | MRF loaded``:
+
+  .. code-block:: python
+
+    import pyagrum as gum
+
+    def foo_listener(progress):
+       if progress==200:
+           print(' MRF loaded ')
+           return
+       elif progress==100:
+           car='%'
+       elif progress%10==0:
+           car='#'
+       else:
+           car='.'
+       print(car,end='',flush=True)
+
+    def bar_listener(progress):
+       if progress==50:
+           print('50%')
+
+    gum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
   """
   mn = MarkovRandomField()
 
@@ -171,8 +173,10 @@ def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>> bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
+  .. code-block:: python
+
+    import pyagrum as gum
+    bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
   Parameters
   ----------

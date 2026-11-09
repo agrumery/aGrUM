@@ -46,6 +46,7 @@
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/dot/dotOptions.h>
+#include <agrum/base/graphs/chainGraph.h>
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/diGraph.h>
 #include <agrum/base/graphs/mixedGraph.h>
@@ -188,6 +189,24 @@ namespace gum_tests {
   GUM_TEST(PDAGLook) {
     ConfigurationGuard guard;
     gum::PDAG          g;
+    g.addNodes(4);
+    // a partially directed cycle: a PDAG has no chain component to draw as a cluster
+    g.addArc(0, 1);
+    g.addEdge(1, 2);
+    g.addEdge(2, 0);
+
+    const auto dot = g.toDot();
+    CHECK(dotContains(dot, "digraph {\n"));
+    CHECK(dotContains(dot, "  0;\n"));
+    CHECK(dotContains(dot, "  3;\n"));
+    CHECK(dotContains(dot, "  0 -> 1;\n"));
+    CHECK(dotContains(dot, "  1 -> 2 [dir=\"none\"];\n"));
+    CHECK_FALSE(dotContains(dot, "subgraph"));
+  }
+
+  GUM_TEST(ChainGraphLook) {
+    ConfigurationGuard guard;
+    gum::ChainGraph    g;
     g.addNodes(4);
     g.addEdge(0, 1);
     g.addArc(1, 2);

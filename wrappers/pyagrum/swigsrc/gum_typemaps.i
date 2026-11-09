@@ -544,3 +544,30 @@ typedef PyObject PyAgrumDict;
 %apply gum::NodeProperty< gum::NodeId >        { NodeProperty< NodeId > };
 %apply const gum::NodeProperty< gum::NodeId >& { const NodeProperty< NodeId >& };
 
+
+// Python dict[int, int] -> const gum::NodeProperty<gum::Size>& domainSizes (node id -> domain size)
+// Used by MeekRules::propagateToDAG(mg, domainSizes). Matched by the parameter name only, so that the
+// other NodeProperty<Size> parameters keep their own conversions.
+%typemap(in) const gum::NodeProperty< gum::Size >& domainSizes (gum::NodeProperty< gum::Size > _tmp_ds) {
+  if (!PyDict_Check($input)) {
+    PyErr_SetString(PyExc_TypeError, "domainSizes must be a dict {node id: domain size}");
+    SWIG_fail;
+  }
+  PyObject*  _key;
+  PyObject*  _val;
+  Py_ssize_t _pos = 0;
+  while (PyDict_Next($input, &_pos, &_key, &_val)) {
+    const std::size_t _id = PyLong_AsSize_t(_key);
+    if (_id == static_cast< std::size_t >(-1) && PyErr_Occurred()) SWIG_fail;
+    const std::size_t _ds = PyLong_AsSize_t(_val);
+    if (_ds == static_cast< std::size_t >(-1) && PyErr_Occurred()) SWIG_fail;
+    _tmp_ds.set(static_cast< gum::NodeId >(_id), static_cast< gum::Size >(_ds));
+  }
+  $1 = &_tmp_ds;
+}
+
+%typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) const gum::NodeProperty< gum::Size >& domainSizes {
+  $1 = PyDict_Check($input);
+}
+
+%apply const gum::NodeProperty< gum::Size >& domainSizes { const NodeProperty< Size >& domainSizes };

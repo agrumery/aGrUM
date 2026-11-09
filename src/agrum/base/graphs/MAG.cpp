@@ -145,7 +145,8 @@ namespace gum {
 
   MAG MAG::fromMarkedGraph(const MarkedGraph& g) {
     if (!graph::isAncestral(g))
-      GUM_ERROR(InvalidArgument, "The marked graph is not a MAG: it is not ancestral")
+      GUM_ERROR(InvalidArgument,
+                "The marked graph is not a MAG: it has a circle or is not ancestral")
     if (!graph::isMaximal(g))
       GUM_ERROR(InvalidArgument, "The marked graph is not a MAG: it is not maximal")
     return MAG(MarkedGraph(g));

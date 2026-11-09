@@ -102,7 +102,7 @@ markAtY : pyagrum.EdgeMark, optional
 "
 Return the endpoint mark on the dst side of edge (src, dst).
 
-The mark at dst indicates what the edge says about dst from src's perspective:
+The mark at dst indicates what the edge says about dst from src's perspective.
 
 Parameters
 ----------
@@ -244,6 +244,7 @@ mark : pyagrum.EdgeMark
 Return a Graphviz dot representation of the graph.
 
 Endpoint marks are rendered as:
+
 - Circle: ``odot``
 - Tail: ``none``
 - Arrowhead: ``normal``
@@ -480,14 +481,6 @@ dict[int, int]
     each node is mapped to the root of its connected component (in the skeleton)
 "
 
-%feature("docstring") gum::MarkedGraph::toString
-"
-Returns
--------
-str
-    a representation of the marked graph (e.g. ``0 o-> 1``)
-"
-
 %feature("docstring") gum::MarkedGraph::eraseEdge
 "
 Erase the edge (and its marks) if it exists.
@@ -512,8 +505,8 @@ Remove all the nodes, hence all the edges and their marks, from the graph (same 
 "
 Returns
 -------
-List
-  the list of the edges
+set[tuple[int, int]]
+  the set of the edges
 "
 
 %feature("docstring") gum::MarkedGraph::eraseNode
@@ -580,8 +573,8 @@ id : int
 
 Returns
 -------
-Set
-    The set of edges adjacent to the given node
+set[int]
+    the nodes adjacent to the given node
 "
 
 %feature("docstring") gum::MarkedGraph::nodes

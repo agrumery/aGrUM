@@ -57,15 +57,17 @@ combined, and a node may carry both.
 
 Examples
 --------
->>> import pyagrum.ktbn as ktbn
->>> ie = ktbn.KTBNInference(model)
->>> ie.addObservation(\"Y\", 3, 1)      # observe Y[3] = 1
->>> ie.addIntervention(\"X\", 2, 1)     # do(X[2] = 1)
->>> ie.addTarget(\"X\")                 # want the whole P(X[t] | ...) series
->>> ie.makeInference(10)               # compute slices 0..9
->>> p3 = ie.posterior(\"X\", 3)
->>> px = ie.posteriors(\"X\")
->>> logpe = ie.logObservationProbability()
+.. code-block:: python
+
+  import pyagrum.ktbn as ktbn
+  ie = ktbn.KTBNInference(model)
+  ie.addObservation(\"Y\", 3, 1)      # observe Y[3] = 1
+  ie.addIntervention(\"X\", 2, 1)     # do(X[2] = 1)
+  ie.addTarget(\"X\")                 # want the whole P(X[t] | ...) series
+  ie.makeInference(10)               # compute slices 0..9
+  p3 = ie.posterior(\"X\", 3)
+  px = ie.posteriors(\"X\")
+  logpe = ie.logObservationProbability()
 
 KTBNInference(ktbn) -> KTBNInference
     Parameters:
@@ -89,10 +91,12 @@ anything is recorded.
 
 Examples
 --------
->>> ie.addIntervention(\"X\", 5, 0)                       # by (base, slice), index
->>> ie.addIntervention(\"X\", 5, \"high\")                  # by (base, slice), label
->>> ie.addIntervention(\"X[5]\", 0)                        # by engine name
->>> ie.addIntervention({\"X[5]\": 0, (\"Z\", 2): \"high\"})    # batch
+.. code-block:: python
+
+  ie.addIntervention(\"X\", 5, 0)                       # by (base, slice), index
+  ie.addIntervention(\"X\", 5, \"high\")                  # by (base, slice), label
+  ie.addIntervention(\"X[5]\", 0)                        # by engine name
+  ie.addIntervention({\"X[5]\": 0, (\"Z\", 2): \"high\"})    # batch
 
 Parameters
 ----------
@@ -167,10 +171,12 @@ all-or-nothing validated before anything is recorded.
 
 Examples
 --------
->>> ie.addObservation(\"X\", 5, 0)                 # hard, by index
->>> ie.addObservation(\"X\", 5, \"high\")            # hard, by label
->>> ie.addObservation(\"X\", 5, [0.1, 0.9])         # soft (likelihoods)
->>> ie.addObservations({\"X[5]\": 0, (\"Z\", 2): 1})  # batch, hard only
+.. code-block:: python
+
+  ie.addObservation(\"X\", 5, 0)                 # hard, by index
+  ie.addObservation(\"X\", 5, \"high\")            # hard, by label
+  ie.addObservation(\"X\", 5, [0.1, 0.9])         # soft (likelihoods)
+  ie.addObservations({\"X[5]\": 0, (\"Z\", 2): 1})  # batch, hard only
 
 Parameters
 ----------

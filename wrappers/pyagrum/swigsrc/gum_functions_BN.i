@@ -82,7 +82,7 @@ def loadBN(
       a BN from a file using one of the availableBNExts() suffixes.
 
   Notes
-  ----
+  -----
       Listeners could be added in order to monitor its loading.
 
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
@@ -91,29 +91,31 @@ def loadBN(
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>>
-  >>> # creating listeners
-  >>> def foo_listener(progress):
-  >>>    if progress==200:
-  >>>        print(' BN loaded ')
-  >>>        return
-  >>>    elif progress==100:
-  >>>        car='%'
-  >>>    elif progress%10==0:
-  >>>        car='#'
-  >>>    else:
-  >>>        car='.'
-  >>>    print(car,end='',flush=True)
-  >>>
-  >>> def bar_listener(progress):
-  >>>    if progress==50:
-  >>>        print('50%')
-  >>>
-  >>> # loadBN with list of listeners
-  >>> gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
-  >>> # .........#.........#.........#.........#..50%
-  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
+  ``.........#.........#.........#.........#..50%`` then
+  ``.......#.........#.........#.........#.........#.........% | BN loaded``:
+
+  .. code-block:: python
+
+    import pyagrum as gum
+
+    def foo_listener(progress):
+       if progress==200:
+           print(' BN loaded ')
+           return
+       elif progress==100:
+           car='%'
+       elif progress%10==0:
+           car='#'
+       else:
+           car='.'
+       print(car,end='',flush=True)
+
+    def bar_listener(progress):
+       if progress==50:
+           print('50%')
+
+    gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
   """
   bn = BayesNet()
 
@@ -169,7 +171,7 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
       whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
 
   Notes
-  ----
+  -----
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
@@ -213,8 +215,10 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>> bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+  .. code-block:: python
+
+    import pyagrum as gum
+    bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -337,10 +341,12 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
 
   Examples
   --------
-  >>> bn=gum.randomBN()
-  >>> bn=gum.randomBN(n=10)
-  >>> bn=gum.randomBN(names="ABCDEF")
-  >>> bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
+  .. code-block:: python
+
+    bn=gum.randomBN()
+    bn=gum.randomBN(n=10)
+    bn=gum.randomBN(names="ABCDEF")
+    bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
 
   Warnings
   --------

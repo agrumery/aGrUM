@@ -54,13 +54,15 @@ factor graph by the identifiers of its variables.
 
 Examples
 --------
-  >>> import pyagrum as gum
-  >>> bn = gum.fastBN('A->B->C')
-  >>> options = gum.DotOptions()
-  >>> options.setSize('12!')
-  >>> options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
-  >>> options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
-  >>> dot = bn.toDot(options)
+.. code-block:: python
+
+  import pyagrum as gum
+  bn = gum.fastBN('A->B->C')
+  options = gum.DotOptions()
+  options.setSize('12!')
+  options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
+  options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
+  dot = bn.toDot(options)
 "
 
 %feature("docstring") gum::dot::DotOptions::setSize

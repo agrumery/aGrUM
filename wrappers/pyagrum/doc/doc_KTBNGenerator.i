@@ -56,12 +56,14 @@ lower to higher rank.
 
 Examples
 --------
->>> import pyagrum as gum
->>> import pyagrum.ktbn as ktbn
->>> gum.initRandom(42)                          # reproducible
->>> gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
->>> gen.setDensity(0.15).setMaxParents(4)
->>> model = gen.generate()
+.. code-block:: python
+
+  import pyagrum as gum
+  import pyagrum.ktbn as ktbn
+  gum.initRandom(42)                          # reproducible
+  gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
+  gen.setDensity(0.15).setMaxParents(4)
+  model = gen.generate()
 
 KTBNGenerator(k, nbTemporal, nbAtemporal=0, maxArcs=0, maxModality=2) -> KTBNGenerator
     Parameters:

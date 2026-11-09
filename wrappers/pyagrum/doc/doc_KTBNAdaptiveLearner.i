@@ -57,12 +57,14 @@ candidate is silently skipped for that candidate only.
 
 Examples
 --------
->>> import pyagrum.ktbn as ktbn
->>> learner = ktbn.KTBNAdaptiveLearner(\"trajs/\", \"traj\", 500, kMax=4)
->>> learner.useScoreBIC().useGreedyHillClimbing()
->>> model = learner.learnKTBN()
->>> learner.bestK()
->>> learner.scorePerCandidateK()
+.. code-block:: python
+
+  import pyagrum.ktbn as ktbn
+  learner = ktbn.KTBNAdaptiveLearner(\"trajs/\", \"traj\", 500, kMax=4)
+  learner.useScoreBIC().useGreedyHillClimbing()
+  model = learner.learnKTBN()
+  learner.bestK()
+  learner.scorePerCandidateK()
 
 KTBNAdaptiveLearner(dirPath, csvBaseName, nbSamples, kMax, atemporalVars, missingSymbols=['?'], induceTypes=True) -> KTBNAdaptiveLearner
     Parameters:
