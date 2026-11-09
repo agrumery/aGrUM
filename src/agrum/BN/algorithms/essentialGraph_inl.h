@@ -53,47 +53,18 @@
 
 namespace gum {
 
-  INLINE PDAG EssentialGraph::pdag() const { return _pdag_; }
+  INLINE NodeSet EssentialGraph::parents(const NodeSet& ids) const { return graph_.parents(ids); }
 
-  INLINE const NodeSet& EssentialGraph::parents(NodeId id) const { return _pdag_.parents(id); }
+  INLINE NodeSet EssentialGraph::children(const NodeSet& ids) const { return graph_.children(ids); }
 
-  INLINE const NodeSet& EssentialGraph::children(NodeId id) const { return _pdag_.children(id); }
+  INLINE NodeSet EssentialGraph::descendants(NodeId id) const { return graph_.descendants(id); }
 
-  INLINE NodeSet EssentialGraph::parents(const NodeSet& ids) const { return _pdag_.parents(ids); }
+  INLINE NodeSet EssentialGraph::ancestors(NodeId id) const { return graph_.ancestors(id); }
 
-  INLINE NodeSet EssentialGraph::children(const NodeSet& ids) const { return _pdag_.children(ids); }
+  INLINE Size EssentialGraph::sizeNodes() const { return graph_.sizeNodes(); }
 
-  INLINE NodeSet EssentialGraph::descendants(NodeId id) const { return _pdag_.descendants(id); }
+  INLINE PDAG EssentialGraph::pdag() const { return PDAG(graph_); }
 
-  INLINE NodeSet EssentialGraph::ancestors(NodeId id) const { return _pdag_.ancestors(id); }
+  INLINE CPDAG EssentialGraph::cpdag() const { return CPDAG(*this); }
 
-  INLINE const NodeSet& EssentialGraph::neighbours(NodeId id) const {
-    return _pdag_.neighbours(id);
-  }
-
-  INLINE Size EssentialGraph::sizeArcs() const { return _pdag_.sizeArcs(); }
-
-  INLINE const ArcSet& EssentialGraph::arcs() const { return _pdag_.arcs(); }
-
-  INLINE Size EssentialGraph::sizeEdges() const { return _pdag_.sizeEdges(); }
-
-  INLINE const EdgeSet& EssentialGraph::edges() const { return _pdag_.edges(); }
-
-  INLINE Size EssentialGraph::sizeNodes() const { return _pdag_.sizeNodes(); }
-
-  INLINE Size EssentialGraph::size() const { return _pdag_.size(); }
-
-  INLINE const NodeGraphPart& EssentialGraph::nodes() const { return _pdag_.nodes(); }
-
-  INLINE NodeId EssentialGraph::idFromName(std::string_view name) const {
-    return _dagmodel_->idFromName(name);
-  }
-
-  INLINE const std::string& EssentialGraph::nameFromId(NodeId node) const {
-    return _dagmodel_->variable(node).name();
-  }
-
-  INLINE NodeProperty< NodeId > EssentialGraph::connectedComponents() const {
-    return _pdag_.connectedComponents();
-  }
 }   // namespace gum

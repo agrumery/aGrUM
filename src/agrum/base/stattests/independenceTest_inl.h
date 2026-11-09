@@ -89,14 +89,6 @@ namespace gum {
     /// destructor
     INLINE IndependenceTest::~IndependenceTest() { GUM_DESTRUCTOR(IndependenceTest); }
 
-    INLINE Size IndependenceTest::degreesOfFreedom_(std::size_t X_size,
-                                                    std::size_t Y_size,
-                                                    std::size_t Z_size,
-                                                    std::size_t n_skipped) {
-      const Size theoretical = Z_size * (X_size - 1) * (Y_size - 1);
-      return (n_skipped < theoretical) ? theoretical - Size(n_skipped) : Size(1);
-    }
-
   } /* namespace learning */
 
 } /* namespace gum */

@@ -297,6 +297,15 @@ namespace gum_tests {
     CHECK(h.isDefinitelyDirected(0, 1));
   }
 
+// PAG::toMixedGraph is deprecated after 3.3.2: its behaviour is still tested until its removal
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4996)
+#endif
+
   GUM_TEST(_toMixedGraph_tail_arrow_becomes_arc_) {
     gum::PAG g;
     g.addNodeWithId(0);
@@ -334,6 +343,12 @@ namespace gum_tests {
     CHECK(!mg.existsArc(0, 1));
     CHECK(!mg.existsArc(1, 0));
   }
+
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
   GUM_TEST(_toString_no_crash_) {
     gum::PAG g = buildTriangle();

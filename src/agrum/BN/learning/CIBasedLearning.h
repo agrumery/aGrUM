@@ -116,6 +116,8 @@ namespace gum {
       // ##########################################################################
       /// @{
 
+      /// set the significance threshold of the independence tests
+      /// @throws OutOfBounds if alpha does not belong to ]0,1[ (NaN included)
       void   setAlpha(double alpha);
       double alpha() const;
 
@@ -141,7 +143,10 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// Phase 1: skeleton discovery via conditional independence tests
+      /// Phase 1: skeleton discovery via conditional independence tests. The pairs forbidden in
+      /// both directions are tested like the other pairs and removed at the end: an independent
+      /// pair gets its separating set, so that the colliders it is the base of can be oriented,
+      /// and the conditioning sets are those of the unconstrained search.
       MixedGraph learnSkeleton(MixedGraph graph) override;
 
       // learnMixedStructure() remains pure virtual (inherited from ConstraintBasedLearning)

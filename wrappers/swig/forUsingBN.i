@@ -73,7 +73,10 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::IBNLearner,gum::learning::BNLearner<d
 
   using gum::learning::IBNLearner::learnDAG;
   using gum::learning::IBNLearner::learnPDAG;
+  using gum::learning::IBNLearner::learnEssentialGraph;
   using gum::learning::IBNLearner::learnPAG;
+  using gum::learning::IBNLearner::errorOnExceededMaxIndegree;
+  using gum::learning::IBNLearner::maxIndegreeExceeded;
   using gum::learning::IBNLearner::names;
   using gum::learning::IBNLearner::idFromName;
   using gum::learning::IBNLearner::nameFromId;

@@ -43,6 +43,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -425,5 +426,38 @@ namespace gum_tests {
     CHECK_THROWS_AS(conf.set("learning", "BNLearnerPreferredAlgo", "foo"), gum::InvalidArgument);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior(1.));
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.useBDeuPrior());
+  }
+
+  GUM_TEST(InvalidAlphaIsRefused) {
+    const std::vector< double > invalid = {-0.1,
+                                           0.0,
+                                           1.0,
+                                           1.1,
+                                           std::numeric_limits< double >::infinity(),
+                                           -std::numeric_limits< double >::infinity(),
+                                           std::numeric_limits< double >::quiet_NaN()};
+
+    auto pc = learner();
+    pc.usePC();
+    auto fci = learner();
+    fci.useFCI();
+    gum::learning::PC  algoPC;
+    gum::learning::FCI algoFCI;
+    for (const auto alpha: invalid) {
+      CHECK_THROWS_AS(pc.setPCAlpha(alpha), gum::OutOfBounds);
+      CHECK_THROWS_AS(fci.setFCIAlpha(alpha), gum::OutOfBounds);
+      CHECK_THROWS_AS(algoPC.setAlpha(alpha), gum::OutOfBounds);
+      CHECK_THROWS_AS(algoFCI.setAlpha(alpha), gum::OutOfBounds);
+    }
+
+    // a refused alpha does not change the learned graph
+    const auto expected = pc.learnPDAG().toString();
+    CHECK_THROWS_AS(pc.setPCAlpha(1.1), gum::OutOfBounds);
+    CHECK_EQ(pc.learnPDAG().toString(), expected);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(pc.setPCAlpha(0.01));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(fci.setFCIAlpha(0.99));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(algoPC.setAlpha(0.5));
+    CHECK_EQ(algoPC.alpha(), 0.5);
   }
 }   // namespace gum_tests

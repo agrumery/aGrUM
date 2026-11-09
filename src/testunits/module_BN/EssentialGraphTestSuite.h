@@ -272,15 +272,15 @@ namespace gum_tests {
     CHECK_FALSE(eg.idFromName("z").has_value());
     CHECK_EQ(eg.skeleton().nameFromId(bn.idFromName("a")), "a");
 
-    // a learned PDAG (here, not the essential graph of bn): kept by copy and assignment
-    gum::PDAG  pdag(bn.dag());
-    const auto learned = gum::EssentialGraph(bn, pdag);
-    const auto copy    = learned;
-    CHECK_EQ(copy.sizeArcs(), 3u);
-    CHECK_EQ(copy.sizeEdges(), 0u);
+    // a PDAG which is a CPDAG (b->c<-d compelled, a-b reversible): kept by copy and assignment
+    const auto given = gum::EssentialGraph(bn, eg.pdag());
+    const auto copy  = given;
+    CHECK_EQ(copy.sizeArcs(), 2u);
+    CHECK_EQ(copy.sizeEdges(), 1u);
     gum::EssentialGraph assigned;
-    assigned = learned;
-    CHECK_EQ(assigned.sizeArcs(), 3u);
+    CHECK(assigned.empty());
+    assigned = given;
+    CHECK_EQ(assigned.sizeArcs(), 2u);
     CHECK_EQ(assigned.nameFromId(bn.idFromName("c")), "c");
 
     // from a named PDAG only: the essential graph does not depend on a model
@@ -299,8 +299,25 @@ namespace gum_tests {
     CHECK(eg.cpdag().contains(bn.dag()));
     CHECK_EQ(eg.cpdag().nameFromId(bn.idFromName("d")), "d");
 
-    // a PDAG which is not a CPDAG (the chain a->b->c is not compelled)
-    CHECK_THROWS_AS(gum::EssentialGraph(bn, gum::PDAG(bn.dag())).cpdag(), gum::InvalidArgument&);
+    // a PDAG which is not a CPDAG (a->b is not compelled): rejected
+    CHECK_THROWS_AS(gum::EssentialGraph(bn, gum::PDAG(bn.dag())), gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::EssentialGraph(gum::PDAG(bn.dag())), gum::InvalidArgument&);
+  }
+
+  GUM_TEST(IsACPDAG) {
+    auto              bn    = gum::BayesNet< double >::fastPrototype("a->b->c;d->c");
+    const auto        eg    = gum::EssentialGraph(bn);
+    const gum::CPDAG& cpdag = eg;
+    CHECK(cpdag == eg.cpdag());
+    CHECK(eg.contains(bn.dag()));
+    CHECK(eg.contains(eg.consistentExtension()));
+    const auto a = bn.idFromName("a");
+    const auto c = bn.idFromName("c");
+    const auto d = bn.idFromName("d");
+    CHECK(eg.dSeparation(a, d, gum::NodeSet()));
+    CHECK_FALSE(eg.dSeparation(a, d, gum::NodeSet{c}));
+    CHECK(gum::EssentialGraph(gum::CPDAG::fromDAG(bn.dag())) == eg);
+    CHECK(gum::EssentialGraph().empty());
   }
 
   GUM_TEST(GumFormat) {
@@ -315,10 +332,17 @@ namespace gum_tests {
     const auto bgum = GET_RESSOURCES_PATH("outputs/essentialGraph.bgum");
     gum::saveGraphGUM(eg, bgum, true);
     CHECK(gum::loadGraphGUM< gum::EssentialGraph >(bgum, true).arcs() == eg.arcs());
+
+    // an essential graph which is not a CPDAG is not read
+    auto       notACPDAG = gum::graphToGUMString(gum::PDAG(bn.dag()));
+    const auto type      = notACPDAG.find("\"PDAG\"");
+    REQUIRE_NE(type, std::string::npos);
+    notACPDAG.replace(type, 6, "\"EssentialGraph\"");
+    CHECK_THROWS_AS(gum::graphFromGUMString< gum::EssentialGraph >(notACPDAG), gum::IOError&);
   }
 
   GUM_TEST(NamesOfTheModelReplaceThoseOfThePDAG) {
-    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B<-C");
     const auto ia = bn.idFromName("A");
     const auto ib = bn.idFromName("B");
     const auto ic = bn.idFromName("C");
@@ -337,10 +361,10 @@ namespace gum_tests {
     CHECK_EQ(eg.nameFromId(ic), "C");
     CHECK(eg.arcs() == pdag.arcs());
 
-    // without names, the labels and tooltips of the PDAG are kept
+    // without names, the labels and tooltips of the CPDAG are kept
     gum::PDAG unnamed;
     unnamed.addNodes(2);
-    unnamed.addArc(0, 1);
+    unnamed.addEdge(0, 1);
     const auto dot = gum::EssentialGraph(unnamed).toDot();
     CHECK_EQ(dot.find("label"), std::string::npos);
     CHECK_EQ(dot.find("tooltip"), std::string::npos);

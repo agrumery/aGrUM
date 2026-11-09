@@ -373,7 +373,10 @@ namespace gum::learning {
     DAG learnDAG();
 
     /// learn a partial structure from a file (must have read the db before and
-    /// must have selected miic)
+    /// must have selected a constraint-based algorithm: MIIC, PC or FCI)
+    /** With FCI, the result is the PDAG of a representative MAG of the learned PAG (see
+     * FCI::learnPDAG): its arcs are not all established by the data, an edge may be a latent
+     * couple. learnPAG() gives the learned structure. */
     PDAG learnPDAG();
 
     /// learn the essential graph of the Markov equivalence class of the data

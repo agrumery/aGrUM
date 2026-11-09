@@ -132,13 +132,30 @@ class TestEssentialGraph(pyAgrumTestCase):
     self.assertIsNone(eg.idFromName("z"))
     self.assertEqual(gum.EssentialGraph(eg.pdag()).idFromName("a"), eg.idFromName("a"))
 
-  def testLearnedPDAGIsKept(self):
+  def testNotACPDAGIsRejected(self):
     bn = gum.fastBN("a->b->c;d->c")
-    learned = gum.EssentialGraph(bn, gum.PDAG(bn.dag()))  # not the essential graph of bn
-    self.assertEqual(learned.sizeArcs(), 3)
-    self.assertEqual(gum.EssentialGraph(learned).sizeArcs(), 3)
     with self.assertRaises(gum.InvalidArgument):
-      learned.cpdag()
+      gum.EssentialGraph(bn, gum.PDAG(bn.dag()))  # a->b is not compelled: not a CPDAG
+    with self.assertRaises(gum.InvalidArgument):
+      gum.EssentialGraph(gum.PDAG(bn.dag()))
+    eg = gum.EssentialGraph(bn, gum.EssentialGraph(bn).pdag())  # a CPDAG
+    self.assertEqual(eg.sizeArcs(), 2)
+    self.assertEqual(gum.EssentialGraph(eg).sizeArcs(), 2)
+
+  def testIsACPDAG(self):
+    bn = gum.fastBN("a->b->c;d->c")
+    eg = gum.EssentialGraph(bn)
+    self.assertIsInstance(eg, gum.CPDAG)
+    self.assertIn("EssentialGraph", repr(eg))
+    a, c, d = (bn.idFromName(n) for n in "acd")
+    self.assertTrue(eg.dSeparation(a, d))
+    self.assertFalse(eg.dSeparation(a, d, c))
+    self.assertTrue(eg.contains(eg.consistentExtension()))
+    self.assertEqual(eg.parents(c), {bn.idFromName("b"), d})
+    self.assertEqual(eg.parents({c}), {bn.idFromName("b"), d})
+    self.assertIn('subgraph "cluster_', gum.EssentialGraph(gum.fastBN("a->b")).toDot())
+    self.assertTrue(gum.EssentialGraph().empty())
+    self.assertEqual(gum.EssentialGraph(gum.CPDAG.fromDAG(bn.dag())), eg)
 
   def testCPDAG(self):
     bn = gum.fastBN("a->b->c;d->c")

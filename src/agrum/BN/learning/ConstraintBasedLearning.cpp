@@ -69,7 +69,9 @@ namespace gum {
         ApproximationScheme(from), _forbiddenGraph_(from._forbiddenGraph_),
         _mandatoryGraph_(from._mandatoryGraph_), _initialMarks_(from._initialMarks_),
         _latentCouples_(from._latentCouples_), _maxLog_(from._maxLog_),
-        _maxIndegree_(from._maxIndegree_) {
+        _maxIndegree_(from._maxIndegree_),
+        _errorOnExceededMaxIndegree_(from._errorOnExceededMaxIndegree_),
+        _maxIndegreeExceeded_(from._maxIndegreeExceeded_) {
       GUM_CONS_CPY(ConstraintBasedLearning);
     }
 
@@ -78,7 +80,9 @@ namespace gum {
         _mandatoryGraph_(std::move(from._mandatoryGraph_)),
         _initialMarks_(std::move(from._initialMarks_)),
         _latentCouples_(std::move(from._latentCouples_)), _maxLog_(from._maxLog_),
-        _maxIndegree_(from._maxIndegree_) {
+        _maxIndegree_(from._maxIndegree_),
+        _errorOnExceededMaxIndegree_(from._errorOnExceededMaxIndegree_),
+        _maxIndegreeExceeded_(from._maxIndegreeExceeded_) {
       GUM_CONS_MOV(ConstraintBasedLearning);
     }
 
@@ -87,23 +91,27 @@ namespace gum {
     ConstraintBasedLearning&
         ConstraintBasedLearning::operator=(const ConstraintBasedLearning& from) {
       ApproximationScheme::operator=(from);
-      _forbiddenGraph_ = from._forbiddenGraph_;
-      _mandatoryGraph_ = from._mandatoryGraph_;
-      _maxIndegree_    = from._maxIndegree_;
-      _initialMarks_   = from._initialMarks_;
-      _latentCouples_  = from._latentCouples_;
-      _maxLog_         = from._maxLog_;
+      _forbiddenGraph_             = from._forbiddenGraph_;
+      _mandatoryGraph_             = from._mandatoryGraph_;
+      _maxIndegree_                = from._maxIndegree_;
+      _errorOnExceededMaxIndegree_ = from._errorOnExceededMaxIndegree_;
+      _maxIndegreeExceeded_        = from._maxIndegreeExceeded_;
+      _initialMarks_               = from._initialMarks_;
+      _latentCouples_              = from._latentCouples_;
+      _maxLog_                     = from._maxLog_;
       return *this;
     }
 
     ConstraintBasedLearning& ConstraintBasedLearning::operator=(ConstraintBasedLearning&& from) {
       ApproximationScheme::operator=(std::move(from));
-      _forbiddenGraph_ = std::move(from._forbiddenGraph_);
-      _mandatoryGraph_ = std::move(from._mandatoryGraph_);
-      _maxIndegree_    = from._maxIndegree_;
-      _initialMarks_   = std::move(from._initialMarks_);
-      _latentCouples_  = std::move(from._latentCouples_);
-      _maxLog_         = from._maxLog_;
+      _forbiddenGraph_             = std::move(from._forbiddenGraph_);
+      _mandatoryGraph_             = std::move(from._mandatoryGraph_);
+      _maxIndegree_                = from._maxIndegree_;
+      _errorOnExceededMaxIndegree_ = from._errorOnExceededMaxIndegree_;
+      _maxIndegreeExceeded_        = from._maxIndegreeExceeded_;
+      _initialMarks_               = std::move(from._initialMarks_);
+      _latentCouples_              = std::move(from._latentCouples_);
+      _maxLog_                     = from._maxLog_;
       return *this;
     }
 
@@ -120,6 +128,16 @@ namespace gum {
     }
 
     void ConstraintBasedLearning::setMaxIndegree(gum::Size n) { _maxIndegree_ = n; }
+
+    void ConstraintBasedLearning::setErrorOnExceededMaxIndegree(bool error) {
+      _errorOnExceededMaxIndegree_ = error;
+    }
+
+    bool ConstraintBasedLearning::errorOnExceededMaxIndegree() const {
+      return _errorOnExceededMaxIndegree_;
+    }
+
+    bool ConstraintBasedLearning::maxIndegreeExceeded() const { return _maxIndegreeExceeded_; }
 
     void ConstraintBasedLearning::addConstraints(
         const HashTable< std::pair< NodeId, NodeId >, char >& constraints) {
@@ -139,12 +157,12 @@ namespace gum {
     }
 
     DAG ConstraintBasedLearning::learnDAG(MixedGraph graph) {
-      return meekRules_.propagateToDAG(learnMixedStructure(graph));
+      return checkMaxIndegree_(meekRules_.propagateToDAG(learnMixedStructure(graph)));
     }
 
     DAG ConstraintBasedLearning::learnDAG(MixedGraph                  graph,
                                           const NodeProperty< Size >& domainSizes) {
-      return meekRules_.propagateToDAG(learnMixedStructure(graph), domainSizes);
+      return checkMaxIndegree_(meekRules_.propagateToDAG(learnMixedStructure(graph), domainSizes));
     }
 
     // ##########################################################################
@@ -165,6 +183,23 @@ namespace gum {
 
     bool ConstraintBasedLearning::isArcValid_(const MixedGraph& graph, NodeId x, NodeId y) {
       return !isForbiddenArc_(x, y) && !isMaxIndegree_(graph, y);
+    }
+
+    DAG ConstraintBasedLearning::checkMaxIndegree_(DAG dag) {
+      _maxIndegreeExceeded_ = false;
+      for (const auto node: dag.nodes())
+        if (dag.parents(node).size() > _maxIndegree_) {
+          _maxIndegreeExceeded_ = true;
+          if (!_errorOnExceededMaxIndegree_) break;
+          GUM_ERROR(OperationNotAllowed,
+                    "the learned DAG has a node (" << node << ") with " << dag.parents(node).size()
+                                                   << " parents, more than the maximum indegree "
+                                                   << _maxIndegree_
+                                                   << " (a constraint-based algorithm does not "
+                                                      "remove the edges kept by its independence "
+                                                      "tests to satisfy it)")
+        }
+      return dag;
     }
 
     // ##########################################################################
@@ -206,52 +241,6 @@ namespace gum {
       return false;
     }
 
-    void ConstraintBasedLearning::orientDoubleHeadedArcs_(MixedGraph& mg) {
-      gum::ArcSet L;
-      for (gum::NodeId x: mg.nodes())
-        for (NodeId y: mg.parents(x))
-          if (mg.parents(y).contains(x)) {
-            if (x > y) continue;
-            else L.insert(gum::Arc(x, y));
-          }
-
-      if (not L.empty()) {
-        while (true) {
-          bool withdrawFlag_L = false;
-          for (auto arc: ArcSet(L)) {
-            bool tail_head        = _existsDirectedPath_(mg, arc.tail(), arc.head());
-            bool head_tail        = _existsDirectedPath_(mg, arc.head(), arc.tail());
-            bool withdrawFlag_arc = false;
-
-            if (tail_head && !head_tail) {
-              mg.eraseArc(Arc(arc.head(), arc.tail()));
-              withdrawFlag_arc = true;
-            } else if (!tail_head && head_tail) {
-              mg.eraseArc(Arc(arc.tail(), arc.head()));
-              withdrawFlag_arc = true;
-            } else if (!tail_head && !head_tail) {
-              mg.eraseArc(Arc(arc.head(), arc.tail()));
-              withdrawFlag_arc = true;
-            }
-
-            if (withdrawFlag_arc) {
-              L.erase(arc);
-              withdrawFlag_L = true;
-            }
-          }
-          if (L.empty()) break;
-
-          // no arc was processed this pass — break cycle by erasing one arc arbitrarily
-          if (!withdrawFlag_L) {
-            auto arc = *L.begin();
-            mg.eraseArc(Arc(arc.head(), arc.tail()));
-            mg.eraseArc(Arc(arc.tail(), arc.head()));
-            L.erase(arc);
-          }
-        }
-      }
-    }
-
     void ConstraintBasedLearning::applyStructuralConstraints_(MixedGraph& graph) {
       for (const auto& arc: _mandatoryGraph_.arcs()) {
         if (graph.existsEdge(arc.head(), arc.tail())) graph.eraseEdge(Edge(arc.head(), arc.tail()));
@@ -275,14 +264,15 @@ namespace gum {
       }
     }
 
-    MixedGraph ConstraintBasedLearning::initGraph_(const MixedGraph& template_graph) {
+    MixedGraph ConstraintBasedLearning::initGraph_(const MixedGraph& template_graph,
+                                                   bool              keepForbiddenEdges) {
       MixedGraph graph;
       for (NodeId n: template_graph.nodes())
         graph.addNodeWithId(n);
 
       auto addEdgeIfAllowed = [&](NodeId x, NodeId y) {
         if (x > y) std::swap(x, y);
-        if (isForbiddenEdge_(x, y))
+        if (!keepForbiddenEdges && isForbiddenEdge_(x, y))
           GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
         else graph.addEdge(x, y);
       };
@@ -302,12 +292,27 @@ namespace gum {
       return graph;
     }
 
+    void ConstraintBasedLearning::removeForbiddenEdges_(MixedGraph& graph) {
+      for (const Edge& edge: EdgeSet(graph.edges())) {
+        const NodeId x = edge.first();
+        const NodeId y = edge.second();
+        if (isForbiddenEdge_(x, y)) {
+          graph.eraseEdge(edge);
+          GUM_SL_EMIT(x, y, "Remove " << x << " - " << y, "Constraints : Forbidden edge")
+        }
+      }
+    }
+
     std::vector< ThreePoints >
         ConstraintBasedLearning::unshieldedTriples_(const MixedGraph& graph) {
       std::vector< ThreePoints > triples;
       for (NodeId z: graph) {
-        for (NodeId x: graph.neighbours(z)) {
-          for (NodeId y: graph.neighbours(z)) {
+        // the arms of a collider: undirected edges and arcs into z (e.g. mandatory arcs)
+        NodeSet arms = graph.neighbours(z);
+        for (NodeId p: graph.parents(z))
+          arms.insert(p);
+        for (NodeId x: arms) {
+          for (NodeId y: arms) {
             if (y < x && !graph.existsEdge(x, y) && !graph.existsArc(x, y)
                 && !graph.existsArc(y, x)) {
               triples.emplace_back(x, y, z);

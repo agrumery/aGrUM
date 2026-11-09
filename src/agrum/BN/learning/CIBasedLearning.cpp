@@ -103,7 +103,14 @@ namespace gum {
 
     void CIBasedLearning::setIndependenceTest(IndependenceTest& test) { test_ = &test; }
 
-    void CIBasedLearning::setAlpha(double alpha) { alpha_ = alpha; }
+    void CIBasedLearning::setAlpha(double alpha) {
+      // written as a negation so that NaN is refused too
+      if (!(alpha > 0.0 && alpha < 1.0)) {
+        GUM_ERROR(OutOfBounds,
+                  "the significance threshold alpha must belong to ]0,1[ (got " << alpha << ")")
+      }
+      alpha_ = alpha;
+    }
 
     double CIBasedLearning::alpha() const { return alpha_; }
 
@@ -124,7 +131,7 @@ namespace gum {
     // ##########################################################################
 
     MixedGraph CIBasedLearning::learnSkeleton(MixedGraph graph) {
-      graph = initGraph_(graph);
+      graph = initGraph_(graph, true);
       sepSet_.clear();
 
       Size d = 0;
@@ -234,6 +241,7 @@ namespace gum {
         ++d;
       }
 
+      removeForbiddenEdges_(graph);
       return graph;
     }
 

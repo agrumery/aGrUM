@@ -103,9 +103,8 @@ IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 
-%ignore gum::EssentialGraph::nodes const;
+// an EssentialGraph is a CPDAG: its read access is the one of CPDAG
 %ignore gum::MarkovBlanket::nodes const;
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
 %{
 #include <agrum/BN/algorithms/essentialGraph.h>
 %}

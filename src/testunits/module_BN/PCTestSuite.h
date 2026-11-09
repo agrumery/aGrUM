@@ -285,7 +285,7 @@ namespace gum_tests {
     CHECK(!mg.existsArc(6, 2));
     // asymmetric: arc 1->5 forbidden, 5->1 could exist
     CHECK(!mg.existsArc(1, 5));
-    // initGraph_ must have emitted a signal for the fully forbidden edge
+    // the skeleton phase must have emitted a signal for the fully forbidden edge
     CHECK(counter.forbidden_count >= 1);
 
     auto dag = search.learnDAG(graph);
@@ -328,8 +328,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(_forbidden_pairs_not_in_skeleton_) {
-    // fully forbidden pairs must not appear in skeleton — initGraph_ removes them
-    // before any CI test, so they are never in the graph
+    // fully forbidden pairs must not appear in skeleton — they are tested (to get a
+    // separating set) but removed at the end of the skeleton phase
     AsiaDB                       db;
     gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
 
@@ -383,18 +383,13 @@ namespace gum_tests {
     CHECK(skel.size() == db.nb_vars);
   }
 
-  GUM_TEST(_alpha_one_skeleton_complete_) {
-    // alpha=1.0: condition pval > 1.0 is never satisfied → no edge removed
-    AsiaDB                       db;
-    gum::learning::IndepTestChi2 chi2(db.parser, db.prior);
-
+  GUM_TEST(_alpha_bounds_refused_) {
+    // alpha must belong to ]0,1[: the degenerate thresholds 0 and 1 are refused
     gum::learning::PC search;
-    search.setIndependenceTest(chi2);
-    search.setAlpha(1.0);
-
-    auto skel = search.learnSkeleton(db.nodeOnlyGraph());
-    auto n    = static_cast< gum::Size >(db.nb_vars);
-    CHECK(skel.sizeEdges() == n * (n - 1) / 2);
+    const double      before = search.alpha();
+    CHECK_THROWS_AS(search.setAlpha(1.0), gum::OutOfBounds);
+    CHECK_THROWS_AS(search.setAlpha(0.0), gum::OutOfBounds);
+    CHECK_EQ(search.alpha(), before);
   }
 
   GUM_TEST(_skeleton_depth0_monotone_in_alpha_) {

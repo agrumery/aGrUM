@@ -62,9 +62,9 @@ namespace gum_tests {
     public:
     // sparse_XYZ.csv: X(A,B,C) x Y(a,b) | Z(0,1)
     // C never appears with Z=0 → 2 silent cells (E=0) in the Z=0 slice.
-    // df_theoretical = 2*(3-1)*(2-1) = 4, n_skipped = 2 → df_effective = 2.
-    // With df=2 the statistic 6.0 gives p-value = exp(-3) ≈ 0.0498,
-    // much smaller than the uncorrected value Chi2(6.0, df=4) ≈ 0.199.
+    // The empty row C of the Z=0 slice has no degree of freedom (issue #210):
+    // df = (2-1)(2-1) for Z=0 + (3-1)(2-1) for Z=1 = 3 (not 4, nor 4 - 2 skipped cells = 2).
+    // With df=3 the statistic 6.0 gives p-value ≈ 0.1116 (≈ 0.0498 with the former df=2).
   };
 
   GUM_TEST(_chi2) {
@@ -401,8 +401,8 @@ namespace gum_tests {
     // statistic: sum over active cells only, computed on the Z=0 and Z=1 slices
     CHECK(stat.first == doctest::Approx(6.0).epsilon(1e-9));
 
-    // p-value must match Chi2(df=2), not Chi2(df=4)
-    CHECK(stat.second == doctest::Approx(gum::Chi2::probaChi2(6.0, 2)).epsilon(1e-6));
+    // p-value must match Chi2(df=3): one degree of freedom per nonempty row and column
+    CHECK(stat.second == doctest::Approx(gum::Chi2::probaChi2(6.0, 3)).epsilon(1e-6));
 
     // verify the correction tightens the test: corrected p < uncorrected p
     CHECK(stat.second < gum::Chi2::probaChi2(6.0, 4));

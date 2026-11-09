@@ -90,8 +90,22 @@ namespace gum {
       const std::size_t X_size = database.domainSize(var_x);
       const std::size_t Y_size = database.domainSize(var_y);
 
-      double            cumulStat = 0.0;
-      std::size_t       n_skipped = 0;
+      double cumulStat = 0.0;
+      // the degrees of freedom of the nonempty part of the table (issue #210): a cell with a zero
+      // margin has a zero expected count, it is left out of the statistic, and so are the degrees
+      // of freedom of its row or column. A slice z keeps (r_z - 1)(c_z - 1) degrees of freedom, r_z
+      // and c_z being its numbers of nonempty rows and columns (an empty slice keeps none)
+      Size       df = 0;
+      const auto countNonZero
+          = [](const std::vector< double >& margins, std::size_t beg, std::size_t size) {
+              std::size_t res = 0;
+              for (std::size_t i = beg; i < beg + size; ++i)
+                if (margins[i] != 0.0) ++res;
+              return res;
+            };
+      const auto addSlice = [&df](std::size_t rows, std::size_t columns) {
+        if (rows > 0 && columns > 0) df += Size(rows - 1) * Size(columns - 1);
+      };
       const std::size_t Z_size
           = idset.hasConditioningSet() ? all_size / (X_size * Y_size) : std::size_t(1);
 
@@ -106,21 +120,18 @@ namespace gum {
         for (std::size_t z = 0, beg_xz = 0, beg_yz = 0, xyz = 0; z < Z_size;
              ++z, beg_xz += X_size, beg_yz += Y_size) {
           if (N_z[z] > 0) {
+            addSlice(countNonZero(N_xz, beg_xz, X_size), countNonZero(N_yz, beg_yz, Y_size));
             for (std::size_t y = std::size_t(0), yz = beg_yz; y < Y_size; ++yz, ++y) {
               for (std::size_t x = std::size_t(0), xz = beg_xz; x < X_size; ++xz, ++x, ++xyz) {
-                // structural zero (a marginal is 0 → E undefined): skip, reduce df.
-                // Sampling zeros (O=0, E>0) are left to cellContrib (return 0).
+                // structural zero (a marginal is 0 → E undefined): skipped, its row or column
+                // has no degree of freedom. Sampling zeros (O=0, E>0) are left to cellContrib.
                 // Agresti, "Categorical Data Analysis", 3rd ed. (Wiley, 2013).
-                if (N_yz[yz] * N_xz[xz] != 0.0) {
+                if (N_yz[yz] * N_xz[xz] != 0.0)
                   cumulStat += cellContrib(N_xyz[xyz], N_xz[xz], N_yz[yz], N_z[z]);
-                } else {
-                  ++n_skipped;
-                }
               }
             }
           } else {
-            n_skipped += X_size * Y_size;
-            xyz += X_size * Y_size;
+            xyz += X_size * Y_size;   // an empty slice has no degree of freedom
           }
         }
       } else {
@@ -133,19 +144,16 @@ namespace gum {
         for (const auto n_x: N_x)
           N += n_x;
 
+        addSlice(countNonZero(N_x, 0, X_size), countNonZero(N_y, 0, Y_size));
         for (std::size_t y = std::size_t(0), xy = 0; y < Y_size; ++y) {
           for (std::size_t x = 0; x < X_size; ++x, ++xy) {
-            if (N_y[y] * N_x[x] != 0.0) {
-              cumulStat += cellContrib(N_xyz[xy], N_x[x], N_y[y], N);
-            } else {
-              ++n_skipped;
-            }
+            if (N_y[y] * N_x[x] != 0.0) cumulStat += cellContrib(N_xyz[xy], N_x[x], N_y[y], N);
           }
         }
       }
 
-      Size   df     = degreesOfFreedom_(X_size, Y_size, Z_size, n_skipped);
-      double pValue = Chi2::probaChi2(cumulStat, df);
+      // clamped to 1 to keep the distribution well-defined (the statistic is then 0: p-value 1)
+      double pValue = Chi2::probaChi2(cumulStat, df > 0 ? df : Size(1));
       return {cumulStat, pValue};
     }
 

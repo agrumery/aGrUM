@@ -105,6 +105,8 @@ SETPROP_THEN_RETURN_SELF(useFCIG2Test);
 SETPROP_THEN_RETURN_SELF(setFCIAlpha);
 SETPROP_THEN_RETURN_SELF(setFCIMaxPathLength);
 SETPROP_THEN_RETURN_SELF(setFCIExhaustiveSepSet);
+SETPROP_THEN_RETURN_SELF(setFCIErrorOnInvalidPAG);
+SETPROP_THEN_RETURN_SELF(setErrorOnExceededMaxIndegree);
 
 %extend gum::learning::BNLearner< double > {
   PyAgrumTupleFF *chi2(const std::string& var1,const std::string& var2,const std::vector<std::string>& knw={}) {
@@ -252,28 +254,6 @@ def fitParameters(self, bn, take_into_account_score=True):
   for n in tmp.names():
     bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
   return self
-
-def learnEssentialGraph(self):
-  """
-  learn an essential graph from a file
-
-  Returns
-  -------
-  pyagrum.EssentialGraph
-    the learned essential graph
-  """
-  bn = BayesNet()
-  for i in range(len(self.names())):
-    bn.add(self.nameFromId(i),2)
-  try:
-    ge = EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
-  except:
-    bn = self.learnBN()
-    ge = EssentialGraph(bn)  # for score-based methods
-
-  ge._bn=bn
-
-  return ge
 
 def useEM(self, epsilon: float, noise: float | None = None) -> "pyagrum.BNLearner":
   """
@@ -491,6 +471,18 @@ def useLocalSearchWithTabuList(self, tabu_size: int | None = None, nb_decrease: 
   }
 }
 
+
+%define WARN_IF_MAX_INDEGREE_EXCEEDED(methodname)
+%pythonappend methodname %{
+  if self.maxIndegreeExceeded():
+      import warnings
+      warnings.warn("the learned DAG has a node with more parents than the maximum indegree (a constraint-based "
+                    "algorithm does not remove the edges kept by its independence tests to satisfy it)", UserWarning)
+%}
+%enddef
+// learnDAG is a method of IBNLearner brought in BNLearner by a using declaration
+WARN_IF_MAX_INDEGREE_EXCEEDED(gum::learning::IBNLearner::learnDAG);
+WARN_IF_MAX_INDEGREE_EXCEEDED(gum::learning::BNLearner<double>::learnBN);
 
 %pythonappend gum::learning::BNLearner<double>::learnParameters %{
   if self._EM_warning():

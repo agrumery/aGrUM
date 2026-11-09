@@ -219,6 +219,21 @@ namespace gum::learning {
     constraintIndegree_.setMaxIndegree(max_indegree);
   }
 
+  INLINE void IBNLearner::setErrorOnExceededMaxIndegree(bool error) {
+    errorOnExceededMaxIndegree_ = error;
+  }
+
+  INLINE bool IBNLearner::errorOnExceededMaxIndegree() const { return errorOnExceededMaxIndegree_; }
+
+  INLINE bool IBNLearner::maxIndegreeExceeded() const {
+    switch (selectedAlgo_) {
+      case AlgoType::PC : return algoPC_.maxIndegreeExceeded();
+      case AlgoType::FCI : return algoFCI_.maxIndegreeExceeded();
+      case AlgoType::MIIC : return algoMiic_.maxIndegreeExceeded();
+      default : return false;
+    }
+  }
+
   // indicate that we wish to use MIIC with constraints
   INLINE void IBNLearner::useMIIC() { selectedAlgo_ = AlgoType::MIIC; }
 
@@ -249,6 +264,7 @@ namespace gum::learning {
     if (selectedAlgo_ != AlgoType::FCI) {
       GUM_ERROR(OperationNotAllowed, "setFCIAlpha() is only valid when using the FCI algorithm")
     }
+    algoFCI_.setAlpha(alpha);   // checks alpha
     alphaFci_ = alpha;
   }
 
@@ -277,6 +293,22 @@ namespace gum::learning {
     return exhaustiveSepSetFci_;
   }
 
+  INLINE void IBNLearner::setFCIErrorOnInvalidPAG(bool error) {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed,
+                "setFCIErrorOnInvalidPAG() is only valid when using the FCI algorithm")
+    }
+    errorOnInvalidPAGFci_ = error;
+  }
+
+  INLINE bool IBNLearner::fciErrorOnInvalidPAG() const {
+    if (selectedAlgo_ != AlgoType::FCI) {
+      GUM_ERROR(OperationNotAllowed,
+                "fciErrorOnInvalidPAG() is only valid when using the FCI algorithm")
+    }
+    return errorOnInvalidPAGFci_;
+  }
+
   // select Chi2 independence test for PC (default)
   INLINE void IBNLearner::useChi2Test() {
     if (selectedAlgo_ != AlgoType::PC) {
@@ -298,6 +330,7 @@ namespace gum::learning {
     if (selectedAlgo_ != AlgoType::PC) {
       GUM_ERROR(OperationNotAllowed, "setPCAlpha() is only valid when using the PC algorithm")
     }
+    algoPC_.setAlpha(alpha);   // checks alpha
     alphaPc_ = alpha;
   }
 

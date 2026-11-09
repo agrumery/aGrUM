@@ -680,10 +680,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
   def testLearnEssentialGraph(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
     learner.useMIIC()
-    eg = learner.learnEssentialGraph()
-    pdag = learner.learnPDAG()
-    self.assertEqual(eg.arcs(), pdag.arcs())
-    self.assertEqual(eg.edges(), pdag.edges())
+    eg = learner.learnEssentialGraph()  # the CPDAG of the learned DAG, not the learned PDAG
+    cpdag = gum.CPDAG.fromDAG(learner.learnDAG())
+    self.assertEqual(eg.arcs(), cpdag.arcs())
+    self.assertEqual(eg.edges(), cpdag.edges())
     self.assertEqual(eg.nameFromId(learner.idFromName("smoking?")), "smoking?")
 
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
@@ -1143,11 +1143,13 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.assertEqual(learner.learnPDAG().sizeEdges() + learner.learnPDAG().sizeArcs(), 1)
 
       self.assertIs(learner.setErrorOnExceededMaxIndegree(False), learner)
-      with self.assertWarns(UserWarning):
+      with self.assertWarns(UserWarning) as cm:
         self.assertEqual(learner.learnDAG().sizeArcs(), 1)
+      self.assertEqual(cm.filename, __file__)  # the warning points at the caller
       self.assertTrue(learner.maxIndegreeExceeded())
-      with self.assertWarns(UserWarning):
+      with self.assertWarns(UserWarning) as cm:
         learner.learnBN()
+      self.assertEqual(cm.filename, __file__)
 
     gum.config.push()
     try:

@@ -91,8 +91,9 @@ pyagrum.DAG
 "
 learn the essential graph of the Markov equivalence class of the data
 
-With a constraint-based method (MIIC, PC, FCI), the essential graph is the learned PDAG (see
-`learnPDAG`); with a score-based method, it is the essential graph of the learned DAG.
+The essential graph (CPDAG) of the learned DAG (see `learnDAG`), whatever the algorithm. With a
+constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by `learnPDAG` (it may not
+be a CPDAG).
 
 Returns
 -------
@@ -103,6 +104,9 @@ Raises
 ------
 pyagrum.MissingValueInDatabase
     if the database contains missing values
+pyagrum.OperationNotAllowed
+    as `learnDAG`, if the learned DAG exceeds the maximum number of parents (see
+    `setMaxIndegree` and `setErrorOnExceededMaxIndegree`)
 "
 
 %feature("docstring") gum::learning::IBNLearner::learnPDAG
@@ -118,6 +122,13 @@ Warnings
 --------
   The learning method must be constraint-based (MIIC, etc.) and not score-based
   (K2, GreedyHillClimbing, etc.)
+
+Notes
+-----
+  With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs
+  are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o
+  become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).
+  Use `learnPAG` to get the learned structure with its uncertain marks.
 "
 
 
@@ -1036,8 +1047,8 @@ Set the maximum number of parents of a node of the learned structure.
 The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,
 MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:
 if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it
-with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` and `learnEssentialGraph()` do not check
-the bound.
+with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` does not check the
+bound.
 
 Parameters
 ----------

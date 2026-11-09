@@ -61,19 +61,3 @@ PAG(src) -> PAG
 
 Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
 "
-
-
-%feature("docstring") gum::PAG::toMixedGraph
-"
-Convert the PAG to a MixedGraph by interpreting definite edge orientations.
-
-- Definitely directed edges become arcs.
-- Bidirected edges become two arcs (one in each direction).
-- Undirected or circle edges become undirected edges.
-
-Returns
--------
-pyagrum.MixedGraph
-"
-
-

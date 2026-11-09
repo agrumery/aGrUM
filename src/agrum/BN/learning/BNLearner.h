@@ -461,6 +461,10 @@ namespace gum::learning {
 
     bool fciExhaustiveSepSet() const;
 
+    BNLearner< GUM_SCALAR >& setFCIErrorOnInvalidPAG(bool error);
+
+    bool fciErrorOnInvalidPAG() const;
+
     BNLearner< GUM_SCALAR >& useChi2Test();
 
     BNLearner< GUM_SCALAR >& useG2Test();
@@ -480,6 +484,8 @@ namespace gum::learning {
     BNLearner< GUM_SCALAR >& useNoCorrection();
 
     BNLearner< GUM_SCALAR >& setMaxIndegree(Size max_indegree);
+
+    BNLearner< GUM_SCALAR >& setErrorOnExceededMaxIndegree(bool error);
 
     BNLearner< GUM_SCALAR >& setSliceOrder(const NodeProperty< NodeId >& slice_order);
 

@@ -230,18 +230,18 @@ bool
 
 %feature("docstring") gum::MarkedGraph::reorientAllWith
 "
-Set all endpoint marks in the PAG to the given mark.
+Set all endpoint marks in the graph to the given mark.
 
 Parameters
 ----------
-m : int
-    mark to set everywhere: ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+mark : pyagrum.EdgeMark
+    the mark to set everywhere (``pyagrum.EdgeMark.Circle``, ``Tail`` or ``Arrowhead``)
 "
 
 
 %feature("docstring") gum::MarkedGraph::toDot
 "
-Return a Graphviz dot representation of the PAG.
+Return a Graphviz dot representation of the graph.
 
 Endpoint marks are rendered as:
 - Circle: ``odot``
@@ -262,12 +262,12 @@ str
 
 %feature("docstring") gum::MarkedGraph::addNode
 "
-Add a new node to the PAG and return its id.
+Add a new node to the graph and return its id.
 
 Returns
 -------
 int
-    the new NodeId
+    the id of the new node
 "
 
 
@@ -289,7 +289,7 @@ pyagrum.DuplicateElement
 
 %feature("docstring") gum::MarkedGraph::addNodes
 "
-Add n new nodes to the PAG.
+Add n new nodes to the graph.
 
 Parameters
 ----------
@@ -299,13 +299,13 @@ n : int
 Returns
 -------
 set of int
-    the new NodeIds
+    the ids of the new nodes
 "
 
 
 %feature("docstring") gum::MarkedGraph::clearEdges
 "
-Remove all edges and their endpoint marks from the PAG.
+Remove all edges and their endpoint marks from the graph.
 
 Nodes are preserved; only edges and their associated marks are removed.
 "
@@ -313,23 +313,23 @@ Nodes are preserved; only edges and their associated marks are removed.
 
 %feature("docstring") gum::MarkedGraph::empty
 "
-Check whether the PAG has no nodes.
+Check whether the graph has no nodes.
 
 Returns
 -------
 bool
-    True if the PAG contains no nodes
+    True if the graph contains no nodes
 "
 
 
 %feature("docstring") gum::MarkedGraph::emptyEdges
 "
-Check whether the PAG has no edges.
+Check whether the graph has no edges.
 
 Returns
 -------
 bool
-    True if the PAG contains no edges
+    True if the graph contains no edges
 "
 
 
@@ -364,7 +364,7 @@ bool
 
 %feature("docstring") gum::MarkedGraph::existsNode
 "
-Check whether a node with the given id exists in the PAG.
+Check whether a node with the given id exists in the graph.
 
 Parameters
 ----------
@@ -380,7 +380,7 @@ bool
 
 %feature("docstring") gum::MarkedGraph::size
 "
-Return the number of nodes in the PAG.
+Return the number of nodes in the graph.
 
 Returns
 -------
@@ -391,7 +391,7 @@ int
 
 %feature("docstring") gum::MarkedGraph::sizeEdges
 "
-Return the number of edges in the PAG.
+Return the number of edges in the graph.
 
 Returns
 -------
@@ -501,6 +501,11 @@ n2 : int
 %feature("docstring") gum::MarkedGraph::clear
 "
 Remove all the nodes and edges from the graph.
+"
+
+%feature("docstring") gum::MarkedGraph::clearNodes
+"
+Remove all the nodes, hence all the edges and their marks, from the graph (same as :meth:`clear`).
 "
 
 %feature("docstring") gum::MarkedGraph::edges
