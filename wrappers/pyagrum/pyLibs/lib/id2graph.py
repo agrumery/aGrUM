@@ -43,10 +43,8 @@ The purpose of this module is to provide tools for mapping Influcence Diagram (a
 be displayed/saved as image.
 """
 
-import hashlib
 import math
 import time
-from tempfile import mkdtemp
 
 import pydot as dot
 
@@ -116,24 +114,24 @@ def LIMIDinference2dot(
   stopTime = time.time()
   meu = ie.MEU()
 
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
+  temp_dir = gds.inferenceTemporaryDirectory()
 
   dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
   fontname, fontsize = gds.fontFromMatplotlib()
   dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
 
-  fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
-  if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
+  fmt = f".{pyagrum.config.typed['influenceDiagram', 'utilityVisibleDigits']}f"
+  if pyagrum.config.typed["influenceDiagram", "utilityShowLoss"]:
     titut = f"mEL {-meu['mean']:{fmt}}"
   else:
     titut = f"MEU {meu['mean']:{fmt}}"
-  if pyagrum.config.typed["influenceDiagram", "utility_show_stdev"]:
+  if pyagrum.config.typed["influenceDiagram", "utilityShowStdev"]:
     titut += f" (stdev={math.sqrt(meu['variance']):{fmt}})"
 
   slabel = f'label="{titut}'
 
-  if pyagrum.config.typed["notebook", "show_inference_time"]:
+  if pyagrum.config.typed["notebook", "showInferenceTime"]:
     slabel += f"\nInference in {1000 * (stopTime - startTime):6.2f}ms"
   dotstr += slabel + '";\n'
 
@@ -156,15 +154,15 @@ def LIMIDinference2dot(
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
-      bgcolor = pyagrum.config["notebook", "evidence_bgcolor"]
-      fgcolor = pyagrum.config["notebook", "evidence_fgcolor"]
+      bgcolor = pyagrum.config["notebook", "evidenceBgColor"]
+      fgcolor = pyagrum.config["notebook", "evidenceFgColor"]
 
     styleattribute = "style=filled, height=0,margin=0.1"
     colorattribute = f'fillcolor="{bgcolor}", fontcolor="{fgcolor}", color="#000000"'
 
     if not diag.isUtilityNode(nid):
       if len(targets) == 0 or name in targets or nid in targets:
-        filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graph_format"]
+        filename = gds.inferenceImageFilename(temp_dir, name)
         saveFigProba(
           ie.posterior(name),
           filename,
@@ -178,14 +176,14 @@ def LIMIDinference2dot(
     else:  # utility node
       mv = ie.meanVar(name)
 
-      if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
+      if pyagrum.config.typed["influenceDiagram", "utilityShowLoss"]:
         coef = -1
       else:
         coef = 1
 
-      fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
+      fmt = f".{pyagrum.config.typed['influenceDiagram', 'utilityVisibleDigits']}f"
       labut = f"{name} : {coef * mv['mean']:{fmt}}"
-      if pyagrum.config.typed["influenceDiagram", "utility_show_stdev"]:
+      if pyagrum.config.typed["influenceDiagram", "utilityShowStdev"]:
         labut += f" ({math.sqrt(mv['variance']):{fmt}})"
 
       dotstr += f' "{name}" [label="{labut}",{colorattribute},{styleattribute},shape={shape}]'
@@ -202,13 +200,4 @@ def LIMIDinference2dot(
       dotstr += ";\n"
   dotstr += "}"
 
-  _graphs = dot.graph_from_dot_data(dotstr)
-  assert _graphs is not None
-  g = _graphs[0]
-
-  if size is None:
-    size = pyagrum.config["influenceDiagram", "id_inference_size"]
-  g.set_size(size)
-  g.temp_dir = temp_dir
-
-  return gds.prepareDot(g)
+  return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir, ("influenceDiagram", "graphInferenceSize")))

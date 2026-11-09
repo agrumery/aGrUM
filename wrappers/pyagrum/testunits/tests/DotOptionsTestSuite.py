@@ -309,6 +309,65 @@ class TestDotOptions(pyAgrumTestCase):
         self.assertEqual("".join(gds.proba2hex(p, cmap, False)), matplotlib.colors.to_hex(cmap(p))[1:])
     self.assertEqual(gds.proba2color(0.6, matplotlib.colormaps["Pastel1"]), "#ffffcc")
 
+  def testInferenceDotHelpers(self):
+    try:
+      import pyagrum.lib.dotstyle as gds
+    except ImportError:
+      self.skipTest("matplotlib is needed for the graphs of pyAgrum")
+    gum.config.push()
+    try:
+      gum.config["notebook", "showInferenceTime"] = True
+      header = gds.inferenceDotHeader("graph", 0.0123)
+      self.assertTrue(header.startswith("graph structs {"))
+      self.assertIn("Inference in  12.30ms", header)
+      gum.config["notebook", "showInferenceTime"] = False
+      self.assertNotIn("Inference in", gds.inferenceDotHeader("digraph", 0.0123))
+      temp_dir = gds.inferenceTemporaryDirectory()
+      g = gds.inferenceDotGraph(gds.inferenceDotHeader() + '"A";}', None, temp_dir)
+      self.assertEqual(g.get_size(), gum.config["notebook", "graphInferenceSize"])
+      self.assertIs(g.temp_dir, temp_dir)
+      g = gds.inferenceDotGraph(
+        gds.inferenceDotHeader() + '"A";}', None, temp_dir, ("influenceDiagram", "graphInferenceSize")
+      )
+      self.assertEqual(g.get_size(), gum.config["influenceDiagram", "graphInferenceSize"])
+    finally:
+      gum.config.pop()
+
+  def testInferenceGraphsImagesAndNodeColors(self):
+    """The images of an inference graph live in its temporary directory, removed with the graph; nodeColor may be
+    keyed by names or by ids; the factors of a factor graph have a valid color and undirected edges."""
+    try:
+      import gc
+      import os
+
+      import pyagrum.lib.bn2graph as gbn2
+      import pyagrum.lib.dotstyle as gds
+      import pyagrum.lib.mrf2graph as gmrf2
+    except ImportError:
+      self.skipTest("matplotlib is needed for the graphs of pyAgrum")
+    self.assertEqual(gds.valueOfNode({"A": 0.1, 2: 0.7}, "A", 0), 0.1)
+    self.assertEqual(gds.valueOfNode({"A": 0.1, 2: 0.7}, "C", 2), 0.7)
+    self.assertIsNone(gds.valueOfNode({"A": 0.1}, "B", 1))
+    self.assertIsNone(gds.valueOfNode(None, "A", 0))
+
+    bn = gum.fastBN("A->B->C")
+    g = gbn2.BNinference2dot(bn, nodeColor={bn.idFromName("B"): 0.5, "C": 0.2})  # keyed by id and by name
+    directory = g.temp_dir.name
+    images = os.listdir(directory)
+    self.assertEqual(len(images), 3)  # one image per node, in the directory
+    self.assertTrue(all(os.path.join(directory, image) in g.to_string() for image in images))
+    del g
+    import pydot as dot
+
+    dot.graph_from_dot_data("graph {}")  # the parser of pydot keeps its last graph until the next parse
+    gc.collect()
+    self.assertFalse(os.path.exists(directory))
+
+    mrf = gum.fastMRF("A--B;B--C")
+    factors = gmrf2.MRFinference2FactorGraphdot(mrf, factorColor=lambda f: 0.5).to_string()
+    self.assertNotIn("->", factors)
+    self.assertNotIn("fillcolor=#", factors)
+
   def testPythonBuiltGraphsAreComplete(self):
     """The graphs built in Python by pyAgrum are already completed: prepareDot changes nothing on them."""
     try:

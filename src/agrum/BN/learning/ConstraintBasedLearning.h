@@ -61,7 +61,6 @@
 #include <agrum/config.h>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
-#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 
 #define GUM_SL_EMIT(x, y, action, explain)                                                \
@@ -184,7 +183,6 @@ namespace gum {
 
       static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
       static bool _existsNonTrivialDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
-      void        orientDoubleHeadedArcs_(MixedGraph& mg);
 
       /// the unshielded triples (x, y, z), y < x: x and y are adjacent to z by an edge or by an arc
       /// into z (e.g. a mandatory arc), and are not adjacent to each other

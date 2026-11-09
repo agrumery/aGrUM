@@ -198,7 +198,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(ReadVectorOversizedField) {
-    // Size = UINT64_MAX → far above 256 MB guard
+    // Size = UINT64_MAX: far above the size of the stream
     std::ostringstream oss;
     uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
     oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));

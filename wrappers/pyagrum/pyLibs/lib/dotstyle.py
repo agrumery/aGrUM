@@ -43,7 +43,10 @@ Look of the graphs drawn with graphviz: colors and their conversions, theme, rea
 completion of the dot graphs built in Python by pyAgrum (prepareDot) and filling of pyagrum.DotOptions.
 """
 
+import hashlib
+import os
 import warnings
+from tempfile import TemporaryDirectory
 
 import matplotlib as mpl
 import matplotlib.colors
@@ -376,6 +379,128 @@ def _dotDefaults(dotgraph: dot.Dot) -> dict[str, dict[str, str]]:
   return defaults
 
 
+def inferenceDotHeader(graphType: str = "digraph", inferenceTime: float | None = None) -> str:
+  """
+  The beginning of the dot text of a graph showing an inference: its look given by the theme and the configuration
+  (font, default colors of the nodes and of the edges), and the time of the inference if
+  ``pyagrum.config["notebook", "showInferenceTime"]``.
+
+  Parameters
+  ----------
+  graphType: str
+    "digraph" or "graph"
+  inferenceTime: float, optional
+    the time of the inference (in seconds)
+
+  Returns
+  -------
+  str
+    the beginning of the dot text (the graph is not closed)
+  """
+  res = f'{graphType} structs {{\n  fontcolor="{getBlackInTheme()}";bgcolor="transparent";'
+  if inferenceTime is not None and pyagrum.config.typed["notebook", "showInferenceTime"]:
+    res += f'  label="Inference in {1000 * inferenceTime:6.2f}ms";\n'
+  fontname, fontsize = fontFromMatplotlib()
+  res += (
+    f'  node [fillcolor="{pyagrum.config["dot", "nodeBgColor"]}", style=filled,'
+    f'color="{configFgColor("dot", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
+  )
+  res += f'  edge [color="{getBlackInTheme()}"];\n'
+  return res
+
+
+def inferenceTemporaryDirectory() -> TemporaryDirectory:
+  """
+  The temporary directory of the images of the nodes of the graph of an inference.
+
+  It is removed when it is garbage collected: :func:`inferenceDotGraph` keeps it in the graph, so that the images
+  live as long as the graph.
+
+  Returns
+  -------
+  tempfile.TemporaryDirectory
+    the temporary directory
+  """
+  return TemporaryDirectory(prefix="tmp")
+
+
+def inferenceImageFilename(temp_dir: TemporaryDirectory, name: str) -> str:
+  """
+  The name of the file of the image of a node in the temporary directory of the graph of an inference.
+
+  Parameters
+  ----------
+  temp_dir: tempfile.TemporaryDirectory
+    the temporary directory (see :func:`inferenceTemporaryDirectory`)
+  name: str
+    the name of the node
+
+  Returns
+  -------
+  str
+    the name of the file, in the format of the key ``notebook.graphFormat`` of ``pyagrum.config``
+  """
+  return os.path.join(
+    temp_dir.name, hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+  )
+
+
+def valueOfNode(values: dict | None, name: str, nid: int):
+  """
+  The value given to a node in a dict keyed by names or by ids (the name wins).
+
+  Parameters
+  ----------
+  values: dict[str | int, Any] or None
+    the values of some nodes
+  name: str
+    the name of the node
+  nid: int
+    the id of the node
+
+  Returns
+  -------
+  Any or None
+    the value of the node, or None if it has none
+  """
+  if values is None:
+    return None
+  if name in values:
+    return values[name]
+  return values.get(nid)
+
+
+def inferenceDotGraph(
+  dotstr: str, size, temp_dir: TemporaryDirectory, sizeKey: tuple[str, str] = ("notebook", "graphInferenceSize")
+):
+  """
+  The pydot graph of the dot text of an inference, keeping the temporary directory of the images of its nodes.
+
+  Parameters
+  ----------
+  dotstr: str
+    the dot text
+  size: str or int, optional
+    the size of the graph (the value of the key ``sizeKey`` of ``pyagrum.config`` if None)
+  temp_dir: tempfile.TemporaryDirectory
+    the temporary directory of the images of the nodes (see :func:`inferenceTemporaryDirectory`): kept in the graph,
+    it is removed with the graph
+  sizeKey: tuple[str, str]
+    the key of the default size in ``pyagrum.config``
+
+  Returns
+  -------
+  pydot.Dot
+    the graph
+  """
+  graphs = dot.graph_from_dot_data(dotstr)
+  assert graphs is not None
+  g = graphs[0]
+  g.set_size(str(pyagrum.config[sizeKey] if size is None else size))
+  g.temp_dir = temp_dir
+  return g
+
+
 # noinspection PyProtectedMember
 def prepareDot(dotgraph: dot.Dot) -> dot.Dot:
   """
@@ -404,9 +529,9 @@ def prepareDot(dotgraph: dot.Dot) -> dot.Dot:
   black = getBlackInTheme()
 
   if dotgraph.get_rankdir() is None and "rankdir" not in defaults["graph"]:
-    dotgraph.set_rankdir(pyagrum.config["notebook", "graphRankDir"])
+    dotgraph.set_rankdir(pyagrum.config["dot", "graphRankDir"])
   if dotgraph.get_layout() is None and "layout" not in defaults["graph"]:
-    dotgraph.set_layout(pyagrum.config["notebook", "graphLayout"])
+    dotgraph.set_layout(pyagrum.config["dot", "graphLayout"])
 
   dotgraph.set_bgcolor("transparent")
   for e in dotgraph.get_edges():

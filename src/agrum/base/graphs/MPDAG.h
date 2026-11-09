@@ -113,7 +113,7 @@ namespace gum {
     MPDAG(const MPDAG& g);
 
     /// move constructor
-    MPDAG(MPDAG&& g) noexcept;
+    MPDAG(MPDAG&& g);
 
     /// destructor
     ~MPDAG();
@@ -122,7 +122,7 @@ namespace gum {
     MPDAG& operator=(const MPDAG& g);
 
     /// move operator
-    MPDAG& operator=(MPDAG&& g) noexcept;
+    MPDAG& operator=(MPDAG&& g);
 
     /// @}
 

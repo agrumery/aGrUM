@@ -117,7 +117,7 @@ namespace gum {
     CPDAG(const CPDAG& g);
 
     /// move constructor
-    CPDAG(CPDAG&& g) noexcept;
+    CPDAG(CPDAG&& g);
 
     /// destructor
     ~CPDAG();
@@ -126,14 +126,14 @@ namespace gum {
     CPDAG& operator=(const CPDAG& g);
 
     /// move operator
-    CPDAG& operator=(CPDAG&& g) noexcept;
+    CPDAG& operator=(CPDAG&& g);
 
     /// @}
 
     /// true if dag belongs to the Markov equivalence class represented by the CPDAG
     bool contains(const DAG& dag) const;
 
-    private:
+    protected:
     /// trusted constructor: g must be a CPDAG and extension one of its consistent extensions
     CPDAG(ChainGraph&& g, DAG&& extension);
   };

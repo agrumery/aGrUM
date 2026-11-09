@@ -116,10 +116,10 @@ namespace gum {
     static MAG fromMarkedGraph(const MarkedGraph& g);
 
     MAG(const MAG& g);
-    MAG(MAG&& g) noexcept;
+    MAG(MAG&& g);
     ~MAG();
     MAG& operator=(const MAG& g);
-    MAG& operator=(MAG&& g) noexcept;
+    MAG& operator=(MAG&& g);
 
     /// @}
 

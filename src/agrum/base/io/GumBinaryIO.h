@@ -40,12 +40,12 @@
 
 /**
  * @file
- * @brief Shared binary I/O helpers for GUM (jgum/bgum) serialization.
+ * @brief Shared I/O helpers for GUM (jgum/bgum) serialization.
  *
- * Provides inline helpers to read/write a length-prefixed byte vector used by
- * the msgpack binary format (.bgum) and the default indentation of the text format
- * (.jgum).  Defined here once to avoid duplication
- * across GumBNReader/Writer, GumIDReader/Writer and GumMRFReader/Writer.
+ * Provides helpers to read/write a length-prefixed byte vector used by the msgpack binary format
+ * (.bgum), to find the format of a file from its extension, and the default indentation of the text
+ * format (.jgum). Defined here once to avoid duplication across the readers and writers of the
+ * graphical models and of the graphs.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -53,16 +53,16 @@
 #ifndef GUM_BINARY_IO_H
 #define GUM_BINARY_IO_H
 
+#include <cstddef>
 #include <cstdint>
 #include <istream>
 #include <optional>
 #include <ostream>
 #include <stdexcept>
+#include <string_view>
 #include <vector>
 
 #include <agrum/config.h>
-
-#include <string_view>
 
 namespace gum {
 
@@ -70,15 +70,18 @@ namespace gum {
    * Reads a length-prefixed byte vector from a binary stream (bgum format).
    *
    * The first 8 bytes encode the payload length as a little-endian uint64_t,
-   * followed by that many payload bytes.
+   * followed by that many payload bytes, up to the end of the stream.
    *
-   * @param is The input binary stream.
+   * @param is The input binary stream, which must be seekable.
    * @return   The payload bytes.
+   * @throw std::runtime_error if the stream can not be read or if the length is not the one of the
+   * rest of the stream (truncated stream, corrupted length, data after the payload).
    */
   GUM_SHARED_PUBLIC std::vector< uint8_t > _readVector_(std::istream& is);
 
   /**
-   * Writes a length-prefixed byte vector to a binary stream (bgum format).
+   * Writes a length-prefixed byte vector to a binary stream (bgum format): the length as a
+   * little-endian uint64_t, whatever the host, then the payload.
    *
    * @param os  The output binary stream.
    * @param vec The payload bytes to write.

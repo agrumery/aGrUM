@@ -43,7 +43,6 @@ The purpose of this module is to provide tools for mapping Markov random field (
 be displayed/saved as image.
 """
 
-import hashlib
 import time
 
 import matplotlib.colors
@@ -229,18 +228,9 @@ def MRFinference2UGdot(
   ie.makeInference()
   stopTime = time.time()
 
-  from tempfile import mkdtemp
+  temp_dir = gds.inferenceTemporaryDirectory()
 
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
-
-  dotstr = 'graph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
-
-  if pyagrum.config.typed["notebook", "showInferenceTime"]:
-    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
-
-  fontname, fontsize = gds.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["dot", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("dot", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
+  dotstr = gds.inferenceDotHeader("graph", stopTime - startTime)
 
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
@@ -251,9 +241,10 @@ def MRFinference2UGdot(
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figureFaceColor"]
 
-    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
+    value = gds.valueOfNode(nodeColor, name, nid)
+    if value is not None:
+      bgcol = gds.proba2bgcolor(value, cmapNode)
+      fgcol = gds.proba2fgcolor(value, cmapNode)
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -263,7 +254,7 @@ def MRFinference2UGdot(
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
 
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+      filename = gds.inferenceImageFilename(temp_dir, name)
       saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -286,16 +277,7 @@ def MRFinference2UGdot(
     dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
   dotstr += "}"
 
-  _graphs = dot.graph_from_dot_data(dotstr)
-  assert _graphs is not None
-  g = _graphs[0]
-
-  if size is None:
-    size = pyagrum.config["notebook", "graphInferenceSize"]
-  g.set_size(str(size))
-  g.temp_dir = temp_dir
-
-  return gds.prepareDot(g)
+  return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir))
 
 
 def MRFinference2FactorGraphdot(
@@ -349,9 +331,7 @@ def MRFinference2FactorGraphdot(
   ie.makeInference()
   stopTime = time.time()
 
-  from tempfile import mkdtemp
-
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
+  temp_dir = gds.inferenceTemporaryDirectory()
   dotstr = f'''graph{{ 
     layout="{pyagrum.config["factorgraph", "graphLayout"]}";
     fontcolor="{gds.getBlackInTheme()}";
@@ -380,9 +360,10 @@ def MRFinference2FactorGraphdot(
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figureFaceColor"]
 
-    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
+    value = gds.valueOfNode(nodeColor, name, nid)
+    if value is not None:
+      bgcol = gds.proba2bgcolor(value, cmapNode)
+      fgcol = gds.proba2fgcolor(value, cmapNode)
 
     # 'hard' colour for evidence (?)
     if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
@@ -391,7 +372,7 @@ def MRFinference2FactorGraphdot(
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+      filename = gds.inferenceImageFilename(temp_dir, name)
       saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -400,28 +381,17 @@ def MRFinference2FactorGraphdot(
   def factorname(f):
     return '"f' + "#".join(map(str, sorted(list(f)))) + '"'
 
-  factorBgColor = {}
   for f in mrf.factors():
     if factorColor is None:
       bgcol = pyagrum.config["factorgraph", "factorBgColor"]
     else:
       bgcol = gds.proba2bgcolor(factorColor(f), cmapNode)
-    factorBgColor[factorname(f)] = bgcol
-    dotstr += f"  {factorname(f)} [style=filled,fillcolor={bgcol},shape=point,width=0.1,height=0.1];\n"
+    dotstr += f'  {factorname(f)} [style=filled,fillcolor="{bgcol}",shape=point,width=0.1,height=0.1];\n'
 
   for f in mrf.factors():
     col = gds.getBlackInTheme()
     for n in f:
-      dotstr += f' {factorname(f)}->"{mrf.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",fillcolor="{factorBgColor[factorname(f)]}",len="{pyagrum.config["factorgraph", "edgeLengthInference"]}"];\n'
+      dotstr += f' {factorname(f)}--"{mrf.variable(n).name()}" [tooltip="{f}:{n}",color="{col}",len="{pyagrum.config["factorgraph", "edgeLengthInference"]}"];\n'
   dotstr += "}"
 
-  _graphs = dot.graph_from_dot_data(dotstr)
-  assert _graphs is not None
-  g = _graphs[0]
-
-  if size is None:
-    size = pyagrum.config["notebook", "graphInferenceSize"]
-  g.set_size(str(size))
-  g.temp_dir = temp_dir
-
-  return gds.prepareDot(g)
+  return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir))

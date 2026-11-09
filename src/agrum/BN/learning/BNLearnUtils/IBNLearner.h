@@ -377,9 +377,9 @@ namespace gum::learning {
     PDAG learnPDAG();
 
     /// learn the essential graph of the Markov equivalence class of the data
-    /** With a constraint-based algorithm (MIIC, PC, FCI), the learned PDAG (see learnPDAG(), which
-     * may not be a CPDAG if it is not extendable); with a score-based algorithm, the CPDAG of the
-     * learned DAG (see learnDAG()). The nodes are named after the variables of the database. */
+    /** The CPDAG of the learned DAG (see learnDAG()), whatever the algorithm: with a
+     * constraint-based algorithm (MIIC, PC, FCI), the learned PDAG itself is given by learnPDAG()
+     * (it may not be a CPDAG). The nodes are named after the variables of the database. */
     EssentialGraph learnEssentialGraph();
 
     /// learn a PAG — only valid when useFCI() has been called
@@ -1378,10 +1378,9 @@ namespace gum::learning {
     DAG learnDag_();
 
     /// the initial graph of a constraint-based algorithm and its common constraints
-    /** @param algo the constraint-based algorithm (PC, FCI or MIIC) whose constraints are set
-     *  @param forbidReversedMandatoryArcs whether the reverse of a mandatory arc is forbidden */
-    MixedGraph prepareConstraintBased_(ConstraintBasedLearning& algo,
-                                       bool                     forbidReversedMandatoryArcs);
+    /** The reverse of a mandatory arc is forbidden.
+     *  @param algo the constraint-based algorithm (PC, FCI or MIIC) whose constraints are set */
+    MixedGraph prepareConstraintBased_(ConstraintBasedLearning& algo);
 
     /// prepares the initial graph for miic
     MixedGraph prepareMiic_();

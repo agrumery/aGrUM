@@ -86,12 +86,12 @@ __all__ = [
   "UndefinedIteratorValue", "UndiGraph", "UnexecutedScheduleOperation", "UnknownLabelInDatabase",
   "UnknownScheduleMultiDim", "UnknownScheduleOperation", "VarType_DISCRETIZED", "VarType_INTEGER",
   "VarType_LABELIZED", "VarType_NUMERICAL", "VarType_RANGE", "VariableElimination",
-  "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "common", "config",
+  "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "availableGraphExts", "common", "config",
   "deprecated", "deprecatedCausalBN", "fastBN", "fastChainGraph", "fastDAG", "fastDiGraph",
   "fastGraph", "fastMarkedGraph", "fastMixedGraph", "fastPAG", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
-  "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior",
-  "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
-  "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue", "saveBN",
+  "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior", "graphFromGUMString",
+  "initRandom", "isOMP", "loadBN", "loadGraph", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
+  "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue", "saveBN", "saveGraph",
   "setNumberOfThreads", "statsObj",
 ]
 
@@ -203,6 +203,7 @@ from .pyagrumcpp import statsObj
 from .pyagrumcpp import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
 from .pyagrumcpp import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG, fastChainGraph
 from .pyagrumcpp import fastMarkedGraph, fastPAG
+from .pyagrumcpp import availableGraphExts, graphFromGUMString, loadGraph, saveGraph
 from .pyagrumcpp import config
 from .pyagrumcpp import (
   DiscretizedVariable,

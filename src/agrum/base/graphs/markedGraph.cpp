@@ -70,7 +70,7 @@ namespace gum {
     GUM_CONS_CPY(MarkedGraph);
   }
 
-  MarkedGraph::MarkedGraph(MarkedGraph&& g) noexcept :
+  MarkedGraph::MarkedGraph(MarkedGraph&& g) :
       NodeGraphPart(std::move(g)), EdgeGraphPart(std::move(g)), _marks_(std::move(g._marks_)) {
     GUM_CONS_MOV(MarkedGraph);
   }
@@ -88,7 +88,7 @@ namespace gum {
     return *this;
   }
 
-  MarkedGraph& MarkedGraph::operator=(MarkedGraph&& g) noexcept {
+  MarkedGraph& MarkedGraph::operator=(MarkedGraph&& g) {
     if (this != &g) {
       NodeGraphPart::operator=(std::move(g));
       EdgeGraphPart::operator=(std::move(g));

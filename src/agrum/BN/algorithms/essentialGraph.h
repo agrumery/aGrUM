@@ -61,24 +61,19 @@
 
 namespace gum {
 
-  namespace dot {
-    class DotOptions;
-  }   // namespace dot
-
   /**
    * @class EssentialGraph
    * @headerfile essentialGraph.h <agrum/BN/algorithms/essentialGraph.h>
-   * @brief The essential graph of a Bayesian network, or a PDAG learned as such.
+   * @brief The essential graph of a Bayesian network: the CPDAG of its Markov equivalence class,
+   * with the names of its variables.
    * @ingroup bn_group
    *
    * The essential graph (or completed PDAG) of a DAG represents its Markov equivalence class: its
    * arcs are the compelled arcs, which have the same orientation in all the DAGs of the class, and
-   * its undirected edges are the reversible ones (Andersson, Madigan and Perlman 1997). It is a
-   * chain graph whose chain components are chordal.
-   *
-   * Built from a model, it is computed by graph::cpdag (algorithm Find-Compelled of Chickering
-   * 1995, linear time). A constraint-based learner may also give a PDAG to encapsulate: it is then
-   * kept as is, and may not be a CPDAG if the learned PDAG is not extendable (see cpdag()).
+   * its undirected edges are the reversible ones (Andersson, Madigan and Perlman 1997). An
+   * EssentialGraph is a CPDAG (immutable): built from a model, it is computed by graph::cpdag
+   * (algorithm Find-Compelled of Chickering 1995, linear time); built from a PDAG, the PDAG is
+   * checked to be a CPDAG.
    *
    * The names of the nodes are stored in the graph: an EssentialGraph does not depend on the model
    * it was built from.
@@ -91,100 +86,80 @@ namespace gum {
    *   for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
    *   doi:10.1214/aos/1031833662.
    */
-  class GUM_PUBLIC_BN EssentialGraph {
+  class GUM_PUBLIC_BN EssentialGraph: public CPDAG {
     public:
-    EssentialGraph() = default;
+    // ############################################################################
+    /// @name Constructors / Destructors
+    // ############################################################################
+    /// @{
+
+    /// the empty essential graph
+    EssentialGraph();
 
     /// the essential graph of the DAG of m, the nodes being named after the variables of m
     explicit EssentialGraph(const DAGmodel& m);
 
     /// pdag as the essential graph of m, the nodes being named after the variables of m
+    /** @throw InvalidArgument if pdag is not a CPDAG (see CPDAG::fromPDAG) */
     EssentialGraph(const DAGmodel& m, const PDAG& pdag);
 
-    /// pdag as an essential graph (e.g. a PDAG learned by a constraint-based algorithm), with its
-    /// names
+    /// pdag as an essential graph, with its names
+    /** @throw InvalidArgument if pdag is not a CPDAG (see CPDAG::fromPDAG) */
     explicit EssentialGraph(const PDAG& pdag);
 
-    EssentialGraph(const EssentialGraph& g)                = default;
-    EssentialGraph(EssentialGraph&& g) noexcept            = default;
-    EssentialGraph& operator=(const EssentialGraph& g)     = default;
-    EssentialGraph& operator=(EssentialGraph&& g) noexcept = default;
+    /// cpdag as an essential graph, with its names
+    explicit EssentialGraph(const CPDAG& cpdag);
+
+    EssentialGraph(const EssentialGraph& g)            = default;
+    EssentialGraph(EssentialGraph&& g)                 = default;
+    EssentialGraph& operator=(const EssentialGraph& g) = default;
+    EssentialGraph& operator=(EssentialGraph&& g)      = default;
 
     ~EssentialGraph();
 
-    /// @return a copy of the mixed graph
-    PDAG pdag() const;
+    /// @}
 
-    /// @return a dot representation of this essentialGraph
-    std::string toDot() const;
+    // ############################################################################
+    /// @name Read access (beyond the one of CPDAG)
+    // ############################################################################
+    /// @{
 
-    /// @return a dot representation of this essentialGraph, with the options given by the caller
-    std::string toDot(const dot::DotOptions& options) const;
+    using CPDAG::children;
+    using CPDAG::parents;
 
-    /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& parents(NodeId id) const;
-
-    /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& children(NodeId id) const;
-
-    /// wrapping @ref MixedGraph::parents(ids)
+    /// the parents of a set of nodes (see MixedGraph::parents)
     NodeSet parents(const NodeSet& ids) const;
 
-    /// wrapping @ref MixedGraph::parents(ids)
+    /// the children of a set of nodes (see MixedGraph::children)
     NodeSet children(const NodeSet& ids) const;
 
-    /// wrapping @ref PDAG::descendants(id)
+    /// the descendants of a node (see PDAG::descendants)
     NodeSet descendants(NodeId id) const;
 
-    /// wrapping @ref PDAG::ancestors(id)
+    /// the ancestors of a node (see PDAG::ancestors)
     NodeSet ancestors(NodeId id) const;
 
-    /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& neighbours(NodeId id) const;
-
-    /// wrapping @ref MixedGraph::sizeArcs()
-    Size sizeArcs() const;
-
-    /// wrapping @ref MixedGraph::arcs()
-    const ArcSet& arcs() const;
-    /// wrapping @ref MixedGraph::sizeEdges()
-    Size sizeEdges() const;
-
-    /// wrapping @ref MixedGraph::edges()
-    const EdgeSet& edges() const;
-
-    /// wrapping @ref MixedGraph::sizeNodes()
+    /// the number of nodes
     Size sizeNodes() const;
-    /// wrapping @ref MixedGraph::size()
-    Size size() const;
 
-    UndiGraph skeleton() const;
+    /// a copy of the graph of the essential graph, as a PDAG
+    PDAG pdag() const;
 
-    /// wrapping @ref MixedGraph::nodes()
-    const NodeGraphPart& nodes() const;
-
-    /// Returns the connected components of the essential graph.
-    /// Each node maps to the id of its component root.
-    NodeProperty< NodeId > connectedComponents() const;
-
-    /// the id of the node with the given name, or std::nullopt
-    std::optional< NodeId > idFromName(std::string_view name) const;
-
-    /// the name of a node
-    std::string nameFromId(NodeId node) const;
-
-    /// the essential graph as a CPDAG
-    /** @throw InvalidArgument if the PDAG is not a CPDAG (e.g. a learned PDAG which is not
-     * extendable) */
+    /// the essential graph as a CPDAG (without the class EssentialGraph)
     CPDAG cpdag() const;
 
-    private:
-    PDAG _pdag_;
+    /// @}
+
+    /// a dot representation: the one of a CPDAG, the names of the nodes as labels
+    std::string toDot() const;
+
+    /// a dot representation, with the options given by the caller (which win over the colors of
+    /// the compelled arcs and the labels)
+    std::string toDot(const dot::DotOptions& options) const;
   };
 
   /// @name EssentialGraph in the GUM format (see graphGumIO.h)
-  /// An essential graph is read as a PDAG, checked as such, not as a CPDAG: it may be a PDAG
-  /// learned by a constraint-based algorithm (see IBNLearner::learnEssentialGraph).
+  /// An essential graph is read as a PDAG, then checked to be a CPDAG (IOError otherwise).
   /// @{
   GUM_PUBLIC_BN std::string graphToGUMString(const EssentialGraph& g,
                                              int                   indent = defaultJgumIndent());

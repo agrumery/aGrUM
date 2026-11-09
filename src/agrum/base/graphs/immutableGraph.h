@@ -129,10 +129,10 @@ namespace gum {
     explicit ImmutableGraph(GRAPH&& g);
 
     ImmutableGraph(const ImmutableGraph< GRAPH >& g);
-    ImmutableGraph(ImmutableGraph< GRAPH >&& g) noexcept;
+    ImmutableGraph(ImmutableGraph< GRAPH >&& g);
     ~ImmutableGraph();
     ImmutableGraph< GRAPH >& operator=(const ImmutableGraph< GRAPH >& g);
-    ImmutableGraph< GRAPH >& operator=(ImmutableGraph< GRAPH >&& g) noexcept;
+    ImmutableGraph< GRAPH >& operator=(ImmutableGraph< GRAPH >&& g);
 
     GRAPH graph_;
   };
@@ -205,10 +205,10 @@ namespace gum {
     ImmutableMixedGraph(GRAPH&& g, DAG&& extension);
 
     ImmutableMixedGraph(const ImmutableMixedGraph< GRAPH >& g);
-    ImmutableMixedGraph(ImmutableMixedGraph< GRAPH >&& g) noexcept;
+    ImmutableMixedGraph(ImmutableMixedGraph< GRAPH >&& g);
     ~ImmutableMixedGraph();
     ImmutableMixedGraph< GRAPH >& operator=(const ImmutableMixedGraph< GRAPH >& g);
-    ImmutableMixedGraph< GRAPH >& operator=(ImmutableMixedGraph< GRAPH >&& g) noexcept;
+    ImmutableMixedGraph< GRAPH >& operator=(ImmutableMixedGraph< GRAPH >&& g);
 
     DAG extension_;
   };

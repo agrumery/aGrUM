@@ -262,14 +262,15 @@ namespace gum {
 
       applyStructuralConstraints_(graph);
 
+      // set, not insert: a mandatory arc whose reverse is forbidden gives the same marks twice
       for (const auto& arc: _mandatoryGraph_.arcs()) {
-        marks.insert({arc.tail(), arc.head()}, '>');
-        marks.insert({arc.head(), arc.tail()}, '-');
+        marks.set({arc.tail(), arc.head()}, '>');
+        marks.set({arc.head(), arc.tail()}, '-');
       }
       for (const Arc& arc: _forbiddenGraph_.arcs()) {
         if (graph.existsArc(arc.head(), arc.tail())) {
-          marks.insert({arc.tail(), arc.head()}, '-');
-          marks.insert({arc.head(), arc.tail()}, '>');
+          marks.set({arc.tail(), arc.head()}, '-');
+          marks.set({arc.head(), arc.tail()}, '>');
         }
       }
 
@@ -598,9 +599,14 @@ namespace gum {
         HashTable< std::pair< NodeId, NodeId >, char >&                        marks) {
       std::vector< ProbabilisticRanking > triples;
       for (NodeId z: graph) {
-        for (NodeId x: graph.neighbours(z)) {
-          for (NodeId y: graph.neighbours(z)) {
-            if (y < x && !graph.existsEdge(x, y)) {
+        // the arms of a collider: undirected edges and arcs into z (e.g. mandatory arcs)
+        NodeSet arms = graph.neighbours(z);
+        for (NodeId p: graph.parents(z))
+          arms.insert(p);
+        for (NodeId x: arms) {
+          for (NodeId y: arms) {
+            if (y < x && !graph.existsEdge(x, y) && !graph.existsArc(x, y)
+                && !graph.existsArc(y, x)) {
               std::vector< NodeId >       ui;
               std::pair< NodeId, NodeId > key     = {x, y};
               std::pair< NodeId, NodeId > rev_key = {y, x};

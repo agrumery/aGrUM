@@ -42,13 +42,10 @@
 This file defines some helpers for handling CTBNs in notebooks
 """
 
-import hashlib
 import time
-from tempfile import mkdtemp
 
 import IPython
 import matplotlib.pyplot as plt
-import pydot as dot
 
 import pyagrum
 import pyagrum.lib.dotstyle as gds
@@ -75,7 +72,7 @@ def getCtbnGraph(ctbn: CTBN, size=None):
       The dot representation.
   """
   if size is None:
-    size = pyagrum.config["ctbn", "graph_size"]
+    size = pyagrum.config["ctbn", "graphSize"]
   return gnb.getDot(ctbn.toDot(), size)
 
 
@@ -92,7 +89,7 @@ def showCtbnGraph(ctbn: CTBN, size=None):
   """
 
   if size is None:
-    size = pyagrum.config["ctbn", "graph_size"]
+    size = pyagrum.config["ctbn", "graphSize"]
   gnb.showDot(ctbn.toDot(), size)
 
 
@@ -160,10 +157,10 @@ def CTBNinference2dot(
   if targets is None:
     targets = {}
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "nodeCmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arcCmap"])
 
   # defaukt
   maxarcs = 100
@@ -182,16 +179,9 @@ def CTBNinference2dot(
   ie.makeInference()
   stopTime = time.time()
 
-  temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
+  temp_dir = gds.inferenceTemporaryDirectory()
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
-
-  if pyagrum.config.typed["notebook", "show_inference_time"]:
-    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
-
-  fontname, fontsize = gds.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["notebook", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("notebook", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
+  dotstr = gds.inferenceDotHeader("digraph", stopTime - startTime)
 
   showdag = ctbn._graph
 
@@ -199,22 +189,23 @@ def CTBNinference2dot(
     name = ctbn.variable(nid).name()
 
     # defaults
-    bgcol = pyagrum.config["notebook", "nodeBgColor"]
-    fgcol = gds.configFgColor("notebook", "nodeFgColor")
+    bgcol = pyagrum.config["dot", "nodeBgColor"]
+    fgcol = gds.configFgColor("dot", "nodeFgColor")
     if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = pyagrum.config["notebook", "figure_facecolor"]
+      bgcol = pyagrum.config["notebook", "figureFaceColor"]
 
-    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
+    value = gds.valueOfNode(nodeColor, name, nid)
+    if value is not None:
+      bgcol = gds.proba2bgcolor(value, cmapNode)
+      fgcol = gds.proba2fgcolor(value, cmapNode)
 
     # 'hard' colour for evidence (?)
     # if name in evs or nid in evs:
-    #   bgcol = pyagrum.config["notebook", "evidence_bgcolor"]
-    #   fgcol = pyagrum.config["notebook", "evidence_fgcolor"]
+    #   bgcol = pyagrum.config["notebook", "evidenceBgColor"]
+    #   fgcol = pyagrum.config["notebook", "evidenceFgColor"]
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graph_format"]
+      filename = gds.inferenceImageFilename(temp_dir, name)
       proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
@@ -240,19 +231,12 @@ def CTBNinference2dot(
 
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
-
-  if size is None:
-    size = pyagrum.config["notebook", "graph_inference_size"]
-  g.set_size(size)
-  g.temp_dir = temp_dir
-
-  return gds.prepareDot(g)
+  return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir))
 
 
 def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
   if size is None:
-    size = pyagrum.config["ctbn", "graph_size"]
+    size = pyagrum.config["ctbn", "graphSize"]
 
   g = CTBNinference2dot(ctbn, engine, targets=targets, size=size)
   return gnb.getGraph(g, size=g.get_size())
@@ -260,7 +244,7 @@ def getCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
 
 def showCtbnInference(ctbn: CTBN, engine, targets=None, size=None):
   if size is None:
-    size = pyagrum.config["ctbn", "graph_size"]
+    size = pyagrum.config["ctbn", "graphSize"]
 
   g = CTBNinference2dot(ctbn, engine, targets=targets, size=size)
   gnb.showGraph(g, size=g.get_size())

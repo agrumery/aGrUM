@@ -68,7 +68,7 @@ namespace gum {
   }
 
   template < typename GRAPH >
-  ImmutableGraph< GRAPH >::ImmutableGraph(ImmutableGraph< GRAPH >&& g) noexcept :
+  ImmutableGraph< GRAPH >::ImmutableGraph(ImmutableGraph< GRAPH >&& g) :
       graph_(std::move(g.graph_)) {
     GUM_CONS_MOV(ImmutableGraph);
   }
@@ -88,8 +88,7 @@ namespace gum {
   }
 
   template < typename GRAPH >
-  ImmutableGraph< GRAPH >&
-      ImmutableGraph< GRAPH >::operator=(ImmutableGraph< GRAPH >&& g) noexcept {
+  ImmutableGraph< GRAPH >& ImmutableGraph< GRAPH >::operator=(ImmutableGraph< GRAPH >&& g) {
     if (this != &g) {
       graph_ = std::move(g.graph_);
       GUM_OP_MOV(ImmutableGraph);
@@ -200,7 +199,7 @@ namespace gum {
   }
 
   template < typename GRAPH >
-  ImmutableMixedGraph< GRAPH >::ImmutableMixedGraph(ImmutableMixedGraph< GRAPH >&& g) noexcept :
+  ImmutableMixedGraph< GRAPH >::ImmutableMixedGraph(ImmutableMixedGraph< GRAPH >&& g) :
       ImmutableGraph< GRAPH >(std::move(g)), extension_(std::move(g.extension_)) {
     GUM_CONS_MOV(ImmutableMixedGraph);
   }
@@ -223,7 +222,7 @@ namespace gum {
 
   template < typename GRAPH >
   ImmutableMixedGraph< GRAPH >&
-      ImmutableMixedGraph< GRAPH >::operator=(ImmutableMixedGraph< GRAPH >&& g) noexcept {
+      ImmutableMixedGraph< GRAPH >::operator=(ImmutableMixedGraph< GRAPH >&& g) {
     if (this != &g) {
       ImmutableGraph< GRAPH >::operator=(std::move(g));
       extension_ = std::move(g.extension_);

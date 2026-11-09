@@ -39,12 +39,9 @@
 ############################################################################
 
 import csv
-import hashlib
-import os
 import time
 from base64 import encodebytes
 from math import ceil
-from tempfile import TemporaryDirectory
 
 import pyagrum
 import pyagrum.bnmixture as BNM
@@ -282,17 +279,9 @@ def BNMixtureInference2dot(
   ie.makeInference()
   stopTime = time.time()
 
-  _td = TemporaryDirectory()
-  temp_dir = _td.name + os.sep
+  temp_dir = gds.inferenceTemporaryDirectory()
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
-
-  if pyagrum.config.typed["notebook", "showInferenceTime"]:
-    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
-
-  fontname, fontsize = gds.fontFromMatplotlib()
-  dotstr += f'  node [fillcolor="{pyagrum.config["dot", "nodeBgColor"]}", style=filled,color="{gds.configFgColor("dot", "nodeFgColor")}",fontname="{fontname}",fontsize="{fontsize}"];\n'
-  dotstr += f'  edge [color="{gds.getBlackInTheme()}"];\n'
+  dotstr = gds.inferenceDotHeader("digraph", stopTime - startTime)
 
   showdag = bnm.refBN.dag() if dag is None else dag
 
@@ -305,9 +294,10 @@ def BNMixtureInference2dot(
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figureFaceColor"]
 
-    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
+    value = gds.valueOfNode(nodeColor, name, nid)
+    if value is not None:
+      bgcol = gds.proba2bgcolor(value, cmapNode)
+      fgcol = gds.proba2fgcolor(value, cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -316,9 +306,9 @@ def BNMixtureInference2dot(
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+      filename = gds.inferenceImageFilename(temp_dir, name)
       # proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=float(pyagrum.config["bnmixture", "histoScale"]))
+      saveFigProba(ie, name, filename, bgcolor=bgcol, scale=pyagrum.config.typed["bnmixture", "histoScale"])
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
     else:
       dotstr += f' "{name}" [{colorattribute}]'
@@ -341,13 +331,7 @@ def BNMixtureInference2dot(
 
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
-
-  if size is None:
-    size = pyagrum.config["notebook", "graphInferenceSize"]
-  g.set_size(size)
-  g.temp_dir = temp_dir
-  g._td = _td
+  g = gds.inferenceDotGraph(dotstr, size, temp_dir)
 
   return gds.prepareDot(g)
 
@@ -428,8 +412,7 @@ def BootstrapInference2dot(
   ie.makeInference()
   stopTime = time.time()
 
-  _td = TemporaryDirectory()
-  temp_dir = _td.name + os.sep
+  temp_dir = gds.inferenceTemporaryDirectory()
 
   dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
 
@@ -438,8 +421,8 @@ def BootstrapInference2dot(
     lab += f"Inference in {1000 * (stopTime - startTime):6.2f}ms"
 
   if quantiles:
-    q1 = float(pyagrum.config["bnmixture", "leftQuantile"]) * 100
-    q2 = float(pyagrum.config["bnmixture", "rightQuantile"]) * 100
+    q1 = pyagrum.config.typed["bnmixture", "leftQuantile"] * 100
+    q2 = pyagrum.config.typed["bnmixture", "rightQuantile"] * 100
     title = f"\nquantiles=[{q1:.1f}%, {q2:.1f}%]"
     lab += f"\n{title}"
   dotstr += f'  label="{lab}";\n'
@@ -459,9 +442,10 @@ def BootstrapInference2dot(
     if len(targets) == 0 or name in targets or nid in targets:
       bgcol = pyagrum.config["notebook", "figureFaceColor"]
 
-    if nodeColor is not None and (name in nodeColor or nid in nodeColor):
-      bgcol = gds.proba2bgcolor(nodeColor[name], cmapNode)
-      fgcol = gds.proba2fgcolor(nodeColor[name], cmapNode)
+    value = gds.valueOfNode(nodeColor, name, nid)
+    if value is not None:
+      bgcol = gds.proba2bgcolor(value, cmapNode)
+      fgcol = gds.proba2fgcolor(value, cmapNode)
 
     # 'hard' colour for evidence (?)
     if name in evs or nid in evs:
@@ -470,14 +454,14 @@ def BootstrapInference2dot(
 
     colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
     if len(targets) == 0 or name in targets or nid in targets:
-      filename = temp_dir + hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+      filename = gds.inferenceImageFilename(temp_dir, name)
       saveFigProba(
         ie,
         name,
         filename,
         bgcolor=bgcol,
         quantiles=quantiles,
-        scale=float(pyagrum.config["bnmixture", "bootHistoScale"]),
+        scale=pyagrum.config.typed["bnmixture", "bootHistoScale"],
         show_mu_sigma=show_mu_sigma,
       )
       dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
@@ -502,13 +486,7 @@ def BootstrapInference2dot(
 
   dotstr += "}"
 
-  g = dot.graph_from_dot_data(dotstr)[0]
-
-  if size is None:
-    size = pyagrum.config["notebook", "graphInferenceSize"]
-  g.set_size(size)
-  g.temp_dir = temp_dir
-  g._td = _td
+  g = gds.inferenceDotGraph(dotstr, size, temp_dir)
 
   return gds.prepareDot(g)
 
@@ -567,9 +545,9 @@ def showBNMixtureInference(
     cmapArc=cmapArc,
   )
   refdot = gnb.BN2dot(bnm.refBN)
-  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "histoScale"]))
+  _compareBNinf(bnm.refBN, refdot, html, scale=pyagrum.config.typed["bnmixture", "histoScale"])
   IPython.display.display(html)
-  html._td.cleanup()
+  html.temp_dir.cleanup()
 
 
 def showBootstrapMixtureInference(
@@ -632,9 +610,9 @@ def showBootstrapMixtureInference(
     show_mu_sigma=show_mu_sigma,
   )
   refdot = gnb.BN2dot(bnm.refBN)
-  _compareBNinf(bnm.refBN, refdot, html, scale=float(pyagrum.config["bnmixture", "bootHistoScale"]))
+  _compareBNinf(bnm.refBN, refdot, html, scale=pyagrum.config.typed["bnmixture", "bootHistoScale"])
   IPython.display.display(html)
-  html._td.cleanup()
+  html.temp_dir.cleanup()
 
 
 def _normalizedArcsWeight(bnm: BNM.BNMixture | BNM.BootstrapMixture):
@@ -920,10 +898,10 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
       ra,
       vmean,
       align="center",
-      height=float(pyagrum.config["bnmixture", "barHeight"]),
+      height=pyagrum.config.typed["bnmixture", "barHeight"],
       color=pyagrum.config["histogram", "color"],
       xerr=error,
-      capsize=float(pyagrum.config["bnmixture", "barCapsize"]) * scale,
+      capsize=pyagrum.config.typed["bnmixture", "barCapsize"] * scale,
     )
 
     for b in barmean:
@@ -941,7 +919,7 @@ def _getProbaH(ie, var_name, scale=1.0, txtcolor="black", quantiles=False, show_
       ra,
       vmean,
       align="center",
-      height=float(pyagrum.config["bnmixture", "barHeight"]),
+      height=pyagrum.config.typed["bnmixture", "barHeight"],
       color=pyagrum.config["histogram", "color"],
     )
 

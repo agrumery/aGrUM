@@ -108,11 +108,11 @@ namespace gum {
                          Size edges_size          = HashTableConst::default_size,
                          bool edges_resize_policy = true);
     MarkedGraph(const MarkedGraph& g);
-    MarkedGraph(MarkedGraph&& g) noexcept;
+    MarkedGraph(MarkedGraph&& g);
     ~MarkedGraph() override;
 
     MarkedGraph& operator=(const MarkedGraph& g);
-    MarkedGraph& operator=(MarkedGraph&& g) noexcept;
+    MarkedGraph& operator=(MarkedGraph&& g);
 
     /// same nodes, same edges and same marks
     bool operator==(const MarkedGraph& g) const;

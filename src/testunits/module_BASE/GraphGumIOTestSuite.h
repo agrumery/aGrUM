@@ -43,11 +43,14 @@
 
 #include <fstream>
 #include <optional>
+#include <sstream>
 #include <string>
+#include <vector>
 
 #include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/graphs/fastMarkedGraph.h>
 #include <agrum/base/graphs/io/graphGumIO.h>
+#include <agrum/base/io/GumBinaryIO.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -219,6 +222,29 @@ namespace gum_tests {
     for (const char* content: {R"({"type": "DiGraph", "nodes": [0, 1], "names": ["A", "B"]})",
                                R"({"type": "DiGraph", "nodes": [0, 1], "names": null})"})
       CHECK_THROWS_AS(gum::graphFromGUMString< gum::DiGraph >(content), gum::IOError&);
+  }
+
+  GUM_TEST(BinaryVectorIsLittleEndianWhateverTheHost) {
+    std::ostringstream os;
+    gum::_writeVector_(os, std::vector< uint8_t >{7, 8, 9});
+    CHECK_EQ(os.str(), std::string("\x03\0\0\0\0\0\0\0\x07\x08\x09", 11));
+
+    std::istringstream is(os.str());
+    CHECK_EQ(gum::_readVector_(is), std::vector< uint8_t >{7, 8, 9});
+  }
+
+  GUM_TEST(BinaryVectorRefusesDataAfterThePayload) {
+    std::ostringstream os;
+    gum::_writeVector_(os, std::vector< uint8_t >{7, 8, 9});
+    std::istringstream is(os.str() + "x");
+    CHECK_THROWS_AS(gum::_readVector_(is), std::runtime_error&);
+  }
+
+  GUM_TEST(BinaryVectorEmptyPayload) {
+    std::ostringstream os;
+    gum::_writeVector_(os, std::vector< uint8_t >{});
+    std::istringstream is(os.str());
+    CHECK(gum::_readVector_(is).empty());
   }
 
   GUM_TEST(FormatOfTheFile) {

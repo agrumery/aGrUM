@@ -61,7 +61,7 @@ namespace gum {
 
   MAG::MAG(const MAG& g) : ImmutableGraph< MarkedGraph >(g) { GUM_CONS_CPY(MAG); }
 
-  MAG::MAG(MAG&& g) noexcept : ImmutableGraph< MarkedGraph >(std::move(g)) { GUM_CONS_MOV(MAG); }
+  MAG::MAG(MAG&& g) : ImmutableGraph< MarkedGraph >(std::move(g)) { GUM_CONS_MOV(MAG); }
 
   MAG::~MAG() { GUM_DESTRUCTOR(MAG); }
 
@@ -73,7 +73,7 @@ namespace gum {
     return *this;
   }
 
-  MAG& MAG::operator=(MAG&& g) noexcept {
+  MAG& MAG::operator=(MAG&& g) {
     if (this != &g) {
       ImmutableGraph< MarkedGraph >::operator=(std::move(g));
       GUM_OP_MOV(MAG);
