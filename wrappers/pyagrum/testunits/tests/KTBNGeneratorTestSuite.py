@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import shutil
 import tempfile
 import unittest
 
@@ -174,7 +175,9 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
 
     self.assertEqual(m.unroll(6).size(), 3 * 6 + 1)
 
-    path = os.path.join(tempfile.mkdtemp(), "ktbn_generated.jgum")
+    tmp = tempfile.mkdtemp()
+    self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+    path = os.path.join(tmp, "ktbn_generated.jgum")
     m.save(path)
     back = gum.KTBN.load(path)
     self.assertEqual(back.k(), m.k())

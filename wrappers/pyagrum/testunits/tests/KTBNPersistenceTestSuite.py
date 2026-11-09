@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import shutil
 import tempfile
 import unittest
 
@@ -82,6 +83,7 @@ def _cptsAlmostEqual(a, b, tc, places=7):
 class KTBNPersistenceTestCase(pyAgrumTestCase):
   def setUp(self):
     self._dir = tempfile.mkdtemp()
+    self.addCleanup(shutil.rmtree, self._dir, ignore_errors=True)
 
   def _path(self, name):
     return os.path.join(self._dir, name)

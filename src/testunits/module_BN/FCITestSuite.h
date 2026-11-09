@@ -442,7 +442,8 @@ namespace gum_tests {
   GUM_TEST(_fci_error_on_invalid_PAG_option_) {
     {
       ConfigurationGuard guard;
-      CHECK(!gum::learning::FCI().errorOnInvalidPAG());
+      CHECK_EQ(gum::learning::FCI().errorOnInvalidPAG(),
+               gum::config().typed< bool >("learning", "fciErrorOnInvalidPAG"));
       gum::config().set("learning", "fciErrorOnInvalidPAG", "True");
       gum::learning::FCI fci;
       CHECK(fci.errorOnInvalidPAG());

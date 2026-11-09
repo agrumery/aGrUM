@@ -41,39 +41,16 @@
 #pragma once
 
 
-#include <vector>
-
 #include <agrum/base/graphs/MPDAG.h>
 
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/randomGraphs.h>
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
 
-  struct MPDAGTestSuite {
-    public:
-    static gum::DAG randomDAG(gum::Size n, double density) {
-      std::vector< gum::NodeId > order;
-      for (gum::NodeId i = 0; i < n; ++i)
-        order.push_back(i);
-      for (gum::Size i = n; i > 1; --i)
-        std::swap(order[i - 1], order[gum::randomValue(i)]);
-      gum::DAG dag;
-      dag.addNodes(n);
-      for (gum::Size i = 0; i < n; ++i)
-        for (gum::Size j = i + 1; j < n; ++j)
-          if (gum::randomProba() < density) dag.addArc(order[i], order[j]);
-      return dag;
-    }
-
-    static gum::NodeSet randomSet(const gum::DAG& dag, gum::NodeId x, gum::NodeId y) {
-      gum::NodeSet z;
-      for (const auto node: dag.nodes())
-        if (node != x && node != y && gum::randomProba() < 0.3) z.insert(node);
-      return z;
-    }
-  };
+  struct MPDAGTestSuite {};
 
   GUM_TEST(MeekClosure) {
     // a->b-c, a and c non adjacent : R1 orients b->c
@@ -117,6 +94,25 @@ namespace gum_tests {
     CHECK_EQ(skeleton.sizeEdges(), gum::Size(2));
     CHECK(skeleton.existsEdge(1, 2));
     CHECK_EQ(skeleton.nameFromId(3), "d");
+  }
+
+  GUM_TEST(CopyAndMove) {
+    gum::PDAG pdag;
+    pdag.addNodes(3);
+    pdag.addArc(0, 1);
+    pdag.addEdge(1, 2);
+    const auto m = gum::MPDAG::meekClosure(pdag);
+    gum::MPDAG copy(m);
+    CHECK(copy == m);
+    gum::MPDAG moved(std::move(copy));
+    CHECK(moved == m);
+    gum::MPDAG assigned = gum::MPDAG::meekClosure(gum::PDAG());
+    assigned            = m;
+    CHECK(assigned == m);
+    gum::MPDAG moveAssigned = gum::MPDAG::meekClosure(gum::PDAG());
+    moveAssigned            = std::move(assigned);
+    CHECK(moveAssigned == m);
+    CHECK(m.contains(moveAssigned.consistentExtension()));
   }
 
   GUM_TEST(NotAlwaysAChainGraph) {
@@ -203,6 +199,13 @@ namespace gum_tests {
         if (x == y) continue;
         const auto z = randomSet(dag, x, y);
         CHECK_EQ(m.dSeparation(x, y, z), dag.dSeparation(x, y, z));
+
+        // the same for sets of nodes
+        gum::NodeSet xs{x};
+        for (const auto node: dag.nodes())
+          if (node != x && node != y && !z.contains(node) && gum::randomProba() < 0.3)
+            xs.insert(node);
+        CHECK_EQ(m.dSeparation(xs, gum::NodeSet{y}, z), dag.dSeparation(xs, gum::NodeSet{y}, z));
       }
     }
   }

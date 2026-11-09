@@ -49,7 +49,7 @@ from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 # Load the data
 data = pd.read_csv("tests/resources/iris.csv")
-data.drop(columns="Id", inplace=True)
+data = data.drop(columns="Id")
 data["PetalLengthCm"] = pd.cut(data["PetalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data["PetalWidthCm"] = pd.cut(data["PetalWidthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)
 data["SepalLengthCm"] = pd.cut(data["SepalLengthCm"], 5, right=True, labels=[0, 1, 2, 3, 4], include_lowest=False)

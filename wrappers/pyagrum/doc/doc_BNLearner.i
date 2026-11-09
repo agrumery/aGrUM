@@ -1501,17 +1501,22 @@ Returns the number of iterations performed by the EM parameter learning algorith
 
 %feature("docstring") gum::learning::IBNLearner::EMHistory
 "
-Returns a list containing the log-likelihoods recorded after each
-expectation/maximization iteration of the EM parameter learning algorithm.
+Returns a list containing the values recorded after each
+expectation/maximization iteration of the EM parameter learning algorithm:
+the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),
+its variation with the difference criterion (`useEMWithDiffCriterion()`).
+
+The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as
+the period size is left at its default value of 1 (see `EMsetPeriodSize()`).
 
 Returns
 -------
 list of float
-        A list of all the log-likelihoods recorded during EM's execution
+        A list of all the values recorded during EM's execution
 
 Warnings
 --------
-Recording log-likelihoods is enabled only when EM is executed in verbose
+Recording these values is enabled only when EM is executed in verbose
 mode. See method `EMsetVerbosity()`.
 "
 

@@ -38,12 +38,19 @@
 #                                                                          #
 ############################################################################
 
+import collections
+import contextlib
+import logging
+import os
 import re
 import sys
 import time
 import unittest
 
 PREFIX = "🍈  "
+
+# only written in the log file: gumTest.py displays the records of the logger "pyAgrum" at the end, not this one
+_details = logging.getLogger("pyAgrum.details")
 
 _C_MODULE = "\033[36m"  # cyan   — module name (inside brackets)
 _C_SUITE = "\033[32m"  # green  — SuiteName
@@ -112,6 +119,15 @@ class ModuleAwareResult(unittest.TextTestResult):
     self._module_map = module_map
     self.module_stats: dict[str, tuple[int, int]] = {}  # {module: (runs, errors)}
 
+  def getDescription(self, test) -> str:
+    """Only the name of the test: the first line of its docstring goes to the log file (see startTest)."""
+    return str(test)
+
+  def startTest(self, test):
+    doc = test.shortDescription()
+    _details.debug(f"{test}: {doc}" if doc else str(test))
+    super().startTest(test)
+
   def _mod(self, test) -> str:
     return self._module_map.get(type(test).__name__, "main")
 
@@ -156,6 +172,36 @@ def notif_module_stats(module_stats: dict[str, tuple[int, int]]) -> None:
     notif(f"{label}{padding}{count}")
 
 
+class WarningsSummary(logging.Handler):
+  """Count the distinct python warnings, in order to display them once at the end of the tests."""
+
+  def __init__(self):
+    super().__init__()
+    self._counts = collections.Counter()
+
+  def emit(self, record):
+    self._counts[" ".join(record.getMessage().split())] += 1
+
+  def display(self) -> None:
+    notif(f" python warnings : {len(self._counts)} distinct")
+    for message, count in self._counts.most_common():
+      notif(f"{count:4} x {message}")
+
+
+@contextlib.contextmanager
+def stdoutToFile(stream):
+  """Send the standard output, of python and of the native code (std::cout in aGrUM), to the open file `stream`."""
+  sys.stdout.flush()
+  saved = os.dup(1)
+  os.dup2(stream.fileno(), 1)
+  try:
+    yield
+  finally:
+    sys.stdout.flush()
+    os.dup2(saved, 1)
+    os.close(saved)
+
+
 class Timer:
   """Context manager to measure elapsed wall time.
 
@@ -182,7 +228,10 @@ class PrefixStream:
   """
 
   def __init__(self, module_map: dict[str, str] | None = None):
-    self._stream = sys.stdout
+    # its own copy of the standard output: it still reaches the terminal during stdoutToFile
+    self._stream = os.fdopen(
+      os.dup(sys.stdout.fileno()), "w", encoding=sys.stdout.encoding, errors=sys.stdout.errors, buffering=1
+    )
     self._buf = ""
     self._module_map = module_map or {}
 

@@ -59,16 +59,20 @@ namespace gum_tests {
     public:
     /// reference: an arc a->b is strongly protected (Andersson, Madigan and Perlman 1997, Th. 4.1)
     static bool stronglyProtected(const gum::MixedGraph& mg, gum::NodeId a, gum::NodeId b) {
+      const auto adjacent = [&mg](gum::NodeId x, gum::NodeId y) {
+        return mg.existsEdge(x, y) || mg.existsArc(x, y) || mg.existsArc(y, x);
+      };
       for (const auto c: mg.parents(a))   // (a) c->a->b, c and b not adjacent
-        if (!mg.existsArc(c, b)) return true;
-      bool oneFound = false;
+        if (!adjacent(c, b)) return true;
+      std::vector< gum::NodeId > neighboursOfA;
       for (const auto c: mg.parents(b)) {
         if (c == a) continue;
-        if (mg.existsArc(a, c)) return true;                            // (c) a->c->b
-        if (!mg.existsEdge(a, c) && !mg.existsArc(c, a)) return true;   // (b) a->b<-c
-        if (mg.existsEdge(c, a)) {                                      // (d) two such c
-          if (oneFound) return true;
-          oneFound = true;
+        if (mg.existsArc(a, c)) return true;   // (c) a->c->b
+        if (!adjacent(a, c)) return true;      // (b) a->b<-c, a and c not adjacent
+        if (mg.existsEdge(a, c)) {             // (d) a-c1->b, a-c2->b, c1 and c2 not adjacent
+          for (const auto other: neighboursOfA)
+            if (!adjacent(c, other)) return true;
+          neighboursOfA.push_back(c);
         }
       }
       return false;

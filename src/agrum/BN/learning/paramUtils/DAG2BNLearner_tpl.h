@@ -290,10 +290,6 @@ namespace gum {
             best_bn             = bn;   // bn is the Bayes net computed at the previous step
             must_return_best_bn = true;
           }
-          if (nb_dec_likelihood_iter > max_nb_dec_likelihood_iter_) {
-            stopApproximationScheme();
-            return best_bn;
-          }
         }
 
         // compute the difference in log-likelihood
@@ -301,8 +297,10 @@ namespace gum {
         current_log_likelihood = log_likelihood_EM_;
 
         bn = std::move(new_bn);
-      } while (continueApproximationScheme(this->isEnabledMinEpsilonRate() ? -log_likelihood_EM_
-                                                                           : delta));
+        // continueApproximationScheme first: each iteration has its entry in the history
+      } while (
+          continueApproximationScheme(this->isEnabledMinEpsilonRate() ? -log_likelihood_EM_ : delta)
+          && nb_dec_likelihood_iter <= max_nb_dec_likelihood_iter_);
 
       stopApproximationScheme();   // just to be sure of the approximationScheme
                                    // has been notified of the end of loop

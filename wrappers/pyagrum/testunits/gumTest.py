@@ -43,13 +43,14 @@ import logging
 import os
 import platform
 import sys
+import warnings
 from pathlib import Path
 from sys import platform as os_platform
 
 _thisdir = os.path.dirname(os.path.abspath(__file__))
 if _thisdir not in sys.path:
   sys.path.insert(0, _thisdir)
-from utils.gumTestOutput import error, notif  # noqa: E402 (after the sys.path setup)
+from utils.gumTestOutput import WarningsSummary, error, notif  # noqa: E402 (after the sys.path setup)
 
 # List of modules to test (empty string means all modules) - Keep this list up to date with the modules.
 # This list is used to check the validity of the '-m <module>' argument and to display the list of available modules with '-m list' or '-m show'
@@ -59,7 +60,7 @@ PYAGRUM_TEST_MODULES = {"", "main", "skbn", "qbn", "causal", "causaleffect", "cl
 
 def go():
   cwd = os.getcwd()
-  FORMAT = "[pyAgrum] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s"
+  FORMAT = "[%(name)s] %(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(funcName)s | %(message)s"
 
   os.chdir(Path(__file__).resolve().parent)
 
@@ -104,12 +105,26 @@ def go():
   logfilename = cwd + logfilename
   notif(f"log : {logfilename}")
 
-  log = logging.getLogger("gumTestLog")
+  log = logging.getLogger("pyAgrum")
   log.setLevel(logging.DEBUG)  # better to have too much log than not enough
   fh = logging.FileHandler(logfilename, mode="w", encoding=None, delay=False)
   fh.setFormatter(logging.Formatter(FORMAT))
   log.addHandler(fh)
   log.propagate = False
+
+  # the python warnings go to the log file, only a summary of them is displayed at the end of the tests
+  if not sys.warnoptions:
+    warnings.simplefilter("default")  # as unittest.TextTestRunner.run, which is not used here (see runTests)
+    # expected here, at the first import of this module whatever the test: no IPython in the tests
+    warnings.filterwarnings(
+      "ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning
+    )
+  logging.captureWarnings(True)
+  pywarnings = logging.getLogger("py.warnings")
+  pywarnings.addHandler(fh)
+  warningsSummary = WarningsSummary()
+  pywarnings.addHandler(warningsSummary)
+  pywarnings.propagate = False
 
   log.info("Mode detected : " + mod)
   log.info("Testing notebooks : " + str(testNotebooks))
@@ -181,6 +196,8 @@ def go():
     for f in logfile:
       if "[pyAgrum]" in f:
         notif(f.rstrip())
+  notif("-" * 70)
+  warningsSummary.display()
   notif("-" * 70)
 
   notif()

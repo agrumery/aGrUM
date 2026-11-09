@@ -57,7 +57,7 @@ res = importlib.util.find_spec("pandas")
 pandasFound = res is not None
 res = importlib.util.find_spec("matplotlib")
 matplotlibFound = res is not None
-res = importlib.util.find_spec("ipython")
+res = importlib.util.find_spec("IPython")
 ipythonFound = res is not None
 
 

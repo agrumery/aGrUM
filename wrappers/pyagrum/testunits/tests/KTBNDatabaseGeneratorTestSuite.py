@@ -41,6 +41,7 @@
 import csv as csvmod
 import math
 import os
+import shutil
 import tempfile
 import unittest
 
@@ -91,6 +92,7 @@ def _checkDrawSamples(tc, lls, directory, stem, expectedRows):
 class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
   def setUp(self):
     self._dir = tempfile.mkdtemp()
+    self.addCleanup(shutil.rmtree, self._dir, ignore_errors=True)
 
   def testDrawSingleTrajectory(self):
     gum.initRandom(42)

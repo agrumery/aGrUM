@@ -109,6 +109,13 @@ namespace gum {
 
     double timer_step = timer_.step();
 
+    const bool period_start = startOfPeriod();
+
+    // before any stop: the history has an entry for the last period, whatever the stop
+    if (period_start && verbosity() && current_state_ == ApproximationSchemeSTATE::Continue) {
+      history_.push_back(error);
+    }
+
     if (enabled_max_time_) {
       if (timer_step > max_time_) {
         stopScheme_(ApproximationSchemeSTATE::TimeLimit);
@@ -116,15 +123,13 @@ namespace gum {
       }
     }
 
-    if (!startOfPeriod()) { return true; }
+    if (!period_start) { return true; }
 
     if (current_state_ != ApproximationSchemeSTATE::Continue) {
       GUM_ERROR(
           OperationNotAllowed,
           "state of the approximation scheme is not correct : " << messageApproximationScheme());
     }
-
-    if (verbosity()) { history_.push_back(error); }
 
     if (enabled_max_iter_) {
       if (current_step_ >= max_iter_) {

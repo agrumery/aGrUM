@@ -41,8 +41,6 @@
 #pragma once
 
 
-#include <vector>
-
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/dot/dotOptions.h>
 #include <agrum/base/graphs/CPDAG.h>
@@ -50,33 +48,12 @@
 
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/randomGraphs.h>
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
 
-  struct CPDAGTestSuite {
-    public:
-    static gum::DAG randomDAG(gum::Size n, double density) {
-      std::vector< gum::NodeId > order;
-      for (gum::NodeId i = 0; i < n; ++i)
-        order.push_back(i);
-      for (gum::Size i = n; i > 1; --i)
-        std::swap(order[i - 1], order[gum::randomValue(i)]);
-      gum::DAG dag;
-      dag.addNodes(n);
-      for (gum::Size i = 0; i < n; ++i)
-        for (gum::Size j = i + 1; j < n; ++j)
-          if (gum::randomProba() < density) dag.addArc(order[i], order[j]);
-      return dag;
-    }
-
-    static gum::NodeSet randomSet(const gum::DAG& dag, gum::NodeId x, gum::NodeId y) {
-      gum::NodeSet z;
-      for (const auto node: dag.nodes())
-        if (node != x && node != y && gum::randomProba() < 0.3) z.insert(node);
-      return z;
-    }
-  };
+  struct CPDAGTestSuite {};
 
   GUM_TEST(FromDAG) {
     // a->c<-b, c->d : all the arcs are compelled
@@ -157,6 +134,13 @@ namespace gum_tests {
         CHECK_EQ(cp.dSeparation(x, y, z), sep);
         CHECK_EQ(ext.dSeparation(x, y, z), sep);
         CHECK_EQ(cp.graph().cSeparation(x, y, z), sep);
+
+        // the same for sets of nodes
+        gum::NodeSet xs{x};
+        for (const auto node: dag.nodes())
+          if (node != x && node != y && !z.contains(node) && gum::randomProba() < 0.3)
+            xs.insert(node);
+        CHECK_EQ(cp.dSeparation(xs, gum::NodeSet{y}, z), dag.dSeparation(xs, gum::NodeSet{y}, z));
       }
     }
   }
@@ -216,6 +200,10 @@ namespace gum_tests {
     gum::CPDAG assigned = gum::CPDAG::fromDAG(gum::DAG());
     assigned            = cp;
     CHECK(assigned == cp);
+    gum::CPDAG moveAssigned = gum::CPDAG::fromDAG(gum::DAG());
+    moveAssigned            = std::move(assigned);
+    CHECK(moveAssigned == cp);
+    CHECK(cp.contains(moveAssigned.consistentExtension()));
     CHECK(!cp.toDot().empty());
   }
 

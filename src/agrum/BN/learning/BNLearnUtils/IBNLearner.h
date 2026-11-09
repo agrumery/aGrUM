@@ -1673,6 +1673,9 @@ namespace gum::learning {
 
     /**
      * @brief returns the history of the last EM execution
+     *
+     * Postcondition: with a period size of 1 and no burn-in, the history has
+     * EMnbrIterations() values, whatever the cause of the stop.
      * @warning to activate the history recording, EM's verbosity must be set to true
      */
     const std::vector< double >& EMHistory() const;

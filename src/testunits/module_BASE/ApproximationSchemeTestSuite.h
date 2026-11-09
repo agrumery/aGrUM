@@ -68,6 +68,19 @@ namespace gum_tests {
     }
   };
 
+  GUM_TEST(HistoryHasAnEntryForTheIterationStoppedByTheTimeLimit) {
+    ConfigurationGuard       guard;
+    gum::ApproximationScheme scheme(true);
+    scheme.setMaxTime(1e-9);
+    scheme.initApproximationScheme();
+    scheme.updateApproximationScheme();
+    CHECK(!scheme.continueApproximationScheme(1.));
+    CHECK_EQ(scheme.stateApproximationScheme(),
+             gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::TimeLimit);
+    CHECK_EQ(scheme.nbrIterations(), gum::Size(1));
+    CHECK_EQ(scheme.history().size(), gum::Size(1));
+  }
+
   GUM_TEST(DefaultsComeFromTheConfiguration) {
     ConfigurationGuard guard;
     checkDefaults(gum::ApproximationScheme());

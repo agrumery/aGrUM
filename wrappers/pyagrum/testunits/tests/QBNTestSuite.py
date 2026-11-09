@@ -332,7 +332,8 @@ class QBNRejectionTestCase(pyAgrumTestCase):
     qinf.makeInference()
     quantum_A = qinf.posterior("A")
 
-    epsilon = 0.1
+    # 200 samples: a standard deviation of at most 0.035, so about 4 sigmas
+    epsilon = 0.15
     self.assertLess(abs(exact_A[0] - quantum_A[0]), epsilon)
     self.assertLess(abs(exact_A[1] - quantum_A[1]), epsilon)
 

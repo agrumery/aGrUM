@@ -96,7 +96,7 @@ namespace gum_tests {
     g.addEdge(1, 2);
     g.addEdge(2, 3);
     g.addEdge(0, 2);
-    const auto order = gum::graph::lexBFS(g);
+    const auto order = gum::graph::lexBFS(g, {0});
     CHECK_EQ(order[0], gum::NodeId(0));
     // 3 is visited last: its label (the visit step of 2) is smaller than the others'
     CHECK_EQ(order[3], gum::NodeId(3));
@@ -196,7 +196,9 @@ namespace gum_tests {
         CHECK(gum::graph::isPerfectEliminationOrdering(triangulated, elimination));
       }
 
-      // a graph that is not chordal needs fill-ins to be triangulated
+      // a triangulation only adds edges: a graph that is not chordal needs fill-ins
+      for (const auto& edge: g.edges())
+        CHECK(triangulated.existsEdge(edge));
       if (!gum::graph::isChordal(g)) CHECK(triangulated.sizeEdges() > g.sizeEdges());
     }
   }

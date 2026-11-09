@@ -39,6 +39,7 @@
 ############################################################################
 
 import os
+import shutil
 import tempfile
 import unittest
 
@@ -66,6 +67,7 @@ def _schema(names):
 class KTBNAdaptiveLearnerTestCase(pyAgrumTestCase):
   def setUp(self):
     self._dir = tempfile.mkdtemp()
+    self.addCleanup(shutil.rmtree, self._dir, ignore_errors=True)
 
   def _p(self, name):
     return os.path.join(self._dir, name)

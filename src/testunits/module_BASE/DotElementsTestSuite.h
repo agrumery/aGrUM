@@ -242,4 +242,17 @@ namespace gum_tests {
     CHECK(hasAttribute(gum::dot::arcAttributes(&zero), "penwidth", "0"));
   }
 
+  GUM_TEST(WithCompelledArcColor) {
+    ConfigurationGuard guard;
+    gum::config().set("dot", "compelledArcColor", "blue");
+    gum::dot::DotOptions options;
+    options.setArcColor(0, 1, "green");
+    const auto result
+        = gum::dot::withCompelledArcColor(options, gum::ArcSet{gum::Arc(0, 1), gum::Arc(1, 2)});
+    CHECK_EQ(result.arc(0, 1)->color, "green");   // the color of the caller is kept
+    CHECK_EQ(result.arc(1, 2)->color, "blue");
+    CHECK(result.arc(2, 3) == nullptr);
+    CHECK(options.arc(1, 2) == nullptr);          // options is not modified
+  }
+
 }   // namespace gum_tests

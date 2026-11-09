@@ -114,6 +114,10 @@ class BNCLassifierTestCase(pyAgrumTestCase):
 
   def testPickling(self):
     bn = gum.fastBN("X1{A|B}->X2{a|b|c}->Y{y0|y1}<-X1;X3[3]->Y<-X4{A|B}")
+    # a random CPT may give a root almost constant, and then a constant column in the sample
+    bn.cpt("X1").fillWith([0.5, 0.5])
+    bn.cpt("X3").fillWith([1 / 3] * 3)
+    bn.cpt("X4").fillWith([0.5, 0.5])
     dftrain, _ = gum.generateSample(bn, 500)
     dftest, _ = gum.generateSample(bn, 300)
     bnc = skbn.createBNClassifier()

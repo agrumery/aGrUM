@@ -654,7 +654,7 @@ if len(args)>1:
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
-            arr.shape = tuple(reversed(self.shape))
+            arr = arr.reshape(tuple(reversed(self.shape)))
         return arr
 
     def as_nparray(self):

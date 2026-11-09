@@ -65,7 +65,7 @@ def addTests(ts, cl):
 class pyAgrumTestCase(unittest.TestCase):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
-    self.log = logging.getLogger("gumTestLog")
+    self.log = logging.getLogger("pyAgrum")
     self.nbLoopForApproximatedTest = 10
 
   @staticmethod

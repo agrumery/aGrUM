@@ -294,6 +294,15 @@ namespace gum_tests {
     CHECK_EQ(*FASTVARDBL("A{1.4:7.4:4}"), *FASTVARDBL("A{1.4|3.4|5.4|7.4}"));
   }
 
+  GUM_TEST(FastDiscretizedVariableWithIntegerTicks) {
+    // with T_TICKS = int, the ticks 1.1, 1.542, ..., 3.31 are 1, 1, 1, 2, 2, 3 without duplicates
+    const auto v = gum::fastVariable< int >("n[1.1:3.31:5]");
+
+    const auto& var = dynamic_cast< const gum::DiscretizedVariable< int >& >(*v);
+    CHECK_EQ(var.ticks(), std::vector< int >{1, 2, 3});
+    CHECK_EQ(var.domainSize(), gum::Size(2));
+  }
+
   GUM_TEST(EquallySpacedIntervall) {
     auto v = gum::fastVariable("alpha { 0 : 1 : 101 }");
     for (const auto& la: v->labels()) {

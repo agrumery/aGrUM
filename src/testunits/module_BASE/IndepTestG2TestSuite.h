@@ -67,7 +67,7 @@ namespace gum_tests {
     // The empty row C of the Z=0 slice has no degree of freedom (issue #210):
     // df = (2-1)(2-1) for Z=0 + (3-1)(2-1) for Z=1 = 3 (not 4, nor 4 - 2 skipped cells = 2).
     // G2 = 2*(12*log(3/2)+4*log(1/2) + 6*log(3/2)+2*log(1/2)) ≈ 6.279
-    // With df=2: p-value = exp(-G2/2) ≈ 0.04327, vs uncorrected ≈ 0.179.
+    // With df=3: p-value ≈ 0.0988, vs uncorrected (df=4) ≈ 0.179.
   };
 
   GUM_TEST(_G2) {
@@ -405,7 +405,7 @@ namespace gum_tests {
     // G2 = 2*(12*log(3/2)+4*log(1/2) + 6*log(3/2)+2*log(1/2)) ≈ 6.2790
     CHECK(stat.first == doctest::Approx(6.2790).epsilon(1e-3));
 
-    // p-value must match Chi2(df=2), not Chi2(df=4)
+    // p-value must match Chi2(df=3), not Chi2(df=4)
     CHECK(stat.second == doctest::Approx(gum::Chi2::probaChi2(stat.first, 3)).epsilon(1e-3));
 
     // verify the correction tightens the test: corrected p < uncorrected p
