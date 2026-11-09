@@ -50,9 +50,11 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_PUBLIC_CN
     gum::credal::CNMonteCarloSampling< float, gum::LazyPropagation< float > >;
 
 template class GUM_PUBLIC_CN
     gum::credal::CNMonteCarloSampling< double, gum::LazyPropagation< double > >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

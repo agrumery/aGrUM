@@ -42,6 +42,7 @@
 
 
 #include <iostream>
+#include <type_traits>
 
 #include <agrum/base/core/math/chi2.h>
 #include <agrum/base/database/databaseTable.h>
@@ -54,7 +55,6 @@
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-#include <type_traits>
 
 namespace gum_tests {
 

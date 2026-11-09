@@ -336,8 +336,8 @@ namespace gum_tests {
 
     try {
       gum::LazyPropagation< double > inference(&asia);
-      auto                           id       = asia.idFromName("Has Lung Cancer");
-      const auto&                    marginal = inference.posterior(id);
+      auto                           id = asia.idFromName("Has Lung Cancer");
+      inference.posterior(id);
       FAIL("Inference should not be correct with a undefined CPT");
     } catch (gum::IncompatibleEvidence&) {
       // OK to be here : CPT of Has Bronchitis has not been defined.

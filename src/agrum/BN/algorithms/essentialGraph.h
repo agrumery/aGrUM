@@ -51,13 +51,12 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphicalModels/DAGmodel.h>
 #include <agrum/base/graphs/io/graphGumIO.h>
-
-#include <string_view>
 
 namespace gum {
 

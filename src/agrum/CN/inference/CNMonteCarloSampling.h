@@ -149,9 +149,11 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+    GUM_IGNORE_ATTRIBUTES_BEGIN
     extern template class GUM_PUBLIC_CN CNMonteCarloSampling< float, LazyPropagation< float > >;
 
     extern template class GUM_PUBLIC_CN CNMonteCarloSampling< double, LazyPropagation< double > >;
+    GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

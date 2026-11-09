@@ -278,6 +278,6 @@ static_assert(gum::GUM_DiGraphable< gum::DiGraph >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/diGraph_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #endif   /* GUM_DIGRAPH_H */

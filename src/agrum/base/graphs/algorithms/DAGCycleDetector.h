@@ -363,6 +363,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/algorithms/DAGCycleDetector_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #endif   // GUM_DAG_CYCLE_DETECTOR_H

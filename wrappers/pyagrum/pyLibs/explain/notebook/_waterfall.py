@@ -112,7 +112,7 @@ def waterfall(
   # Computing arrow width
   arrow_width_base = 0.08 * np.max(np.abs(np.array(list(values.values()))))
 
-  # Tri des SHAP values par importance décroissante
+  # Sort the SHAP values by decreasing importance
   features = [feature for feature in sorted(values.keys(), key=lambda x: abs(values.get(x)), reverse=True)]
   y_positions = np.arange(len(values) * 0.25, 0, -0.25)
 
@@ -121,7 +121,7 @@ def waterfall(
   if ax is None:
     _, ax = plt.subplots()
 
-  # Ligne de base :
+  # Baseline:
   ax.plot([baseline, baseline], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle="--", color="gray")
   if explanation.values_type == "SHAP":
     ax.text(
@@ -158,7 +158,7 @@ def waterfall(
       else (pyagrum.config["tensor", "color1"], "#82D882", -1)
     )
 
-    # Dessin du polygon
+    # Draw the polygon
     polygon = Polygon(
       [
         (x_end + alpha * arrow_width, z - height / 2),
@@ -180,7 +180,7 @@ def waterfall(
     min_x = min(min_x, current_x)
     max_x = max(max_x, current_x)
 
-  # Ligne de sortie du modèle
+  # Model output line
   ax.plot([current_x, current_x], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle="--", color="Black")
   if explanation.func == "_logit":
     ax.text(

@@ -50,10 +50,10 @@
 #ifndef GUM_MULTIDIMBIJARRAY_H
 #define GUM_MULTIDIMBIJARRAY_H
 
+#include <initializer_list>
+
 #include <agrum/base/core/bijection.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
-
-#include <initializer_list>
 
 namespace gum {
 
@@ -201,7 +201,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC MultiDimBijArray< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 }   // namespace gum

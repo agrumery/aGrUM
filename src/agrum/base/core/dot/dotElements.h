@@ -48,6 +48,7 @@
 #ifndef GUM_DOT_ELEMENTS_H
 #define GUM_DOT_ELEMENTS_H
 
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -56,8 +57,6 @@
 #include <agrum/base/core/dot/dotOptions.h>
 #include <agrum/base/core/dot/dotStyle.h>
 #include <agrum/base/graphs/graphElements.h>
-
-#include <string_view>
 
 namespace gum::dot {
 

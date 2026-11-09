@@ -82,6 +82,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
     target_compile_options(gumTest PRIVATE -Wno-c2y-extensions)
 endif ()
 
+# doctest.h compares a gum::Size with a double in its assertions
+if (MSVC)
+    target_compile_options(gumTest PRIVATE /wd4244)
+endif ()
+
 # doctest command-line options:
 # Run all tests:           ./gumTest
 # List all tests:          ./gumTest --list-test-cases

@@ -52,12 +52,11 @@
 #include <climits>
 #include <memory>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
 #include <agrum/agrum.h>
-
-#include <string_view>
-#include <type_traits>
 
 namespace gum {
 

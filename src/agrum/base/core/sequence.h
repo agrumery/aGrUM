@@ -49,15 +49,14 @@
 #ifndef GUM_SEQUENCE_H
 #define GUM_SEQUENCE_H
 
+#include <initializer_list>
 #include <limits>
+#include <type_traits>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/set.h>
-
-#include <initializer_list>
-#include <type_traits>
 
 namespace gum {
 
@@ -1375,10 +1374,12 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::Sequence< int >;
 extern template class GUM_SHARED_PUBLIC gum::Sequence< long >;
 extern template class GUM_SHARED_PUBLIC gum::Sequence< double >;
 extern template class GUM_SHARED_PUBLIC gum::Sequence< std::string >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

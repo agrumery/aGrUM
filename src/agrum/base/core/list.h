@@ -50,6 +50,7 @@
 #define GUM_LIST_H
 
 #include <cstddef>
+#include <initializer_list>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -57,8 +58,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/staticInitializer.h>
-
-#include <initializer_list>
 
 #define GUM_DEFAULT_ITERATOR_NUMBER 4
 
@@ -2535,8 +2534,10 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC ListConstIterator< Debug >;
   extern template class GUM_SHARED_PUBLIC ListConstIteratorSafe< Debug >;
+  GUM_IGNORE_ATTRIBUTES_END
 #  endif
   extern GUM_SHARED_PUBLIC const ListConstIteratorSafe< Debug > _static_list_end_safe_;
   extern GUM_SHARED_PUBLIC const ListConstIterator< Debug > _static_list_end_;
@@ -2549,9 +2550,11 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::List< bool >;
 extern template class GUM_SHARED_PUBLIC gum::List< int >;
 extern template class GUM_SHARED_PUBLIC gum::List< unsigned int >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

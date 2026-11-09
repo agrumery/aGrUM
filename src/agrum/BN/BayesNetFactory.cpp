@@ -49,5 +49,7 @@
 #include <agrum/BN/BayesNetFactory.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_PUBLIC_BN gum::BayesNetFactory< double >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

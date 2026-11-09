@@ -206,7 +206,7 @@ namespace gum_tests {
   GUM_TEST(Errors) {
     gum::dot::DotWriter w;
     // keys which are not identifiers
-    for (const std::string& key: {"", "a b", "a\"b", "1a", "a-b", "a=b", "a;", "label]"}) {
+    for (const std::string key: {"", "a b", "a\"b", "1a", "a-b", "a=b", "a;", "label]"}) {
       INFO("key '" << key << "'");
       CHECK_THROWS_AS(w.node("A", {{key, "v"}}), gum::InvalidArgument);
       CHECK_THROWS_AS(w.graphAttribute({key, "v"}), gum::InvalidArgument);
@@ -215,7 +215,7 @@ namespace gum_tests {
     }
     // ... and nothing has been written
     CHECK_EQ(w.str(), "digraph {\n}\n");
-    for (const std::string& key: {"a", "A", "_a", "a1", "font_name", "_"})
+    for (const std::string key: {"a", "A", "_a", "a1", "font_name", "_"})
       CHECK_NOTHROW(w.node("A", {{key, "v"}}));
 
     // a subgraph which is closed too often, or not closed

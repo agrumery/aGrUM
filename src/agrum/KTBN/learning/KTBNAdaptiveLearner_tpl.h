@@ -53,6 +53,7 @@
 #include <format>
 #include <fstream>
 #include <memory>
+#include <unordered_map>
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/CSVParser.h>
@@ -66,8 +67,6 @@
 #include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
 #include <agrum/BN/learning/scores/scoreMDL.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
-
-#include <unordered_map>
 
 namespace gum::learning {
 

@@ -50,11 +50,11 @@
 #ifndef GUM_SAMPLING_INFERENCE_H
 #define GUM_SAMPLING_INFERENCE_H
 
+#include <string_view>
+
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/tools/estimator.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
-
-#include <string_view>
 
 namespace gum {
   /**
@@ -267,7 +267,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_BN SamplingInference< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 }   // namespace gum

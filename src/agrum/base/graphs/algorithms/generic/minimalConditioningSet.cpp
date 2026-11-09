@@ -39,4 +39,4 @@
  ****************************************************************************/
 
 
-#include "agrum/base/graphs/algorithms/generic/minimalConditioningSet.h"
+#include <agrum/base/graphs/algorithms/generic/minimalConditioningSet.h>

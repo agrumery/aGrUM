@@ -51,7 +51,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/MarkovBlanket_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
   MarkovBlanket::MarkovBlanket(const DAGmodel& m, NodeId id, int level) : _model_(m), _node_(id) {

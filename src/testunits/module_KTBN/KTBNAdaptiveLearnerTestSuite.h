@@ -45,6 +45,9 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -56,9 +59,6 @@
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
-#include <type_traits>
-#include <unordered_map>
-#include <unordered_set>
 
 namespace gum_tests {
 

@@ -51,11 +51,10 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
 #include <agrum/PRM/elements/PRMType.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

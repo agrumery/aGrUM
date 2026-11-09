@@ -81,6 +81,8 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -88,9 +90,6 @@
 
 #include <agrum/BN/learning/BNLearner.h>
 #include <agrum/KTBN/learning/IKTBNLearner.h>
-
-#include <string_view>
-#include <unordered_set>
 
 namespace gum {
 
@@ -739,7 +738,9 @@ namespace gum {
     };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+    GUM_IGNORE_ATTRIBUTES_BEGIN
     extern template class GUM_PUBLIC_KTBN KTBNLearner< double >;
+    GUM_IGNORE_ATTRIBUTES_END
 #endif
 
   } /* namespace learning */

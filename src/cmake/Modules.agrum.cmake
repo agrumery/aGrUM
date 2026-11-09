@@ -202,6 +202,11 @@ macro(buildFileListsWithModules)
                 add_library (agrum${OPTION} ${AGRUM_${OPTION}_SOURCES} ${AGRUM_${OPTION}_C_SOURCES} ${AGRUM_${OPTION}_INCLUDES} ${AGRUM_BASE_INCLUDES_FOR_OTHER_MODULES})
             endif ()
 
+            # lrslib is third-party C code: its conversions are not ours to fix
+            if (MSVC AND AGRUM_${OPTION}_C_SOURCES)
+                set_source_files_properties (${AGRUM_${OPTION}_C_SOURCES} PROPERTIES COMPILE_OPTIONS "/wd4018;/wd4244")
+            endif ()
+
             # lrslib (base/external/lrslib) is vendored third-party C code with
             # no export attributes; attach the generated .def only when agrumCN
             # will actually be a DLL (MSVC/MinGW under BUILD_SHARED_LIBS=ON or

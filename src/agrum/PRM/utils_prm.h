@@ -43,6 +43,7 @@
 #define GUM_UTILS_PRM_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -57,8 +58,6 @@
 #include <agrum/base/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/base/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/PRM/elements/PRMObject.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

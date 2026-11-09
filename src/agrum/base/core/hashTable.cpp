@@ -68,18 +68,22 @@ namespace gum {
 } /* namespace gum */
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::HashTableIterator< int, int >;
 template class GUM_SHARED_PUBLIC gum::HashTableConstIterator< int, int >;
 template class GUM_SHARED_PUBLIC gum::HashTableIteratorSafe< int, int >;
 template class GUM_SHARED_PUBLIC gum::HashTableConstIteratorSafe< int, int >;
+GUM_IGNORE_ATTRIBUTES_END
 #  endif
 
 #endif   // DOXYGEN_SHOULD_SKIP_THIS
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::HashTable< int, int >;
 template class GUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
 template class GUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
 template class GUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

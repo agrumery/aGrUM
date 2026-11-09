@@ -97,6 +97,8 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <variant>
 #include <vector>
 
@@ -104,9 +106,6 @@
 
 #include <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/KTBN/KTBN.h>
-
-#include <unordered_map>
-#include <unordered_set>
 
 namespace gum {
 
@@ -719,7 +718,9 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_KTBN KTBNInference< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 }   // namespace gum

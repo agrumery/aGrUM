@@ -101,10 +101,14 @@ namespace gum_tests {
     }
 
     // GCC 16 false positive: inlined feedMultiDimUntilOverflow triggers -Warray-bounds
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
+#ifdef __GNUC__
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
     CHECK_THROWS_AS(feedMultiDimUntilOverflow(v, m), const gum::OutOfBounds&);
-#pragma GCC diagnostic pop
+#ifdef __GNUC__
+#  pragma GCC diagnostic pop
+#endif
 
     for (int i = 0; i < 100; i++)
       delete (v[i]);

@@ -134,8 +134,7 @@ namespace gum_tests {
     }
 
     static void _withBigFiles_(bool isbinary, int indent = 0) {
-      const auto src    = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
-      const auto dstxml = GET_RESSOURCES_PATH("outputs/Diabetes.bifxml");
+      const auto src = GET_RESSOURCES_PATH("bifxml/Diabetes.bifxml");
       const auto dst = isbinary ? GET_RESSOURCES_PATH("outputs/Diabetes.bgum")
                                 : ((indent < 0) ? GET_RESSOURCES_PATH("outputs/Diabetes_comp.jgum")
                                                 : GET_RESSOURCES_PATH("outputs/Diabetes.jgum"));

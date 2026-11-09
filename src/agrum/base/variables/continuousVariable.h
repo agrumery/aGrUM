@@ -52,12 +52,11 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/variables/IContinuousVariable.h>
-
-#include <string_view>
 
 namespace gum {
 

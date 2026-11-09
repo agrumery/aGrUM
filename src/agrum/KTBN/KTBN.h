@@ -57,6 +57,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -64,8 +65,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/BN/BayesNet.h>
-
-#include <unordered_set>
 
 namespace gum {
 
@@ -773,7 +772,9 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_KTBN KTBN< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
   /// @brief Prints the k-DBN using its toString() description.

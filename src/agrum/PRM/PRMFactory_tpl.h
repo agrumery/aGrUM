@@ -49,14 +49,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <string_view>
 
 #include <agrum/base/core/math/formula.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
 #include <agrum/PRM/PRMFactory.h>
-
-#include <string_view>
 
 namespace gum {
 

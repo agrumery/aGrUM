@@ -45,6 +45,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+import warnings
 
 import pyagrum as gum
 
@@ -418,7 +419,10 @@ class TestDotOptions(pyAgrumTestCase):
       import pyagrum.lib.bn_vs_bn as gcm
       import pyagrum.lib.cn2graph as gcn2
       import pyagrum.lib.dotstyle as gds
-      import pyagrum.lib.dynamicBN as gdyn
+
+      with warnings.catch_warnings():  # the deprecation of the module itself is not checked here
+        warnings.filterwarnings("ignore", message="This module is deprecated", category=FutureWarning)
+        import pyagrum.lib.dynamicBN as gdyn
       import pyagrum.lib.id2graph as gid2
       import pyagrum.lib.mrf2graph as gmrf2
       from pyagrum import ctbn

@@ -82,11 +82,13 @@ namespace gum {
 
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::List< bool >;
 template class GUM_SHARED_PUBLIC gum::List< int >;
 template class GUM_SHARED_PUBLIC gum::List< unsigned int >;
 template class GUM_SHARED_PUBLIC gum::ListConstIterator< gum::Debug >;
 template class GUM_SHARED_PUBLIC gum::ListConstIteratorSafe< gum::Debug >;
+GUM_IGNORE_ATTRIBUTES_END
 #  endif
 
 

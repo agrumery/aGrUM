@@ -130,6 +130,6 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/listeners/diGraphListener_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #endif   // GUM_DIGRAPH_LISTENER_H

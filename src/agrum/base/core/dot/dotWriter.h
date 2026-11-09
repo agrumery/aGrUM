@@ -48,11 +48,10 @@
 #define GUM_DOT_WRITER_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
-
-#include <string_view>
 
 namespace gum::dot {
 

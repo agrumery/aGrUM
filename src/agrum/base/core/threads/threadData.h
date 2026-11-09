@@ -49,10 +49,9 @@
 #define GUM_THREAD_DATA_H
 
 #include <new>
+#include <type_traits>
 
 #include <agrum/agrum.h>
-
-#include <type_traits>
 
 namespace gum {
 

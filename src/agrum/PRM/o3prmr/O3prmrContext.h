@@ -51,11 +51,10 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/PRM/inference/PRMInference.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

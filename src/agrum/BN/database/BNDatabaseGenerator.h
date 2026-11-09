@@ -89,12 +89,11 @@
 
 #include <filesystem>
 #include <fstream>
+#include <string_view>
 
 #include <agrum/base/core/progressNotification.h>
 #include <agrum/base/database/databaseTable.h>
 #include <agrum/BN/BayesNet.h>
-
-#include <string_view>
 
 namespace gum {
 
@@ -257,7 +256,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+    GUM_IGNORE_ATTRIBUTES_BEGIN
     extern template class GUM_PUBLIC_BN BNDatabaseGenerator< double >;
+    GUM_IGNORE_ATTRIBUTES_END
 #endif
 
   } /* namespace learning */

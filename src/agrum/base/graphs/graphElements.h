@@ -421,7 +421,9 @@ namespace gum {
 } /* namespace gum */
 
 #if !defined(GUM_NO_EXTERN_TEMPLATE_CLASS) && !defined(SWIG)
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::HashFunc< gum::NodeSet >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 #ifndef GUM_NO_INLINE

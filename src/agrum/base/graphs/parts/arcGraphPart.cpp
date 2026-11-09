@@ -49,8 +49,8 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/arcGraphPart_inl.h>
-#endif   // GU%_NO_INLINE
-#include "agrum/base/graphs/graphElements.h"
+#endif   // GUM_NO_INLINE
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum {
 

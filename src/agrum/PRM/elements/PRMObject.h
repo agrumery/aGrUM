@@ -50,10 +50,9 @@
 #define GUM_PRM_OBJECT_H
 
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
-
-#include <string_view>
 
 namespace gum {
 

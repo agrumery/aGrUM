@@ -49,9 +49,9 @@
 #ifndef GUM_DECISIONTENSOR_H
 #define GUM_DECISIONTENSOR_H
 
-#include <agrum/base/multidim/tensor.h>
-
 #include <string_view>
+
+#include <agrum/base/multidim/tensor.h>
 
 namespace gum {
   /**

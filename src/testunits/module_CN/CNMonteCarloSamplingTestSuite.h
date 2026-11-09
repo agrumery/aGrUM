@@ -210,10 +210,10 @@ namespace gum_tests {
 
     try {
       for (const auto node: cn->current_bn().nodes()) {
-        auto   pmin  = mcs.marginalMin(node);
-        auto   pmax  = mcs.marginalMax(node);
-        double e_inf = mcs.expectationMin(node);
-        double e_sup = mcs.expectationMax(node);
+        auto pmin = mcs.marginalMin(node);
+        auto pmax = mcs.marginalMax(node);
+        mcs.expectationMin(node);
+        mcs.expectationMax(node);
       }
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);
@@ -251,10 +251,10 @@ namespace gum_tests {
 
     try {
       for (const auto node: cn->current_bn().nodes()) {
-        auto   inf(mcs.marginalMin(node));
-        auto   sup(mcs.marginalMax(node));
-        double e_inf = mcs.expectationMin(node);
-        double e_sup = mcs.expectationMax(node);
+        auto inf(mcs.marginalMin(node));
+        auto sup(mcs.marginalMax(node));
+        mcs.expectationMin(node);
+        mcs.expectationMax(node);
       }
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);
@@ -303,10 +303,10 @@ namespace gum_tests {
 
     try {
       for (const auto node: cn->current_bn().nodes()) {
-        auto   inf(mcs.marginalMin(node));
-        auto   sup(mcs.marginalMax(node));
-        double e_inf = mcs.expectationMin(node);
-        double e_sup = mcs.expectationMax(node);
+        auto inf(mcs.marginalMin(node));
+        auto sup(mcs.marginalMax(node));
+        mcs.expectationMin(node);
+        mcs.expectationMax(node);
       }
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);

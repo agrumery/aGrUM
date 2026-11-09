@@ -43,12 +43,11 @@
 
 #include <functional>
 #include <sstream>
+#include <type_traits>
 #include <utility>
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/sharedAVLTree.h>
-
-#include <type_traits>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

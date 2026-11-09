@@ -164,7 +164,7 @@ namespace PyAgrumHelper {
       if (withLabels) {
         val = PyUnicode_FromString(inst.variable(i).label(inst.val(i)).c_str());
       } else {
-        val = PyLong_FromUnsignedLong(inst.val(i));
+        val = PyLong_FromSize_t(inst.val(i));
       }
       PyDict_SetItem(res, key, val);
       Py_DecRef(key);

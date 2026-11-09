@@ -51,14 +51,13 @@
 #define GUM_AVL_TREE_H
 
 #include <algorithm>
+#include <initializer_list>
 #include <string>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/hashFunc.h>
 #include <agrum/base/core/staticInitializer.h>
-
-#include <initializer_list>
 
 namespace gum {
 

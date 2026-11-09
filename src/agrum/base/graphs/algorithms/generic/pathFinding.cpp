@@ -39,4 +39,4 @@
  ****************************************************************************/
 
 
-#include "agrum/base/graphs/algorithms/generic/pathFinding.h"
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>

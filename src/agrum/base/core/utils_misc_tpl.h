@@ -54,9 +54,9 @@
 #include <iostream>
 #include <string>
 #include <tuple>
+#include <type_traits>
 
 #include <agrum/base/core/utils_misc.h>
-#include <type_traits>
 
 namespace std {
   template < typename T >

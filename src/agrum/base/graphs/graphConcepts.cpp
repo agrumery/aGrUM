@@ -39,4 +39,4 @@
  ****************************************************************************/
 
 
-#include "agrum/base/graphs/graphConcepts.h"
+#include <agrum/base/graphs/graphConcepts.h>

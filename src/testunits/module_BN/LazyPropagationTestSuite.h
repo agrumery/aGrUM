@@ -1450,7 +1450,6 @@ namespace gum_tests {
 
     gum::NodeId ii2 = bn.add(*vars[2]);
     bn.addArc(i0, ii2);
-    auto& x2 = bn.variable(ii2);
     auto& p2 = bn.cpt(ii2);
     p2.fillWith({0.4, 0.6, 0.8, 0.2});
 
@@ -1519,7 +1518,6 @@ namespace gum_tests {
     gum::NodeId ii4 = bn.add(*vars[4]);
     bn.addArc(ii1, ii4);
     bn.addArc(ii3, ii4);
-    auto& x4 = bn.variable(ii4);
     auto& p4 = bn.cpt(ii4);
     p4.fillWith({0.2, 0.8, 0.3, 0.7, 0.4, 0.6, 0.5, 0.5});
 

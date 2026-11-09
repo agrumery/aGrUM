@@ -50,6 +50,7 @@
 #define GUM_MULTIDIM_CONTAINER_H
 
 #include <functional>
+#include <initializer_list>
 #include <iostream>
 #include <vector>
 
@@ -58,7 +59,6 @@
 #include <agrum/base/multidim/implementations/multiDimAdressable.h>
 
 #include <agrum/base/core/math/math_utils.h>
-#include <initializer_list>
 
 namespace gum {
   // needed for content()

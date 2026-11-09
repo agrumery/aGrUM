@@ -52,8 +52,10 @@
 
 #include <cstddef>
 #include <functional>
+#include <initializer_list>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -61,9 +63,6 @@
 
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/sharedAVLTree.h>
-
-#include <initializer_list>
-#include <type_traits>
 
 namespace gum {
 

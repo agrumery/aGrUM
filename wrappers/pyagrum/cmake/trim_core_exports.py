@@ -96,6 +96,10 @@ def gnu_undefined_symbols(path):
 
 _DUMPBIN_EXPORT_RE = re.compile(r"^\s*\d+\s+[0-9A-Fa-f]+\s+[0-9A-Fa-f]+\s+(\S+)")
 _DUMPBIN_IMPORT_RE = re.compile(r"^\s+[0-9A-Fa-f]+\s+(\S+)\s*$")
+# variables in the MSVC decoration: `@@0` to `@@2` static members, `@@3` globals, after the first `@@` (a later one
+# belongs to the signature of a function). Their dllexport says DATA in the objects: a line of the .def without DATA
+# is a second, different specification of the export (LNK4197)
+_MSVC_DATA_SYMBOL_RE = re.compile(r"^\?[^?](?:(?!@@).)*@@[0-3]")
 
 
 def msvc_defined_symbols(path):
@@ -210,7 +214,7 @@ def main():
     elif args.format == "msvc":
       f.write("EXPORTS\n")
       for sym in sorted(needed):
-        f.write(f"    {sym}\n")
+        f.write(f"    {sym} DATA\n" if _MSVC_DATA_SYMBOL_RE.match(sym) else f"    {sym}\n")
     else:
       for sym in sorted(needed):
         f.write(sym + "\n")

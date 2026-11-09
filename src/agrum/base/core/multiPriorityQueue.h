@@ -50,6 +50,7 @@
 #define GUM_MULTI_PRIORITY_QUEUE_H
 
 #include <functional>
+#include <initializer_list>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -58,8 +59,6 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/hashTable.h>
-
-#include <initializer_list>
 
 namespace gum {
 

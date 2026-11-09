@@ -53,13 +53,12 @@
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/IPRMFactory.h>
-
-#include <string_view>
 
 namespace gum {
 

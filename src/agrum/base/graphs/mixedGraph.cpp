@@ -50,7 +50,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/mixedGraph_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
 

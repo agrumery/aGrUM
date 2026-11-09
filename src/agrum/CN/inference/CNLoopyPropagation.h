@@ -52,10 +52,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <limits>
+#include <string_view>
 
 #include <agrum/CN/inference/inferenceEngine.h>
-
-#include <string_view>
 
 #define INF_ std::numeric_limits< GUM_SCALAR >::infinity()
 
@@ -397,7 +396,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+    GUM_IGNORE_ATTRIBUTES_BEGIN
     extern template class GUM_PUBLIC_CN CNLoopyPropagation< double >;
+    GUM_IGNORE_ATTRIBUTES_END
 #endif
   }   // namespace credal
 }   // namespace gum

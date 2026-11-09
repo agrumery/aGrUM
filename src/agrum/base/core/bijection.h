@@ -52,14 +52,13 @@
 #ifndef GUM_BIJECTION_H
 #define GUM_BIJECTION_H
 
+#include <initializer_list>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
 
 #include <agrum/base/core/hashTable.h>
-
-#include <initializer_list>
-#include <type_traits>
 
 namespace gum {
 
@@ -1736,8 +1735,10 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC BijectionIterator< int, int >;
   extern template class GUM_SHARED_PUBLIC BijectionIteratorSafe< int, int >;
+  GUM_IGNORE_ATTRIBUTES_END
 #  endif
   extern GUM_SHARED_PUBLIC const BijectionIterator< int, int > _static_Bijection_end_;
   extern GUM_SHARED_PUBLIC const BijectionIteratorSafe< int, int > _static_Bijection_end_safe_;
@@ -1762,8 +1763,10 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::Bijection< int, int >;
 extern template class GUM_SHARED_PUBLIC gum::Bijection< std::string, std::string >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

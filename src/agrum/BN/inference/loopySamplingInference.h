@@ -100,6 +100,7 @@ namespace gum {
   };
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_BN LoopySamplingInference< float, WeightedSampling >;
   extern template class GUM_PUBLIC_BN LoopySamplingInference< double, WeightedSampling >;
   extern template class GUM_PUBLIC_BN LoopySamplingInference< float, ImportanceSampling >;
@@ -108,6 +109,7 @@ namespace gum {
   extern template class GUM_PUBLIC_BN LoopySamplingInference< double, MonteCarloSampling >;
   extern template class GUM_PUBLIC_BN LoopySamplingInference< float, GibbsSampling >;
   extern template class GUM_PUBLIC_BN LoopySamplingInference< double, GibbsSampling >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
   template < GUM_Numeric GUM_SCALAR >

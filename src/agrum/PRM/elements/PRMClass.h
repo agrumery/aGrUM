@@ -49,14 +49,13 @@
 #ifndef GUM_CLASS_H
 #define GUM_CLASS_H
 
+#include <string_view>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/PRM/elements/PRMParameter.h>
 #include <agrum/PRM/elements/PRMSlotChain.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

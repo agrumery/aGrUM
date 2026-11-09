@@ -47,12 +47,12 @@
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
 
+#include <type_traits>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/stattests/priors/prior.h>
 #include <agrum/base/stattests/recordCounter.h>
-
-#include <type_traits>
 
 namespace gum {
 

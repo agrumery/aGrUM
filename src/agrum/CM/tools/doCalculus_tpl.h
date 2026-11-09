@@ -51,14 +51,13 @@
 
 #include <algorithm>
 #include <queue>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 
 #include <agrum/CM/tools/causalFormula.h>
 #include <agrum/CM/tools/doCalculus.h>
 #include <agrum/CM/tools/separation.h>
-
-#include <unordered_map>
-#include <unordered_set>
 
 namespace gum {
 

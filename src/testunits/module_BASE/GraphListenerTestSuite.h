@@ -87,13 +87,13 @@ namespace gum_tests {
       void whenEdgeAdded(const void*, gum::NodeId f, gum::NodeId s) {
         _nbrEdges_++;
 
-        if (_isOn_) GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")");
+        if (_isOn_) { GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")"); }
       }
 
       void whenEdgeDeleted(const void*, gum::NodeId f, gum::NodeId s) {
         _nbrEdges_--;
 
-        if (_isOn_) GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")");
+        if (_isOn_) { GUM_TRACE(f << "--" << s << "(" << _nbrEdges_ << ")"); }
       }
 
       int nodes() const { return _nbrNode_; }

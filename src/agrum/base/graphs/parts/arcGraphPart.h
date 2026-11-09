@@ -306,7 +306,7 @@ namespace gum {
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/arcGraphPart_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #include <agrum/base/graphs/parts/arcGraphPart_tpl.h>
 

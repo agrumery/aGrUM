@@ -89,7 +89,7 @@ def export(obj: Any, filename: str | None = None, **kwargs) -> Any:
   except pyagrum.InvalidArgument:
     pass
 
-  # si l'objet est un string (non dot), on suppose que c'est du html
+  # if the object is a string (not dot), assume it is HTML
   if isinstance(obj, str):
     return exportHTML(obj, filename=filename)
   if hasattr(obj, "_repr_html_"):

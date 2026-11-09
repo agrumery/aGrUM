@@ -50,9 +50,11 @@
 #define GUM_HASHTABLE_H
 
 #include <cstddef>
+#include <initializer_list>
 #include <iostream>
 #include <limits>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -62,8 +64,6 @@
 #include <agrum/base/core/staticInitializer.h>
 
 #include <agrum/base/core/optional_ref.h>
-#include <initializer_list>
-#include <string_view>
 
 namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -2652,10 +2652,12 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC HashTableIterator< int, int >;
   extern template class GUM_SHARED_PUBLIC HashTableConstIterator< int, int >;
   extern template class GUM_SHARED_PUBLIC HashTableIteratorSafe< int, int >;
   extern template class GUM_SHARED_PUBLIC HashTableConstIteratorSafe< int, int >;
+  GUM_IGNORE_ATTRIBUTES_END
 #  endif
   extern GUM_SHARED_PUBLIC const HashTableIterator< int, int > _static_HashTable_end_;
   extern GUM_SHARED_PUBLIC const HashTableConstIterator< int, int > _static_HashTable_cend_;
@@ -2672,10 +2674,12 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::HashTable< int, int >;
 extern template class GUM_SHARED_PUBLIC gum::HashTable< int, std::string >;
 extern template class GUM_SHARED_PUBLIC gum::HashTable< std::string, std::string >;
 extern template class GUM_SHARED_PUBLIC gum::HashTable< std::string, int >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

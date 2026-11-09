@@ -57,10 +57,9 @@
 #define GUM_DOT_STYLE_H
 
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
-
-#include <string_view>
 
 namespace gum::dot {
 

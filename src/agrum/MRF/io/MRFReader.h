@@ -54,12 +54,11 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/MRF/MarkovRandomField.h>
-
-#include <string_view>
 
 namespace gum {
   /* =========================================================================*/
@@ -101,7 +100,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_MRF MRFReader< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 } /* namespace gum */

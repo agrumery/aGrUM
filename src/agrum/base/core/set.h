@@ -48,13 +48,12 @@
 #ifndef GUM_SET_H
 #define GUM_SET_H
 
+#include <initializer_list>
 #include <string>
 
 #include <agrum/base/core/debug.h>
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/core/list.h>
-
-#include <initializer_list>
 
 namespace gum {
 
@@ -990,7 +989,9 @@ namespace gum {
   // its methods stay implicitly/vaguely-inline and get re-hidden by
   // -fvisibility-inlines-hidden regardless of the class-level GUM_SHARED_PUBLIC
   // tag above (same root cause fixed for gum::BayesNetFactory<double>).
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC HashFunc< Set< unsigned long > >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -1003,8 +1004,10 @@ namespace gum {
   // pointers to void to be cast into pointers to other types (and conversely).
   // This avoids the painful strict-aliasing rule warning
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_SHARED_PUBLIC SetIterator< int >;
   extern template class GUM_SHARED_PUBLIC SetIteratorSafe< int >;
+  GUM_IGNORE_ATTRIBUTES_END
 #  endif
   extern GUM_SHARED_PUBLIC const SetIterator< int > _static_Set_end_;
   extern GUM_SHARED_PUBLIC const SetIteratorSafe< int > _static_Set_end_safe_;
@@ -1017,12 +1020,14 @@ namespace gum {
 
 
 #if !defined(GUM_NO_EXTERN_TEMPLATE_CLASS) && !defined(SWIG)
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_SHARED_PUBLIC gum::Set< int >;
 extern template class GUM_SHARED_PUBLIC gum::Set< long >;
 extern template class GUM_SHARED_PUBLIC gum::Set< unsigned int >;
 extern template class GUM_SHARED_PUBLIC gum::Set< unsigned long >;
 extern template class GUM_SHARED_PUBLIC gum::Set< double >;
 extern template class GUM_SHARED_PUBLIC gum::Set< std::string >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

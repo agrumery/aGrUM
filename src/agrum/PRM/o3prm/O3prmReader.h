@@ -68,12 +68,12 @@
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
 #pragma pop_macro("GUM_COCOR_PUBLIC")
+#include <string_view>
+
 #include <agrum/PRM/o3prm/O3ClassFactory.h>
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 #include <agrum/PRM/o3prm/O3SystemFactory.h>
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

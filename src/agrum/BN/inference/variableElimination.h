@@ -400,7 +400,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_BN VariableElimination< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

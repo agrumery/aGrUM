@@ -641,11 +641,11 @@ class CNMonteCarloSampling(object):
       ------
       pyagrum.InvalidArgument
          If one value is not a value for the node
-       pyagrum.InvalidArgument
+      pyagrum.InvalidArgument
          If the size of a value is different from the domain side of the node
-       pyagrum.FatalError
+      pyagrum.FatalError
          If one value is a vector of 0s
-       pyagrum.UndefinedElement
+      pyagrum.UndefinedElement
          If one node does not belong to the Bayesian network
       """
       if isinstance(evidces, dict):
@@ -1104,11 +1104,11 @@ class CNLoopyPropagation(object):
       ------
       pyagrum.InvalidArgument
          If one value is not a value for the node
-       pyagrum.InvalidArgument
+      pyagrum.InvalidArgument
          If the size of a value is different from the domain side of the node
-       pyagrum.FatalError
+      pyagrum.FatalError
          If one value is a vector of 0s
-       pyagrum.UndefinedElement
+      pyagrum.UndefinedElement
          If one node does not belong to the Bayesian network
       """
       if isinstance(evidces, dict):

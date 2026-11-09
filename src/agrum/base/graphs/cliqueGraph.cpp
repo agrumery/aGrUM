@@ -54,7 +54,7 @@
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/cliqueGraph_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

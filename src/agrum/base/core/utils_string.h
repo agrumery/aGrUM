@@ -53,11 +53,10 @@
 #include <cstdlib>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/agrum.h>
-
-#include <string_view>
 
 namespace gum {
   /// @ingroup utilities_group

@@ -57,13 +57,12 @@
 #define GUM_LEARNING_DB_TRANSLATOR_SET_H
 
 #include <limits>
+#include <type_traits>
 #include <vector>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/database/DBTranslatorUtils.h>
-
-#include <type_traits>
 
 namespace gum {
 

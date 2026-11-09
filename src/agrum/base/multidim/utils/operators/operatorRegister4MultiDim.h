@@ -53,11 +53,10 @@
 #include <atomic>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/core/hashTable.h>
-
-#include <string_view>
 
 namespace gum {
 

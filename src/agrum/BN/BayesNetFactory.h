@@ -50,12 +50,11 @@
 #define GUM_BAYESNET_FACTORY_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNetFactory.h>
-
-#include <string_view>
 
 namespace gum {
 
@@ -483,7 +482,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_BN BayesNetFactory< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 } /* namespace gum */

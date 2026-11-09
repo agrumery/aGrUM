@@ -255,6 +255,6 @@ static_assert(gum::GUM_UndiGraphable< gum::UndiGraph >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/undiGraph_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 #endif   /* GUM_UNDIGRAPH_H */

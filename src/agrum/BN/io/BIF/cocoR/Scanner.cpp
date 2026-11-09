@@ -39,6 +39,8 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if defined(__GNUC__) || defined(__clang__)
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wsign-compare"
+// the generated comment functions may not use all the saved positions
+#  pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 
    namespace gum {

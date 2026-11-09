@@ -53,12 +53,11 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/MRF/io/MRFReader.h>
-
-#include <string_view>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // including coco-generated PARSER and SCANNER; GUM_COCOR_PUBLIC is locally
@@ -175,7 +174,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+  GUM_IGNORE_ATTRIBUTES_BEGIN
   extern template class GUM_PUBLIC_MRF UAIMRFReader< double >;
+  GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 } /* namespace gum */

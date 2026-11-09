@@ -213,7 +213,7 @@ from .pyagrumcpp import (
   IntegerVariable,
   NumericalDiscreteVariable,
 )
-from .pyagrumcpp import Tensor, Instantiation, Tensor
+from .pyagrumcpp import Tensor, Instantiation
 from .pyagrumcpp import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, ChainGraph, CPDAG, MPDAG, MarkedGraph, PAG, MAG, CliqueGraph
 from .pyagrumcpp import EdgeMark, EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
 from .pyagrumcpp import JunctionTreeGenerator

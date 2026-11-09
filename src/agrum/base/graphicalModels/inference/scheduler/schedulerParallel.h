@@ -51,6 +51,7 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -61,8 +62,6 @@
 #include <agrum/base/core/priorityQueue.h>
 #include <agrum/base/core/threads/threadExecutor.h>
 #include <agrum/base/graphicalModels/inference/scheduler/schedulerSequential.h>
-
-#include <condition_variable>
 
 namespace gum {
 

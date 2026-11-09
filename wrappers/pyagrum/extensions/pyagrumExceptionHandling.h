@@ -75,7 +75,7 @@ static void SetPythonizeAgrumException() {
     PyErr_SetString(PyExc_RuntimeError, "C++ Bad Cast");
   } catch (gum::SyntaxError& e) {
     PyErr_SetString(PyExc_SyntaxError, e.errorContent().c_str());
-    PyErr_SyntaxLocationEx(e.filename().c_str(), e.line(), e.col());
+    PyErr_SyntaxLocationEx(e.filename().c_str(), static_cast< int >(e.line()), static_cast< int >(e.col()));
   } catch (gum::Exception& e) {
     const std::string swigTypeName = std::string("gum::") + e.pythonClassName_() + " *";
     PyErr_SetString(SWIG_Python_ExceptionType(SWIG_TypeQuery(swigTypeName.c_str())), e.what());

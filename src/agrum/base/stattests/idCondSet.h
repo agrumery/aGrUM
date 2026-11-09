@@ -50,6 +50,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -57,8 +58,6 @@
 
 #include <agrum/base/core/sequence.h>
 #include <agrum/base/graphs/graphElements.h>
-
-#include <type_traits>
 
 namespace gum {
 

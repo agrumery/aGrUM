@@ -48,13 +48,12 @@
  ****************************************************************************/
 
 #include <algorithm>
+#include <unordered_set>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/generic/reachability.h>
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/CM/tools/separation.h>
-
-#include <unordered_set>
 
 namespace gum {
 

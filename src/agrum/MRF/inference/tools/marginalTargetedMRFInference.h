@@ -51,12 +51,11 @@
 #define GUM_MARKOV_RANDOM_FIELD_MARGINAL_TARGETED_INFERENCE_H
 
 #include <string>
+#include <string_view>
 
 #include <agrum/agrum.h>
 
 #include <agrum/MRF/inference/tools/MRFInference.h>
-
-#include <string_view>
 
 namespace gum {
 

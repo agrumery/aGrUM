@@ -50,13 +50,12 @@
 #define GUM_SYSTEM_H
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include <agrum/base/variables/integerVariable.h>
 #include <agrum/BN/BayesNetFactory.h>
 #include <agrum/PRM/elements/PRMInstance.h>
-
-#include <string_view>
 
 namespace gum {
   namespace prm {

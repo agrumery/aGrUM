@@ -137,11 +137,15 @@ namespace gum {
       auto d = (GUM_SCALAR)randomProba();
 
       if (d < cnd)
-        map.insert(i, influenceDiagram->addChanceNode(RangeVariable(varName, "", 0, nb_mod - 1)));
+        map.insert(i,
+                   influenceDiagram->addChanceNode(
+                       RangeVariable(varName, "", 0, static_cast< long >(nb_mod) - 1)));
       else if (d < (cnd + und))
         map.insert(i, influenceDiagram->addUtilityNode(RangeVariable(varName, "", 0, 0)));
       else
-        map.insert(i, influenceDiagram->addDecisionNode(RangeVariable(varName, "", 0, nb_mod - 1)));
+        map.insert(i,
+                   influenceDiagram->addDecisionNode(
+                       RangeVariable(varName, "", 0, static_cast< long >(nb_mod) - 1)));
     }
 
     // We add arcs

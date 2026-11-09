@@ -54,10 +54,9 @@
 #include <numeric>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <utility>
 #include <vector>
-
-#include <type_traits>
 
 
 #ifdef GUM_DEBUG_MODE

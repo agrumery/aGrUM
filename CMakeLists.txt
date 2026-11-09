@@ -113,6 +113,8 @@ endif ()
 if (MSVC)
     add_compile_definitions(NOMINMAX _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_DEPRECATE)
     add_compile_options(/bigobj)
+    # C4251, C4275: members and bases without dll-interface, everywhere with GUM_PUBLIC. C4250: inherited by dominance.
+    add_compile_options(/W3 /wd4251 /wd4275 /wd4250)
 endif ()
 
 if (NOT AGRUM_INLINE)

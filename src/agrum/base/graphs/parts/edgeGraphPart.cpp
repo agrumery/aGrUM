@@ -50,7 +50,7 @@
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/parts/edgeGraphPart_inl.h>
 #endif   // GUM_NO_INLINE
-#include "agrum/base/graphs/graphElements.h"
+#include <agrum/base/graphs/graphElements.h>
 
 namespace gum {
 

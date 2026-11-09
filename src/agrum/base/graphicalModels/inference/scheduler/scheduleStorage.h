@@ -49,6 +49,7 @@
 #define GUM_SCHEDULE_STORAGE_H
 
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -56,8 +57,6 @@
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleMultiDim.h>
 #include <agrum/base/graphicalModels/inference/scheduler/scheduleOperator.h>
-
-#include <type_traits>
 
 namespace gum {
 

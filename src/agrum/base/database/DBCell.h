@@ -50,14 +50,13 @@
 #include <cstring>
 #include <stdexcept>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/bijection.h>
-
-#include <string_view>
-#include <type_traits>
 
 namespace gum {
 

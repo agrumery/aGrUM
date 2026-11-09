@@ -42,6 +42,7 @@
 
 #include <optional>
 #include <string>
+#include <type_traits>
 
 #include <gumtest/AgrumTestSuite.h>
 #include <gumtest/utils.h>
@@ -49,7 +50,6 @@
 #include <agrum/base/core/hashTable.h>
 
 #include <agrum/base/core/optional_ref.h>
-#include <type_traits>
 
 namespace gum_tests {
 

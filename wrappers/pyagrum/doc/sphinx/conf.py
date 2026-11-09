@@ -24,6 +24,7 @@
 import datetime
 import os
 import sys
+import warnings
 
 import matplotlib
 from sphinx.errors import ExtensionError
@@ -553,7 +554,16 @@ def skip(app, what, name, obj, skip, options):
 
 autodoc_type_aliases = {
     "Incomplete": "typing.Any",
+    "pandas.DataFrame": "pandas.DataFrame",  # only imported under TYPE_CHECKING by the annotations of generateSample
 }
+
+# expected warnings at the import of the documented modules: pyagrum.lib.dynamicBN is deprecated (and still
+# documented), autodoc imports pyagrum.lib.notebook out of an IPython instance
+warnings.filterwarnings("ignore", message="This module is deprecated since pyAgrum>=3.2", category=FutureWarning)
+warnings.filterwarnings("ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning)
+
+# qiskit is an optional dependency of pyagrum.qBNSampling, absent from the documentation environment
+autodoc_mock_imports = ["qiskit", "qiskit_aer", "qiskit_ibm_runtime"]
 
 suppress_warnings = [
     "ref.ref",

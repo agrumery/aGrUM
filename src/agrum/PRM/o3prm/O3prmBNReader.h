@@ -53,11 +53,10 @@
 
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 #include <agrum/BN/io/BNReader.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
-
-#include <string_view>
 
 namespace gum {
   /**
@@ -142,7 +141,9 @@ namespace gum {
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 extern template class GUM_PUBLIC_PRM gum::O3prmBNReader< double >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 

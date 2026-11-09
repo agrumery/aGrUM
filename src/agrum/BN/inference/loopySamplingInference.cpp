@@ -42,6 +42,7 @@
 #include <agrum/BN/inference/loopySamplingInference.h>
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< float, gum::WeightedSampling >;
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< double, gum::WeightedSampling >;
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< float, gum::ImportanceSampling >;
@@ -50,4 +51,5 @@ template class GUM_PUBLIC_BN gum::LoopySamplingInference< float, gum::GibbsSampl
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< double, gum::GibbsSampling >;
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< float, gum::MonteCarloSampling >;
 template class GUM_PUBLIC_BN gum::LoopySamplingInference< double, gum::MonteCarloSampling >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

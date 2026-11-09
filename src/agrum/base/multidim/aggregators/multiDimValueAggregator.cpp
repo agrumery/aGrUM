@@ -50,5 +50,7 @@
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::aggregator::MultiDimValueAggregator< double >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

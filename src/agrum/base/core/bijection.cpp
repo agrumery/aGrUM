@@ -66,14 +66,18 @@ namespace gum {
 } /* namespace gum */
 
 #  ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::BijectionIterator< int, int >;
 template class GUM_SHARED_PUBLIC gum::BijectionIteratorSafe< int, int >;
+GUM_IGNORE_ATTRIBUTES_END
 #  endif
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 
 #ifndef GUM_NO_EXTERN_TEMPLATE_CLASS
+GUM_IGNORE_ATTRIBUTES_BEGIN
 template class GUM_SHARED_PUBLIC gum::Bijection< int, int >;
 template class GUM_SHARED_PUBLIC gum::Bijection< std::string, std::string >;
+GUM_IGNORE_ATTRIBUTES_END
 #endif

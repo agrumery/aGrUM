@@ -114,7 +114,7 @@ namespace gum {
             const auto step    = (fmax - fmin) / nbr;
             double     current = fmin;
             for (auto i = 0; i <= nbr; i += 1) {
-              ticks.push_back(current);
+              ticks.push_back(static_cast< GUM_SCALAR >(current));
               current += step;
             }
             ds = ticks.size();

@@ -58,13 +58,13 @@
 #include <queue>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <agrum/base/variables/IDiscretizedVariable.h>
 #include <agrum/KTBN/database/KTBNDatabaseGenerator.h>
 
 #include <agrum/base/core/utils_random.h>
-#include <unordered_map>
 
 namespace gum::learning {
 

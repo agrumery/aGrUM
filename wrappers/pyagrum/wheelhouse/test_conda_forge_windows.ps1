@@ -62,6 +62,12 @@ function Enable-Msvc2022 {
 # conda-forge packages to be resolved at every execution.
 $CONDA_PREFIX_CI = Join-Path $env:TEMP "pyagrum-conda-forge-$CI_JOB_ID"
 
+# conda keeps the repodata in the cache of its first writable package directory. The jobs running at
+# the same time on this runner must not share it: on Windows, updating it concurrently fails
+# (WinError 183, 32 or 2). The shared directory still provides the packages it already holds.
+$CONDA_PKGS_CI = Join-Path $env:TEMP "pyagrum-conda-forge-pkgs-$CI_JOB_ID"
+$env:CONDA_PKGS_DIRS = "$CONDA_PKGS_CI,$(Join-Path (conda info --base) 'pkgs')"
+
 $BUILD_DIR = Join-Path $CI_PROJECT_DIR "build-conda-forge-preflight"
 
 
@@ -285,5 +291,9 @@ finally {
             Remove-Item -Recurse -Force $CONDA_PREFIX_CI `
                 -ErrorAction SilentlyContinue
         }
+    }
+
+    if (Test-Path $CONDA_PKGS_CI) {
+        Remove-Item -Recurse -Force $CONDA_PKGS_CI -ErrorAction SilentlyContinue
     }
 }

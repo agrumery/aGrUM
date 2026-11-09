@@ -50,10 +50,10 @@
 #ifndef GUM_PROGRESSNOTIFICATION_H
 #define GUM_PROGRESSNOTIFICATION_H
 
+#include <string_view>
+
 #include <agrum/base/core/signal/signalers.h>
 #include <agrum/base/core/timer.h>
-
-#include <string_view>
 
 namespace gum {
 

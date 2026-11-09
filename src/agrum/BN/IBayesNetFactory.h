@@ -49,13 +49,12 @@
 #define GUM_INTERFACE_BAYESNET_FACTORY_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/graphicalModels/variableNodeMap.h>
 #include <agrum/base/multidim/implementations/multiDimAdressable.h>
 #include <agrum/base/variables/labelizedVariable.h>
-
-#include <string_view>
 
 namespace gum {
   /**

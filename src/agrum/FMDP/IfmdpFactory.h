@@ -51,11 +51,10 @@
 #define GUM_ABSTRACT_FMDP_FACTORY_H
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <agrum/FMDP/fmdp.h>
-
-#include <string_view>
 
 namespace gum {
 

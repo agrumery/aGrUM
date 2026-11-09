@@ -39,14 +39,13 @@
  ****************************************************************************/
 
 
-#include "agrum/base/io/GumBinaryIO.h"
-
 #include <algorithm>
 #include <cctype>
 #include <climits>
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
+#include <agrum/base/io/GumBinaryIO.h>
 
 namespace gum {
 
