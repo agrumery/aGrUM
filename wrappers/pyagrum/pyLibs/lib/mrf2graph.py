@@ -211,14 +211,6 @@ def MRFinference2UGdot(
   if cmapArc is None:
     cmapArc = plt.get_cmap(pyagrum.config["notebook", "arcCmap"])
 
-  # default
-  minarcs = 0
-  maxarcs = 100
-
-  if arcWidth is not None:
-    minarcs = min(arcWidth.values())
-    maxarcs = max(arcWidth.values())
-
   startTime = time.time()
   if engine is None:
     ie = pyagrum.ShaferShenoyMRFInference(mrf)
@@ -232,49 +224,23 @@ def MRFinference2UGdot(
 
   dotstr = gds.inferenceDotHeader("graph", stopTime - startTime)
 
+  evidence = ie.hardEvidenceNodes() | ie.softEvidenceNodes()
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
+    dotstr += gds.inferenceNodeDot(
+      name,
+      nid,
+      targets,
+      nodeColor,
+      cmapNode,
+      nid in evidence,
+      temp_dir,
+      lambda filename, bgcol: saveFigProba(ie.posterior(name), filename, bgcolor=bgcol),
+    )
 
-    # defaults
-    bgcol = pyagrum.config["dot", "nodeBgColor"]
-    fgcol = gds.configFgColor("dot", "nodeFgColor")
-    if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = pyagrum.config["notebook", "figureFaceColor"]
-
-    value = gds.valueOfNode(nodeColor, name, nid)
-    if value is not None:
-      bgcol = gds.proba2bgcolor(value, cmapNode)
-      fgcol = gds.proba2fgcolor(value, cmapNode)
-
-    # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
-      bgcol = pyagrum.config["notebook", "evidenceBgColor"]
-      fgcol = pyagrum.config["notebook", "evidenceFgColor"]
-
-    colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
-
-    if len(targets) == 0 or name in targets or nid in targets:
-      filename = gds.inferenceImageFilename(temp_dir, name)
-      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
-    else:
-      dotstr += f' "{name}" [{colorattribute}]'
-
-  for a in mrf.edges():
-    (n, j) = a
-    pw = 1.0
-    av = f"{n}&nbsp;&mdash;&nbsp;{j}"
-    col = gds.getBlackInTheme()
-
-    if arcWidth is not None and (n, j) in arcWidth:
-      if maxarcs != minarcs:
-        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-      av = f"{n}&nbsp;&mdash;&nbsp;{j} : {arcWidth[a]}"
-
-    if arcColor is not None and a in arcColor:
-      col = gds.proba2color(arcColor[a], cmapArc)
-
-    dotstr += f' "{mrf.variable(n).name()}"--"{mrf.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
+  dotstr += gds.inferenceArcsDot(
+    mrf.edges(), lambda n: mrf.variable(n).name(), arcWidth, arcColor, cmapArc, oriented=False
+  )
   dotstr += "}"
 
   return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir))
@@ -332,51 +298,23 @@ def MRFinference2FactorGraphdot(
   stopTime = time.time()
 
   temp_dir = gds.inferenceTemporaryDirectory()
-  dotstr = f'''graph{{ 
-    layout="{pyagrum.config["factorgraph", "graphLayout"]}";
-    fontcolor="{gds.getBlackInTheme()}";
-    bgcolor="transparent";
-  '''
+  dotstr = gds.inferenceDotHeader("graph", stopTime - startTime)
+  dotstr += f'  layout="{pyagrum.config["factorgraph", "graphLayout"]}";\n'
 
-  if pyagrum.config.typed["notebook", "showInferenceTime"]:
-    dotstr += f'  label="Inference in {1000 * (stopTime - startTime):6.2f}ms";\n'
-
-  dotstr += (
-    '  node [fillcolor="'
-    + pyagrum.config["dot", "nodeBgColor"]
-    + '", style=filled,color="'
-    + gds.configFgColor("dot", "nodeFgColor")
-    + '"];'
-    + "\n"
-  )
-  dotstr += '  edge [color="' + gds.getBlackInTheme() + '"];' + "\n"
-
+  evidence = ie.hardEvidenceNodes() | ie.softEvidenceNodes()
   for nid in mrf.nodes():
     name = mrf.variable(nid).name()
-
-    # defaults
-    bgcol = pyagrum.config["dot", "nodeBgColor"]
-    fgcol = gds.configFgColor("dot", "nodeFgColor")
-    if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = pyagrum.config["notebook", "figureFaceColor"]
-
-    value = gds.valueOfNode(nodeColor, name, nid)
-    if value is not None:
-      bgcol = gds.proba2bgcolor(value, cmapNode)
-      fgcol = gds.proba2fgcolor(value, cmapNode)
-
-    # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
-      bgcol = pyagrum.config["notebook", "evidenceBgColor"]
-      fgcol = pyagrum.config["notebook", "evidenceFgColor"]
-
-    colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
-    if len(targets) == 0 or name in targets or nid in targets:
-      filename = gds.inferenceImageFilename(temp_dir, name)
-      saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
-    else:
-      dotstr += f' "{name}" [shape=rectangle,margin=0.04,width=0,height=0,{colorattribute}];\n'
+    dotstr += gds.inferenceNodeDot(
+      name,
+      nid,
+      targets,
+      nodeColor,
+      cmapNode,
+      nid in evidence,
+      temp_dir,
+      lambda filename, bgcol: saveFigProba(ie.posterior(name), filename, bgcolor=bgcol),
+      "shape=rectangle,margin=0.04,width=0,height=0,",
+    )
 
   def factorname(f):
     return '"f' + "#".join(map(str, sorted(list(f)))) + '"'

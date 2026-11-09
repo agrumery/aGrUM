@@ -40,8 +40,10 @@
 
 import contextlib
 import io
+import os
 import shutil
 import sys
+import tempfile
 import unittest
 
 import pyagrum as gum
@@ -309,6 +311,28 @@ class TestDotOptions(pyAgrumTestCase):
         self.assertEqual("".join(gds.proba2hex(p, cmap, False)), matplotlib.colors.to_hex(cmap(p))[1:])
     self.assertEqual(gds.proba2color(0.6, matplotlib.colormaps["Pastel1"]), "#ffffcc")
 
+  def testROCBackgroundColor(self):
+    try:
+      import matplotlib
+
+      matplotlib.use("Agg")
+      import pylab
+
+      import pyagrum.lib.bn2roc as roc
+    except ImportError:
+      self.skipTest("matplotlib is needed for the graphs of pyAgrum")
+    bn = gum.fastBN("a->b")
+    with tempfile.TemporaryDirectory() as temp_dir:
+      csv = os.path.join(temp_dir, "roc.csv")
+      generator = gum.BNDatabaseGenerator(bn)
+      generator.drawSamples(200)
+      generator.toCSV(csv)
+      try:
+        roc.showROC_PR(bn, csv, "b", "1", show_progress=False, show_fig=False, save_fig=False, bgcolor="#123456")
+        self.assertEqual(matplotlib.colors.to_hex(pylab.gcf().get_facecolor()), "#123456")
+      finally:
+        pylab.close("all")
+
   def testInferenceDotHelpers(self):
     try:
       import pyagrum.lib.dotstyle as gds
@@ -322,6 +346,12 @@ class TestDotOptions(pyAgrumTestCase):
       self.assertIn("Inference in  12.30ms", header)
       gum.config["notebook", "showInferenceTime"] = False
       self.assertNotIn("Inference in", gds.inferenceDotHeader("digraph", 0.0123))
+      self.assertNotIn("label=", gds.inferenceDotHeader("digraph", 0.0123))
+      self.assertIn('label="MEU 1";', gds.inferenceDotHeader("digraph", 0.0123, "MEU 1"))
+      gum.config["notebook", "showInferenceTime"] = True
+      self.assertIn('label="MEU 1\nInference in  12.30ms";', gds.inferenceDotHeader("digraph", 0.0123, "MEU 1"))
+      self.assertNotEqual(gds.contrastFgColor("#000000"), gds.contrastFgColor("#FFFFFF"))
+      gum.config["notebook", "showInferenceTime"] = False
       temp_dir = gds.inferenceTemporaryDirectory()
       g = gds.inferenceDotGraph(gds.inferenceDotHeader() + '"A";}', None, temp_dir)
       self.assertEqual(g.get_size(), gum.config["notebook", "graphInferenceSize"])
@@ -341,6 +371,7 @@ class TestDotOptions(pyAgrumTestCase):
       import os
 
       import pyagrum.lib.bn2graph as gbn2
+      import pyagrum.lib.cn2graph as gcn2
       import pyagrum.lib.dotstyle as gds
       import pyagrum.lib.mrf2graph as gmrf2
     except ImportError:
@@ -362,6 +393,11 @@ class TestDotOptions(pyAgrumTestCase):
     dot.graph_from_dot_data("graph {}")  # the parser of pydot keeps its last graph until the next parse
     gc.collect()
     self.assertFalse(os.path.exists(directory))
+
+    cn = _credalNet(gum.fastBN("A->B", 2))
+    evidenceColor = gum.config["notebook", "evidenceBgColor"]
+    self.assertNotIn(evidenceColor, gcn2.CNinference2dot(cn, targets={"B"}).to_string())
+    self.assertIn(evidenceColor, gcn2.CNinference2dot(cn, targets={"B"}, evs={"A": 1}).to_string())
 
     mrf = gum.fastMRF("A--B;B--C")
     factors = gmrf2.MRFinference2FactorGraphdot(mrf, factorColor=lambda f: 0.5).to_string()

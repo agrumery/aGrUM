@@ -402,10 +402,10 @@ def proba2histo(
   if scale is None:
     scale = 1.0
 
-  if p.variable(0).domainSize() > int(pyagrum.config["histogram", "lineThreshold"]) and not (isev):
+  if p.variable(0).domainSize() > pyagrum.config.typed["histogram", "lineThreshold"] and not (isev):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
-  if p.variable(0).domainSize() > int(pyagrum.config["histogram", "horizontalThreshold"]):
+  if p.variable(0).domainSize() > pyagrum.config.typed["histogram", "horizontalThreshold"]:
     return _getProbaV(p, scale, txtcolor=txtcolor)
 
   return _getProbaH(p, scale, util=util, txtcolor=txtcolor)

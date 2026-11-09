@@ -235,7 +235,7 @@ def CLGInference2dot(
     else:
       if nodeColor is None or n not in nodeColor:
         bgcol = pyagrum.config["histogram", "color"]
-        fgcol = pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcol, gds.getBlackInTheme())
+        fgcol = gds.contrastFgColor(bgcol)
         res = ""
       else:
         bgcol = gds.proba2bgcolor(nodeColor[n], cmapNode)

@@ -716,28 +716,6 @@ def showROC_PR(
     else:
       raise TypeError("first argument must be a string or a DataFrame")
 
-  if bgcolor is not None:
-    # the background color is set in the configuration for the drawing only, even if it fails
-    oldcol = pyagrum.config["notebook", "figureFaceColor"]
-    pyagrum.config["notebook", "figureFaceColor"] = bgcolor
-    try:
-      return showROC_PR(
-        bn,
-        datasrc,
-        target,
-        label,
-        beta=beta,
-        show_progress=show_progress,
-        show_fig=show_fig,
-        save_fig=save_fig,
-        with_labels=with_labels,
-        show_ROC=show_ROC,
-        show_PR=show_PR,
-        significant_digits=significant_digits,
-      )
-    finally:
-      pyagrum.config["notebook", "figureFaceColor"] = oldcol
-
   filename = _getFilename(datasrc)
   (res, totalP, totalN) = _computePoints(
     bn,
@@ -826,6 +804,9 @@ def showROC_PR(
       thresholds_to_show=[thresholdPR],
       rate=rate,
     )
+
+  if bgcolor is not None:
+    pylab.gcf().set_facecolor(bgcolor)
 
   if save_fig:
     pylab.savefig(figname, dpi=300, transparent=(bgcolor is None))

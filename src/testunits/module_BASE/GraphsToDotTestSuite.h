@@ -200,10 +200,11 @@ namespace gum_tests {
     CHECK(dotContains(dot,
                       "  subgraph \"cluster_0\" {\n"
                       "    style=\"filled\";\n"
-                      "    color=\"#F5F5F5\";\n"
-                      "    rank=\"same\";\n"));
-    CHECK(dotContains(dot, "    0;\n"));
-    CHECK(dotContains(dot, "    1;\n"));
+                      "    color=\"#C9D6E3\";\n"
+                      "    subgraph {\n"
+                      "      rank=\"same\";\n"));
+    CHECK(dotContains(dot, "      0;\n"));
+    CHECK(dotContains(dot, "      1;\n"));
     CHECK(dotContains(dot, "  1 -> 2;\n"));
     CHECK(dotContains(dot, "  0 -> 1 [dir=\"none\"];\n"));
     // the braces of the cluster are single

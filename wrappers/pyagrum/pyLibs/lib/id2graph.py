@@ -116,11 +116,6 @@ def LIMIDinference2dot(
 
   temp_dir = gds.inferenceTemporaryDirectory()
 
-  dotstr = 'digraph structs {\n  fontcolor="' + gds.getBlackInTheme() + '";bgcolor="transparent";'
-
-  fontname, fontsize = gds.fontFromMatplotlib()
-  dotstr += f'node[fontname="{fontname}",fontsize="{fontsize}"];'
-
   fmt = f".{pyagrum.config.typed['influenceDiagram', 'utilityVisibleDigits']}f"
   if pyagrum.config.typed["influenceDiagram", "utilityShowLoss"]:
     titut = f"mEL {-meu['mean']:{fmt}}"
@@ -129,11 +124,7 @@ def LIMIDinference2dot(
   if pyagrum.config.typed["influenceDiagram", "utilityShowStdev"]:
     titut += f" (stdev={math.sqrt(meu['variance']):{fmt}})"
 
-  slabel = f'label="{titut}'
-
-  if pyagrum.config.typed["notebook", "showInferenceTime"]:
-    slabel += f"\nInference in {1000 * (stopTime - startTime):6.2f}ms"
-  dotstr += slabel + '";\n'
+  dotstr = gds.inferenceDotHeader("digraph", stopTime - startTime, titut)
 
   for nid in diag.nodes():
     name = diag.variable(nid).name()

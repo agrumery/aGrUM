@@ -46,6 +46,7 @@ completion of the dot graphs built in Python by pyAgrum (prepareDot) and filling
 import hashlib
 import os
 import warnings
+import weakref
 from tempfile import TemporaryDirectory
 
 import matplotlib as mpl
@@ -257,6 +258,23 @@ def proba2fgcolor(p: float, cmap: matplotlib.colors.Colormap) -> str:
   return rgb2brightness(*hextuple2rgb(proba2hex(p, cmap, withSpecialColor=True)))
 
 
+def contrastFgColor(bgcolor: str) -> str:
+  """
+  The font color which is readable on a background color.
+
+  Parameters
+  ----------
+  bgcolor: str
+    the background color (a name or "#RRGGBB")
+
+  Returns
+  -------
+  str
+    the font color
+  """
+  return pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcolor, getBlackInTheme())
+
+
 def fontFromMatplotlib() -> tuple[str, float]:
   """
   Find the font name and the font size ysed by matplotlib
@@ -379,7 +397,7 @@ def _dotDefaults(dotgraph: dot.Dot) -> dict[str, dict[str, str]]:
   return defaults
 
 
-def inferenceDotHeader(graphType: str = "digraph", inferenceTime: float | None = None) -> str:
+def inferenceDotHeader(graphType: str = "digraph", inferenceTime: float | None = None, label: str | None = None) -> str:
   """
   The beginning of the dot text of a graph showing an inference: its look given by the theme and the configuration
   (font, default colors of the nodes and of the edges), and the time of the inference if
@@ -391,6 +409,8 @@ def inferenceDotHeader(graphType: str = "digraph", inferenceTime: float | None =
     "digraph" or "graph"
   inferenceTime: float, optional
     the time of the inference (in seconds)
+  label: str, optional
+    a text shown with the graph, above the time of the inference
 
   Returns
   -------
@@ -398,8 +418,11 @@ def inferenceDotHeader(graphType: str = "digraph", inferenceTime: float | None =
     the beginning of the dot text (the graph is not closed)
   """
   res = f'{graphType} structs {{\n  fontcolor="{getBlackInTheme()}";bgcolor="transparent";'
+  lines = [] if label is None else [label]
   if inferenceTime is not None and pyagrum.config.typed["notebook", "showInferenceTime"]:
-    res += f'  label="Inference in {1000 * inferenceTime:6.2f}ms";\n'
+    lines.append(f"Inference in {1000 * inferenceTime:6.2f}ms")
+  if lines:
+    res += '  label="' + "\n".join(lines) + '";\n'
   fontname, fontsize = fontFromMatplotlib()
   res += (
     f'  node [fillcolor="{pyagrum.config["dot", "nodeBgColor"]}", style=filled,'
@@ -413,8 +436,8 @@ def inferenceTemporaryDirectory() -> TemporaryDirectory:
   """
   The temporary directory of the images of the nodes of the graph of an inference.
 
-  It is removed when it is garbage collected: :func:`inferenceDotGraph` keeps it in the graph, so that the images
-  live as long as the graph.
+  It is removed with the graph: :func:`inferenceDotGraph` keeps it in the graph and cleans it up when the graph is
+  garbage collected, so that the images live as long as the graph.
 
   Returns
   -------
@@ -470,6 +493,117 @@ def valueOfNode(values: dict | None, name: str, nid: int):
   return values.get(nid)
 
 
+def inferenceNodeDot(
+  name: str,
+  nid: int,
+  targets,
+  nodeColor: dict | None,
+  cmapNode,
+  isEvidence: bool,
+  temp_dir: TemporaryDirectory,
+  saveFig,
+  otherAttributes: str = "",
+) -> str:
+  """
+  The dot text of a node in the graph of an inference: the image of its posterior for a target, a colored node else.
+
+  The colors come from the configuration, then from `nodeColor`, then from the evidence.
+
+  Parameters
+  ----------
+  name: str
+    the name of the node
+  nid: int
+    the id of the node
+  targets: set
+    the names or ids of the targets (empty: all the nodes are targets)
+  nodeColor: dict[str | int, float], optional
+    the values of some nodes, keyed by names or by ids, colored with `cmapNode`
+  cmapNode: matplotlib.colors.Colormap
+    the colormap of the nodes
+  isEvidence: bool
+    True if the node is observed
+  temp_dir: tempfile.TemporaryDirectory
+    the temporary directory of the images
+  saveFig: Callable[[str, str], None]
+    saves the image of the posterior of the node, given the name of the file and the background color
+  otherAttributes: str
+    other attributes of a node which is not a target, ending with a comma
+
+  Returns
+  -------
+  str
+    the dot text of the node
+  """
+  isTarget = len(targets) == 0 or name in targets or nid in targets
+
+  bgcol = pyagrum.config["notebook", "figureFaceColor"] if isTarget else pyagrum.config["dot", "nodeBgColor"]
+  fgcol = configFgColor("dot", "nodeFgColor")
+
+  value = valueOfNode(nodeColor, name, nid)
+  if value is not None:
+    bgcol = proba2bgcolor(value, cmapNode)
+    fgcol = proba2fgcolor(value, cmapNode)
+
+  if isEvidence:
+    bgcol = pyagrum.config["notebook", "evidenceBgColor"]
+    fgcol = pyagrum.config["notebook", "evidenceFgColor"]
+
+  colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
+  if isTarget:
+    filename = inferenceImageFilename(temp_dir, name)
+    saveFig(filename, bgcol)
+    return f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
+  return f' "{name}" [{otherAttributes}{colorattribute}];\n'
+
+
+def inferenceArcsDot(arcs, nameOf, arcWidth: dict | None, arcColor: dict | None, cmapArc, oriented: bool = True) -> str:
+  """
+  The dot text of the arcs (or edges) in the graph of an inference.
+
+  Parameters
+  ----------
+  arcs: Iterable[tuple[int, int]]
+    the arcs or the edges
+  nameOf: Callable[[int], str]
+    the name of a node from its id
+  arcWidth: dict[tuple[int, int], float], optional
+    the values of some arcs, shown by their width and in their tooltip
+  arcColor: dict[tuple[int, int], float], optional
+    the values of some arcs, colored with `cmapArc`
+  cmapArc: matplotlib.colors.Colormap
+    the colormap of the arcs
+  oriented: bool
+    True for the arcs of a digraph, False for the edges of a graph
+
+  Returns
+  -------
+  str
+    the dot text of the arcs
+  """
+  link, symbol = ("->", "&rarr;") if oriented else ("--", "&mdash;")
+  minWidth = min(arcWidth.values()) if arcWidth else 0
+  maxWidth = max(arcWidth.values()) if arcWidth else 0
+
+  res = ""
+  for a in arcs:
+    (n, j) = a
+    pw = 1.0
+    av = f"{n}&nbsp;{symbol}&nbsp;{j}"
+    col = getBlackInTheme()
+
+    if arcWidth is not None and a in arcWidth:
+      if maxWidth != minWidth:
+        pw = 0.1 + 5 * (arcWidth[a] - minWidth) / (maxWidth - minWidth)
+      av = f"{n}&nbsp;{symbol}&nbsp;{j} : {arcWidth[a]}"
+
+    if arcColor is not None and a in arcColor:
+      col = proba2color(arcColor[a], cmapArc)
+
+    res += f' "{nameOf(n)}"{link}"{nameOf(j)}" [penwidth="{pw}",tooltip="{av}",color="{col}"];\n'
+  return res
+
+
 def inferenceDotGraph(
   dotstr: str, size, temp_dir: TemporaryDirectory, sizeKey: tuple[str, str] = ("notebook", "graphInferenceSize")
 ):
@@ -498,6 +632,7 @@ def inferenceDotGraph(
   g = graphs[0]
   g.set_size(str(pyagrum.config[sizeKey] if size is None else size))
   g.temp_dir = temp_dir
+  weakref.finalize(g, temp_dir.cleanup)  # an explicit cleanup: its implicit one emits a ResourceWarning
   return g
 
 
@@ -548,7 +683,7 @@ def prepareDot(dotgraph: dot.Dot) -> dot.Dot:
     if fillcolor is None:
       fillcolor = defaults["node"].get("fillcolor")
     if fillcolor is not None:
-      n.set_fontcolor(pyagrum.pyagrumcpp._resolveFgColor("adaptive", fillcolor, black))
+      n.set_fontcolor(contrastFgColor(fillcolor))
     else:
       n.set_fontcolor(black)
 

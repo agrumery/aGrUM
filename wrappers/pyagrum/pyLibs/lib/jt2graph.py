@@ -86,11 +86,11 @@ def _mapDotString(
   if scaleClique is None and scaleSep is None and lenEdge is None and colorClique is None and colorSep is None:
     return jt.__map_str__()
   if scaleClique is None:
-    scaleClique = float(pyagrum.config["junctionTree", "mapCliqueScale"])
+    scaleClique = pyagrum.config.typed["junctionTree", "mapCliqueScale"]
   if scaleSep is None:
-    scaleSep = float(pyagrum.config["junctionTree", "mapSepScale"])
+    scaleSep = pyagrum.config.typed["junctionTree", "mapSepScale"]
   if lenEdge is None:
-    lenEdge = float(pyagrum.config["junctionTree", "mapEdgeLen"])
+    lenEdge = pyagrum.config.typed["junctionTree", "mapEdgeLen"]
   return jt.__map_str__(scaleClique, scaleSep, lenEdge, colorClique or "", colorSep or "")
 
 

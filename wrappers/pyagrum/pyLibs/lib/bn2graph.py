@@ -52,7 +52,6 @@ import pydot as dot
 import pyagrum
 import pyagrum.lib.dotstyle as gds
 from pyagrum.lib import proba_histogram
-from pyagrum.lib.utils import getBlackInTheme
 
 
 def BN2dot(
@@ -165,14 +164,6 @@ def BNinference2dot(
   if cmapArc is None:
     cmapArc = plt.get_cmap(pyagrum.config["notebook", "arcCmap"])
 
-  # defaukt
-  maxarcs = 100.0
-  minarcs = 0.0
-
-  if arcWidth is not None:
-    minarcs = min(arcWidth.values())
-    maxarcs = max(arcWidth.values())
-
   startTime = time.time()
   if engine is None:
     ie = pyagrum.LazyPropagation(bn)
@@ -188,49 +179,21 @@ def BNinference2dot(
 
   showdag = bn.dag() if dag is None else dag
 
+  evidence = ie.hardEvidenceNodes() | ie.softEvidenceNodes()
   for nid in showdag.nodes():
     name = bn.variable(nid).name()
+    dotstr += gds.inferenceNodeDot(
+      name,
+      nid,
+      targets,
+      nodeColor,
+      cmapNode,
+      nid in evidence,
+      temp_dir,
+      lambda filename, bgcol: proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol),
+    )
 
-    # defaults
-    bgcol = pyagrum.config["dot", "nodeBgColor"]
-    fgcol = gds.configFgColor("dot", "nodeFgColor")
-    if len(targets) == 0 or name in targets or nid in targets:
-      bgcol = pyagrum.config["notebook", "figureFaceColor"]
-
-    value = gds.valueOfNode(nodeColor, name, nid)
-    if value is not None:
-      bgcol = gds.proba2bgcolor(value, cmapNode)
-      fgcol = gds.proba2fgcolor(value, cmapNode)
-
-    # 'hard' colour for evidence (?)
-    if nid in ie.hardEvidenceNodes() | ie.softEvidenceNodes():
-      bgcol = pyagrum.config["notebook", "evidenceBgColor"]
-      fgcol = pyagrum.config["notebook", "evidenceFgColor"]
-
-    colorattribute = f'fillcolor="{bgcol}", fontcolor="{fgcol}", color="#000000"'
-    if len(targets) == 0 or name in targets or nid in targets:
-      filename = gds.inferenceImageFilename(temp_dir, name)
-      proba_histogram.saveFigProba(ie.posterior(name), filename, bgcolor=bgcol)
-      dotstr += f' "{name}" [shape=rectangle,image="{filename}",label="", {colorattribute}];\n'
-    else:
-      dotstr += f' "{name}" [{colorattribute}]'
-
-  for a in showdag.arcs():
-    (n, j) = a
-    pw = 1.0
-    av = f"{n}&nbsp;&rarr;&nbsp;{j}"
-    col = getBlackInTheme()
-
-    if arcWidth is not None and a in arcWidth:
-      if maxarcs != minarcs:
-        pw = 0.1 + 5 * (arcWidth[a] - minarcs) / (maxarcs - minarcs)
-      av = f"{n}&nbsp;&rarr;&nbsp;{j} : {arcWidth[a]}"
-
-    if arcColor is not None and a in arcColor:
-      col = gds.proba2color(arcColor[a], cmapArc)
-
-    dotstr += f' "{bn.variable(n).name()}"->"{bn.variable(j).name()}" [penwidth="{pw}",tooltip="{av}",color="{col}"];'
-
+  dotstr += gds.inferenceArcsDot(showdag.arcs(), lambda n: bn.variable(n).name(), arcWidth, arcColor, cmapArc)
   dotstr += "}"
 
   return gds.prepareDot(gds.inferenceDotGraph(dotstr, size, temp_dir))

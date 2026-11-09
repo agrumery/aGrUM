@@ -1196,11 +1196,11 @@ def _reprTensor(
   if withColors is None:
     withColors = pyagrum.config.typed["tensor", "withColors"]
 
-  with_fraction = pyagrum.config["tensor", "withFraction"] == "True"
+  with_fraction = pyagrum.config.typed["tensor", "withFraction"]
   if with_fraction:
-    fraction_limit = int(pyagrum.config["tensor", "fractionLimit"])
-    fraction_round_error = float(pyagrum.config["tensor", "fractionRoundError"])
-    fraction_with_latex = pyagrum.config["tensor", "fractionWithLatex"] == "True"
+    fraction_limit = pyagrum.config.typed["tensor", "fractionLimit"]
+    fraction_round_error = pyagrum.config.typed["tensor", "fractionRoundError"]
+    fraction_with_latex = pyagrum.config.typed["tensor", "fractionWithLatex"]
 
   def _rgb(r, g, b):
     return f"#{r:02x}{g:02x}{b:02x}"
