@@ -77,7 +77,7 @@ except NameError:
   ) from None
 
 # SVG is not reliably supported outside Jupyter notebooks — force PNG for all rendering
-pyagrum.config["notebook", "graph_format"] = "png"
+pyagrum.config["notebook", "graphFormat"] = "png"
 
 # ipython console is typically dark-background
 setDarkTheme()
@@ -131,7 +131,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
     the size of the visualisation
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   gr.set_size(size)
   display(Image(data=gr.create_png(), format="png"))
@@ -176,7 +176,7 @@ def showBNDiff(bn1: pyagrum.BayesNet, bn2: pyagrum.BayesNet, size: float | str |
       Size of the rendered graph.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
   cmp = GraphicalBNComparator(bn1, bn2)
   showGraph(cmp.dotDiff(), size)
 
@@ -211,7 +211,7 @@ def showJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctionTreeMapSize"]
+    size = pyagrum.config["junctionTree", "mapSize"]
   showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -229,7 +229,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
       Size of the rendered graph.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
   showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -245,7 +245,7 @@ def showProba(p: pyagrum.Tensor, scale: float = 1.0) -> None:
       Scale factor.
   """
   _ = proba2histo(p, scale)
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
   plt.show()
 
 
@@ -263,7 +263,7 @@ def showProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1
     the zoom factor
   """
   _ = probaMinMaxH(pmin, pmax, scale)
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
   plt.show()
 
 
@@ -313,7 +313,7 @@ def showBN(
       Color map to show the arc values.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmap
@@ -354,7 +354,7 @@ def showCN(
     color map to show the vals of arcs
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -411,10 +411,10 @@ def showMRF(
       Color map to show the edge colors.
   """
   if view is None:
-    view = pyagrum.config["notebook", "markovRandomFieldView"]
+    view = pyagrum.config["markovRandomField", "view"]
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmap
@@ -491,7 +491,7 @@ def showInference(model: pyagrum.PGM, **kwargs) -> None:
   view: str, optional
     'graph' | 'factorgraph' | None for MarkovRandomField
   """
-  size = kwargs.get("size", pyagrum.config["notebook", "graph_inference_size"])
+  size = kwargs.get("size", pyagrum.config["notebook", "graphInferenceSize"])
   showGraph(prepareShowInference(model, **kwargs), size)
 
 

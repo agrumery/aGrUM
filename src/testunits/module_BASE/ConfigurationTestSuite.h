@@ -126,6 +126,11 @@ Color = #FF7F64
     c.set("main", "NUMBER", "5");
     CHECK_EQ(c.get("main", "number"), "5");
 
+    // ... and they are displayed as declared
+    CHECK_NE(c.toString().find("Flag = False"), std::string::npos);
+    CHECK_EQ(c.grep("flag"), c.grep("FLAG"));
+    CHECK_NE(c.grep("flag").find("Flag"), std::string::npos);
+
     // ... but sections are
     CHECK(!c.has("Main", "number"));
     CHECK_THROWS_AS(c.get("Main", "number"), const gum::SyntaxError&);
@@ -388,6 +393,14 @@ Color = #FF7F64
     CHECK_EQ(c.toString(), "[s]\n  new = 5");
     CHECK_EQ(c.diff(), "[s]\n  new = 5");
     CHECK_EQ(c.grep("old"), "");
+
+    // the notice says since when and what to use instead
+    gum::Configuration versioned("[s]\n### int :: the new one\nnew = 1\n"
+                                 "### deprecated -> s.new :: deprecated after 1.2.3\nold = 0\n");
+    versioned.set("s", "old", "5");
+    notices = versioned.takeNotices();
+    REQUIRE_EQ(notices.size(), std::size_t(1));
+    CHECK_EQ(notices[0].message, "'s.old' is deprecated after 1.2.3, use 's.new' instead.");
   }
 
   GUM_TEST(ConfigurationDisplay) {
@@ -395,15 +408,15 @@ Color = #FF7F64
 
     CHECK_EQ(c.diff(), "");
     CHECK_EQ(c.toString(),
-             "[main]\n  number = 4\n  real = 1e-6\n  flag = False\n  mode = auto\n"
-             "  text = \\text{do}(\n  undocumented = whatever\n[other]\n  color = #FF7F64");
+             "[main]\n  number = 4\n  real = 1e-6\n  Flag = False\n  mode = auto\n"
+             "  text = \\text{do}(\n  undocumented = whatever\n[other]\n  Color = #FF7F64");
 
     c.set("main", "number", "9");
     c.set("other", "color", "red");
-    CHECK_EQ(c.diff(), "[main]\n  number = 9\n[other]\n  color = red");
+    CHECK_EQ(c.diff(), "[main]\n  number = 9\n[other]\n  Color = red");
 
     // a section matching the search is displayed as a whole
-    CHECK_EQ(c.grep("OTHER"), "[other]\n  color = red");
+    CHECK_EQ(c.grep("OTHER"), "[other]\n  Color = red");
     CHECK_EQ(c.grep("num"), "[main]\n  number = 9");
     CHECK_EQ(c.grep("nothing like that"), "");
   }
@@ -454,7 +467,7 @@ Color = #FF7F64
       c.save(filename);
     }
     CHECK_EQ(ConfigurationTestSuite::readFile(filename),
-             "[main]\n  number = 9\n  flag = True\n[other]\n  color = red\n");
+             "[main]\n  number = 9\n  Flag = True\n[other]\n  Color = red\n");
 
     gum::Configuration c(ConfigurationTestSuite::defaults());
     int                nbHooks = 0;
@@ -466,7 +479,7 @@ Color = #FF7F64
     CHECK_EQ(c.get("other", "color"), "red");
     CHECK(c.takeNotices().empty());
     CHECK_EQ(ConfigurationTestSuite::readFile(filename),
-             "[main]\n  number = 9\n  flag = True\n[other]\n  color = red\n");   // not rewritten
+             "[main]\n  number = 9\n  Flag = True\n[other]\n  Color = red\n");   // not rewritten
 
     CHECK_THROWS_AS(c.load(filename + ".nosuchfile"), const gum::IOError&);
     CHECK_THROWS_AS(c.save("/nosuchdirectory/nosuchfile"), const gum::IOError&);

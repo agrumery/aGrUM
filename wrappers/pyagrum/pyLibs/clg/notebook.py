@@ -85,10 +85,10 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
   arcLabel = {arc: clg.coefArc(*arc) for arc in clg.arcs()}
 
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "nodeCmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arcCmap"])
 
   # default
   maxarcs = 100
@@ -102,8 +102,8 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
 
   for n in clg.names():
     if nodeColor is None or n not in nodeColor:
-      bgcol = pyagrum.config["notebook", "nodeBgColor"]
-      fgcol = gds.configFgColor("notebook", "nodeFgColor")
+      bgcol = pyagrum.config["dot", "nodeBgColor"]
+      fgcol = gds.configFgColor("dot", "nodeFgColor")
       res = ""
     else:
       bgcol = gds.proba2bgcolor(nodeColor[n], cmapNode)
@@ -163,7 +163,7 @@ def CLG2dot(clg, *, size=None, nodeColor=None, arcWidth=None, arcColor=None, cma
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member
@@ -212,10 +212,10 @@ def CLGInference2dot(
   ie.updateEvidence(evs)
 
   if cmapNode is None:
-    cmapNode = plt.get_cmap(pyagrum.config["notebook", "node_cmap"])
+    cmapNode = plt.get_cmap(pyagrum.config["notebook", "nodeCmap"])
 
   if cmapArc is None:
-    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arc_cmap"])
+    cmapArc = plt.get_cmap(pyagrum.config["notebook", "arcCmap"])
 
   # default
   maxarcs = 100
@@ -229,12 +229,12 @@ def CLGInference2dot(
 
   for n in clg.names():
     if n in evs:
-      bgcol = pyagrum.config["notebook", "evidence_bgcolor"]
-      fgcol = pyagrum.config["notebook", "evidence_fgcolor"]
+      bgcol = pyagrum.config["notebook", "evidenceBgColor"]
+      fgcol = pyagrum.config["notebook", "evidenceFgColor"]
       res = ""
     else:
       if nodeColor is None or n not in nodeColor:
-        bgcol = pyagrum.config["notebook", "histogram_color"]
+        bgcol = pyagrum.config["histogram", "color"]
         fgcol = pyagrum.pyagrumcpp._resolveFgColor("adaptive", bgcol, gds.getBlackInTheme())
         res = ""
       else:
@@ -285,7 +285,7 @@ def CLGInference2dot(
     dotobj.add_edge(edge)
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   # dynamic member makes pylink unhappy
   # pylint: disable=no-member

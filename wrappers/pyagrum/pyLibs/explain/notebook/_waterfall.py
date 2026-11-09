@@ -153,9 +153,9 @@ def waterfall(
     height = 0.2
     arrow_width = min(0.4 * abs(delta), arrow_width_base)
     facecolor, edgecolor, alpha = (
-      (pyagrum.config["notebook", "tensor_color_0"], "#D98383", 1)
+      (pyagrum.config["tensor", "color0"], "#D98383", 1)
       if values[feature] <= 0
-      else (pyagrum.config["notebook", "tensor_color_1"], "#82D882", -1)
+      else (pyagrum.config["tensor", "color1"], "#82D882", -1)
     )
 
     # Dessin du polygon

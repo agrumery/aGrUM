@@ -205,11 +205,6 @@ class ActBuilderAgrum(ActBuilder):
       for module in self.modules:
         line += " -DBUILD_" + module + "=ON"
 
-    if self.current["fixed_seed"]:
-      line += " -DGUM_RANDOMSEED=" + cfg.fixedSeedValue
-    else:
-      line += " -DGUM_RANDOMSEED=0"
-
     line += " -DBUILD_PYTHON=OFF"
 
     if self.current["threads"] == "omp":

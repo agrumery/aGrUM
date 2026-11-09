@@ -407,7 +407,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
         dot.Node(
           f'"{bnref.variable(i1).name()}"',
           style="filled",
-          fillcolor=pyagrum.config["notebook", "graphdiff_correct_color"],
+          fillcolor=pyagrum.config["graphdiff", "correctColor"],
           color=gutils.getBlackInTheme(),
         )
       )
@@ -417,7 +417,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Node(
             f'"{bnref.variable(i1).name()}"',
             style="dashed",
-            fillcolor=pyagrum.config["notebook", "graphdiff_correct_color"],
+            fillcolor=pyagrum.config["graphdiff", "correctColor"],
             color=gutils.getBlackInTheme(),
           )
         )
@@ -429,8 +429,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
         dot.Edge(
           f'"{n1}"',
           f'"{n2}"',
-          style=pyagrum.config["notebook", "graphdiff_correct_style"],
-          color=pyagrum.config["notebook", "graphdiff_correct_color"],
+          style=pyagrum.config["graphdiff", "correctStyle"],
+          color=pyagrum.config["graphdiff", "correctColor"],
         )
       )
 
@@ -445,8 +445,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=pyagrum.config["notebook", "graphdiff_missing_style"],
-            color=pyagrum.config["notebook", "graphdiff_missing_color"],
+            style=pyagrum.config["graphdiff", "missingStyle"],
+            color=pyagrum.config["graphdiff", "missingColor"],
           )
         )
         continue
@@ -456,8 +456,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=pyagrum.config["notebook", "graphdiff_correct_style"],
-            color=pyagrum.config["notebook", "graphdiff_correct_color"],
+            style=pyagrum.config["graphdiff", "correctStyle"],
+            color=pyagrum.config["graphdiff", "correctColor"],
           )
         )
       elif bncmp.existsArc(n2, n1):  # arc is reversed in BN2
@@ -466,8 +466,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Edge(
             f'"{n2}"',
             f'"{n1}"',
-            style=pyagrum.config["notebook", "graphdiff_reversed_style"],
-            color=pyagrum.config["notebook", "graphdiff_reversed_color"],
+            style=pyagrum.config["graphdiff", "reversedStyle"],
+            color=pyagrum.config["graphdiff", "reversedColor"],
           )
         )
       else:  # arc is missing in BN2
@@ -475,8 +475,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=pyagrum.config["notebook", "graphdiff_missing_style"],
-            color=pyagrum.config["notebook", "graphdiff_missing_color"],
+            style=pyagrum.config["graphdiff", "missingStyle"],
+            color=pyagrum.config["graphdiff", "missingColor"],
           )
         )
 
@@ -488,8 +488,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
           dot.Edge(
             f'"{n1}"',
             f'"{n2}"',
-            style=pyagrum.config["notebook", "graphdiff_overflow_style"],
-            color=pyagrum.config["notebook", "graphdiff_overflow_color"],
+            style=pyagrum.config["graphdiff", "overflowStyle"],
+            color=pyagrum.config["graphdiff", "overflowColor"],
           )
         )
 
@@ -514,8 +514,8 @@ def graphDiffLegend() -> dot.Dot | None:
       "a",
       "b",
       label="overflow",
-      style=pyagrum.config["notebook", "graphdiff_overflow_style"],
-      color=pyagrum.config["notebook", "graphdiff_overflow_color"],
+      style=pyagrum.config["graphdiff", "overflowStyle"],
+      color=pyagrum.config["graphdiff", "overflowColor"],
     )
   )
   res.add_edge(
@@ -523,8 +523,8 @@ def graphDiffLegend() -> dot.Dot | None:
       "c",
       "d",
       label="Missing",
-      style=pyagrum.config["notebook", "graphdiff_missing_style"],
-      color=pyagrum.config["notebook", "graphdiff_missing_color"],
+      style=pyagrum.config["graphdiff", "missingStyle"],
+      color=pyagrum.config["graphdiff", "missingColor"],
     )
   )
   res.add_edge(
@@ -532,8 +532,8 @@ def graphDiffLegend() -> dot.Dot | None:
       "e",
       "f",
       label="reversed",
-      style=pyagrum.config["notebook", "graphdiff_reversed_style"],
-      color=pyagrum.config["notebook", "graphdiff_reversed_color"],
+      style=pyagrum.config["graphdiff", "reversedStyle"],
+      color=pyagrum.config["graphdiff", "reversedColor"],
     )
   )
   res.add_edge(
@@ -541,8 +541,8 @@ def graphDiffLegend() -> dot.Dot | None:
       "g",
       "h",
       label="Correct",
-      style=pyagrum.config["notebook", "graphdiff_correct_style"],
-      color=pyagrum.config["notebook", "graphdiff_correct_color"],
+      style=pyagrum.config["graphdiff", "correctStyle"],
+      color=pyagrum.config["graphdiff", "correctColor"],
     )
   )
 

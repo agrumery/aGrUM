@@ -54,14 +54,6 @@
 #include <agrum/base/core/utils_random.h>
 
 namespace gum {
-  namespace _rand_namespace_ {
-    INLINE
-    std::mt19937& generator() {
-      static std::mt19937 Generator_;
-      return Generator_;
-    }
-  }   // namespace _rand_namespace_
-
   INLINE
   Idx randomValue(const Size max) {
     if (max == 0) { GUM_ERROR(OutOfBounds, "randomValue: max must be > 0") }
@@ -75,24 +67,9 @@ namespace gum {
     return uni_real(_rand_namespace_::generator());
   }
 
-  INLINE
-  void initRandom(unsigned int seed) {
-    if (seed == 0) seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
-    std::seed_seq seq{seed + 1, seed + 2, seed + 3, seed + 4, seed + 5};
-    _rand_namespace_::generator().seed(seq);
-  }
-
   /// returns the current generator's value
   INLINE
   unsigned int currentRandomGeneratorValue() { return _rand_namespace_::generator()(); }
-
-  // returns the aGrUM's seed used by the std::generators
-  INLINE
-  unsigned int randomGeneratorSeed() {
-    return (unsigned int)((GUM_RANDOMSEED == 0)
-                              ? std::chrono::system_clock::now().time_since_epoch().count()
-                              : GUM_RANDOMSEED);
-  }
 
   INLINE
   std::mt19937& randomGenerator() { return _rand_namespace_::generator(); }

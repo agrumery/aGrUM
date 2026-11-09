@@ -137,11 +137,6 @@ class ActBuilderPyAgrum(ActBuilder):
 
     line += " -DBUILD_ALL=ON"
 
-    if self.current["fixed_seed"]:
-      line += " -DGUM_RANDOMSEED=" + cfg.fixedSeedValue
-    else:
-      line += " -DGUM_RANDOMSEED=0"
-
     line += " -DBUILD_PYTHON=ON"
 
     if self.current["stable_abi_off"]:

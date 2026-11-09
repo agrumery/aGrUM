@@ -43,6 +43,7 @@
 
 #include <agrum/config.h>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/math/pow.h>
 #include <agrum/base/core/timer.h>
 #include <agrum/BN/BayesNet.h>
@@ -53,7 +54,7 @@
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
-  // a test to see if GUM_RANDOMSEED is working
+  // the tests changing the seed give it back at the end: the seed of a run stays the one displayed
   struct RandomGeneratorTestSuite {
     public:
     // namespace gum_tests
@@ -69,9 +70,7 @@ namespace gum_tests {
   };
 
   GUM_TEST(RandomSeed) {
-    CHECK(((GUM_RANDOMSEED == 0) || (GUM_RANDOMSEED == 10)));
-
-    CHECK_EQ(GUM_RANDOMSEED, 0);
+    const auto seed = gum::randomGeneratorSeed();
 
     gum::initRandom(20);
     const auto x1 = gum::randomProba();
@@ -88,10 +87,50 @@ namespace gum_tests {
     CHECK(fabs((gum::randomProba()) - (x2)) < 1e-5);
     CHECK(fabs((gum::randomProba()) - (x3)) < 1e-5);
 
-    gum::initRandom(GUM_RANDOMSEED);
+    gum::initRandom(seed);
+  }
+
+  GUM_TEST(SeedInUse) {
+    const auto seed = gum::randomGeneratorSeed();
+    gum::initRandom(42);
+    CHECK_EQ(gum::randomGeneratorSeed(), 42u);
+    gum::initRandom(0);   // the clock: the value in use is known, hence replayable
+    const auto clock = gum::randomGeneratorSeed();
+    const auto x     = gum::randomProba();
+    gum::initRandom(clock);
+    CHECK_EQ(gum::randomProba(), x);
+    gum::initRandom(seed);
+  }
+
+  GUM_TEST(RandomSeedKeyHasNoEffectOnTheGenerator) {
+    const auto seed = gum::randomGeneratorSeed();
+    {
+      ConfigurationGuard guard;
+      gum::config().takeNotices();
+      gum::initRandom(7);
+      const auto x = gum::randomProba();
+
+      gum::initRandom(7);
+      gum::config().set("core", "randomSeed", "99");
+      CHECK_EQ(gum::randomProba(), x);
+      CHECK_EQ(gum::randomGeneratorSeed(), 7u);
+
+      auto notices = gum::config().takeNotices();
+      REQUIRE_EQ(notices.size(), std::size_t(1));
+      CHECK(notices[0].kind == gum::Configuration::Notice::Kind::NO_EFFECT);
+      CHECK_NE(notices[0].message.find("initRandom()"), std::string::npos);
+
+      // the same value or another key: nothing to say
+      gum::config().set("core", "randomSeed", "99");
+      gum::config().set("core", "jgumIndent", "2");
+      CHECK(gum::config().takeNotices().empty());
+    }
+    gum::config().takeNotices();   // the guard gave the former value back
+    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomSeeForStructure) {
+    const auto seed = gum::randomGeneratorSeed();
     try {
       const auto n_nodes  = 100;
       const auto n_arcs   = 150;
@@ -103,9 +142,11 @@ namespace gum_tests {
       gum::initRandom(20);
       gen.generateBN(bn);
     } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+    gum::initRandom(seed);
   }
 
   GUM_TEST(BugSeed) {
+    const auto seed = gum::randomGeneratorSeed();
     gum::initRandom(0);
     const auto x0 = gum::randomProba();
     gum::initRandom(10);
@@ -119,10 +160,11 @@ namespace gum_tests {
     CHECK_EQ(x10, gum::randomProba());
     gum::initRandom(42);
     CHECK_EQ(x42, gum::randomProba());
-    gum::initRandom(GUM_RANDOMSEED);
+    gum::initRandom(seed);
   }
 
   GUM_TEST(BugSeed2) {
+    const auto seed = gum::randomGeneratorSeed();
     gum::initRandom(0);
     const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
     gum::initRandom(10);
@@ -153,17 +195,19 @@ namespace gum_tests {
     for (const auto i: bn42.nodes())
       GUM_CHECK_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()));
 
-    gum::initRandom(GUM_RANDOMSEED);
+    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomValueZeroThrows) { CHECK_THROWS_AS(gum::randomValue(0), const gum::OutOfBounds&); }
 
   GUM_TEST(RandomValueRange) {
+    const auto seed = gum::randomGeneratorSeed();
     gum::initRandom(42);
     for (int i = 0; i < 1000; ++i) {
       const auto v = gum::randomValue(5);
       CHECK(v < gum::Idx(5));
     }
+    gum::initRandom(seed);
   }
 
   GUM_TEST(Int2PowBounds) {

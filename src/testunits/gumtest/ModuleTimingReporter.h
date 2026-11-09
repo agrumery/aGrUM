@@ -49,6 +49,7 @@
 #include <vector>
 
 #include <agrum/base/core/utils_misc.h>
+#include <agrum/base/core/utils_random.h>
 #include <doctest/doctest.h>
 
 namespace gum_test {
@@ -100,6 +101,9 @@ namespace gum_test {
     void report_query(const doctest::QueryData&) override {}
 
     void test_run_start() override {
+      // to replay a run: this value as core.randomSeed in the file agrum.ini of the current
+      // directory
+      _out << "random seed: " << gum::randomGeneratorSeed() << "\n";
       _modules.clear();
       _lastModule        = "";
       _lastSuite         = "";

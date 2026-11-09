@@ -98,11 +98,11 @@ namespace gum_tests {
     g.addArc(0, 1);
 
     // what setDarkTheme() does, and a few other keys
-    gum::config().set("notebook", "arcColor", "#AAAAAA");
-    gum::config().set("notebook", "graphSize", "12!");
-    gum::config().set("notebook", "graphRankDir", "LR");
-    gum::config().set("notebook", "nodeBgColor", "burlywood");
-    gum::config().set("notebook", "nodeFgColor", "adaptive");
+    gum::config().set("dot", "arcColor", "#AAAAAA");
+    gum::config().set("dot", "graphSize", "12!");
+    gum::config().set("dot", "graphRankDir", "LR");
+    gum::config().set("dot", "nodeBgColor", "burlywood");
+    gum::config().set("dot", "nodeFgColor", "adaptive");
 
     const auto dot = g.toDot();
     CHECK(dotContains(
@@ -113,7 +113,7 @@ namespace gum_tests {
                       "color=\"#AAAAAA\"];"));
     CHECK(dotContains(dot, "edge [color=\"#AAAAAA\"];"));
 
-    gum::config().set("notebook", "nodeFgColor", "red");
+    gum::config().set("dot", "nodeFgColor", "red");
     CHECK(dotContains(g.toDot(), "fontcolor=\"red\""));
   }
 

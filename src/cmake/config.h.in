@@ -54,8 +54,6 @@
 #define GUM_MINOR_VERSION ${GUM_MINOR_VERSION}
 #define GUM_PATCH_VERSION ${GUM_PATCH_VERSION}
 
-#define GUM_RANDOMSEED ${GUM_RANDOMSEED}
-
 #cmakedefine GUM_SRC_PATH @GUM_SRC_PATH@
 #define GUM_VERSION @GUM_VERSION@
 
@@ -213,6 +211,19 @@
 #  if defined(_WIN32)
 #    define GUM_NO_EXTERN_TEMPLATE_CLASS
 #  endif
+#endif
+
+// GCC: "type attributes ignored after type is already defined" (-Wattributes) on every explicit
+// instantiation or extern template declaration tagged with a visibility macro, the class being
+// already defined. The attribute changes nothing there, the warning is only noise: these macros
+// surround such blocks to silence it. Clang and MSVC do not emit it.
+#if defined(__GNUC__) && !defined(__clang__)
+#  define GUM_IGNORE_ATTRIBUTES_BEGIN \
+    _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wattributes\"")
+#  define GUM_IGNORE_ATTRIBUTES_END _Pragma("GCC diagnostic pop")
+#else
+#  define GUM_IGNORE_ATTRIBUTES_BEGIN
+#  define GUM_IGNORE_ATTRIBUTES_END
 #endif
 
 @GUM_PUBLIC_MODULE_MACROS@

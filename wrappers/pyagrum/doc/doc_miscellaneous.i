@@ -48,6 +48,8 @@
 "
 Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
+This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
+
 Parameters
 ----------
 seed : int
@@ -136,7 +138,7 @@ Only active in debug build mode (GUM_DEBUG_MODE). No output in release mode.
 Returns
 -------
 int
-  a randomly generated seed
+  the seed of the generator: the value given to the last call to `initRandom` or, if it was 0, the value taken from the current time. Used as `core.randomSeed` in a file `pyagrum.ini`, it repeats the same pseudo-random numbers sequence.
 "
 
 %feature("docstring") gum::randomValue
@@ -147,7 +149,7 @@ int
   a value randomly drawn (0 or 1)
 "
 
-%feature("docstring") gum::fastGraph
+%define FAST_GRAPH_DOC_HEAD
 "
 Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
 
@@ -178,47 +180,47 @@ Parameters
 ----------
 desc : str
   the string containing the dot-like specification
-
-Returns
--------
-pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG or pyagrum.ChainGraph
-
-Examples
---------
-gum.fastDiGraph('A->B->C;B->E')
-gum.fastUndiGraph('A-B-C')
-gum.fastMixedGraph('A->B-C')
-gum.fastDAG('A->B->C')
-gum.fastPDAG('A->B-C')
-gum.fastChainGraph('A->B-C')
 "
+%enddef
 
-%feature("docstring") gum::fastMarkedGraph
+%define FAST_MARKED_GRAPH_DOC_HEAD
 "
 Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
 description.
 
 An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
 circle, nothing for a tail. A circle must be separated from the name of its node by a space
-(``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). An edge may be repeated with the same marks
+(``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
+``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
 (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
-
-Parameters
-----------
-desc : str
-  the string containing the dot-like specification
-
-Returns
--------
-pyagrum.MarkedGraph or pyagrum.PAG
 
 Raises
 ------
 pyagrum.InvalidEdge
   If the description is malformed or describes an edge with different marks.
 
-Examples
---------
-gum.fastMarkedGraph('A->B;B<->C;C o-> D;D o-o E;E-F')
-gum.fastPAG('X o-o Y;Y o-> Z')
+Parameters
+----------
+desc : str
+  the string containing the dot-like specification
 "
+%enddef
+
+// one docstring per instantiation, so that each fast* function gives its own return type
+%define FAST_GRAPH_DOC(FUNCTION, HEAD, GRAPHTYPE)
+%feature("docstring") gum::FUNCTION< gum::GRAPHTYPE > HEAD
+"
+Returns
+-------
+pyagrum." #GRAPHTYPE "
+";
+%enddef
+
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, DiGraph)
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, UndiGraph)
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, MixedGraph)
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, DAG)
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, PDAG)
+FAST_GRAPH_DOC(fastGraph, FAST_GRAPH_DOC_HEAD, ChainGraph)
+FAST_GRAPH_DOC(fastMarkedGraph, FAST_MARKED_GRAPH_DOC_HEAD, MarkedGraph)
+FAST_GRAPH_DOC(fastMarkedGraph, FAST_MARKED_GRAPH_DOC_HEAD, PAG)

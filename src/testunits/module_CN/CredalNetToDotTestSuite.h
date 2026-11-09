@@ -108,7 +108,7 @@ namespace gum_tests {
 
     gum::config().set("credalnet", "nodeBgColor", "burlywood");
     gum::config().set("credalnet", "nodeFgColor", "adaptive");
-    gum::config().set("notebook", "nodeBgColor", "yellow");   // not the one of the credal networks
+    gum::config().set("dot", "nodeBgColor", "yellow");   // not the one of the credal networks
     const auto dot = cn.toDot();
     CHECK(cnDotHas(dot, "node [style=\"filled\", fillcolor=\"burlywood\", fontcolor=\"black\""));
     CHECK_FALSE(cnDotHas(dot, "yellow"));

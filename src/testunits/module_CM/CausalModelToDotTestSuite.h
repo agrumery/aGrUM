@@ -103,7 +103,7 @@ namespace gum_tests {
     gum::config().set("causal", "latentBgColor", "yellow");
     gum::config().set("causal", "latentFgColor", "red");
     gum::config().set("causal", "showLatentNames", "true");
-    gum::config().set("notebook", "arcColor", "#AAAAAA");
+    gum::config().set("dot", "arcColor", "#AAAAAA");
 
     const auto dot = cm.toDot();
     CHECK(cmDotHas(dot, "size=\"1.9\""));

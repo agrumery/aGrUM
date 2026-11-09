@@ -159,6 +159,7 @@ class ConfigMetadata(NamedTuple):
   values: tuple[str, ...]  # allowed values when kind == "enum"
   doc: str  # one-line documentation
   target: tuple[str, str] | None  # replacement (section, option) when kind == "deprecated"
+  deprecated: bool = False  # deprecated without replacement: the key keeps its kind and its value
 %}
 
 %extend gum::Configuration {
@@ -299,7 +300,7 @@ def doc(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config.doc("notebook", "tensor_visible_digits")
+    >>> pyagrum.config.doc("tensor", "visibleDigits")
     "int :: number of visible digits when displaying a tensor"
 
   Parameters
@@ -329,9 +330,9 @@ def getTyped(self, section, option):
 
   Examples
   --------
-    >>> pyagrum.config.typed["notebook", "tensor_visible_digits"]
+    >>> pyagrum.config.typed["tensor", "visibleDigits"]
     4
-    >>> pyagrum.config.typed["notebook", "tensor_with_colors"]
+    >>> pyagrum.config.typed["tensor", "withColors"]
     True
 
   Parameters
@@ -363,13 +364,14 @@ def schema(self):
       deprecation target) and its default value (None for a deprecated key).
   """
   rows = self._schemaRows()
-  for i in range(0, len(rows), 8):
-    section, option, kind, values, doc, tsection, toption, default = rows[i : i + 8]
+  for i in range(0, len(rows), 9):
+    section, option, kind, values, doc, tsection, toption, default, deprecated = rows[i : i + 9]
     meta = ConfigMetadata(
       kind,
       tuple(values.split("|")) if kind == "enum" else (),
       doc,
       (tsection, toption) if kind == "deprecated" else None,
+      deprecated == "1",
     )
     yield section, option, meta, None if kind == "deprecated" else default
 

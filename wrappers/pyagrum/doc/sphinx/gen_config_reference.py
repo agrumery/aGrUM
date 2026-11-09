@@ -53,7 +53,7 @@ def generate(outdir):
   bysection = {}
   deprecated = []
   for section, option, meta, default in pyagrum.config.schema():
-    if meta.kind == "deprecated":
+    if meta.kind == "deprecated" or meta.deprecated:
       deprecated.append((section, option, meta))
     else:
       bysection.setdefault(section, []).append((option, meta, default))
@@ -100,7 +100,7 @@ def generate(outdir):
     for section, option, meta in deprecated:
       lines += [
         f"   * - ``{section}.{option}``",
-        f"     - ``{meta.target[0]}.{meta.target[1]}``",
+        f"     - ``{meta.target[0]}.{meta.target[1]}``" if meta.target else "     - *(none)*",
         f"     - {meta.doc}",
       ]
   else:

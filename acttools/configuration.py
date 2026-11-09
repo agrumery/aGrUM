@@ -210,7 +210,6 @@ cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.pymodulesFile = "wrappers/pyagrum/pymodules.txt"  # the file to parse to find the pyAgrum leaf modules
 cfg.pymodulesPath = "wrappers/pyagrum/pyLibs"  # the path to the python modules
 cfg.configFile = ".options.act3.pickle"
-cfg.fixedSeedValue = "10"
 
 cfg.nbr_tests_for_stats = 100
 
@@ -238,7 +237,6 @@ def init_params() -> None:
     "destination": "/usr/local",
     "jobs": "except1",
     "static_lib": False,
-    "fixed_seed": False,
     "no_fun": False,
     "consolide": False,
     "stats": False,
@@ -293,7 +291,6 @@ def init_params() -> None:
 
   cfg.non_persistent = [
     "verbose",
-    "fixed_seed",
     "consolide",
     "stats",
     "no_fun",
@@ -379,13 +376,6 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     action="store_false",
     dest="withSQL",
     default=current["withSQL"],
-  )
-  cfg.parser.add_argument(
-    "--fixed_seed",
-    help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
-    action="store_true",
-    dest="fixed_seed",
-    default=False,
   )
   cfg.parser.add_argument(
     "--consolide",

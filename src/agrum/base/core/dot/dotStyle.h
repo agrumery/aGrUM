@@ -42,11 +42,11 @@
  * @file
  * @brief Look of the graphs drawn with graphviz, read from the configuration.
  *
- * The look of a graph is given by keys of gum::Configuration (sections `notebook`, `factorgraph`,
- * `dynamicBN`, `influenceDiagram`, `credalnet` and `causal`). A style is a copy of the values of
- * these keys, taken at the moment of the call to `read()` : a `toDot()` reads the style once, when
- * it is called, and not when the graph is built, so that it follows the changes of the
- * configuration (the light or dark theme for instance). The font colors of a style are never
+ * The look of a graph is given by keys of gum::Configuration (sections `dot`, `junctionTree`,
+ * `factorgraph`, `dynamicBN`, `influenceDiagram`, `credalnet` and `causal`). A style is a copy of
+ * the values of these keys, taken at the moment of the call to `read()` : a `toDot()` reads the
+ * style once, when it is called, and not when the graph is built, so that it follows the changes of
+ * the configuration (the light or dark theme for instance). The font colors of a style are never
  * `adaptive`: this special value is already resolved (see gum::dot::resolveFgColor) against the
  * background color of the same elements, with the color of the arcs when this background is not a
  * color that can be interpreted.
@@ -71,7 +71,7 @@ namespace gum::dot {
    * @brief The look shared by all the graphs: size, direction, layout, colors of the arcs and of
    * the nodes.
    *
-   * `read()` gives the style of the graphs drawn in a notebook (keys of the section `notebook`).
+   * `read()` gives the style of the graphs (keys of the section `dot`).
    */
   struct GUM_SHARED_PUBLIC DotStyle {
     /// graphviz size of the graph, in inches (`5`, or `12!` for an exact size)
@@ -95,15 +95,15 @@ namespace gum::dot {
     /// color of the edges with a circle mark of a marked graph (empty: the color of the arcs)
     std::string circleMarkEdgeColor;
 
-    /// @brief the style of the graphs of the section `notebook`
+    /// @brief the style of the graphs of the section `dot`
     static DotStyle read();
     /// @brief the style of the credal networks : the colors of the nodes are the ones of the
     /// section `credalnet`
     static DotStyle readCredalNet();
   };
 
-  /// @brief The style of a junction tree (section `notebook`): `size` is the size of the tree, not
-  /// the one of its map.
+  /// @brief The style of a junction tree (section `junctionTree`): `size` is the size of the tree,
+  /// not the one of its map.
   struct GUM_SHARED_PUBLIC JunctionTreeDotStyle: DotStyle {
     /// show the names of the variables in the cliques
     bool        withNames{true};
@@ -186,10 +186,10 @@ namespace gum::dot {
    *
    * The background color is the key of the same section whose suffix `FgColor` is replaced by
    * `BgColor` (`nodeFgColor` goes with `nodeBgColor`). The special value `adaptive` is resolved by
-   * gum::dot::resolveFgColor, with the color of the arcs (key `arcColor` of the section `notebook`)
+   * gum::dot::resolveFgColor, with the color of the arcs (key `arcColor` of the section `dot`)
    * when the background is not a color that can be interpreted.
    *
-   * @param section the section of the configuration (`notebook`, `causal`...).
+   * @param section the section of the configuration (`dot`, `causal`...).
    * @param key the key of the font color, which ends with `FgColor`.
    * @return the font color, never `adaptive`.
    * @throw InvalidArgument if `key` does not end with `FgColor`.

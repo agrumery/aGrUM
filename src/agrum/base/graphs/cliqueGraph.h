@@ -254,7 +254,7 @@ namespace gum {
     std::string toDot(const dot::DotOptions& options) const override;
 
     /// friendly displays the content of the map of the CliqueGraph in DOT format, with the values
-    /// of the configuration (section notebook, keys junctionTreeMap* and junctionTree*BgColor)
+    /// of the configuration (section junctionTree, keys map* and *BgColor)
     std::string mapToDot() const;
 
     /// friendly displays the content of the map of the CliqueGraph in DOT format

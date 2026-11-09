@@ -50,9 +50,33 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/utils_misc.h>
+#include <agrum/base/core/utils_random.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/core/utils_random_inl.h>
-#endif           // GUM_NO_INLINE
+#endif   // GUM_NO_INLINE
 
-namespace gum {} /* namespace gum */
+namespace gum {
+  namespace {
+    // the seed given to the last call to initRandom (0 if none), the clock being resolved
+    unsigned int _currentSeed_ = 0;
+  }   // namespace
+
+  namespace _rand_namespace_ {
+    // not inline: an inline function would give one generator per shared module
+    std::mt19937& generator() {
+      static std::mt19937 Generator_;
+      return Generator_;
+    }
+  }   // namespace _rand_namespace_
+
+  void initRandom(unsigned int seed) {
+    if (seed == 0) seed = (unsigned int)std::chrono::system_clock::now().time_since_epoch().count();
+    _currentSeed_ = seed;
+    std::seed_seq seq{seed + 1, seed + 2, seed + 3, seed + 4, seed + 5};
+    _rand_namespace_::generator().seed(seq);
+  }
+
+  unsigned int randomGeneratorSeed() { return _currentSeed_; }
+
+} /* namespace gum */

@@ -107,29 +107,14 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
     shortfalls = sum(1 for _ in range(40) if _maxKernelLag(gen.generate()) < 4)
     self.assertGreater(shortfalls, 0)
 
-  def testGeneratorRunsTwiceWithoutError(self):
-    # NOTE: the C++ suite's testGeneratorReproducibleFromSeed asserts that
-    # re-seeding via gum::initRandom(seed) and regenerating reproduces the
-    # exact same model. That does NOT hold here: gum.initRandom() (re-)seeds
-    # the RNG engine living in core _pyagrumcpp.so, but KTBNGenerator's own
-    # draws (compiled into the separate _ktbncpp.so) appear to consult a
-    # DIFFERENT, un-reseeded copy of that engine -- suspected root cause:
-    # utils_random.h's generator()/randomGenerator() (the mutable RNG
-    # accessor) carry no PYGUM_SHARED_PUBLIC/GUM_SHARED_PUBLIC visibility
-    # tag, unlike their neighbours initRandom()/randomGeneratorSeed() which
-    # do -- so each leaf module .so likely gets its own private, only
-    # implicitly-seeded RNG state, the same category of cross-module-
-    # boundary bug as CSVParser earlier this session. This looks like a
-    # pre-existing gap affecting every leaf module's own random draws
-    # (KTBNGenerator, KTBN.generateCPTs()/generateCPT(), and presumably the
-    # equivalent generators in MRF/PRM/CN/CM/ID), not something introduced
-    # by the KTBN SWIG layer -- reported for the parent to confirm/fix
-    # rather than patched here. Kept as a smoke test only: two independent
-    # draws must each be a legal, non-degenerate k-DBN.
+  def testGeneratorReproducibleFromSeed(self):
+    # the draws of this leaf module use the generator of the core module, reached by initRandom
     gum.initRandom(2024)
     a = gum.KTBNGenerator(4, 3, 1).generate()
     gum.initRandom(2024)
     b = gum.KTBNGenerator(4, 3, 1).generate()
+    self.assertEqual(a.sizeArcs(), b.sizeArcs())
+    self.assertEqual(a.toString(), b.toString())
 
     for m in (a, b):
       self.assertEqual(m.k(), 4)

@@ -90,9 +90,10 @@ namespace gum {
 }   // namespace gum
 
 %extend gum::Configuration {
-  // the whole schema, flattened: 8 strings per key, in the order of the defaults
+  // the whole schema, flattened: 9 strings per key, in the order of the defaults
   //   section, key, kind (int|float|bool|str|enum|deprecated), allowed values joined by '|' (enum),
-  //   documentation, replacement section and key (deprecated), default value
+  //   documentation, replacement section and key (deprecated), default value,
+  //   "1" if deprecated without replacement (empty otherwise)
   std::vector< std::string > schemaRows() const {
     std::vector< std::string > rows;
     for (const auto& entry: self->schema()) {
@@ -104,16 +105,18 @@ namespace gum {
       rows.push_back(entry.meta.targetSection);
       rows.push_back(entry.meta.targetKey);
       rows.push_back(entry.defaultValue);
+      rows.push_back(entry.meta.deprecated ? "1" : "");
     }
     return rows;
   }
 
-  // the queued notices, flattened: 2 strings per notice ("deprecation" or "file", message)
+  // the queued notices, flattened: 2 strings per notice ("deprecation", "file" or "noEffect", message)
   std::vector< std::string > takeNoticeRows() {
     std::vector< std::string > rows;
     for (const auto& notice: self->takeNotices()) {
       rows.push_back(notice.kind == gum::Configuration::Notice::Kind::DEPRECATION ? "deprecation"
-                                                                                   : "file");
+                     : notice.kind == gum::Configuration::Notice::Kind::FILE      ? "file"
+                                                                                  : "noEffect");
       rows.push_back(notice.message);
     }
     return rows;

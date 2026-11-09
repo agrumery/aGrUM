@@ -117,10 +117,10 @@ namespace gum_tests {
 
   GUM_TEST(PreambleFollowsTheConfiguration) {
     ConfigurationGuard guard;
-    gum::config().set("notebook", "arcColor", "#AAAAAA");
-    gum::config().set("notebook", "graphSize", "8");
-    gum::config().set("notebook", "nodeFgColor", "adaptive");
-    gum::config().set("notebook", "nodeBgColor", "burlywood");
+    gum::config().set("dot", "arcColor", "#AAAAAA");
+    gum::config().set("dot", "graphSize", "8");
+    gum::config().set("dot", "nodeFgColor", "adaptive");
+    gum::config().set("dot", "nodeBgColor", "burlywood");
 
     gum::dot::DotWriter w;
     gum::dot::writePreamble(w, gum::dot::DotStyle::read(), gum::dot::DotOptions());

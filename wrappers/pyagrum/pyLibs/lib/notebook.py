@@ -102,9 +102,9 @@ class FlowLayout:
       display: inline-block;
       margin: 7px;
       padding : 3px;
-      border: {pyagrum.config.typed["notebook", "flow_border_width"]}px solid {pyagrum.config["notebook", "flow_border_color"]};  
+      border: {pyagrum.config.typed["notebook", "flowBorderWidth"]}px solid {pyagrum.config["notebook", "flowBorderColor"]};  
       valign:middle;
-      background-color: {pyagrum.config["notebook", "flow_background_color"]};
+      background-color: {pyagrum.config["notebook", "flowBackgroundColor"]};
       }}
       </style>
       """
@@ -278,7 +278,7 @@ def _reprGraph(gr: dot.Dot, size: float | str | None, asString: bool, graph_form
     gr.set_size(size)
 
   if graph_format is None:
-    graph_format = pyagrum.config["notebook", "graph_format"]
+    graph_format = pyagrum.config["notebook", "graphFormat"]
 
   if graph_format == "svg":
     gsvg = IPython.display.SVG(prepareLinksForSVG(gr.create_svg(encoding="utf-8").decode("utf-8")))
@@ -307,7 +307,7 @@ def showGraph(gr: dot.Dot, size: float | str | None = None) -> None:
     the size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   _reprGraph(gr, size, asString=False)
 
@@ -329,7 +329,7 @@ def getGraph(gr: dot.Dot, size: float | str | None = None) -> str:
     the HTML representation of the graph (as a string)
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   result = _reprGraph(gr, size, asString=True)
   assert result is not None
@@ -354,7 +354,7 @@ def showDot(dotstring: str, size: float | str | None = None) -> None:
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
   showGraph(_from_dotstring(dotstring), size)
 
 
@@ -374,7 +374,7 @@ def getDot(dotstring: str, size: float | str | None = None) -> str:
     the HTML representation of the dot string
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   return getGraph(_from_dotstring(dotstring), size)
 
@@ -408,7 +408,7 @@ def getBNDiff(
     the HTML representation of the comparison
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   return getGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -437,7 +437,7 @@ def showBNDiff(
     with style or not.
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   showGraph(graphDiff(bn1, bn2, noStyle), size)
 
@@ -470,7 +470,7 @@ def getJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctionTreeMapSize"]
+    size = pyagrum.config["junctionTree", "mapSize"]
   return getGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -502,7 +502,7 @@ def showJunctionTreeMap(
     color for the separator nodes
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctionTreeMapSize"]
+    size = pyagrum.config["junctionTree", "mapSize"]
   showGraph(_junctionTreeMapDot(bn, scaleClique, scaleSep, lenEdge, colorClique, colorSep), size)
 
 
@@ -520,7 +520,7 @@ def showJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float |
     size (for graphviz) of the rendered graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
   showDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -542,7 +542,7 @@ def getJunctionTree(bn: pyagrum.BayesNet, withNames: bool = True, size: float | 
       the HTML representation of the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "junctionTreeGraphSize"]
+    size = pyagrum.config["junctionTree", "graphSize"]
   return getDot(_junctionTreeDotStr(bn, withNames), size)
 
 
@@ -590,7 +590,7 @@ def getProba(p: pyagrum.Tensor, scale: float | None = None) -> str:
   str
     the HTML representation of the marginal
   """
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
   # return _getMatplotFig(proba2histo(p, scale))
   fig = proba2histo(p, scale)
   plt.close()
@@ -634,7 +634,7 @@ def getProbaMinMax(pmin: pyagrum.Tensor, pmax: pyagrum.Tensor, scale: float = 1.
   str
     the HTML representation of the marginal min,max
   """
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
   return _getMatplotFig(probaMinMaxH(pmin, pmax, scale))
 
 
@@ -714,10 +714,10 @@ def showMRF(
    the graph
   """
   if view is None:
-    view = pyagrum.config["notebook", "markovRandomFieldView"]
+    view = pyagrum.config["markovRandomField", "view"]
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
@@ -810,7 +810,7 @@ def showBN(
     a nodeMap of values to be shown as tooltip
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -869,7 +869,7 @@ def showCN(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -929,13 +929,13 @@ def getMRF(
     the graph
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapEdge is None:
     cmapEdge = cmapNode
 
   if view is None:
-    view = pyagrum.config["notebook", "markovRandomFieldView"]
+    view = pyagrum.config["markovRandomField", "view"]
 
   if view == "graph":
     dottxt = MRF2UGdot(mrf, size, nodeColor, edgeWidth, edgeColor, cmapNode, cmapEdge)
@@ -985,7 +985,7 @@ def getBN(
     the desired representation of the Bayesian network
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1045,7 +1045,7 @@ def getCN(
     the desired representation of the Credal Network
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if cmapArc is None:
     cmapArc = cmapNode
@@ -1105,7 +1105,7 @@ def showInference(model: pyagrum.PGM, **kwargs) -> None:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "graph_inference_size"]
+    size = pyagrum.config["notebook", "graphInferenceSize"]
 
   showGraph(prepareShowInference(model, **kwargs), size)
 
@@ -1150,7 +1150,7 @@ def getInference(model: pyagrum.PGM, **kwargs) -> str:
   if "size" in kwargs:
     size = kwargs["size"]
   else:
-    size = pyagrum.config["notebook", "graph_inference_size"]
+    size = pyagrum.config["notebook", "graphInferenceSize"]
 
   grinf = prepareShowInference(model, **kwargs)
   return getGraph(grinf, size)
@@ -1187,20 +1187,20 @@ def _reprTensor(
   """
   from fractions import Fraction
 
-  r0, g0, b0 = gds.color2rgb(pyagrum.config["notebook", "tensor_color_0"])
-  r1, g1, b1 = gds.color2rgb(pyagrum.config["notebook", "tensor_color_1"])
+  r0, g0, b0 = gds.color2rgb(pyagrum.config["tensor", "color0"])
+  r1, g1, b1 = gds.color2rgb(pyagrum.config["tensor", "color1"])
 
   if digits is None:
-    digits = pyagrum.config.typed["notebook", "tensor_visible_digits"]
+    digits = pyagrum.config.typed["tensor", "visibleDigits"]
 
   if withColors is None:
-    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["tensor", "withColors"]
 
-  with_fraction = pyagrum.config["notebook", "tensor_with_fraction"] == "True"
+  with_fraction = pyagrum.config["tensor", "withFraction"] == "True"
   if with_fraction:
-    fraction_limit = int(pyagrum.config["notebook", "tensor_fraction_limit"])
-    fraction_round_error = float(pyagrum.config["notebook", "tensor_fraction_round_error"])
-    fraction_with_latex = pyagrum.config["notebook", "tensor_fraction_with_latex"] == "True"
+    fraction_limit = int(pyagrum.config["tensor", "fractionLimit"])
+    fraction_round_error = float(pyagrum.config["tensor", "fractionRoundError"])
+    fraction_with_latex = pyagrum.config["tensor", "fractionWithLatex"] == "True"
 
   def _rgb(r, g, b):
     return f"#{r:02x}{g:02x}{b:02x}"
@@ -1263,7 +1263,7 @@ def _reprTensor(
     s = "<tr>"
     if nparents > 0:
       # parents order
-      if pyagrum.config["notebook", "tensor_parent_values"] == "revmerge":
+      if pyagrum.config["tensor", "parentValues"] == "revmerge":
         pmin, pmax, pinc = nparents - 1, 0 - 1, -1
       else:
         pmin, pmax, pinc = 0, nparents, 1
@@ -1292,13 +1292,13 @@ def _reprTensor(
     while not inst.end():
       s = "<tr>"
       # parents order
-      if pyagrum.config["notebook", "tensor_parent_values"] == "revmerge":
+      if pyagrum.config["tensor", "parentValues"] == "revmerge":
         pmin, pmax, pinc = 1, nparents + 1, 1
       else:
         pmin, pmax, pinc = nparents, 0, -1
       for par in range(pmin, pmax, pinc):
         label = inst.variable(par).label(inst.val(par))
-        if par == 1 or pyagrum.config["notebook", "tensor_parent_values"] == "nomerge":
+        if par == 1 or pyagrum.config["tensor", "parentValues"] == "nomerge":
           s += f"<th style='border:1px solid black;color:black;background-color:#BBBBBB'><center>{label}</center></th>"
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
@@ -1374,7 +1374,7 @@ def showTensor(
     the aliases for variables name in the table
   """
   if withColors is None:
-    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["tensor", "withColors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1407,7 +1407,7 @@ def getTensor(
     the html representation of the Tensor (as a string)
   """
   if withColors is None:
-    withColors = pyagrum.config.typed["notebook", "tensor_with_colors"]
+    withColors = pyagrum.config.typed["tensor", "withColors"]
 
   if withColors:
     withColors = __isKindOfProba(pot)
@@ -1759,8 +1759,8 @@ def showCausalImpact(
 
 def _update_config_notebooks() -> None:
   # hook to control some parameters for notebook when config changes
-  mpl.rcParams["figure.facecolor"] = pyagrum.config["notebook", "figure_facecolor"]
-  set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+  mpl.rcParams["figure.facecolor"] = pyagrum.config["notebook", "figureFaceColor"]
+  set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
 
 
 # check if an instance of ipython exists

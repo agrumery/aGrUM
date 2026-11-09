@@ -102,9 +102,9 @@
             LaTeX representation of the causal impact expression.
         """
         if doOperatorPrefix is None:
-            doOperatorPrefix = pyagrum.config["causal", "latex_do_prefix"]
+            doOperatorPrefix = pyagrum.config["causal", "latexDoPrefix"]
         if doOperatorSuffix is None:
-            doOperatorSuffix = pyagrum.config["causal", "latex_do_suffix"]
+            doOperatorSuffix = pyagrum.config["causal", "latexDoSuffix"]
         return $action(self, doOperatorPrefix, doOperatorSuffix)
 %}
 

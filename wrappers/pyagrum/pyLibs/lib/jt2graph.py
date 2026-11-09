@@ -70,7 +70,7 @@ def _junctionTreeOptions(
 def _junctionTreeDot(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
   """The pydot graph of a junction tree built for a model (the attribute `_engine` of the junction tree)."""
   model = jt._engine._model
-  withNames = pyagrum.config.typed["notebook", "junctionTreeWithNames"]
+  withNames = pyagrum.config.typed["junctionTree", "withNames"]
   return gds.dotFromAgrum(jt.toDot(_junctionTreeOptions(jt, model, withNames, size)))
 
 
@@ -86,11 +86,11 @@ def _mapDotString(
   if scaleClique is None and scaleSep is None and lenEdge is None and colorClique is None and colorSep is None:
     return jt.__map_str__()
   if scaleClique is None:
-    scaleClique = float(pyagrum.config["notebook", "junctionTreeMapCliqueScale"])
+    scaleClique = float(pyagrum.config["junctionTree", "mapCliqueScale"])
   if scaleSep is None:
-    scaleSep = float(pyagrum.config["notebook", "junctionTreeMapSepScale"])
+    scaleSep = float(pyagrum.config["junctionTree", "mapSepScale"])
   if lenEdge is None:
-    lenEdge = float(pyagrum.config["notebook", "junctionTreeMapEdgeLen"])
+    lenEdge = float(pyagrum.config["junctionTree", "mapEdgeLen"])
   return jt.__map_str__(scaleClique, scaleSep, lenEdge, colorClique or "", colorSep or "")
 
 

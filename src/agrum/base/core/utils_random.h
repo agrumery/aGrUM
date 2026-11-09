@@ -62,8 +62,9 @@
 
 namespace gum {
   namespace _rand_namespace_ {
-    std::mt19937& generator();
-  }
+    /// The only generator of aGrUM (exported, so that all the shared modules use the same one).
+    GUM_SHARED_PUBLIC std::mt19937& generator();
+  }   // namespace _rand_namespace_
 
   /// @ingroup utilities_group
   /// @{
@@ -91,8 +92,10 @@ namespace gum {
   std::vector< GUM_SCALAR > randomDistribution(Size n);
 
   /**
-   * @brief Returns the aGrUM's seed used by the std::generators.
-   * @return Returns the aGrUM's seed used by the std::generators.
+   * @brief Returns the seed of the generator of aGrUM.
+   * @return The seed given to the last call to initRandom() (the value taken from the clock if it
+   * was 0): the key core.randomSeed at start, then what initRandom() received. 0 if initRandom()
+   * was never called, i.e. in a program linked statically which does not use gum::Configuration.
    */
   GUM_SHARED_PUBLIC unsigned int randomGeneratorSeed();
 
@@ -101,6 +104,11 @@ namespace gum {
 
   /**
    * @brief Initialize random generator seed.
+   *
+   * This is the way to act directly on the generator at any time. At start, the library calls it
+   * once with the key core.randomSeed of gum::Configuration; changing this key later has no effect.
+   *
+   * @param seed the seed; 0 for a seed taken from the clock.
    */
   GUM_SHARED_PUBLIC void initRandom(unsigned int seed = 0);
 

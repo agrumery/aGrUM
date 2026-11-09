@@ -159,10 +159,10 @@ Parameters
 ----------
 doOperatorPrefix : str, optional
     Prefix for the do-operator notation. Defaults to
-    ``gum.config[\"causal\", \"latex_do_prefix\"]``.
+    ``gum.config[\"causal\", \"latexDoPrefix\"]``.
 doOperatorSuffix : str, optional
     Suffix for the do-operator notation. Defaults to
-    ``gum.config[\"causal\", \"latex_do_suffix\"]``.
+    ``gum.config[\"causal\", \"latexDoSuffix\"]``.
 
 Returns
 -------

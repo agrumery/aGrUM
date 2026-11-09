@@ -447,7 +447,7 @@ NODE_FG : str, optional
     Deprecated: use ``pyagrum.config['causal', 'nodeFgColor']``.
     Text colour for all the nodes.
 EDGE_COL : str, optional
-    Deprecated: use ``pyagrum.config['notebook', 'arcColor']``.
+    Deprecated: use ``pyagrum.config['dot', 'arcColor']``.
     Edge colour.
 
 Returns

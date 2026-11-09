@@ -102,14 +102,14 @@ namespace gum_tests {
 
   GUM_TEST(JunctionTreeFollowsTheConfiguration) {
     ConfigurationGuard guard;
-    gum::config().set("notebook", "junctionTreeGraphSize", "12!");
-    gum::config().set("notebook", "junctionTreeCliqueBgColor", "#101010");
-    gum::config().set("notebook", "junctionTreeCliqueFgColor", "adaptive");
-    gum::config().set("notebook", "junctionTreeCliqueFontSize", "14");
-    gum::config().set("notebook", "junctionTreeSeparatorBgColor", "yellow");
-    gum::config().set("notebook", "junctionTreeSeparatorFgColor", "red");
-    gum::config().set("notebook", "junctionTreeSeparatorFontSize", "6");
-    gum::config().set("notebook", "arcColor", "#AAAAAA");
+    gum::config().set("junctionTree", "graphSize", "12!");
+    gum::config().set("junctionTree", "cliqueBgColor", "#101010");
+    gum::config().set("junctionTree", "cliqueFgColor", "adaptive");
+    gum::config().set("junctionTree", "cliqueFontSize", "14");
+    gum::config().set("junctionTree", "separatorBgColor", "yellow");
+    gum::config().set("junctionTree", "separatorFgColor", "red");
+    gum::config().set("junctionTree", "separatorFontSize", "6");
+    gum::config().set("dot", "arcColor", "#AAAAAA");
 
     const auto dot = dotJunctionTree().toDot();
     CHECK(dotHas(dot, "size=\"12!\""));
@@ -176,9 +176,9 @@ namespace gum_tests {
     CHECK(dotHas(dot, "width=\"0.5\""));   // 0.5 * 1 node
 
     // and the configuration changes the map
-    gum::config().set("notebook", "junctionTreeMapCliqueScale", "1");
-    gum::config().set("notebook", "junctionTreeMapEdgeLen", "2");
-    gum::config().set("notebook", "junctionTreeCliqueBgColor", "pink");
+    gum::config().set("junctionTree", "mapCliqueScale", "1");
+    gum::config().set("junctionTree", "mapEdgeLen", "2");
+    gum::config().set("junctionTree", "cliqueBgColor", "pink");
     const auto changed = jt.mapToDot();
     CHECK(dotHas(changed, "width=\"4\""));
     CHECK(dotHas(changed, "len=\"2\""));

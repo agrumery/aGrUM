@@ -62,19 +62,19 @@ namespace gum::dot {
       return gum::config().typed< T >(section, key);
     }
 
-    // the part of the style which comes from the section `notebook`
-    DotStyle _notebook_() {
+    // the part of the style which comes from the section `dot`
+    DotStyle _dot_() {
       DotStyle style;
-      style.size                  = _str_("notebook", "graphSize");
-      style.rankDir               = _str_("notebook", "graphRankDir");
-      style.layout                = _str_("notebook", "graphLayout");
-      style.arcColor              = _str_("notebook", "arcColor");
-      style.nodeBgColor           = _str_("notebook", "nodeBgColor");
-      style.nodeFgColor           = configFgColor("notebook", "nodeFgColor");
-      style.chainComponentBgColor = _str_("notebook", "chainComponentBgColor");
-      style.compelledArcColor     = _str_("notebook", "compelledArcColor");
-      style.bidirectedEdgeColor   = _str_("notebook", "bidirectedEdgeColor");
-      style.circleMarkEdgeColor   = _str_("notebook", "circleMarkEdgeColor");
+      style.size                  = _str_("dot", "graphSize");
+      style.rankDir               = _str_("dot", "graphRankDir");
+      style.layout                = _str_("dot", "graphLayout");
+      style.arcColor              = _str_("dot", "arcColor");
+      style.nodeBgColor           = _str_("dot", "nodeBgColor");
+      style.nodeFgColor           = configFgColor("dot", "nodeFgColor");
+      style.chainComponentBgColor = _str_("dot", "chainComponentBgColor");
+      style.compelledArcColor     = _str_("dot", "compelledArcColor");
+      style.bidirectedEdgeColor   = _str_("dot", "bidirectedEdgeColor");
+      style.circleMarkEdgeColor   = _str_("dot", "circleMarkEdgeColor");
       return style;
     }
   }   // namespace
@@ -85,15 +85,13 @@ namespace gum::dot {
       GUM_ERROR(InvalidArgument, "The key '" << key << "' of a font color must end with FgColor")
     }
     const std::string bgKey = std::string(key.substr(0, key.size() - fgSuffix.size())) + "BgColor";
-    return resolveFgColor(_str_(section, key),
-                          _str_(section, bgKey),
-                          _str_("notebook", "arcColor"));
+    return resolveFgColor(_str_(section, key), _str_(section, bgKey), _str_("dot", "arcColor"));
   }
 
-  DotStyle DotStyle::read() { return _notebook_(); }
+  DotStyle DotStyle::read() { return _dot_(); }
 
   DotStyle DotStyle::readCredalNet() {
-    DotStyle style    = _notebook_();
+    DotStyle style    = _dot_();
     style.nodeBgColor = _str_("credalnet", "nodeBgColor");
     style.nodeFgColor = configFgColor("credalnet", "nodeFgColor");
     return style;
@@ -101,29 +99,29 @@ namespace gum::dot {
 
   JunctionTreeDotStyle JunctionTreeDotStyle::read() {
     JunctionTreeDotStyle style;
-    static_cast< DotStyle& >(style) = _notebook_();
-    style.size                      = _str_("notebook", "junctionTreeGraphSize");
+    static_cast< DotStyle& >(style) = _dot_();
+    style.size                      = _str_("junctionTree", "graphSize");
 
-    style.withNames        = _typed_< bool >("notebook", "junctionTreeWithNames");
-    style.separatorBgColor = _str_("notebook", "junctionTreeSeparatorBgColor");
-    style.separatorFgColor = configFgColor("notebook", "junctionTreeSeparatorFgColor");
+    style.withNames        = _typed_< bool >("junctionTree", "withNames");
+    style.separatorBgColor = _str_("junctionTree", "separatorBgColor");
+    style.separatorFgColor = configFgColor("junctionTree", "separatorFgColor");
     style.separatorFontSize
-        = static_cast< int >(_typed_< std::int64_t >("notebook", "junctionTreeSeparatorFontSize"));
-    style.cliqueBgColor = _str_("notebook", "junctionTreeCliqueBgColor");
-    style.cliqueFgColor = configFgColor("notebook", "junctionTreeCliqueFgColor");
+        = static_cast< int >(_typed_< std::int64_t >("junctionTree", "separatorFontSize"));
+    style.cliqueBgColor = _str_("junctionTree", "cliqueBgColor");
+    style.cliqueFgColor = configFgColor("junctionTree", "cliqueFgColor");
     style.cliqueFontSize
-        = static_cast< int >(_typed_< std::int64_t >("notebook", "junctionTreeCliqueFontSize"));
+        = static_cast< int >(_typed_< std::int64_t >("junctionTree", "cliqueFontSize"));
 
-    style.mapCliqueScale = _typed_< double >("notebook", "junctionTreeMapCliqueScale");
-    style.mapSepScale    = _typed_< double >("notebook", "junctionTreeMapSepScale");
-    style.mapEdgeLen     = _typed_< double >("notebook", "junctionTreeMapEdgeLen");
-    style.mapSize        = _str_("notebook", "junctionTreeMapSize");
+    style.mapCliqueScale = _typed_< double >("junctionTree", "mapCliqueScale");
+    style.mapSepScale    = _typed_< double >("junctionTree", "mapSepScale");
+    style.mapEdgeLen     = _typed_< double >("junctionTree", "mapEdgeLen");
+    style.mapSize        = _str_("junctionTree", "mapSize");
     return style;
   }
 
   FactorGraphDotStyle FactorGraphDotStyle::read() {
     FactorGraphDotStyle style;
-    static_cast< DotStyle& >(style) = _notebook_();
+    static_cast< DotStyle& >(style) = _dot_();
     style.layout                    = _str_("factorgraph", "graphLayout");
     style.nodeBgColor               = _str_("factorgraph", "nodeBgColor");
     style.nodeFgColor               = configFgColor("factorgraph", "nodeFgColor");
@@ -136,7 +134,7 @@ namespace gum::dot {
 
   InfluenceDiagramDotStyle InfluenceDiagramDotStyle::read() {
     InfluenceDiagramDotStyle style;
-    static_cast< DotStyle& >(style) = _notebook_();
+    static_cast< DotStyle& >(style) = _dot_();
     style.size                      = _str_("influenceDiagram", "graphSize");
 
     style.chanceBgColor = _str_("influenceDiagram", "chanceBgColor");
@@ -158,7 +156,7 @@ namespace gum::dot {
 
   CausalDotStyle CausalDotStyle::read() {
     CausalDotStyle style;
-    static_cast< DotStyle& >(style) = _notebook_();
+    static_cast< DotStyle& >(style) = _dot_();
     style.size                      = _str_("causal", "graphSize");
     style.nodeBgColor               = _str_("causal", "nodeBgColor");
     style.nodeFgColor               = configFgColor("causal", "nodeFgColor");
@@ -171,7 +169,7 @@ namespace gum::dot {
 
   DynamicBNDotStyle DynamicBNDotStyle::read() {
     DynamicBNDotStyle style;
-    static_cast< DotStyle& >(style) = _notebook_();
+    static_cast< DotStyle& >(style) = _dot_();
     style.size                      = _str_("dynamicBN", "graphSize");
 
     style.timeSliceBgColor       = _str_("dynamicBN", "timeSliceBgColor");

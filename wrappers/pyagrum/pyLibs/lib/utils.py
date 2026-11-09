@@ -56,17 +56,17 @@ import pyagrum
 
 def setDarkTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in dark theme"""
-  pyagrum.config["notebook", "arcColor"] = "#AAAAAA"
+  pyagrum.config["dot", "arcColor"] = "#AAAAAA"
 
 
 def setLightTheme() -> None:
   """change the color for arcs and text in graphs to be more visible in light theme"""
-  pyagrum.config["notebook", "arcColor"] = "#4A4A4A"
+  pyagrum.config["dot", "arcColor"] = "#4A4A4A"
 
 
 def getBlackInTheme() -> str:
   """return the color used for arc and text in graphs"""
-  return pyagrum.config["notebook", "arcColor"]
+  return pyagrum.config["dot", "arcColor"]
 
 
 def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -> None:
@@ -81,7 +81,7 @@ def showApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -
     a function to apply to the history values
   """
   if apsc.verbosity():
-    set_matplotlib_formats(pyagrum.config["notebook", "graph_format"])
+    set_matplotlib_formats(pyagrum.config["notebook", "graphFormat"])
     if len(apsc.history()) < 10:
       plt.xlim(1, 10)
     else:
@@ -209,8 +209,8 @@ async def async_html2image(htmlcontent: str, filename: str):
     try:
       await page.screenshot(path=tmp_path, full_page=True, type="png")
       _, (x0, y0, x1, y1) = _white_bbox(tmp_path)
-      w = x1 - x0 + pyagrum.config.typed["notebook", "export_pdf_margin_x"]
-      h = y1 - y0 + pyagrum.config.typed["notebook", "export_pdf_margin_y"]
+      w = x1 - x0 + pyagrum.config.typed["notebook", "exportPdfMarginX"]
+      h = y1 - y0 + pyagrum.config.typed["notebook", "exportPdfMarginY"]
     finally:
       os.unlink(tmp_path)
     await page.add_style_tag(

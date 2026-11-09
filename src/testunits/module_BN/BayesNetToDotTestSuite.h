@@ -96,10 +96,10 @@ namespace gum_tests {
     ConfigurationGuard guard;
     auto               bn = gum::BayesNet< double >::fastPrototype("a->b");
 
-    gum::config().set("notebook", "arcColor", "#AAAAAA");
-    gum::config().set("notebook", "graphRankDir", "LR");
-    gum::config().set("notebook", "nodeBgColor", "burlywood");
-    gum::config().set("notebook", "nodeFgColor", "adaptive");
+    gum::config().set("dot", "arcColor", "#AAAAAA");
+    gum::config().set("dot", "graphRankDir", "LR");
+    gum::config().set("dot", "nodeBgColor", "burlywood");
+    gum::config().set("dot", "nodeFgColor", "adaptive");
     const auto dot = bn.toDot();
     CHECK(bnDotHas(dot, "rankdir=\"LR\""));
     CHECK(bnDotHas(dot,

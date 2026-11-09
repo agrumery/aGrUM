@@ -77,6 +77,7 @@ namespace gum_tests {
 
     for (const auto& e: std::vector< ConfigurationDefaultsTestSuite::Expected< std::int64_t > >{
              {"core", "maxNumberOfThreads", -1},
+             {"core", "randomSeed", 0},
              {"core", "jgumIndent", -1},
              {"approximation", "maxIter", 10000},
              {"approximation", "burnIn", 0},
@@ -148,6 +149,7 @@ namespace gum_tests {
              {"gibbsKL", "verbosity", false},
              {"gibbsKL", "drawnAtRandom", true},
              {"mcKL", "verbosity", false},
+             {"learning", "fciErrorOnInvalidPAG", false},
              {"junctionTree", "withNames", true},
              {"causal", "showLatentNames", false},
          }) {

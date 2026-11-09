@@ -825,7 +825,7 @@ class CausalModel(object):
             Deprecated: use ``pyagrum.config['causal', 'nodeFgColor']``.
             Text colour for all the nodes.
         EDGE_COL : str, optional
-            Deprecated: use ``pyagrum.config['notebook', 'arcColor']``.
+            Deprecated: use ``pyagrum.config['dot', 'arcColor']``.
             Edge colour.
 
         Returns
@@ -1193,9 +1193,9 @@ class CausalImpact(object):
             LaTeX representation of the causal impact expression.
         """
         if doOperatorPrefix is None:
-            doOperatorPrefix = pyagrum.config["causal", "latex_do_prefix"]
+            doOperatorPrefix = pyagrum.config["causal", "latexDoPrefix"]
         if doOperatorSuffix is None:
-            doOperatorSuffix = pyagrum.config["causal", "latex_do_suffix"]
+            doOperatorSuffix = pyagrum.config["causal", "latexDoSuffix"]
         return _cmcpp.CausalImpact_toLatex(self, doOperatorPrefix, doOperatorSuffix)
 
 

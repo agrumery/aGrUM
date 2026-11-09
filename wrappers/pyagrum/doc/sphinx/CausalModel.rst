@@ -14,8 +14,8 @@ pyAgrum provides a set of tools to perform causal inference and estimate causal 
 
     .. code-block:: python
 
-            pyagrum.config["causal","latex_do_prefix"]="\hookrightarrow("
-            pyagrum.config["causal","latex_do_suffix"]=")"
+            pyagrum.config["causal","latexDoPrefix"]="\hookrightarrow("
+            pyagrum.config["causal","latexDoSuffix"]=")"
 
 A :class:`pyagrum.CausalModel` pairs a causal DAG with latent (hidden) variables and explicit
 causal assumptions. It is the entry point for do-calculus reasoning and causal effect

@@ -132,7 +132,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   """
 
   var = p.variable(0)
-  if pyagrum.config["notebook", "histogram_mode"] == "compact":
+  if pyagrum.config["histogram", "mode"] == "compact":
     ra, v, lv = __limits(p)
   else:
     lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
@@ -157,7 +157,7 @@ def _getProbaLine(p, scale=1.0, txtcolor="black"):
   ax = fig.add_subplot(111)
   ax.set_xticks(ra[::step])
   ax.set_xticklabels(lv[::step], rotation="vertical")
-  ax.fill_between(ra, v, color=pyagrum.config["notebook", "histogram_color"])
+  ax.fill_between(ra, v, color=pyagrum.config["histogram", "color"])
 
   ax.set_ylim(bottom=0, top=1.05 * p.max())
   ax.set_title(_getTitleHisto(p, True), color=txtcolor)
@@ -189,14 +189,14 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     a matplotlib histogram for a Tensor p.
 
   """
-  if pyagrum.config["notebook", "histogram_mode"] == "compact":
+  if pyagrum.config["histogram", "mode"] == "compact":
     ra, v, lv = __limits(p)
   else:
     var = p.variable(0)
     if util is not None:
       lu = util.toarray()
-      coef = -1 if pyagrum.config.typed["influenceDiagram", "utility_show_loss"] else 1
-      fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
+      coef = -1 if pyagrum.config.typed["influenceDiagram", "utilityShowLoss"] else 1
+      fmt = f".{pyagrum.config.typed['influenceDiagram', 'utilityVisibleDigits']}f"
       lv = [f"{var.label(int(i))} [{coef * lu[i]:{fmt}}]" for i in np.arange(var.domainSize())]
     else:
       lv = [var.label(int(i)) for i in np.arange(var.domainSize())]
@@ -209,10 +209,10 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
 
   ax = fig.add_subplot(111)
 
-  bars = ax.bar(ra, v, align="center", color=pyagrum.config["notebook", "histogram_color"])
+  bars = ax.bar(ra, v, align="center", color=pyagrum.config["histogram", "color"])
   ma = p.max()
 
-  if pyagrum.config.typed["notebook", "histogram_use_percent"]:
+  if pyagrum.config.typed["histogram", "usePercent"]:
     perc = 100
     suffix = "%"
   else:
@@ -220,7 +220,7 @@ def _getProbaV(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_height() != 0:
-      txt = f"{b.get_height() * perc:.{pyagrum.config.typed['notebook', 'histogram_vertical_visible_digits']}f}{suffix}"
+      txt = f"{b.get_height() * perc:.{pyagrum.config.typed['histogram', 'verticalVisibleDigits']}f}{suffix}"
       ax.text(b.get_x() + 0.5, ma, txt, ha="center", va="top", rotation="vertical", alpha=0.7)
 
   ax.set_ylim(bottom=0, top=p.max())
@@ -262,9 +262,9 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   if util is not None:
     lu = util.toarray()
-    fmt = f".{pyagrum.config.typed['influenceDiagram', 'utility_visible_digits']}f"
+    fmt = f".{pyagrum.config.typed['influenceDiagram', 'utilityVisibleDigits']}f"
 
-    if pyagrum.config.typed["influenceDiagram", "utility_show_loss"]:
+    if pyagrum.config.typed["influenceDiagram", "utilityShowLoss"]:
       vx = [f"{var.label(int(i))} [{-lu[i] if lu[i] != 0 else 0:{fmt}}]" for i in ra_reverse]
     else:
       vx = [f"{var.label(int(i))} [{lu[i]:{fmt}}]" for i in ra_reverse]
@@ -280,9 +280,9 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
 
   vals = p.tolist()
   vals.reverse()
-  bars = ax.barh(ra, vals, align="center", color=pyagrum.config["notebook", "histogram_color"])
+  bars = ax.barh(ra, vals, align="center", color=pyagrum.config["histogram", "color"])
 
-  if pyagrum.config.typed["notebook", "histogram_use_percent"]:
+  if pyagrum.config.typed["histogram", "usePercent"]:
     perc = 100
     suffix = "%"
   else:
@@ -290,9 +290,7 @@ def _getProbaH(p, scale=1.0, util=None, txtcolor="black"):
     suffix = ""
   for b in bars:
     if b.get_width() != 0:
-      txt = (
-        f"{b.get_width() * perc:.{pyagrum.config.typed['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
-      )
+      txt = f"{b.get_width() * perc:.{pyagrum.config.typed['histogram', 'horizontalVisibleDigits']}f}{suffix}"
       ax.text(1, b.get_y(), txt, ha="right", va="bottom", alpha=0.7)
 
   ax.set_xlim(0, 1)
@@ -316,13 +314,13 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
 
   lim1 = 0
   lim2 = len(vals) - 1
-  if pyagrum.config["notebook", "histogram_mode"] == "compact":
-    while vals[lim1] <= pyagrum.config.typed["notebook", "histogram_epsilon"]:
+  if pyagrum.config["histogram", "mode"] == "compact":
+    while vals[lim1] <= pyagrum.config.typed["histogram", "epsilon"]:
       lim1 += 1
     if lim1 > 0:
       lim1 -= 1
 
-    while vals[lim2] <= pyagrum.config.typed["notebook", "histogram_epsilon"]:
+    while vals[lim2] <= pyagrum.config.typed["histogram", "epsilon"]:
       lim2 -= 1
     if lim2 < len(vals) - 1:
       lim2 += 1
@@ -354,8 +352,8 @@ def _getHistoForDiscretized(p, scale=1, txtcolor="Black"):
     height=vals[lim1 : 1 + lim2],
     width=widths[lim1 : 1 + lim2],
     align="edge",
-    color=pyagrum.config["notebook", "histogram_color"],
-    edgecolor=pyagrum.config["notebook", "histogram_edge_color"],
+    color=pyagrum.config["histogram", "color"],
+    edgecolor=pyagrum.config["histogram", "edgeColor"],
     zorder=33,
   )
 
@@ -396,18 +394,18 @@ def proba2histo(
   isev = p.min() == 0.0 and p.max() == 1.0 and p.sum() == 1.0
 
   if p.variable(0).varType() == pyagrum.VarType_DISCRETIZED:
-    if pyagrum.config["notebook", "histogram_discretized_visualisation"] == "histogram":
+    if pyagrum.config["histogram", "discretizedVisualisation"] == "histogram":
       if scale is None:
-        scale = pyagrum.config.typed["notebook", "histogram_discretized_scale"]
+        scale = pyagrum.config.typed["histogram", "discretizedScale"]
       return _getHistoForDiscretized(p, scale, txtcolor)
 
   if scale is None:
     scale = 1.0
 
-  if p.variable(0).domainSize() > int(pyagrum.config["notebook", "histogram_line_threshold"]) and not (isev):
+  if p.variable(0).domainSize() > int(pyagrum.config["histogram", "lineThreshold"]) and not (isev):
     return _getProbaLine(p, scale, txtcolor=txtcolor)
 
-  if p.variable(0).domainSize() > int(pyagrum.config["notebook", "histogram_horizontal_threshold"]):
+  if p.variable(0).domainSize() > int(pyagrum.config["histogram", "horizontalThreshold"]):
     return _getProbaV(p, scale, txtcolor=txtcolor)
 
   return _getProbaH(p, scale, util=util, txtcolor=txtcolor)
@@ -439,7 +437,7 @@ def saveFigProba(
   fig = proba2histo(p, util=util, txtcolor=txtcolor)
 
   if bgcolor is None:
-    fc = pyagrum.config["notebook", "figure_facecolor"]
+    fc = pyagrum.config["notebook", "figureFaceColor"]
   else:
     fc = bgcolor
 
@@ -450,7 +448,7 @@ def saveFigProba(
     facecolor=fc,
     pad_inches=0.05,
     dpi=fig.dpi,
-    format=pyagrum.config["notebook", "graph_format"],
+    format=pyagrum.config["notebook", "graphFormat"],
   )
   plt.close(fig)
 
@@ -493,9 +491,9 @@ def probaMinMaxH(
   vmax = pmax.tolist()
   vmax.reverse()
   barsmax = ax.barh(ra, vmax, align="center", color="#BBFFAA")
-  barsmin = ax.barh(ra, vmin, align="center", color=pyagrum.config["notebook", "histogram_color"])
+  barsmin = ax.barh(ra, vmin, align="center", color=pyagrum.config["histogram", "color"])
 
-  if pyagrum.config.typed["notebook", "histogram_use_percent"]:
+  if pyagrum.config.typed["histogram", "usePercent"]:
     perc = 100
     suffix = "%"
   else:
@@ -503,10 +501,10 @@ def probaMinMaxH(
     suffix = ""
 
   for b in barsmax:
-    txt = f"{b.get_width() * perc:.{pyagrum.config.typed['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width() * perc:.{pyagrum.config.typed['histogram', 'horizontalVisibleDigits']}f}{suffix}"
     ax.text(1, b.get_y(), txt, ha="right", va="bottom")
   for b in barsmin:
-    txt = f"{b.get_width() * perc:.{pyagrum.config.typed['notebook', 'histogram_horizontal_visible_digits']}f}{suffix}"
+    txt = f"{b.get_width() * perc:.{pyagrum.config.typed['histogram', 'horizontalVisibleDigits']}f}{suffix}"
     ax.text(0, b.get_y(), txt, ha="left", va="bottom")
 
   ax.set_xlim(0, 1)
@@ -542,7 +540,7 @@ def saveFigProbaMinMax(
   fig = probaMinMaxH(pmin, pmax, txtcolor=txtcolor)
 
   if bgcolor is None:
-    fc = pyagrum.config["notebook", "figure_facecolor"]
+    fc = pyagrum.config["notebook", "figureFaceColor"]
   else:
     fc = bgcolor
 
@@ -553,6 +551,6 @@ def saveFigProbaMinMax(
     facecolor=fc,
     pad_inches=0.05,
     dpi=fig.dpi,
-    format=pyagrum.config["notebook", "graph_format"],
+    format=pyagrum.config["notebook", "graphFormat"],
   )
   plt.close(fig)

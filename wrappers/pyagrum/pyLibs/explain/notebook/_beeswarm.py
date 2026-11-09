@@ -117,8 +117,8 @@ def beeswarm(
 
   # Plot the beeswarm
   ax.plot([0, 0], [y_positions[-1] - 0.25, y_positions[0] + 0.25], linestyle="--", color="gray")
-  color1 = pyagrum.config["notebook", "tensor_color_0"]
-  color2 = pyagrum.config["notebook", "tensor_color_1"]
+  color1 = pyagrum.config["tensor", "color0"]
+  color2 = pyagrum.config["tensor", "color1"]
   cmap = colors.LinearSegmentedColormap.from_list("custom_red_green", [color1, color2])
 
   if sort:

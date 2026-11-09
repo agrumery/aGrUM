@@ -51,8 +51,9 @@
  *     key = value
  *
  * where type is one of `int`, `float`, `bool`, `str`, an enumeration `v1|v2|...` or a
- * deprecation `deprecated -> section.key`. Lines starting with `#` (but not `###`) or `;` are
- * free comments.
+ * deprecation: `deprecated -> section.key` (redirected to its replacement) or `deprecated type`
+ * (without replacement: the key keeps its type and its value). Lines starting with `#` (but not
+ * `###`) or `;` are free comments.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -63,18 +64,17 @@
 #include <atomic>
 #include <cstdint>
 #include <functional>
+#include <initializer_list>
 #include <mutex>
+#include <shared_mutex>
 #include <string>
+#include <string_view>
+#include <unordered_map>
 #include <utility>
 #include <variant>
 #include <vector>
 
 #include <agrum/agrum.h>
-
-#include <initializer_list>
-#include <shared_mutex>
-#include <string_view>
-#include <unordered_map>
 
 namespace gum {
 
@@ -88,7 +88,8 @@ namespace gum {
    * booleans are stored as `True` or `False` (accepted spellings, whatever the case: TRUE, 1, ON,
    * YES / FALSE, 0, OFF, NO), enumerated values with the casing declared in the defaults.
    *
-   * Section names are case-sensitive, key names are not (they are stored in lowercase).
+   * Section names are case-sensitive, key names are not: a key is found whatever the case of its
+   * name, and is displayed as declared in the defaults.
    *
    * Thread-safety: every public method is thread-safe (readers run concurrently, writers are
    * exclusive). Values are returned by copy. Hooks are run outside of any lock, so a hook may
@@ -132,6 +133,9 @@ namespace gum {
       std::string                doc;             ///< one-line documentation
       std::string                targetSection;   ///< replacement key (kind == DEPRECATED)
       std::string                targetKey;       ///< replacement key (kind == DEPRECATED)
+      /// deprecated without replacement (`### deprecated type :: ...`): the key keeps its type and
+      /// its value, is hidden, and every access to it queues a deprecation notice
+      bool deprecated{false};
 
       /// @return the allowed values joined by '|' (kind == ENUM), empty otherwise.
       std::string joinedValues() const;
@@ -153,7 +157,9 @@ namespace gum {
 
     /// a message that cannot be an exception (the operation went on), see takeNotices()
     struct Notice {
-      enum class Kind : unsigned char { DEPRECATION, FILE };
+      /// DEPRECATION: a deprecated key is used; FILE: a problem in a user file or in a hook;
+      /// NO_EFFECT: the change of a key which is only read at start
+      enum class Kind : unsigned char { DEPRECATION, FILE, NO_EFFECT };
       Notice::Kind kind;
       std::string  message;
     };

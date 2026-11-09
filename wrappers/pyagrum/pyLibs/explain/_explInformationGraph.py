@@ -97,7 +97,7 @@ def getInformationGraph(bn, evs=None, size=None, cmap=_INFOcmap, withMinMax=Fals
     graph as a dot representation and if asked, min_information_value, max_information_value, min_mutual_information_value, max_mutual_information_value
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if evs is None:
     evs = {}
@@ -177,7 +177,7 @@ def _reprInformation(bn, evs=None, size=None, cmap=_INFOcmap, asString=False, sh
   from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if evs is None:
     evs = {}
@@ -249,7 +249,7 @@ def getInformation(bn, evs=None, size=None, cmap=_INFOcmap) -> str:
     return the HTML string
   """
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
 
   if evs is None:
     evs = {}
@@ -281,5 +281,5 @@ def showInformation(bn, evs=None, size=None, cmap=_INFOcmap, show_legend=True):
     evs = {}
 
   if size is None:
-    size = pyagrum.config["notebook", "graphSize"]
+    size = pyagrum.config["dot", "graphSize"]
   return _reprInformation(bn, evs, size, cmap, asString=False, show_legend=show_legend)

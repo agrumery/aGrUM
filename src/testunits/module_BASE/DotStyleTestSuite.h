@@ -73,8 +73,10 @@ namespace gum_tests {
              {"arcColor", "#123456"},
              {"nodeBgColor", "#654321"},
              {"nodeFgColor", "orange"},
+             {"chainComponentBgColor", "#EEEEEE"},
+             {"compelledArcColor", "blue"},
          }) {
-      setDotKey("notebook", key.c_str(), value);
+      setDotKey("dot", key.c_str(), value);
     }
 
     auto style = gum::dot::DotStyle::read();
@@ -84,9 +86,11 @@ namespace gum_tests {
     CHECK_EQ(style.arcColor, "#123456");
     CHECK_EQ(style.nodeBgColor, "#654321");
     CHECK_EQ(style.nodeFgColor, "orange");
+    CHECK_EQ(style.chainComponentBgColor, "#EEEEEE");
+    CHECK_EQ(style.compelledArcColor, "blue");
 
     // a later change is seen by the next call, not by the style already read
-    setDotKey("notebook", "graphSize", "12!");
+    setDotKey("dot", "graphSize", "12!");
     CHECK_EQ(style.size, "7");
     CHECK_EQ(gum::dot::DotStyle::read().size, "12!");
   }
@@ -94,29 +98,29 @@ namespace gum_tests {
   GUM_TEST(DarkAndLightThemeOnlyChangeTheArcColor) {
     ConfigurationGuard guard;
     // what setDarkTheme() and setLightTheme() of pyAgrum do
-    setDotKey("notebook", "arcColor", "#AAAAAA");
+    setDotKey("dot", "arcColor", "#AAAAAA");
     CHECK_EQ(gum::dot::DotStyle::read().arcColor, "#AAAAAA");
-    setDotKey("notebook", "arcColor", "#4A4A4A");
+    setDotKey("dot", "arcColor", "#4A4A4A");
     CHECK_EQ(gum::dot::DotStyle::read().arcColor, "#4A4A4A");
   }
 
   GUM_TEST(AdaptiveFontColor) {
     ConfigurationGuard guard;
-    setDotKey("notebook", "nodeFgColor", "adaptive");
+    setDotKey("dot", "nodeFgColor", "adaptive");
 
-    setDotKey("notebook", "nodeBgColor", "#404040");
+    setDotKey("dot", "nodeBgColor", "#404040");
     CHECK_EQ(gum::dot::DotStyle::read().nodeFgColor, "white");
-    setDotKey("notebook", "nodeBgColor", "burlywood");
+    setDotKey("dot", "nodeBgColor", "burlywood");
     CHECK_EQ(gum::dot::DotStyle::read().nodeFgColor, "black");
 
     // a background which is not a color: the color of the arcs, so the theme
-    setDotKey("notebook", "nodeBgColor", "transparent");
-    setDotKey("notebook", "arcColor", "#AAAAAA");
+    setDotKey("dot", "nodeBgColor", "transparent");
+    setDotKey("dot", "arcColor", "#AAAAAA");
     CHECK_EQ(gum::dot::DotStyle::read().nodeFgColor, "#AAAAAA");
 
     // an explicit color is never changed
-    setDotKey("notebook", "nodeFgColor", "red");
-    setDotKey("notebook", "nodeBgColor", "#404040");
+    setDotKey("dot", "nodeFgColor", "red");
+    setDotKey("dot", "nodeBgColor", "#404040");
     CHECK_EQ(gum::dot::DotStyle::read().nodeFgColor, "red");
   }
 
@@ -131,7 +135,7 @@ namespace gum_tests {
 
     // a background which is not a color: the color of the arcs of the section notebook
     setDotKey("causal", "latentBgColor", "transparent");
-    setDotKey("notebook", "arcColor", "#AAAAAA");
+    setDotKey("dot", "arcColor", "#AAAAAA");
     CHECK_EQ(gum::dot::configFgColor("causal", "latentFgColor"), "#AAAAAA");
 
     setDotKey("causal", "latentFgColor", "red");
@@ -143,8 +147,8 @@ namespace gum_tests {
 
   GUM_TEST(CredalNetStyle) {
     ConfigurationGuard guard;
-    setDotKey("notebook", "graphSize", "3");
-    setDotKey("notebook", "nodeBgColor", "yellow");
+    setDotKey("dot", "graphSize", "3");
+    setDotKey("dot", "nodeBgColor", "yellow");
     setDotKey("credalnet", "nodeBgColor", "#202020");
     setDotKey("credalnet", "nodeFgColor", "adaptive");
 
@@ -158,18 +162,18 @@ namespace gum_tests {
 
   GUM_TEST(JunctionTreeStyle) {
     ConfigurationGuard guard;
-    setDotKey("notebook", "junctionTreeGraphSize", "11");
-    setDotKey("notebook", "junctionTreeWithNames", "false");
-    setDotKey("notebook", "junctionTreeSeparatorBgColor", "#000000");
-    setDotKey("notebook", "junctionTreeSeparatorFgColor", "adaptive");
-    setDotKey("notebook", "junctionTreeSeparatorFontSize", "9");
-    setDotKey("notebook", "junctionTreeCliqueBgColor", "white");
-    setDotKey("notebook", "junctionTreeCliqueFgColor", "adaptive");
-    setDotKey("notebook", "junctionTreeCliqueFontSize", "12");
-    setDotKey("notebook", "junctionTreeMapCliqueScale", "0.5");
-    setDotKey("notebook", "junctionTreeMapSepScale", "0.25");
-    setDotKey("notebook", "junctionTreeMapEdgeLen", "2");
-    setDotKey("notebook", "junctionTreeMapSize", "13");
+    setDotKey("junctionTree", "graphSize", "11");
+    setDotKey("junctionTree", "withNames", "false");
+    setDotKey("junctionTree", "separatorBgColor", "#000000");
+    setDotKey("junctionTree", "separatorFgColor", "adaptive");
+    setDotKey("junctionTree", "separatorFontSize", "9");
+    setDotKey("junctionTree", "cliqueBgColor", "white");
+    setDotKey("junctionTree", "cliqueFgColor", "adaptive");
+    setDotKey("junctionTree", "cliqueFontSize", "12");
+    setDotKey("junctionTree", "mapCliqueScale", "0.5");
+    setDotKey("junctionTree", "mapSepScale", "0.25");
+    setDotKey("junctionTree", "mapEdgeLen", "2");
+    setDotKey("junctionTree", "mapSize", "13");
 
     const auto style = gum::dot::JunctionTreeDotStyle::read();
     CHECK_EQ(style.size, "11");   // the size of the tree, not the one of the graphs
@@ -191,8 +195,8 @@ namespace gum_tests {
 
   GUM_TEST(FactorGraphStyle) {
     ConfigurationGuard guard;
-    setDotKey("notebook", "graphSize", "4");
-    setDotKey("notebook", "graphLayout", "dot");
+    setDotKey("dot", "graphSize", "4");
+    setDotKey("dot", "graphLayout", "dot");
     setDotKey("factorgraph", "graphLayout", "sfdp");
     setDotKey("factorgraph", "nodeBgColor", "coral");
     setDotKey("factorgraph", "nodeFgColor", "adaptive");

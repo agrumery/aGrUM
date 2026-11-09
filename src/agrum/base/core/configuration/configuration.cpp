@@ -48,6 +48,7 @@
 
 // to ease automatic parsers
 #include <algorithm>
+#include <atomic>
 #include <cctype>
 #include <charconv>
 #include <cmath>
@@ -65,6 +66,7 @@
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/threads/threads.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <agrum/base/core/utils_string.h>
 
 // the whole of aGrUM is compiled with GUM_FOR_SWIG for a pyAgrum build: the embedded defaults are
@@ -235,7 +237,7 @@ namespace gum {
               && !_hasSpace_(target)) {
             meta.kind          = Configuration::Kind::DEPRECATED;
             meta.targetSection = target.substr(0, dot);
-            meta.targetKey     = toLower(target.substr(dot + 1));
+            meta.targetKey     = target.substr(dot + 1);
             return true;
           }
         } else if (!rest.empty() && rest.rfind("deprecated", 0) != 0) {
@@ -395,7 +397,6 @@ namespace gum {
       if (!inSection) err("key outside of any section");
       if (!hasKeyValue) err("malformed line '" + trimmed + "'");
 
-      key = toLower(key);
       if (const auto first = _tryFind_(section, key); first != _npos_) {
         err("duplicate key '" + section + "." + key + "' (already defined in "
             + _items_[first].origin + ")");
@@ -843,7 +844,7 @@ namespace gum {
   std::string Configuration::grep(std::string_view search) const {
     const auto low = toLower(search);
     return _render_([&](const Item& item) {
-      return contains(toLower(item.section), low) || contains(item.key, low);
+      return contains(toLower(item.section), low) || contains(toLower(item.key), low);
     });
   }
 
@@ -907,13 +908,27 @@ namespace gum {
       static Configuration global{
           {configurationEmbeddedDefaults(), "defaults.ini (aGrUM)"},
           {configurationEmbeddedPyAgrumDefaults(), "defaults.ini (pyAgrum)"}};
-      // the number of threads is the only [core] key acting directly on the library; a negative
-      // value gives back what the machine (or OMP_NUM_THREADS) provides, read before any change
+      // the number of threads is the only [core] key acting on the library at each change; a
+      // negative value gives back what the machine (or OMP_NUM_THREADS) provides, read before any
+      // change
       global.addHook([machine = gum::getMaxNumberOfThreads()](const Configuration& c) {
         const auto n = c.typed< std::int64_t >("core", "maxNumberOfThreads");
         gum::setNumberOfThreads(n < 0 ? machine : static_cast< unsigned int >(n));
       });
       global._loadUserFile_();
+      // the seed is read here, once, and not in a hook: the hooks are run at each change of the
+      // configuration, which would reset the generator
+      const auto seed = global.typed< std::int64_t >("core", "randomSeed");
+      gum::initRandom(static_cast< unsigned int >(seed));
+      // static: runHooks() runs copies of the hooks, which could not keep the last value
+      static std::atomic< std::int64_t > lastSeed{seed};
+      global.addHook([](const Configuration& c) {
+        const auto current = c.typed< std::int64_t >("core", "randomSeed");
+        if (lastSeed.exchange(current) != current)
+          c._queue_(Notice::Kind::NO_EFFECT,
+                    "'core.randomSeed' is read once at start, this change has no effect on the "
+                    "random generator: use initRandom() to act directly on it.");
+      });
       try {
         global.runHooks();
       } catch (const std::exception& e) {
