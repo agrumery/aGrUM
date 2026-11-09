@@ -3750,24 +3750,24 @@ namespace Swig {
 #define SWIGTYPE_p_gum__BayesNetFragmentT_double_t swig_types[16]
 #define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[17]
 #define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[18]
-#define SWIGTYPE_p_gum__CliqueGraph swig_types[19]
-#define SWIGTYPE_p_gum__DAG swig_types[20]
-#define SWIGTYPE_p_gum__DAGmodel swig_types[21]
-#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[22]
-#define SWIGTYPE_p_gum__DiscreteVariable swig_types[23]
-#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[24]
-#define SWIGTYPE_p_gum__GraphicalModel swig_types[25]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[26]
-#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[27]
-#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[28]
-#define SWIGTYPE_p_gum__IntegerVariable swig_types[29]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[30]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[31]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[32]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[33]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[34]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[35]
-#define SWIGTYPE_p_gum__PAG swig_types[36]
+#define SWIGTYPE_p_gum__ChainGraph swig_types[19]
+#define SWIGTYPE_p_gum__CliqueGraph swig_types[20]
+#define SWIGTYPE_p_gum__DAG swig_types[21]
+#define SWIGTYPE_p_gum__DAGmodel swig_types[22]
+#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[23]
+#define SWIGTYPE_p_gum__DiscreteVariable swig_types[24]
+#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[25]
+#define SWIGTYPE_p_gum__GraphicalModel swig_types[26]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[27]
+#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[28]
+#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[29]
+#define SWIGTYPE_p_gum__IntegerVariable swig_types[30]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[31]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[32]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[33]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[34]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[35]
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[36]
 #define SWIGTYPE_p_gum__PDAG swig_types[37]
 #define SWIGTYPE_p_gum__RangeVariable swig_types[38]
 #define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[39]
@@ -4431,24 +4431,10 @@ SWIG_AsPtr_std_string (PyObject * obj, std::string **val)
   return SWIG_ERROR;
 }
 
-
-SWIGINTERN int
-SWIG_AsVal_bool (PyObject *obj, bool *val)
-{
-  int r;
-  if (!PyBool_Check(obj))
-    return SWIG_ERROR;
-  r = PyObject_IsTrue(obj);
-  if (r == -1)
-    return SWIG_ERROR;
-  if (val) *val = r ? true : false;
-  return SWIG_OK;
-}
-
-SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__loadGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,bool binary=false){
+SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__loadGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,PyObject *binary=nullptr){
     std::stringstream stream;
     try {
-      gum::GumIDReader<double> reader(self,name,binary);
+      gum::GumIDReader<double> reader(self,name,PyAgrumHelper::isBinaryGUMFile(name,binary));
       auto nbErr=reader.proceed();
       reader.showElegantErrorsAndWarnings(stream);
       if (nbErr>0) {
@@ -4457,8 +4443,8 @@ SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__loadGUM__SWIG_0(gum::Influenc
       }
     } catch (gum::IOError& e) { throw(e); }
   }
-SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__saveGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,bool binary=false,int indent=gum::defaultJgumIndent()){
-    gum::GumIDWriter<double> writer(binary,indent);
+SWIGINTERN void gum_InfluenceDiagram_Sl_double_Sg__saveGUM__SWIG_0(gum::InfluenceDiagram< double > *self,std::string name,PyObject *binary=nullptr,int indent=gum::defaultJgumIndent()){
+    gum::GumIDWriter<double> writer(PyAgrumHelper::isBinaryGUMFile(name,binary),indent);
     writer.write(name,*self);
   }
 SWIGINTERN std::string gum_InfluenceDiagram_Sl_double_Sg__saveGUMstring__SWIG_0(gum::InfluenceDiagram< double > *self,int indent=gum::defaultJgumIndent()){
@@ -8996,11 +8982,9 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_loadGUM__SWIG_0(PyObject *self, Py_s
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
   std::string arg2 ;
-  bool arg3 ;
+  PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  bool val3 ;
-  int ecode3 = 0 ;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -9018,11 +9002,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_loadGUM__SWIG_0(PyObject *self, Py_s
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "InfluenceDiagram_loadGUM" "', argument " "3"" of type '" "bool""'");
-  } 
-  arg3 = static_cast< bool >(val3);
+  arg3 = swig_obj[2];
   {
     try {
       gum_InfluenceDiagram_Sl_double_Sg__loadGUM__SWIG_0(arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
@@ -9098,7 +9078,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_loadGUM(PyObject *self, PyObject *ar
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'InfluenceDiagram_loadGUM'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::InfluenceDiagram< double >::loadGUM(std::string,bool)\n"
+    "    gum::InfluenceDiagram< double >::loadGUM(std::string,PyObject *)\n"
     "    gum::InfluenceDiagram< double >::loadGUM(std::string)\n");
   return 0;
 }
@@ -9108,12 +9088,10 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram__saveGUM__SWIG_0(PyObject *self, Py_
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
   std::string arg2 ;
-  bool arg3 ;
+  PyObject *arg3 = 0 ;
   int arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  bool val3 ;
-  int ecode3 = 0 ;
   int val4 ;
   int ecode4 = 0 ;
   
@@ -9133,11 +9111,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram__saveGUM__SWIG_0(PyObject *self, Py_
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "InfluenceDiagram__saveGUM" "', argument " "3"" of type '" "bool""'");
-  } 
-  arg3 = static_cast< bool >(val3);
+  arg3 = swig_obj[2];
   ecode4 = SWIG_AsVal_int(swig_obj[3], &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "InfluenceDiagram__saveGUM" "', argument " "4"" of type '" "int""'");
@@ -9162,11 +9136,9 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram__saveGUM__SWIG_1(PyObject *self, Py_
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
   std::string arg2 ;
-  bool arg3 ;
+  PyObject *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  bool val3 ;
-  int ecode3 = 0 ;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -9184,11 +9156,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram__saveGUM__SWIG_1(PyObject *self, Py_
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
-  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "InfluenceDiagram__saveGUM" "', argument " "3"" of type '" "bool""'");
-  } 
-  arg3 = static_cast< bool >(val3);
+  arg3 = swig_obj[2];
   {
     try {
       gum_InfluenceDiagram_Sl_double_Sg__saveGUM__SWIG_0(arg1,SWIG_STD_MOVE(*(&arg2)),arg3);
@@ -9269,8 +9237,8 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram__saveGUM(PyObject *self, PyObject *a
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'InfluenceDiagram__saveGUM'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::InfluenceDiagram< double >::saveGUM(std::string,bool,int)\n"
-    "    gum::InfluenceDiagram< double >::saveGUM(std::string,bool)\n"
+    "    gum::InfluenceDiagram< double >::saveGUM(std::string,PyObject *,int)\n"
+    "    gum::InfluenceDiagram< double >::saveGUM(std::string,PyObject *)\n"
     "    gum::InfluenceDiagram< double >::saveGUM(std::string)\n");
   return 0;
 }
@@ -12427,8 +12395,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Examples\n"
 		"--------\n"
-		">>> import pyagrum as gum\n"
-		">>> bn=pyagrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)\n"
+		"import pyagrum as gum\n"
+		"bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -12918,11 +12886,14 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"name : str\n"
 		"    the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)\n"
-		"binary : bool\n"
-		"    if True, read as bgum (msgpack) regardless of extension (default: False)\n"
+		"binary : bool, optional\n"
+		"    True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is\n"
+		"    given by the extension (binary for an unknown extension).\n"
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"    If binary contradicts the extension (``.jgum`` or ``.bgum``)\n"
 		"pyagrum.GumIOError\n"
 		"    If file not found\n"
 		"pyagrum.FatalError\n"
@@ -13469,14 +13440,14 @@ static void *_p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimImplementationT_do
 static void *_p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimImplementationT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimImplementation< double > *)  ((gum::MultiDimWithOffset< double > *) x));
 }
+static void *_p_gum__ChainGraphTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::UndiGraph *) (gum::MixedGraph *)(gum::PDAG *) ((gum::ChainGraph *) x));
+}
 static void *_p_gum__CliqueGraphTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::UndiGraph *)  ((gum::CliqueGraph *) x));
 }
 static void *_p_gum__MixedGraphTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::UndiGraph *)  ((gum::MixedGraph *) x));
-}
-static void *_p_gum__PAGTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::UndiGraph *)  ((gum::PAG *) x));
 }
 static void *_p_gum__PDAGTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::UndiGraph *) (gum::MixedGraph *) ((gum::PDAG *) x));
@@ -13528,8 +13499,8 @@ static swig_type_info _swigt__p_gum__SetT_std__size_t_t__const_iterator = {"_p_g
 static swig_type_info _swigt__p_gum__ShaferShenoyLIMIDInferenceT_double_t = {"_p_gum__ShaferShenoyLIMIDInferenceT_double_t", "gum::ShaferShenoyLIMIDInference< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__TensorT_double_t = {"_p_gum__TensorT_double_t", "gum::Tensor< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__UndiGraph = {"_p_gum__UndiGraph", "gum::UndiGraph *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__ChainGraph = {"_p_gum__ChainGraph", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__MixedGraph = {"_p_gum__MixedGraph", 0, 0, 0, 0, 0};
-static swig_type_info _swigt__p_gum__PAG = {"_p_gum__PAG", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__PDAG = {"_p_gum__PDAG", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__dot__DotOptions = {"_p_gum__dot__DotOptions", "gum::dot::DotOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator = {"_p_iterator", "iterator *", 0, 0, (void*)0, 0};
@@ -13565,6 +13536,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__BayesNetFragmentT_double_t,
   &_swigt__p_gum__BayesNetT_double_t,
   &_swigt__p_gum__CausalImpactT_double_t,
+  &_swigt__p_gum__ChainGraph,
   &_swigt__p_gum__CliqueGraph,
   &_swigt__p_gum__DAG,
   &_swigt__p_gum__DAGmodel,
@@ -13582,7 +13554,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__MultiDimImplementationT_double_t,
   &_swigt__p_gum__MultiDimWithOffsetT_double_t,
   &_swigt__p_gum__NumericalDiscreteVariable,
-  &_swigt__p_gum__PAG,
   &_swigt__p_gum__PDAG,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__SetT_gum__Arc_t,
@@ -13657,10 +13628,10 @@ static swig_cast_info _swigc__p_gum__SetT_std__size_t_t[] = {  {&_swigt__p_gum__
 static swig_cast_info _swigc__p_gum__SetT_std__size_t_t__const_iterator[] = {  {&_swigt__p_gum__SetT_std__size_t_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ShaferShenoyLIMIDInferenceT_double_t[] = {  {&_swigt__p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__TensorT_double_t[] = {  {&_swigt__p_gum__TensorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__ChainGraph[] = {{&_swigt__p_gum__ChainGraph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MixedGraph[] = {{&_swigt__p_gum__MixedGraph, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__PAG[] = {{&_swigt__p_gum__PAG, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__PDAG[] = {{&_swigt__p_gum__PDAG, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__UndiGraph[] = {  {&_swigt__p_gum__UndiGraph, 0, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__PAG, _p_gum__PAGTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__PDAG, _p_gum__PDAGTo_p_gum__UndiGraph, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__UndiGraph[] = {  {&_swigt__p_gum__UndiGraph, 0, 0, 0},  {&_swigt__p_gum__ChainGraph, _p_gum__ChainGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__UndiGraph, 0, 0},  {&_swigt__p_gum__PDAG, _p_gum__PDAGTo_p_gum__UndiGraph, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__dot__DotOptions[] = {  {&_swigt__p_gum__dot__DotOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator[] = {  {&_swigt__p_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator_category[] = {  {&_swigt__p_iterator_category, 0, 0, 0},{0, 0, 0, 0}};
@@ -13695,6 +13666,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__BayesNetFragmentT_double_t,
   _swigc__p_gum__BayesNetT_double_t,
   _swigc__p_gum__CausalImpactT_double_t,
+  _swigc__p_gum__ChainGraph,
   _swigc__p_gum__CliqueGraph,
   _swigc__p_gum__DAG,
   _swigc__p_gum__DAGmodel,
@@ -13712,7 +13684,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__MultiDimImplementationT_double_t,
   _swigc__p_gum__MultiDimWithOffsetT_double_t,
   _swigc__p_gum__NumericalDiscreteVariable,
-  _swigc__p_gum__PAG,
   _swigc__p_gum__PDAG,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__SetT_gum__Arc_t,

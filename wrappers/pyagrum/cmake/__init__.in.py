@@ -62,9 +62,9 @@ pyAgrum includes :
 __all__ = [
   "AbstractScheduleMultiDim", "ApproximationScheme", "Arc", "ArcSet", "ArgumentError",
   "ArrayLike", "BNDatabaseGenerator", "BNGenerator", "BNInference", "BNLearner", "BayesNet",
-  "BayesNetFragment", "CPTError", "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel",
+  "BayesNetFragment", "CPDAG", "CPTError", "ChainGraph", "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel",
   "DiGraph", "DiscreteVariable", "DiscretizedVariable", "DotOptions", "DuplicateElement",
-  "DuplicateLabel", "DuplicateScheduleMultiDim", "Edge", "EdgeMark_Arrowhead", "EdgeMark_Circle",
+  "DuplicateLabel", "DuplicateScheduleMultiDim", "Edge", "EdgeMark", "EdgeMark_Arrowhead", "EdgeMark_Circle",
   "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FactoryError", "FactoryInvalidState",
   "FatalError", "FormatNotFound", "GibbsBNdistance", "GibbsSampling", "Graph", "GraphError",
   "GumException", "GumIOError", "GumTypeError", "HedgeException", "ImportanceSampling",
@@ -74,7 +74,7 @@ __all__ = [
   "IteratorError", "JunctionTreeGenerator", "LabelizedVariable", "LatentDescriptor",
   "LatentDescriptorList", "LazyPropagation", "LearningError", "LoopyBeliefPropagation",
   "LoopyGibbsSampling", "LoopyImportanceSampling", "LoopyMonteCarloSampling",
-  "LoopyWeightedSampling", "MCBNDistance", "MarkovBlanket", "MatrixLike", "MeekRules",
+  "LoopyWeightedSampling", "MAG", "MCBNDistance", "MPDAG", "MarkedGraph", "MarkovBlanket", "MatrixLike", "MeekRules",
   "MissingValueInDatabase", "MissingVariableInDatabase", "MixedGraph", "MonteCarloSampling",
   "NameSet", "NoChild", "NoNeighbour", "NoParent", "NodeId", "NodeList", "NodeSet", "NotFound",
   "NotImplementedYet", "NullElement", "NumericalDiscreteVariable", "OperationNotAllowed",
@@ -87,8 +87,8 @@ __all__ = [
   "UnknownScheduleMultiDim", "UnknownScheduleOperation", "VarType_DISCRETIZED", "VarType_INTEGER",
   "VarType_LABELIZED", "VarType_NUMERICAL", "VarType_RANGE", "VariableElimination",
   "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "common", "config",
-  "deprecated", "deprecatedCausalBN", "fastBN", "fastDAG", "fastDiGraph", "fastGraph",
-  "fastMixedGraph", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
+  "deprecated", "deprecatedCausalBN", "fastBN", "fastChainGraph", "fastDAG", "fastDiGraph",
+  "fastGraph", "fastMarkedGraph", "fastMixedGraph", "fastPAG", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
   "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior",
   "initRandom", "isOMP", "loadBN", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
   "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue", "saveBN",
@@ -201,7 +201,8 @@ from .pyagrumcpp import statsObj
 # `from pyagrum import _gum_pickle_load, ...` instead of reaching into the
 # `pyagrum.pyagrumcpp` SWIG proxy submodule directly.
 from .pyagrumcpp import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
-from .pyagrumcpp import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG
+from .pyagrumcpp import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG, fastChainGraph
+from .pyagrumcpp import fastMarkedGraph, fastPAG
 from .pyagrumcpp import config
 from .pyagrumcpp import (
   DiscretizedVariable,
@@ -212,8 +213,8 @@ from .pyagrumcpp import (
   NumericalDiscreteVariable,
 )
 from .pyagrumcpp import Tensor, Instantiation, Tensor
-from .pyagrumcpp import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, PAG, CliqueGraph
-from .pyagrumcpp import EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
+from .pyagrumcpp import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, PDAG, ChainGraph, CPDAG, MPDAG, MarkedGraph, PAG, MAG, CliqueGraph
+from .pyagrumcpp import EdgeMark, EdgeMark_Circle, EdgeMark_Tail, EdgeMark_Arrowhead
 from .pyagrumcpp import JunctionTreeGenerator
 from .pyagrumcpp import DotOptions
 from .pyagrumcpp import MeekRules

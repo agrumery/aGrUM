@@ -47,8 +47,8 @@
  * Output: a PAG (Partial Ancestral Graph) over observed variables.
  *
  * aGrUM learning contract: every algorithm must be able to produce a BN.
- * learnDAG() and learnPDAG() work via PAG→MixedGraph approximation.
- * Users wanting the full PAG call learnPAG() directly.
+ * learnDAG() and learnPDAG() go through the representative MAG of the learned PAG (Zhang 2008,
+ * Artificial Intelligence, Theorem 2). Users wanting the full PAG call learnPAG() directly.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
@@ -72,7 +72,17 @@ namespace gum::learning {
    *  5. Orientation rules R1–R10 (Phase 5 — later)
    *  6. Collect _latentCouples_ from final PAG (Phase 6 — later)
    *
-   * learnMixedStructure() bridges to learnDAG/learnPDAG via toMixedGraph().
+   * learnPDAG() and learnDAG() do not apply the Meek rules (which are not defined on a PAG): the
+   * learned PAG is turned into its representative MAG (Zhang 2008, Artificial Intelligence,
+   * Theorem 2: the edges o-> and --o become ->, the edges o-o are oriented into a DAG without
+   * unshielded collider), whose edges <-> are the latent couples (latentVariables()).
+   *
+   * @par References
+   * - P. Spirtes, C. Glymour, R. Scheines. Causation, Prediction, and Search (2nd ed.). MIT Press,
+   *   2000.
+   * - J. Zhang. On the completeness of orientation rules for causal discovery in the presence of
+   *   latent confounders and selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
+   *   doi:10.1016/j.artint.2008.08.001.
    *
    * @ingroup learning_group
    */
@@ -85,11 +95,11 @@ namespace gum::learning {
 
     FCI();
     FCI(const FCI&) = default;
-    FCI(FCI&&) noexcept;
+    FCI(FCI&&)      = default;
     ~FCI() override;
 
-    FCI& operator=(const FCI&);
-    FCI& operator=(FCI&&) noexcept;
+    FCI& operator=(const FCI&) = default;
+    FCI& operator=(FCI&&)      = default;
 
     /// @}
 
@@ -102,6 +112,12 @@ namespace gum::learning {
     void setMaxPathLength(Size maxLen);
     Size maxPathLength() const;
 
+    /// when the learned PAG is detected as not valid (see learnPDAG): an error, or the former
+    /// approximation
+    /** Initialized from the key `learning.fciErrorOnInvalidPAG` at the construction. */
+    void setErrorOnInvalidPAG(bool error);
+    bool errorOnInvalidPAG() const;
+
     /// @}
 
     // ##########################################################################
@@ -112,7 +128,27 @@ namespace gum::learning {
     /// primary FCI output: learn a PAG from the given node-only or partial graph
     PAG learnPAG(MixedGraph graph);
 
-    /// bridge for learnDAG/learnPDAG: runs learnPAG then converts via toMixedGraph()
+    /// the PDAG of the representative MAG of the learned PAG
+    /** The arcs -> of the MAG are kept, its edges -- and <-> become undirected edges. The edges
+     * o-o of the PAG are oriented by graph::orientAsDAG. An invalid PAG is detected only by a
+     * directed cycle in this representative graph: then the former approximation (PAG seen as a
+     * mixed graph, then the Meek rules) is used, or InvalidArgument is raised if
+     * errorOnInvalidPAG(). Other invalid PAGs are not detected and give their representative graph
+     * as is: e.g. a graph of edges o-o which is not chordal (orientAsDAG then creates new
+     * v-structures) or an almost directed cycle through an edge <->.
+     * @throw InvalidArgument if the representative graph has a directed cycle and
+     * errorOnInvalidPAG() */
+    PDAG learnPDAG(MixedGraph graph) override;
+
+    /// a DAG of the representative MAG of the learned PAG, all the domains being considered equal
+    DAG learnDAG(MixedGraph graph) override;
+
+    /// a DAG of the representative MAG of the learned PAG
+    /** The arcs of the PDAG of learnPDAG() are kept, its edges are oriented by graph::orientAsDAG
+     * (small CPTs given the domain sizes). The edges <-> of the MAG remain in latentVariables(). */
+    DAG learnDAG(MixedGraph graph, const NodeProperty< Size >& domainSizes) override;
+
+    /// the mixed graph of learnPDAG()
     MixedGraph learnMixedStructure(MixedGraph graph) override;
 
     /// learnSkeleton() inherited from CIBasedLearning
@@ -162,7 +198,11 @@ namespace gum::learning {
                            NodeId                             c,
                            const HashTable< NodeId, NodeId >& previous) const;
 
-    Size maxPathLength_ = Size(-1);
+    /// the PDAG of the representative MAG of pag (see learnPDAG)
+    PDAG representativePDAG_(const PAG& pag, const NodeProperty< Size >& domainSizes);
+
+    Size maxPathLength_     = Size(-1);
+    bool errorOnInvalidPAG_ = gum::config().typed< bool >("learning", "fciErrorOnInvalidPAG");
   };
 
 }   // namespace gum::learning

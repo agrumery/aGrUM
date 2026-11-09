@@ -270,6 +270,18 @@ Color = #FF7F64
                                          "### deprecated -> s.new :: x\nmid = 1\n"
                                          "### deprecated -> s.mid :: x\nold = 1\n"),
                     const gum::SyntaxError&);   // deprecated -> deprecated
+    CHECK_THROWS_AS(gum::Configuration(h
+                                       + "### deprecated int :: x\nunused = 1\n"
+                                         "### deprecated -> s.unused :: x\nold = 1\n"),
+                    const gum::SyntaxError&);       // deprecated -> deprecated without replacement
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated :: x\nold = 1\n"),
+                    const gum::SyntaxError&);       // deprecated without type
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecatedint :: x\nold = 1\n"),
+                    const gum::SyntaxError&);       // deprecated not followed by a blank
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated deprecated int :: x\nold = 1\n"),
+                    const gum::SyntaxError&);       // deprecated twice
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated int :: x\nold = abc\n"),
+                    const gum::InvalidArgument&);   // default violating its own type
 
     // four '#' is a free comment, not a metadata line
     CHECK_NOTHROW(gum::Configuration(h + "#### int ::\nk = 1\n"));
@@ -493,6 +505,34 @@ Color = #FF7F64
     std::filesystem::remove(filename);
   }
 
+  GUM_TEST(ConfigurationDeprecatedKeyWithoutReplacement) {
+    gum::Configuration c(
+        "[s]\n### int :: kept\nk = 1\n"
+        "### deprecated float[0,] :: deprecated after 3.3.2, no longer used\nold = 1.5\n");
+
+    CHECK(c.takeNotices().empty());
+    // the key keeps its type, its domain and its value ...
+    CHECK_EQ(c.typed< double >("s", "old"), 1.5);
+    CHECK_THROWS_AS(c.set("s", "old", "-1"), const gum::InvalidArgument&);
+    c.takeNotices();
+    c.set("s", "old", "2.5");
+    CHECK_EQ(c.get("s", "old"), "2.5");
+    // ... and every access queues a deprecation notice, without any replacement
+    const auto notices = c.takeNotices();
+    REQUIRE_EQ(notices.size(), std::size_t(1));
+    CHECK(notices[0].kind == gum::Configuration::Notice::Kind::DEPRECATION);
+    CHECK_EQ(notices[0].message, "'s.old' is deprecated after 3.3.2, no longer used.");
+
+    CHECK(c.meta("s", "old").deprecated);
+    CHECK(c.meta("s", "old").kind == gum::Configuration::Kind::FLOAT);
+    CHECK_EQ(c.doc("s", "old"), "deprecated float[0,] :: deprecated after 3.3.2, no longer used");
+    // it is hidden
+    CHECK_EQ(c.toString(), "[s]\n  k = 1");
+    CHECK_EQ(c.diff(), "");
+    CHECK_EQ(c.grep("old"), "");
+    c.takeNotices();
+  }
+
   GUM_TEST(ConfigurationSaveMigratesDeprecatedKeys) {
     const auto filename = ConfigurationTestSuite::tempFile();
     const auto defaults = std::string("[s]\n### int :: the answer\nnewkey = 1\n"
@@ -655,7 +695,8 @@ Color = #FF7F64
 
   GUM_TEST(ConfigurationNoVisibleKeyStartsWithDefault) {
     for (const auto& entry: gum::Configuration::instance().schema()) {
-      if (entry.meta.kind == gum::Configuration::Kind::DEPRECATED) continue;
+      if (entry.meta.kind == gum::Configuration::Kind::DEPRECATED || entry.meta.deprecated)
+        continue;
       CHECK_MESSAGE(entry.key.rfind("default_", 0) != 0,
                     entry.section << "." << entry.key << ": 'default' is implied in defaults.ini");
     }

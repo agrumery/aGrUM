@@ -43,6 +43,7 @@
 
 #include <iostream>
 
+#include <agrum/base/graphs/chainGraph.h>
 #include <agrum/base/graphs/graphElements.h>
 #include <agrum/base/graphs/PDAG.h>
 
@@ -110,16 +111,6 @@ namespace gum_tests {
     gum::NodeId id6;
     gum::NodeId id7;
     gum::NodeId id8;
-
-
-    // P1→X--Y←P2  (0=P1, 1=X, 2=Y, 3=P2)
-    // Chain component {X,Y}: parents = {P1,P2} → married P1--P2.
-    // Key PDAG difference vs DAG: in DAG X→Y←P2 the marriage would be X--P2,
-    // not P1--P2.
-
-
-    // A--B--C→D  (0=A, 1=B, 2=C, 3=D)
-    // moralizedAncestralGraph({D}) must follow the edge chain C--B--A.
   };
 
   GUM_TEST(Constructor1) {
@@ -158,9 +149,20 @@ namespace gum_tests {
     buildPDAG(graph);
 
     CHECK_THROWS_AS(graph.addArc(id4, id1), const gum::InvalidDirectedCycle&);
-    CHECK_THROWS_AS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
-    CHECK_THROWS_AS(graph.addEdge(id0, id4), const gum::InvalidPartiallyDirectedCycle&);
-    CHECK_THROWS_AS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
+
+    // partially directed cycles are allowed in a PDAG (not in a ChainGraph)
+    {
+      gum::PDAG g(graph);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(g.addArc(id8, id1));
+    }
+    {
+      gum::PDAG g(graph);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(g.addEdge(id0, id4));
+    }
+    {
+      gum::PDAG g(graph);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(g.addEdge(id8, id1));
+    }
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4));
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7));
@@ -168,11 +170,51 @@ namespace gum_tests {
 
     auto id9 = graph.addNode();
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9));
-    CHECK_THROWS_AS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
-    CHECK_THROWS_AS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
 
     CHECK_THROWS_AS(graph.addArc(1000, id1), const gum::InvalidNode&);
     CHECK_THROWS_AS(graph.addArc(id1, 1000), const gum::InvalidNode&);
+  }
+
+  GUM_TEST(PartiallyDirectedCyclesAreAllowed) {
+    // h-v, h-w, w->v : the partially directed cycle h-w->v-h is a valid PDAG
+    gum::PDAG         g;
+    const gum::NodeId h = g.addNode(), v = g.addNode(), w = g.addNode(), t = g.addNode();
+    g.addEdge(h, v);
+    g.addEdge(h, w);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(g.addArc(w, v));
+    g.addEdge(v, t);
+    CHECK_THROWS_AS(g.addArc(v, w), const gum::InvalidDirectedCycle&);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(g.addArc(t, h));
+    // ... but not a directed cycle
+    gum::PDAG         d;
+    const gum::NodeId x = d.addNode(), y = d.addNode(), z = d.addNode();
+    d.addArc(x, y);
+    d.addArc(y, z);
+    CHECK_THROWS_AS(d.addArc(z, x), const gum::InvalidDirectedCycle&);
+  }
+
+  GUM_TEST(AtMostOneConnectionPerPair) {
+    gum::PDAG         g;
+    const gum::NodeId x = g.addNode(), y = g.addNode();
+    g.addEdge(x, y);
+    CHECK_THROWS_AS(g.addArc(x, y), const gum::InvalidArc&);
+    CHECK_THROWS_AS(g.addArc(y, x), const gum::InvalidArc&);
+    g.eraseEdge(gum::Edge(x, y));
+    g.addArc(x, y);
+    CHECK_THROWS_AS(g.addEdge(x, y), const gum::InvalidEdge&);
+    CHECK_THROWS_AS(g.addEdge(y, x), const gum::InvalidEdge&);
+    CHECK_EQ(g.sizeArcs(), gum::Size(1));
+    CHECK_EQ(g.sizeEdges(), gum::Size(0));
+
+    // copy of a mixed graph
+    gum::MixedGraph mg;
+    mg.addNodes(2);
+    mg.addArc(0, 1);
+    mg.addEdge(0, 1);
+    CHECK_THROWS_AS(gum::PDAG{mg}, const gum::InvalidArc&);
+    mg.eraseEdge(gum::Edge(0, 1));
+    mg.addArc(1, 0);
+    CHECK_THROWS_AS(gum::PDAG{mg}, const gum::InvalidDirectedCycle&);
   }
 
   GUM_TEST(CopyConstructor) {
@@ -587,141 +629,70 @@ namespace gum_tests {
     CHECK_THROWS_AS(graph.addArc(x, x), const gum::Exception&);
   }
 
-  GUM_TEST(cSeparationFromKennethLee) {
-    {
-      gum::PDAG p;
-      p.addNodes(10);
-      p.addArc(0, 1);
-      p.addArc(1, 2);
-      GUM_CHECK_ASSERT_THROWS_NOTHING(p.cSeparation(0, 2, gum::NodeSet({1})));
-    }
-    {
-      gum::PDAG p;
-      p.addNodes(10);
-      p.addEdge(0, 1);
-      CHECK(!p.cSeparation(0, 1, gum::NodeSet({2})));
-    }
-    {
-      gum::PDAG p;
-      p.addNodes(4);
-      p.addEdge(0, 1);
-      p.addArc(1, 2);
-      p.addArc(3, 2);
-      CHECK(!p.cSeparation(0, 2, gum::NodeSet()));
-      CHECK(!p.cSeparation(3, 2, gum::NodeSet()));
-      CHECK(p.cSeparation(1, 3, gum::NodeSet()));
-      CHECK(p.cSeparation(0, 3, gum::NodeSet()));
-      CHECK(!p.cSeparation(1, 3, gum::NodeSet({2})));
-      CHECK(!p.cSeparation(0, 3, gum::NodeSet({2})));
-      CHECK(p.cSeparation(0, 3, gum::NodeSet({1, 2})));
-      CHECK(!p.cSeparation(1, 3, gum::NodeSet({0, 2})));
-      CHECK(p.cSeparation(1, 3, gum::NodeSet({0})));
-    }
+  GUM_TEST(ConversionsRejectMonoCycles) {
+    // an edge from a node to itself, refused by addEdge, is refused by the conversions too
+    gum::UndiGraph u;
+    u.addNodes(2);
+    u.addEdge(0, 1);
+    u.addEdge(1, 1);
+    CHECK_THROWS_AS(gum::PDAG{u}, gum::InvalidDirectedCycle&);
+    gum::MixedGraph m;
+    m.addNodes(2);
+    m.addArc(0, 1);
+    m.addEdge(1, 1);
+    CHECK_THROWS_AS(gum::PDAG{m}, gum::InvalidDirectedCycle&);
   }
 
-  GUM_TEST(MoralGraphFromLouisDerumaux) {
-    gum::PDAG graph;
-    buildPDAG(graph);
-    gum::UndiGraph moral = graph.moralGraph();
-    CHECK(moral.existsEdge(id0, id7));
+// PDAG::moralGraph, moralizedAncestralGraph, cSeparation and hasMixedReallyOrientedPath are
+// deprecated after 3.3.2: their behaviour is still tested until their removal
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(_MSC_VER)
+#  pragma warning(push)
+#  pragma warning(disable : 4996)
+#endif
+
+  GUM_TEST(DeprecatedMethodsGiveTheResultsOfChainGraph) {
+    // 0-1->2<-3
+    gum::PDAG pdag;
+    pdag.addNodes(4);
+    pdag.addEdge(0, 1);
+    pdag.addArc(1, 2);
+    pdag.addArc(3, 2);
+    const gum::ChainGraph chain(pdag);
+
+    CHECK(pdag.moralGraph() == chain.moralGraph());
+    CHECK(pdag.moralGraph().existsEdge(1, 3));
+    const gum::NodeSet nodes{2};
+    CHECK(pdag.moralizedAncestralGraph(nodes) == chain.moralizedAncestralGraph(nodes));
+    CHECK(pdag.cSeparation(1, 3, gum::NodeSet()));
+    CHECK(!pdag.cSeparation(1, 3, gum::NodeSet({2})));
+    CHECK(pdag.cSeparation(gum::NodeSet({0, 1}), gum::NodeSet({3}), gum::NodeSet()));
+    CHECK(!pdag.cSeparation(gum::NodeSet({0, 1}), gum::NodeSet({3}), gum::NodeSet({2})));
   }
 
-  GUM_TEST(MoralGraphChainComponent) {
-    gum::PDAG g;
-    g.addNodes(4);
-    g.addArc(0, 1);    // P1→X
-    g.addEdge(1, 2);   // X--Y
-    g.addArc(3, 2);    // P2→Y
-
-    gum::UndiGraph m = g.moralGraph();
-    CHECK_EQ(m.size(), 4U);
-    CHECK(m.existsEdge(0, 1));     // arc P1→X → edge
-    CHECK(m.existsEdge(1, 2));     // edge X--Y preserved
-    CHECK(m.existsEdge(2, 3));     // arc P2→Y → edge
-    CHECK(m.existsEdge(0, 3));     // chain-component marriage: P1--P2
-    CHECK_EQ(m.sizeEdges(), 4U);   // no spurious edges
-    // X is inside the chain component, not a parent — must NOT be married with P2
-    CHECK(!m.existsEdge(1, 3));
+  GUM_TEST(DeprecatedHasMixedReallyOrientedPathFindsWalks) {
+    // t-v, v-h, v-a, a->b, b-v: the partially directed cycle v-a->b-v can be walked between t and h
+    gum::PDAG         g;
+    const gum::NodeId t = g.addNode(), v = g.addNode(), h = g.addNode(), a = g.addNode(),
+                      b = g.addNode();
+    g.addEdge(t, v);
+    g.addEdge(v, h);
+    CHECK(!g.hasMixedReallyOrientedPath(t, h));
+    g.addEdge(v, a);
+    g.addArc(a, b);
+    CHECK(g.hasMixedReallyOrientedPath(t, b));   // t-v-a->b
+    CHECK(!g.hasMixedReallyOrientedPath(t, t));
+    g.addEdge(b, v);
+    // t-v-a->b-v-h, whereas the only path t-v-h has no arc
+    CHECK(g.hasMixedReallyOrientedPath(t, h));
   }
 
-  GUM_TEST(MoralizedAncestralGraphEdgeFollowing) {
-    gum::PDAG g;
-    g.addNodes(4);
-    g.addEdge(0, 1);   // A--B
-    g.addEdge(1, 2);   // B--C
-    g.addArc(2, 3);    // C→D
-
-    // Starting from D, following arc C→D backward gives C, then edges C--B, B--A.
-    auto m = g.moralizedAncestralGraph(gum::NodeSet{3});
-    CHECK_EQ(m.size(), 4U);
-    CHECK(m.existsNode(0));   // A included via edge chain
-    CHECK(m.existsNode(1));   // B included
-    CHECK(m.existsNode(2));   // C included
-    CHECK(m.existsNode(3));   // D (query)
-
-    // chain component {A,B,C}: no parents → no marriage edges
-    // only arc C→D becomes edge C--D
-    CHECK(m.existsEdge(2, 3));
-    CHECK(m.existsEdge(0, 1));
-    CHECK(m.existsEdge(1, 2));
-    CHECK_EQ(m.sizeEdges(), 3U);
-
-    // moralizedAncestralGraph({D}) in a pure DAG A→B→C→D: same size,
-    // but follows arcs only — A is still included via arcs.
-    // The difference shows when a node is reachable only via an undirected edge:
-    gum::PDAG g2;
-    g2.addNodes(3);
-    g2.addEdge(0, 1);   // A--B (no arc involving A)
-    g2.addArc(1, 2);    // B→C
-
-    // A has no arc to B — only an undirected edge.
-    // moralizedAncestralGraph({C}) must still include A via the edge B--A.
-    auto m2 = g2.moralizedAncestralGraph(gum::NodeSet{2});
-    CHECK_EQ(m2.size(), 3U);
-    CHECK(m2.existsNode(0));   // A included despite no arc
-  }
-
-  GUM_TEST(cSeparationBugFromLouisDerumaux) {
-    auto p = gum::PDAG();
-
-    const auto a  = p.addNode();
-    const auto b  = p.addNode();
-    const auto c  = p.addNode();
-    const auto d  = p.addNode();
-    const auto e  = p.addNode();
-    const auto f  = p.addNode();
-    const auto g  = p.addNode();
-    const auto h  = p.addNode();
-    const auto i  = p.addNode();
-    const auto j  = p.addNode();
-    const auto k  = p.addNode();
-    const auto z1 = p.addNode();
-    const auto z2 = p.addNode();
-    const auto y  = p.addNode();
-
-    p.addEdge(a, b);
-    p.addEdge(a, c);
-    p.addEdge(b, d);
-    p.addArc(y, z2);
-    p.addArc(c, e);
-    p.addArc(d, f);
-    p.addArc(d, g);
-    p.addEdge(z2, z1);
-    p.addEdge(z1, e);
-    p.addEdge(e, f);
-    p.addEdge(g, h);
-    p.addArc(e, j);
-    p.addArc(f, k);
-    p.addArc(g, k);
-    p.addEdge(i, j);
-
-    const auto m = p.moralizedAncestralGraph({c, e, f, h});
-
-    CHECK(m.existsEdge(c, d));
-    CHECK(m.existsEdge(y, c));
-    CHECK(m.existsEdge(y, d));
-
-    CHECK(!p.cSeparation(e, h, {f, c}));
-  }
+#if defined(__GNUC__) || defined(__clang__)
+#  pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#  pragma warning(pop)
+#endif
 
 }   // namespace gum_tests

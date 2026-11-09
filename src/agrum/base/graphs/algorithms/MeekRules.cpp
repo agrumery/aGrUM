@@ -44,15 +44,30 @@
  *
  * @author Mahdi Hadj Ali and Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <vector>
+
 #include <agrum/agrum.h>
 
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
 #include <agrum/base/graphs/algorithms/MeekRules.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/base/graphs/algorithms/MeekRules_inl.h>
 #endif   // GUM_NO_INLINE
 
 namespace gum {
+
+  namespace {
+    /// the closure of mg under the Meek rules if mg is an extendable PDAG, std::nullopt otherwise
+    std::optional< PDAG > extendableClosure(const MixedGraph& mg) {
+      for (const auto& edge: mg.edges())
+        if (mg.existsArc(edge.first(), edge.second()) || mg.existsArc(edge.second(), edge.first()))
+          return std::nullopt;
+      if (graph::hasDirectedCycle(mg)) return std::nullopt;   // including double-headed arcs
+      return graph::meekClosure(PDAG(mg));
+    }
+  }   // namespace
 
   /// default constructor
   MeekRules::MeekRules() { GUM_CONSTRUCTOR(MeekRules); }
@@ -63,52 +78,63 @@ namespace gum {
   /// Propagates MeekRules in a MixedGraph
   MixedGraph MeekRules::propagate(const MixedGraph& graph) {
     _choices_.clear();
+    if (auto closure = extendableClosure(graph)) return std::move(*closure);
     return _propagates_(graph);
   }
 
   /// Propagates the orientation of a MixedGraph (no double-headed arcs) and return a PDAG.
   PDAG MeekRules::propagateToCPDAG(const MixedGraph& mg) {
     _choices_.clear();
+    if (auto closure = extendableClosure(mg)) return std::move(*closure);
+    return _propagatesToPDAG_(mg);
+  }
 
+  PDAG MeekRules::_propagatesToPDAG_(const MixedGraph& mg) {
     MixedGraph graph = _propagates_(mg);
 
     // Resolve double-headed arc while avoiding cycle creation.
     _orientDoubleHeadedArcs_(graph);
 
-    // cycle have been resolved above, so we can safely convert to PDAG
-    PDAG pdag;
-    for (auto node: graph) {
-      pdag.addNodeWithId(node);
-    }
-    for (const Edge& edge: graph.edges()) {
-      pdag.addEdge(edge.first(), edge.second());
-    }
-    for (const Arc& arc: graph.arcs()) {
-      pdag.addArc(arc.tail(), arc.head());
-    }
-    return pdag;
+    // a pair connected by an arc and an edge keeps only the arc
+    std::vector< Edge > doubled;
+    for (const Edge& edge: graph.edges())
+      if (graph.existsArc(edge.first(), edge.second())
+          || graph.existsArc(edge.second(), edge.first()))
+        doubled.push_back(edge);
+    for (const Edge& edge: doubled)
+      graph.eraseEdge(edge);
+    // only the 2-cycles have been resolved: a longer directed cycle of mg remains, rejected by the
+    // PDAG (checked once, names kept)
+    return PDAG(graph);
   }
 
   /// Propagates the orientation of a MixedGraph and return a DAG.
   DAG MeekRules::propagateToDAG(const gum::MixedGraph& mg) {
+    // no domain size: all the domains are considered equal
+    NodeProperty< Size > domainSizes;
+    for (const auto node: mg.nodes())
+      domainSizes.insert(node, 2);
+    return propagateToDAG(mg, domainSizes);
+  }
+
+  DAG MeekRules::propagateToDAG(const MixedGraph& mg, const NodeProperty< Size >& domainSizes) {
+    // the propagated graph: the closure of an extendable PDAG (not computed again to orient it), or
+    // the result of the former propagation (its arcs are kept in the DAG in both cases)
     _choices_.clear();
-    // Orient all remaining  edges into arcs
-    MixedGraph graph = _propagates_(mg);
-
-    // complete remaining edges
-    _complete_(graph);
-
-    // Resolve double-headed arc while avoiding cycle creation.
-    _orientDoubleHeadedArcs_(graph);
-
-
-    DAG dag;
-    for (auto node: graph.nodes()) {
-      dag.addNodeWithId(node);
+    std::optional< PDAG > pdag = extendableClosure(mg);
+    DAG                   dag;
+    if (pdag.has_value()) {
+      dag = graph::detail::orientClosureAsDAG(*pdag, domainSizes);
+    } else {
+      pdag = _propagatesToPDAG_(mg);
+      dag  = graph::orientAsDAG(*pdag, domainSizes);
     }
-    for (const Arc& arc: graph.arcs()) {
-      dag.addArc(arc.tail(), arc.head());
-    }
+
+    // the arbitrary choices: the orientations of the edges left undirected
+    for (const auto& edge: pdag->edges())
+      if (dag.existsArc(edge.first(), edge.second()))
+        _choices_.emplace_back(edge.first(), edge.second());
+      else _choices_.emplace_back(edge.second(), edge.first());
     return dag;
   }
 
@@ -191,21 +217,6 @@ namespace gum {
       }
     }
     return graph;
-  }
-
-  void MeekRules::_complete_(MixedGraph& graph) {
-    // Propagates existing orientations thanks to rules
-    bool newOrientation = true;
-    while (newOrientation) {
-      newOrientation = false;
-      for (NodeId x: graph.nodes()) {
-        if (!graph.parents(x).empty()) { newOrientation |= _applyMeekRules_(graph, x); }
-      }
-    }
-
-    // GUM_TRACE(graph.toDot())
-    //  Orient remaining edges
-    _propagatesOrientationInChainOfRemainingEdges_(graph);
   }
 
   /// Propagates the orientation from a node to its neighbours
@@ -301,66 +312,6 @@ namespace gum {
       }
     }
     return false;
-  }
-
-  /// Arbitrary propagation if we can't propagate thanks to MeekRules
-  void MeekRules::_propagatesOrientationInChainOfRemainingEdges_(MixedGraph& essentialGraph) {
-    // then decide the orientation for remaining edges
-    while (!essentialGraph.edges().empty()) {
-      const auto& edge               = *(essentialGraph.edges().begin());
-      NodeId      root               = edge.first();
-      Size        size_children_root = essentialGraph.children(root).size();
-      NodeSet     visited;
-      NodeSet     stack{root};
-
-      // check the best root for the set of neighbours
-      while (!stack.empty()) {
-        NodeId next = *(stack.begin());
-        stack.erase(next);
-        if (visited.contains(next)) continue;
-        if (essentialGraph.children(next).size() > size_children_root) {
-          size_children_root = essentialGraph.children(next).size();
-          root               = next;
-        }
-        for (const auto n: essentialGraph.neighbours(next))
-          if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
-        visited.insert(next);
-      }
-
-      // orientation now
-      visited.clear();
-      stack.clear();
-      stack.insert(root);
-      while (!stack.empty()) {
-        // GUM_TRACE("stack : " << stack)
-        NodeId next = *(stack.begin());
-        stack.erase(next);
-        // GUM_TRACE("next : " << next)
-        if (visited.contains(next)) continue;
-        const auto nei = essentialGraph.neighbours(next);
-        for (const auto n: nei) {
-          // GUM_TRACE("n : "<< n)
-          if (!stack.contains(n) && !visited.contains(n)) stack.insert(n);
-          // GUM_TRACE(" + amap reasonably orientation for " << n << "->" << next);
-          if (_applyMeekRules_(essentialGraph, next)) {
-            continue;
-          } else {
-            if (!essentialGraph.existsArc(next, n)) {
-              essentialGraph.eraseEdge(Edge(n, next));
-              if (!_existsDirectedPath_(essentialGraph, next, n)) {
-                essentialGraph.addArc(n, next);
-                _choices_.emplace_back(n, next);
-              } else {
-                // n→next would create a cycle; reverse is safe
-                essentialGraph.addArc(next, n);
-                _choices_.emplace_back(next, n);
-              }
-            }
-          }
-        }
-        visited.insert(next);
-      }
-    }
   }
 
   bool MeekRules::_existsDirectedPath_(const MixedGraph& graph, const NodeId n1, const NodeId n2) {

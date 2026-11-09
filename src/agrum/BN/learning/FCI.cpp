@@ -45,6 +45,9 @@
 #include <set>
 #include <vector>
 
+#include <agrum/base/graphs/algorithms/ancestral.h>
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/BN/learning/FCI.h>
 
 namespace gum::learning {
@@ -815,6 +818,41 @@ namespace gum::learning {
   // Primary output — learnPAG
   // ##########################################################################
 
+  namespace {
+    /// the PAG as a mixed graph (arrowhead and tail: arc, two arrowheads: two arcs, else an edge):
+    /// the adjacencies with the mandatory arcs, and the former approximation of the PAG
+    MixedGraph mixedGraphOf(const PAG& pag) {
+      MixedGraph g;
+      for (const NodeId n: pag.nodes())
+        g.addNodeWithId(n);
+      for (const Edge& e: pag.edges()) {
+        const NodeId x      = e.first();
+        const NodeId y      = e.second();
+        const bool   xArrow = pag.isArrowhead(y, x);
+        const bool   yArrow = pag.isArrowhead(x, y);
+        if (xArrow && yArrow) {
+          g.addArc(x, y);
+          g.addArc(y, x);
+        } else if (yArrow) {
+          g.addArc(x, y);
+        } else if (xArrow) {
+          g.addArc(y, x);
+        } else {
+          g.addEdge(x, y);
+        }
+      }
+      return g;
+    }
+
+    /// all the domains are considered equal
+    NodeProperty< Size > equalDomains(const NodeGraphPart& nodes) {
+      NodeProperty< Size > sizes;
+      for (const auto node: nodes.nodes())
+        sizes.insert(node, 2);
+      return sizes;
+    }
+  }   // namespace
+
   PAG FCI::learnPAG(MixedGraph graph) {
     // Phase 1: skeleton discovery
     MixedGraph skeleton = learnSkeleton(std::move(graph));
@@ -848,7 +886,7 @@ namespace gum::learning {
         pag.setMarkAt(a.head(), a.tail(), EdgeMark::Tail);
       }
     }
-    orientCollidersOnPAG_(pag, pag.toMixedGraph());
+    orientCollidersOnPAG_(pag, mixedGraphOf(pag));
 
     // Phase 5: orientation rules R1–R10 (fixed-point)
     applyOrientationRules_(pag);
@@ -865,14 +903,59 @@ namespace gum::learning {
   }
 
   // ##########################################################################
-  // Bridge — learnMixedStructure
+  // Bridge — learnPDAG, learnDAG, learnMixedStructure
   // ##########################################################################
 
-  MixedGraph FCI::learnMixedStructure(MixedGraph graph) {
-    PAG        pag = learnPAG(std::move(graph));
-    MixedGraph mg  = pag.toMixedGraph();
-    orientDoubleHeadedArcs_(mg);
-    return mg;
+
+  void FCI::setErrorOnInvalidPAG(bool error) { errorOnInvalidPAG_ = error; }
+
+  bool FCI::errorOnInvalidPAG() const { return errorOnInvalidPAG_; }
+
+  PDAG FCI::representativePDAG_(const PAG& pag, const NodeProperty< Size >& domainSizes) {
+    // Zhang 2008 (Artificial Intelligence), Theorem 2, the edges o-o being oriented as a DAG
+    // without unshielded collider (a consistent extension when they form a chordal graph, as in a
+    // valid PAG) with small CPTs
+    const auto representative
+        = graph::representativeGraph(pag,
+                                     graph::orientAsDAG(graph::circleComponent(pag), domainSizes));
+    MixedGraph mag;   // x--y and x<->y as undirected edges
+    for (const NodeId n: representative.nodes())
+      mag.addNodeWithId(n);
+    for (const Edge& e: representative.edges()) {
+      const NodeId x = e.first();
+      const NodeId y = e.second();
+      if (representative.isDefinitelyDirected(x, y)) mag.addArc(x, y);
+      else if (representative.isDefinitelyDirected(y, x)) mag.addArc(y, x);
+      else mag.addEdge(x, y);
+    }
+
+    if (graph::hasDirectedCycle(mag)) {   // not a valid PAG
+      if (errorOnInvalidPAG_)
+        GUM_ERROR(InvalidArgument,
+                  "FCI: the learned PAG is not valid (its representative graph has a directed "
+                  "cycle)")
+      return meekRules_.propagateToCPDAG(mixedGraphOf(pag));   // the former approximation
+    }
+    return PDAG(mag);
   }
+
+  PDAG FCI::learnPDAG(MixedGraph graph) {
+    const PAG pag = learnPAG(std::move(graph));
+    return representativePDAG_(pag, equalDomains(pag));
+  }
+
+  DAG FCI::learnDAG(MixedGraph graph) {
+    const PAG  pag   = learnPAG(std::move(graph));
+    const auto sizes = equalDomains(pag);
+    return checkMaxIndegree_(graph::orientAsDAG(representativePDAG_(pag, sizes), sizes));
+  }
+
+  DAG FCI::learnDAG(MixedGraph graph, const NodeProperty< Size >& domainSizes) {
+    const PAG pag = learnPAG(std::move(graph));
+    return checkMaxIndegree_(
+        graph::orientAsDAG(representativePDAG_(pag, domainSizes), domainSizes));
+  }
+
+  MixedGraph FCI::learnMixedStructure(MixedGraph graph) { return learnPDAG(std::move(graph)); }
 
 }   // namespace gum::learning

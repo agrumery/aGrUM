@@ -86,6 +86,14 @@ namespace gum::dot {
     std::string nodeBgColor;
     /// font color of the nodes
     std::string nodeFgColor;
+    /// background color of the chain components of a partially directed graph
+    std::string chainComponentBgColor;
+    /// color of the compelled arcs of a CPDAG, an MPDAG or an essential graph
+    std::string compelledArcColor;
+    /// color of the bidirected edges (<->) of a marked graph (empty: the color of the arcs)
+    std::string bidirectedEdgeColor;
+    /// color of the edges with a circle mark of a marked graph (empty: the color of the arcs)
+    std::string circleMarkEdgeColor;
 
     /// @brief the style of the graphs of the section `notebook`
     static DotStyle read();

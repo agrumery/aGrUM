@@ -376,6 +376,12 @@ namespace gum::learning {
     /// must have selected miic)
     PDAG learnPDAG();
 
+    /// learn the essential graph of the Markov equivalence class of the data
+    /** With a constraint-based algorithm (MIIC, PC, FCI), the learned PDAG (see learnPDAG(), which
+     * may not be a CPDAG if it is not extendable); with a score-based algorithm, the CPDAG of the
+     * learned DAG (see learnDAG()). The nodes are named after the variables of the database. */
+    EssentialGraph learnEssentialGraph();
+
     /// learn a PAG — only valid when useFCI() has been called
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     PAG learnPAG();
@@ -951,6 +957,7 @@ namespace gum::learning {
     /// set the significance threshold alpha for PC. If it is never set, PC uses the key
     /// `learning.alpha` of the configuration, as it was when the learner was constructed.
     /// @throws OperationNotAllowed when PC is not the selected algorithm
+    /// @throws OutOfBounds if alpha does not belong to ]0,1[ (NaN included)
     void setPCAlpha(double alpha);
 
     /// set stable mode for PC — defer removals to end of each depth level (default true)
@@ -984,6 +991,7 @@ namespace gum::learning {
     /// set the significance threshold alpha for FCI. If it is never set, FCI uses the key
     /// `learning.alpha` of the configuration, as it was when the learner was constructed.
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    /// @throws OutOfBounds if alpha does not belong to ]0,1[ (NaN included)
     void setFCIAlpha(double alpha);
 
     /// set maximum discriminating-path length for FCI R4 (default Size(-1) = unlimited)
@@ -998,6 +1006,16 @@ namespace gum::learning {
     /// @throws OperationNotAllowed when FCI is not the selected algorithm
     bool fciExhaustiveSepSet() const;
 
+    /// FCI, when the learned PAG is detected as not valid (a directed cycle in its representative
+    /// graph, see FCI::learnPDAG): raise InvalidArgument (true) or use the former approximation
+    /// (false); initialized from the key `learning.fciErrorOnInvalidPAG`
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    void setFCIErrorOnInvalidPAG(bool error);
+
+    /// see setFCIErrorOnInvalidPAG
+    /// @throws OperationNotAllowed when FCI is not the selected algorithm
+    bool fciErrorOnInvalidPAG() const;
+
     /// @}
 
     // ##########################################################################
@@ -1006,7 +1024,24 @@ namespace gum::learning {
     /// @{
 
     /// sets the max indegree
+    /** The score-based algorithms only explore the DAGs satisfying it. The constraint-based
+     * algorithms (PC, FCI, MIIC) use it when orienting the v-structures, but never remove an edge
+     * kept by their independence tests to satisfy it: when the DAG of learnDAG() or learnBN()
+     * exceeds it, OperationNotAllowed is raised or the DAG is returned (see
+     * setErrorOnExceededMaxIndegree). */
     void setMaxIndegree(Size max_indegree);
+
+    /// constraint-based algorithms, when the learned DAG exceeds the max indegree: raise
+    /// OperationNotAllowed (true) or return it (false); initialized from the key
+    /// `learning.errorOnExceededMaxIndegree`
+    void setErrorOnExceededMaxIndegree(bool error);
+
+    /// see setErrorOnExceededMaxIndegree
+    bool errorOnExceededMaxIndegree() const;
+
+    /// whether the last DAG learned by the selected constraint-based algorithm exceeds the max
+    /// indegree (always false for the score-based algorithms, which satisfy it)
+    bool maxIndegreeExceeded() const;
 
     /**
      * sets a partial order on the nodes
@@ -1273,6 +1308,12 @@ namespace gum::learning {
     double alphaFci_{gum::config().typed< double >("learning", "alpha")};
     Size   maxPathLengthFci_{Size(-1)};
     bool   exhaustiveSepSetFci_{false};
+    /// initialized from the key `learning.fciErrorOnInvalidPAG`
+    bool errorOnInvalidPAGFci_{gum::config().typed< bool >("learning", "fciErrorOnInvalidPAG")};
+
+    /// constraint-based algorithms ; initialized from the key `learning.errorOnExceededMaxIndegree`
+    bool errorOnExceededMaxIndegree_{
+        gum::config().typed< bool >("learning", "errorOnExceededMaxIndegree")};
 
     /// the parametric EM
     DAG2BNLearner dag2BN_;
@@ -1335,6 +1376,12 @@ namespace gum::learning {
 
     /// returns the DAG learnt
     DAG learnDag_();
+
+    /// the initial graph of a constraint-based algorithm and its common constraints
+    /** @param algo the constraint-based algorithm (PC, FCI or MIIC) whose constraints are set
+     *  @param forbidReversedMandatoryArcs whether the reverse of a mandatory arc is forbidden */
+    MixedGraph prepareConstraintBased_(ConstraintBasedLearning& algo,
+                                       bool                     forbidReversedMandatoryArcs);
 
     /// prepares the initial graph for miic
     MixedGraph prepareMiic_();

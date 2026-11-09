@@ -41,6 +41,8 @@
 
 #pragma once
 
+#include <utility>
+
 #include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 
 namespace gum::graph {
@@ -236,6 +238,43 @@ namespace gum::graph {
   template < GUM_MixedGraphable G >
   bool hasMixedOrientedPath(const G& g, NodeId n1, NodeId n2) {
     return mixedOrientedPath(g, n1, n2).has_value();
+  }
+
+  template < GUM_MixedGraphable G >
+  bool hasMixedWalkWithArc(const G& g, NodeId n1, NodeId n2) {
+    if (n1 == n2) return false;
+
+    // the search state is (node, whether an arc has already been followed): a node reached without
+    // any arc must still be explorable later through an arc, hence two separate visited sets
+    NodeSet                                  reachedWithArc;
+    NodeSet                                  reachedWithoutArc;
+    std::vector< std::pair< NodeId, bool > > toVisit{{n1, false}};
+    reachedWithoutArc.insert(n1);
+
+    while (!toVisit.empty()) {
+      const auto [node, withArc] = toVisit.back();
+      toVisit.pop_back();
+
+      for (const auto child: g.children(node)) {
+        if (child == n2) return true;
+        if (!reachedWithArc.contains(child)) {
+          reachedWithArc.insert(child);
+          toVisit.emplace_back(child, true);
+        }
+      }
+      for (const auto neighbour: g.neighbours(node)) {
+        if (neighbour == n2) {
+          if (withArc) return true;
+          continue;
+        }
+        NodeSet& reached = withArc ? reachedWithArc : reachedWithoutArc;
+        if (!reached.contains(neighbour)) {
+          reached.insert(neighbour);
+          toVisit.emplace_back(neighbour, withArc);
+        }
+      }
+    }
+    return false;
   }
 
   template < GUM_MixedGraphable G >

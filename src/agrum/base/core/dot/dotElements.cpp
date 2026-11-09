@@ -130,4 +130,15 @@ namespace gum::dot {
     attributes.insert(attributes.begin(), {std::string(key), std::string(value)});
   }
 
+  DotOptions withCompelledArcColor(const DotOptions& options, const ArcSet& compelled) {
+    const auto color = DotStyle::read().compelledArcColor;
+    DotOptions result(options);
+    for (const auto& arc: compelled) {
+      const auto* given = options.arc(arc.tail(), arc.head());
+      if (given == nullptr || given->color.empty())
+        result.setArcColor(arc.tail(), arc.head(), color);
+    }
+    return result;
+  }
+
 }   // namespace gum::dot

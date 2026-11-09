@@ -42,10 +42,13 @@
 
 
 #include <iostream>
+#include <utility>
 
 #include <agrum/base/graphs/algorithms/MeekRules.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/base/graphs/PDAG.h>
 
+#include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
 
@@ -58,8 +61,7 @@ namespace gum_tests {
     // Undirected: 6-3, 3-0, 3-7, 3-2, 4-3, 0-5, 4-0, 0-2, 4-5
     // R1 fires: 6->3, 3->0, 3->7, 3->2, 0->5, 0->2
     // R2 fires: 4->3 (via 4->6->3), 4->0 (via 4->3->0), 4->5 (via 4->0->5)
-    // NB: MixedGraph used instead of PDAG because 2->7, 3-7 and 3-2 simultaneously
-    //     would violate aGrUM's hasMixedReallyOrientedPath PDAG invariant.
+    // NB: 2->7, 3-7 and 3-2 form a partially directed cycle.
 
 
     // R1 isolated: 0->1-2, 0 not adjacent to 2.
@@ -466,4 +468,158 @@ namespace gum_tests {
     CHECK(res.existsEdge(0, 1));
     CHECK(res.existsEdge(1, 3));
   }
+
+  GUM_TEST(ArcAndEdgeOnTheSamePair) {
+    // a pair connected by an arc and an edge: the arc is kept
+    gum::MixedGraph mg;
+    mg.addNodes(3);
+    mg.addArc(0, 1);
+    mg.addEdge(0, 1);
+    mg.addEdge(1, 2);
+    gum::MeekRules meek;
+    gum::PDAG      pdag;
+    CHECK_NOTHROW(pdag = meek.propagateToCPDAG(mg));
+    CHECK(pdag.existsArc(0, 1));
+    CHECK(!pdag.existsEdge(0, 1));
+    gum::DAG dag;
+    CHECK_NOTHROW(dag = meek.propagateToDAG(mg));
+    CHECK(dag.existsArc(0, 1));
+    CHECK_EQ(dag.sizeArcs(), gum::Size(2));
+  }
+
+  GUM_TEST(PropagateToDAGWithDomainSizes) {
+    // path 0-1-2 with domain sizes 4, 5, 5: 0->1->2 has the smallest CPTs (4 + 20 + 25)
+    gum::MixedGraph path;
+    path.addNodes(3);
+    path.addEdge(0, 1);
+    path.addEdge(1, 2);
+    gum::MeekRules mr;
+    const auto     dag
+        = mr.propagateToDAG(path, gum::NodeProperty< gum::Size >{{0, 4}, {1, 5}, {2, 5}});
+    CHECK_EQ(dag.sizeArcs(), gum::Size(2));
+    CHECK(dag.existsArc(0, 1));
+    CHECK(dag.existsArc(1, 2));
+    CHECK_EQ(mr.choices().size(), std::size_t(2));
+
+    // a missing domain size, a domain size 0
+    CHECK_THROWS_AS(mr.propagateToDAG(path, gum::NodeProperty< gum::Size >{{0, 4}, {1, 5}}),
+                    const gum::InvalidArgument&);
+    CHECK_THROWS_AS(mr.propagateToDAG(path, gum::NodeProperty< gum::Size >{{0, 4}, {1, 0}, {2, 5}}),
+                    const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(NamesAreKept) {
+    gum::MixedGraph mg;
+    mg.addNodes(4);
+    for (gum::NodeId i = 0; i < 4; ++i)
+      mg.setName(i, std::string(1, char('A' + i)));
+    mg.addArc(0, 2);
+    mg.addArc(1, 2);
+    mg.addEdge(2, 3);
+    gum::MeekRules mr;
+    const auto     checkNames = [](const gum::NodeGraphPart& g) {
+      for (gum::NodeId i = 0; i < 4; ++i)
+        CHECK_EQ(g.nameFromId(i), std::string(1, char('A' + i)));
+    };
+    checkNames(mr.propagate(mg));
+    checkNames(mr.propagateToCPDAG(mg));
+    checkNames(mr.propagateToDAG(mg));
+
+    // a double-headed arc: the former propagation
+    mg.addArc(3, 1);
+    mg.addArc(1, 3);
+    checkNames(mr.propagate(mg));
+    checkNames(mr.propagateToCPDAG(mg));
+    checkNames(mr.propagateToDAG(mg));
+  }
+
+  GUM_TEST(NonExtendableDAGKeepsTheOrientationsOfTheCPDAG) {
+    // 0->1-2 (R1 orients 1->2) and the non chordal cycle 1-2-3-4-1: not extendable
+    gum::MixedGraph mg;
+    mg.addNodes(5);
+    mg.addArc(0, 1);
+    mg.addEdge(1, 2);
+    mg.addEdge(2, 3);
+    mg.addEdge(3, 4);
+    mg.addEdge(4, 1);
+    CHECK(!gum::graph::consistentExtension(gum::PDAG(mg)).has_value());
+
+    gum::MeekRules mr;
+    const auto     cpdag = mr.propagateToCPDAG(mg);
+    CHECK(cpdag.existsArc(1, 2));
+    const auto dag = mr.propagateToDAG(mg);
+    for (const auto& arc: cpdag.arcs())
+      CHECK(dag.existsArc(arc.tail(), arc.head()));
+
+    // random non extendable PDAGs: the DAG contains the arcs of the propagated graph
+    int nonExtendable = 0;
+    for (int i = 0; i < 500; ++i) {
+      gum::PDAG pdag;
+      pdag.addNodes(4 + gum::randomValue(8));
+      for (gum::NodeId x = 0; x < pdag.size(); ++x)
+        for (gum::NodeId y = x + 1; y < pdag.size(); ++y)
+          if (gum::randomProba() < 0.35) {
+            if (gum::randomProba() < 0.3) pdag.addArc(x, y);
+            else pdag.addEdge(x, y);
+          }
+      if (gum::graph::consistentExtension(pdag).has_value()) continue;
+      ++nonExtendable;
+      const auto propagated = mr.propagateToCPDAG(pdag);
+      const auto oriented   = mr.propagateToDAG(pdag);
+      for (const auto& arc: propagated.arcs())
+        CHECK(oriented.existsArc(arc.tail(), arc.head()));
+    }
+    CHECK_LT(0, nonExtendable);
+  }
+
+  // non-regression (#207): the DAG must stay in the Markov equivalence class of the CPDAG
+  GUM_TEST(DAGOfACPDAGStaysInItsEquivalenceClass) {
+    // a valid CPDAG without arc: the completion created the unshielded collider 1->0<-2
+    gum::MixedGraph mg;
+    mg.addNodes(5);
+    for (const auto& [x, y]: {std::pair{0, 1}, {0, 3}, {1, 3}, {2, 3}, {0, 2}, {0, 4}})
+      mg.addEdge(x, y);
+
+    gum::MeekRules mr;
+    const auto     cpdag = mr.propagateToCPDAG(mg);
+    CHECK_EQ(cpdag.sizeArcs(), 0u);
+    CHECK_EQ(cpdag.sizeEdges(), 6u);
+
+    const auto dag = mr.propagateToDAG(mg);
+    CHECK_EQ(dag.sizeArcs(), 6u);
+    for (const auto& edge: mg.edges())
+      CHECK((dag.existsArc(edge.first(), edge.second())
+             || dag.existsArc(edge.second(), edge.first())));
+    for (const auto z: dag.nodes())
+      for (const auto x: dag.parents(z))
+        for (const auto y: dag.parents(z))
+          if (x < y) CHECK(mg.existsEdge(x, y));
+    CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(dag)) == mg);
+
+    // random DAGs: the DAG of their CPDAG has the same CPDAG
+    for (int i = 0; i < 500; ++i) {
+      gum::DAG original;
+      original.addNodes(4 + gum::randomValue(8));
+      for (gum::NodeId x = 0; x < original.size(); ++x)
+        for (gum::NodeId y = x + 1; y < original.size(); ++y)
+          if (gum::randomProba() < 0.4) original.addArc(x, y);
+      const auto expected = gum::graph::cpdag(original);
+      const auto oriented = mr.propagateToDAG(expected);
+      CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(oriented))
+            == static_cast< const gum::MixedGraph& >(expected));
+    }
+  }
+
+  GUM_TEST(DirectedCycleIsRejected) {
+    // only the 2-cycles (double-headed arcs) are resolved
+    gum::MixedGraph mg;
+    mg.addNodes(3);
+    mg.addArc(0, 1);
+    mg.addArc(1, 2);
+    mg.addArc(2, 0);
+    gum::MeekRules meek;
+    CHECK_THROWS_AS(meek.propagateToCPDAG(mg), gum::InvalidDirectedCycle&);
+    CHECK_THROWS_AS(meek.propagateToDAG(mg), gum::InvalidDirectedCycle&);
+  }
+
 }   // namespace gum_tests

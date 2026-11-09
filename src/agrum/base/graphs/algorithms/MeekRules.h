@@ -61,8 +61,28 @@ namespace gum {
    * flavours are available: MixedGraph (partial orientation), PDAG (completed PDAG / CPDAG),
    * and DAG (fully oriented).
    *
-   * When the rules alone cannot resolve all undirected edges, an arbitrary orientation is chosen
-   * using a min-parents heuristic; the affected arcs are recorded and accessible via choices().
+   * If the input is an extendable PDAG (Dor and Tarsi 1992), its closure under the rules is unique
+   * (Meek 1995): propagate and propagateToCPDAG compute it with graph::meekClosure (Wienöbst,
+   * Bannach and Liśkiewicz 2021, Algorithm 2). Otherwise (a non-extendable PDAG,
+   * as a constraint-based learner may produce from conflicting independence tests, or a mixed graph
+   * with double connections), the rules are applied by a fixpoint iteration whose result depends
+   * on the order of the nodes, and propagateToCPDAG resolves the double-headed arcs with a
+   * min-parents heuristic.
+   *
+   * propagateToDAG orients the result of propagateToCPDAG with graph::orientAsDAG, which looks for
+   * small CPTs: a consistent extension if this PDAG is extendable, a DAG with some new v-structures
+   * otherwise; in both cases, the DAG contains all its arcs. The orientations of the edges that the
+   * propagation leaves undirected are recorded and accessible via choices().
+   *
+   * @par References
+   * - C. Meek. Causal inference and causal explanation with background knowledge. Proceedings of
+   *   the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410.
+   *   arXiv:1302.4972.
+   * - D. Dor, M. Tarsi. A simple algorithm to construct a consistent extension of a partially
+   *   oriented graph. UCLA Cognitive Systems Laboratory, Technical Report R-185, October 1992.
+   * - M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms
+   *   and computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
+   *   Intelligence, PMLR 161:1248-1257, 2021.
    */
   class GUM_SHARED_PUBLIC MeekRules {
     public:
@@ -95,21 +115,37 @@ namespace gum {
      *  double-headed arcs.
      *  @param mg the mixed graph to orient
      *  @return a PDAG representing the essential graph
+     *  @throw InvalidDirectedCycle if mg contains a directed cycle of length 3 or more (the
+     *  2-cycles, i.e. double-headed arcs, are resolved)
      */
     PDAG propagateToCPDAG(const MixedGraph& mg);
 
-    /// Applies Meek rules and completes the result into a DAG.
-    /** Meek rules R1–R4 are applied, remaining undirected edges are arbitrarily oriented,
-     *  and double-headed arcs are resolved to ensure an acyclic result.
+    /// Orients a MixedGraph into a DAG, all the domains being considered equal.
+    /** Same as propagateToDAG(mg, domainSizes) with the same domain size for all the nodes: the
+     *  heuristic then looks for nodes with few parents.
      *  @param mg the mixed graph to orient
-     *  @return a DAG consistent with the orientations implied by the input
+     *  @return a DAG containing the arcs of propagateToCPDAG(mg)
+     *  @throw InvalidDirectedCycle if mg contains a directed cycle of length 3 or more
      */
     DAG propagateToDAG(const MixedGraph& mg);
 
+    /// Orients a MixedGraph into a DAG with small CPTs.
+    /** The input is first propagated by propagateToCPDAG, then the resulting PDAG is oriented by
+     *  graph::orientAsDAG: a consistent extension if the PDAG is extendable (the input then gives
+     *  the same result as its closure), a DAG with new v-structures otherwise. The DAG contains all
+     *  the arcs of the propagated PDAG.
+     *  @param mg the mixed graph to orient
+     *  @param domainSizes the domain size of each node of mg
+     *  @return a DAG containing the arcs of propagateToCPDAG(mg)
+     *  @throw InvalidArgument if a node of mg has no domain size, or a domain size 0
+     *  @throw InvalidDirectedCycle if mg contains a directed cycle of length 3 or more
+     */
+    DAG propagateToDAG(const MixedGraph& mg, const NodeProperty< Size >& domainSizes);
+
     /// Returns the arcs for which the algorithm made an arbitrary orientation choice.
-    /** An arc is recorded here when no Meek rule could determine its direction and the
-     *  algorithm had to pick one arbitrarily (e.g. to break a double-headed arc or to
-     *  orient a residual undirected edge).
+    /** An arc is recorded here when the fixpoint iteration of the rules (for an input which is
+     *  not an extendable PDAG) derives both orientations of an edge. propagateToDAG also records
+     *  the orientations of the edges left undirected by propagateToCPDAG.
      *  @return the list of arbitrarily chosen arcs, in order of selection
      */
     const std::vector< Arc >& choices() const;
@@ -117,6 +153,10 @@ namespace gum {
     private:
     /// Applies Meek rules R1–R4 exhaustively and returns the resulting graph.
     MixedGraph _propagates_(const MixedGraph& graph);
+
+    /// propagateToCPDAG for an input which is not an extendable PDAG: the fixpoint iteration of
+    /// the rules, then the resolution of the double-headed arcs
+    PDAG _propagatesToPDAG_(const MixedGraph& mg);
 
     std::vector< Arc > _choices_;
 
@@ -126,13 +166,6 @@ namespace gum {
      *  @return true if at least one edge was oriented
      */
     bool _applyMeekRules_(MixedGraph& graph, NodeId xj);
-
-    /// Arbitrarily orients remaining undirected edges when no Meek rule applies.
-    /** Uses a BFS-based heuristic: picks the node with the most children as a local root
-     *  and orients edges away from it.
-     *  @param graph the graph (modified in place)
-     */
-    void _propagatesOrientationInChainOfRemainingEdges_(MixedGraph& graph);
 
     /// Resolves double-headed arcs (x→y and y→x simultaneously) to avoid cycles.
     /** For each double-headed arc, erases one direction based on existing directed paths;
@@ -150,9 +183,6 @@ namespace gum {
 
     /// Returns true if there is a directed path from n1 to n2 (BFS, double arcs ignored).
     static bool _existsDirectedPath_(const MixedGraph& graph, NodeId n1, NodeId n2);
-
-    /// Orients all remaining undirected edges, applying Meek rules then a chain heuristic.
-    void _complete_(MixedGraph& graph);
 
     /// Returns the arc to erase when resolving a double-headed arc, using a min-parents heuristic.
     /** Prefers to keep the direction whose head already has more parents.  Ties are broken by

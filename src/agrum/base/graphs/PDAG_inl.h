@@ -76,13 +76,14 @@ namespace gum {
     if (head == tail) {
       GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG for node " << head)
     }
+    if (this->existsEdge(tail, head)) {
+      GUM_ERROR(InvalidArc,
+                "Add an arc in a PDAG where an edge already exists : between " << tail << " and "
+                                                                               << head)
+    }
     if (this->hasDirectedPath(head, tail)) {
       GUM_ERROR(InvalidDirectedCycle,
                 "Add a directed cycle in a PDAG : between " << head << " and " << tail)
-    }
-    if (this->hasMixedReallyOrientedPath(head, tail)) {
-      GUM_ERROR(InvalidPartiallyDirectedCycle,
-                "Add a partial directed cycle in a PDAG : between " << head << " and " << tail)
     }
 
     // checking whether tail and head do belong to the graph is performed
@@ -92,11 +93,10 @@ namespace gum {
 
   INLINE void PDAG::addEdge(const NodeId tail, const NodeId head) {
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG !") }
-
-    if (this->hasMixedReallyOrientedPath(head, tail)
-        || this->hasMixedReallyOrientedPath(tail, head)) {
-      GUM_ERROR(InvalidPartiallyDirectedCycle,
-                "Add a partial directed cycle in a PDAG : between " << head << " and " << tail)
+    if (this->existsArc(tail, head) || this->existsArc(head, tail)) {
+      GUM_ERROR(InvalidEdge,
+                "Add an edge in a PDAG where an arc already exists : between " << tail << " and "
+                                                                               << head)
     }
 
     // checking whether tail and head do belong to the graph is performed

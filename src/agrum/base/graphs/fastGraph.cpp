@@ -40,4 +40,66 @@
 
 #include <agrum/base/graphs/fastGraph.h>
 
-namespace gum {}   // namespace gum
+#include <agrum/base/core/utils_string.h>
+
+namespace gum {
+
+  namespace graph::detail {
+
+    std::size_t fastGraphFindDash(std::string_view chain, std::size_t from) {
+      int depth = 0;
+      for (std::size_t i = from; i < chain.size(); ++i) {
+        const char c = chain[i];
+        if (c == '[' || c == '{') {
+          ++depth;
+        } else if (c == ']' || c == '}') {
+          if (depth > 0) --depth;
+        } else if ((c == '-') && (depth == 0)) {
+          return i;
+        }
+      }
+      return std::string_view::npos;
+    }
+
+    std::vector< std::pair< std::string, FastGraphOp > > fastGraphTokenize(std::string_view chain) {
+      std::vector< std::pair< std::string, FastGraphOp > > tokens;
+      std::size_t                                          pos       = 0;
+      FastGraphOp                                          pendingOp = FastGraphOp::None;
+
+      while (pos <= chain.size()) {
+        const auto dashPos = fastGraphFindDash(chain, pos);
+
+        std::size_t opStart = dashPos;
+        std::size_t opLen   = 1;
+        FastGraphOp op      = FastGraphOp::Edge;
+
+        if (dashPos != std::string_view::npos) {
+          if ((dashPos + 1 < chain.size()) && (chain[dashPos + 1] == '>')) {
+            opLen = 2;
+            op    = FastGraphOp::Arc;
+          } else if ((dashPos > pos) && (chain[dashPos - 1] == '<')) {
+            opStart = dashPos - 1;
+            opLen   = 2;
+            op      = FastGraphOp::RevArc;
+          }
+        }
+
+        const auto tokEnd = (dashPos == std::string_view::npos) ? chain.size() : opStart;
+
+        tokens.emplace_back(trim_copy(chain.substr(pos, tokEnd - pos)), pendingOp);
+
+        if (dashPos == std::string_view::npos) { break; }
+        pendingOp = op;
+        pos       = opStart + opLen;
+      }
+      return tokens;
+    }
+
+    bool fastGraphIsNodeIdToken(const std::string& token) {
+      int value = 0;
+      return isIntegerWithResult(token, &value) && (value >= 0);
+    }
+
+  }   // namespace graph::detail
+
+}   // namespace gum

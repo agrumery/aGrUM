@@ -65,12 +65,16 @@ namespace gum::dot {
     // the part of the style which comes from the section `notebook`
     DotStyle _notebook_() {
       DotStyle style;
-      style.size        = _str_("notebook", "graphSize");
-      style.rankDir     = _str_("notebook", "graphRankDir");
-      style.layout      = _str_("notebook", "graphLayout");
-      style.arcColor    = _str_("notebook", "arcColor");
-      style.nodeBgColor = _str_("notebook", "nodeBgColor");
-      style.nodeFgColor = configFgColor("notebook", "nodeFgColor");
+      style.size                  = _str_("notebook", "graphSize");
+      style.rankDir               = _str_("notebook", "graphRankDir");
+      style.layout                = _str_("notebook", "graphLayout");
+      style.arcColor              = _str_("notebook", "arcColor");
+      style.nodeBgColor           = _str_("notebook", "nodeBgColor");
+      style.nodeFgColor           = configFgColor("notebook", "nodeFgColor");
+      style.chainComponentBgColor = _str_("notebook", "chainComponentBgColor");
+      style.compelledArcColor     = _str_("notebook", "compelledArcColor");
+      style.bidirectedEdgeColor   = _str_("notebook", "bidirectedEdgeColor");
+      style.circleMarkEdgeColor   = _str_("notebook", "circleMarkEdgeColor");
       return style;
     }
   }   // namespace

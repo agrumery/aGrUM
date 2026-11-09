@@ -190,8 +190,8 @@ Create a Markov random field with a modified dot-like syntax which specifies:
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+import pyagrum as gum
+bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -278,11 +278,14 @@ Parameters
 ----------
 name : str
     the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-binary : bool
-    if True, read as bgum (msgpack) regardless of extension (default: False)
+binary : bool, optional
+    True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is
+    given by the extension (binary for an unknown extension).
 
 Raises
 ------
+pyagrum.InvalidArgument
+    If binary contradicts the extension (``.jgum`` or ``.bgum``)
 pyagrum.GumIOError
     If file not found
 pyagrum.FatalError

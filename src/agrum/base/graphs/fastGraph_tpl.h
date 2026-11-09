@@ -41,7 +41,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cstdint>
 #include <string>
 #include <utility>
 #include <vector>
@@ -52,85 +51,41 @@
 
 namespace gum {
 
-  namespace detail {
+  namespace graph::detail {
 
-    /// which operator (if any) precedes a node token in a fastGraph chain
-    enum class FastGraphOp : std::uint8_t { None, Arc, RevArc, Edge };
-
-    /**
-     * @brief Finds the first '-' at bracket-depth 0, starting at @p from, skipping any
-     * '['...']' or '{'...'}' span.
-     *
-     * Node tokens built downstream by BayesNet/InfluenceDiagram's fastPrototype() may embed a
-     * fastVariable domain descriptor, e.g. "A[-3,3]" (negative range) or "B{-1.5:6.3:5}" (negative
-     * ticks): the '-' there is part of a number, not a topology operator, so it must not be
-     * mistaken for one.
-     */
-    inline std::size_t fastGraphFindDash(std::string_view chain, std::size_t from) {
-      int depth = 0;
-      for (std::size_t i = from; i < chain.size(); ++i) {
-        const char c = chain[i];
-        if (c == '[' || c == '{') {
-          ++depth;
-        } else if (c == ']' || c == '}') {
-          if (depth > 0) --depth;
-        } else if ((c == '-') && (depth == 0)) {
-          return i;
-        }
-      }
-      return std::string_view::npos;
-    }
+    /// the chains of tokens of a description, and whether their tokens are NodeIds
+    template < typename TOKEN >
+    struct FastGraphChains {
+      std::vector< std::vector< TOKEN > > chains;
+      bool                                useIds = true;
+    };
 
     /**
-     * @brief Scans one ";"-delimited chain, splitting it into node tokens
-     * while remembering, for each token, whether it was preceded by "->"
-     * (Arc), "<-" (RevArc) or "-" (Edge). A plain split() cannot preserve
-     * this, since it only handles one delimiter at a time.
+     * @brief Splits a description into its ";"-delimited chains of tokens and decides how to
+     * read the nodes: as NodeIds if every token is a non-negative integer, else as names.
      *
-     * "-" (not "--") is used for edges: MRF's own fast syntax already uses
-     * "--" to list the variables of a single factor (a clique), which is a
-     * different construct from a chain of pairwise edges. Reusing "--" here
-     * would silently give the same token two incompatible meanings.
+     * @param desc the description.
+     * @param tokenize `std::vector< TOKEN > tokenize(std::string_view chain)`.
+     * @param tokenName `const std::string& tokenName(const TOKEN&)`: the node name of a token.
+     * @param onEmptyToken called for an operator without a node token: must throw.
      */
-    inline std::vector< std::pair< std::string, FastGraphOp > >
-        fastGraphTokenize(std::string_view chain) {
-      std::vector< std::pair< std::string, FastGraphOp > > tokens;
-      std::size_t                                          pos       = 0;
-      FastGraphOp                                          pendingOp = FastGraphOp::None;
-
-      while (pos <= chain.size()) {
-        const auto dashPos = fastGraphFindDash(chain, pos);
-
-        std::size_t opStart = dashPos;
-        std::size_t opLen   = 1;
-        FastGraphOp op      = FastGraphOp::Edge;
-
-        if (dashPos != std::string_view::npos) {
-          if ((dashPos + 1 < chain.size()) && (chain[dashPos + 1] == '>')) {
-            opLen = 2;
-            op    = FastGraphOp::Arc;
-          } else if ((dashPos > pos) && (chain[dashPos - 1] == '<')) {
-            opStart = dashPos - 1;
-            opLen   = 2;
-            op      = FastGraphOp::RevArc;
-          }
+    template < typename TOKENIZE, typename TOKEN_NAME, typename ON_EMPTY_TOKEN >
+    auto fastGraphParseChains(std::string_view desc,
+                              TOKENIZE         tokenize,
+                              TOKEN_NAME       tokenName,
+                              ON_EMPTY_TOKEN   onEmptyToken) {
+      FastGraphChains< typename decltype(tokenize(desc))::value_type > parsed;
+      for (const auto& chainStr: split(remove_newline(desc), ";")) {
+        if (trim_copy(chainStr).empty()) { continue; }
+        auto tokens = tokenize(chainStr);
+        for (const auto& token: tokens) {
+          const std::string& name = tokenName(token);
+          if (name.empty()) { onEmptyToken(); }
+          if (!fastGraphIsNodeIdToken(name)) { parsed.useIds = false; }
         }
-
-        const auto tokEnd = (dashPos == std::string_view::npos) ? chain.size() : opStart;
-
-        tokens.emplace_back(trim_copy(chain.substr(pos, tokEnd - pos)), pendingOp);
-
-        if (dashPos == std::string_view::npos) { break; }
-        pendingOp = op;
-        pos       = opStart + opLen;
+        parsed.chains.push_back(std::move(tokens));
       }
-      return tokens;
-    }
-
-    /// true if token must be read as a NodeId (non-negative integer)
-    inline bool fastGraphIsNodeIdToken(const std::string& token) {
-      int value = 0;
-      return isIntegerWithResult(token, &value) && (value >= 0);
+      return parsed;
     }
 
     /// gets or creates the node denoted by token, in NodeId or name mode
@@ -204,34 +159,29 @@ namespace gum {
       }
     }
 
-  }   // namespace detail
+  }   // namespace graph::detail
 
   template < GUM_NodeGraphable GRAPH_TYPE >
   GRAPH_TYPE fastGraph(std::string_view desc) {
-    using namespace detail;
+    using namespace graph::detail;
 
-    std::vector< std::vector< std::pair< std::string, FastGraphOp > > > chains;
-    bool                                                                useIds = true;
-
-    for (const auto& chainStr: split(remove_newline(desc), ";")) {
-      if (trim_copy(chainStr).empty()) { continue; }
-
-      auto tokens = fastGraphTokenize(chainStr);
-      for (const auto& [token, op]: tokens) {
-        if (token.empty()) {
+    const auto parsed = fastGraphParseChains(
+        desc,
+        fastGraphTokenize,
+        [](const std::pair< std::string, FastGraphOp >& token) -> const std::string& {
+          return token.first;
+        },
+        [&] {
           GUM_ERROR(InvalidArc,
                     "fastGraph: malformed description '" << desc
                                                          << "' (operator without a node token)")
-        }
-        if (!fastGraphIsNodeIdToken(token)) { useIds = false; }
-      }
-      chains.push_back(std::move(tokens));
-    }
+        });
 
     GRAPH_TYPE g;
 
-    auto resolve = [&](const std::string& token) { return fastGraphBuildNode(g, token, useIds); };
-    auto addArc  = [&](NodeId tail, NodeId head, const std::string& token) {
+    auto resolve
+        = [&](const std::string& token) { return fastGraphBuildNode(g, token, parsed.useIds); };
+    auto addArc = [&](NodeId tail, NodeId head, const std::string& token) {
       if constexpr (GUM_DiGraphable< GRAPH_TYPE >) {
         g.addArc(tail, head);
       } else {
@@ -250,7 +200,7 @@ namespace gum {
       }
     };
 
-    for (const auto& tokens: chains) {
+    for (const auto& tokens: parsed.chains) {
       fastGraphWalkTokens(tokens, desc, resolve, addArc, addEdge);
     }
 

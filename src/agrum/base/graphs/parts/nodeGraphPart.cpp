@@ -45,6 +45,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
+#include <limits>
+
 #include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
@@ -211,6 +213,8 @@ namespace gum {
   }
 
   void NodeGraphPart::addNodeWithId(const NodeId id) {
+    if (id == std::numeric_limits< NodeId >::max())
+      GUM_ERROR(OutOfBounds, "Id " << id << " is reserved: the bound of the ids would overflow")
     if (id >= _boundVal_) {
       if (id > _boundVal_) {   // we have to add holes
         if (!_holes_) _holes_ = new NodeSet(_holes_size_, _holes_resize_policy_);

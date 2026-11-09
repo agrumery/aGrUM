@@ -374,6 +374,10 @@ namespace gum {
     /** @warning This method should be carefully used. Please prefer
      * @ref populateNodes or @ref populateNodesFromProperty when possible
      * @throws DuplicateElement exception if the id already exists
+     * @throws OutOfBounds if id is the largest NodeId (the bound of the ids, id + 1, would
+     * overflow)
+     * @warning the ids lower than id which are not nodes are stored (as holes): O(id) time and
+     * memory for the first node added with a large id
      */
     virtual void addNodeWithId(const NodeId id);
 

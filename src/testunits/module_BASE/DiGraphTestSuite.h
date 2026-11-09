@@ -524,6 +524,14 @@ namespace gum_tests {
     cyclic.addArc(1, 2);
     cyclic.addArc(2, 0);
     CHECK_THROWS_AS(cyclic.topologicalOrder(), gum::InvalidDirectedCycle);
+
+    // a cycle separated from the nodes without parent (0->1 and 2->3->2): it must throw too
+    gum::DiGraph separated;
+    separated.addNodes(4);
+    separated.addArc(0, 1);
+    separated.addArc(2, 3);
+    separated.addArc(3, 2);
+    CHECK_THROWS_AS(separated.topologicalOrder(), gum::InvalidDirectedCycle);
   }
 
   GUM_TEST(ToDotWithNames) {

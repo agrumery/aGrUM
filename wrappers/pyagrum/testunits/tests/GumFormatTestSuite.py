@@ -40,6 +40,7 @@
 
 import os
 import pickle
+import tempfile
 import unittest
 
 import pyagrum as gum
@@ -344,6 +345,39 @@ class TestGumFormat(pyAgrumTestCase):
       gum.loadMRF(filename)
     self.assertIn("expected 'MRF'", str(ctx.exception))
     self.assertIn("got 'BN'", str(ctx.exception))
+
+  # ── format given by the extension ────────────────────────────────────────
+
+  def testSaveGUMFormatGivenByTheExtension(self):
+    models = (
+      (gum.fastBN("A->B->C"), gum.loadBN),
+      (gum.fastID("A->C->*D->$U;A->$U"), gum.loadID),
+      (gum.fastMRF("A--B--C;D--A"), gum.loadMRF),
+    )
+    for model, load in models:
+      for ext in (".jgum", ".bgum"):
+        filename = self.agrumSrcDir("test_format" + ext)
+        model.saveGUM(filename)  # no binary: the format of the extension
+        self.assertEqual(load(filename), model)
+        other = type(model)()
+        other.loadGUM(filename)  # no binary: the format of the extension
+        self.assertEqual(other, model)
+      # binary for another extension (not ignored by git: written in a temporary directory)
+      with tempfile.TemporaryDirectory() as tmp:
+        filename = os.path.join(tmp, "test_format.gum")
+        model.saveGUM(filename)
+        with open(filename, "rb") as f:
+          self.assertNotEqual(f.read(1), b"{")
+        other = type(model)()
+        other.loadGUM(filename)
+        self.assertEqual(other, model)
+      # an explicit format which contradicts the extension
+      with self.assertRaises(gum.InvalidArgument):
+        model.saveGUM(self.agrumSrcDir("test_format.jgum"), binary=True)
+      with self.assertRaises(gum.InvalidArgument):
+        model.saveGUM(self.agrumSrcDir("test_format.bgum"), binary=False)
+      with self.assertRaises(gum.InvalidArgument):
+        type(model)().loadGUM(self.agrumSrcDir("test_format.bgum"), binary=False)
 
 
 ts = unittest.TestSuite()

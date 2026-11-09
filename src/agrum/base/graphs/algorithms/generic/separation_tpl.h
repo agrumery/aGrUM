@@ -47,6 +47,7 @@ namespace gum::graph {
 
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
+    if (Z.contains(Y)) return true;   // an observed node is separated (as an observed X)
     NodeSet qX;
     qX.insert(X);
     return !graph::dConnected(g, qX, Z).exists(Y);
@@ -55,7 +56,8 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
     if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
-    return (graph::dConnected(g, X, Z) * Y).empty();
+    // the observed nodes of Y are separated (the observed nodes of X start no path)
+    return (graph::dConnected(g, X, Z) * (Y - Z)).empty();
   }
 
   template < GUM_MixedGraphable G >

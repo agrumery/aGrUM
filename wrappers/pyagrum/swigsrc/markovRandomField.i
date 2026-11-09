@@ -98,10 +98,10 @@ IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
 %rename(_saveGUMstring) gum::MarkovRandomField::saveGUMstring;
 
 %extend gum::MarkovRandomField {
-  void loadGUM(std::string name, bool binary=false) {
+  void loadGUM(std::string name, PyObject* binary=nullptr) {
     std::stringstream stream;
     try {
-      gum::GumMRFReader<GUM_SCALAR> reader(self,name,binary);
+      gum::GumMRFReader<GUM_SCALAR> reader(self,name,PyAgrumHelper::isBinaryGUMFile(name,binary));
       auto nbErr=reader.proceed();
       reader.showElegantErrorsAndWarnings(stream);
       if (nbErr>0) {
@@ -111,8 +111,8 @@ IMPROVE_MARKOVNET_API(gum::MarkovRandomField);
     } catch (gum::IOError& e) { throw(e); }
   }
 
-  void saveGUM(std::string name, bool binary=false, int indent=gum::defaultJgumIndent()) {
-    gum::GumMRFWriter<GUM_SCALAR> writer(binary,indent);
+  void saveGUM(std::string name, PyObject* binary=nullptr, int indent=gum::defaultJgumIndent()) {
+    gum::GumMRFWriter<GUM_SCALAR> writer(PyAgrumHelper::isBinaryGUMFile(name,binary),indent);
     writer.write(name,*self);
   }
 
@@ -175,7 +175,7 @@ def __setstate__(self,state):
     self.loadGUMstring(state)
     return self
 
-def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
   """
   Save the Markov random field as a .jgum (text) or .bgum (binary) file.
 
@@ -183,12 +183,18 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
   ----------
   name : str
     the name of the file
-  binary : bool
-    if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+  binary : bool, optional
+    True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+    default, the format is given by the extension of name (binary for an unknown extension).
   indent : int, optional
-    JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+    JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most
     compact output, N>=0 to pretty-print with N spaces. Defaults to
     ``pyagrum.config["core","jgumIndent"]``.
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
   """
   if indent is None:
     self._saveGUM(name, binary)

@@ -47,13 +47,57 @@
 #ifndef GUM_FAST_GRAPH_H
 #define GUM_FAST_GRAPH_H
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/graphs/mixedGraph.h>
 
-#include <string_view>
-
 namespace gum {
+
+#ifndef SWIG
+  namespace graph::detail {
+
+    /// which operator (if any) precedes a node token in a fastGraph chain
+    enum class FastGraphOp : std::uint8_t { None, Arc, RevArc, Edge };
+
+    /**
+     * @brief Scans one ";"-delimited chain, splitting it into node tokens
+     * while remembering, for each token, whether it was preceded by "->"
+     * (Arc), "<-" (RevArc) or "-" (Edge). A plain split() cannot preserve
+     * this, since it only handles one delimiter at a time.
+     *
+     * "-" (not "--") is used for edges: MRF's own fast syntax already uses
+     * "--" to list the variables of a single factor (a clique), which is a
+     * different construct from a chain of pairwise edges. Reusing "--" here
+     * would silently give the same token two incompatible meanings.
+     */
+    GUM_SHARED_PUBLIC std::vector< std::pair< std::string, FastGraphOp > >
+                      fastGraphTokenize(std::string_view chain);
+
+    /**
+     * @brief Finds the first '-' at bracket-depth 0, starting at @p from, skipping any
+     * '['...']' or '{'...'}' span.
+     *
+     * Node tokens built downstream by BayesNet/InfluenceDiagram's fastPrototype() may embed a
+     * fastVariable domain descriptor, e.g. "A[-3,3]" (negative range) or "B{-1.5:6.3:5}"
+     * (negative ticks): the '-' there is part of a number, not a topology operator, so it must
+     * not be mistaken for one.
+     *
+     * @return the position of the '-', std::string_view::npos if none.
+     */
+    std::size_t fastGraphFindDash(std::string_view chain, std::size_t from);
+
+    /// true if token must be read as a NodeId (non-negative integer)
+    GUM_SHARED_PUBLIC bool fastGraphIsNodeIdToken(const std::string& token);
+
+  }   // namespace graph::detail
+#endif   // SWIG
 
   /**
    * @brief Builds a GRAPH_TYPE from a DOT-like textual description.

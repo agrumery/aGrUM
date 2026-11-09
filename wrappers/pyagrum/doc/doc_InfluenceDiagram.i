@@ -549,8 +549,8 @@ Notes
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=pyagrum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
+import pyagrum as gum
+bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -573,11 +573,14 @@ Parameters
 ----------
 name : str
     the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-binary : bool
-    if True, read as bgum (msgpack) regardless of extension (default: False)
+binary : bool, optional
+    True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is
+    given by the extension (binary for an unknown extension).
 
 Raises
 ------
+pyagrum.InvalidArgument
+    If binary contradicts the extension (``.jgum`` or ``.bgum``)
 pyagrum.GumIOError
     If file not found
 pyagrum.FatalError

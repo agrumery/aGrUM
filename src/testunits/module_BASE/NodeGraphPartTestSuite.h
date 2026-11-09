@@ -41,6 +41,8 @@
 #pragma once
 
 
+#include <limits>
+
 #include <agrum/base/graphs/parts/nodeGraphPart.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -495,4 +497,14 @@ namespace gum_tests {
     CHECK_EQ(ngp5.nameFromId(x), "XX");
     CHECK(!ngp5.idFromName("tmp").has_value());
   }
+
+  GUM_TEST(AddNodeWithTheLargestId) {
+    // id + 1 would overflow the bound of the ids
+    gum::NodeGraphPart ngp;
+    CHECK_THROWS_AS(ngp.addNodeWithId(std::numeric_limits< gum::NodeId >::max()),
+                    gum::OutOfBounds&);
+    CHECK(ngp.empty());
+    CHECK_EQ(ngp.bound(), gum::NodeId(0));
+  }
+
 }   // namespace gum_tests

@@ -1,5 +1,134 @@
 # aGrUM Changelog
 
+## Changelog for next version
+
+- pyAgrum
+
+    - `initRandom` now reaches the draws of all the modules (`KTBNGenerator`, ...: each module had its own generator,
+      with a fixed seed). A new `pyagrum.ini` key `core.randomSeed` gives the seed at start (see aGrUM below) and
+      `randomGeneratorSeed()` returns the seed in use. `import pyagrum` no longer calls `initRandom(0)`.
+    - Configuration of pyAgrum reorganized in lowerCamelCase, with sections by subject; the former names are
+      deprecated after 3.3.2 and still work: `notebook.tensor_*` → `tensor.*` (`tensor_visible_digits` →
+      `tensor.visibleDigits`...), `notebook.histogram_*` → `histogram.*`, `notebook.graphdiff_*` → `graphdiff.*`, the
+      other keys of `notebook`, `factorgraph`, `influenceDiagram`, `credalnet`, `causal`, `ROC`, `ctbn` and `bnmixture`
+      in lowerCamelCase (`notebook.graph_format` → `notebook.graphFormat`, `ctbn.graph_size` → `ctbn.graphSize`...).
+      `credalnet.histo_max_color`, `bnmixture.line_size` and `ctbn.show_latent_names`, `ctbn.latent_bgcolor`,
+      `ctbn.latent_fgcolor`, no longer used, are deprecated after 3.3.2. The arcs of the drawings of `bnmixture` use
+      `bnmixture.arcCmap` (it was read from `notebook.arcCmap`).
+    - `showROC_PR(bgcolor=...)` now colors the background of the figure (it was ignored).
+    - The graphs have `saveGUM`/`saveGUMstring` and are pickled through the GUM format: the isolated nodes, the names
+      and the marks were lost, and `CPDAG`, `MPDAG`, `MAG`, `EssentialGraph` could not be pickled. New
+      `graphFromGUMString`, `loadGraph` and `saveGraph` (format given by the extension, as `loadBN`/`saveBN`: `.jgum`,
+      `.bgum` or `.pkl`, see the new `availableGraphExts`). Reading a graph pickled by pyAgrum 3.3.2 or before is
+      deprecated after 3.3.2.
+    - `MarkedGraph`, `fastMarkedGraph` and `fastPAG`; the marks of a `PAG` are `pyagrum.EdgeMark` values (an `IntEnum`:
+      the constants `EdgeMark_Circle`, `EdgeMark_Tail` and `EdgeMark_Arrowhead` still work).
+    - `saveGUM`/`loadGUM` of `BayesNet`, `InfluenceDiagram`, `MarkovRandomField` and of the graphs: by default
+      (`binary=None`), the format is given by the extension, `.jgum` for the text format, `.bgum` or any other
+      extension for the binary one; an explicit `binary` contradicting `.jgum`/`.bgum` raises `InvalidArgument`.
+
+- aGrUM
+
+    - Behaviour change: the random generator is now initialized at start from the new key `core.randomSeed` (default
+      0, the clock): the draws of a program change at each run, unless it calls `initRandom` or sets this key in
+      `agrum.ini`. The key is read once; changing it later only queues a notice saying to use `initRandom()`. There
+      is now one generator for all the shared modules, and `randomGeneratorSeed()` returns the seed in use. The CMake
+      variable `GUM_RANDOMSEED` and the option `act --fixed_seed`, which had no effect on the draws, are removed. The
+      test runs display their seed.
+    - New `MarkedGraph` (edges with a mark at each end: tail, arrowhead or circle; adding an existing edge updates its
+      marks; directed view `parents`/`children`/`spouses`/`undirectedNeighbours`; `skeleton()`) and
+      `fastMarkedGraph` (an edge described twice with different marks raises `InvalidEdge`); `PAG` derives from it
+      instead of `UndiGraph` (a `PAG` is no longer an `UndiGraph`). New keys `dot.bidirectedEdgeColor` and
+      `dot.circleMarkEdgeColor` for their DOT representation.
+    - New immutable class `MAG` (maximal ancestral graph): `fromDAG` with latent and selected nodes (Richardson and
+      Spirtes 2002), `fromPAG` (representative MAG, Zhang 2008), checked `fromMarkedGraph`, `mSeparation`,
+      `neighbours` (undirected edges, as for the other graphs) and `adjacents` (any edge); new
+      `graph::ancestors`, `graph::anteriors`, `graph::isAncestral`, `graph::isMaximal`, `graph::circleComponent`,
+      `graph::representativeGraph` (Zhang 2008, Theorem 2) and `graph::mSeparation` for
+      marked graphs. Also in pyAgrum.
+    - FCI: `learnPDAG`/`learnDAG` go through the representative MAG of the learned PAG (Zhang 2008, Theorem 2)
+      instead of applying the Meek rules to the PAG seen as a mixed graph; `PAG::toMixedGraph` is deprecated after
+      3.3.2 (use `MAG::fromPAG`). If the learned PAG is not valid, the former approximation is used, or
+      `InvalidArgument` is raised with the new key `learning.fciErrorOnInvalidPAG` (or `setFCIErrorOnInvalidPAG`).
+    - Configuration reorganized (lowerCamelCase keys, sections by subject); the former names are deprecated after
+      3.3.2 and still work: the look of the graphs moves from `notebook` to `dot` (`notebook.arcColor` →
+      `dot.arcColor`...), the junction trees to `junctionTree` (`notebook.junctionTreeGraphSize` →
+      `junctionTree.graphSize`...), `notebook.markovRandomFieldView` → `markovRandomField.view`. In the ini files,
+      `### deprecated <type>` declares a deprecated key without replacement (still read, no longer used).
+    - The graphs (but `CliqueGraph`) in the native GUM format (jgum/bgum): `graphToGUMString`, `saveGraphGUM`,
+      `graphFromGUMString<G>`, `loadGraphGUM<G>`, `graphGUMType` (class, nodes with names, arcs, edges, marks).
+      The format of a file is given by its extension unless `binary` is given (binary for an extension other than
+      `.jgum`). On reading, the number of absent ids lower than the largest one is at most max(number of nodes, 65536)
+      (a graph stores them: `IOError` otherwise); `NodeGraphPart::addNodeWithId` rejects the largest `NodeId`.
+    - Bug fix: `topologicalOrder` (`DiGraph`, `MixedGraph` and their subclasses) raises `InvalidDirectedCycle` for a
+      cycle separated from the nodes without parent (in release mode, it returned an incomplete order).
+    - `PDAG` follows the literature: only directed cycles and double connections (arc and edge on a same pair) are
+      forbidden. New `ChainGraph` (PDAG without partially directed cycle) with `moralGraph`,
+      `moralizedAncestralGraph` and `cSeparation` (LWF); these methods of `PDAG` are deprecated after 3.3.2.
+      So is `PDAG::hasMixedReallyOrientedPath` (with a partially directed cycle, it finds a walk, not always a
+      path): use `ChainGraph::hasMixedReallyOrientedPath`, exact on a chain graph.
+      New `graph::hasDirectedCycle` and `graph::hasPartiallyDirectedCycle`.
+    - New graph algorithms: `graph::lexBFS`, `graph::maximumCardinalitySearch`, `graph::isPerfectEliminationOrdering`,
+      `graph::isChordal`, `graph::degeneracyOrdering`, `graph::consistentExtension` (extension of a PDAG,
+      Wienöbst et al. 2021) and `graph::cpdag` (CPDAG of a DAG, Chickering 1995).
+    - New immutable graph classes `CPDAG` (Markov equivalence class of DAGs) and `MPDAG` (CPDAG with background
+      knowledge), built from a DAG, by Meek closure or by checked conversion, with `dSeparation` (d-separation of the
+      represented DAGs, computed on a consistent extension kept from the construction), `contains` and
+      `consistentExtension`; also in pyAgrum. `CPDAG`, `MPDAG` and `MAG` share a read-only base (`ImmutableGraph`,
+      `ImmutableMixedGraph`) with, beyond the accessors of their graph, `hasName`, `empty`, `connectedComponents`
+      and `skeleton` (and, in pyAgrum, `connectedComponentsList`, `connectedComponentsCount`, `adjacencyMatrix`).
+    - New `graph::meekClosure` (closure of an extendable PDAG under the Meek rules, Wienöbst et al. 2021, in O(dm)),
+      used by `MeekRules` whenever its input is an extendable PDAG; the former propagation remains for the other inputs.
+    - New `graph::orientAsDAG`: orientation of a PDAG into a DAG looking for small CPTs (a consistent extension if the
+      PDAG is extendable), with a minimal total size of the CPTs for a CPDAG (Clique-Picking recursion of Wienöbst et
+      al. 2021) for its undirected components of at most `graph.orientAsDAGExactMaxSize` nodes (new configuration key,
+      100 by default), a greedy heuristic otherwise. `MeekRules::propagateToDAG` and the constraint-based learners
+      (MIIC, PC, FCI) use it with the domain sizes of the variables: the orientation of the reversible arcs of a learned
+      BN may change.
+    - `EssentialGraph` stores the names of the nodes and no longer depends on the model it was built from (a copy of
+      a learned essential graph kept the model's one instead of the learned PDAG); it is built by `graph::cpdag` in
+      linear time, can be built from a named `PDAG`, and gives its `cpdag()`. `BNLearner::learnEssentialGraph` is
+      written in C++ (in pyAgrum, the errors of the learning are no longer hidden). `EssentialGraph::idFromName`
+      returns `std::optional` (`None` in pyAgrum) instead of raising `NotFound`, as for the other graphs.
+    - `EssentialGraph` is now always a CPDAG, and a subclass of `CPDAG` (all its methods, drawn with the clusters of
+      its chain components): built from a `PDAG` (or read in the GUM format), the PDAG is checked to be a CPDAG
+      (`InvalidArgument`, `IOError`); it can also be built from a `CPDAG`. `BNLearner::learnEssentialGraph` gives the
+      CPDAG of the learned DAG whatever the algorithm (with MIIC, PC or FCI, it gave the learned PDAG, which may not
+      be a CPDAG: this one is still given by `learnPDAG`).
+    - Same look for `PDAG`, `ChainGraph`, `CPDAG`, `MPDAG` and `EssentialGraph` in DOT: clusters for the chain
+      components (of a `ChainGraph` and a `CPDAG`), compelled arcs colored; new keys `dot.chainComponentBgColor` and
+      `dot.compelledArcColor` (formerly hard-coded); `CPDAG.toDot` and `MPDAG.toDot` accept `DotOptions`.
+
+- Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
+
+    - `MeekRules::propagateToDAG` (used by PC to learn a DAG) could create an unshielded collider absent from the
+      CPDAG, hence a DAG outside the learned Markov equivalence class; it is now a consistent extension (#207).
+    - `graph::dSeparated` (hence `dSeparation` of `DAG`, `CPDAG`, `MPDAG` and of the models) and
+      `graph::mSeparation`: a node of Y which belongs to Z is separated from any node, as a node of X in Z already
+      was (it was reported as not separated, so that exchanging X and Y could change the answer).
+    - The constraint-based algorithms (PC, FCI, MIIC) ignored the maximum indegree outside the orientation of the
+      v-structures: `learnDAG`/`learnBN` now raise `OperationNotAllowed` when the learned DAG exceeds it (their
+      independence tests never remove an edge to satisfy it), or return the DAG (with a warning in pyAgrum) with the
+      new key `learning.errorOnExceededMaxIndegree` set to `False` (or `setErrorOnExceededMaxIndegree`);
+      `maxIndegreeExceeded()` tells whether the last learned DAG exceeds it (#208).
+    - `BNLearner::setPCAlpha`, `BNLearner::setFCIAlpha` and `CIBasedLearning::setAlpha` raise `OutOfBounds` for a
+      significance threshold outside ]0,1[ (negative, 0, 1, greater than 1, infinite or NaN), which was silently
+      accepted and changed the learned graph (#209).
+    - A structural constraint compatible with an unshielded collider could hide it: PC, FCI and MIIC now consider an
+      arc into the middle node (e.g. a mandatory arc) as an arm of the collider, and PC and FCI test the pairs
+      forbidden in both directions during the skeleton phase (then remove them), so that they get a separating set
+      (#206).
+    - The chi2 and G2 independence tests (PC, FCI, `BNLearner::chi2` and `BNLearner::G2`) computed their degrees of
+      freedom from the number of skipped cells: they are now computed from the nonempty rows and columns of each
+      nonempty slice, the empty rows, columns and slices having no degree of freedom (#210).
+    - MIIC raised `DuplicateElement` when a mandatory arc had its reverse forbidden (by the user, the slice order or
+      a node without parent).
+    - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
+      `MRFinference2FactorGraphdot`, `LIMIDinference2dot`, the inferences of CTBN and BNMixture): `nodeColor` keyed by
+      the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory
+      and never removed (they now live in it and are removed with the graph); the colors of the factors of a factor
+      graph were not quoted (invalid DOT) and its edges were directed.
+
 ## Changelog for 3.3.2
 
 - pyAgrum

@@ -42,15 +42,40 @@
 #include "agrum/base/io/GumBinaryIO.h"
 
 #include <algorithm>
+#include <cctype>
 #include <climits>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/exceptions.h>
 
 namespace gum {
 
   int defaultJgumIndent() {
     const auto indent = Configuration::instance().typed< std::int64_t >("core", "jgumIndent");
     return static_cast< int >(std::clamp< std::int64_t >(indent, -1, INT_MAX));
+  }
+
+  std::optional< bool > binaryOfGUMExtension(std::string_view path) {
+    const auto hasExtension = [path](std::string_view ext) {
+      return path.size() >= ext.size()
+          && std::equal(ext.begin(), ext.end(), path.end() - ext.size(), [](char a, char b) {
+               return a == std::tolower(static_cast< unsigned char >(b));
+             });
+    };
+    if (hasExtension(".bgum")) return true;
+    if (hasExtension(".jgum")) return false;
+    return std::nullopt;
+  }
+
+  bool isBinaryGUMFile(std::string_view path, std::optional< bool > binary) {
+    const auto fromExtension = binaryOfGUMExtension(path);
+    if (!binary.has_value()) return fromExtension.value_or(true);
+    if (fromExtension.has_value() && *fromExtension != *binary)
+      GUM_ERROR(InvalidArgument,
+                "The file '" << path << "' can not be written or read in the "
+                             << (*binary ? "binary" : "text") << " GUM format: its extension is "
+                             << (*binary ? ".jgum" : ".bgum"))
+    return *binary;
   }
 
 }   // namespace gum

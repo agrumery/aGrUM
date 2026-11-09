@@ -42,12 +42,14 @@
 
 
 // floating point env
+#include <algorithm>
 #include <cfenv>
 #include <iostream>
 #include <string>
 #include <vector>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
 #include <agrum/BN/learning/BNLearner.h>
@@ -1838,18 +1840,22 @@ namespace gum_tests {
     learner.useMIIC();
     learner.useNMLCorrection();
 
-    auto bn            = learner.learnBN();
-    auto expected_arcs = std::vector< std::pair< std::string, std::string > >(
-        {{"coupon", "loyalty"},
-         {"coupon", "recent visit"},
-         {"loyalty", "renewal"},
-         {"loyalty", "recent visit"},
-         {"corporate customer", "loyalty"},
-         {"corporate customer", "yearly consumption"},
-         {"yearly consumption", "loyalty"},
-         {"yearly consumption", "coupon"}});
+    auto bn = learner.learnBN();
+    auto expected_arcs
+        = std::vector< std::pair< std::string, std::string > >({{"coupon", "loyalty"},
+                                                                {"coupon", "recent visit"},
+                                                                {"loyalty", "renewal"},
+                                                                {"loyalty", "recent visit"},
+                                                                {"corporate customer", "loyalty"},
+                                                                {"yearly consumption", "loyalty"}});
     for (const auto& [tail, head]: expected_arcs) {
       CHECK(bn.existsArc(tail, head));
+    }
+    // reversible: their orientation depends on the sizes of the CPTs
+    auto expected_edges = std::vector< std::pair< std::string, std::string > >(
+        {{"corporate customer", "yearly consumption"}, {"yearly consumption", "coupon"}});
+    for (const auto& [x, y]: expected_edges) {
+      CHECK((bn.existsArc(x, y) || bn.existsArc(y, x)));
     }
   }
 
@@ -2203,6 +2209,28 @@ namespace gum_tests {
     _test_dirichlet(gum::BayesNet< double >::fastPrototype("A<-B->C->D", 3));
   }
 
+  GUM_TEST(LearnEssentialGraph) {
+    {   // constraint-based: the learned PDAG
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+      learner.useMIIC();
+      const auto eg   = learner.learnEssentialGraph();
+      const auto pdag = learner.learnPDAG();
+      CHECK(eg.arcs() == pdag.arcs());
+      CHECK(eg.edges() == pdag.edges());
+      CHECK_EQ(eg.nameFromId(learner.idFromName("smoking")), "smoking");
+    }
+    {   // score-based: the CPDAG of the learned DAG
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+      learner.useGreedyHillClimbing();
+      const auto eg = learner.learnEssentialGraph();
+      const auto cp = gum::graph::cpdag(learner.learnDAG());
+      CHECK(eg.arcs() == cp.arcs());
+      CHECK(eg.edges() == cp.edges());
+      CHECK(eg.cpdag().contains(learner.learnDAG()));
+      CHECK_EQ(eg.idFromName("bronchitis"), learner.idFromName("bronchitis"));
+    }
+  }
+
   GUM_TEST(NoCycleTest24) {
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/24.csv"));
     // used to raise a undirected cycle exception
@@ -2219,7 +2247,9 @@ namespace gum_tests {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
       auto                               bn = learner.learnBN();
       CHECK_LT(static_cast< gum::Size >(0), bn.parents("smoking").size());
-      CHECK_LT(static_cast< gum::Size >(0), bn.children("visit_to_Asia").size());
+      // visit_to_Asia-tuberculosis is reversible: its orientation depends on the sizes of the CPTs
+      CHECK_LT(static_cast< gum::Size >(0),
+               bn.parents("visit_to_Asia").size() + bn.children("visit_to_Asia").size());
     }
     {
       gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
@@ -2344,4 +2374,107 @@ namespace gum_tests {
     const auto bn4 = learner.learnBN();
     CHECK_EQ(bn4.size(), static_cast< gum::Size >(37));
   }
+
+  // non-regression (#208): the constraint-based algorithms do not ignore the maximum indegree
+  GUM_TEST(ConstraintBasedLearnDAGChecksTheMaxIndegree) {
+    using Learner = gum::learning::BNLearner< double >;
+    for (const auto& select: {+[](Learner& l) { l.usePC(); },
+                              +[](Learner& l) { l.useFCI(); },
+                              +[](Learner& l) { l.useMIIC(); }}) {
+      Learner learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+      select(learner);
+      const auto dag        = learner.learnDAG();
+      gum::Size  maxParents = 0;
+      for (const auto node: dag.nodes())
+        maxParents = std::max(maxParents, dag.parents(node).size());
+      CHECK_LT(0u, maxParents);
+
+      // a bound that the learned DAG satisfies changes nothing
+      learner.setMaxIndegree(dag.size());
+      CHECK_EQ(learner.learnDAG().arcs(), dag.arcs());
+
+      CHECK(!learner.maxIndegreeExceeded());
+
+      // no edge can be kept with no parent at all: the bound cannot be satisfied
+      learner.setMaxIndegree(0);
+      CHECK_EQ(learner.errorOnExceededMaxIndegree(),
+               gum::config().typed< bool >("learning", "errorOnExceededMaxIndegree"));
+      learner.setErrorOnExceededMaxIndegree(true);
+      CHECK_THROWS_AS(learner.learnDAG(), gum::OperationNotAllowed);
+      CHECK_THROWS_AS(learner.learnBN(), gum::OperationNotAllowed);
+      GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnPDAG());
+
+      // ... or the DAG is returned, the excess being recorded: the edges are kept (the bound only
+      // prevents some orientations of v-structures)
+      learner.setErrorOnExceededMaxIndegree(false);
+      const auto exceeding = learner.learnDAG();
+      CHECK(learner.maxIndegreeExceeded());
+      CHECK_EQ(exceeding.sizeArcs(), dag.sizeArcs());
+      for (const auto& arc: dag.arcs())
+        CHECK((exceeding.existsArc(arc.tail(), arc.head())
+               || exceeding.existsArc(arc.head(), arc.tail())));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnBN());
+      CHECK(learner.maxIndegreeExceeded());
+
+      // the option is kept by a copy of the learner
+      Learner copy(learner);
+      CHECK(!copy.errorOnExceededMaxIndegree());
+    }
+  }
+
+  // non-regression (#206): a structural constraint compatible with a collider does not hide it
+  GUM_TEST(ConstraintBasedLearningKeepsCollidersCompatibleWithConstraints) {
+    using Learner       = gum::learning::BNLearner< double >;
+    const std::string L = "lung_cancer";
+    const std::string T = "tuberculosis";
+    const std::string E = "tuberculos_or_cancer";
+
+    for (const auto& select: {+[](Learner& l) { l.usePC(); },
+                              +[](Learner& l) { l.useFCI(); },
+                              +[](Learner& l) { l.useMIIC(); }}) {
+      for (const auto& constrain:
+           {+[](Learner&) {},
+            +[](Learner& l) { l.addMandatoryArc("tuberculosis", "tuberculos_or_cancer"); },
+            +[](Learner& l) {
+              l.addForbiddenArc("lung_cancer", "tuberculosis");
+              l.addForbiddenArc("tuberculosis", "lung_cancer");
+            }}) {
+        Learner learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+        select(learner);
+        constrain(learner);
+        const auto pdag = learner.learnPDAG();
+        CHECK(pdag.existsArc(learner.idFromName(L), learner.idFromName(E)));
+        CHECK(pdag.existsArc(learner.idFromName(T), learner.idFromName(E)));
+      }
+    }
+  }
+
+  GUM_TEST(CopiesKeepTheConstraintBasedState) {
+    using Learner = gum::learning::BNLearner< double >;
+    // copyState: the parameters of FCI
+    Learner learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+    learner.useFCI();
+    learner.setFCIErrorOnInvalidPAG(!learner.fciErrorOnInvalidPAG());
+    Learner other(GET_RESSOURCES_PATH("csv/asia3.csv"));
+    other.copyState(learner);
+    CHECK_EQ(other.fciErrorOnInvalidPAG(), learner.fciErrorOnInvalidPAG());
+
+    // a copy keeps whether the last learned DAG exceeded the max indegree, for each algorithm
+    for (const auto& select: {+[](Learner& l) { l.usePC(); },
+                              +[](Learner& l) { l.useFCI(); },
+                              +[](Learner& l) { l.useMIIC(); }}) {
+      Learner exceeding(GET_RESSOURCES_PATH("csv/asia3.csv"));
+      select(exceeding);
+      exceeding.setMaxIndegree(0);
+      exceeding.setErrorOnExceededMaxIndegree(false);
+      exceeding.learnDAG();
+      REQUIRE(exceeding.maxIndegreeExceeded());
+      const Learner copy(exceeding);
+      CHECK(copy.maxIndegreeExceeded());
+      Learner assigned(GET_RESSOURCES_PATH("csv/asia3.csv"));
+      assigned = exceeding;
+      CHECK(assigned.maxIndegreeExceeded());
+    }
+  }
+
 } /* namespace gum_tests */

@@ -48,10 +48,14 @@
 #ifndef GUM_DOT_ELEMENTS_H
 #define GUM_DOT_ELEMENTS_H
 
+#include <utility>
+#include <vector>
+
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/dot/dotOptions.h>
 #include <agrum/base/core/dot/dotStyle.h>
+#include <agrum/base/graphs/graphElements.h>
 
 #include <string_view>
 
@@ -107,6 +111,14 @@ namespace gum::dot {
    */
   GUM_SHARED_PUBLIC void
       addDefaultAttribute(DotAttributes& attributes, std::string_view key, std::string_view value);
+
+  /**
+   * @brief The options with the color of the compelled arcs : each arc of `compelled` without a
+   * color in `options` gets the color of the configuration key `dot.compelledArcColor` (the color
+   * given by the caller of the `toDot()` wins).
+   */
+  GUM_SHARED_PUBLIC DotOptions withCompelledArcColor(const DotOptions& options,
+                                                     const ArcSet&     compelled);
 
 }   // namespace gum::dot
 

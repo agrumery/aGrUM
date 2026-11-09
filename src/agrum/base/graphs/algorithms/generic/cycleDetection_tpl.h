@@ -80,8 +80,77 @@ namespace gum::graph {
       }
     }
 
-    GUM_ASSERT(result.size() == g.size());
+    // the nodes of a cycle are never reached, even when there are nodes without parent elsewhere
+    if (result.size() != g.size())
+      GUM_ERROR(InvalidDirectedCycle, "cycles prevent the creation of a topological ordering.")
     return result;
+  }
+
+  template < GUM_DiGraphable G >
+  bool hasDirectedCycle(const G& g) {
+    NodeProperty< Size >  indegree;
+    std::vector< NodeId > border;
+    for (const auto node: g.nodes()) {
+      const Size deg = g.parents(node).size();
+      indegree.insert(node, deg);
+      if (deg == 0) border.push_back(node);
+    }
+
+    Size nbRemoved = 0;
+    while (!border.empty()) {
+      const NodeId node = border.back();
+      border.pop_back();
+      ++nbRemoved;
+      for (const auto child: g.children(node))
+        if (--indegree[child] == 0) border.push_back(child);
+    }
+    return nbRemoved != g.size();
+  }
+
+  template < GUM_MixedGraphable G >
+  bool hasPartiallyDirectedCycle(const G& g) {
+    // label each node by its chain component (connected component of the undirected part)
+    NodeProperty< Size > component;
+    Size                 nbComponents = 0;
+    for (const auto node: g.nodes()) {
+      if (component.exists(node)) continue;
+      component.insert(node, nbComponents);
+      std::vector< NodeId > toVisit{node};
+      while (!toVisit.empty()) {
+        const NodeId current = toVisit.back();
+        toVisit.pop_back();
+        for (const auto neighbour: g.neighbours(current))
+          if (!component.exists(neighbour)) {
+            component.insert(neighbour, nbComponents);
+            toVisit.push_back(neighbour);
+          }
+      }
+      ++nbComponents;
+    }
+
+    // Kahn's algorithm on the graph of the components (an arc inside a component is a cycle)
+    std::vector< Size >                indegree(nbComponents, 0);
+    std::vector< std::vector< Size > > successors(nbComponents);
+    for (const auto node: g.nodes())
+      for (const auto child: g.children(node)) {
+        const Size from = component[node], to = component[child];
+        if (from == to) return true;
+        successors[from].push_back(to);
+        ++indegree[to];
+      }
+
+    std::vector< Size > border;
+    for (Size c = 0; c < nbComponents; ++c)
+      if (indegree[c] == 0) border.push_back(c);
+    Size nbRemoved = 0;
+    while (!border.empty()) {
+      const Size c = border.back();
+      border.pop_back();
+      ++nbRemoved;
+      for (const auto next: successors[c])
+        if (--indegree[next] == 0) border.push_back(next);
+    }
+    return nbRemoved != nbComponents;
   }
 
   template < GUM_UndiGraphable G >

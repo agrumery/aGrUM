@@ -107,7 +107,7 @@ namespace gum {
     };
 
     for (const auto& chaine: split(remove_newline(dotlike), ";")) {
-      using namespace detail;
+      using namespace graph::detail;
       fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
     }
     bn.generateCPTs();

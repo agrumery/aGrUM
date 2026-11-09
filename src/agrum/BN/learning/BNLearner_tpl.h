@@ -656,6 +656,19 @@ namespace gum {
       dag2BN_ = learner.dag2BN_;
 
       setMaxIndegree(learner.constraintIndegree_.maxIndegree());
+      setErrorOnExceededMaxIndegree(learner.errorOnExceededMaxIndegree_);
+
+      // the parameters of PC and FCI (already checked by the setters of learner)
+      indepTestTypePC_      = learner.indepTestTypePC_;
+      alphaPc_              = learner.alphaPc_;
+      stablePc_             = learner.stablePc_;
+      maxCondSetSizePc_     = learner.maxCondSetSizePc_;
+      sortedUCPc_           = learner.sortedUCPc_;
+      indepTestTypeFCI_     = learner.indepTestTypeFCI_;
+      alphaFci_             = learner.alphaFci_;
+      maxPathLengthFci_     = learner.maxPathLengthFci_;
+      exhaustiveSepSetFci_  = learner.exhaustiveSepSetFci_;
+      errorOnInvalidPAGFci_ = learner.errorOnInvalidPAGFci_;
       for (const auto src: learner.constraintNoParentNodes_.nodes()) {
         try {
           const auto dst = idFromName(learner.nameFromId(src));
@@ -1118,6 +1131,17 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setFCIErrorOnInvalidPAG(bool error) {
+      IBNLearner::setFCIErrorOnInvalidPAG(error);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    bool BNLearner< GUM_SCALAR >::fciErrorOnInvalidPAG() const {
+      return IBNLearner::fciErrorOnInvalidPAG();
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useChi2Test() {
       IBNLearner::useChi2Test();
       return *this;
@@ -1174,6 +1198,12 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setMaxIndegree(Size max_indegree) {
       IBNLearner::setMaxIndegree(max_indegree);
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::setErrorOnExceededMaxIndegree(bool error) {
+      IBNLearner::setErrorOnExceededMaxIndegree(error);
       return *this;
     }
 

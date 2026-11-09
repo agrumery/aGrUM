@@ -193,9 +193,21 @@
 %include <agrum/base/graphs/DAG.h>
 %include <agrum/base/graphs/mixedGraph.h>
 %include <agrum/base/graphs/PDAG.h>
-%include <agrum/base/graphs/fastGraph.h>
-
+%include <agrum/base/graphs/chainGraph.h>
+// the read-only bases of the immutable graphs (not meant to be used directly)
+%include <agrum/base/graphs/immutableGraph.h>
+%template ( _ImmutableGraphChainGraph ) gum::ImmutableGraph< gum::ChainGraph >;
+%template ( _ImmutableMixedGraphChainGraph ) gum::ImmutableMixedGraph< gum::ChainGraph >;
+%template ( _ImmutableGraphPDAG ) gum::ImmutableGraph< gum::PDAG >;
+%template ( _ImmutableMixedGraphPDAG ) gum::ImmutableMixedGraph< gum::PDAG >;
+%include <agrum/base/graphs/CPDAG.h>
+%include <agrum/base/graphs/MPDAG.h>
+%include <agrum/base/graphs/markedGraph.h>
 %include <agrum/base/graphs/PAG.h>
+%template ( _ImmutableGraphMarkedGraph ) gum::ImmutableGraph< gum::MarkedGraph >;
+%include <agrum/base/graphs/MAG.h>
+%include <agrum/base/graphs/fastGraph.h>
+%include <agrum/base/graphs/fastMarkedGraph.h>
 
 %include <agrum/base/graphs/cliqueGraph.h>
 %import <agrum/base/graphs/algorithms/triangulations/defaultTriangulation.h>
@@ -246,6 +258,9 @@
 %template ( fastMixedGraph) gum::fastGraph<gum::MixedGraph>;
 %template ( fastDAG) gum::fastGraph<gum::DAG>;
 %template ( fastPDAG) gum::fastGraph<gum::PDAG>;
+%template ( fastChainGraph) gum::fastGraph<gum::ChainGraph>;
+%template ( fastMarkedGraph) gum::fastMarkedGraph<gum::MarkedGraph>;
+%template ( fastPAG) gum::fastMarkedGraph<gum::PAG>;
 
 /* TEMPLATES FOR CLASSES */
 %template ( randomDistribution ) gum::randomDistribution<double>;

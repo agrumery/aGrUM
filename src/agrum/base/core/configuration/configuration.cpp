@@ -224,7 +224,9 @@ namespace gum {
       const auto cut  = spec.find_first_of("[]");
       const auto type = trim_copy(std::string_view(spec).substr(0, cut));
 
-      if (spec.rfind("deprecated", 0) == 0) {
+      // the word deprecated, followed by the end of the spec or a blank (not `deprecatedint`)
+      if (spec.rfind("deprecated", 0) == 0
+          && (spec.size() == 10 || std::isspace(static_cast< unsigned char >(spec[10])))) {
         const auto rest = trim_copy(std::string_view(spec).substr(10));
         if (rest.rfind("->", 0) == 0) {
           const auto target = trim_copy(std::string_view(rest).substr(2));
@@ -236,6 +238,11 @@ namespace gum {
             meta.targetKey     = toLower(target.substr(dot + 1));
             return true;
           }
+        } else if (!rest.empty() && rest.rfind("deprecated", 0) != 0) {
+          // deprecated without replacement: the key keeps its own type
+          if (!_parseMetaSpec_(rest, doc, meta, error)) return false;
+          meta.deprecated = true;
+          return true;
         }
       } else if (type == "int" || type == "float" || type == "bool" || type == "str") {
         meta.kind = type == "int"   ? Configuration::Kind::INT
@@ -271,7 +278,7 @@ namespace gum {
       error = "'" + spec
             + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, "
               "v1|v2|..., "
-              "deprecated -> section.key)";
+              "deprecated -> section.key, deprecated type)";
       return false;
     }
 
@@ -441,7 +448,7 @@ namespace gum {
                            0,
                            0)
         }
-        if (_items_[pos].meta.kind == Kind::DEPRECATED) {
+        if (_items_[pos].meta.kind == Kind::DEPRECATED || _items_[pos].meta.deprecated) {
           GUM_SYNTAX_ERROR("deprecated key '" << item.section << "." << item.key
                                               << "' redirects to deprecated key '"
                                               << item.meta.targetSection << "."
@@ -500,14 +507,18 @@ namespace gum {
   }
 
   std::size_t Configuration::_resolve_(std::size_t pos, std::vector< Notice >* sink) const {
-    const auto& item = _items_[pos];
-    if (item.meta.kind != Kind::DEPRECATED) return pos;
-    Notice notice{Notice::Kind::DEPRECATION,
-                  "'" + item.section + "." + item.key + "' is deprecated (" + item.meta.doc
-                      + "), use '" + item.meta.targetSection + "." + item.meta.targetKey
-                      + "' instead."};
+    const auto& item       = _items_[pos];
+    const bool  redirected = item.meta.kind == Kind::DEPRECATED;
+    if (!redirected && !item.meta.deprecated) return pos;
+    // the documentation of a deprecated key says since when: 'deprecated after x.y.z'
+    std::string message = "'" + item.section + "." + item.key + "' is "
+                        + (item.meta.doc.empty() ? std::string("deprecated") : item.meta.doc);
+    if (redirected)
+      message += ", use '" + item.meta.targetSection + "." + item.meta.targetKey + "' instead";
+    Notice notice{Notice::Kind::DEPRECATION, message + "."};
     if (sink != nullptr) sink->push_back(std::move(notice));
     else _queue_(notice.kind, std::move(notice.message));
+    if (!redirected) return pos;
     return _tryFind_(item.meta.targetSection, item.meta.targetKey);   // checked by _checkSchema_
   }
 
@@ -624,8 +635,11 @@ namespace gum {
     switch (m.kind) {
       case Kind::DEPRECATED :
         return "deprecated -> " + m.targetSection + "." + m.targetKey + " :: " + m.doc;
-      case Kind::ENUM : return m.joinedValues() + " :: " + m.doc;
-      default : return kindName(m.kind) + m.domain.text + " :: " + m.doc;
+      case Kind::ENUM :
+        return (m.deprecated ? "deprecated " : "") + m.joinedValues() + " :: " + m.doc;
+      default :
+        return (m.deprecated ? "deprecated " : "") + kindName(m.kind) + m.domain.text
+             + " :: " + m.doc;
     }
   }
 
@@ -815,7 +829,7 @@ namespace gum {
     // the keys of a section are contiguous in _items_ (a duplicate section is refused by _parse_)
     const std::string* current = nullptr;   // section of the last rendered key
     for (const auto& item: _items_) {
-      if (item.meta.kind == Kind::DEPRECATED || !keep(item)) continue;
+      if (item.meta.kind == Kind::DEPRECATED || item.meta.deprecated || !keep(item)) continue;
       if (current == nullptr || *current != item.section) {
         if (current != nullptr) res += '\n';
         res += "[" + item.section + "]";

@@ -54,6 +54,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/base/stattests/indepTestChi2.h>
 #include <agrum/base/stattests/indepTestG2.h>
 #include <agrum/base/stattests/pseudoCount.h>
@@ -227,12 +228,14 @@ namespace gum::learning {
       selectedAlgo_(from.selectedAlgo_), allowArcAdditions_(from.allowArcAdditions_),
       allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
       allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(from.algoK2_),
-      algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_),
+      algoMiic_(from.algoMiic_), kmodeMiic_(from.kmodeMiic_), algoPC_(from.algoPC_),
       indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_), stablePc_(from.stablePc_),
       maxCondSetSizePc_(from.maxCondSetSizePc_), sortedUCPc_(from.sortedUCPc_),
-      indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
+      algoFCI_(from.algoFCI_), indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
       maxPathLengthFci_(from.maxPathLengthFci_), exhaustiveSepSetFci_(from.exhaustiveSepSetFci_),
-      dag2BN_(from.dag2BN_), greedyHillClimbing_(from.greedyHillClimbing_),
+      errorOnInvalidPAGFci_(from.errorOnInvalidPAGFci_),
+      errorOnExceededMaxIndegree_(from.errorOnExceededMaxIndegree_), dag2BN_(from.dag2BN_),
+      greedyHillClimbing_(from.greedyHillClimbing_),
       extendedGreedyHillClimbing_(from.extendedGreedyHillClimbing_),
       greedyThickThinning_(from.greedyThickThinning_),
       localSearchWithTabuList_(from.localSearchWithTabuList_), scoreDatabase_(from.scoreDatabase_),
@@ -259,10 +262,13 @@ namespace gum::learning {
       allowArcDeletions_(from.allowArcDeletions_), allowArcReversals_(from.allowArcReversals_),
       allowArcTriangleDeletions_(from.allowArcTriangleDeletions_), algoK2_(std::move(from.algoK2_)),
       algoMiic_(std::move(from.algoMiic_)), kmodeMiic_(from.kmodeMiic_),
-      indepTestTypePC_(from.indepTestTypePC_), alphaPc_(from.alphaPc_), stablePc_(from.stablePc_),
-      maxCondSetSizePc_(from.maxCondSetSizePc_), sortedUCPc_(from.sortedUCPc_),
+      algoPC_(std::move(from.algoPC_)), indepTestTypePC_(from.indepTestTypePC_),
+      alphaPc_(from.alphaPc_), stablePc_(from.stablePc_), maxCondSetSizePc_(from.maxCondSetSizePc_),
+      sortedUCPc_(from.sortedUCPc_), algoFCI_(std::move(from.algoFCI_)),
       indepTestTypeFCI_(from.indepTestTypeFCI_), alphaFci_(from.alphaFci_),
       maxPathLengthFci_(from.maxPathLengthFci_), exhaustiveSepSetFci_(from.exhaustiveSepSetFci_),
+      errorOnInvalidPAGFci_(from.errorOnInvalidPAGFci_),
+      errorOnExceededMaxIndegree_(from.errorOnExceededMaxIndegree_),
       dag2BN_(std::move(from.dag2BN_)), greedyHillClimbing_(std::move(from.greedyHillClimbing_)),
       extendedGreedyHillClimbing_(std::move(from.extendedGreedyHillClimbing_)),
       greedyThickThinning_(std::move(from.greedyThickThinning_)),
@@ -337,6 +343,8 @@ namespace gum::learning {
       algoK2_                     = from.algoK2_;
       algoMiic_                   = from.algoMiic_;
       kmodeMiic_                  = from.kmodeMiic_;
+      algoPC_                     = from.algoPC_;
+      algoFCI_                    = from.algoFCI_;
       indepTestTypePC_            = from.indepTestTypePC_;
       alphaPc_                    = from.alphaPc_;
       stablePc_                   = from.stablePc_;
@@ -346,6 +354,8 @@ namespace gum::learning {
       alphaFci_                   = from.alphaFci_;
       maxPathLengthFci_           = from.maxPathLengthFci_;
       exhaustiveSepSetFci_        = from.exhaustiveSepSetFci_;
+      errorOnInvalidPAGFci_       = from.errorOnInvalidPAGFci_;
+      errorOnExceededMaxIndegree_ = from.errorOnExceededMaxIndegree_;
       dag2BN_                     = from.dag2BN_;
       greedyHillClimbing_         = from.greedyHillClimbing_;
       extendedGreedyHillClimbing_ = from.extendedGreedyHillClimbing_;
@@ -407,6 +417,8 @@ namespace gum::learning {
       algoK2_                     = from.algoK2_;
       algoMiic_                   = std::move(from.algoMiic_);
       kmodeMiic_                  = from.kmodeMiic_;
+      algoPC_                     = std::move(from.algoPC_);
+      algoFCI_                    = std::move(from.algoFCI_);
       indepTestTypePC_            = from.indepTestTypePC_;
       alphaPc_                    = from.alphaPc_;
       stablePc_                   = from.stablePc_;
@@ -416,6 +428,8 @@ namespace gum::learning {
       alphaFci_                   = from.alphaFci_;
       maxPathLengthFci_           = from.maxPathLengthFci_;
       exhaustiveSepSetFci_        = from.exhaustiveSepSetFci_;
+      errorOnInvalidPAGFci_       = from.errorOnInvalidPAGFci_;
+      errorOnExceededMaxIndegree_ = from.errorOnExceededMaxIndegree_;
       dag2BN_                     = std::move(from.dag2BN_);
       greedyHillClimbing_         = std::move(from.greedyHillClimbing_);
       extendedGreedyHillClimbing_ = std::move(from.extendedGreedyHillClimbing_);
@@ -624,107 +638,10 @@ namespace gum::learning {
     return param_estimator;
   }
 
-  // prepares the initial graph for constraintMiic
-  MixedGraph IBNLearner::prepareMiic_() {
-    // Initialize the mixed graph to the fully connected graph
-    MixedGraph mgraph;
-    DiGraph    forbiddenGraph;
-    DAG        mandatoryGraph;
-
-    // GUM_CHECKPOINT
-    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
-      mgraph.addNodeWithId(i);
-      forbiddenGraph.addNodeWithId(i);
-      mandatoryGraph.addNodeWithId(i);
-    }
-
-    const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
-
-    if (possible_edges.empty()) {
-      for (const NodeId i: mgraph.nodes()) {
-        for (NodeId j = 0; j < i; ++j) {
-          // contiguous nodeIds !
-          mgraph.addEdge(j, i);
-        }
-      }
-    } else {
-      for (const auto& edge: possible_edges) {
-        mgraph.addEdge(edge.first(), edge.second());
-      }
-    }
-    // GUM_CHECKPOINT
-
-    // translating the mandatory arcs for constraintMiic
-    HashTable< std::pair< NodeId, NodeId >, char > initial_marks;
-    const ArcSet&                                  mandatory_arcs = constraintMandatoryArcs_.arcs();
-
-    // GUM_CHECKPOINT
-    for (const auto& arc: mandatory_arcs) {
-      mandatoryGraph.addArc(arc.tail(), arc.head());
-      // MIIC's marks mechanism (orientationMiic_) handles the reverse direction;
-      // adding it to forbiddenGraph would cause DuplicateElement (unlike preparePC_).
-    }
-
-    // GUM_CHECKPOINT
-    //  translating the forbidden arcs for constraintMiic
-    const ArcSet& forbidden_arcs = constraintForbiddenArcs_.arcs();
-    for (const auto& arc: forbidden_arcs) {
-      forbiddenGraph.addArc(arc.tail(), arc.head());
-    }
-
-    // GUM_CHECKPOINT
-    const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
-    gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
-    for (const auto& [n1, r1]: sliceOrder) {
-      for (const auto& [n2, r2]: copyOrder) {
-        if (r1 > r2) {
-          forbiddenGraph.addArc(n1, n2);
-          // initial_marks.insert({n1, n2}, '-');
-        } else if (r2 > r1) {
-          forbiddenGraph.addArc(n2, n1);
-          // initial_marks.insert({n2, n1}, '-');
-        }
-      }
-      copyOrder.erase(n1);
-    }
-
-    // GUM_CHECKPOINT
-    const auto& totalOrder = constraintTotalOrder_.totalOrder();
-    for (auto iter1 = totalOrder.begin(); iter1 != totalOrder.end(); ++iter1) {
-      const auto node1 = *iter1;
-      for (auto iter2 = iter1 + 1; iter2 != totalOrder.end(); ++iter2) {
-        forbiddenGraph.addArc(*iter2, node1);
-      }
-    }
-
-    for (const auto node: constraintNoParentNodes_.nodes()) {
-      for (const auto node2: mgraph.nodes()) {
-        if (node != node2) { forbiddenGraph.addArc(node2, node); }
-      }
-    }
-
-    for (const auto node: constraintNoChildrenNodes_.nodes()) {
-      for (const auto node2: mgraph.nodes()) {
-        if (node != node2) { forbiddenGraph.addArc(node, node2); }
-      }
-    }
-
-    // GUM_CHECKPOINT
-    algoMiic_.setMaxIndegree(constraintIndegree_.maxIndegree());
-    algoMiic_.addConstraints(initial_marks);
-    algoMiic_.setMandatoryGraph(mandatoryGraph);
-    algoMiic_.setForbiddenGraph(forbiddenGraph);
-
-    // GUM_CHECKPOINT
-    // create the mutual entropy object
-    // if ( _mutual_info_ == nullptr) { this->useNMLCorrection(); }
-    createCorrectedMutualInformation_();
-
-    // GUM_CHECKPOINT
-    return mgraph;
-  }
-
-  MixedGraph IBNLearner::preparePC_() {
+  // the initial graph of PC, FCI and MIIC (complete, or made of the possible edges), and their
+  // common constraints: maximal indegree, mandatory and forbidden arcs (including those of the
+  // slice order, of the total order and of the nodes without parent or without child)
+  MixedGraph IBNLearner::prepareConstraintBased_(ConstraintBasedLearning& algo) {
     MixedGraph mgraph;
     DiGraph    forbiddenGraph;
     DAG        mandatoryGraph;
@@ -739,7 +656,7 @@ namespace gum::learning {
     if (possible_edges.empty()) {
       for (const NodeId i: mgraph.nodes()) {
         for (NodeId j = 0; j < i; ++j) {
-          mgraph.addEdge(j, i);
+          mgraph.addEdge(j, i);   // contiguous node ids
         }
       }
     } else {
@@ -786,6 +703,29 @@ namespace gum::learning {
         if (node != node2) { forbiddenGraph.addArc(node, node2); }
       }
     }
+
+    algo.setMaxIndegree(constraintIndegree_.maxIndegree());
+    algo.setErrorOnExceededMaxIndegree(errorOnExceededMaxIndegree_);
+    algo.setMandatoryGraph(mandatoryGraph);
+    algo.setForbiddenGraph(forbiddenGraph);
+    return mgraph;
+  }
+
+  // prepares the initial graph for constraintMiic
+  MixedGraph IBNLearner::prepareMiic_() {
+    // MIIC's marks mechanism (orientationMiic_) handles the reverse direction of the mandatory
+    // arcs: adding it to the forbidden graph would cause DuplicateElement (unlike PC and FCI)
+    MixedGraph mgraph = prepareConstraintBased_(algoMiic_);
+    algoMiic_.addConstraints(HashTable< std::pair< NodeId, NodeId >, char >());
+
+    // create the mutual entropy object
+    createCorrectedMutualInformation_();
+    return mgraph;
+  }
+
+  MixedGraph IBNLearner::preparePC_() {
+    MixedGraph mgraph = prepareConstraintBased_(algoPC_);
+
 
     // build the independence test (owned by IBNLearner)
     if (indepTestPC_) {
@@ -804,9 +744,6 @@ namespace gum::learning {
                                      scoreDatabase_.nodeId2Columns());
     }
 
-    algoPC_.setMaxIndegree(constraintIndegree_.maxIndegree());
-    algoPC_.setMandatoryGraph(mandatoryGraph);
-    algoPC_.setForbiddenGraph(forbiddenGraph);
     algoPC_.setIndependenceTest(*indepTestPC_);
     algoPC_.setAlpha(alphaPc_);
     algoPC_.setStable(stablePc_);
@@ -818,67 +755,7 @@ namespace gum::learning {
   }
 
   MixedGraph IBNLearner::prepareFCI_() {
-    MixedGraph mgraph;
-    DiGraph    forbiddenGraph;
-    DAG        mandatoryGraph;
-
-    for (Size i = 0; i < scoreDatabase_.databaseTable().nbVariables(); ++i) {
-      mgraph.addNodeWithId(i);
-      forbiddenGraph.addNodeWithId(i);
-      mandatoryGraph.addNodeWithId(i);
-    }
-
-    const EdgeSet& possible_edges = constraintPossibleEdges_.edges();
-    if (possible_edges.empty()) {
-      for (const NodeId i: mgraph.nodes()) {
-        for (NodeId j = 0; j < i; ++j) {
-          mgraph.addEdge(j, i);
-        }
-      }
-    } else {
-      for (const auto& edge: possible_edges) {
-        mgraph.addEdge(edge.first(), edge.second());
-      }
-    }
-
-    for (const auto& arc: constraintMandatoryArcs_.arcs()) {
-      mandatoryGraph.addArc(arc.tail(), arc.head());
-      forbiddenGraph.addArc(arc.head(), arc.tail());
-    }
-    for (const auto& arc: constraintForbiddenArcs_.arcs()) {
-      forbiddenGraph.addArc(arc.tail(), arc.head());
-    }
-
-    const gum::NodeProperty< gum::Size > sliceOrder = constraintSliceOrder_.sliceOrder();
-    gum::NodeProperty< gum::Size >       copyOrder  = gum::HashTable(sliceOrder);
-    for (const auto& [n1, r1]: sliceOrder) {
-      for (const auto& [n2, r2]: copyOrder) {
-        if (r1 > r2) {
-          forbiddenGraph.addArc(n1, n2);
-        } else if (r2 > r1) {
-          forbiddenGraph.addArc(n2, n1);
-        }
-      }
-      copyOrder.erase(n1);
-    }
-
-    const auto& totalOrder = constraintTotalOrder_.totalOrder();
-    for (auto iter1 = totalOrder.begin(); iter1 != totalOrder.end(); ++iter1) {
-      for (auto iter2 = iter1 + 1; iter2 != totalOrder.end(); ++iter2) {
-        forbiddenGraph.addArc(*iter2, *iter1);
-      }
-    }
-
-    for (const auto node: constraintNoParentNodes_.nodes()) {
-      for (const auto node2: mgraph.nodes()) {
-        if (node != node2) { forbiddenGraph.addArc(node2, node); }
-      }
-    }
-    for (const auto node: constraintNoChildrenNodes_.nodes()) {
-      for (const auto node2: mgraph.nodes()) {
-        if (node != node2) { forbiddenGraph.addArc(node, node2); }
-      }
-    }
+    MixedGraph mgraph = prepareConstraintBased_(algoFCI_);
 
     if (indepTestFCI_) {
       delete indepTestFCI_;
@@ -896,13 +773,11 @@ namespace gum::learning {
                                       scoreDatabase_.nodeId2Columns());
     }
 
-    algoFCI_.setMaxIndegree(constraintIndegree_.maxIndegree());
-    algoFCI_.setMandatoryGraph(mandatoryGraph);
-    algoFCI_.setForbiddenGraph(forbiddenGraph);
     algoFCI_.setIndependenceTest(*indepTestFCI_);
     algoFCI_.setAlpha(alphaFci_);
     algoFCI_.setMaxPathLength(maxPathLengthFci_);
     algoFCI_.setExhaustiveSepSet(exhaustiveSepSetFci_);
+    algoFCI_.setErrorOnInvalidPAG(errorOnInvalidPAGFci_);
 
     return mgraph;
   }
@@ -959,6 +834,12 @@ namespace gum::learning {
       pdag.setName(i, scoreDatabase_.databaseTable().variableName(i));
     }
     return pdag;
+  }
+
+  EssentialGraph IBNLearner::learnEssentialGraph() {
+    // the essential graph of the learned DAG, whatever the algorithm: a learned PDAG may not be a
+    // CPDAG (see learnPDAG)
+    return EssentialGraph(CPDAG::fromDAG(learnDAG()));
   }
 
   PAG IBNLearner::learnPAG_() {
@@ -1038,19 +919,28 @@ namespace gum::learning {
       init_graph.eraseArc(arc);
 
 
+    // the constraint-based algorithms orient the undirected edges looking for small CPTs
+    const auto nodeDomainSizes = [this] {
+      NodeProperty< Size > res;
+      const auto&          sizes = scoreDatabase_.domainSizes();
+      for (NodeId node = 0; node < sizes.size(); ++node)
+        res.insert(node, sizes[node]);
+      return res;
+    };
+
     switch (selectedAlgo_) {
       // ========================================================================
       case AlgoType::PC : {
         BNLearnerListener listener(this, algoPC_);
         MixedGraph        mgraph = this->preparePC_();
-        return algoPC_.learnDAG(mgraph);
+        return algoPC_.learnDAG(mgraph, nodeDomainSizes());
       }
 
       // ========================================================================
       case AlgoType::FCI : {
         BNLearnerListener listener(this, algoFCI_);
         MixedGraph        mgraph = this->prepareFCI_();
-        return algoFCI_.learnDAG(mgraph);
+        return algoFCI_.learnDAG(mgraph, nodeDomainSizes());
       }
 
       // ========================================================================
@@ -1060,7 +950,7 @@ namespace gum::learning {
         MixedGraph mgraph = this->prepareMiic_();
 
         algoMiic_.setMutualInformation(*mutualInfo_);
-        return algoMiic_.learnDAG(mgraph);
+        return algoMiic_.learnDAG(mgraph, nodeDomainSizes());
       }
 
       // ========================================================================

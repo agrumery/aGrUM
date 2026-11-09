@@ -106,6 +106,11 @@ IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 %ignore gum::EssentialGraph::nodes const;
 %ignore gum::MarkovBlanket::nodes const;
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::EssentialGraph);
+%{
+#include <agrum/BN/algorithms/essentialGraph.h>
+%}
+ADD_GUM_IO_TO_GRAPH(gum::EssentialGraph)
+ADD_GUM_GRAPH_READERS(gum::EssentialGraph, EssentialGraph)
 ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
 
@@ -190,10 +195,10 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 %rename(_saveGUMstring) gum::BayesNet::saveGUMstring;
 
 %extend gum::BayesNet {
-  void loadGUM(std::string name, PyObject *l=nullptr,bool binary=false) {
+  void loadGUM(std::string name, PyObject *l=nullptr,PyObject* binary=nullptr) {
       std::stringstream stream;
       try {
-          gum::GumBNReader<GUM_SCALAR> reader(self,name,binary);
+          gum::GumBNReader<GUM_SCALAR> reader(self,name,PyAgrumHelper::isBinaryGUMFile(name,binary));
 
           auto nbErr=reader.proceed();
           reader.showElegantErrorsAndWarnings(stream);
@@ -206,8 +211,8 @@ IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
       }
   }
 
-  void saveGUM(std::string name, bool binary=false,int indent=gum::defaultJgumIndent()) {
-    gum::GumBNWriter<GUM_SCALAR> writer(binary,indent);
+  void saveGUM(std::string name, PyObject* binary=nullptr, int indent=gum::defaultJgumIndent()) {
+    gum::GumBNWriter<GUM_SCALAR> writer(PyAgrumHelper::isBinaryGUMFile(name,binary),indent);
     writer.write( name, *self );
   }
 
@@ -428,7 +433,7 @@ def __setstate__(self,state):
     self.loadGUMstring(state)
     return self
 
-def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
   """
   Save the Bayesian network as a .jgum (text) or .bgum (binary) file.
 
@@ -436,12 +441,18 @@ def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
   ----------
   name : str
     the name of the file
-  binary : bool
-    if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+  binary : bool, optional
+    True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+    default, the format is given by the extension of name (binary for an unknown extension).
   indent : int, optional
-    JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+    JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most
     compact output, N>=0 to pretty-print with N spaces. Defaults to
     ``pyagrum.config["core","jgumIndent"]``.
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
   """
   if indent is None:
     self._saveGUM(name, binary)

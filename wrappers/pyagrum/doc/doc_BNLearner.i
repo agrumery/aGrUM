@@ -87,6 +87,24 @@ pyagrum.DAG
 "
 
 
+%feature("docstring") gum::learning::IBNLearner::learnEssentialGraph
+"
+learn the essential graph of the Markov equivalence class of the data
+
+With a constraint-based method (MIIC, PC, FCI), the essential graph is the learned PDAG (see
+`learnPDAG`); with a score-based method, it is the essential graph of the learned DAG.
+
+Returns
+-------
+pyagrum.EssentialGraph
+    the learned essential graph
+
+Raises
+------
+pyagrum.MissingValueInDatabase
+    if the database contains missing values
+"
+
 %feature("docstring") gum::learning::IBNLearner::learnPDAG
 "
 learn a partially directed acyclic graph (PDAG) from the BNLearner's database
@@ -194,6 +212,8 @@ Raises
 ------
 pyagrum.OperationNotAllowed
     If FCI has not been selected (call `useFCI()` first).
+pyagrum.OutOfBounds
+    If alpha is not strictly between 0 and 1.
 "
 
 
@@ -253,6 +273,49 @@ Returns
 -------
 bool
     ``True`` if exhaustive sepset mode is on, ``False`` otherwise (default).
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
+%feature("docstring") gum::learning::BNLearner::setFCIErrorOnInvalidPAG
+"
+Choose what FCI does when the learned PAG is not valid.
+
+``learnDAG`` and ``learnPDAG`` with FCI go through the representative MAG of the learned PAG
+(Zhang 2008). If the PAG is not valid (its representative graph has a directed cycle, which may
+happen with conflicting independence tests), either an error is raised (``True``) or the former
+approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
+symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
+The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).
+
+Parameters
+----------
+error : bool
+    ``True`` to raise ``pyagrum.InvalidArgument`` on an invalid PAG.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+
+Raises
+------
+pyagrum.OperationNotAllowed
+    If FCI has not been selected (call `useFCI()` first).
+"
+
+
+%feature("docstring") gum::learning::BNLearner::fciErrorOnInvalidPAG
+"
+Return whether FCI raises an error on an invalid learned PAG (see ``setFCIErrorOnInvalidPAG``).
+
+Returns
+-------
+bool
 
 Raises
 ------
@@ -536,8 +599,8 @@ Set the significance threshold (α) used by the PC algorithm to decide
 whether two variables are conditionally independent.
 
 An edge (X, Y) is removed from the skeleton when the p-value of the
-conditional independence test exceeds α. Smaller α makes PC more
-conservative (fewer edges removed); larger α makes it more aggressive.
+conditional independence test exceeds α. Smaller α removes more edges
+(sparser graphs); larger α keeps more edges.
 
 Parameters
 ----------
@@ -554,6 +617,8 @@ Raises
 ------
 pyagrum.OperationNotAllowed
     If the PC algorithm has not been selected (call `usePC()` first).
+pyagrum.OutOfBounds
+    If alpha is not strictly between 0 and 1.
 "
 
 
@@ -921,8 +986,59 @@ l : list
 "
 
 
+%feature("docstring") gum::learning::BNLearner::setErrorOnExceededMaxIndegree
+"
+Choose what the constraint-based algorithms (PC, FCI, MIIC) do when the learned DAG exceeds the maximum indegree.
+
+These algorithms never remove an edge kept by their independence tests to satisfy the bound given by `setMaxIndegree`.
+If the DAG of `learnDAG()` or `learnBN()` has a node with more parents than this bound, either an error is raised
+(``True``) or the DAG is returned with a warning (``False``). The default value is the key
+``learning.errorOnExceededMaxIndegree`` of ``pyagrum.config`` (``True``).
+
+Parameters
+----------
+error : bool
+    ``True`` to raise ``pyagrum.OperationNotAllowed`` when the learned DAG exceeds the maximum indegree.
+
+Returns
+-------
+pyagrum.BNLearner
+    the BNLearner itself, to allow method chaining.
+"
+
+
+%feature("docstring") gum::learning::IBNLearner::errorOnExceededMaxIndegree
+"
+Return whether the constraint-based algorithms raise an error when the learned DAG exceeds the maximum indegree (see
+`setErrorOnExceededMaxIndegree`).
+
+Returns
+-------
+bool
+"
+
+
+%feature("docstring") gum::learning::IBNLearner::maxIndegreeExceeded
+"
+Return whether the last DAG learned (by `learnDAG()` or `learnBN()`) by the selected constraint-based algorithm exceeds
+the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
+
+Returns
+-------
+bool
+"
+
+
 %feature("docstring") gum::learning::BNLearner::setMaxIndegree
 "
+Set the maximum number of parents of a node of the learned structure.
+
+The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,
+MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:
+if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it
+with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` and `learnEssentialGraph()` do not check
+the bound.
+
 Parameters
 ----------
 max_indegree : int

@@ -1,0 +1,210 @@
+/****************************************************************************
+ *   This file is part of the aGrUM/pyAgrum library.                        *
+ *                                                                          *
+ *   Copyright (c) 2005-2026 by                                             *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *                                                                          *
+ *   The aGrUM/pyAgrum library is free software; you can redistribute it    *
+ *   and/or modify it under the terms of either :                           *
+ *                                                                          *
+ *    - the GNU Lesser General Public License as published by               *
+ *      the Free Software Foundation, either version 3 of the License,      *
+ *      or (at your option) any later version,                              *
+ *    - the MIT license (MIT),                                              *
+ *    - or both in dual license, as here.                                   *
+ *                                                                          *
+ *   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    *
+ *                                                                          *
+ *   This aGrUM/pyAgrum library is distributed in the hope that it will be  *
+ *   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          *
+ *   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS *
+ *   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   *
+ *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER *
+ *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        *
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  *
+ *   OTHER DEALINGS IN THE SOFTWARE.                                        *
+ *                                                                          *
+ *   See LICENCES for more details.                                         *
+ *                                                                          *
+ *   SPDX-FileCopyrightText: Copyright 2005-2026                            *
+ *       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 *
+ *       - Christophe GONZALES(_at_AMU)                                     *
+ *   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      *
+ *                                                                          *
+ *   Contact  : info_at_agrum_dot_org                                       *
+ *   homepage : http://agrum.gitlab.io                                      *
+ *   gitlab   : https://gitlab.com/agrumery/agrum                           *
+ *                                                                          *
+ ****************************************************************************/
+
+#pragma once
+
+
+#include <vector>
+
+#include <agrum/base/graphs/MPDAG.h>
+
+#include <agrum/base/core/utils_random.h>
+#include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/utils.h>
+
+namespace gum_tests {
+
+  struct MPDAGTestSuite {
+    public:
+    static gum::DAG randomDAG(gum::Size n, double density) {
+      std::vector< gum::NodeId > order;
+      for (gum::NodeId i = 0; i < n; ++i)
+        order.push_back(i);
+      for (gum::Size i = n; i > 1; --i)
+        std::swap(order[i - 1], order[gum::randomValue(i)]);
+      gum::DAG dag;
+      dag.addNodes(n);
+      for (gum::Size i = 0; i < n; ++i)
+        for (gum::Size j = i + 1; j < n; ++j)
+          if (gum::randomProba() < density) dag.addArc(order[i], order[j]);
+      return dag;
+    }
+
+    static gum::NodeSet randomSet(const gum::DAG& dag, gum::NodeId x, gum::NodeId y) {
+      gum::NodeSet z;
+      for (const auto node: dag.nodes())
+        if (node != x && node != y && gum::randomProba() < 0.3) z.insert(node);
+      return z;
+    }
+  };
+
+  GUM_TEST(MeekClosure) {
+    // a->b-c, a and c non adjacent : R1 orients b->c
+    gum::PDAG pdag;
+    pdag.addNodes(3);
+    pdag.addArc(0, 1);
+    pdag.addEdge(1, 2);
+    const auto m = gum::MPDAG::meekClosure(pdag);
+    CHECK(m.existsArc(1, 2));
+    CHECK_EQ(m.sizeEdges(), gum::Size(0));
+    CHECK(m.contains(m.consistentExtension()));
+    CHECK_THROWS_AS(gum::MPDAG::fromPDAG(pdag), const gum::InvalidArgument&);   // not closed
+    CHECK(gum::MPDAG::fromPDAG(m.graph()) == m);
+
+    // not extendable
+    gum::PDAG c4;
+    c4.addNodes(4);
+    for (gum::NodeId i = 0; i < 4; ++i)
+      c4.addEdge(i, (i + 1) % 4);
+    CHECK_THROWS_AS(gum::MPDAG::meekClosure(c4), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::MPDAG::fromPDAG(c4), const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(ReadAccess) {
+    // a->b-c closed into a->b->c, and an isolated d
+    gum::PDAG pdag;
+    pdag.addNodes(4);
+    pdag.setName(3, "d");
+    pdag.addArc(0, 1);
+    pdag.addEdge(1, 2);
+    const auto m = gum::MPDAG::meekClosure(pdag);
+    CHECK(!m.empty());
+    CHECK(gum::MPDAG::meekClosure(gum::PDAG()).empty());
+    CHECK(m.hasName(3));
+    CHECK(!m.hasName(0));
+    CHECK_EQ(m.idFromName("d"), std::optional< gum::NodeId >(3));
+    const auto cc = m.connectedComponents();
+    CHECK_EQ(cc[0], cc[2]);
+    CHECK_NE(cc[0], cc[3]);
+    const auto skeleton = m.skeleton();
+    CHECK_EQ(skeleton.sizeEdges(), gum::Size(2));
+    CHECK(skeleton.existsEdge(1, 2));
+    CHECK_EQ(skeleton.nameFromId(3), "d");
+  }
+
+  GUM_TEST(NotAlwaysAChainGraph) {
+    // triangle a-b-c-a with the knowledge a->b : a->b-c-a is a partially directed cycle
+    gum::DAG triangle;
+    triangle.addNodes(3);
+    triangle.addArc(0, 1);
+    triangle.addArc(1, 2);
+    triangle.addArc(0, 2);
+    const auto cp = gum::CPDAG::fromDAG(triangle);
+    CHECK_EQ(cp.sizeEdges(), gum::Size(3));
+    const auto m = gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 1)});
+    CHECK(m.existsArc(0, 1));
+    CHECK(m.existsEdge(1, 2));
+    CHECK(m.existsEdge(0, 2));
+    CHECK_THROWS_AS(gum::ChainGraph{m.graph()}, const gum::InvalidPartiallyDirectedCycle&);
+  }
+
+  GUM_TEST(FromCPDAG) {
+    // chain a-b-c : the knowledge a->b gives b->c (R1)
+    gum::DAG chain;
+    chain.addNodes(3);
+    chain.addArc(0, 1);
+    chain.addArc(1, 2);
+    const auto cp = gum::CPDAG::fromDAG(chain);
+    const auto m  = gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 1)});
+    CHECK(m.existsArc(0, 1));
+    CHECK(m.existsArc(1, 2));
+    CHECK(m.cpdag() == cp);
+    CHECK(m.contains(chain));
+
+    // a->b and c->b would create a new v-structure: not in the class
+    CHECK_THROWS_AS(gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 1), gum::Arc(2, 1)}),
+                    const gum::InvalidArgument&);
+    // a->c does not orient an edge of the CPDAG
+    CHECK_THROWS_AS(gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 2)}), const gum::InvalidArc&);
+
+    // a directed cycle in the knowledge: not in the class either
+    gum::DAG triangle;
+    triangle.addNodes(3);
+    triangle.addArc(0, 1);
+    triangle.addArc(1, 2);
+    triangle.addArc(0, 2);
+    const auto cp3 = gum::CPDAG::fromDAG(triangle);
+    CHECK_THROWS_AS(
+        gum::MPDAG::fromCPDAG(cp3, gum::ArcSet{gum::Arc(0, 1), gum::Arc(1, 2), gum::Arc(2, 0)}),
+        const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(NamesAreKept) {
+    gum::DAG dag;
+    dag.addNodes(3);
+    dag.setName(0, "A");
+    dag.setName(1, "B");
+    dag.setName(2, "C");
+    dag.addArc(0, 1);
+    dag.addArc(1, 2);
+    const auto g = gum::MPDAG::meekClosure(gum::PDAG(dag));
+    CHECK_EQ(g.nameFromId(1), "B");
+    CHECK_EQ(g.idFromName("C"), std::optional< gum::NodeId >(2));
+    CHECK(!g.idFromName("Z").has_value());
+    CHECK_EQ(g.consistentExtension().nameFromId(0), "A");
+  }
+
+  GUM_TEST(DSeparationIsTheDSeparationOfTheDAGs) {
+    for (int i = 0; i < 100; ++i) {
+      const auto dag = randomDAG(4 + gum::randomValue(8), 0.3);
+      const auto cp  = gum::CPDAG::fromDAG(dag);
+      // background knowledge: some edges oriented as in dag
+      gum::ArcSet knowledge;
+      for (const auto& edge: cp.edges())
+        if (gum::randomProba() < 0.3)
+          knowledge.insert(dag.existsArc(edge.first(), edge.second())
+                               ? gum::Arc(edge.first(), edge.second())
+                               : gum::Arc(edge.second(), edge.first()));
+      const auto m = gum::MPDAG::fromCPDAG(cp, knowledge);
+      CHECK(m.contains(dag));
+      CHECK(m.cpdag() == cp);
+      for (const auto& arc: knowledge)
+        CHECK(m.existsArc(arc.tail(), arc.head()));
+      for (int k = 0; k < 10; ++k) {
+        const gum::NodeId x = gum::randomValue(dag.size());
+        const gum::NodeId y = gum::randomValue(dag.size());
+        if (x == y) continue;
+        const auto z = randomSet(dag, x, y);
+        CHECK_EQ(m.dSeparation(x, y, z), dag.dSeparation(x, y, z));
+      }
+    }
+  }
+
+}   // namespace gum_tests

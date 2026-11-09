@@ -156,6 +156,18 @@ namespace gum::graph {
   bool hasMixedOrientedPath(const G& g, NodeId n1, NodeId n2);
 
   /**
+   * @brief Returns true if a walk from @p n1 to @p n2 with at least one arc exists.
+   *
+   * Follows arcs forward and edges in both directions. A walk may visit a node several times, so
+   * the search is linear in the size of the graph. In a graph without partially directed cycle
+   * (a chain graph), such a walk exists iff such a simple path exists; otherwise, it may exist
+   * without any simple path having an arc (e.g. a-b, b-c, c->d, d-b, b-e from a to e).
+   * Returns false if @p n1 == @p n2.
+   */
+  template < GUM_MixedGraphable G >
+  bool hasMixedWalkWithArc(const G& g, NodeId n1, NodeId n2);
+
+  /**
    * @brief Shortest path ignoring all orientations in a mixed graph.
    *
    * Traverses edges (both directions), parents, and children.

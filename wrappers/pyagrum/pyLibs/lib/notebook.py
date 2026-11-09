@@ -1821,7 +1821,11 @@ else:
   pyagrum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
   pyagrum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
   pyagrum.DAG._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.CPDAG._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.MPDAG._repr_html_ = lambda self: getDot(self.toDot())
   pyagrum.EssentialGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.MarkedGraph._repr_html_ = lambda self: getDot(self.toDot())
+  pyagrum.MAG._repr_html_ = lambda self: getDot(self.toDot())
   pyagrum.MarkovBlanket._repr_html_ = lambda self: getDot(self.toDot())
 
   pyagrum.KTBN._repr_html_ = lambda self: getDot(self.toDot())

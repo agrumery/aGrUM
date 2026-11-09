@@ -119,6 +119,24 @@ class SwigPyIterator(object):
 # Register SwigPyIterator in _pyagrumcpp:
 _pyagrumcpp.SwigPyIterator_swigregister(SwigPyIterator)
 import numpy 
+
+import enum as _enum
+
+
+class EdgeMark(_enum.IntEnum):
+  """
+  The mark at an end of an edge of a marked graph (pyagrum.MarkedGraph, pyagrum.PAG).
+
+  An edge x-y carries one mark at x and one at y: ``x->y`` has a tail at x and an arrowhead at y,
+  ``x<->y`` an arrowhead at both ends, ``x--y`` a tail at both ends; a circle is an end whose mark
+  is not determined (in a PAG, it varies across the equivalence class).
+  """
+
+# the values of the C++ enumeration pyagrum.EdgeMark
+  Circle = _pyagrumcpp.EdgeMark_Circle
+  Tail = _pyagrumcpp.EdgeMark_Tail
+  Arrowhead = _pyagrumcpp.EdgeMark_Arrowhead
+
 class JunctionTreeGenerator(object):
     r"""
 
@@ -228,17 +246,230 @@ class JunctionTreeGenerator(object):
 # Register JunctionTreeGenerator in _pyagrumcpp:
 _pyagrumcpp.JunctionTreeGenerator_swigregister(JunctionTreeGenerator)
 
+def _graphFromGUMString_DiGraph(content: str) -> "pyagrum.DiGraph":
+    return _pyagrumcpp._graphFromGUMString_DiGraph(content)
+
+def _loadGraphGUM_DiGraph(path: str, binary: bool) -> "pyagrum.DiGraph":
+    return _pyagrumcpp._loadGraphGUM_DiGraph(path, binary)
+
+def _graphFromGUMString_DAG(content: str) -> "pyagrum.DAG":
+    return _pyagrumcpp._graphFromGUMString_DAG(content)
+
+def _loadGraphGUM_DAG(path: str, binary: bool) -> "pyagrum.DAG":
+    return _pyagrumcpp._loadGraphGUM_DAG(path, binary)
+
+def _graphFromGUMString_UndiGraph(content: str) -> "pyagrum.UndiGraph":
+    return _pyagrumcpp._graphFromGUMString_UndiGraph(content)
+
+def _loadGraphGUM_UndiGraph(path: str, binary: bool) -> "pyagrum.UndiGraph":
+    return _pyagrumcpp._loadGraphGUM_UndiGraph(path, binary)
+
+def _graphFromGUMString_MixedGraph(content: str) -> "pyagrum.MixedGraph":
+    return _pyagrumcpp._graphFromGUMString_MixedGraph(content)
+
+def _loadGraphGUM_MixedGraph(path: str, binary: bool) -> "pyagrum.MixedGraph":
+    return _pyagrumcpp._loadGraphGUM_MixedGraph(path, binary)
+
+def _graphFromGUMString_PDAG(content: str) -> "pyagrum.PDAG":
+    return _pyagrumcpp._graphFromGUMString_PDAG(content)
+
+def _loadGraphGUM_PDAG(path: str, binary: bool) -> "pyagrum.PDAG":
+    return _pyagrumcpp._loadGraphGUM_PDAG(path, binary)
+
+def _graphFromGUMString_ChainGraph(content: str) -> "pyagrum.ChainGraph":
+    return _pyagrumcpp._graphFromGUMString_ChainGraph(content)
+
+def _loadGraphGUM_ChainGraph(path: str, binary: bool) -> "pyagrum.ChainGraph":
+    return _pyagrumcpp._loadGraphGUM_ChainGraph(path, binary)
+
+def _graphFromGUMString_MarkedGraph(content: str) -> "pyagrum.MarkedGraph":
+    return _pyagrumcpp._graphFromGUMString_MarkedGraph(content)
+
+def _loadGraphGUM_MarkedGraph(path: str, binary: bool) -> "pyagrum.MarkedGraph":
+    return _pyagrumcpp._loadGraphGUM_MarkedGraph(path, binary)
+
+def _graphFromGUMString_PAG(content: str) -> "pyagrum.PAG":
+    return _pyagrumcpp._graphFromGUMString_PAG(content)
+
+def _loadGraphGUM_PAG(path: str, binary: bool) -> "pyagrum.PAG":
+    return _pyagrumcpp._loadGraphGUM_PAG(path, binary)
+
+def _graphFromGUMString_CPDAG(content: str) -> "pyagrum.CPDAG":
+    return _pyagrumcpp._graphFromGUMString_CPDAG(content)
+
+def _loadGraphGUM_CPDAG(path: str, binary: bool) -> "pyagrum.CPDAG":
+    return _pyagrumcpp._loadGraphGUM_CPDAG(path, binary)
+
+def _graphFromGUMString_MPDAG(content: str) -> "pyagrum.MPDAG":
+    return _pyagrumcpp._graphFromGUMString_MPDAG(content)
+
+def _loadGraphGUM_MPDAG(path: str, binary: bool) -> "pyagrum.MPDAG":
+    return _pyagrumcpp._loadGraphGUM_MPDAG(path, binary)
+
+def _graphFromGUMString_MAG(content: str) -> "pyagrum.MAG":
+    return _pyagrumcpp._graphFromGUMString_MAG(content)
+
+def _loadGraphGUM_MAG(path: str, binary: bool) -> "pyagrum.MAG":
+    return _pyagrumcpp._loadGraphGUM_MAG(path, binary)
+
+def _graphGUMType(content: str) -> str:
+    return _pyagrumcpp._graphGUMType(content)
+
+def _graphGUMTypeOfFile(path: str, binary: bool) -> str:
+    return _pyagrumcpp._graphGUMTypeOfFile(path, binary)
+
+def _setstate_from_former_pickle(graph, state):
+# the pickles of the graphs up to pyAgrum 3.3.2: a dict of arcs and edges
+  import warnings
+
+  warnings.warn(
+    "Reading a graph pickled by pyAgrum 3.3.2 or before is deprecated after 3.3.2: pickle it again",
+    DeprecationWarning,
+    stacklevel=3,
+  )
+  graph.__init__()
+  for x, y in state.get("arcs", []):
+    for n in (x, y):
+      if not graph.existsNode(n):
+        graph.addNodeWithId(n)
+    graph.addArc(x, y)
+  for x, y in state.get("edges", []):
+    for n in (x, y):
+      if not graph.existsNode(n):
+        graph.addNodeWithId(n)
+    graph.addEdge(x, y)
+
+
+def graphFromGUMString(content: str):
+  """
+  Read a graph from a jgum string (see the method ``saveGUMstring`` of the graphs).
+
+  Parameters
+  ----------
+  content : str
+    the jgum string
+
+  Returns
+  -------
+  pyagrum.DiGraph or pyagrum.DAG or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.PDAG or pyagrum.ChainGraph or pyagrum.MarkedGraph or pyagrum.PAG or pyagrum.CPDAG or pyagrum.MPDAG or pyagrum.MAG or pyagrum.EssentialGraph
+    the graph, of the class written in the string
+
+  Raises
+  ------
+  pyagrum.GumIOError
+    if the string is not a graph in the GUM format, or if the graph does not respect the
+    properties of its class (e.g. a cycle in a DAG)
+  """
+  graphType = _graphGUMType(content)
+  reader = globals().get("_graphFromGUMString_" + graphType)
+  if reader is None:
+    raise GumIOError(f"Unknown graph class '{graphType}' in the jgum string")
+  return reader(content)
+
+
+def loadGraph(filename: str):
+  """
+  Read a graph from a file, its format being given by its extension: .jgum (GUM, text), .bgum (GUM,
+  binary) or .pkl (pickle).
+
+  Parameters
+  ----------
+  filename : str
+    the name of the file (see :func:`pyagrum.availableGraphExts`)
+
+  Returns
+  -------
+  pyagrum.DiGraph or pyagrum.DAG or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.PDAG or pyagrum.ChainGraph or pyagrum.MarkedGraph or pyagrum.PAG or pyagrum.CPDAG or pyagrum.MPDAG or pyagrum.MAG or pyagrum.EssentialGraph
+    the graph, of the class written in the file
+
+  Raises
+  ------
+  pyagrum.GumIOError
+    if the file can not be read or is not a graph in the GUM format, or if the graph does not
+    respect the properties of its class (e.g. a cycle in a DAG)
+  pyagrum.InvalidArgument
+    if the extension is unknown (see :func:`pyagrum.availableGraphExts`)
+  """
+  name = str(filename)
+  extension = name.split(".")[-1].upper()
+  if extension == "PKL":
+    return _gum_pickle_load(name)
+  if extension not in ("JGUM", "BGUM"):
+    raise InvalidArgument(f"extension {name.split('.')[-1]} unknown. Please use among {availableGraphExts()}")
+  binary = extension == "BGUM"
+  graphType = _graphGUMTypeOfFile(name, binary)
+  reader = globals().get("_loadGraphGUM_" + graphType)
+  if reader is None:
+    raise GumIOError(f"Unknown graph class '{graphType}' in {filename}")
+  return reader(name, binary)
+
+
+def saveGraph(graph, filename: str) -> None:
+  """
+  Save a graph in a file, its format being given by its extension: .jgum (GUM, text), .bgum (GUM,
+  binary) or .pkl (pickle).
+
+  Parameters
+  ----------
+  graph : pyagrum.DiGraph or pyagrum.DAG or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.PDAG or pyagrum.ChainGraph or pyagrum.MarkedGraph or pyagrum.PAG or pyagrum.CPDAG or pyagrum.MPDAG or pyagrum.MAG or pyagrum.EssentialGraph
+    the graph (any class of graph; pickle only for pyagrum.CliqueGraph)
+  filename : str
+    the name of the file (see :func:`pyagrum.availableGraphExts`)
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    if the extension is unknown (see :func:`pyagrum.availableGraphExts`)
+  NotImplementedError
+    if graph is a pyagrum.CliqueGraph (or a pyagrum.JunctionTree) and the format is GUM (a
+    pyagrum.CliqueGraph can be pickled)
+  """
+  name = str(filename)
+  extension = name.split(".")[-1].upper()
+  if extension == "PKL":
+    _gum_pickle_save(graph, name)
+  elif extension in ("JGUM", "BGUM"):
+    graph.saveGUM(name, binary=extension == "BGUM")
+  else:
+    raise InvalidArgument(f"extension {name.split('.')[-1]} unknown. Please use among {availableGraphExts()}")
+
+
+def availableGraphExts() -> str:
+  """ Give the list of all formats known by pyAgrum to save a graph.
+
+  :return: a string which lists all suffixes for supported graph file formats.
+  """
+  return "jgum|bgum|pkl"
+
+
+
 import warnings
 from typing import NamedTuple
 
 
 class ConfigMetadata(NamedTuple):
-  """Metadata attached to a configuration key by a '###' line in ``defaults.ini``."""
+  """
+  Metadata attached to a configuration key by a '###' line in ``defaults.ini``.
+
+  Attributes
+  ----------
+  kind : str
+      "int", "float", "bool", "str", "enum", or "deprecated" for a key replaced by another one
+  values : tuple[str, ...]
+      the allowed values when kind is "enum"
+  doc : str
+      the one-line documentation
+  target : tuple[str, str] or None
+      the replacement (section, option) when kind is "deprecated"
+  deprecated : bool
+      True for a key deprecated without replacement: it keeps its kind and its value, but is no longer used
+  """
 
   kind: str  # "int" | "float" | "bool" | "str" | "enum" | "deprecated"
   values: tuple[str, ...]  # allowed values when kind == "enum"
   doc: str  # one-line documentation
   target: tuple[str, str] | None  # replacement (section, option) when kind == "deprecated"
+  deprecated: bool = False  # deprecated without replacement: the key keeps its kind and its value
 
 class GumException(Exception):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -869,7 +1100,7 @@ def randomGeneratorSeed() -> int:
     Returns
     -------
     int
-      a randomly generated seed
+      the seed of the generator: the value given to the last call to `initRandom` or, if it was 0, the value taken from the current time. Used as `core.randomSeed` in a file `pyagrum.ini`, it repeats the same pseudo-random numbers sequence.
 
     """
     return _pyagrumcpp.randomGeneratorSeed()
@@ -881,6 +1112,8 @@ def initRandom(seed: int=0) -> None:
     r"""
 
     Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
+
+    This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
 
     Parameters
     ----------
@@ -902,10 +1135,10 @@ class _Configuration(object):
     value of some of these keys, but never creates a section or a key.
 
     Each key is described in ``defaults.ini`` by a metadata line ``### type :: documentation`` where type is
-    ``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation
-    ``deprecated -> section.key``. Setting a value that does not respect the declared type raises a
-    ``ValueError``. Accessing a deprecated key emits a ``DeprecationWarning`` and transparently uses the
-    replacement key. While values are always stored as strings, ``config.typed[section, key]`` gives the
+    ``int``, ``float``, ``bool``, ``str``, an enumeration ``v1|v2|...`` or a deprecation:
+    ``deprecated -> section.key``, or ``deprecated type`` for a key without replacement, no longer used.
+    Setting a value that does not respect the declared type raises a ``ValueError``. Accessing a deprecated
+    key emits a ``DeprecationWarning`` and transparently uses the replacement key, if any. While values are always stored as strings, ``config.typed[section, key]`` gives the
     value converted according to the declared type. Boolean and enumerated values are canonicalized when set:
     any accepted boolean spelling (``yes``/``on``/``1``/...) is stored as ``True`` or ``False``, an
     enumerated value is stored with the casing declared in ``defaults.ini``.
@@ -914,9 +1147,11 @@ class _Configuration(object):
 
     Examples
     --------
-      >>> import pyagrum
-      >>> pyagrum.config["dynamicBN", "graphSize"] = 10
-      >>> pyagrum.config["dynamicBN", "graphSize"]
+    .. code-block:: python
+
+      import pyagrum
+      pyagrum.config["dynamicBN", "graphSize"] = 10
+      pyagrum.config["dynamicBN", "graphSize"]
       "10"
 
     """
@@ -1075,8 +1310,10 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config["dynamicBN", "graphSize"] = 10
-        >>> pyagrum.config["dynamicBN", "graphSize"]
+      .. code-block:: python
+
+        pyagrum.config["dynamicBN", "graphSize"] = 10
+        pyagrum.config["dynamicBN", "graphSize"]
         "10"
 
       Parameters
@@ -1104,8 +1341,10 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config["dynamicBN", "graphSize"] = 10
-        >>> pyagrum.config["dynamicBN", "graphSize"]
+      .. code-block:: python
+
+        pyagrum.config["dynamicBN", "graphSize"] = 10
+        pyagrum.config["dynamicBN", "graphSize"]
         "10"
 
       Parameters
@@ -1127,7 +1366,9 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config.doc("notebook", "tensor_visible_digits")
+      .. code-block:: python
+
+        pyagrum.config.doc("tensor", "visibleDigits")
         "int :: number of visible digits when displaying a tensor"
 
       Parameters
@@ -1141,7 +1382,7 @@ class _Configuration(object):
       -------
       str
           The metadata as ``type :: documentation`` (``deprecated -> section.key :: documentation``
-          for a deprecated key).
+          for a deprecated key, ``deprecated type :: documentation`` for one without replacement).
 
       Raises
       ------
@@ -1157,9 +1398,11 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> pyagrum.config.typed["notebook", "tensor_visible_digits"]
+      .. code-block:: python
+
+        pyagrum.config.typed["tensor", "visibleDigits"]
         4
-        >>> pyagrum.config.typed["notebook", "tensor_with_colors"]
+        pyagrum.config.typed["tensor", "withColors"]
         True
 
       Parameters
@@ -1181,8 +1424,10 @@ class _Configuration(object):
 
       Examples
       --------
-        >>> for section, option, meta, default in pyagrum.config.schema():
-        ...   print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
+      .. code-block:: python
+
+        for section, option, meta, default in pyagrum.config.schema():
+          print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
 
       Yields
       ------
@@ -1191,13 +1436,14 @@ class _Configuration(object):
           deprecation target) and its default value (None for a deprecated key).
       """
       rows = self._schemaRows()
-      for i in range(0, len(rows), 8):
-        section, option, kind, values, doc, tsection, toption, default = rows[i : i + 8]
+      for i in range(0, len(rows), 9):
+        section, option, kind, values, doc, tsection, toption, default, deprecated = rows[i : i + 9]
         meta = ConfigMetadata(
           kind,
           tuple(values.split("|")) if kind == "enum" else (),
           doc,
           (tsection, toption) if kind == "deprecated" else None,
+          deprecated == "1",
         )
         yield section, option, meta, None if kind == "deprecated" else default
 
@@ -1311,13 +1557,15 @@ class DotOptions(object):
 
     Examples
     --------
-      >>> import pyagrum as gum
-      >>> bn = pyagrum.fastBN('A->B->C')
-      >>> options = pyagrum.DotOptions()
-      >>> options.setSize('12!')
-      >>> options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
-      >>> options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
-      >>> dot = bn.toDot(options)
+    .. code-block:: python
+
+      import pyagrum as gum
+      bn = gum.fastBN('A->B->C')
+      options = gum.DotOptions()
+      options.setSize('12!')
+      options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
+      options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
+      dot = bn.toDot(options)
 
     """
 
@@ -2392,28 +2640,30 @@ class LabelizedVariable(DiscreteVariable):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> # creating a variable with 3 labels : '0', '1' and '2'
-    >>> va=pyagrum.LabelizedVariable('a','a labelized variable',3)
-    >>> print(va)
-    a:Labelized(<0,1,2>)
-    >>> va.addLabel('foo')
-    (pyagrum.LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
-    >>> va.changeLabel(1,'bar')
-    >>> print(va)
-    a:Labelized(<0,bar,2,foo>)
-    >>> vb=pyagrum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
-    >>> print(vb)
-    b:Labelized(<A,B,C>)
-    >>> vb.labels()
-    ('A', 'B', 'C')
-    >>> vb.isLabel('E')
-    False
-    >>> vb.label(2)
-    'C'
-    >>> vc=pyagrum.LabelizedVariable('b','b',['one','two','three'])
-    >>> vc
-    (pyagrum.LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
+    .. code-block:: python
+
+      import pyagrum as gum
+      # creating a variable with 3 labels : '0', '1' and '2'
+      va=gum.LabelizedVariable('a','a labelized variable',3)
+      print(va)
+      a:Labelized(<0,1,2>)
+      va.addLabel('foo')
+      (pyagrum.LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
+      va.changeLabel(1,'bar')
+      print(va)
+      a:Labelized(<0,bar,2,foo>)
+      vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
+      print(vb)
+      b:Labelized(<A,B,C>)
+      vb.labels()
+      ('A', 'B', 'C')
+      vb.isLabel('E')
+      False
+      vb.label(2)
+      'C'
+      vc=gum.LabelizedVariable('b','b',['one','two','three'])
+      vc
+      (pyagrum.LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
 
     """
 
@@ -2698,19 +2948,21 @@ class RangeVariable(DiscreteVariable):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> vI=pyagrum.RangeVariable('I','I in [4,10]',4,10)
-    >>> print(vI)
-    I:Range([4,10])
-    >>> vI.maxVal()
-    10
-    >>> vI.belongs(1)
-    False
-    >>> # where is the value 5 ?
-    >>> vI.index('5')
-    1
-    >>> vI.labels()
-    ('4', '5', '6', '7', '8', '9', '10')
+    .. code-block:: python
+
+      import pyagrum as gum
+      vI=gum.RangeVariable('I','I in [4,10]',4,10)
+      print(vI)
+      I:Range([4,10])
+      vI.maxVal()
+      10
+      vI.belongs(1)
+      False
+      # where is the value 5 ?
+      vI.index('5')
+      1
+      vI.labels()
+      ('4', '5', '6', '7', '8', '9', '10')
 
     """
 
@@ -2964,21 +3216,23 @@ class IntegerVariable(DiscreteVariable):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> # creating a variable with 3 values : 1,34,142
-    >>> va=pyagrum.IntegerVariable('a','a integer variable',[1,34,142])
-    >>> print(va)
-    a:Integer(<1,34,142>)
-    >>> va.addValue(25)
-    (pyagrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
-    >>> va.changeValue(34,43)
-    >>> print(va)
-    a:Integer(<1,25,43,142>)
-    >>> vb=pyagrum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
-    >>> print(vb)
-    b:Integer(<1,34,142>)
-    >>> vb.labels()
-    ('1', '34', '142')
+    .. code-block:: python
+
+      import pyagrum as gum
+      # creating a variable with 3 values : 1,34,142
+      va=gum.IntegerVariable('a','a integer variable',[1,34,142])
+      print(va)
+      a:Integer(<1,34,142>)
+      va.addValue(25)
+      (pyagrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
+      va.changeValue(34,43)
+      print(va)
+      a:Integer(<1,25,43,142>)
+      vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
+      print(vb)
+      b:Integer(<1,34,142>)
+      vb.labels()
+      ('1', '34', '142')
 
     """
 
@@ -3274,24 +3528,26 @@ class NumericalDiscreteVariable(DiscreteVariable):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> # creating a variable with 3 values : 1.5,3.14,1.42
-    >>> va=pyagrum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
-    >>> print(va)
-    a:NumericalDiscrete({1.42|1.5|3.14})
-    >>> va.addValue(2.01)
-    (pyagrum.NumericalDiscreteVariable@0x55ea157b8d60) a:NumericalDiscrete({1.42|1.5|2.01|3.14})
-    >>> va.changeValue(3.14,3.1415)
-    >>> print(va)
-    a:NumericalDiscrete({1.42|1.5|2.01|3.1415})
-    >>> vb=pyagrum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
-    >>> print(vb)
-    b:NumericalDiscrete({1.42|1.5|3.14})
-    >>> vb.labels()
-    ('1.42', '1.5', '3.14')
-    >>>> vc=pyagrum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
-    >>> print(vc)
-    c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
+    .. code-block:: python
+
+      import pyagrum as gum
+      # creating a variable with 3 values : 1.5,3.14,1.42
+      va=gum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
+      print(va)
+      a:NumericalDiscrete({1.42|1.5|3.14})
+      va.addValue(2.01)
+      (pyagrum.NumericalDiscreteVariable@0x55ea157b8d60) a:NumericalDiscrete({1.42|1.5|2.01|3.14})
+      va.changeValue(3.14,3.1415)
+      print(va)
+      a:NumericalDiscrete({1.42|1.5|2.01|3.1415})
+      vb=gum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
+      print(vb)
+      b:NumericalDiscrete({1.42|1.5|3.14})
+      vb.labels()
+      ('1.42', '1.5', '3.14')
+      vc=gum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
+      print(vc)
+      c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 
     """
 
@@ -4012,7 +4268,8 @@ class UndiGraph(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -4025,6 +4282,10 @@ class UndiGraph(object):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -4143,32 +4404,6 @@ class UndiGraph(object):
       for i in self.nodes():
         yield i
 
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
 
     def edges(self) -> set[tuple[int,int]]:
         r"""
@@ -4196,6 +4431,66 @@ class UndiGraph(object):
 
         """
         return _pyagrumcpp.UndiGraph_neighbours(self, id)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.UndiGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.UndiGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
 
     def addNode(self) -> int:
         r"""
@@ -4607,7 +4902,8 @@ class DiGraph(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -4620,6 +4916,10 @@ class DiGraph(object):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -4738,32 +5038,6 @@ class DiGraph(object):
       for i in self.nodes():
         yield i
 
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
 
     def arcs(self) -> set[tuple[int,int]]:
         r"""
@@ -4845,6 +5119,66 @@ class DiGraph(object):
 
         """
         return _pyagrumcpp.DiGraph_ancestors(self, *args)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.DiGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.DiGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
 
     def addNode(self) -> int:
         r"""
@@ -5027,7 +5361,7 @@ _pyagrumcpp.DiGraph_swigregister(DiGraph)
 class DAG(DiGraph):
     r"""
 
-    DAG represents a Directed Graph.
+    DAG represents a Directed Acyclic Graph.
 
     DAG() -> DAG
         default constructor
@@ -5064,8 +5398,8 @@ class DAG(DiGraph):
 
         Parameters
         ----------
-        nodes : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
+        nodes : iterable of int
+          the node ids (a set, a list...; a single node id is given as ``{id}``)
         Returns
         -------
         pyagrum.UndiGraph
@@ -5151,32 +5485,6 @@ class DAG(DiGraph):
       for i in self.nodes():
         yield i
 
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
 
     def arcs(self) -> set[tuple[int,int]]:
         r"""
@@ -5258,6 +5566,66 @@ class DAG(DiGraph):
 
         """
         return _pyagrumcpp.DAG_ancestors(self, id)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.DAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.DAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
 
     def addArc(self, *args) -> None:
         r"""
@@ -5542,32 +5910,6 @@ class MixedGraph(UndiGraph, DiGraph):
       for i in self.nodes():
         yield i
 
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
-
 
     def arcs(self) -> set[tuple[int,int]]:
         r"""
@@ -5732,33 +6074,64 @@ class MixedGraph(UndiGraph, DiGraph):
         """
         return _pyagrumcpp.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.MixedGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.MixedGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
 
       Returns
       -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
+      str
+        the jgum string
       """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
 
-    def connectedComponentsCount(self):
-      """ number of connected components
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
 
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
 
 
     def addNode(self) -> int:
@@ -6034,14 +6407,39 @@ _pyagrumcpp.MixedGraph_swigregister(MixedGraph)
 class PDAG(MixedGraph):
     r"""
 
-    PDAG represents a graph with both arcs and edges.
+    PDAG represents a partially directed acyclic graph: a graph with arcs and undirected edges, with at
+    most one connection (an arc or an edge) between two nodes and without directed cycle (a cycle made of
+    arcs only).
+
+    A cycle mixing arcs and edges (a partially directed cycle) is allowed in a PDAG: a PDAG without
+    partially directed cycle is a chain graph (see :class:`pyagrum.ChainGraph`). The orientation of a
+    partially directed graph by the Meek rules gives a PDAG, which is not always a chain graph.
 
     PDAG() -> PDAG
         default constructor
 
     PDAG(src) -> PDAG
         Parameters:
-            - **src** (*pyagrum.PDAG*) --the PDAG to copy
+            - **src** (*pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+
+    Raises
+    ------
+    pyagrum.InvalidDirectedCycle
+      If the mixed graph to copy contains a directed cycle.
+    pyagrum.InvalidArc
+      If the mixed graph to copy connects two nodes by both an arc and an edge.
+
+    References
+    ----------
+    C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
+    Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
+
+    D. M. Chickering. Optimal Structure Identification With Greedy Search. Journal of Machine Learning
+    Research 3:507-554, 2002.
+
+    M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
+    computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
+    Intelligence, PMLR 161:1248-1257, 2021.
 
     """
 
@@ -6051,98 +6449,121 @@ class PDAG(MixedGraph):
         _pyagrumcpp.PDAG_swiginit(self, _pyagrumcpp.new_PDAG(*args))
     __swig_destroy__ = _pyagrumcpp.delete_PDAG
 
-    def moralGraph(self) -> "pyagrum.UndiGraph":
-        r"""
-
-        Returns the moral graph of the PDAG, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
-
-        Returns
-        -------
-        pyagrum.UndiGraph
-            The moral graph
-
-        """
-        return _pyagrumcpp.PDAG_moralGraph(self)
-
-    def moralizedAncestralGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
-        r"""
-
-        Compute the moralized ancestral graph of the nodes from the DAG.
-
-        Parameters
-        ----------
-        nodes : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
-        Returns
-        -------
-        pyagrum.UndiGraph
-          the moralized ancestral graph of the nodes from the DAG.
-
-        """
-        return _pyagrumcpp.PDAG_moralizedAncestralGraph(self, nodes)
-
-    def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
-        r"""
-
-        Check if there is a strictly oriented path from node1 to node2 (all arcs, no edges).
-
-        Parameters
-        ----------
-        node1 : int
-            the start node id
-        node2 : int
-            the end node id
-
-        Returns
-        -------
-        bool
-            True if such a path exists
-
-        """
-        return _pyagrumcpp.PDAG_hasMixedReallyOrientedPath(self, n1, n2)
-
-    def toDot(self, *args) -> str:
-        r"""
-
-        Parameters
-        ----------
-        options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
-
-        Returns
-        -------
-        str
-            a friendly display of the graph in DOT format
-
-        """
-        return _pyagrumcpp.PDAG_toDot(self, *args)
-
     def __repr__(self) -> str:
         return _pyagrumcpp.PDAG___repr__(self)
 
     def __str__(self) -> str:
         return _pyagrumcpp.PDAG___str__(self)
 
-    def cSeparation(self, *args) -> bool:
-        r"""
+    def _moralGraph(self) -> "pyagrum.UndiGraph":
+        return _pyagrumcpp.PDAG__moralGraph(self)
 
-        Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given) in the PDAG.
+    def _hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
+        return _pyagrumcpp.PDAG__hasMixedReallyOrientedPath(self, n1, n2)
 
-        Parameters
-        ----------
-        X : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
-        Y : int | sequence of int
-          a sequence of node ids (int) or a single node id (int)
-        Z : int | sequence of int (optional)
-          a sequence of node ids (int) or a single node id (int)
-        Returns
-        -------
-        bool
-          True if X and Y are c-separated (by Z if given), False otherwise.
+    def _moralizedAncestralGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
+        return _pyagrumcpp.PDAG__moralizedAncestralGraph(self, nodes)
 
-        """
-        return _pyagrumcpp.PDAG_cSeparation(self, *args)
+    def _cSeparation(self, X: object, Y: object, Z: object) -> bool:
+        return _pyagrumcpp.PDAG__cSeparation(self, X, Y, Z)
+
+    def moralGraph(self):
+      """
+      Returns the moral graph of the PDAG (LWF interpretation of chain graphs).
+
+      Returns
+      -------
+      pyagrum.UndiGraph
+        the moral graph
+
+      Warnings
+      --------
+      PDAG.moralGraph is deprecated after 3.3.2, use ChainGraph.moralGraph instead.
+      """
+      import warnings
+      warnings.warn("PDAG.moralGraph is deprecated after 3.3.2, use ChainGraph.moralGraph instead",
+                    DeprecationWarning, stacklevel=2)
+      return self._moralGraph()
+
+    def moralizedAncestralGraph(self, nodes):
+      """
+      Compute the moral graph (LWF interpretation of chain graphs) of the smallest ancestral set
+      containing the nodes.
+
+      Parameters
+      ----------
+      nodes : set[int]
+        the nodes
+
+      Returns
+      -------
+      pyagrum.UndiGraph
+        the moral graph of this ancestral set
+
+      Warnings
+      --------
+      PDAG.moralizedAncestralGraph is deprecated after 3.3.2, use ChainGraph.moralizedAncestralGraph
+      instead.
+      """
+      import warnings
+      warnings.warn("PDAG.moralizedAncestralGraph is deprecated after 3.3.2, use "
+                    "ChainGraph.moralizedAncestralGraph instead", DeprecationWarning, stacklevel=2)
+      return self._moralizedAncestralGraph(nodes)
+
+    def cSeparation(self, X, Y, Z=None):
+      """
+      Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given).
+
+      Parameters
+      ----------
+      X : int or set[int]
+        a node or a set of nodes
+      Y : int or set[int]
+        a node or a set of nodes
+      Z : int or set[int], optional
+        the observed node or nodes (none by default)
+
+      Returns
+      -------
+      bool
+        True if X and Y are c-separated by Z
+
+      Warnings
+      --------
+      PDAG.cSeparation is deprecated after 3.3.2, use ChainGraph.cSeparation instead.
+      """
+      import warnings
+      warnings.warn("PDAG.cSeparation is deprecated after 3.3.2, use ChainGraph.cSeparation instead",
+                    DeprecationWarning, stacklevel=2)
+      return self._cSeparation(X, Y, Z)
+
+    def hasMixedReallyOrientedPath(self, n1, n2):
+      """
+      Check if a walk from n1 to n2 exists, following the arcs in their direction and the edges in
+      either direction, with at least one arc. A walk may visit a node several times.
+
+      Parameters
+      ----------
+      n1 : int
+        the id of the first node of the walk
+      n2 : int
+        the id of the last node of the walk
+
+      Returns
+      -------
+      bool
+        True if such a walk exists
+
+      Warnings
+      --------
+      PDAG.hasMixedReallyOrientedPath is deprecated after 3.3.2, use
+      ChainGraph.hasMixedReallyOrientedPath instead.
+      """
+      import warnings
+      warnings.warn("PDAG.hasMixedReallyOrientedPath is deprecated after 3.3.2, use "
+                    "ChainGraph.hasMixedReallyOrientedPath instead", DeprecationWarning, stacklevel=2)
+      return self._hasMixedReallyOrientedPath(n1, n2)
+
 
     def addNodes(self, n: int) -> set[int]:
         r"""
@@ -6168,32 +6589,6 @@ class PDAG(MixedGraph):
       """
       for i in self.nodes():
         yield i
-
-    def __getstate__(self):
-        state=dict()
-        if hasattr(self,'arcs'):
-            state['arcs']=self.arcs()
-        if hasattr(self,'edges'):
-          state['edges']=self.edges()
-        return state
-
-    def __setstate__(self,state):
-        self.__init__()
-        if 'arcs' in state:
-            for x,y in state['arcs']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addArc(x,y)
-        if 'edges' in state:
-            for x,y in state['edges']:
-              if not self.existsNode(x):
-                self.addNodeWithId(x)
-              if not self.existsNode(y):
-                self.addNodeWithId(y)
-              self.addEdge(x,y)
-        return self
 
 
     def arcs(self) -> set[tuple[int,int]]:
@@ -6359,33 +6754,64 @@ class PDAG(MixedGraph):
         """
         return _pyagrumcpp.PDAG_mixedUnorientedPath(self, node1, node2)
 
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.PDAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.PDAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
 
       Returns
       -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
+      str
+        the jgum string
       """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
 
-    def connectedComponentsCount(self):
-      """ number of connected components
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
 
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
 
 
     def addNode(self) -> int:
@@ -6475,8 +6901,10 @@ class PDAG(MixedGraph):
 
         Raises
         ------
-          pyagrum.InvalidNode
-            If n1 or n2 does not belong to the graph nodes.
+        pyagrum.InvalidNode
+          If n1 or n2 does not belong to the graph nodes.
+        pyagrum.InvalidEdge
+          If an arc already connects n1 and n2.
 
         """
         return _pyagrumcpp.PDAG_addEdge(self, *args)
@@ -6572,11 +7000,12 @@ class PDAG(MixedGraph):
 
         Raises
         ------
-          pyagrum.InvalidNode
-            If head or tail does not belong to the graph nodes.
-
-          PyAgrum.InvalidDirectedCycle
-            if the arc would create a (mixed) cycle.
+        pyagrum.InvalidNode
+          If head or tail does not belong to the graph nodes.
+        pyagrum.InvalidArc
+          If an edge already connects tail and head.
+        pyagrum.InvalidDirectedCycle
+          If the arc would create a directed cycle.
 
         """
         return _pyagrumcpp.PDAG_addArc(self, *args)
@@ -6673,48 +7102,1619 @@ class PDAG(MixedGraph):
 
 # Register PDAG in _pyagrumcpp:
 _pyagrumcpp.PDAG_swigregister(PDAG)
-EdgeMark_Circle = _pyagrumcpp.EdgeMark_Circle
-EdgeMark_Tail = _pyagrumcpp.EdgeMark_Tail
-EdgeMark_Arrowhead = _pyagrumcpp.EdgeMark_Arrowhead
-class PAG(UndiGraph):
+class ChainGraph(PDAG):
     r"""
 
-    PAG represents a Partial Ancestral Graph, the output of the FCI algorithm.
+    ChainGraph represents a chain graph: a PDAG (arcs and undirected edges, at most one connection between
+    two nodes) without partially directed cycle, i.e. without any cycle containing at least one arc in
+    which the arcs are followed in their direction and the edges in either direction.
 
-    A PAG is an undirected graph whose edges carry endpoint marks. Each edge
-    between nodes x and y has two marks, one at each endpoint:
+    Equivalently, the connected components of the undirected part (the chain components) are linked by
+    arcs that form a directed acyclic graph over the components. DAGs and undirected graphs are chain
+    graphs.
 
-    - ``EdgeMark_Circle`` (o): uncertain endpoint
-    - ``EdgeMark_Tail`` (-): definite non-ancestor (tail)
-    - ``EdgeMark_Arrowhead`` (>): definite ancestor (arrowhead)
+    This class is the graph only: the independence model read from a chain graph depends on its
+    interpretation (LWF, AMP or MVR). The methods `moralGraph`, `moralizedAncestralGraph` and
+    `cSeparation` follow the LWF interpretation.
 
-    PAG() -> PAG
+    ChainGraph() -> ChainGraph
         default constructor
 
-    PAG(src) -> PAG
+    ChainGraph(src) -> ChainGraph
         Parameters:
-            - **src** (*pyagrum.PAG*) -- the PAG to copy
+            - **src** (*pyagrum.ChainGraph*, *pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
 
-    Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``.
+    Raises
+    ------
+    pyagrum.InvalidPartiallyDirectedCycle
+      If the graph to copy contains a partially directed cycle.
+    pyagrum.InvalidDirectedCycle
+      If the mixed graph to copy contains a directed cycle.
+    pyagrum.InvalidArc
+      If the mixed graph to copy connects two nodes by both an arc and an edge.
+
+    References
+    ----------
+    S. L. Lauritzen, N. Wermuth. Graphical Models for Associations between Variables, some of which are
+    Qualitative and some Quantitative. The Annals of Statistics 17(1):31-57, 1989.
+    doi:10.1214/aos/1176347003.
+
+    M. Frydenberg. The chain graph Markov property. Scandinavian Journal of Statistics 17(4):333-353, 1990.
+
+    S. A. Andersson, D. Madigan, M. D. Perlman. Alternative Markov Properties for Chain Graphs.
+    Scandinavian Journal of Statistics 28(1):33-85, 2001. doi:10.1111/1467-9469.00224.
+
+    R. R. Bouckaert, M. Studený. Chain graphs: Semantics and expressiveness. ECSQARU 1995, LNCS 946,
+    pp. 69-76, Springer. doi:10.1007/3-540-60112-0_9.
+
+    R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
+    structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
+
+    D. Sonntag, J. M. Peña. Chain graph interpretations and their relations revisited. International
+    Journal of Approximate Reasoning 58:39-56, 2015. doi:10.1016/j.ijar.2014.12.001.
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
-        _pyagrumcpp.PAG_swiginit(self, _pyagrumcpp.new_PAG(*args))
-    __swig_destroy__ = _pyagrumcpp.delete_PAG
+        _pyagrumcpp.ChainGraph_swiginit(self, _pyagrumcpp.new_ChainGraph(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_ChainGraph
+
+    def addArc(self, tail: int, head: int) -> None:
+        r"""
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+          If head or tail does not belong to the graph nodes.
+        pyagrum.InvalidArc
+          If an edge already connects tail and head.
+        pyagrum.InvalidDirectedCycle
+          If the arc would create a directed cycle.
+        pyagrum.InvalidPartiallyDirectedCycle
+          If the arc would create a partially directed cycle, i.e. if there is a path from head to tail
+          following the arcs in their direction and the edges in either direction.
+
+        """
+        return _pyagrumcpp.ChainGraph_addArc(self, tail, head)
+
+    def addEdge(self, first: int, second: int) -> None:
+        r"""
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+          If n1 or n2 does not belong to the graph nodes.
+        pyagrum.InvalidEdge
+          If an arc already connects n1 and n2.
+        pyagrum.InvalidPartiallyDirectedCycle
+          If the edge would create a partially directed cycle.
+
+        """
+        return _pyagrumcpp.ChainGraph_addEdge(self, first, second)
+
+    def hasMixedReallyOrientedPath(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check if a path from n1 to n2 exists, following the arcs in their direction and the edges in either
+        direction, with at least one arc.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the first node of the path
+        n2 : int
+          the id of the last node of the path
+
+        Returns
+        -------
+        bool
+          True if such a path exists (False if n1 and n2 are the same node)
+
+        """
+        return _pyagrumcpp.ChainGraph_hasMixedReallyOrientedPath(self, n1, n2)
+
+    def moralGraph(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns the moral graph of the chain graph (LWF interpretation): the parents of each chain component
+        are married, then all the arcs become edges.
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            The moral graph
+
+        """
+        return _pyagrumcpp.ChainGraph_moralGraph(self)
+
+    def moralizedAncestralGraph(self, nodes: set[int] | list[int]) -> "pyagrum.UndiGraph":
+        r"""
+
+        Compute the moral graph (LWF interpretation) of the smallest ancestral set containing the nodes.
+
+        Parameters
+        ----------
+        nodes : iterable of int
+          the node ids (a set, a list...; a single node id is given as ``{id}``)
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the moralized ancestral graph of the nodes.
+
+        """
+        return _pyagrumcpp.ChainGraph_moralizedAncestralGraph(self, nodes)
+
+    def toDot(self, *args) -> str:
+        r"""
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
+        return _pyagrumcpp.ChainGraph_toDot(self, *args)
+
+    def __repr__(self) -> str:
+        return _pyagrumcpp.ChainGraph___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.ChainGraph___str__(self)
+
+    def cSeparation(self, *args) -> bool:
+        r"""
+
+        Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given) in the chain graph
+        (LWF interpretation).
+
+        Parameters
+        ----------
+        X : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Y : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Z : int | sequence of int (optional)
+          a sequence of node ids (int) or a single node id (int)
+
+        Returns
+        -------
+        bool
+          True if X and Y are c-separated (by Z if given), False otherwise.
+
+        """
+        return _pyagrumcpp.ChainGraph_cSeparation(self, *args)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.ChainGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.ChainGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
+
+# Register ChainGraph in _pyagrumcpp:
+_pyagrumcpp.ChainGraph_swigregister(ChainGraph)
+class _ImmutableGraphChainGraph(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def graph(self) -> "pyagrum.ChainGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.ChainGraph
+          a copy of the chain graph of the CPDAG
+
+        """
+        val = _pyagrumcpp._ImmutableGraphChainGraph_graph(self)
+
+        val = type(val)(val)
+
+
+        return val
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_nodes(self)
+
+    def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the edges of the graph: the undirected edges of a CPDAG or an MPDAG, the edges (with
+          any marks) of a MAG
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_edges(self)
+
+    def size(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of nodes
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_size(self)
+
+    def sizeEdges(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of edges (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_sizeEdges(self)
+
+    def empty(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if the graph has no node
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_empty(self)
+
+    def existsNode(self, node: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        bool
+          True if the node exists
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_existsNode(self, node)
+
+    def existsEdge(self, first: int, second: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        first : int
+          the id of a node
+        second : int
+          the id of another node
+
+        Returns
+        -------
+        bool
+          True if the edge first-second exists (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_existsEdge(self, first, second)
+
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        The names of the nodes are kept from the graph the immutable graph was built from.
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        str
+          the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> int | None:
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+          the name to look up
+
+        Returns
+        -------
+        int or None
+          the node id, or None if the name is not found
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_idFromName(self, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        bool
+          True if the node has a name
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_hasName(self, id)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        The connected components of the graph (of its skeleton).
+
+        Returns
+        -------
+        dict[int, int]
+          each node id mapped to the id of the root of its component
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_connectedComponents(self)
+
+    def skeleton(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the undirected graph with the same nodes (ids and names) and the same adjacencies
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_skeleton(self)
+
+    def __eq__(self, g: "_ImmutableGraphChainGraph") -> bool:
+        return _pyagrumcpp._ImmutableGraphChainGraph___eq__(self, g)
+
+    def toString(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          a string representation of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphChainGraph_toString(self)
+
+# Register _ImmutableGraphChainGraph in _pyagrumcpp:
+_pyagrumcpp._ImmutableGraphChainGraph_swigregister(_ImmutableGraphChainGraph)
+class _ImmutableMixedGraphChainGraph(_ImmutableGraphChainGraph):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def arcs(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the arcs of the graph (the arcs with the same orientation in all the represented DAGs)
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_arcs(self)
+
+    def parents(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the parents of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_parents(self, node)
+
+    def children(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the children of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_children(self, node)
+
+    def neighbours(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the undirected neighbours of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_neighbours(self, node)
+
+    def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of arcs
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_sizeArcs(self)
+
+    def existsArc(self, tail: int, head: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail
+        head : int
+          the id of the head
+
+        Returns
+        -------
+        bool
+          True if the arc tail->head exists
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_existsArc(self, tail, head)
+
+    def consistentExtension(self) -> "pyagrum.DAG":
+        r"""
+
+        Returns
+        -------
+        pyagrum.DAG
+          a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),
+          kept from the construction of the graph
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_consistentExtension(self)
+
+    def dSeparation(self, *args) -> bool:
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_dSeparation(self, *args)
+
+    def toDot(self, *args) -> str:
+        r"""
+
+        The chain components (nodes linked by undirected edges) are drawn in clusters (color of the key
+        ``dot.chainComponentBgColor`` of ``pyagrum.config``) and the compelled arcs with the color of the key
+        ``dot.compelledArcColor``.
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+
+        Returns
+        -------
+        str
+          a representation of the CPDAG in the DOT format
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphChainGraph_toDot(self, *args)
+
+# Register _ImmutableMixedGraphChainGraph in _pyagrumcpp:
+_pyagrumcpp._ImmutableMixedGraphChainGraph_swigregister(_ImmutableMixedGraphChainGraph)
+class _ImmutableGraphPDAG(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def graph(self) -> "pyagrum.PDAG":
+        r"""
+
+        Returns
+        -------
+        pyagrum.PDAG
+          a copy of the PDAG of the MPDAG
+
+        """
+        val = _pyagrumcpp._ImmutableGraphPDAG_graph(self)
+
+        val = type(val)(val)
+
+
+        return val
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_nodes(self)
+
+    def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the edges of the graph: the undirected edges of a CPDAG or an MPDAG, the edges (with
+          any marks) of a MAG
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_edges(self)
+
+    def size(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of nodes
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_size(self)
+
+    def sizeEdges(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of edges (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_sizeEdges(self)
+
+    def empty(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if the graph has no node
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_empty(self)
+
+    def existsNode(self, node: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        bool
+          True if the node exists
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_existsNode(self, node)
+
+    def existsEdge(self, first: int, second: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        first : int
+          the id of a node
+        second : int
+          the id of another node
+
+        Returns
+        -------
+        bool
+          True if the edge first-second exists (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_existsEdge(self, first, second)
+
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        The names of the nodes are kept from the graph the immutable graph was built from.
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        str
+          the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> int | None:
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+          the name to look up
+
+        Returns
+        -------
+        int or None
+          the node id, or None if the name is not found
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_idFromName(self, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        bool
+          True if the node has a name
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_hasName(self, id)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        The connected components of the graph (of its skeleton).
+
+        Returns
+        -------
+        dict[int, int]
+          each node id mapped to the id of the root of its component
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_connectedComponents(self)
+
+    def skeleton(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the undirected graph with the same nodes (ids and names) and the same adjacencies
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_skeleton(self)
+
+    def __eq__(self, g: "_ImmutableGraphPDAG") -> bool:
+        return _pyagrumcpp._ImmutableGraphPDAG___eq__(self, g)
+
+    def toString(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          a string representation of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphPDAG_toString(self)
+
+# Register _ImmutableGraphPDAG in _pyagrumcpp:
+_pyagrumcpp._ImmutableGraphPDAG_swigregister(_ImmutableGraphPDAG)
+class _ImmutableMixedGraphPDAG(_ImmutableGraphPDAG):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def arcs(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the arcs of the graph (the arcs with the same orientation in all the represented DAGs)
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_arcs(self)
+
+    def parents(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the parents of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_parents(self, node)
+
+    def children(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the children of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_children(self, node)
+
+    def neighbours(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        set[int]
+          the undirected neighbours of the node
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_neighbours(self, node)
+
+    def sizeArcs(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of arcs
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_sizeArcs(self)
+
+    def existsArc(self, tail: int, head: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail
+        head : int
+          the id of the head
+
+        Returns
+        -------
+        bool
+          True if the arc tail->head exists
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_existsArc(self, tail, head)
+
+    def consistentExtension(self) -> "pyagrum.DAG":
+        r"""
+
+        Returns
+        -------
+        pyagrum.DAG
+          a represented DAG (a consistent extension: same skeleton, same v-structures, containing the arcs),
+          kept from the construction of the graph
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_consistentExtension(self)
+
+    def dSeparation(self, *args) -> bool:
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_dSeparation(self, *args)
+
+    def toDot(self, *args) -> str:
+        r"""
+
+        The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of ``pyagrum.config``. No
+        cluster is drawn: an MPDAG is not always a chain graph.
+
+        Parameters
+        ----------
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+
+        Returns
+        -------
+        str
+          a representation of the MPDAG in the DOT format
+
+        """
+        return _pyagrumcpp._ImmutableMixedGraphPDAG_toDot(self, *args)
+
+# Register _ImmutableMixedGraphPDAG in _pyagrumcpp:
+_pyagrumcpp._ImmutableMixedGraphPDAG_swigregister(_ImmutableMixedGraphPDAG)
+class CPDAG(_ImmutableMixedGraphChainGraph):
+    r"""
+
+    CPDAG represents a completed partially directed acyclic graph (or essential graph): the representation
+    of a Markov equivalence class of DAGs.
+
+    Two DAGs are Markov equivalent iff they have the same skeleton and the same v-structures (Verma and
+    Pearl 1990). The CPDAG of a class has an arc for each compelled arc (same orientation in all the DAGs
+    of the class) and an undirected edge for each reversible one. It is a chain graph whose chain
+    components are chordal (Andersson, Madigan and Perlman 1997).
+
+    A CPDAG cannot be modified (its properties are global): it is built from a DAG
+    (:meth:`CPDAG.fromDAG`, Chickering 1995) or from a PDAG with a check (:meth:`CPDAG.fromPDAG`).
+    :meth:`dSeparation` gives the d-separation of every DAG of the class (they are Markov equivalent);
+    it is computed on a DAG of the class kept from the construction (:meth:`consistentExtension`). It is
+    also the c-separation of the chain graph of the CPDAG (a DAG and its essential graph are Markov
+    equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Bouckaert and
+    Studený 1998).
+
+    Examples
+    --------
+    .. code-block:: python
+
+      import pyagrum as gum
+      cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C;D->C'))
+      cpdag.arcs(), cpdag.edges()
+      ({(1, 2), (3, 2)}, {(0, 1)})
+
+    References
+    ----------
+    T. Verma, J. Pearl. Equivalence and Synthesis of Causal Models. Proceedings of the 6th Conference on
+    Uncertainty in Artificial Intelligence (UAI 1990), pp. 220-227. arXiv:1304.1108.
+
+    D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures.
+    Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 87-98.
+    arXiv:1302.4938.
+
+    S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for
+    acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997. doi:10.1214/aos/1031833662.
+
+    R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
+    structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    @staticmethod
+    def fromDAG(dag: "pyagrum.DAG") -> "pyagrum.CPDAG":
+        r"""
+
+        The CPDAG of the Markov equivalence class of a DAG (algorithm Find-Compelled of Chickering 1995).
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+          a DAG
+
+        Returns
+        -------
+        pyagrum.CPDAG
+          the CPDAG of its Markov equivalence class
+
+        """
+        return _pyagrumcpp.CPDAG_fromDAG(dag)
+
+    @staticmethod
+    def fromPDAG(pdag: "PDAG") -> "pyagrum.CPDAG":
+        r"""
+
+        Checked conversion of a PDAG into a CPDAG: the PDAG must be the CPDAG of its consistent extensions.
+
+        Parameters
+        ----------
+        pdag : pyagrum.PDAG
+          a PDAG
+
+        Returns
+        -------
+        pyagrum.CPDAG
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          If the PDAG is not a CPDAG.
+
+        """
+        return _pyagrumcpp.CPDAG_fromPDAG(pdag)
+
+    def __init__(self, *args):
+        _pyagrumcpp.CPDAG_swiginit(self, _pyagrumcpp.new_CPDAG(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_CPDAG
+
+    def contains(self, dag: "pyagrum.DAG") -> bool:
+        r"""
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+          a DAG
+
+        Returns
+        -------
+        bool
+          True if the DAG is represented by the CPDAG.
+
+        """
+        return _pyagrumcpp.CPDAG_contains(self, dag)
+
+    def __repr__(self) -> str:
+        return _pyagrumcpp.CPDAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.CPDAG___str__(self)
+
+    def dSeparation(self, *args) -> bool:
+        r"""
+
+        Check if the sets of nodes X and Y are d-separated (by the set of nodes Z if given) in every DAG
+        represented by the CPDAG.
+
+        Parameters
+        ----------
+        X : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Y : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Z : int | sequence of int (optional)
+          a sequence of node ids (int) or a single node id (int)
+
+        Returns
+        -------
+        bool
+          True if X and Y are d-separated (by Z if given), False otherwise.
+
+        """
+        return _pyagrumcpp.CPDAG_dSeparation(self, *args)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp.CPDAG_nodes(self)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.CPDAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.CPDAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
+
+# Register CPDAG in _pyagrumcpp:
+_pyagrumcpp.CPDAG_swigregister(CPDAG)
+class MPDAG(_ImmutableMixedGraphPDAG):
+    r"""
+
+    MPDAG represents a maximally oriented PDAG: a CPDAG refined by background knowledge.
+
+    A PDAG represents the DAGs with its skeleton, its v-structures and containing its arcs (its consistent
+    extensions). Its maximal orientation (MPDAG) orients every edge that has the same orientation in all
+    these DAGs: it is the closure of the PDAG under the Meek rules (Meek 1995). A CPDAG with some imposed
+    arcs gives an MPDAG (Perković, Kalisch and Maathuis 2017). An MPDAG is not always a chain graph.
+
+    An MPDAG cannot be modified: it is built by :meth:`MPDAG.meekClosure`, :meth:`MPDAG.fromCPDAG` or
+    checked by :meth:`MPDAG.fromPDAG`. The represented DAGs are Markov equivalent: :meth:`dSeparation` is
+    the d-separation of any of them.
+
+    Examples
+    --------
+    .. code-block:: python
+
+      import pyagrum as gum
+      cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C'))
+      mpdag = gum.MPDAG.fromCPDAG(cpdag, [(0, 1)])  # A->B imposed, then B->C by the Meek rules
+      mpdag.arcs()
+      {(0, 1), (1, 2)}
+
+    References
+    ----------
+    C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
+    Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
+
+    E. Perković, M. Kalisch, M. H. Maathuis. Interpreting and using CPDAGs with background knowledge.
+    Proceedings of the 33rd Conference on Uncertainty in Artificial Intelligence (UAI 2017), PMLR
+    R15:461-470. arXiv:1707.02171.
+
+    M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
+    computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
+    Intelligence, PMLR 161:1248-1257, 2021.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    @staticmethod
+    def meekClosure(pdag: "PDAG") -> "pyagrum.MPDAG":
+        r"""
+
+        The maximal orientation of an extendable PDAG (its closure under the Meek rules).
+
+        Parameters
+        ----------
+        pdag : pyagrum.PDAG
+          an extendable PDAG
+
+        Returns
+        -------
+        pyagrum.MPDAG
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          If the PDAG has no consistent extension.
+
+        """
+        return _pyagrumcpp.MPDAG_meekClosure(pdag)
+
+    @staticmethod
+    def fromPDAG(pdag: "PDAG") -> "pyagrum.MPDAG":
+        r"""
+
+        Checked conversion of a PDAG into an MPDAG: the PDAG must be extendable and closed under the Meek
+        rules.
+
+        Parameters
+        ----------
+        pdag : pyagrum.PDAG
+          a PDAG
+
+        Returns
+        -------
+        pyagrum.MPDAG
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          If the PDAG is not an MPDAG.
+
+        """
+        return _pyagrumcpp.MPDAG_fromPDAG(pdag)
+
+    def __init__(self, *args):
+        _pyagrumcpp.MPDAG_swiginit(self, _pyagrumcpp.new_MPDAG(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_MPDAG
+
+    def contains(self, dag: "pyagrum.DAG") -> bool:
+        r"""
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+          a DAG
+
+        Returns
+        -------
+        bool
+          True if the DAG is represented by the MPDAG.
+
+        """
+        return _pyagrumcpp.MPDAG_contains(self, dag)
+
+    def cpdag(self) -> "pyagrum.CPDAG":
+        r"""
+
+        Returns
+        -------
+        pyagrum.CPDAG
+          the CPDAG of the Markov equivalence class of the represented DAGs
+
+        """
+        return _pyagrumcpp.MPDAG_cpdag(self)
+
+    def __repr__(self) -> str:
+        return _pyagrumcpp.MPDAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.MPDAG___str__(self)
+
+    def dSeparation(self, *args) -> bool:
+        r"""
+
+        Check if the sets of nodes X and Y are d-separated (by the set of nodes Z if given) in every DAG
+        represented by the MPDAG.
+
+        Parameters
+        ----------
+        X : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Y : int | sequence of int
+          a sequence of node ids (int) or a single node id (int)
+        Z : int | sequence of int (optional)
+          a sequence of node ids (int) or a single node id (int)
+
+        Returns
+        -------
+        bool
+          True if X and Y are d-separated (by Z if given), False otherwise.
+
+        """
+        return _pyagrumcpp.MPDAG_dSeparation(self, *args)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
+
+    @staticmethod
+    def _fromCPDAGArcs(cpdag: "CPDAG", tails: tuple[int, ...], heads: tuple[int, ...]) -> "pyagrum.MPDAG":
+        return _pyagrumcpp.MPDAG__fromCPDAGArcs(cpdag, tails, heads)
+
+    @staticmethod
+    def fromCPDAG(cpdag: "CPDAG", arcs) -> "MPDAG":
+      """
+      The MPDAG of a CPDAG with some arcs imposed by background knowledge.
+
+      Parameters
+      ----------
+      cpdag : pyagrum.CPDAG
+        the Markov equivalence class
+      arcs : iterable of tuple[int, int]
+        the imposed arcs (tail, head): each one must orient an edge of the CPDAG (or be one of its arcs)
+
+      Returns
+      -------
+      pyagrum.MPDAG
+        the maximal orientation of the CPDAG with these arcs
+
+      Raises
+      ------
+      pyagrum.InvalidArc
+        If an arc does not orient an edge of the CPDAG.
+      pyagrum.InvalidArgument
+        If no DAG of the Markov equivalence class contains these arcs.
+      """
+      arcs = list(arcs)
+      return MPDAG._fromCPDAGArcs(cpdag, [t for t, _ in arcs], [h for _, h in arcs])
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp.MPDAG_nodes(self)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.MPDAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.MPDAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
+
+# Register MPDAG in _pyagrumcpp:
+_pyagrumcpp.MPDAG_swigregister(MPDAG)
+EdgeMark_Circle = _pyagrumcpp.EdgeMark_Circle
+EdgeMark_Tail = _pyagrumcpp.EdgeMark_Tail
+EdgeMark_Arrowhead = _pyagrumcpp.EdgeMark_Arrowhead
+class MarkedGraph(object):
+    r"""
+
+    MarkedGraph represents a graph whose edges carry a mark at each of their ends.
+
+    Each edge between nodes x and y has two marks, one at each end (``pyagrum.EdgeMark``):
+
+    - ``EdgeMark.Circle`` (o): undetermined end
+    - ``EdgeMark.Tail`` (-): tail
+    - ``EdgeMark.Arrowhead`` (>): arrowhead
+
+    There is at most one edge between two nodes: ``x->y`` (tail at x, arrowhead at y), ``x<->y``, ``x--y``,
+    ``x o-> y``, ``x o-o y``... A marked graph is not an undirected graph: its skeleton is given by ``skeleton()``
+    and its directed view by ``parents``, ``children``, ``spouses`` and ``undirectedNeighbours``.
+
+    MarkedGraph() -> MarkedGraph
+        default constructor
+
+    MarkedGraph(src) -> MarkedGraph
+        Parameters:
+            - **src** (*pyagrum.MarkedGraph*) -- the marked graph to copy
+
+    See also ``pyagrum.fastMarkedGraph``, ``pyagrum.PAG`` and ``pyagrum.MAG``.
+
+    References
+    ----------
+    T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
+
+    J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
+
+    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
+    selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        _pyagrumcpp.MarkedGraph_swiginit(self, _pyagrumcpp.new_MarkedGraph(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_MarkedGraph
+
+    def __eq__(self, g: "MarkedGraph") -> bool:
+        return _pyagrumcpp.MarkedGraph___eq__(self, g)
 
     def clearEdges(self) -> None:
         r"""
 
-        Remove all edges and their endpoint marks from the PAG.
+        Remove all edges and their endpoint marks from the graph.
 
         Nodes are preserved; only edges and their associated marks are removed.
 
         """
-        return _pyagrumcpp.PAG_clearEdges(self)
+        return _pyagrumcpp.MarkedGraph_clearEdges(self)
 
     def eraseNode(self, id: int) -> None:
         r"""
@@ -6727,7 +8727,7 @@ class PAG(UndiGraph):
           the id of the node
 
         """
-        return _pyagrumcpp.PAG_eraseNode(self, id)
+        return _pyagrumcpp.MarkedGraph_eraseNode(self, id)
 
     def clear(self) -> None:
         r"""
@@ -6735,7 +8735,73 @@ class PAG(UndiGraph):
         Remove all the nodes and edges from the graph.
 
         """
-        return _pyagrumcpp.PAG_clear(self)
+        return _pyagrumcpp.MarkedGraph_clear(self)
+
+    def clearNodes(self) -> None:
+        r"""
+
+        Remove all the nodes, hence all the edges and their marks, from the graph (same as :meth:`clear`).
+
+        """
+        return _pyagrumcpp.MarkedGraph_clearNodes(self)
+
+    def markAt(self, src: int, dst: int) -> "pyagrum.EdgeMark":
+        r"""
+
+        Return the endpoint mark on the dst side of edge (src, dst).
+
+        The mark at dst indicates what the edge says about dst from src's perspective.
+
+        Parameters
+        ----------
+        src : int
+            id of the source node
+        dst : int
+            id of the destination node
+
+        Returns
+        -------
+        pyagrum.EdgeMark
+            the mark (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+
+        """
+        val = _pyagrumcpp.MarkedGraph_markAt(self, src, dst)
+
+        val = EdgeMark(val)
+
+
+        return val
+
+
+    def setMarkAt(self, src: int, dst: int, mark: "pyagrum.EdgeMark") -> None:
+        r"""
+
+        Set the endpoint mark on the dst side of edge (src, dst).
+
+        Parameters
+        ----------
+        src : int
+            id of the source node
+        dst : int
+            id of the destination node
+        mark : pyagrum.EdgeMark
+            the new mark
+
+        """
+        return _pyagrumcpp.MarkedGraph_setMarkAt(self, src, dst, mark)
+
+    def reorientAllWith(self, mark: "pyagrum.EdgeMark") -> None:
+        r"""
+
+        Set all endpoint marks in the graph to the given mark.
+
+        Parameters
+        ----------
+        mark : pyagrum.EdgeMark
+            the mark to set everywhere (``pyagrum.EdgeMark.Circle``, ``Tail`` or ``Arrowhead``)
+
+        """
+        return _pyagrumcpp.MarkedGraph_reorientAllWith(self, mark)
 
     def isArrowhead(self, src: int, dst: int) -> bool:
         r"""
@@ -6752,7 +8818,7 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isArrowhead(self, src, dst)
+        return _pyagrumcpp.MarkedGraph_isArrowhead(self, src, dst)
 
     def isTail(self, src: int, dst: int) -> bool:
         r"""
@@ -6769,7 +8835,7 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isTail(self, src, dst)
+        return _pyagrumcpp.MarkedGraph_isTail(self, src, dst)
 
     def isCircle(self, src: int, dst: int) -> bool:
         r"""
@@ -6786,7 +8852,7 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isCircle(self, src, dst)
+        return _pyagrumcpp.MarkedGraph_isCircle(self, src, dst)
 
     def isDefinitelyDirected(self, x: int, y: int) -> bool:
         r"""
@@ -6805,7 +8871,7 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isDefinitelyDirected(self, x, y)
+        return _pyagrumcpp.MarkedGraph_isDefinitelyDirected(self, x, y)
 
     def isBidirected(self, x: int, y: int) -> bool:
         r"""
@@ -6822,7 +8888,24 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isBidirected(self, x, y)
+        return _pyagrumcpp.MarkedGraph_isBidirected(self, x, y)
+
+    def isUndirected(self, x: int, y: int) -> bool:
+        r"""
+
+        Return True if the edge x-y has a tail at both ends (x--y).
+
+        Parameters
+        ----------
+        x : int
+        y : int
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrumcpp.MarkedGraph_isUndirected(self, x, y)
 
     def isDefCollider(self, x: int, z: int, y: int) -> bool:
         r"""
@@ -6842,30 +8925,101 @@ class PAG(UndiGraph):
         bool
 
         """
-        return _pyagrumcpp.PAG_isDefCollider(self, x, z, y)
+        return _pyagrumcpp.MarkedGraph_isDefCollider(self, x, z, y)
 
-    def toMixedGraph(self) -> "pyagrum.MixedGraph":
+    def parents(self, x: int) -> set[int]:
         r"""
 
-        Convert the PAG to a MixedGraph by interpreting definite edge orientations.
-
-        - Definitely directed edges become arcs.
-        - Bidirected edges become two arcs (one in each direction).
-        - Undirected or circle edges become undirected edges.
+        Parameters
+        ----------
+        x : int
+            the id of a node
 
         Returns
         -------
-        pyagrum.MixedGraph
+        set[int]
+            the nodes y such that y->x
 
         """
-        return _pyagrumcpp.PAG_toMixedGraph(self)
+        return _pyagrumcpp.MarkedGraph_parents(self, x)
+
+    def children(self, x: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        x : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that x->y
+
+        """
+        return _pyagrumcpp.MarkedGraph_children(self, x)
+
+    def spouses(self, x: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        x : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that x<->y
+
+        """
+        return _pyagrumcpp.MarkedGraph_spouses(self, x)
+
+    def undirectedNeighbours(self, x: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        x : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that x--y
+
+        """
+        return _pyagrumcpp.MarkedGraph_undirectedNeighbours(self, x)
+
+    def skeleton(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+            the undirected graph of the adjacencies, with the names of the nodes
+
+        """
+        return _pyagrumcpp.MarkedGraph_skeleton(self)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        Returns
+        -------
+        dict[int, int]
+            each node is mapped to the root of its connected component (in the skeleton)
+
+        """
+        return _pyagrumcpp.MarkedGraph_connectedComponents(self)
 
     def toDot(self, *args) -> str:
         r"""
 
-        Return a Graphviz dot representation of the PAG.
+        Return a Graphviz dot representation of the graph.
 
         Endpoint marks are rendered as:
+
         - Circle: ``odot``
         - Tail: ``none``
         - Arrowhead: ``normal``
@@ -6881,12 +9035,167 @@ class PAG(UndiGraph):
             dot-format string
 
         """
-        return _pyagrumcpp.PAG_toDot(self, *args)
+        return _pyagrumcpp.MarkedGraph_toDot(self, *args)
+
+    def __repr__(self) -> str:
+        return _pyagrumcpp.MarkedGraph___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.MarkedGraph___str__(self)
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
+        return _pyagrumcpp.MarkedGraph_nodes(self)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        str
+            the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrumcpp.MarkedGraph_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> int | None:
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+            the name to look up
+
+        Returns
+        -------
+        int or None
+            the node id, or None if the name is not found
+
+        """
+        return _pyagrumcpp.MarkedGraph_idFromName(self, name)
+
+    def setName(self, id: int, name: str) -> None:
+        r"""
+
+        Assign a name to a node.
+
+        If the node already has a name, it is replaced. The name must not already be
+        used by another node.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+        name : str
+            the name to assign
+
+        Raises
+        ------
+        pyagrum.InvalidNode
+            If the node does not exist.
+        pyagrum.DuplicateElement
+            If the name is already used by a different node.
+
+        """
+        return _pyagrumcpp.MarkedGraph_setName(self, id, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Check whether a node has an explicitly assigned name.
+
+        Parameters
+        ----------
+        id : int
+            the node id
+
+        Returns
+        -------
+        bool
+            True if a name has been assigned to this node via setName
+
+        """
+        return _pyagrumcpp.MarkedGraph_hasName(self, id)
 
     def addNodes(self, n: int) -> set[int]:
         r"""
 
-        Add n new nodes to the PAG.
+        Add n new nodes to the graph.
 
         Parameters
         ----------
@@ -6896,23 +9205,123 @@ class PAG(UndiGraph):
         Returns
         -------
         set of int
-            the new NodeIds
+            the ids of the new nodes
 
         """
-        return _pyagrumcpp.PAG_addNodes(self, n)
+        return _pyagrumcpp.MarkedGraph_addNodes(self, n)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
+
+    def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the edges
+
+        """
+        return _pyagrumcpp.MarkedGraph_edges(self)
+
+    def neighbours(self, id: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        set[int]
+            the nodes adjacent to the given node
+
+        """
+        return _pyagrumcpp.MarkedGraph_neighbours(self, id)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.MarkedGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.MarkedGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
 
     def addNode(self) -> int:
         r"""
 
-        Add a new node to the PAG and return its id.
+        Add a new node to the graph and return its id.
 
         Returns
         -------
         int
-            the new NodeId
+            the id of the new node
 
         """
-        return _pyagrumcpp.PAG_addNode(self)
+        return _pyagrumcpp.MarkedGraph_addNode(self)
 
     def addNodeWithId(self, id: int) -> None:
         r"""
@@ -6930,12 +9339,12 @@ class PAG(UndiGraph):
             if the given id is already used
 
         """
-        return _pyagrumcpp.PAG_addNodeWithId(self, id)
+        return _pyagrumcpp.MarkedGraph_addNodeWithId(self, id)
 
     def existsNode(self, id: int) -> bool:
         r"""
 
-        Check whether a node with the given id exists in the PAG.
+        Check whether a node with the given id exists in the graph.
 
         Parameters
         ----------
@@ -6948,12 +9357,12 @@ class PAG(UndiGraph):
             True if the node exists
 
         """
-        return _pyagrumcpp.PAG_existsNode(self, id)
+        return _pyagrumcpp.MarkedGraph_existsNode(self, id)
 
     def size(self) -> int:
         r"""
 
-        Return the number of nodes in the PAG.
+        Return the number of nodes in the graph.
 
         Returns
         -------
@@ -6961,94 +9370,20 @@ class PAG(UndiGraph):
             number of nodes
 
         """
-        return _pyagrumcpp.PAG_size(self)
+        return _pyagrumcpp.MarkedGraph_size(self)
 
     def empty(self) -> bool:
         r"""
 
-        Check whether the PAG has no nodes.
+        Check whether the graph has no nodes.
 
         Returns
         -------
         bool
-            True if the PAG contains no nodes
+            True if the graph contains no nodes
 
         """
-        return _pyagrumcpp.PAG_empty(self)
-
-    def eraseEdge(self, *args) -> None:
-        r"""
-
-        Erase the edge between n1 and n2.
-
-        Parameters
-        ----------
-        n1 : int
-          the id of the tail node
-        n2 : int
-          the id of the head node
-
-        """
-        return _pyagrumcpp.PAG_eraseEdge(self, *args)
-
-    def existsEdge(self, n1: int, n2: int) -> bool:
-        r"""
-
-        Check whether an edge exists between two nodes.
-
-        Parameters
-        ----------
-        n1 : int
-            id of one endpoint
-        n2 : int
-            id of the other endpoint
-
-        Returns
-        -------
-        bool
-            True if the edge exists
-
-        """
-        return _pyagrumcpp.PAG_existsEdge(self, n1, n2)
-
-    def sizeEdges(self) -> int:
-        r"""
-
-        Return the number of edges in the PAG.
-
-        Returns
-        -------
-        int
-            number of edges
-
-        """
-        return _pyagrumcpp.PAG_sizeEdges(self)
-
-    def emptyEdges(self) -> bool:
-        r"""
-
-        Check whether the PAG has no edges.
-
-        Returns
-        -------
-        bool
-            True if the PAG contains no edges
-
-        """
-        return _pyagrumcpp.PAG_emptyEdges(self)
-
-    def eraseNeighbours(self, n: int) -> None:
-        r"""
-
-        Remove all edges adjacent to a given node (and their marks).
-
-        Parameters
-        ----------
-        n : int
-            id of the node
-
-        """
-        return _pyagrumcpp.PAG_eraseNeighbours(self, n)
+        return _pyagrumcpp.MarkedGraph_empty(self)
 
     def addEdge(self, *args) -> None:
         r"""
@@ -7070,69 +9405,827 @@ class PAG(UndiGraph):
             id of the first node
         y : int
             id of the second node
-        markAtX : int, optional
-            mark at the x endpoint (``EdgeMark_Circle``, ``EdgeMark_Tail``, or ``EdgeMark_Arrowhead``)
-        markAtY : int, optional
-            mark at the y endpoint (``EdgeMark_Circle``, ``EdgeMark_Tail``, or ``EdgeMark_Arrowhead``)
+        markAtX : pyagrum.EdgeMark, optional
+            mark at the x endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+        markAtY : pyagrum.EdgeMark, optional
+            mark at the y endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
 
         """
-        return _pyagrumcpp.PAG_addEdge(self, *args)
+        return _pyagrumcpp.MarkedGraph_addEdge(self, *args)
 
-    def markAt(self, *args):
+    def eraseEdge(self, *args) -> None:
         r"""
 
-        Return the endpoint mark on the dst side of edge (src, dst).
-
-        The mark at dst indicates what the edge says about dst from src's perspective:
-        ``marks_[Arc(src,dst)]`` = mark at the dst endpoint.
+        Erase the edge (and its marks) if it exists.
 
         Parameters
         ----------
-        src : int
-            id of the source node
-        dst : int
-            id of the destination node
+        n1 : int
+        n2 : int
+
+        """
+        return _pyagrumcpp.MarkedGraph_eraseEdge(self, *args)
+
+    def existsEdge(self, n1: int, n2: int) -> bool:
+        r"""
+
+        Check whether an edge exists between two nodes.
+
+        Parameters
+        ----------
+        n1 : int
+            id of one endpoint
+        n2 : int
+            id of the other endpoint
+
+        Returns
+        -------
+        bool
+            True if the edge exists
+
+        """
+        return _pyagrumcpp.MarkedGraph_existsEdge(self, n1, n2)
+
+    def sizeEdges(self) -> int:
+        r"""
+
+        Return the number of edges in the graph.
 
         Returns
         -------
         int
-            ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+            number of edges
 
         """
-        return _pyagrumcpp.PAG_markAt(self, *args)
+        return _pyagrumcpp.MarkedGraph_sizeEdges(self)
 
-    def setMarkAt(self, *args) -> None:
+    def emptyEdges(self) -> bool:
         r"""
 
-        Set the endpoint mark on the dst side of edge (src, dst).
+        Check whether the graph has no edges.
+
+        Returns
+        -------
+        bool
+            True if the graph contains no edges
+
+        """
+        return _pyagrumcpp.MarkedGraph_emptyEdges(self)
+
+    def eraseNeighbours(self, n: int) -> None:
+        r"""
+
+        Remove all edges adjacent to a given node (and their marks).
+
+        Parameters
+        ----------
+        n : int
+            id of the node
+
+        """
+        return _pyagrumcpp.MarkedGraph_eraseNeighbours(self, n)
+
+# Register MarkedGraph in _pyagrumcpp:
+_pyagrumcpp.MarkedGraph_swigregister(MarkedGraph)
+class PAG(MarkedGraph):
+    r"""
+
+    PAG represents a Partial Ancestral Graph, the output of the FCI algorithm.
+
+    A PAG is a ``pyagrum.MarkedGraph`` representing a Markov equivalence class of maximal ancestral
+    graphs: an arrowhead or a tail is in all the graphs of the class, a circle varies across the class
+    (Zhang 2008). No invariant is checked (the output of FCI on finite data may not be a valid PAG).
+
+    PAG() -> PAG
+        default constructor
+
+    PAG(src) -> PAG
+        Parameters:
+            - **src** (*pyagrum.PAG*) -- the PAG to copy
+
+    Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
+
+    References
+    ----------
+    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent
+    confounders and selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008. doi:10.1016/j.artint.2008.08.001.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        _pyagrumcpp.PAG_swiginit(self, _pyagrumcpp.new_PAG(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_PAG
+
+    def __repr__(self) -> str:
+        return _pyagrumcpp.PAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.PAG___str__(self)
+
+    def _toMixedGraph(self) -> "pyagrum.MixedGraph":
+        return _pyagrumcpp.PAG__toMixedGraph(self)
+
+    def toMixedGraph(self):
+      """
+      Approximate conversion into a mixed graph: tail-arrowhead becomes an arc, arrowhead-arrowhead two
+      arcs, anything else an undirected edge.
+
+      Warnings
+      --------
+      PAG.toMixedGraph is deprecated after 3.3.2, use MAG.fromPAG instead (a representative MAG).
+
+      Returns
+      -------
+      pyagrum.MixedGraph
+      """
+      import warnings
+      warnings.warn("PAG.toMixedGraph is deprecated after 3.3.2, use MAG.fromPAG instead",
+                    DeprecationWarning, stacklevel=2)
+      return self._toMixedGraph()
+
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.PAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.PAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
+
+# Register PAG in _pyagrumcpp:
+_pyagrumcpp.PAG_swigregister(PAG)
+class _ImmutableGraphMarkedGraph(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    def graph(self) -> "pyagrum.MarkedGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.MarkedGraph
+            a copy of the marked graph of the MAG
+
+        """
+        val = _pyagrumcpp._ImmutableGraphMarkedGraph_graph(self)
+
+        val = type(val)(val)
+
+
+        return val
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_nodes(self)
+
+    def edges(self) -> set[tuple[int,int]]:
+        r"""
+
+        Returns
+        -------
+        set[tuple[int, int]]
+          the set of the edges of the graph: the undirected edges of a CPDAG or an MPDAG, the edges (with
+          any marks) of a MAG
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_edges(self)
+
+    def size(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of nodes
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_size(self)
+
+    def sizeEdges(self) -> int:
+        r"""
+
+        Returns
+        -------
+        int
+          the number of edges (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_sizeEdges(self)
+
+    def empty(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if the graph has no node
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_empty(self)
+
+    def existsNode(self, node: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+          the id of a node
+
+        Returns
+        -------
+        bool
+          True if the node exists
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_existsNode(self, node)
+
+    def existsEdge(self, first: int, second: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        first : int
+          the id of a node
+        second : int
+          the id of another node
+
+        Returns
+        -------
+        bool
+          True if the edge first-second exists (see :meth:`edges`)
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_existsEdge(self, first, second)
+
+    def nameFromId(self, id: int) -> str:
+        r"""
+
+        Return the name of a node, or its id as a string if no name was set.
+
+        The names of the nodes are kept from the graph the immutable graph was built from.
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        str
+          the name associated with the node, or ``str(id)`` if the node has no name
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_nameFromId(self, id)
+
+    def idFromName(self, name: str) -> int | None:
+        r"""
+
+        Return the id of the node with the given name, or None if no such name exists.
+
+        Parameters
+        ----------
+        name : str
+          the name to look up
+
+        Returns
+        -------
+        int or None
+          the node id, or None if the name is not found
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_idFromName(self, name)
+
+    def hasName(self, id: int) -> bool:
+        r"""
+
+        Parameters
+        ----------
+        id : int
+          the node id
+
+        Returns
+        -------
+        bool
+          True if the node has a name
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_hasName(self, id)
+
+    def connectedComponents(self) -> dict[int,int]:
+        r"""
+
+        The connected components of the graph (of its skeleton).
+
+        Returns
+        -------
+        dict[int, int]
+          each node id mapped to the id of the root of its component
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_connectedComponents(self)
+
+    def skeleton(self) -> "pyagrum.UndiGraph":
+        r"""
+
+        Returns
+        -------
+        pyagrum.UndiGraph
+          the undirected graph with the same nodes (ids and names) and the same adjacencies
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_skeleton(self)
+
+    def __eq__(self, g: "_ImmutableGraphMarkedGraph") -> bool:
+        return _pyagrumcpp._ImmutableGraphMarkedGraph___eq__(self, g)
+
+    def toString(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          a string representation of the graph
+
+        """
+        return _pyagrumcpp._ImmutableGraphMarkedGraph_toString(self)
+
+# Register _ImmutableGraphMarkedGraph in _pyagrumcpp:
+_pyagrumcpp._ImmutableGraphMarkedGraph_swigregister(_ImmutableGraphMarkedGraph)
+class MAG(_ImmutableGraphMarkedGraph):
+    r"""
+
+    MAG represents a maximal ancestral graph: the independence model of a DAG over its observed variables, the latent
+    variables being marginalized and the selected ones conditioned on.
+
+    A MAG is a marked graph without circle (edges ``->``, ``<->`` and ``--``) which is ancestral and maximal; its
+    separation is the m-separation. A MAG is immutable: it is built by ``MAG.fromDAG``, ``MAG.fromPAG`` or the checked
+    conversion ``MAG.fromMarkedGraph``.
+
+    References
+    ----------
+    T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
+
+    J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
+
+    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
+    selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
+
+    Examples
+    --------
+    .. code-block:: python
+
+      import pyagrum as gum
+      dag = gum.fastDAG('A->X<-T->Y<-B')
+      mag = gum.MAG.fromDAG(dag, {dag.idFromName('T')})  # T latent: A->X<->Y<-B
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    @staticmethod
+    def fromDAG(*args) -> "pyagrum.MAG":
+        r"""
+
+        The MAG of a DAG over its observed nodes (Richardson and Spirtes 2002, Theorem 4.2).
+
+        Two observed nodes are adjacent iff no set of observed nodes (with the selected ones) d-separates them; the edge is
+        ``a--b`` if each one is an ancestor of the other or of a selected node, ``a->b`` if only a is, ``a<->b`` if none is.
+
+        Parameters
+        ----------
+        dag : pyagrum.DAG
+            the DAG
+        latents : set[int], optional
+            its latent nodes (marginalized), as a set (not a list)
+        selection : set[int], optional
+            its selected nodes (conditioned on), as a set (not a list)
+
+        Returns
+        -------
+        pyagrum.MAG
+            the MAG over the other nodes (same ids and names)
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if a node is both latent and selected, or is not in the DAG
+
+        """
+        return _pyagrumcpp.MAG_fromDAG(*args)
+
+    @staticmethod
+    def fromPAG(pag: "PAG") -> "pyagrum.MAG":
+        r"""
+
+        A representative MAG of the Markov equivalence class represented by a PAG (Zhang 2008, Artificial Intelligence,
+        Theorem 2): the edges ``o->`` and ``--o`` become ``->``, and the edges ``o-o`` are oriented into a DAG without
+        unshielded collider.
+
+        Parameters
+        ----------
+        pag : pyagrum.PAG
+            the PAG
+
+        Returns
+        -------
+        pyagrum.MAG
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if the PAG is not valid
+
+        """
+        return _pyagrumcpp.MAG_fromPAG(pag)
+
+    @staticmethod
+    def fromMarkedGraph(g: "MarkedGraph") -> "pyagrum.MAG":
+        r"""
+
+        Checked conversion of a marked graph.
+
+        Parameters
+        ----------
+        g : pyagrum.MarkedGraph
+            a marked graph
+
+        Returns
+        -------
+        pyagrum.MAG
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if the graph has a circle, or is not ancestral, or is not maximal
+
+        """
+        return _pyagrumcpp.MAG_fromMarkedGraph(g)
+
+    def __init__(self, *args):
+        _pyagrumcpp.MAG_swiginit(self, _pyagrumcpp.new_MAG(*args))
+    __swig_destroy__ = _pyagrumcpp.delete_MAG
+
+    def neighbours(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that node--y (undirected edge)
+
+        """
+        return _pyagrumcpp.MAG_neighbours(self, node)
+
+    def adjacents(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes linked to node by an edge, whatever its marks
+
+        """
+        return _pyagrumcpp.MAG_adjacents(self, node)
+
+    def parents(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that y->node
+
+        """
+        return _pyagrumcpp.MAG_parents(self, node)
+
+    def children(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that node->y
+
+        """
+        return _pyagrumcpp.MAG_children(self, node)
+
+    def spouses(self, node: int) -> set[int]:
+        r"""
+
+        Parameters
+        ----------
+        node : int
+            the id of a node
+
+        Returns
+        -------
+        set[int]
+            the nodes y such that node<->y
+
+        """
+        return _pyagrumcpp.MAG_spouses(self, node)
+
+    def markAt(self, src: int, dst: int) -> "pyagrum.EdgeMark":
+        r"""
 
         Parameters
         ----------
         src : int
-            id of the source node
         dst : int
-            id of the destination node
-        m : int
-            new mark: ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+
+        Returns
+        -------
+        pyagrum.EdgeMark
+            the mark at the dst-end of the edge src-dst
 
         """
-        return _pyagrumcpp.PAG_setMarkAt(self, *args)
+        val = _pyagrumcpp.MAG_markAt(self, src, dst)
 
-    def reorientAllWith(self, *args) -> None:
+        val = EdgeMark(val)
+
+
+        return val
+
+
+    def toDot(self, *args) -> str:
         r"""
-
-        Set all endpoint marks in the PAG to the given mark.
 
         Parameters
         ----------
-        m : int
-            mark to set everywhere: ``EdgeMark_Circle`` (0), ``EdgeMark_Tail`` (1), or ``EdgeMark_Arrowhead`` (2)
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and edges...)
+
+        Returns
+        -------
+        str
+            a representation of the MAG in the DOT format (see pyagrum.MarkedGraph.toDot)
 
         """
-        return _pyagrumcpp.PAG_reorientAllWith(self, *args)
+        return _pyagrumcpp.MAG_toDot(self, *args)
 
-# Register PAG in _pyagrumcpp:
-_pyagrumcpp.PAG_swigregister(PAG)
+    def __repr__(self) -> str:
+        return _pyagrumcpp.MAG___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.MAG___str__(self)
+
+    def mSeparation(self, *args) -> bool:
+        r"""
+
+        Test the m-separation (the separation of the MAG: the d-separation of the DAGs it represents).
+
+        Parameters
+        ----------
+        X : int or set[int]
+            a node or a set of nodes
+        Y : int or set[int]
+            a node or a set of nodes
+        Z : int or set[int], optional
+            the conditioning nodes (none by default)
+
+        Returns
+        -------
+        bool
+            True if X and Y are m-separated by Z
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if X and Y are not disjoint
+
+        """
+        return _pyagrumcpp.MAG_mSeparation(self, *args)
+
+    def __iter__(self):
+      """
+      Iterate over the nodes of the graph
+
+      Yield
+      -----
+      int
+        The index of the node
+      """
+      for i in self.nodes():
+        yield i
+
+
+    def nodes(self) -> set[int]:
+        r"""
+
+        Returns
+        -------
+        set[int]
+          the set of the node ids of the graph
+
+        """
+        return _pyagrumcpp.MAG_nodes(self)
+
+    def connectedComponentsList(self):
+      """ connected components as a dict of sets
+
+      Returns
+      -------
+      dict(int, set[int])
+        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
+
+      """
+      cc = self.connectedComponents()
+      result = {}
+      for node, root in cc.items():
+        if root not in result:
+          result[root] = set()
+        result[root].add(node)
+      return result
+
+    def connectedComponentsCount(self):
+      """ number of connected components
+
+      Returns
+      -------
+      int
+        the number of connected components in the graph.
+
+      """
+      return len(set(self.connectedComponents().values()))
+
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.MAG__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.MAG__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Returns
+      -------
+      str
+        the jgum string
+      """
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
+
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
+
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
+
+
+# Register MAG in _pyagrumcpp:
+_pyagrumcpp.MAG_swigregister(MAG)
 class CliqueGraph(UndiGraph):
     r"""
 
@@ -7427,6 +10520,45 @@ class CliqueGraph(UndiGraph):
         """
         return _pyagrumcpp.CliqueGraph_separator(self, cliq1, cliq2)
 
+    def _addCliqueWithId(self, id: int, clique: set[int] | list[int]) -> None:
+        return _pyagrumcpp.CliqueGraph__addCliqueWithId(self, id, clique)
+
+    def _addCliqueEdge(self, cliq1: int, cliq2: int) -> None:
+        return _pyagrumcpp.CliqueGraph__addCliqueEdge(self, cliq1, cliq2)
+
+    def __getstate__(self):
+      return {"cliques": {n: set(self.clique(n)) for n in self.nodes()}, "edges": list(self.edges())}
+
+    def __setstate__(self, state):
+      self.__init__()
+      for n, clique in state["cliques"].items():
+        self._addCliqueWithId(n, set(clique))
+      for x, y in state["edges"]:
+        self._addCliqueEdge(x, y)
+      return self
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Not available: a clique graph is not a graph of the GUM format (the cliques would be lost).
+
+      Raises
+      ------
+      NotImplementedError
+        always
+      """
+      raise NotImplementedError("a CliqueGraph can not be saved in the GUM format (the cliques would be lost)")
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Not available: a clique graph is not a graph of the GUM format (the cliques would be lost).
+
+      Raises
+      ------
+      NotImplementedError
+        always
+      """
+      raise NotImplementedError("a CliqueGraph can not be saved in the GUM format (the cliques would be lost)")
+
     def toDotWithNames(self,bn):
         """
         Parameters
@@ -7488,7 +10620,7 @@ class MeekRules(object):
 
         Propagates orientation constraints in the graph according to the Meek rules. The Meek rules are applied iteratively until no more orientation constraints can be propagated. And then arbitratily resolves double orientations. This method returns a `pyagrum.PDAG` with the properties of CPDAG.
 
-        The arbitrary resolution of double orientations is not deterministic. It depends on the order of the edges in the graph. `pyagrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG`.
+        The arbitrary resolution of double orientations is not deterministic. It depends on the order of the edges in the graph. `pyagrum.MeekRules.choices` returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.propagateToCPDAG`.
 
         Parameters
         ----------
@@ -7498,38 +10630,52 @@ class MeekRules(object):
         Returns
         -------
         pyagrum.PDAG
-            The completed `pyagrum.PDAG` (CPDAG).
+            The completed `pyagrum.PDAG`. If ``mg`` is extendable, it is its closure: a CPDAG without background knowledge
+            in its arcs, an MPDAG with it.
 
         """
         return _pyagrumcpp.MeekRules_propagateToCPDAG(self, mg)
 
-    def propagateToDAG(self, mg: "MixedGraph") -> "pyagrum.DAG":
+    def propagateToDAG(self, *args) -> "pyagrum.DAG":
         r"""
 
-        Calls `propagateToCPDAG` and then orients the remaining edges arbitrarily according to some heuristics. `pyagrum.MeekRules.Choices` returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToDAG`.
+        Calls `propagateToCPDAG` and then orients the remaining edges: into a consistent extension if the propagated graph
+        has one, else with new v-structures. The orientation looks for small CPTs: with ``domainSizes``, it uses the domain
+        size of each node; without, all the domains are considered equal (nodes with few parents). The DAG contains all the
+        arcs of the propagated graph. `pyagrum.MeekRules.choices` returns the list of the arbitrary choices made by the last
+        execution of `pyagrum.MeekRules.propagateToDAG`.
 
         Parameters
         ----------
-        mg : `pyagrum.MixedGraph` or `pyagrum.PDAG`
+        mg : pyagrum.MixedGraph or pyagrum.PDAG
             The graph to be completed.
+        domainSizes : dict[int, int], optional
+            The domain size of each node of ``mg`` (node id -> domain size).
 
         Returns
         -------
-        `pyagrum.DAG`
+        pyagrum.DAG
             The completed `pyagrum.DAG`.
 
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If a node of ``mg`` has no domain size in ``domainSizes``, or a domain size 0.
+        pyagrum.InvalidDirectedCycle
+            If ``mg`` contains a directed cycle of length 3 or more.
+
         """
-        return _pyagrumcpp.MeekRules_propagateToDAG(self, mg)
+        return _pyagrumcpp.MeekRules_propagateToDAG(self, *args)
 
     def choices(self) -> list[tuple[int,int]]:
         r"""
 
-        Returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG` or `pyagrum.MeekRules.progagatesToDAG`.
+        Returns the list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.propagateToCPDAG` or `pyagrum.MeekRules.propagateToDAG`.
 
         Returns
         -------
         list of tuple
-            The list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.progagatesToCPDAG` or `pyagrum.MeekRules.progagatesToDAG`. Each tuple represents a `pyagrum.Edge`.
+            The list of the arbitrary choices made by the last execution of `pyagrum.MeekRules.propagateToCPDAG` or `pyagrum.MeekRules.propagateToDAG`. Each tuple represents a `pyagrum.Edge`.
 
         """
         return _pyagrumcpp.MeekRules_choices(self)
@@ -7559,10 +10705,12 @@ class Instantiation(object):
 
     Examples
     --------
-    >>> ## Access the value of A in an instantiation aI
-    >>> valueOfA = aI['A']
-    >>> ## Modify the value
-    >>> aI['A'] = newValueOfA
+    .. code-block:: python
+
+      ## Access the value of A in an instantiation aI
+      valueOfA = aI['A']
+      ## Modify the value
+      aI['A'] = newValueOfA
 
     """
 
@@ -8241,15 +11389,17 @@ class Instantiation(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastBN("A[3]->B[3]<-C[3]")
-        >>> I=pyagrum.Instantiation(bn.cpt("B"))
-        >>> for i in I.loopIn():
-              print(i)
-              print(bn.cpt("B").get(i))
-              bn.cpt("B").set(i,0.3)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.fastBN("A[3]->B[3]<-C[3]")
+          I=gum.Instantiation(bn.cpt("B"))
+          for i in I.loopIn():
+                print(i)
+                print(bn.cpt("B").get(i))
+                bn.cpt("B").set(i,0.3)
         """
-        J=pyagrum.Instantiation(self)
+        J=Instantiation(self)
         J.setFirst()
         while not J.end():
             yield(J)
@@ -9707,22 +12857,24 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
 
     Examples
     --------
-    >>> print(pyagrum.fastVariable('A{On|Off|Defun}'))
-    A:Labelized({On|Off|Defun})
-    >>> print(pyagrum.fastVariable('A{3.14|0|1.15}'))
-    A:NumericalDiscrete({0|1.15|3.14})
-    >>> print(pyagrum.fastVariable('A{1.2:5.2:5}}'))
-    A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})
-    >>> print(pyagrum.fastVariable('A{1|3|9}'))
-    A:Integer({1|3|9})
-    >>> print(pyagrum.fastVariable('A[4,6]'))
-    A:Range([4,6])
-    >>> print(pyagrum.fastVariable('A[5]'))
-    A:Range([0,4])
-    >>> print(pyagrum.fastVariable('A[4,6,10]'))
-    A:Discretized(<[4;6[,[6;10]>)
-    >>> print(pyagrum.fastVariable('A[1:6:5]'))
-    A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)
+    .. code-block:: python
+
+      print(gum.fastVariable('A{On|Off|Defun}'))
+      A:Labelized({On|Off|Defun})
+      print(gum.fastVariable('A{3.14|0|1.15}'))
+      A:NumericalDiscrete({0|1.15|3.14})
+      print(gum.fastVariable('A{1.2:5.2:5}}'))
+      A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})
+      print(gum.fastVariable('A{1|3|9}'))
+      A:Integer({1|3|9})
+      print(gum.fastVariable('A[4,6]'))
+      A:Range([4,6])
+      print(gum.fastVariable('A[5]'))
+      A:Range([0,4])
+      print(gum.fastVariable('A[4,6,10]'))
+      A:Discretized(<[4;6[,[6;10]>)
+      print(gum.fastVariable('A[1:6:5]'))
+      A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)
 
 
 
@@ -9764,15 +12916,7 @@ def fastDiGraph(desc: str) -> "pyagrum.DiGraph":
 
     Returns
     -------
-    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
-
-    Examples
-    --------
-    >>> pyagrum.fastDiGraph('A->B->C;B->E')
-    >>> pyagrum.fastUndiGraph('A-B-C')
-    >>> pyagrum.fastMixedGraph('A->B-C')
-    >>> pyagrum.fastDAG('A->B->C')
-    >>> pyagrum.fastPDAG('A->B-C')
+    pyagrum.DiGraph
 
     """
     return _pyagrumcpp.fastDiGraph(desc)
@@ -9812,15 +12956,7 @@ def fastUndiGraph(desc: str) -> "pyagrum.UndiGraph":
 
     Returns
     -------
-    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
-
-    Examples
-    --------
-    >>> pyagrum.fastDiGraph('A->B->C;B->E')
-    >>> pyagrum.fastUndiGraph('A-B-C')
-    >>> pyagrum.fastMixedGraph('A->B-C')
-    >>> pyagrum.fastDAG('A->B->C')
-    >>> pyagrum.fastPDAG('A->B-C')
+    pyagrum.UndiGraph
 
     """
     return _pyagrumcpp.fastUndiGraph(desc)
@@ -9860,15 +12996,7 @@ def fastMixedGraph(desc: str) -> "pyagrum.MixedGraph":
 
     Returns
     -------
-    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
-
-    Examples
-    --------
-    >>> pyagrum.fastDiGraph('A->B->C;B->E')
-    >>> pyagrum.fastUndiGraph('A-B-C')
-    >>> pyagrum.fastMixedGraph('A->B-C')
-    >>> pyagrum.fastDAG('A->B->C')
-    >>> pyagrum.fastPDAG('A->B-C')
+    pyagrum.MixedGraph
 
     """
     return _pyagrumcpp.fastMixedGraph(desc)
@@ -9908,15 +13036,7 @@ def fastDAG(desc: str) -> "pyagrum.DAG":
 
     Returns
     -------
-    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
-
-    Examples
-    --------
-    >>> pyagrum.fastDiGraph('A->B->C;B->E')
-    >>> pyagrum.fastUndiGraph('A-B-C')
-    >>> pyagrum.fastMixedGraph('A->B-C')
-    >>> pyagrum.fastDAG('A->B->C')
-    >>> pyagrum.fastPDAG('A->B-C')
+    pyagrum.DAG
 
     """
     return _pyagrumcpp.fastDAG(desc)
@@ -9956,18 +13076,108 @@ def fastPDAG(desc: str) -> "pyagrum.PDAG":
 
     Returns
     -------
-    pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
-
-    Examples
-    --------
-    >>> pyagrum.fastDiGraph('A->B->C;B->E')
-    >>> pyagrum.fastUndiGraph('A-B-C')
-    >>> pyagrum.fastMixedGraph('A->B-C')
-    >>> pyagrum.fastDAG('A->B->C')
-    >>> pyagrum.fastPDAG('A->B-C')
+    pyagrum.PDAG
 
     """
     return _pyagrumcpp.fastPDAG(desc)
+
+def fastChainGraph(desc: str) -> "pyagrum.ChainGraph":
+    r"""
+
+    Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
+
+    ``'->'`` denotes a directed arc, ``'<-'`` a directed arc in the other direction
+    (e.g. ``'A->B<-C'`` means both A and C point to B), ``'-'`` an undirected edge,
+    ``';'`` separates independent chains. If every node token in the description is
+    a non-negative integer, those integers are used directly as node ids ;
+    otherwise every token -- including numeric-looking ones -- is used as a node
+    name.
+
+    Note
+    ----
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    already uses ``'--'`` to list the variables of a single factor (a clique), a
+    different construct from a chain of pairwise edges. ``'A--B'`` is therefore
+    rejected here rather than silently misread.
+
+    Raises
+    ------
+    pyagrum.InvalidArc
+      If the description requires a directed arc but the target graph type does
+      not support arcs, or if the description is malformed.
+    pyagrum.InvalidEdge
+      If the description requires an undirected edge but the target graph type
+      does not support edges.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.ChainGraph
+
+    """
+    return _pyagrumcpp.fastChainGraph(desc)
+
+def fastMarkedGraph(desc: str) -> "pyagrum.MarkedGraph":
+    r"""
+
+    Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+    description.
+
+    An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
+    circle, nothing for a tail. A circle must be separated from the name of its node by a space
+    (``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
+    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
+    (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
+
+    Raises
+    ------
+    pyagrum.InvalidEdge
+      If the description is malformed or describes an edge with different marks.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.MarkedGraph
+
+    """
+    return _pyagrumcpp.fastMarkedGraph(desc)
+
+def fastPAG(desc: str) -> "pyagrum.PAG":
+    r"""
+
+    Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+    description.
+
+    An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
+    circle, nothing for a tail. A circle must be separated from the name of its node by a space
+    (``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
+    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
+    (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
+
+    Raises
+    ------
+    pyagrum.InvalidEdge
+      If the description is malformed or describes an edge with different marks.
+
+    Parameters
+    ----------
+    desc : str
+      the string containing the dot-like specification
+
+    Returns
+    -------
+    pyagrum.PAG
+
+    """
+    return _pyagrumcpp.fastPAG(desc)
 
 def randomDistribution(n: int) -> tuple[float, ...]:
     r"""
@@ -10003,17 +13213,19 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> vX=pyagrum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
-    >>> print(vX)
-    X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
-    >>> vX.isTick(4)
-    False
-    >>> vX.labels()
-    ('[1;2[', '[2;3[', '[3;3.1415]')
-    >>> # where is the real value 2.5 ?
-    >>> vX.index('2.5')
-    1
+    .. code-block:: python
+
+      import pyagrum as gum
+      vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
+      print(vX)
+      X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
+      vX.isTick(4)
+      False
+      vX.labels()
+      ('[1;2[', '[2;3[', '[3;3.1415]')
+      # where is the real value 2.5 ?
+      vX.index('2.5')
+      1
 
     """
 
@@ -11112,14 +14324,16 @@ class Tensor(object):
 
         Examples
         --------
-        >>> A=pyagrum.fastVariable('A[0:10:20]')
-        >>> p=pyagrum.Tensor.evEq(A,5)
-        >>> p
-        (pyagrum.Tensor@000001D7FAB06AD0)
-          A                                                                                                                                                                                                    |
-        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+        .. code-block:: python
+
+          A=gum.fastVariable('A[0:10:20]')
+          p=gum.Tensor.evEq(A,5)
+          p
+          (pyagrum.Tensor@000001D7FAB06AD0)
+            A                                                                                                                                                                                                    |
+          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
 
         Parameters
         ----------
@@ -11178,14 +14392,16 @@ class Tensor(object):
 
         Examples
         --------
-        >>> A=pyagrum.fastVariable('A[0:10:20]')
-        >>> p=pyagrum.Tensor.evGt(A,5)
-        >>> p
-        (pyagrum.Tensor@000001D7FAB06AD0)
-          A                                                                                                                                                                                                    |
-        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+        .. code-block:: python
+
+          A=gum.fastVariable('A[0:10:20]')
+          p=gum.Tensor.evGt(A,5)
+          p
+          (pyagrum.Tensor@000001D7FAB06AD0)
+            A                                                                                                                                                                                                    |
+          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
 
         Parameters
         ----------
@@ -11249,9 +14465,11 @@ class Tensor(object):
 
         Examples
         --------
-        >>> def log2cptA(x):
-        ...   return -math.log2(bn.cpt('A')[x])
-        >>> entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
+        .. code-block:: python
+
+          def log2cptA(x):
+            return -math.log2(bn.cpt('A')[x])
+          entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
 
         Returns
         -------
@@ -11519,12 +14737,14 @@ class Tensor(object):
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=pyagrum.fastBN("A[3]->B[3]<-C[3]")
-      >>> for i in bn.cpt("B").loopIn():
-            print(i)
-            print(bn.cpt("B").get(i))
-            bn.cpt("B").set(i,0.3)
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN("A[3]->B[3]<-C[3]")
+        for i in bn.cpt("B").loopIn():
+              print(i)
+              print(bn.cpt("B").get(i))
+              bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -11541,9 +14761,11 @@ class Tensor(object):
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=pyagrum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(B+A+C)/2')
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn.cpt('B').fillFromFunction('(B+A+C)/2')
 
       Parameters
       ----------
@@ -11588,9 +14810,11 @@ class Tensor(object):
 
       Examples
       --------
-      >>> import pyagrum as gum
-      >>> bn=pyagrum.fastBN('A[3]->B[3]<-C[3]')
-      >>> bn.cpt('B').fillFromFunction('(A+C)/2')
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn.cpt('B').fillFromFunction('(A+C)/2')
 
       Parameters
       ----------
@@ -11615,7 +14839,7 @@ class Tensor(object):
       import math
       forbidden=frozenset(['__import__','__class__'])
 
-      if self.variable(0).varType() == pyagrum.VarType_LABELIZED:
+      if self.variable(0).varType() == VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       self.fillWith(0)
@@ -11646,10 +14870,12 @@ class Tensor(object):
 
       Examples
       --------
-      >>> import scipy.stats as stats
-      >>> import pyagrum as gum
-      >>> bn=pyagrum.fastBN('A[10]->B[10]<-C[10]')
-      >>> bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
+      .. code-block:: python
+
+        import scipy.stats as stats
+        import pyagrum as gum
+        bn=gum.fastBN('A[10]->B[10]<-C[10]')
+        bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------
@@ -11672,7 +14898,7 @@ class Tensor(object):
 
       var=self.variable(0)
       var_ds=var.domainSize()
-      if var.varType() == pyagrum.VarType_LABELIZED:
+      if var.varType() == VarType_LABELIZED:
         raise InvalidArgument("[pyAgrum] The variable "+self.variable(0).name()+" is a LabelizedVariable")
 
       codes={k:float(s_fns[k]) if isinstance(s_fns[k], (int, float)) else compile(s_fns[k],"<string>","eval") for k in s_fns.keys()}
@@ -11690,7 +14916,7 @@ class Tensor(object):
 
       Xs=numpy.array([var.numerical(i) for i in range(var_ds)], dtype=numpy.float64)
 
-      I=pyagrum.Instantiation()
+      I=Instantiation()
       for i in range(1,self.nbrDim()):
         I.add(self.variable(i))
 
@@ -11721,18 +14947,21 @@ class Tensor(object):
 
       Examples
       --------
-        >>> import pyagrum as gum
-        >>> bn1=pyagrum.fastBN('A[3]->B[3]<-C[3]')
-        >>> bn2=pyagrum.fastBN('A[3]<-B[3]<-C[3]')
-        >>> # bn1.cpt('A')+bn2.cpt('A') # does not work since the vars 'A' in bn1 and bn2 are not the same.
-        >>> bn1.cpt('A').toVars(bn2)+bn2.cpt('A') # OK
+      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same:
+
+      .. code-block:: python
+
+        import pyagrum as gum
+        bn1=gum.fastBN('A[3]->B[3]<-C[3]')
+        bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
+        bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A') # OK
 
       Returns
       -------
         pyagrum.Tensor
             a copy of the Potential with the same variables as p.
       """
-      res=pyagrum.Tensor()
+      res=Tensor()
       for i in self.names:
         res.add(p.variable(i))
       res.fillWith(self)
@@ -11895,12 +15124,14 @@ class Tensor(object):
 
         Examples
         --------
-        >>> t = pyagrum.Tensor().add(pyagrum.LabelizedVariable("a","",2)).add(pyagrum.LabelizedVariable("b","",3))
-        >>> t.fillWith([1,2,3,4,5,6])
-        >>> t.toarray()          # shape (3, 2)
-        array([[1., 2.],
-               [3., 4.],
-               [5., 6.]])
+        .. code-block:: python
+
+          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+          t.fillWith([1,2,3,4,5,6])
+          t.toarray()          # shape (3, 2)
+          array([[1., 2.],
+                 [3., 4.],
+                 [5., 6.]])
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
@@ -11924,12 +15155,14 @@ class Tensor(object):
 
         Examples
         --------
-        >>> t = pyagrum.Tensor().add(pyagrum.LabelizedVariable("a","",2)).add(pyagrum.LabelizedVariable("b","",3))
-        >>> t.fillWith([1,2,3,4,5,6])
-        >>> v = t.as_nparray()   # shape (3, 2), shares buffer with t
-        >>> v[0, 0] = 99
-        >>> t[{"a": 0, "b": 0}]  # 99.0
-        99.0
+        .. code-block:: python
+
+          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
+          t.fillWith([1,2,3,4,5,6])
+          v = t.as_nparray()   # shape (3, 2), shares buffer with t
+          v[0, 0] = 99
+          t[{"a": 0, "b": 0}]  # 99.0
+          99.0
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:
@@ -12275,11 +15508,9 @@ def getNumberOfLogicalProcessors() -> int:
 
 import warnings
 
-# seed is chosen randomly :)
-initRandom(0)
-
 # configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
-# current directory (if any), and applied the parameters that act on the library (number of threads, ...)
+# current directory (if any), and applied the parameters that act on the library (number of threads,
+# seed of the random generator, ...)
 config = _Configuration._instance()
 # warnings for the notices queued when the library loaded pyagrum.ini
 config._emitNotices()
@@ -12316,7 +15547,7 @@ def fastGraph(
 
   For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
   :func:`pyagrum.fastUndiGraph`, :func:`pyagrum.fastMixedGraph`, :func:`pyagrum.fastDAG`,
-  or :func:`pyagrum.fastPDAG` directly.
+  :func:`pyagrum.fastPDAG` or :func:`pyagrum.fastChainGraph` directly.
 
   Parameters
   ----------
@@ -12338,7 +15569,7 @@ def fastGraph(
   if is_edge:
     try:
       return fastPDAG(desc)
-    except InvalidDirectedCycle:
+    except (InvalidDirectedCycle, InvalidArc):
       return fastMixedGraph(desc)
 
   try:
@@ -12772,6 +16003,12 @@ class BNGenerator(object):
 
 # Register BNGenerator in _pyagrumcpp:
 _pyagrumcpp.BNGenerator_swigregister(BNGenerator)
+
+def _graphFromGUMString_EssentialGraph(content: str) -> "pyagrum.EssentialGraph":
+    return _pyagrumcpp._graphFromGUMString_EssentialGraph(content)
+
+def _loadGraphGUM_EssentialGraph(path: str, binary: bool) -> "pyagrum.EssentialGraph":
+    return _pyagrumcpp._loadGraphGUM_EssentialGraph(path, binary)
 class InformationTheory(object):
     r"""
 
@@ -12791,14 +16028,15 @@ class InformationTheory(object):
         Z :  : int or str or iterable[int or str] (optional)
           a third (an optional) nodeset
 
-    Example-------
+    Examples
+    --------
           .. code:: python
 
               import pyagrum as gum
-              bn=pyagrum.fastBN('A->B<-C<-D->E<-F->G->A')
-              ie=pyagrum.LazyPropagation(bn)
-              it=pyagrum.InformationTheory(ie,'A',['B','G'],['C'])
-              print(f'Entropy(A)={it.entropyX()}'')
+              bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
+              ie=gum.LazyPropagation(bn)
+              it=gum.InformationTheory(ie,'A',['B','G'],['C'])
+              print(f'Entropy(A)={it.entropyX()}')
               print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
               print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
               print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
@@ -12827,14 +16065,15 @@ class InformationTheory(object):
             Z :  : int or str or iterable[int or str] (optional)
               a third (an optional) nodeset
 
-        Example-------
+        Examples
+        --------
               .. code:: python
 
                   import pyagrum as gum
-                  bn=pyagrum.fastBN('A->B<-C<-D->E<-F->G->A')
-                  ie=pyagrum.LazyPropagation(bn)
-                  it=pyagrum.InformationTheory(ie,'A',['B','G'],['C'])
-                  print(f'Entropy(A)={it.entropyX()}'')
+                  bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
+                  ie=gum.LazyPropagation(bn)
+                  it=gum.InformationTheory(ie,'A',['B','G'],['C'])
+                  print(f'Entropy(A)={it.entropyX()}')
                   print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
                   print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
                   print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
@@ -12944,242 +16183,57 @@ class InformationTheory(object):
 
 # Register InformationTheory in _pyagrumcpp:
 _pyagrumcpp.InformationTheory_swigregister(InformationTheory)
-class EssentialGraph(object):
+class EssentialGraph(CPDAG):
     r"""
 
-    Class building the essential graph from a BN.
+    The essential graph of a Bayesian network: the CPDAG of its Markov equivalence class, with the names
+    of its variables.
 
-    Essential graph is a mixed graph (Chain Graph) that represents the class of markov equivalent Bayesian networks (with the same independency model).
+    The essential graph (or completed PDAG) represents the Markov equivalence class of a Bayesian
+    network: the Bayesian networks with the same independence model. Its arcs have the same orientation
+    in all the Bayesian networks of the class; its undirected edges may have both orientations.
+
+    An EssentialGraph is a ``pyagrum.CPDAG`` (immutable, with all its methods). The names of the nodes
+    are stored in the essential graph: it does not depend on the model it was built from.
 
     EssentialGraph(m) -> EssentialGraph
         Parameters:
-          - **m** (*pyagrum.DAGmodel*) -- a DAGmodel
+          - **m** (*pyagrum.DAGmodel*) -- a Bayesian network (or any DAG model)
+
+    EssentialGraph(m, pdag) -> EssentialGraph
+        Parameters:
+          - **m** (*pyagrum.DAGmodel*) -- the model giving the names of the nodes
+          - **pdag** (*pyagrum.PDAG*) -- the essential graph: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+
+    EssentialGraph(pdag) -> EssentialGraph
+        Parameters:
+          - **pdag** (*pyagrum.PDAG*) -- the essential graph, with the names of its nodes: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+
+    EssentialGraph(cpdag) -> EssentialGraph
+        Parameters:
+          - **cpdag** (*pyagrum.CPDAG*) -- the essential graph, with the names of its nodes
+
+    References
+    ----------
+    D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures. UAI 1995, pp. 87-98.
+
+    S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         _pyagrumcpp.EssentialGraph_swiginit(self, _pyagrumcpp.new_EssentialGraph(*args))
     __swig_destroy__ = _pyagrumcpp.delete_EssentialGraph
 
-    def pdag(self) -> "pyagrum.PDAG":
-        r"""
-
-        Returns
-        -------
-        pyagrum.PDAG
-            the PDAG (Partially Directed Graph)
-
-        """
-        return _pyagrumcpp.EssentialGraph_pdag(self)
-
-    def toDot(self, *args) -> str:
+    def parents(self, *args):
         r"""
 
         Parameters
         ----------
-        options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
-
-        Returns
-        -------
-        str
-            a friendly display of the graph in DOT format
-
-        """
-        return _pyagrumcpp.EssentialGraph_toDot(self, *args)
-
-    def sizeArcs(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of arcs in the graph
-
-        """
-        return _pyagrumcpp.EssentialGraph_sizeArcs(self)
-
-    def sizeEdges(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of edges in the graph
-
-        """
-        return _pyagrumcpp.EssentialGraph_sizeEdges(self)
-
-    def sizeNodes(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of nodes in the graph
-
-        """
-        return _pyagrumcpp.EssentialGraph_sizeNodes(self)
-
-    def size(self) -> int:
-        r"""
-
-        Returns
-        -------
-        int
-            the number of nodes in the graph
-
-        """
-        return _pyagrumcpp.EssentialGraph_size(self)
-
-    def skeleton(self) -> "pyagrum.UndiGraph":
-        r"""
-
-        Return the skeleton of the essential graph (the underlying undirected graph without arc orientations).
-
-        Returns
-        -------
-        pyagrum.UndiGraph
-            the skeleton of the essential graph
-
-        """
-        return _pyagrumcpp.EssentialGraph_skeleton(self)
-
-    def connectedComponents(self) -> dict[int,int]:
-        r"""
-
-        Return the connected components of the essential graph.
-
-        Each node is mapped to the id of its component root (an arbitrarily chosen node from the same component).
-
-        Returns
-        -------
-        dict[int, int]
-            mapping node id → component root id
-
-        """
-        return _pyagrumcpp.EssentialGraph_connectedComponents(self)
-
-    def idFromName(self, name: str) -> int:
-        r"""
-
-        Parameters
-        ----------
-        name : str
-          the name of the variable in the model
-
-        Returns
-        -------
-        int
-          the nodeId from the name of the variable in the model
-
-        """
-        return _pyagrumcpp.EssentialGraph_idFromName(self, name)
-
-    def nameFromId(self, node: int) -> str:
-        r"""
-
-        Parameters
-        ----------
-        node : int
-          the nodeId of the variable in the model
-
-        Returns
-        -------
-        str
-          the name of the variable in the model from the nodeId
-
-        """
-        return _pyagrumcpp.EssentialGraph_nameFromId(self, node)
-
-    def nodes(self) -> set[int]:
-        r"""
-
-        Return the set of node ids in the essential graph.
-
-        Returns
-        -------
-        set[int]
-            the set of all node ids
-
-        """
-        return _pyagrumcpp.EssentialGraph_nodes(self)
-
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
-
-    def arcs(self) -> set[tuple[int,int]]:
-        r"""
-
-        Returns
-        -------
-        list
-            The lisf of arcs in the EssentialGraph
-
-        """
-        return _pyagrumcpp.EssentialGraph_arcs(self)
-
-    def parents(self, id: int) -> set[int]:
-        r"""
-
-        Parameters
-        ----------
-        id :
-            The id of the child node
+        id : int | set[int]
+            the id of a node, or a set of ids
 
         Returns
         -------
@@ -13187,15 +16241,15 @@ class EssentialGraph(object):
             the set of the parents ids.
 
         """
-        return _pyagrumcpp.EssentialGraph_parents(self, id)
+        return _pyagrumcpp.EssentialGraph_parents(self, *args)
 
-    def children(self, id: int) -> set[int]:
+    def children(self, *args):
         r"""
 
         Parameters
         ----------
-        id : int
-          the id of the parent
+        id : int | set[int]
+          the id of a node, or a set of ids
 
         Returns
         -------
@@ -13203,9 +16257,9 @@ class EssentialGraph(object):
             the set of all the children
 
         """
-        return _pyagrumcpp.EssentialGraph_children(self, id)
+        return _pyagrumcpp.EssentialGraph_children(self, *args)
 
-    def descendants(self, *args) -> set[int]:
+    def descendants(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of descendants of a node
@@ -13221,9 +16275,9 @@ class EssentialGraph(object):
           the set of ids of the descendants of node `norid`.
 
         """
-        return _pyagrumcpp.EssentialGraph_descendants(self, *args)
+        return _pyagrumcpp.EssentialGraph_descendants(self, id)
 
-    def ancestors(self, *args) -> set[int]:
+    def ancestors(self, id: int) -> set[int]:
         r"""
 
         give the set of nodeid of ancestors of a node
@@ -13239,91 +16293,134 @@ class EssentialGraph(object):
           the set of ids of the ancestors of node `norid`.
 
         """
-        return _pyagrumcpp.EssentialGraph_ancestors(self, *args)
+        return _pyagrumcpp.EssentialGraph_ancestors(self, id)
 
-    def edges(self) -> set[tuple[int,int]]:
+    def sizeNodes(self) -> int:
         r"""
 
         Returns
         -------
-        List
-          the list of the edges
+        int
+            the number of nodes in the graph
 
         """
-        return _pyagrumcpp.EssentialGraph_edges(self)
+        return _pyagrumcpp.EssentialGraph_sizeNodes(self)
 
-    def neighbours(self, id: int) -> set[int]:
+    def pdag(self) -> "pyagrum.PDAG":
         r"""
+
+        Returns
+        -------
+        pyagrum.PDAG
+            a copy of the essential graph as a PDAG
+
+        """
+        return _pyagrumcpp.EssentialGraph_pdag(self)
+
+    def cpdag(self) -> "pyagrum.CPDAG":
+        r"""
+
+        Returns
+        -------
+        pyagrum.CPDAG
+            the essential graph as a (plain) CPDAG
+
+        """
+        return _pyagrumcpp.EssentialGraph_cpdag(self)
+
+    def toDot(self, *args) -> str:
+        r"""
+
+        Drawn as a ``pyagrum.CPDAG`` (chain components in clusters, compelled arcs with the color of the key
+        ``dot.compelledArcColor`` of ``pyagrum.config``), the nodes being labelled with the names of the variables.
 
         Parameters
         ----------
-        id : int
-            the id of the checked node
+        options : pyagrum.DotOptions, optional
+            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
-        Set
-            The set of edges adjacent to the given node
+        str
+            a friendly display of the graph in DOT format
 
         """
-        return _pyagrumcpp.EssentialGraph_neighbours(self, id)
+        return _pyagrumcpp.EssentialGraph_toDot(self, *args)
 
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
+    def __repr__(self) -> str:
+        return _pyagrumcpp.EssentialGraph___repr__(self)
+
+    def __str__(self) -> str:
+        return _pyagrumcpp.EssentialGraph___str__(self)
+
+    def _saveGUMstring(self, *args) -> str:
+        return _pyagrumcpp.EssentialGraph__saveGUMstring(self, *args)
+
+    def _saveGUM(self, *args) -> None:
+        return _pyagrumcpp.EssentialGraph__saveGUM(self, *args)
+
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
+      """
+      Save the graph as a .jgum (text) or .bgum (binary) file (its class, its nodes with their names, its arcs,
+      edges and marks).
+
+      Parameters
+      ----------
+      name : str
+        the name of the file
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
+      indent : int, optional
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most compact
+        output, N>=0 to pretty-print with N spaces. Defaults to ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
+      """
+      if indent is None:
+        self._saveGUM(name, binary)
+      else:
+        self._saveGUM(name, binary, indent)
+
+    def saveGUMstring(self, indent: int | None = None) -> str:
+      """
+      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+
+      Parameters
+      ----------
+      indent : int, optional
+        JSON indentation: -1 for the most compact output, N>=0 to pretty-print with N spaces.
+        Defaults to ``pyagrum.config["core","jgumIndent"]``.
 
       Returns
       -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
+      str
+        the jgum string
       """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
+      return self._saveGUMstring() if indent is None else self._saveGUMstring(indent)
 
-    def connectedComponentsCount(self):
-      """ number of connected components
+    def __getstate__(self):
+      return self.saveGUMstring(-1)
 
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
+    def __setstate__(self, state):
+      if isinstance(state, dict):
+        _setstate_from_former_pickle(self, state)
+      else:
+        self.__init__(graphFromGUMString(state))
+      return self
 
 
 # Register EssentialGraph in _pyagrumcpp:
 _pyagrumcpp.EssentialGraph_swigregister(EssentialGraph)
+
+def graphToGUMString(*args) -> str:
+    return _pyagrumcpp.graphToGUMString(*args)
+
+def saveGraphGUM(*args) -> None:
+    return _pyagrumcpp.saveGraphGUM(*args)
 class MarkovBlanket(object):
     r"""
 
@@ -13467,7 +16564,8 @@ class MarkovBlanket(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -13480,6 +16578,10 @@ class MarkovBlanket(object):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -13600,7 +16702,8 @@ class MarkovBlanket(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -13613,6 +16716,10 @@ class MarkovBlanket(object):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -13637,13 +16744,15 @@ class StructuralMetrics(object):
 
     Examples
     --------
-    >>> import pyagrum as gum
-    >>> ref = pyagrum.fastBN('A->B->C;A->C')
-    >>> test = pyagrum.fastBN('A->B;C->B;A->C')
-    >>> comp = pyagrum.StructuralMetrics()
-    >>> comp.compare(ref, test)
-    >>> comp.precision()
-    >>> comp.sid(ref, test)
+    .. code-block:: python
+
+      import pyagrum as gum
+      ref = gum.fastBN('A->B->C;A->C')
+      test = gum.fastBN('A->B;C->B;A->C')
+      comp = gum.StructuralMetrics()
+      comp.compare(ref, test)
+      comp.precision()
+      comp.sid(ref, test)
 
     StructuralMetrics() -> StructuralMetrics
         default constructor
@@ -14158,13 +17267,15 @@ class IBayesNet(DAGmodel):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-        >>> print(bn.evEqu('A',5)
-          A                                                                                                                                                                                                    |
-        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+          print(bn.evEqu('A',5)
+            A                                                                                                                                                                                                    |
+          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
 
         Parameters
         ----------
@@ -14243,13 +17354,15 @@ class IBayesNet(DAGmodel):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-        >>> print(bn.evGt('A',5)
-          A                                                                                                                                                                                                    |
-        [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-        ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-         0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+          print(bn.evGt('A',5)
+            A                                                                                                                                                                                                    |
+          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
+          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
 
         Parameters
         ----------
@@ -14404,7 +17517,8 @@ class IBayesNet(DAGmodel):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -14417,6 +17531,10 @@ class IBayesNet(DAGmodel):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -14498,8 +17616,10 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
         Parameters
         ----------
@@ -14965,11 +18085,13 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet()
-        >>> w = bn.addAMPLITUDE(pyagrum.RangeVariable('W', '', 0, 2))
-        >>> for name in 'ABC':
-        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 10, 12)), w)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet()
+          w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
+          for name in 'ABC':
+            bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
 
         """
         return _pyagrumcpp.BayesNet_addAMPLITUDE(self, var)
@@ -15059,14 +18181,16 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet()
-        >>> levels = ['low', 'medium', 'high']
-        >>> a = bn.add(pyagrum.LabelizedVariable('A', '', levels))
-        >>> b = bn.add(pyagrum.LabelizedVariable('B', '', levels))
-        >>> m = bn.addMAX(pyagrum.LabelizedVariable('M', '', levels))
-        >>> bn.addArc(a, m)
-        >>> bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet()
+          levels = ['low', 'medium', 'high']
+          a = bn.add(gum.LabelizedVariable('A', '', levels))
+          b = bn.add(gum.LabelizedVariable('B', '', levels))
+          m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
+          bn.addArc(a, m)
+          bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
 
         """
         return _pyagrumcpp.BayesNet_addMAX(self, var)
@@ -15105,11 +18229,13 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet()
-        >>> m = bn.addMEDIAN(pyagrum.RangeVariable('M', '', 10, 12))
-        >>> for name in 'ABC':
-        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 10, 12)), m)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet()
+          m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
+          for name in 'ABC':
+            bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
 
         """
         return _pyagrumcpp.BayesNet_addMEDIAN(self, var)
@@ -15145,13 +18271,15 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet()
-        >>> a = bn.add(pyagrum.RangeVariable('A', '', 0, 1))
-        >>> c = bn.add(pyagrum.RangeVariable('C', '', 10, 11))
-        >>> m = bn.addMIN(pyagrum.RangeVariable('M', '', 0, 11))
-        >>> bn.addArc(a, m)
-        >>> bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet()
+          a = bn.add(gum.RangeVariable('A', '', 0, 1))
+          c = bn.add(gum.RangeVariable('C', '', 10, 11))
+          m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
+          bn.addArc(a, m)
+          bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
 
         """
         return _pyagrumcpp.BayesNet_addMIN(self, var)
@@ -15186,11 +18314,13 @@ class BayesNet(IBayesNet):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn = pyagrum.BayesNet()
-        >>> s = bn.addSUM(pyagrum.RangeVariable('S', '', 0, 4))
-        >>> for name in 'AB':
-        ...   bn.addArc(bn.add(pyagrum.RangeVariable(name, '', 0, 2)), s)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn = gum.BayesNet()
+          s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
+          for name in 'AB':
+            bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
 
         """
         return _pyagrumcpp.BayesNet_addSUM(self, var)
@@ -15533,7 +18663,8 @@ class BayesNet(IBayesNet):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -15546,6 +18677,10 @@ class BayesNet(IBayesNet):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -15644,7 +18779,7 @@ class BayesNet(IBayesNet):
         self._listeners.append(nl)
 
 
-    def loadGUM(self, name: str, l: object=None, binary: bool=False) -> None:
+    def loadGUM(self, name: str, l: object=None, binary: object=None) -> None:
         r"""
 
         Load a jgum (JSON) or bgum (binary/msgpack) file.
@@ -15653,11 +18788,14 @@ class BayesNet(IBayesNet):
         ----------
         name : str
             the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-        binary : bool
-            if True, read as bgum (msgpack) regardless of extension (default: False)
+        binary : bool, optional
+            True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is
+            given by the extension (binary for an unknown extension).
 
         Raises
         ------
+        pyagrum.InvalidArgument
+            If binary contradicts the extension (``.jgum`` or ``.bgum``)
         pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
@@ -16000,7 +19138,7 @@ class BayesNet(IBayesNet):
         self.loadGUMstring(state)
         return self
 
-    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
       """
       Save the Bayesian network as a .jgum (text) or .bgum (binary) file.
 
@@ -16008,12 +19146,18 @@ class BayesNet(IBayesNet):
       ----------
       name : str
         the name of the file
-      binary : bool
-        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
       indent : int, optional
-        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most
         compact output, N>=0 to pretty-print with N spaces. Defaults to
         ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
       """
       if indent is None:
         self._saveGUM(name, binary)
@@ -16622,7 +19766,8 @@ class BayesNetFragment(IBayesNet, ):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -16635,6 +19780,10 @@ class BayesNetFragment(IBayesNet, ):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -27179,21 +30328,23 @@ class BNDatabaseGenerator(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-        >>> g=pyagrum.BNDatabaseGenerator(bn)
-        >>> g.setRandomVarOrder()
-        >>> g.drawSamples(5,
-        ...               {'B':'yes','E':'1'})
-        -122.98754206579288
-        >>> g.setDiscretizedLabelModeRandom() # By default
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes  2.802302  0  0  1  0
-        1  yes  1.761605  0  0  1  0
-        2  yes  2.507535  0  0  1  1
-        3  yes  2.815282  0  1  1  0
-        4  yes  5.548571  1  0  1  1
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+          g=gum.BNDatabaseGenerator(bn)
+          g.setRandomVarOrder()
+          g.drawSamples(5,
+                        {'B':'yes','E':'1'})
+          -122.98754206579288
+          g.setDiscretizedLabelModeRandom() # By default
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes  2.802302  0  0  1  0
+          1  yes  1.761605  0  0  1  0
+          2  yes  2.507535  0  0  1  1
+          3  yes  2.815282  0  1  1  0
+          4  yes  5.548571  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
@@ -27205,21 +30356,23 @@ class BNDatabaseGenerator(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-        >>> g=pyagrum.BNDatabaseGenerator(bn)
-        >>> g.setRandomVarOrder()
-        >>> g.drawSamples(5,
-        ...               {'B':'yes','E':'1'})
-        -122.98754206579288
-        >>> g.setDiscretizedLabelModeMedian()
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes  2.250000  0  0  1  0
-        1  yes  2.250000  0  0  1  0
-        2  yes  2.250000  0  0  1  1
-        3  yes  2.250000  0  1  1  0
-        4  yes  6.600000  1  0  1  1
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+          g=gum.BNDatabaseGenerator(bn)
+          g.setRandomVarOrder()
+          g.drawSamples(5,
+                        {'B':'yes','E':'1'})
+          -122.98754206579288
+          g.setDiscretizedLabelModeMedian()
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes  2.250000  0  0  1  0
+          1  yes  2.250000  0  0  1  0
+          2  yes  2.250000  0  0  1  1
+          3  yes  2.250000  0  1  1  0
+          4  yes  6.600000  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
@@ -27231,21 +30384,23 @@ class BNDatabaseGenerator(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-        >>> g=pyagrum.BNDatabaseGenerator(bn)
-        >>> g.setRandomVarOrder()
-        >>> g.drawSamples(5,
-        ...               {'B':'yes','E':'1'})
-        -122.98754206579288
-        >>> g.setDiscretizedLabelModeInterval()
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes   [1.5;3[  0  0  1  0
-        1  yes   [1.5;3[  0  0  1  0
-        2  yes   [1.5;3[  0  0  1  1
-        3  yes   [1.5;3[  0  1  1  0
-        4  yes  [3;10.2]  1  0  1  1
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+          g=gum.BNDatabaseGenerator(bn)
+          g.setRandomVarOrder()
+          g.drawSamples(5,
+                        {'B':'yes','E':'1'})
+          -122.98754206579288
+          g.setDiscretizedLabelModeInterval()
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes   [1.5;3[  0  0  1  0
+          1  yes   [1.5;3[  0  0  1  0
+          2  yes   [1.5;3[  0  0  1  1
+          3  yes   [1.5;3[  0  1  1  0
+          4  yes  [3;10.2]  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
@@ -27466,37 +30621,39 @@ class BNDatabaseGenerator(object):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-        >>> g=pyagrum.BNDatabaseGenerator(bn)
-        >>> g.setRandomVarOrder()
-        >>> g.drawSamples(5,
-        ...               {'B':'yes','E':'1'})
-        -122.98754206579288
-        >>> g.setDiscretizedLabelModeRandom() # By default
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes  2.802302  0  0  1  0
-        1  yes  1.761605  0  0  1  0
-        2  yes  2.507535  0  0  1  1
-        3  yes  2.815282  0  1  1  0
-        4  yes  5.548571  1  0  1  1
-        >>> g.setDiscretizedLabelModeMedian()
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes  2.250000  0  0  1  0
-        1  yes  2.250000  0  0  1  0
-        2  yes  2.250000  0  0  1  1
-        3  yes  2.250000  0  1  1  0
-        4  yes  6.600000  1  0  1  1
-        >>> g.setDiscretizedLabelModeInterval()
-        >>> g.to_pandas()
-             B         F  A  C  E  D
-        0  yes   [1.5;3[  0  0  1  0
-        1  yes   [1.5;3[  0  0  1  0
-        2  yes   [1.5;3[  0  0  1  1
-        3  yes   [1.5;3[  0  1  1  0
-        4  yes  [3;10.2]  1  0  1  1
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
+          g=gum.BNDatabaseGenerator(bn)
+          g.setRandomVarOrder()
+          g.drawSamples(5,
+                        {'B':'yes','E':'1'})
+          -122.98754206579288
+          g.setDiscretizedLabelModeRandom() # By default
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes  2.802302  0  0  1  0
+          1  yes  1.761605  0  0  1  0
+          2  yes  2.507535  0  0  1  1
+          3  yes  2.815282  0  1  1  0
+          4  yes  5.548571  1  0  1  1
+          g.setDiscretizedLabelModeMedian()
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes  2.250000  0  0  1  0
+          1  yes  2.250000  0  0  1  0
+          2  yes  2.250000  0  0  1  1
+          3  yes  2.250000  0  1  1  0
+          4  yes  6.600000  1  0  1  1
+          g.setDiscretizedLabelModeInterval()
+          g.to_pandas()
+               B         F  A  C  E  D
+          0  yes   [1.5;3[  0  0  1  0
+          1  yes   [1.5;3[  0  0  1  0
+          2  yes   [1.5;3[  0  0  1  1
+          3  yes   [1.5;3[  0  1  1  0
+          4  yes  [3;10.2]  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_drawSamples(self, *args)
@@ -27585,7 +30742,16 @@ class BNLearner(object):
             the learnt BayesNet
 
         """
-        return _pyagrumcpp.BNLearner_learnBN(self)
+        val = _pyagrumcpp.BNLearner_learnBN(self)
+
+        if self.maxIndegreeExceeded():
+            import warnings
+            warnings.warn("the learned DAG has a node with more parents than the maximum indegree (a constraint-based "
+                          "algorithm does not remove the edges kept by its independence tests to satisfy it)", UserWarning, stacklevel=2)
+
+
+        return val
+
 
     def learnParameters(self, *args) -> "pyagrum.BayesNet":
         r"""
@@ -28254,6 +31420,8 @@ class BNLearner(object):
         ------
         pyagrum.OperationNotAllowed
             If FCI has not been selected (call `useFCI()` first).
+        pyagrum.OutOfBounds
+            If alpha is not strictly between 0 and 1.
 
         """
         val = _pyagrumcpp.BNLearner_setFCIAlpha(self, alpha)
@@ -28346,6 +31514,59 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_fciExhaustiveSepSet(self)
 
+    def setFCIErrorOnInvalidPAG(self, error: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Choose what FCI does when the learned PAG is not valid.
+
+        ``learnDAG`` and ``learnPDAG`` with FCI go through the representative MAG of the learned PAG
+        (Zhang 2008). If the PAG is not valid (its representative graph has a directed cycle, which may
+        happen with conflicting independence tests), either an error is raised (``True``) or the former
+        approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
+        symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
+        The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).
+
+        Parameters
+        ----------
+        error : bool
+            ``True`` to raise ``pyagrum.InvalidArgument`` on an invalid PAG.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        val = _pyagrumcpp.BNLearner_setFCIErrorOnInvalidPAG(self, error)
+
+        return self
+
+
+        return val
+
+
+    def fciErrorOnInvalidPAG(self) -> bool:
+        r"""
+
+        Return whether FCI raises an error on an invalid learned PAG (see ``setFCIErrorOnInvalidPAG``).
+
+        Returns
+        -------
+        bool
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If FCI has not been selected (call `useFCI()` first).
+
+        """
+        return _pyagrumcpp.BNLearner_fciErrorOnInvalidPAG(self)
+
     def useChi2Test(self) -> "pyagrum.BNLearner":
         r"""
 
@@ -28398,8 +31619,8 @@ class BNLearner(object):
         whether two variables are conditionally independent.
 
         An edge (X, Y) is removed from the skeleton when the p-value of the
-        conditional independence test exceeds α. Smaller α makes PC more
-        conservative (fewer edges removed); larger α makes it more aggressive.
+        conditional independence test exceeds α. Smaller α removes more edges
+        (sparser graphs); larger α keeps more edges.
 
         Parameters
         ----------
@@ -28416,6 +31637,8 @@ class BNLearner(object):
         ------
         pyagrum.OperationNotAllowed
             If the PC algorithm has not been selected (call `usePC()` first).
+        pyagrum.OutOfBounds
+            If alpha is not strictly between 0 and 1.
 
         """
         return _pyagrumcpp.BNLearner_setPCAlpha(self, alpha)
@@ -28537,6 +31760,14 @@ class BNLearner(object):
     def setMaxIndegree(self, max_indegree: int) -> "pyagrum.BNLearner":
         r"""
 
+        Set the maximum number of parents of a node of the learned structure.
+
+        The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,
+        MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:
+        if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it
+        with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` does not check the
+        bound.
+
         Parameters
         ----------
         max_indegree : int
@@ -28544,6 +31775,35 @@ class BNLearner(object):
 
         """
         return _pyagrumcpp.BNLearner_setMaxIndegree(self, max_indegree)
+
+    def setErrorOnExceededMaxIndegree(self, error: bool) -> "pyagrum.BNLearner":
+        r"""
+
+        Choose what the constraint-based algorithms (PC, FCI, MIIC) do when the learned DAG exceeds the maximum indegree.
+
+        These algorithms never remove an edge kept by their independence tests to satisfy the bound given by `setMaxIndegree`.
+        If the DAG of `learnDAG()` or `learnBN()` has a node with more parents than this bound, either an error is raised
+        (``True``) or the DAG is returned with a warning (``False``). The default value is the key
+        ``learning.errorOnExceededMaxIndegree`` of ``pyagrum.config`` (``True``).
+
+        Parameters
+        ----------
+        error : bool
+            ``True`` to raise ``pyagrum.OperationNotAllowed`` when the learned DAG exceeds the maximum indegree.
+
+        Returns
+        -------
+        pyagrum.BNLearner
+            the BNLearner itself, to allow method chaining.
+
+        """
+        val = _pyagrumcpp.BNLearner_setErrorOnExceededMaxIndegree(self, error)
+
+        return self
+
+
+        return val
+
 
     def setTotalOrder(self, *args) -> "pyagrum.BNLearner":
         r"""
@@ -29040,28 +32300,6 @@ class BNLearner(object):
         bn.cpt(bn.idFromName(n)).fillWith(tmp.cpt(n))
       return self
 
-    def learnEssentialGraph(self):
-      """
-      learn an essential graph from a file
-
-      Returns
-      -------
-      pyagrum.EssentialGraph
-        the learned essential graph
-      """
-      bn = BayesNet()
-      for i in range(len(self.names())):
-        bn.add(self.nameFromId(i),2)
-      try:
-        ge = EssentialGraph(bn,self.learnPDAG()) # for constraint-based methods
-      except:
-        bn = self.learnBN()
-        ge = EssentialGraph(bn)  # for score-based methods
-
-      ge._bn=bn
-
-      return ge
-
     def useEM(self, epsilon: float, noise: float | None = None) -> "pyagrum.BNLearner":
       """
       Sets whether we use EM for parameter learning or not, depending on the value of epsilon.
@@ -29497,7 +32735,16 @@ class BNLearner(object):
             the learned DAG
 
         """
-        return _pyagrumcpp.BNLearner_learnDAG(self)
+        val = _pyagrumcpp.BNLearner_learnDAG(self)
+
+        if self.maxIndegreeExceeded():
+            import warnings
+            warnings.warn("the learned DAG has a node with more parents than the maximum indegree (a constraint-based "
+                          "algorithm does not remove the edges kept by its independence tests to satisfy it)", UserWarning, stacklevel=2)
+
+
+        return val
+
 
     def learnPDAG(self) -> "pyagrum.PDAG":
         r"""
@@ -29516,6 +32763,31 @@ class BNLearner(object):
 
         """
         return _pyagrumcpp.BNLearner_learnPDAG(self)
+
+    def learnEssentialGraph(self) -> "pyagrum.EssentialGraph":
+        r"""
+
+        learn the essential graph of the Markov equivalence class of the data
+
+        The essential graph (CPDAG) of the learned DAG (see `learnDAG`), whatever the algorithm. With a
+        constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by `learnPDAG` (it may not
+        be a CPDAG).
+
+        Returns
+        -------
+        pyagrum.EssentialGraph
+            the learned essential graph
+
+        Raises
+        ------
+        pyagrum.MissingValueInDatabase
+            if the database contains missing values
+        pyagrum.OperationNotAllowed
+            as `learnDAG`, if the learned DAG exceeds the maximum number of parents (see
+            `setMaxIndegree` and `setErrorOnExceededMaxIndegree`)
+
+        """
+        return _pyagrumcpp.BNLearner_learnEssentialGraph(self)
 
     def learnPAG(self) -> "pyagrum.PAG":
         r"""
@@ -29538,6 +32810,32 @@ class BNLearner(object):
 
         """
         return _pyagrumcpp.BNLearner_learnPAG(self)
+
+    def errorOnExceededMaxIndegree(self) -> bool:
+        r"""
+
+        Return whether the constraint-based algorithms raise an error when the learned DAG exceeds the maximum indegree (see
+        `setErrorOnExceededMaxIndegree`).
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrumcpp.BNLearner_errorOnExceededMaxIndegree(self)
+
+    def maxIndegreeExceeded(self) -> bool:
+        r"""
+
+        Return whether the last DAG learned (by `learnDAG()` or `learnBN()`) by the selected constraint-based algorithm exceeds
+        the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
+
+        Returns
+        -------
+        bool
+
+        """
+        return _pyagrumcpp.BNLearner_maxIndegreeExceeded(self)
 
     def names(self) -> tuple[str, ...]:
         r"""
@@ -30091,7 +33389,7 @@ def loadBN(
       a BN from a file using one of the availableBNExts() suffixes.
 
   Notes
-  ----
+  -----
       Listeners could be added in order to monitor its loading.
 
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
@@ -30100,29 +33398,31 @@ def loadBN(
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>>
-  >>> # creating listeners
-  >>> def foo_listener(progress):
-  >>>    if progress==200:
-  >>>        print(' BN loaded ')
-  >>>        return
-  >>>    elif progress==100:
-  >>>        car='%'
-  >>>    elif progress%10==0:
-  >>>        car='#'
-  >>>    else:
-  >>>        car='.'
-  >>>    print(car,end='',flush=True)
-  >>>
-  >>> def bar_listener(progress):
-  >>>    if progress==50:
-  >>>        print('50%')
-  >>>
-  >>> # loadBN with list of listeners
-  >>> pyagrum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
-  >>> # .........#.........#.........#.........#..50%
-  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
+  ``.........#.........#.........#.........#..50%`` then
+  ``.......#.........#.........#.........#.........#.........% | BN loaded``:
+
+  .. code-block:: python
+
+    import pyagrum as gum
+
+    def foo_listener(progress):
+       if progress==200:
+           print(' BN loaded ')
+           return
+       elif progress==100:
+           car='%'
+       elif progress%10==0:
+           car='#'
+       else:
+           car='.'
+       print(car,end='',flush=True)
+
+    def bar_listener(progress):
+       if progress==50:
+           print('50%')
+
+    gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
   """
   bn = BayesNet()
 
@@ -30178,7 +33478,7 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
       whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
 
   Notes
-  ----
+  -----
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
@@ -30222,8 +33522,10 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>> bn=pyagrum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+  .. code-block:: python
+
+    import pyagrum as gum
+    bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -30346,10 +33648,12 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
 
   Examples
   --------
-  >>> bn=pyagrum.randomBN()
-  >>> bn=pyagrum.randomBN(n=10)
-  >>> bn=pyagrum.randomBN(names="ABCDEF")
-  >>> bn=pyagrum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
+  .. code-block:: python
+
+    bn=gum.randomBN()
+    bn=gum.randomBN(n=10)
+    bn=gum.randomBN(names="ABCDEF")
+    bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
 
   Warnings
   --------

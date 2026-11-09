@@ -47,154 +47,109 @@
  *
  */
 #include <agrum/base/core/dot/dotElements.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 
 #ifdef GUM_NO_INLINE
 #  include <agrum/BN/algorithms/essentialGraph_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
 namespace gum {
-  EssentialGraph::EssentialGraph(const DAGmodel& m) : _dagmodel_(&m) { _buildEssentialGraph_(); }
-
-  EssentialGraph::EssentialGraph(const DAGmodel& m, const PDAG& mg) : _dagmodel_(&m), _pdag_(mg) {}
-
-  EssentialGraph::EssentialGraph(const EssentialGraph& g) {
-    _dagmodel_ = g._dagmodel_;
-    _buildEssentialGraph_();
-  }
-
-  EssentialGraph& EssentialGraph::operator=(const EssentialGraph& g) {
-    if (&g != this) {
-      _dagmodel_ = g._dagmodel_;
-      _buildEssentialGraph_();
+  namespace {
+    /// the DAG of m with the names of the variables of m only
+    DAG namedDAG(const DAGmodel& m) {
+      const DAG model = m.dag();   // a copy: a temporary would not outlive the loops
+      DAG       dag;
+      for (const auto node: model.nodes()) {
+        dag.addNodeWithId(node);
+        dag.setName(node, m.variable(node).name());
+      }
+      for (const auto& arc: model.arcs())
+        dag.addArc(arc.tail(), arc.head());
+      return dag;
     }
-    return *this;
-  }
+
+    /// the PDAG pdag with the names of the variables of m only: its own names are dropped (renaming
+    /// node by node would fail halfway on names permuted between its nodes)
+    PDAG namedAfter(const PDAG& pdag, const DAGmodel& m) {
+      MixedGraph g;
+      for (const auto node: pdag.nodes()) {
+        g.addNodeWithId(node);
+        g.setName(node, m.variable(node).name());
+      }
+      for (const auto& arc: pdag.arcs())
+        g.addArc(arc.tail(), arc.head());
+      for (const auto& edge: pdag.edges())
+        g.addEdge(edge.first(), edge.second());
+      return PDAG(g);
+    }
+  }   // namespace
+
+  EssentialGraph::EssentialGraph() : CPDAG(ChainGraph(), DAG()) {}
+
+  EssentialGraph::EssentialGraph(const DAGmodel& m) : CPDAG(CPDAG::fromDAG(namedDAG(m))) {}
+
+  EssentialGraph::EssentialGraph(const DAGmodel& m, const PDAG& pdag) :
+      CPDAG(CPDAG::fromPDAG(namedAfter(pdag, m))) {}
+
+  EssentialGraph::EssentialGraph(const PDAG& pdag) : CPDAG(CPDAG::fromPDAG(pdag)) {}
+
+  EssentialGraph::EssentialGraph(const CPDAG& cpdag) : CPDAG(cpdag) {}
 
   EssentialGraph::~EssentialGraph() = default;
-
-  void EssentialGraph::_buildEssentialGraph_() {
-    MixedGraph mg;   // during the process, the graph may not be a PDAG
-    _pdag_.clear();
-    if (_dagmodel_ == nullptr) return;
-
-    for (const auto& node: _dagmodel_->nodes()) {
-      mg.addNodeWithId(node);
-      _pdag_.addNodeWithId(node);
-    }
-    for (const auto& arc: _dagmodel_->arcs()) {
-      mg.addArc(arc.tail(), arc.head());
-    }
-
-    std::vector< Arc > v;
-    do {
-      v.clear();
-      for (const auto x: _dagmodel_->topologicalOrder())
-        for (const auto y: mg.children(x))
-          if (!_strongly_protected_(mg, x, y)) v.emplace_back(x, y);
-
-      for (const auto& arc: v) {
-        mg.eraseArc(arc);
-        mg.addEdge(arc.tail(), arc.head());
-      }
-    } while (!v.empty());
-
-    for (const auto& arc: mg.arcs()) {
-      _pdag_.addArc(arc.tail(), arc.head());
-    }
-    for (const auto& edge: mg.edges()) {
-      _pdag_.addEdge(edge.first(), edge.second());
-    }
-
-    for (auto id: _pdag_)
-      _pdag_.setName(id, _dagmodel_->variable(id).name());
-  }
-
-  bool EssentialGraph::_strongly_protected_(NodeId a, NodeId b) const {
-    return _strongly_protected_(_pdag_, a, b);
-  }
-
-  bool EssentialGraph::_strongly_protected_(MixedGraph mg, NodeId a, NodeId b) {
-    // testing a->b from
-    // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
-    //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
-
-    // condition (a)
-    for (const auto& c: mg.parents(a)) {
-      if (!mg.existsArc(c, b)) { return true; }
-    }
-
-
-    for (const auto& c: mg.parents(b)) {
-      if (c == a) { continue; }
-      // condition (c)
-      if (mg.existsArc(a, c)) { return true; }
-
-      // condition (b) knowing that a can not be a parent of c (condition below)
-      if (!mg.existsEdge(a, c) && !mg.existsArc(c, a)) { return true; }
-    }
-
-    // condition (d)
-    bool oneFound = false;
-    for (const auto& c: mg.parents(b)) {
-      if (c == a) { continue; }
-      // condition (d)
-      if (mg.existsEdge(c, a)) {
-        if (oneFound) {   // this is the second found
-          return true;
-        }
-        oneFound = true;
-      }
-    }
-
-    return false;
-  }
 
   std::string EssentialGraph::toDot() const { return toDot(dot::DotOptions()); }
 
   std::string EssentialGraph::toDot(const dot::DotOptions& options) const {
-    const auto     style = dot::DotStyle::read();
-    dot::DotWriter writer(true);
-    dot::writePreamble(writer, style, options);
-
-    if (_dagmodel_ != nullptr) {
-      for (const auto node: _pdag_.nodes()) {
-        const auto& name = _dagmodel_->variable(node).name();
-        writer.node(node,
-                    dot::nodeAttributes(style,
-                                        options.node(node),
-                                        name,
-                                        "(" + std::to_string(node) + ") " + name));
-      }
-
-      for (const auto& edge: _pdag_.edges()) {
-        auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
-        attributes.insert(attributes.begin(), {"dir", "none"});
-        writer.edge(edge.first(), edge.second(), attributes);
-      }
-
-      // the arcs which are in every DAG of the equivalence class are in red
-      for (const auto& arc: _pdag_.arcs()) {
-        auto attributes = dot::arcAttributes(options.arc(arc.tail(), arc.head()));
-        dot::addDefaultAttribute(attributes, "color", "red");
-        writer.edge(arc.tail(), arc.head(), attributes);
-      }
+    // the look of a CPDAG (clusters, colored compelled arcs), with the names of the variables as
+    // labels unless the caller gives other ones
+    dot::DotOptions withLabels(options);
+    for (const auto node: nodes()) {
+      if (!hasName(node)) continue;   // the default label and tooltip of the graph
+      const auto* given = options.node(node);
+      const auto  name  = nameFromId(node);
+      if (given == nullptr || given->label.empty()) withLabels.setNodeLabel(node, name);
+      if (given == nullptr || given->tooltip.empty())
+        withLabels.setNodeTooltip(node, "(" + std::to_string(node) + ") " + name);
     }
-
-    return writer.str();
+    return CPDAG::toDot(withLabels);
   }
 
-  UndiGraph EssentialGraph::skeleton() const {
-    UndiGraph skel;
-    for (const auto& n: nodes())
-      skel.addNodeWithId(n);
-    for (const auto& edge: edges())
-      skel.addEdge(edge.first(), edge.second());
-    for (const auto& arc: arcs())
-      skel.addEdge(arc.tail(), arc.head());
-    if (_dagmodel_ != nullptr)
-      for (auto id: skel)
-        skel.setName(id, _dagmodel_->variable(id).name());
-    return skel;
+  std::string graphToGUMString(const EssentialGraph& g, int indent) {
+    return graph::detail::gumGraphToString(
+        graph::detail::gumGraphContentOf(g.graph(), "EssentialGraph"),
+        indent);
   }
+
+  void saveGraphGUM(const EssentialGraph& g,
+                    std::string_view      path,
+                    std::optional< bool > binary,
+                    int                   indent) {
+    graph::detail::gumGraphToFile(graph::detail::gumGraphContentOf(g.graph(), "EssentialGraph"),
+                                  path,
+                                  binary,
+                                  indent);
+  }
+
+  namespace {
+    /// the essential graph read from a GUM content: checked to be a CPDAG
+    EssentialGraph essentialGraphOf(const graph::detail::GumGraphContent& content) {
+      auto pdag = graph::detail::gumGraphPDAGOf(content, "EssentialGraph");
+      try {
+        return EssentialGraph(pdag);
+      } catch (const Exception&) { graph::detail::rethrowAsIOError("EssentialGraph"); }
+    }
+  }   // namespace
+
+  template <>
+  EssentialGraph graphFromGUMString< EssentialGraph >(std::string_view content) {
+    return essentialGraphOf(graph::detail::gumGraphFromString(content));
+  }
+
+  template <>
+  EssentialGraph loadGraphGUM< EssentialGraph >(std::string_view      path,
+                                                std::optional< bool > binary) {
+    return essentialGraphOf(graph::detail::gumGraphFromFile(path, binary));
+  }
+
 }   // namespace gum

@@ -274,6 +274,220 @@ class TestGraph(pyAgrumTestCase):
     self.assertEqual(len(ccl), 1)
     self.assertEqual(set(list(ccl.values())[0]), {0, 1, 2})
 
+  def testPDAGAllowsPartiallyDirectedCycles(self):
+    pg = gum.PDAG()
+    pg.addNodes(3)
+    pg.addEdge(0, 1)
+    pg.addEdge(1, 2)
+    pg.addArc(2, 0)  # 2->0-1-2 is a partially directed cycle: allowed in a PDAG
+    self.assertEqual(pg.sizeArcs(), 1)
+    self.assertEqual(pg.sizeEdges(), 2)
+
+  def testPDAGForbidsDirectedCyclesAndDoubleConnections(self):
+    pg = gum.PDAG()
+    pg.addNodes(3)
+    pg.addArc(0, 1)
+    pg.addArc(1, 2)
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      pg.addArc(2, 0)
+    with self.assertRaises(gum.InvalidEdge):
+      pg.addEdge(0, 1)
+    pg.addEdge(0, 2)
+    with self.assertRaises(gum.InvalidArc):
+      pg.addArc(2, 0)
+
+    mg = gum.MixedGraph()
+    mg.addNodes(2)
+    mg.addArc(0, 1)
+    mg.addArc(1, 0)
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      gum.PDAG(mg)
+
+  def testChainGraph(self):
+    cg = gum.ChainGraph()
+    cg.addNodes(3)
+    cg.addEdge(0, 1)
+    cg.addEdge(1, 2)
+    with self.assertRaises(gum.InvalidPartiallyDirectedCycle):
+      cg.addArc(2, 0)
+    self.assertIsInstance(cg, gum.PDAG)
+    self.assertIsInstance(cg, gum.MixedGraph)
+
+    # constructors
+    pg = gum.PDAG()
+    pg.addNodes(3)
+    pg.addEdge(0, 1)
+    pg.addEdge(1, 2)
+    self.assertEqual(gum.ChainGraph(pg).sizeEdges(), 2)
+    pg.addArc(2, 0)
+    with self.assertRaises(gum.InvalidPartiallyDirectedCycle):
+      gum.ChainGraph(pg)
+    self.assertEqual(gum.ChainGraph(gum.fastDAG("A->B->C")).sizeArcs(), 2)
+    self.assertEqual(gum.ChainGraph(gum.fastUndiGraph("A-B-C")).sizeEdges(), 2)
+    self.assertEqual(gum.ChainGraph(gum.fastMixedGraph("A->B-C")).sizeArcs(), 1)
+
+    # fast syntax and pickling
+    fcg = gum.fastChainGraph("A->B-C;D->C")
+    self.assertIsInstance(fcg, gum.ChainGraph)
+    self.assertEqual((fcg.sizeArcs(), fcg.sizeEdges()), (2, 1))
+    with self.assertRaises(gum.InvalidPartiallyDirectedCycle):
+      gum.fastChainGraph("A->B-C-A")
+    import pickle
+
+    copy = pickle.loads(pickle.dumps(fcg))
+    self.assertIsInstance(copy, gum.ChainGraph)
+    self.assertEqual(copy.arcs(), fcg.arcs())
+    self.assertEqual(copy.edges(), fcg.edges())
+
+  def testChainGraphSeparation(self):
+    # P1->X--Y<-P2 (0=P1, 1=X, 2=Y, 3=P2): the parents of the chain component {X,Y} are married
+    cg = gum.ChainGraph()
+    cg.addNodes(4)
+    cg.addArc(0, 1)
+    cg.addEdge(1, 2)
+    cg.addArc(3, 2)
+    moral = cg.moralGraph()
+    self.assertTrue(moral.existsEdge(0, 3))
+    self.assertFalse(moral.existsEdge(1, 3))
+    self.assertEqual(moral.sizeEdges(), 4)
+    self.assertEqual(cg.moralizedAncestralGraph({1}).size(), 4)
+    self.assertTrue(cg.cSeparation(0, 3))
+    self.assertFalse(cg.cSeparation(0, 3, {1}))
+    self.assertFalse(cg.cSeparation({0}, {3}, {1, 2}))
+
+  def testTopologicalOrderOfACyclicGraph(self):
+    g = gum.DiGraph()
+    g.addNodes(4)
+    g.addArc(0, 1)
+    g.addArc(2, 3)
+    g.addArc(3, 2)  # a cycle separated from the node without parent
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      g.topologicalOrder()
+
+  def testCPDAG(self):
+    dag = gum.fastDAG("A->B->C;D->C")
+    cpdag = gum.CPDAG.fromDAG(dag)
+    self.assertEqual(cpdag.arcs(), {(1, 2), (3, 2)})
+    self.assertEqual(cpdag.edges(), {(0, 1)})
+    self.assertTrue(cpdag.contains(dag))
+    self.assertTrue(cpdag.contains(cpdag.consistentExtension()))
+    self.assertEqual(cpdag.nameFromId(3), "D")
+    self.assertEqual(cpdag.idFromName("C"), 2)
+    self.assertIsNone(cpdag.idFromName("Z"))
+    self.assertEqual(cpdag.graph().nameFromId(0), "A")
+    self.assertEqual(cpdag.consistentExtension().nameFromId(1), "B")
+    # the compelled arcs are colored, unless the caller gives a color
+    self.assertIn(f'1 -> 2 [color="{gum.config["dot", "compelledArcColor"]}"]', cpdag.toDot())
+    options = gum.DotOptions()
+    options.setArcColor(1, 2, "green")
+    self.assertIn('1 -> 2 [color="green"]', cpdag.toDot(options))
+    gum.config.push()
+    try:
+      gum.config["dot", "compelledArcColor"] = "blue"
+      self.assertIn('3 -> 2 [color="blue"]', cpdag.toDot())
+    finally:
+      gum.config.pop()
+    self.assertFalse(cpdag.contains(gum.fastDAG("A->B<-C;D->C")))
+    self.assertIsInstance(cpdag.graph(), gum.ChainGraph)
+    self.assertEqual(set(cpdag), {0, 1, 2, 3})
+
+    # d-separation of the class
+    self.assertTrue(cpdag.dSeparation(0, 3))
+    self.assertTrue(cpdag.dSeparation(0, 3, None))
+    self.assertFalse(cpdag.dSeparation(0, 3, 2))
+    self.assertTrue(cpdag.dSeparation({0}, {2}, {1}))
+
+    # checked conversion
+    self.assertEqual(gum.CPDAG.fromPDAG(gum.PDAG(cpdag.graph())), cpdag)
+    with self.assertRaises(gum.InvalidArgument):
+      gum.CPDAG.fromPDAG(gum.fastPDAG("A->B-C"))
+
+  def testMPDAG(self):
+    cpdag = gum.CPDAG.fromDAG(gum.fastDAG("A->B->C"))
+    self.assertEqual(cpdag.sizeEdges(), 2)
+    mpdag = gum.MPDAG.fromCPDAG(cpdag, [(0, 1)])
+    self.assertEqual(mpdag.arcs(), {(0, 1), (1, 2)})
+    self.assertEqual(mpdag.cpdag(), cpdag)
+    self.assertEqual(mpdag.nameFromId(2), "C")
+    self.assertEqual(mpdag.idFromName("B"), 1)
+    self.assertEqual(mpdag.cpdag().nameFromId(0), "A")
+    self.assertTrue(mpdag.dSeparation(0, 2, 1))
+    self.assertFalse(mpdag.dSeparation(0, 2))
+    self.assertIsInstance(mpdag.graph(), gum.PDAG)
+    with self.assertRaises(gum.InvalidArgument):
+      gum.MPDAG.fromCPDAG(cpdag, [(0, 1), (2, 1)])  # a new v-structure
+    with self.assertRaises(gum.InvalidArc):
+      gum.MPDAG.fromCPDAG(cpdag, [(0, 2)])
+    with self.assertRaises(gum.InvalidArc):
+      gum.MPDAG.fromCPDAG(cpdag, [(-1, 0)])  # not a node
+
+    pdag = gum.fastPDAG("A->B-C")
+    self.assertEqual(gum.MPDAG.meekClosure(pdag).arcs(), {(0, 1), (1, 2)})
+    with self.assertRaises(gum.InvalidArgument):
+      gum.MPDAG.fromPDAG(pdag)  # not closed under the Meek rules
+    with self.assertRaises(gum.InvalidArgument):
+      gum.MPDAG.meekClosure(gum.fastPDAG("A-B-C-D-A"))  # not extendable
+
+  def testReadAccessOfTheImmutableGraphs(self):
+    cpdag = gum.CPDAG.fromDAG(gum.fastDAG("A->B<-C;D"))
+    mpdag = gum.MPDAG.meekClosure(gum.fastPDAG("A->B-C;D"))
+    mag = gum.MAG.fromMarkedGraph(gum.fastMarkedGraph("A-B->C;D<->E"))
+    for g in (cpdag, mpdag, mag):
+      a, d = g.idFromName("A"), g.idFromName("D")
+      self.assertFalse(g.empty())
+      self.assertTrue(g.hasName(a))
+      self.assertEqual(g.connectedComponentsCount(), 2)
+      self.assertEqual(len(g.connectedComponentsList()), 2)
+      self.assertNotEqual(g.connectedComponents()[a], g.connectedComponents()[d])
+      skeleton = g.skeleton()
+      self.assertIsInstance(skeleton, gum.UndiGraph)
+      self.assertEqual(skeleton.sizeEdges(), g.sizeEdges() + (g.sizeArcs() if hasattr(g, "sizeArcs") else 0))
+      self.assertEqual(skeleton.nameFromId(a), "A")
+      matrix = g.adjacencyMatrix()
+      self.assertEqual(int(matrix.sum()), 2 * skeleton.sizeEdges() if g is mag else g.sizeArcs() + 2 * g.sizeEdges())
+    self.assertTrue(gum.CPDAG.fromDAG(gum.DAG()).empty())
+    # MAG: neighbours are the undirected edges only, adjacents any edge
+    b, c = mag.idFromName("B"), mag.idFromName("C")
+    self.assertEqual(mag.neighbours(b), {mag.idFromName("A")})
+    self.assertEqual(mag.adjacents(b), {mag.idFromName("A"), c})
+    self.assertEqual(mag.neighbours(c), set())
+    self.assertFalse(hasattr(mag, "undirectedNeighbours"))
+
+  def testPDAGDeprecatedLWFMethods(self):
+    if not hasattr(gum.PDAG, "cSeparation"):
+      self.skipTest("the deprecated LWF methods of PDAG have been removed")
+    pg = gum.PDAG()
+    pg.addNodes(4)
+    pg.addArc(0, 1)
+    pg.addEdge(1, 2)
+    pg.addArc(3, 2)
+    cg = gum.ChainGraph(pg)
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(pg.moralGraph().edges(), cg.moralGraph().edges())
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(pg.moralizedAncestralGraph({1}).edges(), cg.moralizedAncestralGraph({1}).edges())
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(pg.cSeparation(0, 3, {1}), cg.cSeparation(0, 3, {1}))
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(pg.cSeparation(0, 3), cg.cSeparation(0, 3))
+    self.assertTrue(cg.hasMixedReallyOrientedPath(0, 2))
+    self.assertFalse(cg.hasMixedReallyOrientedPath(2, 1))
+    with self.assertWarns(DeprecationWarning):
+      self.assertTrue(pg.hasMixedReallyOrientedPath(0, 2))
+
+    # a PDAG which is not a chain graph (partially directed cycle 0->1-2-0): computed as in C++
+    nc = gum.PDAG()
+    nc.addNodes(3)
+    nc.addArc(0, 1)
+    nc.addEdge(1, 2)
+    nc.addEdge(2, 0)
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(nc.moralGraph().size(), 3)
+    with self.assertWarns(DeprecationWarning):
+      self.assertEqual(nc.moralizedAncestralGraph({1}).size(), 3)
+    with self.assertWarns(DeprecationWarning):
+      self.assertFalse(nc.cSeparation(0, 1))
+
   def testAdjancecyMatrix(self):
     mg = gum.MixedGraph()
     mg.addNodes(4)
@@ -390,11 +604,11 @@ class TestGraph(pyAgrumTestCase):
       self.assertIn('edge [color="#4A4A4A"]', dot)
 
       # the dark theme only changes the color of the arcs
-      gum.config["notebook", "arcColor"] = "#AAAAAA"
+      gum.config["dot", "arcColor"] = "#AAAAAA"
       self.assertIn('edge [color="#AAAAAA"]', g.toDot())
 
-      gum.config["notebook", "graphSize"] = "12!"
-      gum.config["notebook", "nodeBgColor"] = "burlywood"
+      gum.config["dot", "graphSize"] = "12!"
+      gum.config["dot", "nodeBgColor"] = "burlywood"
       dot = g.toDot()
       self.assertIn('size="12!"', dot)
       self.assertIn('fillcolor="burlywood", fontcolor="black"', dot)
@@ -407,6 +621,155 @@ class TestGraph(pyAgrumTestCase):
       self.assertIn("0 -- 1;", u.toDot())
     finally:
       gum.config.pop()
+
+  def testMarkedGraph(self):
+    g = gum.fastMarkedGraph("A o-> B;B<->C;C-D;D->E")
+    a, b, c, d, e = (g.idFromName(n) for n in "ABCDE")
+    self.assertIsInstance(g.markAt(a, b), gum.EdgeMark)
+    self.assertEqual(g.markAt(b, a), gum.EdgeMark.Circle)
+    self.assertEqual(g.markAt(a, b), gum.EdgeMark.Arrowhead)
+    self.assertEqual(g.markAt(a, b), gum.EdgeMark_Arrowhead)  # the former constants still work
+    self.assertEqual(g.spouses(b), {c})
+    self.assertEqual(g.undirectedNeighbours(c), {d})
+    self.assertEqual(g.parents(e), {d})
+    self.assertEqual(g.children(d), {e})
+    self.assertEqual(g.parents(b), set())  # o-> is not a definite arc
+    self.assertEqual(g.neighbours(b), {a, c})
+
+    # addEdge on an existing edge updates its marks
+    g.addEdge(a, b, gum.EdgeMark.Tail, gum.EdgeMark.Arrowhead)
+    self.assertTrue(g.isDefinitelyDirected(a, b))
+    self.assertEqual(g.sizeEdges(), 4)
+    with self.assertRaises(gum.NotFound):
+      g.markAt(a, e)
+
+    self.assertEqual(g.skeleton().sizeEdges(), 4)
+    self.assertEqual(g.connectedComponentsCount(), 1)
+    self.assertIn("A", g.toDot())
+    self.assertIn("-->", str(g))
+
+  def testMarkedGraphRejectsInvalidMarks(self):
+    g = gum.fastMarkedGraph("A o-> B")
+    a, b = g.idFromName("A"), g.idFromName("B")
+    for bad in (3, 7, -1):
+      with self.assertRaises(ValueError):
+        g.setMarkAt(a, b, bad)
+      with self.assertRaises(ValueError):
+        g.addEdge(a, b, gum.EdgeMark.Tail, bad)
+      with self.assertRaises(ValueError):
+        g.reorientAllWith(bad)
+    self.assertEqual(g.markAt(a, b), gum.EdgeMark.Arrowhead)
+    self.assertEqual(g.markAt(b, a), gum.EdgeMark.Circle)
+    g.setMarkAt(b, a, 1)  # a plain int of a valid mark is accepted
+    self.assertEqual(g.markAt(b, a), gum.EdgeMark.Tail)
+
+  def testReprOfChainGraphAndPAG(self):
+    self.assertIn("pyagrum.ChainGraph@", repr(gum.ChainGraph(gum.fastPDAG("A->B;B-C"))))
+    self.assertIn("pyagrum.PAG@", repr(gum.fastPAG("A o-> B")))
+    self.assertIn("pyagrum.MarkedGraph@", repr(gum.fastMarkedGraph("A o-> B")))
+
+  def testDocstringExamplesUseTheGumAlias(self):
+    # the examples read "import pyagrum as gum": the module name must not be rewritten in them
+    self.assertIn("gum.fastBN(", gum.DotOptions.__doc__)
+    self.assertNotIn("pyagrum.fastBN(", gum.DotOptions.__doc__)
+
+  def testFastPAG(self):
+    p = gum.fastPAG("0 o-o 1;1 o-> 2;2<->3")
+    self.assertIsInstance(p, gum.PAG)
+    self.assertIsInstance(p, gum.MarkedGraph)
+    self.assertTrue(p.isCircle(0, 1) and p.isCircle(1, 0))
+    self.assertTrue(p.isArrowhead(1, 2) and p.isCircle(2, 1))
+    self.assertTrue(p.isBidirected(2, 3))
+    self.assertEqual(p.addNodes(2), {4, 5})
+    # an edge repeated with the same marks is accepted, with different marks it is rejected
+    self.assertEqual(gum.fastPAG("0 o-> 1;1 <-o 0").sizeEdges(), 1)
+    with self.assertRaises(gum.InvalidEdge):
+      gum.fastPAG("0 o-> 1;0<->1")
+
+  def testMAG(self):
+    dag = gum.fastDAG("A->X<-T->Y<-B")
+    t = dag.idFromName("T")
+    mag = gum.MAG.fromDAG(dag, {t})  # T latent
+    x, y = mag.idFromName("X"), mag.idFromName("Y")
+    self.assertEqual(mag.size(), 4)
+    self.assertTrue(mag.graph().isBidirected(x, y))
+    self.assertIsInstance(mag.graph(), gum.MarkedGraph)
+    self.assertEqual(mag.markAt(x, y), gum.EdgeMark.Arrowhead)
+    self.assertEqual(mag.spouses(x), {y})
+    self.assertEqual(mag.parents(x), {mag.idFromName("A")})
+    # the m-separation of the MAG is the d-separation of the DAG
+    self.assertFalse(mag.mSeparation(x, y))
+    self.assertTrue(mag.mSeparation(mag.idFromName("A"), mag.idFromName("B")))
+    self.assertTrue(
+      mag.mSeparation(mag.idFromName("A"), y, x)
+      == dag.dSeparation(dag.idFromName("A"), dag.idFromName("Y"), {dag.idFromName("X")})
+    )
+
+    selected = gum.MAG.fromDAG(dag, set(), {t})  # T selected
+    self.assertEqual(selected.sizeEdges(), 2)
+    with self.assertRaises(gum.InvalidArgument):
+      gum.MAG.fromDAG(dag, {t}, {t})
+
+    rep = gum.MAG.fromPAG(gum.fastPAG("A o-> B;C o-> B;B -o D"))
+    self.assertTrue(rep.graph().isDefinitelyDirected(rep.idFromName("B"), rep.idFromName("D")))
+    with self.assertRaises(gum.InvalidArgument):
+      gum.MAG.fromMarkedGraph(gum.fastMarkedGraph("A->B->C;A<->C"))
+    self.assertIn("<->", str(mag))
+    self.assertEqual(sorted(mag), sorted(mag.nodes()))
+
+  def testGumFormatAndPickling(self):
+    import pickle
+
+    dag = gum.fastDAG("A->B;C")
+    magDAG = gum.fastDAG("A->X<-T->Y;Z")
+    graphs = [
+      dag,
+      gum.fastDiGraph("A->B->A;C"),
+      gum.fastUndiGraph("A-B;C"),
+      gum.fastMixedGraph("A->B-C;D"),
+      gum.fastPDAG("A->B-C;D"),
+      gum.fastChainGraph("A->B;B-C;D"),
+      gum.fastMarkedGraph("A o-> B;B<->C;D"),
+      gum.fastPAG("A o-> B;B<->C;D"),
+      gum.CPDAG.fromDAG(dag),
+      gum.MPDAG.meekClosure(gum.PDAG(dag)),
+      gum.MAG.fromDAG(magDAG, {magDAG.idFromName("T")}),
+    ]
+    for g in graphs:
+      for copy in (pickle.loads(pickle.dumps(g)), gum.graphFromGUMString(g.saveGUMstring())):
+        self.assertIs(type(copy), type(g))
+        self.assertEqual(copy, g)
+        self.assertEqual(sorted(copy.nodes()), sorted(g.nodes()))  # isolated nodes included
+        for n in g.nodes():
+          self.assertEqual(copy.nameFromId(n), g.nameFromId(n))
+
+    eg = gum.EssentialGraph(gum.fastBN("a->b;c"))
+    eg2 = pickle.loads(pickle.dumps(eg))
+    self.assertEqual(eg2.arcs(), eg.arcs())
+    self.assertEqual(eg2.nameFromId(2), "c")
+
+    import os
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+      for ext in (".jgum", ".bgum"):
+        filename = os.path.join(tmp, "graph" + ext)
+        gum.saveGraph(graphs[7], filename)
+        read = gum.loadGraph(filename)
+        self.assertIsInstance(read, gum.PAG)
+        self.assertEqual(read, graphs[7])
+      with self.assertRaises(gum.InvalidArgument):  # nothing is written
+        gum.saveGraph(dag, os.path.join(tmp, "graph.txt"))
+    with self.assertRaises(gum.GumIOError):
+      gum.graphFromGUMString("not a graph")
+    with self.assertRaises(gum.GumIOError):  # a DAG with a cycle is a malformed jgum
+      gum.graphFromGUMString('{"type": "DAG", "nodes": [0, 1], "arcs": [[0, 1], [1, 0]]}')
+
+    # the former pickles (a dict of arcs and edges) are still read, with a deprecation warning
+    former = gum.DAG.__new__(gum.DAG)
+    with self.assertWarns(DeprecationWarning):
+      former.__setstate__({"arcs": {(0, 1), (1, 2)}})
+    self.assertEqual(former.arcs(), {(0, 1), (1, 2)})
 
   def testPAGBasic(self):
     p = gum.PAG()
@@ -474,6 +837,115 @@ class TestGraph(pyAgrumTestCase):
     p.addEdge(0, 1)
     p.addEdge(2, 3)
     self.assertEqual(p.connectedComponentsCount(), 2)
+
+  def testGraphSaveGUMFormatGivenByTheExtension(self):
+    import os
+    import tempfile
+
+    g = gum.fastDAG("A->B->C")
+    with tempfile.TemporaryDirectory() as tmp:
+      for ext in (".jgum", ".bgum"):
+        filename = os.path.join(tmp, "graph" + ext)
+        g.saveGUM(filename)  # no binary: the format of the extension
+        self.assertEqual(gum.loadGraph(filename), g)
+      # binary for another extension
+      g.saveGUM(os.path.join(tmp, "graph.gum"))
+      with open(os.path.join(tmp, "graph.gum"), "rb") as f:
+        self.assertNotEqual(f.read(1), b"{")
+      with self.assertRaises(gum.InvalidArgument):
+        g.saveGUM(os.path.join(tmp, "graph.jgum"), binary=True)
+      with self.assertRaises(gum.InvalidArgument):
+        g.saveGUM(os.path.join(tmp, "graph.bgum"), binary=False)
+      with self.assertRaises(gum.InvalidArgument):
+        gum.loadGraph(os.path.join(tmp, "graph.txt"))
+
+  def testSaveGraphAndLoadGraphGivenByTheExtension(self):
+    import os
+    import tempfile
+
+    self.assertEqual(gum.availableGraphExts(), "jgum|bgum|pkl")
+    cpdag = gum.CPDAG.fromDAG(gum.fastDAG("A->B<-C;B->D"))
+    cliques = gum.LazyPropagation(gum.fastBN("A->B->C<-D;C->E;B->E")).junctionTree()
+    with tempfile.TemporaryDirectory() as tmp:
+      for ext in ("jgum", "bgum", "pkl"):
+        filename = os.path.join(tmp, "graph." + ext)
+        gum.saveGraph(cpdag, filename)
+        read = gum.loadGraph(filename)
+        self.assertIsInstance(read, gum.CPDAG)
+        self.assertEqual(read, cpdag)
+        self.assertEqual(read.nameFromId(3), "D")
+      # a clique graph can only be pickled
+      filename = os.path.join(tmp, "cliques.pkl")
+      gum.saveGraph(cliques, filename)
+      read = gum.loadGraph(filename)
+      self.assertEqual(read.edges(), cliques.edges())
+      for n in cliques.nodes():
+        self.assertEqual(read.clique(n), cliques.clique(n))
+      with self.assertRaises(NotImplementedError):
+        gum.saveGraph(cliques, os.path.join(tmp, "cliques.jgum"))
+      # an unknown extension: the known ones are given
+      for io in (lambda f: gum.saveGraph(cpdag, f), gum.loadGraph):
+        with self.assertRaisesRegex(gum.InvalidArgument, "jgum\\|bgum\\|pkl"):
+          io(os.path.join(tmp, "graph.txt"))
+
+  def testEdgeMarkIsTheEnumerationOfAgrum(self):
+    self.assertEqual(int(gum.EdgeMark.Circle), gum.EdgeMark_Circle)
+    self.assertEqual(int(gum.EdgeMark.Tail), gum.EdgeMark_Tail)
+    self.assertEqual(int(gum.EdgeMark.Arrowhead), gum.EdgeMark_Arrowhead)
+    self.assertFalse(hasattr(gum, "IntEnum"))
+
+  def testPAGToMixedGraphKeepsTheNames(self):
+    pag = gum.fastPAG("A o-> B;B<->C")
+    with self.assertWarns(DeprecationWarning):
+      mg = pag.toMixedGraph()
+    self.assertEqual({mg.nameFromId(n) for n in mg.nodes()}, {"A", "B", "C"})
+    self.assertTrue(mg.existsArc(pag.idFromName("B"), pag.idFromName("C")))
+    self.assertTrue(mg.existsArc(pag.idFromName("C"), pag.idFromName("B")))
+
+  def testCliqueGraphPickling(self):
+    import os
+    import pickle
+    import tempfile
+
+    bn = gum.fastBN("A->B->C<-D;C->E;B->E")
+    jt = gum.LazyPropagation(bn).junctionTree()
+    copy = pickle.loads(pickle.dumps(jt))
+    self.assertEqual(set(copy.nodes()), set(jt.nodes()))
+    self.assertEqual(copy.edges(), jt.edges())
+    for n in jt.nodes():
+      self.assertEqual(copy.clique(n), jt.clique(n))
+    for x, y in jt.edges():
+      self.assertEqual(copy.separator(x, y), jt.separator(x, y))
+
+    # the cliques are not in the GUM format
+    with self.assertRaises(NotImplementedError):
+      jt.saveGUMstring()
+    with tempfile.TemporaryDirectory() as tmp:
+      with self.assertRaises(NotImplementedError):
+        jt.saveGUM(os.path.join(tmp, "jt.jgum"))
+      with self.assertRaises(NotImplementedError):
+        gum.saveGraph(jt, os.path.join(tmp, "jt.bgum"))
+      self.assertEqual(os.listdir(tmp), [])
+
+  def testMeekRulesPropagateToDAGWithDomainSizes(self):
+    mg = gum.MixedGraph()
+    for _ in range(3):
+      mg.addNode()
+    mg.addEdge(0, 1)
+    mg.addEdge(1, 2)
+    meek = gum.MeekRules()
+    dag = meek.propagateToDAG(mg, {0: 2, 1: 2, 2: 10})
+    self.assertEqual(dag.sizeArcs(), 2)
+    # no v-structure added: the propagated graph has a consistent extension
+    self.assertLessEqual(len(dag.parents(1)), 1)
+    self.assertEqual(meek.propagateToDAG(mg).sizeArcs(), 2)
+
+    with self.assertRaises(gum.InvalidArgument):
+      meek.propagateToDAG(mg, {0: 2, 1: 2})
+    with self.assertRaises(gum.InvalidArgument):
+      meek.propagateToDAG(mg, {0: 2, 1: 0, 2: 2})
+    with self.assertRaises(TypeError):
+      meek.propagateToDAG(mg, [2, 2, 2])
 
 
 ts = unittest.TestSuite()

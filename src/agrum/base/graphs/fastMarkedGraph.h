@@ -38,8 +38,79 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
 
-#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
+/** @file
+ * @brief Builds a marked graph from a "fast" DOT-like textual description.
+ *
+ * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
+ */
+#ifndef GUM_FAST_MARKED_GRAPH_H
+#define GUM_FAST_MARKED_GRAPH_H
 
-namespace detail {}   // namespace detail
+#include <concepts>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include <agrum/agrum.h>
+
+#include <agrum/base/graphs/fastGraph.h>
+#include <agrum/base/graphs/markedGraph.h>
+
+namespace gum {
+
+#ifndef SWIG
+  namespace graph::detail {
+
+    /// a node token of a marked graph and the marks of the edge which precedes it (at the previous
+    /// node, at this node)
+    struct FastMarkedToken {
+      std::string token;
+      EdgeMark    markAtPrevious;
+      EdgeMark    markAtThis;
+    };
+
+    /**
+     * @brief Scans one ";"-delimited chain of a marked graph: each '-' (outside brackets) is an
+     * edge, with the mark just before it at the previous node and the mark just after it at the
+     * next node: '<' or '>' is an arrowhead, 'o' is a circle when it is separated by a space from
+     * a node name on its side of the edge, anything else is a tail. Hence 'o' is a node name in
+     * "o->B", "A->o->B" or "A-o".
+     */
+    GUM_SHARED_PUBLIC std::vector< FastMarkedToken >
+                      fastMarkedGraphTokenize(std::string_view chain);
+
+  }   // namespace graph::detail
+#endif   // SWIG
+
+  /**
+   * @brief Builds a marked graph (MarkedGraph, PAG) from a DOT-like textual description.
+   *
+   * Syntax: as for fastGraph(), with an edge given by its two marks around a '-': '<' or '>' for
+   * an arrowhead, 'o' for a circle, nothing for a tail, e.g. "A->B; B<->C; C o-> D; D o-o E; E-F"
+   * ("A-F" has a tail at both ends). A circle must be separated from the name of its node by a
+   * space ("C o-> D", not "Co->D", where "Co" would be a node). Otherwise, and when no node name
+   * lies on its side of the edge, 'o' is read as a node name: "o->B", "A->o->B" and "A-o" use
+   * a node named "o".
+   *
+   * An edge may be described several times with the same marks ("A->B; A->B"), but not with
+   * different ones ("A->B; B->A", "A o-o B; A->B").
+   *
+   * @tparam GRAPH_TYPE MarkedGraph or one of its subclasses (PAG).
+   * @param desc the DOT-like description.
+   * @return the built graph.
+   * @throw InvalidEdge if the description is malformed (e.g. an operator without a following
+   *        node token) or if an edge is described with conflicting marks.
+   * @throw DuplicateElement propagated as-is if @p desc reuses a name across distinct nodes.
+   */
+  template < typename GRAPH_TYPE = MarkedGraph >
+#ifndef SWIG   // SWIG 4.3 cannot read a requires-clause
+    requires std::derived_from< GRAPH_TYPE, MarkedGraph >
+#endif
+  GRAPH_TYPE fastMarkedGraph(std::string_view desc);
+
+}   // namespace gum
+
+#include <agrum/base/graphs/fastMarkedGraph_tpl.h>
+
+#endif   // GUM_FAST_MARKED_GRAPH_H

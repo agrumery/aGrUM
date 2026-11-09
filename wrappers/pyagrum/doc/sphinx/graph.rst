@@ -36,6 +36,8 @@ edge, ``';'`` separates independent chains.
 
 .. autofunction:: pyagrum.fastPDAG
 
+.. autofunction:: pyagrum.fastChainGraph
+
 See also this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_tensorsAndGraphs.html>`_
 for a tour of graph construction and algorithms.
 
@@ -66,10 +68,25 @@ Mixed Graph
 
 .. autoclass:: pyagrum.MixedGraph
 
-Partially Directed Graph (DAG)
-------------------------------
+Partially Directed Acyclic Graph (PDAG)
+---------------------------------------
 
 .. autoclass:: pyagrum.PDAG
+
+Chain Graph
+-----------
+
+.. autoclass:: pyagrum.ChainGraph
+
+Completed PDAG (CPDAG)
+----------------------
+
+.. autoclass:: pyagrum.CPDAG
+
+Maximally oriented PDAG (MPDAG)
+-------------------------------
+
+.. autoclass:: pyagrum.MPDAG
 
 Partial Ancestral Graph (PAG)
 ------------------------------

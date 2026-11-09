@@ -6,7 +6,13 @@
 %include "doc_CliqueGraph.i"
 %include "doc_MixedGraph.i"
 %include "doc_PDAG.i"
+%include "doc_ChainGraph.i"
+%include "doc_ImmutableGraph.i"
+%include "doc_CPDAG.i"
+%include "doc_MPDAG.i"
+%include "doc_MarkedGraph.i"
 %include "doc_PAG.i"
+%include "doc_MAG.i"
 
 %include "doc_Variable.i"
 %include "doc_DiscreteVariable.i"

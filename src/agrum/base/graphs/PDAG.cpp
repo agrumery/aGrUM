@@ -45,8 +45,11 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *
  */
-#include <agrum/base/core/dot/dotElements.h>
+#include <utility>
+
+#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
 #include <agrum/base/graphs/algorithms/generic/moralization.h>
+#include <agrum/base/graphs/algorithms/generic/pathFinding.h>
 #include <agrum/base/graphs/algorithms/generic/separation.h>
 #include <agrum/base/graphs/PDAG.h>
 
@@ -72,11 +75,34 @@ namespace gum {
     GUM_CONSTRUCTOR(PDAG);
   }
 
-  PDAG::PDAG(const UndiGraph& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONSTRUCTOR(PDAG); }
+  namespace {
+    /// the edges x-x of an undirected graph are mono-cycles, rejected as by PDAG::addEdge
+    void checkNoMonoCycle(const UndiGraph& g) {
+      for (const auto& edge: g.edges())
+        if (edge.first() == edge.second())
+          GUM_ERROR(InvalidDirectedCycle,
+                    "A PDAG can not contain an edge from the node " << edge.first() << " to itself")
+    }
+  }   // namespace
+
+  PDAG::PDAG(const UndiGraph& g) : NodeGraphPart(g), MixedGraph(g) {
+    checkNoMonoCycle(g);
+    GUM_CONSTRUCTOR(PDAG);
+  }
 
   PDAG::PDAG(const DAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONSTRUCTOR(PDAG); }
 
-  PDAG::PDAG(const MixedGraph& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONS_CPY(PDAG); }
+  PDAG::PDAG(const MixedGraph& g) : NodeGraphPart(g), MixedGraph(g) {
+    checkNoMonoCycle(g);
+    for (const auto& edge: g.edges())
+      if (g.existsArc(edge.first(), edge.second()) || g.existsArc(edge.second(), edge.first()))
+        GUM_ERROR(InvalidArc,
+                  "A PDAG can not connect " << edge.first() << " and " << edge.second()
+                                            << " by both an arc and an edge")
+    if (graph::hasDirectedCycle(g))
+      GUM_ERROR(InvalidDirectedCycle, "A PDAG can not contain a directed cycle")
+    GUM_CONS_CPY(PDAG);
+  }
 
   PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONS_CPY(PDAG); }
 
@@ -88,31 +114,8 @@ namespace gum {
 
   UndiGraph PDAG::moralGraph() const { return graph::moralGraph(*this); }
 
-  bool rec_hasMixedReallyOrientedPath(const PDAG& gr,
-                                      NodeSet&    marked,
-                                      NodeId      node,
-                                      NodeId      goal,
-                                      bool        alreadyOriented) {
-    if (node == goal) return alreadyOriented;
-    if (marked.contains(node)) return false;
-    marked.insert(node);
-    for (const auto nod: gr.children(node))
-      if (rec_hasMixedReallyOrientedPath(gr, marked, nod, goal, true)) return true;
-    for (const auto nod: gr.neighbours(node))
-      if (rec_hasMixedReallyOrientedPath(gr, marked, nod, goal, alreadyOriented)) return true;
-    return false;
-  }
-
   bool PDAG::hasMixedReallyOrientedPath(gum::NodeId n1, gum::NodeId n2) const {
-    if (n1 == n2) return false;
-    NodeSet marked;   // marked as already explored
-    for (const auto nod: this->children(n1))
-      if (rec_hasMixedReallyOrientedPath(*this, marked, nod, n2, true)) return true;
-
-    for (const auto nod: this->neighbours(n1))
-      if (rec_hasMixedReallyOrientedPath(*this, marked, nod, n2, false)) return true;
-
-    return false;
+    return graph::hasMixedWalkWithArc(*this, n1, n2);
   }
 
   UndiGraph PDAG::moralizedAncestralGraph(const NodeSet& nodes) const {
@@ -125,46 +128,6 @@ namespace gum {
 
   bool PDAG::cSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const {
     return graph::cSeparated(*this, X, Y, Z);
-  }
-
-  std::string PDAG::toDot() const { return toDot(dot::DotOptions()); }
-
-  std::string PDAG::toDot(const dot::DotOptions& options) const {
-    const auto     style = dot::DotStyle::read();
-    dot::DotWriter writer(true);
-    dot::writePreamble(writer, style, options);
-
-    // the nodes without undirected edge, then one cluster for each chain component
-    NodeSet treatedNodes;
-    for (const auto node: nodes()) {
-      if (neighbours(node).empty()) {
-        writeDotNode(writer, style, options, node);
-        treatedNodes.insert(node);
-      }
-    }
-
-    int cluster = 0;
-    for (const auto node: nodes()) {
-      if (treatedNodes.exists(node)) continue;
-      writer.beginSubgraph("cluster_" + std::to_string(cluster++),
-                           {{"style", "filled"}, {"color", "#F5F5F5"}, {"rank", "same"}});
-      for (const auto cc: chainComponent(node)) {
-        writeDotNode(writer, style, options, cc);
-        treatedNodes.insert(cc);
-      }
-      writer.endSubgraph();
-    }
-
-    for (const auto& arc: arcs())
-      writer.edge(arc.tail(), arc.head(), dot::arcAttributes(options.arc(arc.tail(), arc.head())));
-
-    for (const auto& edge: edges()) {
-      auto attributes = dot::arcAttributes(options.edge(edge.first(), edge.second()));
-      attributes.insert(attributes.begin(), {"dir", "none"});
-      writer.edge(edge.first(), edge.second(), attributes);
-    }
-
-    return writer.str();
   }
 
 } /* namespace gum */

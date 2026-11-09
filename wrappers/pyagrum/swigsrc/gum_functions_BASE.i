@@ -89,7 +89,7 @@ def fastGraph(
 
   For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
   :func:`pyagrum.fastUndiGraph`, :func:`pyagrum.fastMixedGraph`, :func:`pyagrum.fastDAG`,
-  or :func:`pyagrum.fastPDAG` directly.
+  :func:`pyagrum.fastPDAG` or :func:`pyagrum.fastChainGraph` directly.
 
   Parameters
   ----------
@@ -111,7 +111,7 @@ def fastGraph(
   if is_edge:
     try:
       return fastPDAG(desc)
-    except InvalidDirectedCycle:
+    except (InvalidDirectedCycle, InvalidArc):
       return fastMixedGraph(desc)
 
   try:

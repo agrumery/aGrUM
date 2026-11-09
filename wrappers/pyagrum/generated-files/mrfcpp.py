@@ -261,7 +261,8 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -274,6 +275,10 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -351,8 +356,10 @@ class MarkovRandomField(IMarkovRandomField):
 
         Examples
         --------
-        >>> import pyagrum as gum
-        >>> bn=pyagrum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
+        .. code-block:: python
+
+          import pyagrum as gum
+          bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
 
         Parameters
         ----------
@@ -799,7 +806,8 @@ class MarkovRandomField(IMarkovRandomField):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods)
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
 
       Returns
       -------
@@ -812,6 +820,10 @@ class MarkovRandomField(IMarkovRandomField):
       am=numpy.zeros((n,n)).astype(int)
 
       for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
           if hasattr(self,'children'):
               for children in self.children(node):
                   am[node,children]=1
@@ -891,7 +903,7 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrfcpp.MarkovRandomField_isIndependent(self, *args)
 
-    def loadGUM(self, name: str, binary: bool=False) -> None:
+    def loadGUM(self, name: str, binary: object=None) -> None:
         r"""
 
         Load a jgum (JSON) or bgum (binary/msgpack) file.
@@ -900,11 +912,14 @@ class MarkovRandomField(IMarkovRandomField):
         ----------
         name : str
             the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-        binary : bool
-            if True, read as bgum (msgpack) regardless of extension (default: False)
+        binary : bool, optional
+            True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is
+            given by the extension (binary for an unknown extension).
 
         Raises
         ------
+        pyagrum.InvalidArgument
+            If binary contradicts the extension (``.jgum`` or ``.bgum``)
         pyagrum.GumIOError
             If file not found
         pyagrum.FatalError
@@ -1029,7 +1044,7 @@ class MarkovRandomField(IMarkovRandomField):
         self.loadGUMstring(state)
         return self
 
-    def saveGUM(self, name: str, binary: bool = False, indent: int = None) -> None:
+    def saveGUM(self, name: str, binary: bool | None = None, indent: int | None = None) -> None:
       """
       Save the Markov random field as a .jgum (text) or .bgum (binary) file.
 
@@ -1037,12 +1052,18 @@ class MarkovRandomField(IMarkovRandomField):
       ----------
       name : str
         the name of the file
-      binary : bool
-        if True, save in the msgpack-based .bgum binary format instead of the JSON-based .jgum text format
+      binary : bool, optional
+        True for the msgpack-based .bgum binary format, False for the JSON-based .jgum text format. By
+        default, the format is given by the extension of name (binary for an unknown extension).
       indent : int, optional
-        JSON indentation for the .jgum text format (ignored if binary=True): -1 for the most
+        JSON indentation for the .jgum text format (ignored for the binary format): -1 for the most
         compact output, N>=0 to pretty-print with N spaces. Defaults to
         ``pyagrum.config["core","jgumIndent"]``.
+
+      Raises
+      ------
+      pyagrum.InvalidArgument
+        if binary contradicts the extension (``.jgum`` or ``.bgum``) of name
       """
       if indent is None:
         self._saveGUM(name, binary)
@@ -2042,29 +2063,31 @@ def loadMRF(
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>>
-  >>> # creating listeners
-  >>> def foo_listener(progress):
-  >>>    if progress==200:
-  >>>        print(' BN loaded ')
-  >>>        return
-  >>>    elif progress==100:
-  >>>        car='%'
-  >>>    elif progress%10==0:
-  >>>        car='#'
-  >>>    else:
-  >>>        car='.'
-  >>>    print(car,end='',flush=True)
-  >>>
-  >>> def bar_listener(progress):
-  >>>    if progress==50:
-  >>>        print('50%')
-  >>>
-  >>> # loadBN with list of listeners
-  >>> pyagrum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
-  >>> # .........#.........#.........#.........#..50%
-  >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
+  ``.........#.........#.........#.........#..50%`` then
+  ``.......#.........#.........#.........#.........#.........% | MRF loaded``:
+
+  .. code-block:: python
+
+    import pyagrum as gum
+
+    def foo_listener(progress):
+       if progress==200:
+           print(' MRF loaded ')
+           return
+       elif progress==100:
+           car='%'
+       elif progress%10==0:
+           car='#'
+       else:
+           car='.'
+       print(car,end='',flush=True)
+
+    def bar_listener(progress):
+       if progress==50:
+           print('50%')
+
+    gum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
   """
   mn = MarkovRandomField()
 
@@ -2127,8 +2150,10 @@ def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
 
   Examples
   --------
-  >>> import pyagrum as gum
-  >>> bn=pyagrum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
+  .. code-block:: python
+
+    import pyagrum as gum
+    bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
   Parameters
   ----------

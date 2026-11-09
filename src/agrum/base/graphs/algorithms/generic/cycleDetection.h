@@ -46,8 +46,9 @@
  * All functions live in namespace gum::graph and are constrained by the
  * concepts defined in graphConcepts.h :
  *
- *   GUM_DiGraphable   — topologicalOrder
- *   GUM_UndiGraphable — hasUndirectedCycle
+ *   GUM_DiGraphable    — topologicalOrder, hasDirectedCycle
+ *   GUM_UndiGraphable  — hasUndirectedCycle
+ *   GUM_MixedGraphable — hasPartiallyDirectedCycle
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
@@ -79,6 +80,15 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   Sequence< NodeId > topologicalOrder(const G& g);
 
+  /**
+   * @brief Returns true if @p g contains a directed cycle (a cycle made of arcs only, followed in
+   * their direction, self-loops included).
+   *
+   * Kahn's algorithm: O(n + m).
+   */
+  template < GUM_DiGraphable G >
+  bool hasDirectedCycle(const G& g);
+
   // =========================================================================
   // Undirected graphs (GUM_UndiGraphable)
   // =========================================================================
@@ -91,6 +101,25 @@ namespace gum::graph {
    */
   template < GUM_UndiGraphable G >
   bool hasUndirectedCycle(const G& g);
+
+  // =========================================================================
+  // Mixed graphs (GUM_MixedGraphable)
+  // =========================================================================
+
+  /**
+   * @brief Returns true if the mixed graph @p g contains a partially directed cycle.
+   *
+   * A partially directed (or semi-directed) cycle is a cycle with at least one arc, in which every
+   * arc is followed in its direction and every edge in either direction. A mixed graph without
+   * directed cycle is a PDAG; a PDAG without partially directed cycle is a chain graph (see
+   * gum::ChainGraph for the references).
+   *
+   * The connected components of the undirected part (the chain components) are contracted: there
+   * is a partially directed cycle iff an arc lies inside a component, or the arcs between
+   * components form a directed cycle. O(n + m).
+   */
+  template < GUM_MixedGraphable G >
+  bool hasPartiallyDirectedCycle(const G& g);
 
 }   // namespace gum::graph
 

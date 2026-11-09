@@ -85,6 +85,10 @@ ADD_REPR_STR_API(gum,DiGraph);
 ADD_REPR_STR_API(gum,DAG);
 ADD_REPR_STR_API(gum,MixedGraph);
 ADD_REPR_STR_API(gum,PDAG);
+ADD_REPR_STR_API(gum,CPDAG);
+ADD_REPR_STR_API(gum,MPDAG);
+ADD_REPR_STR_API(gum,MarkedGraph);
+ADD_REPR_STR_API(gum,MAG);
 
 ADD_REPR_STR_API(gum,IBayesNet<double>);
 ADD_REPR_STR_API(gum,BayesNet<double>);

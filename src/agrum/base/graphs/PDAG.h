@@ -44,8 +44,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
-#ifndef GUM_MAG_H
-#define GUM_MAG_H
+#ifndef GUM_PDAG_H
+#define GUM_PDAG_H
 
 #include <agrum/base/graphs/DAG.h>
 #include <agrum/base/graphs/mixedGraph.h>
@@ -65,10 +65,31 @@ namespace gum {
    * \ingroup graph_group
    *
    *
-   * This is the base class for partially directed acyclic graph : addArc and addEdge may throw a
-   * DirectedCycle if any (directed) cycle is created by this arc/edge.
+   * A PDAG is a mixed graph (arcs and undirected edges) with at most one connection (an arc or an
+   * edge) between two nodes and without any directed cycle, i.e. a cycle of at least 3 distinct
+   * nodes made of arcs only, followed in their direction. A cycle mixing arcs and edges (a
+   * partially directed cycle) is allowed: a PDAG without partially directed cycle is a chain graph
+   * (see gum::ChainGraph). This is the definition used for the orientation of partially directed
+   * graphs (Meek 1995; Chickering 2002; Wienöbst et al. 2021, Sec. 2): the closure of a PDAG under
+   * the Meek rules is a PDAG, not always a chain graph.
    *
-   * @par exemple de code
+   * addArc and addEdge check these properties and throw if they would be violated.
+   *
+   * @warning The assignment operators are not virtual: a PDAG assigned through a reference to
+   * gum::MixedGraph is not checked. The same holds for a gum::ChainGraph assigned through a
+   * reference to gum::PDAG or gum::MixedGraph. Use the checked constructors to convert a graph.
+   *
+   * @par References
+   * - C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of
+   *   the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410.
+   *   arXiv:1302.4972.
+   * - D. M. Chickering. Optimal Structure Identification With Greedy Search. Journal of Machine
+   *   Learning Research 3:507-554, 2002.
+   * - M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms
+   *   and computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
+   *   Intelligence, PMLR 161:1248-1257, 2021.
+   *
+   * @par Code example
    * @code
    * // creating empty graphs
    * gum::PDAG g1,g2;
@@ -84,9 +105,9 @@ namespace gum {
    * //throw an InvalidNode
    * // g1.addArc( i1+i2+i3,i1 );
    *
-   * // throw an InvalidCycle
+   * // throw an InvalidDirectedCycle
    * // g1.addArc( i3,i1 );
-   *   *
+   *
    * // copying graphs
    * gum::PDAG g3 = g1;
    * g2 = g1;
@@ -102,7 +123,7 @@ namespace gum {
    * g4.eraseArc( Arc ( i1,i3 ) );
    *
    * // remove some edge
-   * g4.eraseEdge( Edge ( i1,i3 ) );
+   * g4.eraseEdge( Edge ( i2,i3 ) );
    *
    * // remove node
    * g2.eraseNode( i2 );
@@ -111,17 +132,17 @@ namespace gum {
    * for ( const auto node : g3.nodes() ) // type of node = gum::NodeId
    *   cerr << node << endl;
    *
-   * for ( const auto& arc= g3.arcs()) // type of arc : gum::Arc&
-   *   cerr << iter << endl;
+   * for ( const auto& arc : g3.arcs()) // type of arc : gum::Arc&
+   *   cerr << arc << endl;
    *
-   * for ( const auto& arc= g3.edge()) // type of edge : gum::Edge&
-   *   cerr << iter << endl;
+   * for ( const auto& edge : g3.edges()) // type of edge : gum::Edge&
+   *   cerr << edge << endl;
    *
    * for ( const auto node :g3.parents( gum::NodeId(3) ))
-   *   cerr << "  -  "<<*iter;
+   *   cerr << "  -  "<<node;
    *
    * for ( const auto node :g3.neighbours( gum::NodeId(3) ))
-   *   cerr << "  -  "<<*iter;
+   *   cerr << "  -  "<<node;
    *
    * cerr<<endl;
    *
@@ -152,8 +173,13 @@ namespace gum {
          Size edges_size          = HashTableConst::default_size,
          bool edges_resize_policy = true);
 
+    /// copy of an undirected graph
+    /** @throw InvalidDirectedCycle if g contains an edge from a node to itself */
     explicit PDAG(const UndiGraph& g);
     explicit PDAG(const DAG& g);
+    /// copy of a mixed graph
+    /** @throw InvalidDirectedCycle if g contains a directed cycle or an edge from a node to itself
+     * @throw InvalidArc if a pair of nodes of g is connected by an arc and an edge */
     explicit PDAG(const MixedGraph& g);
 
     /// copy constructor
@@ -194,12 +220,11 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes
-     * @throw InvalidMixedCycle if any (mixed) cycle is created by this
-     * arc.
-     * @warning Unfortunately, this means that addArc is not in constant
-     * time anymore.
+     * @throw InvalidArc if an edge already connects tail and head
+     * @throw InvalidDirectedCycle if the arc creates a directed cycle (head == tail included)
+     * @warning addArc searches for a directed path from head to tail: it is not in constant time.
      */
-    void addArc(NodeId tail, NodeId head) final;
+    void addArc(NodeId tail, NodeId head) override;
     /// @}
 
     /// insert a new edge into the partially directed graph
@@ -209,57 +234,64 @@ namespace gum {
      * @warning if the edge already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if first or second does not belong to the graph nodes
-     * @throw InvalidMixedCycle if any (mixed) cycle is created by this
-     * edge.
-     * @warning Unfortunately, this means that addEdge is not in constant
-     * time anymore.
+     * @throw InvalidEdge if an arc already connects first and second
+     * @throw InvalidDirectedCycle if first == second
      */
-    void addEdge(NodeId first, NodeId second) final;
+    void addEdge(NodeId first, NodeId second) override;
     /// @}
 
     /** build a UndiGraph by moralizing the PDAG
      *
      * @return the moralized graph
+     * @deprecated deprecated after 3.3.2: the moralization (LWF) is defined for chain graphs, use
+     * ChainGraph::moralGraph.
      */
+    [[deprecated("PDAG::moralGraph is deprecated after 3.3.2, use ChainGraph::moralGraph")]]
     UndiGraph moralGraph() const;
 
     /** build a UndiGraph by moralizing the Ancestral Graph of a set of Nodes
      *
      * @param nodes the set of nodeId
      * @return the moralized ancestral graph
+     * @deprecated deprecated after 3.3.2: the moralization (LWF) is defined for chain graphs, use
+     * ChainGraph::moralizedAncestralGraph.
      */
+    [[deprecated("PDAG::moralizedAncestralGraph is deprecated after 3.3.2, use "
+                 "ChainGraph::moralizedAncestralGraph")]]
     UndiGraph moralizedAncestralGraph(const NodeSet& nodes) const;
 
-    /** @brief returns true if a mixed edge/directed arc path from node1 to node2 in the
-     * arc/edge set exists with at least one arc in the path (undirected path
-     * are not OK).
+    /** @brief returns true if a walk from n1 to n2 exists, following the arcs in their direction
+     * and the edges in either direction, with at least one arc
      *
-     * @param node1 the id from which the path begins
-     * @param node2 the id to which the path ends
+     * A walk may visit a node several times: with a partially directed cycle, allowed in a PDAG,
+     * the result may be true without any path (visiting each node once) having an arc.
+     *
+     * @param n1 the id from which the walk begins
+     * @param n2 the id to which the walk ends
+     * @deprecated deprecated after 3.3.2: exact for chain graphs only, use
+     * ChainGraph::hasMixedReallyOrientedPath.
      */
+    [[deprecated("PDAG::hasMixedReallyOrientedPath is deprecated after 3.3.2, use "
+                 "ChainGraph::hasMixedReallyOrientedPath")]]
     bool hasMixedReallyOrientedPath(NodeId n1, NodeId n2) const;
 
     /** check if node X and node Y are independent given nodes Z (in the sense of
      * c-separation)
      *
-     * @warning cSeparation can be defined for PDAG but may seem relevant only for ChainGraph (PDAG
-     * with no partially directed cycle)
+     * @deprecated deprecated after 3.3.2: the c-separation is defined for chain graphs, use
+     * ChainGraph::cSeparation.
      */
+    [[deprecated("PDAG::cSeparation is deprecated after 3.3.2, use ChainGraph::cSeparation")]]
     bool cSeparation(NodeId X, NodeId Y, const NodeSet& Z) const;
 
     /** check if nodes X and nodes  Y are independent given Z (in the sense of
-     * d-separation)
+     * c-separation)
      *
-     * @warning cSeparation can be defined for PDAG but may seem relevant only for chainGraph (PDAG
-     * with no partially directed cycle)
+     * @deprecated deprecated after 3.3.2: the c-separation is defined for chain graphs, use
+     * ChainGraph::cSeparation.
      */
+    [[deprecated("PDAG::cSeparation is deprecated after 3.3.2, use ChainGraph::cSeparation")]]
     bool cSeparation(const NodeSet& X, const NodeSet& Y, const NodeSet& Z) const;
-
-    /// to friendly display mixed graph in DOT format
-    std::string toDot() const override;
-
-    /// to friendly display mixed graph in DOT format, with the options given by the caller
-    std::string toDot(const dot::DotOptions& options) const override;
   };
 
 } /* namespace gum */
@@ -268,6 +300,6 @@ static_assert(gum::GUM_MixedGraphable< gum::PDAG >);
 
 #ifndef GUM_NO_INLINE
 #  include <agrum/base/graphs/PDAG_inl.h>
-#endif   // GU%_NO_INLINE
+#endif   // GUM_NO_INLINE
 
-#endif   /* GUM_MAG_H */
+#endif   /* GUM_PDAG_H */

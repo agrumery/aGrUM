@@ -126,6 +126,27 @@ class TestEssentialGraph(pyAgrumTestCase):
     eg2 = gum.EssentialGraph(bn2)
     self.assertEqual(eg2.connectedComponentsCount(), 1)
 
+  def testDoesNotDependOnTheModel(self):
+    eg = gum.EssentialGraph(gum.fastBN("a->b->c;d->c"))  # the BN is not kept alive
+    self.assertEqual(eg.nameFromId(eg.idFromName("d")), "d")
+    self.assertIsNone(eg.idFromName("z"))
+    self.assertEqual(gum.EssentialGraph(eg.pdag()).idFromName("a"), eg.idFromName("a"))
+
+  def testLearnedPDAGIsKept(self):
+    bn = gum.fastBN("a->b->c;d->c")
+    learned = gum.EssentialGraph(bn, gum.PDAG(bn.dag()))  # not the essential graph of bn
+    self.assertEqual(learned.sizeArcs(), 3)
+    self.assertEqual(gum.EssentialGraph(learned).sizeArcs(), 3)
+    with self.assertRaises(gum.InvalidArgument):
+      learned.cpdag()
+
+  def testCPDAG(self):
+    bn = gum.fastBN("a->b->c;d->c")
+    cp = gum.EssentialGraph(bn).cpdag()
+    self.assertIsInstance(cp, gum.CPDAG)
+    self.assertTrue(cp.contains(bn.dag()))
+    self.assertEqual(cp.nameFromId(bn.idFromName("d")), "d")
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestEssentialGraph)

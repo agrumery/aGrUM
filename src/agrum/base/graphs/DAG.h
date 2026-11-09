@@ -64,6 +64,9 @@ namespace gum {
    * This is the base class for Directed Acyclic Graph : addArc may throw a
    * DirectedCycle if any (directed) cycle is created by this arc.
    *
+   * @warning The assignment operators are not virtual: a DAG assigned through a reference to
+   * gum::DiGraph is not checked and may then contain a directed cycle.
+   *
    * @par exemple de code
    * @code
    * // creating empty graphs

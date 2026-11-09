@@ -38,22 +38,41 @@
  *                                                                          *
  ****************************************************************************/
 
-
-
-
-
-
-
 %feature("docstring") gum::PDAG
 "
-PDAG represents a graph with both arcs and edges.
+PDAG represents a partially directed acyclic graph: a graph with arcs and undirected edges, with at
+most one connection (an arc or an edge) between two nodes and without directed cycle (a cycle made of
+arcs only).
+
+A cycle mixing arcs and edges (a partially directed cycle) is allowed in a PDAG: a PDAG without
+partially directed cycle is a chain graph (see :class:`pyagrum.ChainGraph`). The orientation of a
+partially directed graph by the Meek rules gives a PDAG, which is not always a chain graph.
 
 PDAG() -> PDAG
     default constructor
 
 PDAG(src) -> PDAG
     Parameters:
-        - **src** (*pyagrum.PDAG*) --the PDAG to copy
+        - **src** (*pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+
+Raises
+------
+pyagrum.InvalidDirectedCycle
+  If the mixed graph to copy contains a directed cycle.
+pyagrum.InvalidArc
+  If the mixed graph to copy connects two nodes by both an arc and an edge.
+
+References
+----------
+C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
+Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
+
+D. M. Chickering. Optimal Structure Identification With Greedy Search. Journal of Machine Learning
+Research 3:507-554, 2002.
+
+M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
+computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
+Intelligence, PMLR 161:1248-1257, 2021.
 "
 %feature("docstring") gum::PDAG::addArc
 "
@@ -68,13 +87,13 @@ head : int
 
 Raises
 ------
-  pyagrum.InvalidNode
-    If head or tail does not belong to the graph nodes.
-
-  PyAgrum.InvalidDirectedCycle
-    if the arc would create a (mixed) cycle.
+pyagrum.InvalidNode
+  If head or tail does not belong to the graph nodes.
+pyagrum.InvalidArc
+  If an edge already connects tail and head.
+pyagrum.InvalidDirectedCycle
+  If the arc would create a directed cycle.
 "
-
 
 %feature("docstring") gum::PDAG::mixedOrientedPath
 "
@@ -107,7 +126,6 @@ List
 
 "
 
-
 %feature("docstring") gum::PDAG::addEdge
 "
 Insert a new edge into the graph.
@@ -121,29 +139,11 @@ n2 : int
 
 Raises
 ------
-  pyagrum.InvalidNode
-    If n1 or n2 does not belong to the graph nodes.
+pyagrum.InvalidNode
+  If n1 or n2 does not belong to the graph nodes.
+pyagrum.InvalidEdge
+  If an arc already connects n1 and n2.
 "
-
-
-%feature("docstring") gum::PDAG::cSeparation
-"
-Check if the sets of nodes X and Y are c-separated (by the set of nodes Z if given) in the PDAG.
-
-Parameters
-----------
-X : int | sequence of int
-  a sequence of node ids (int) or a single node id (int)
-Y : int | sequence of int
-  a sequence of node ids (int) or a single node id (int)
-Z : int | sequence of int (optional)
-  a sequence of node ids (int) or a single node id (int)
-Returns
--------
-bool
-  True if X and Y are c-separated (by Z if given), False otherwise.
-"
-
 
 %feature("docstring") gum::PDAG::ancestors
 "
@@ -175,29 +175,6 @@ set
   the set of ids of the descendants of node `norid`.
 "
 
-%feature("docstring") gum::PDAG::moralGraph
-"
-Returns the moral graph of the PDAG, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
-
-Returns
--------
-pyagrum.UndiGraph
-    The moral graph
-"
-
-%feature("docstring") gum::PDAG::moralizedAncestralGraph
-"
-Compute the moralized ancestral graph of the nodes from the DAG.
-
-Parameters
-----------
-nodes : int | sequence of int
-  a sequence of node ids (int) or a single node id (int)
-Returns
--------
-pyagrum.UndiGraph
-  the moralized ancestral graph of the nodes from the DAG.
-"
 %feature("docstring") gum::PDAG::addNode
 "
 Add a new node to the graph and return its id.
@@ -420,23 +397,6 @@ Returns
 -------
 bool
     True if the node exists
-"
-
-%feature("docstring") gum::PDAG::hasMixedReallyOrientedPath
-"
-Check if there is a strictly oriented path from node1 to node2 (all arcs, no edges).
-
-Parameters
-----------
-node1 : int
-    the start node id
-node2 : int
-    the end node id
-
-Returns
--------
-bool
-    True if such a path exists
 "
 
 %feature("docstring") gum::PDAG::neighbours

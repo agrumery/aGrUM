@@ -674,4 +674,21 @@ namespace gum_tests {
     CHECK_EQ(gum::graph::minimalCondSet(chain, gum::NodeSet{0, 2}, gum::NodeSet{1}),
              gum::NodeSet{1});
   }
+
+  GUM_TEST(DSeparationOfObservedNodes) {
+    // 0->1<-2: an observed node is separated from any node, in X as in Y
+    gum::DAG dag;
+    dag.addNodes(3);
+    dag.addArc(0, 1);
+    dag.addArc(2, 1);
+    CHECK(dag.dSeparation(0, 1, gum::NodeSet{0}));
+    CHECK(dag.dSeparation(0, 1, gum::NodeSet{1}));
+    CHECK(dag.dSeparation(1, 0, gum::NodeSet{1}));
+    CHECK(dag.dSeparation(gum::NodeSet{0}, gum::NodeSet{1}, gum::NodeSet{1}));
+    CHECK(dag.dSeparation(gum::NodeSet{1}, gum::NodeSet{0}, gum::NodeSet{1}));
+    // it remains a node of Z for the other nodes: here, it activates the collider
+    CHECK_FALSE(dag.dSeparation(gum::NodeSet{0, 1}, gum::NodeSet{2}, gum::NodeSet{1}));
+    CHECK_FALSE(dag.dSeparation(gum::NodeSet{2}, gum::NodeSet{0, 1}, gum::NodeSet{1}));
+  }
+
 }   // namespace gum_tests

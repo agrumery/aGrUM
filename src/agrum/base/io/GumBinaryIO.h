@@ -55,11 +55,14 @@
 
 #include <cstdint>
 #include <istream>
+#include <optional>
 #include <ostream>
 #include <stdexcept>
 #include <vector>
 
 #include <agrum/config.h>
+
+#include <string_view>
 
 namespace gum {
 
@@ -89,6 +92,26 @@ namespace gum {
    * @return The indentation (-1 is the most compact output).
    */
   GUM_SHARED_PUBLIC int defaultJgumIndent();
+
+  /**
+   * The format given by the extension of a GUM file (case insensitive).
+   *
+   * @param path The name of the file.
+   * @return     true for ".bgum" (binary), false for ".jgum" (text), std::nullopt otherwise.
+   */
+  GUM_SHARED_PUBLIC std::optional< bool > binaryOfGUMExtension(std::string_view path);
+
+  /**
+   * The format of a GUM file: the explicit one if given, else the one of its extension (binary for
+   * an extension other than ".jgum" and ".bgum").
+   *
+   * @param path   The name of the file.
+   * @param binary The explicit format (true: binary .bgum, false: text .jgum), if any.
+   * @return       true if the file is in the binary format.
+   * @throw InvalidArgument if binary contradicts the extension (".jgum" or ".bgum") of path.
+   */
+  GUM_SHARED_PUBLIC bool isBinaryGUMFile(std::string_view      path,
+                                         std::optional< bool > binary = std::nullopt);
 
 } /* namespace gum */
 

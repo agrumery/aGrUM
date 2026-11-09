@@ -38,6 +38,80 @@
  *                                                                          *
  ****************************************************************************/
 
-#pragma once
+#include <cctype>
 
-#include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/fastMarkedGraph.h>
+
+#include <agrum/base/core/utils_string.h>
+
+namespace gum {
+
+  namespace graph::detail {
+
+    namespace {
+
+      /// true if position i of chain is a space or out of the chain
+      bool fastGraphIsBlank(std::string_view chain, std::size_t i) {
+        return i >= chain.size() || std::isspace(static_cast< unsigned char >(chain[i]));
+      }
+
+      /// position of the first non-blank character of chain from i (chain.size() if none)
+      std::size_t fastGraphSkipBlanks(std::string_view chain, std::size_t i) {
+        while (i < chain.size() && fastGraphIsBlank(chain, i)) {
+          ++i;
+        }
+        return i;
+      }
+
+    }   // namespace
+
+    std::vector< FastMarkedToken > fastMarkedGraphTokenize(std::string_view chain) {
+      std::vector< FastMarkedToken > tokens;
+      std::size_t                    pos            = 0;
+      EdgeMark                       markAtPrevious = EdgeMark::Tail;
+      EdgeMark                       markAtNext     = EdgeMark::Tail;
+      while (pos <= chain.size()) {
+        const auto dashPos = fastGraphFindDash(chain, pos);
+        if (dashPos == std::string_view::npos) {
+          tokens.push_back({trim_copy(chain.substr(pos)), markAtPrevious, markAtNext});
+          break;
+        }
+
+        std::size_t opStart = dashPos;
+        EdgeMark    left    = EdgeMark::Tail;
+        if (dashPos > pos && chain[dashPos - 1] == '<') {
+          left    = EdgeMark::Arrowhead;
+          opStart = dashPos - 1;
+        } else if (dashPos > pos + 1 && chain[dashPos - 1] == 'o'
+                   && fastGraphIsBlank(chain, dashPos - 2)
+                   && fastGraphSkipBlanks(chain, pos) < dashPos - 1) {
+          // a circle needs the name of its node before it
+          left    = EdgeMark::Circle;
+          opStart = dashPos - 1;
+        }
+        std::size_t opEnd = dashPos + 1;
+        EdgeMark    right = EdgeMark::Tail;
+        if (opEnd < chain.size() && chain[opEnd] == '>') {
+          right = EdgeMark::Arrowhead;
+          ++opEnd;
+        } else if (opEnd < chain.size() && chain[opEnd] == 'o'
+                   && fastGraphIsBlank(chain, opEnd + 1)) {
+          // a circle needs the name of its node after it, not an operator nor the end of chain
+          const auto next = fastGraphSkipBlanks(chain, opEnd + 1);
+          if (next < chain.size() && chain[next] != '<' && chain[next] != '-') {
+            right = EdgeMark::Circle;
+            ++opEnd;
+          }
+        }
+
+        tokens.push_back({trim_copy(chain.substr(pos, opStart - pos)), markAtPrevious, markAtNext});
+        markAtPrevious = left;
+        markAtNext     = right;
+        pos            = opEnd;
+      }
+      return tokens;
+    }
+
+  }   // namespace graph::detail
+
+}   // namespace gum

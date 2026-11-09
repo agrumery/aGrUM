@@ -115,11 +115,11 @@ pyagrum.GumTypeError
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet()
->>> w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
->>> for name in 'ABC':
-...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
+import pyagrum as gum
+bn = gum.BayesNet()
+w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
+for name in 'ABC':
+  bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
 "
 
 %feature("docstring") gum::BayesNet::addAND
@@ -263,14 +263,14 @@ pyagrum.GumTypeError
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet()
->>> levels = ['low', 'medium', 'high']
->>> a = bn.add(gum.LabelizedVariable('A', '', levels))
->>> b = bn.add(gum.LabelizedVariable('B', '', levels))
->>> m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
->>> bn.addArc(a, m)
->>> bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
+import pyagrum as gum
+bn = gum.BayesNet()
+levels = ['low', 'medium', 'high']
+a = bn.add(gum.LabelizedVariable('A', '', levels))
+b = bn.add(gum.LabelizedVariable('B', '', levels))
+m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
+bn.addArc(a, m)
+bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
 "
 
 %feature("docstring") gum::BayesNet::addMEDIAN
@@ -306,11 +306,11 @@ pyagrum.GumTypeError
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet()
->>> m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
->>> for name in 'ABC':
-...   bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
+import pyagrum as gum
+bn = gum.BayesNet()
+m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
+for name in 'ABC':
+  bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
 "
 
 %feature("docstring") gum::BayesNet::addMIN
@@ -343,13 +343,13 @@ pyagrum.GumTypeError
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet()
->>> a = bn.add(gum.RangeVariable('A', '', 0, 1))
->>> c = bn.add(gum.RangeVariable('C', '', 10, 11))
->>> m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
->>> bn.addArc(a, m)
->>> bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
+import pyagrum as gum
+bn = gum.BayesNet()
+a = bn.add(gum.RangeVariable('A', '', 0, 1))
+c = bn.add(gum.RangeVariable('C', '', 10, 11))
+m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
+bn.addArc(a, m)
+bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
 "
 
 %feature("docstring") gum::BayesNet::addSUM
@@ -381,11 +381,11 @@ pyagrum.GumTypeError
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.BayesNet()
->>> s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
->>> for name in 'AB':
-...   bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
+import pyagrum as gum
+bn = gum.BayesNet()
+s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
+for name in 'AB':
+  bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
 "
 
 %feature("docstring") gum::BayesNet::addNoisyAND
@@ -672,8 +672,8 @@ Notes
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn=pyagrum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
+import pyagrum as gum
+bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -1019,9 +1019,9 @@ Notes
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
->>> print(bn.evEqu('A',5)
+import pyagrum as gum
+bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+print(bn.evEqu('A',5)
   A                                                                                                                                                                                                    |
 [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
 ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
@@ -1050,9 +1050,9 @@ Notes
 
 Examples
 --------
->>> import pyagrum as gum
->>> bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
->>> print(bn.evGt('A',5)
+import pyagrum as gum
+bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
+print(bn.evGt('A',5)
   A                                                                                                                                                                                                    |
 [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
 ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
@@ -1125,11 +1125,14 @@ Parameters
 ----------
 name : str
     the file's path (extension: ``.jgum`` for JSON, ``.bgum`` for binary)
-binary : bool
-    if True, read as bgum (msgpack) regardless of extension (default: False)
+binary : bool, optional
+    True to read a bgum (msgpack) file, False to read a jgum (JSON) file. By default, the format is
+    given by the extension (binary for an unknown extension).
 
 Raises
 ------
+pyagrum.InvalidArgument
+    If binary contradicts the extension (``.jgum`` or ``.bgum``)
 pyagrum.GumIOError
     If file not found
 pyagrum.FatalError

@@ -46,8 +46,10 @@
 #include <vector>
 
 #include <agrum/base/core/dot/dotOptions.h>
+#include <agrum/base/graphs/algorithms/orientation.h>
 #include <agrum/BN/algorithms/essentialGraph.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
 #include <testunits/gumtest/utils.h>
@@ -55,7 +57,42 @@
 namespace gum_tests {
   struct EssentialGraphTestSuite {
     public:
-    // namespace gum_tests
+    /// reference: an arc a->b is strongly protected (Andersson, Madigan and Perlman 1997, Th. 4.1)
+    static bool stronglyProtected(const gum::MixedGraph& mg, gum::NodeId a, gum::NodeId b) {
+      for (const auto c: mg.parents(a))   // (a) c->a->b, c and b not adjacent
+        if (!mg.existsArc(c, b)) return true;
+      bool oneFound = false;
+      for (const auto c: mg.parents(b)) {
+        if (c == a) continue;
+        if (mg.existsArc(a, c)) return true;                            // (c) a->c->b
+        if (!mg.existsEdge(a, c) && !mg.existsArc(c, a)) return true;   // (b) a->b<-c
+        if (mg.existsEdge(c, a)) {                                      // (d) two such c
+          if (oneFound) return true;
+          oneFound = true;
+        }
+      }
+      return false;
+    }
+
+    /// reference: the arcs which are not strongly protected become edges, until a fixpoint
+    static gum::MixedGraph naiveEssentialGraph(const gum::DAG& dag) {
+      gum::MixedGraph mg;
+      for (const auto node: dag.nodes())
+        mg.addNodeWithId(node);
+      for (const auto& arc: dag.arcs())
+        mg.addArc(arc.tail(), arc.head());
+      std::vector< gum::Arc > unprotected;
+      do {
+        unprotected.clear();
+        for (const auto& arc: mg.arcs())
+          if (!stronglyProtected(mg, arc.tail(), arc.head())) unprotected.push_back(arc);
+        for (const auto& arc: unprotected) {
+          mg.eraseArc(arc);
+          mg.addEdge(arc.tail(), arc.head());
+        }
+      } while (!unprotected.empty());
+      return mg;
+    }
   };
 
   GUM_TEST(Chain) {
@@ -211,6 +248,102 @@ namespace gum_tests {
     auto smallBn = gum::BayesNet< float >::fastPrototype("a->b");
     auto chain   = gum::EssentialGraph(smallBn);
     CHECK_NE(chain.toDot().find("  0 -> 1 [dir=\"none\"];\n"), std::string::npos);
+  }
+
+  GUM_TEST(SameAsStronglyProtectedArcs) {
+    // the compelled arcs of Chickering (1995) are the strongly protected arcs of Andersson et al.
+    // (1997)
+    for (int i = 0; i < 30; ++i) {
+      gum::BayesNet< double >                bn;
+      gum::SimpleBayesNetGenerator< double > generator(15, 25, 2);
+      generator.generateBN(bn);
+      const auto eg  = gum::EssentialGraph(bn).pdag();
+      const auto ref = naiveEssentialGraph(bn.dag());
+      CHECK(eg.arcs() == ref.arcs());
+      CHECK(eg.edges() == ref.edges());
+    }
+  }
+
+  GUM_TEST(NamesAndCopy) {
+    auto bn = gum::BayesNet< double >::fastPrototype("a->b->c;d->c");
+    auto eg = gum::EssentialGraph(bn);
+    CHECK_EQ(eg.nameFromId(bn.idFromName("d")), "d");
+    CHECK_EQ(eg.idFromName("b"), bn.idFromName("b"));
+    CHECK_FALSE(eg.idFromName("z").has_value());
+    CHECK_EQ(eg.skeleton().nameFromId(bn.idFromName("a")), "a");
+
+    // a learned PDAG (here, not the essential graph of bn): kept by copy and assignment
+    gum::PDAG  pdag(bn.dag());
+    const auto learned = gum::EssentialGraph(bn, pdag);
+    const auto copy    = learned;
+    CHECK_EQ(copy.sizeArcs(), 3u);
+    CHECK_EQ(copy.sizeEdges(), 0u);
+    gum::EssentialGraph assigned;
+    assigned = learned;
+    CHECK_EQ(assigned.sizeArcs(), 3u);
+    CHECK_EQ(assigned.nameFromId(bn.idFromName("c")), "c");
+
+    // from a named PDAG only: the essential graph does not depend on a model
+    gum::EssentialGraph alone;
+    {
+      auto tmp = gum::BayesNet< double >::fastPrototype("x->y");
+      alone    = gum::EssentialGraph(tmp);
+    }
+    CHECK_EQ(alone.nameFromId(0), "x");
+    CHECK_EQ(gum::EssentialGraph(alone.pdag()).idFromName("y"), 1u);
+  }
+
+  GUM_TEST(AsCPDAG) {
+    auto       bn = gum::BayesNet< double >::fastPrototype("a->b->c;d->c");
+    const auto eg = gum::EssentialGraph(bn);
+    CHECK(eg.cpdag().contains(bn.dag()));
+    CHECK_EQ(eg.cpdag().nameFromId(bn.idFromName("d")), "d");
+
+    // a PDAG which is not a CPDAG (the chain a->b->c is not compelled)
+    CHECK_THROWS_AS(gum::EssentialGraph(bn, gum::PDAG(bn.dag())).cpdag(), gum::InvalidArgument&);
+  }
+
+  GUM_TEST(GumFormat) {
+    auto       bn   = gum::BayesNet< double >::fastPrototype("a->b->c;d->c");
+    const auto eg   = gum::EssentialGraph(bn);
+    const auto text = gum::graphToGUMString(eg);
+    CHECK_EQ(gum::graphGUMType(text), "EssentialGraph");
+    const auto read = gum::graphFromGUMString< gum::EssentialGraph >(text);
+    CHECK(read.arcs() == eg.arcs());
+    CHECK(read.edges() == eg.edges());
+    CHECK_EQ(read.nameFromId(bn.idFromName("d")), "d");
+    const auto bgum = GET_RESSOURCES_PATH("outputs/essentialGraph.bgum");
+    gum::saveGraphGUM(eg, bgum, true);
+    CHECK(gum::loadGraphGUM< gum::EssentialGraph >(bgum, true).arcs() == eg.arcs());
+  }
+
+  GUM_TEST(NamesOfTheModelReplaceThoseOfThePDAG) {
+    const auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    const auto ia = bn.idFromName("A");
+    const auto ib = bn.idFromName("B");
+    const auto ic = bn.idFromName("C");
+    // a PDAG whose names are permuted
+    gum::PDAG pdag;
+    for (const auto node: bn.nodes())
+      pdag.addNodeWithId(node);
+    for (const auto& arc: bn.arcs())
+      pdag.addArc(arc.tail(), arc.head());
+    pdag.setName(ia, "B");
+    pdag.setName(ib, "C");
+    pdag.setName(ic, "A");
+    const gum::EssentialGraph eg(bn, pdag);
+    CHECK_EQ(eg.nameFromId(ia), "A");
+    CHECK_EQ(eg.nameFromId(ib), "B");
+    CHECK_EQ(eg.nameFromId(ic), "C");
+    CHECK(eg.arcs() == pdag.arcs());
+
+    // without names, the labels and tooltips of the PDAG are kept
+    gum::PDAG unnamed;
+    unnamed.addNodes(2);
+    unnamed.addArc(0, 1);
+    const auto dot = gum::EssentialGraph(unnamed).toDot();
+    CHECK_EQ(dot.find("label"), std::string::npos);
+    CHECK_EQ(dot.find("tooltip"), std::string::npos);
   }
 
 }   // namespace gum_tests

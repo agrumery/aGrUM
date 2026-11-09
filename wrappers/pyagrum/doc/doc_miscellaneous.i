@@ -167,10 +167,10 @@ rejected here rather than silently misread.
 
 Raises
 ------
-gum.InvalidArc
+pyagrum.InvalidArc
   If the description requires a directed arc but the target graph type does
   not support arcs, or if the description is malformed.
-gum.InvalidEdge
+pyagrum.InvalidEdge
   If the description requires an undirected edge but the target graph type
   does not support edges.
 
@@ -181,13 +181,44 @@ desc : str
 
 Returns
 -------
-pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG
+pyagrum.DiGraph or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.DAG or pyagrum.PDAG or pyagrum.ChainGraph
 
 Examples
 --------
->>> gum.fastDiGraph('A->B->C;B->E')
->>> gum.fastUndiGraph('A-B-C')
->>> gum.fastMixedGraph('A->B-C')
->>> gum.fastDAG('A->B->C')
->>> gum.fastPDAG('A->B-C')
+gum.fastDiGraph('A->B->C;B->E')
+gum.fastUndiGraph('A-B-C')
+gum.fastMixedGraph('A->B-C')
+gum.fastDAG('A->B->C')
+gum.fastPDAG('A->B-C')
+gum.fastChainGraph('A->B-C')
+"
+
+%feature("docstring") gum::fastMarkedGraph
+"
+Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+description.
+
+An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
+circle, nothing for a tail. A circle must be separated from the name of its node by a space
+(``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). An edge may be repeated with the same marks
+(``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
+
+Parameters
+----------
+desc : str
+  the string containing the dot-like specification
+
+Returns
+-------
+pyagrum.MarkedGraph or pyagrum.PAG
+
+Raises
+------
+pyagrum.InvalidEdge
+  If the description is malformed or describes an edge with different marks.
+
+Examples
+--------
+gum.fastMarkedGraph('A->B;B<->C;C o-> D;D o-o E;E-F')
+gum.fastPAG('X o-o Y;Y o-> Z')
 "
