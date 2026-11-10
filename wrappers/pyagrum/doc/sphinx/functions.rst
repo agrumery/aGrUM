@@ -4,34 +4,35 @@ Functions from pyagrum
 Useful functions in pyAgrum
 ---------------------------
 
-.. autofunction:: pyagrum.getPosterior
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.mutilateBN
+   pyagrum.getPosterior
+   pyagrum.mutilateBN
 
 
 Input/Output for Bayesian networks
 ----------------------------------
 
-.. autofunction:: pyagrum.availableBNExts
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.loadBN
-
-.. autofunction:: pyagrum.saveBN
+   pyagrum.availableBNExts
+   pyagrum.loadBN
+   pyagrum.saveBN
 
 Input/Output for Markov random fields
 -------------------------------------
 
-.. autofunction:: pyagrum.availableMRFExts
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.loadMRF
-
-.. autofunction:: pyagrum.saveMRF
+   pyagrum.availableMRFExts
+   pyagrum.loadMRF
+   pyagrum.saveMRF
 
 Input for influence diagram
 ---------------------------
 
-.. autofunction:: pyagrum.availableIDExts
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.loadID
-
-.. autofunction:: pyagrum.saveID
+   pyagrum.availableIDExts
+   pyagrum.loadID
+   pyagrum.saveID

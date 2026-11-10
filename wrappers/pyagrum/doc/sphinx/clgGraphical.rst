@@ -5,14 +5,11 @@ Graphical tools for CLG
     :align: center
     :alt: A CLG model
 
-.. autofunction:: pyagrum.clg.notebook.exportCLG
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.clg.notebook.getInference
-
-.. autofunction:: pyagrum.clg.notebook.showInference
-
-.. autofunction:: pyagrum.clg.notebook.exportInference
-
-.. autofunction:: pyagrum.clg.notebook.CLG2dot
-
-.. autofunction:: pyagrum.clg.notebook.CLGInference2dot
+   pyagrum.clg.notebook.exportCLG
+   pyagrum.clg.notebook.getInference
+   pyagrum.clg.notebook.showInference
+   pyagrum.clg.notebook.exportInference
+   pyagrum.clg.notebook.CLG2dot
+   pyagrum.clg.notebook.CLGInference2dot

@@ -16,11 +16,13 @@ Properties :
     - :math:`\mathbb{E}(D_{i,j}) = \frac{1}{q_{i,j}}`
     - :math:`\forall i \sum_{j}q_{i,j} = 0`
 
-.. autoclass:: pyagrum.ctbn.CIM
+.. pyagrum-class:: pyagrum.ctbn.CIM
 
-.. autoclass:: pyagrum.ctbn.CTBN
+.. pyagrum-class:: pyagrum.ctbn.CTBN
 
 Other functions for CTBN model
 ------------------------------
 
-.. autofunction:: pyagrum.ctbn.randomCTBN
+.. pyagrum-functions::
+
+   pyagrum.ctbn.randomCTBN

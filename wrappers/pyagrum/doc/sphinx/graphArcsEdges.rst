@@ -1,6 +1,6 @@
 Edges and Arcs
 ==============
 
-.. autoclass:: pyagrum.Arc
+.. pyagrum-class:: pyagrum.Arc
 
-.. autoclass:: pyagrum.Edge
+.. pyagrum-class:: pyagrum.Edge

@@ -24,21 +24,16 @@ edge, ``';'`` separates independent chains.
   a chain of pairwise edges. Writing ``'A--B'`` in these functions raises an error rather than
   being silently misread.
 
-.. autofunction:: pyagrum.fastDiGraph
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.fastUndiGraph
-
-.. autofunction:: pyagrum.fastMixedGraph
-
-.. autofunction:: pyagrum.fastDAG
-
-.. autofunction:: pyagrum.fastPDAG
-
-.. autofunction:: pyagrum.fastChainGraph
-
-.. autofunction:: pyagrum.fastMarkedGraph
-
-.. autofunction:: pyagrum.fastPAG
+   pyagrum.fastDiGraph
+   pyagrum.fastUndiGraph
+   pyagrum.fastMixedGraph
+   pyagrum.fastDAG
+   pyagrum.fastPDAG
+   pyagrum.fastChainGraph
+   pyagrum.fastMarkedGraph
+   pyagrum.fastPAG
 
 See also this `notebook <https://pyagrum.readthedocs.io/en/latest/notebooks/93-Tools_tensorsAndGraphs.html>`_
 for a tour of graph construction and algorithms.

@@ -29,7 +29,7 @@ SITEOPTS       = $(DEFAULTOPTS) -c $(SITEDIR) $(SITEDIR)
 ALLRTDOPTS   =  $(PAPEROPT_$(PAPER)) $(RTDOPTS) 
 
 
-AGRUMRTDDIR = "{agrum}/build/pyAgrum/release/wrappers/pyagrum/docs"
+AGRUMRTDDIR = $(abspath $(RTDDIR))
 
 # the i18n builder cannot share the environment and doctrees with the others
 I18NRTDOPTS  = $(PAPEROPT_$(PAPER)) $(RTDOPTS) .
@@ -46,8 +46,12 @@ help:
 	@echo "  dummy      to check syntax errors of document sources"
 
 .PHONY: clean
-clean:
+clean: clean-site
 	rm -rf $(RTDDIR)/*
+
+# the site is built in $(SITEDIR) only: it must not erase the html documentation of RTDDIR
+.PHONY: clean-site
+clean-site:
 	rm -rf $(SITEDIR)
 	rm -rf $(SITEDIR).zip
 
@@ -58,12 +62,10 @@ rtd: html
 html: clean
 	$(SPHINXBUILD) -b html $(ALLRTDOPTS) . $(RTDDIR)
 	@echo
-	@echo "Build finished. The HTML pages are in $(AGRUMRTDDIR)/html."
+	@echo "Build finished. The HTML pages are in $(AGRUMRTDDIR)."
 
 .PHONY: site
-site: clean
-	@echo "Building the HTML site in $(SITEDIR)/html ..."
-	$(SPHINXBUILD) -b html $(ALLRTDOPTS) . $(SITEDIR)/RTD
+site: clean-site
 	@echo "Building the site in $(SITEDIR) ..."
 	python3 webbuild.py $(SITEDIR)
 	

@@ -5,4 +5,4 @@ Chain Graph
     :align: center
     :alt: a chain graph
 
-.. autoclass:: pyagrum.ChainGraph
+.. pyagrum-class:: pyagrum.ChainGraph

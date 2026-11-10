@@ -79,10 +79,10 @@ It is used to represent probabilities and utilities tables in aGrUMs' multidimen
 Instantiation
 -------------
 
-.. autoclass:: pyagrum.Instantiation
+.. pyagrum-class:: pyagrum.Instantiation
 
 Tensor
 ------
 
-.. autoclass:: pyagrum.Tensor
+.. pyagrum-class:: pyagrum.Tensor
 		:exclude-members: populate

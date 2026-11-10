@@ -5,4 +5,4 @@ Partially Directed Acyclic Graph (PDAG)
     :align: center
     :alt: a PDAG
 
-.. autoclass:: pyagrum.PDAG
+.. pyagrum-class:: pyagrum.PDAG

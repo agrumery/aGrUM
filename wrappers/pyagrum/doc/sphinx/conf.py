@@ -90,6 +90,7 @@ extensions = [
     # 'sphinx.ext.viewcode',
     # 'sphinx.ext.coverage'
     "sphinxcontrib.bibtex",
+    "pyagrum_apipages",  # local: one page per member of the documented classes
 ]
 # autosummary_generate = True  # Turn on sphinx.ext.autosummary
 
@@ -571,13 +572,8 @@ suppress_warnings = [
     "sphinx_autodoc_typehints.forward_reference",
 ]
 
+# no members by default: the members of a class have their own pages (pyagrum-class, see pyagrum_apipages.py)
 autodoc_default_options = {
-    "members": None,
-    "undoc-members": None,
-    # 'private-members',
-    # 'special-members',
-    "inherited-members": True,
-    # 'ignore-module-all',
     "exclude-members": "thisown",
 }
 

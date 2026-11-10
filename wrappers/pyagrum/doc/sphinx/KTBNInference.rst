@@ -6,4 +6,4 @@ observations and Pearl-style do-interventions -- without ever unrolling the
 model. aGrUM/pyAgrum implements one exact algorithm, a generalization of
 Murphy's interface algorithm to order k.
 
-.. autoclass:: pyagrum.ktbn.KTBNInference
+.. pyagrum-class:: pyagrum.ktbn.KTBNInference

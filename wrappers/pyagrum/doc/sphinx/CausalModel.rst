@@ -34,9 +34,9 @@ which case you are in.
    :doc:`CausalInference`
       Functions for computing causal impacts and applying do-calculus.
 
-.. autoclass:: pyagrum.CausalModel
+.. pyagrum-class:: pyagrum.CausalModel
 
 Backdoor and frontdoor criteria
 --------------------------------
 
-.. autoclass:: pyagrum.DoorCriteria
+.. pyagrum-class:: pyagrum.DoorCriteria

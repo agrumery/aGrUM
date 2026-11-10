@@ -9,7 +9,7 @@ The function :meth:`pyagrum.fastVariable` allows to easily create variables of a
 
 Common API for Random Discrete Variables
 ----------------------------------------
-.. autoclass:: pyagrum.DiscreteVariable
+.. pyagrum-class:: pyagrum.DiscreteVariable
 
 Concrete classes for Random Discrete Variables
 ----------------------------------------------
@@ -17,24 +17,24 @@ Concrete classes for Random Discrete Variables
 LabelizedVariable
 ^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.LabelizedVariable
+.. pyagrum-class:: pyagrum.LabelizedVariable
 
 DiscretizedVariable
 ^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.DiscretizedVariable
+.. pyagrum-class:: pyagrum.DiscretizedVariable
 
 IntegerVariable
 ^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.IntegerVariable
+.. pyagrum-class:: pyagrum.IntegerVariable
 
 RangeVariable
 ^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.RangeVariable
+.. pyagrum-class:: pyagrum.RangeVariable
 
 NumericalDiscreteVariable
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.NumericalDiscreteVariable
+.. pyagrum-class:: pyagrum.NumericalDiscreteVariable

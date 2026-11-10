@@ -14,7 +14,7 @@ based on :cite:t:`colombo2014order`.
 
 The independence test used is based on :cite:t:`simionato2022bounding`.
 
-.. autoclass:: pyagrum.clg.learning.CLGLearner
+.. pyagrum-class:: pyagrum.clg.learning.CLGLearner
 
 .. bibliography::
     :filter: docname in docnames

@@ -5,7 +5,7 @@ Marked Graph
     :align: center
     :alt: a marked graph
 
-.. autoclass:: pyagrum.EdgeMark
+.. pyagrum-class:: pyagrum.EdgeMark
   :no-inherited-members:
 
-.. autoclass:: pyagrum.MarkedGraph
+.. pyagrum-class:: pyagrum.MarkedGraph

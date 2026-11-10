@@ -9,8 +9,8 @@ This tools aimed to provide some different views on the Bayesian network in
 order to explore its qualitative and/or quantitave behaviours.
 
 
-.. autoclass:: pyagrum.JunctionTreeGenerator
+.. pyagrum-class:: pyagrum.JunctionTreeGenerator
 
-.. autoclass:: pyagrum.EssentialGraph
+.. pyagrum-class:: pyagrum.EssentialGraph
 
-.. autoclass:: pyagrum.MarkovBlanket
+.. pyagrum-class:: pyagrum.MarkovBlanket

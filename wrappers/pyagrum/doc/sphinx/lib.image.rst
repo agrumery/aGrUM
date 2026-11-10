@@ -32,5 +32,7 @@ Export and visualize Graphical models and Tensors (png, pdf)
 Visualization of models and inference
 -------------------------------------
 
-.. autofunction:: pyagrum.lib.image.export
-.. autofunction:: pyagrum.lib.image.exportInference
+.. pyagrum-functions::
+
+   pyagrum.lib.image.export
+   pyagrum.lib.image.exportInference

@@ -9,13 +9,15 @@ A CLG is :
 
 A CLG is equivalent to a SEM (Structural Equation Model) with Gaussian variables.
 
-.. autoclass:: pyagrum.clg.CLG
+.. pyagrum-class:: pyagrum.clg.CLG
     :members:
 
-.. autoclass:: pyagrum.clg.SEM
+.. pyagrum-class:: pyagrum.clg.SEM
     :members:
 
 Other functions for CLG
 -----------------------
 
-.. autofunction:: pyagrum.clg.randomCLG
+.. pyagrum-functions::
+
+   pyagrum.clg.randomCLG

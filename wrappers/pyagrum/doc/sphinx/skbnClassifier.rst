@@ -6,4 +6,4 @@ classifier built on top of a :class:`pyagrum.BayesNet`. It implements the standa
 ``predict`` / ``predict_proba`` interface, making it easy to integrate Bayesian network
 classifiers into existing scikit-learn pipelines.
 
-.. autoclass:: pyagrum.skbn.BNClassifier
+.. pyagrum-class:: pyagrum.skbn.BNClassifier

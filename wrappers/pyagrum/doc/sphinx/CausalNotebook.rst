@@ -4,10 +4,9 @@ Notebook's tools for causality
 Visualization helpers for causal models in Jupyter notebooks. These functions render
 :class:`pyagrum.CausalModel` instances and causal inference results as graphical outputs.
 
-.. autofunction:: pyagrum.lib.notebook.getCausalModel
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.lib.notebook.showCausalModel
-
-.. autofunction:: pyagrum.lib.notebook.getCausalImpact
-
-.. autofunction:: pyagrum.lib.notebook.showCausalImpact
+   pyagrum.lib.notebook.getCausalModel
+   pyagrum.lib.notebook.showCausalModel
+   pyagrum.lib.notebook.getCausalImpact
+   pyagrum.lib.notebook.showCausalImpact

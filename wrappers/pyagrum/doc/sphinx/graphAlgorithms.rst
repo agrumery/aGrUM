@@ -38,6 +38,4 @@ A worked example: from a DAG to its Markov equivalence class and back.
   sorted(gg.consistentExtension(cpdag).arcs())
   # [(0, 1), (1, 2), (2, 4), (3, 2)]
 
-.. automodule:: pyagrum.graph
-  :members:
-  :member-order: bysource
+.. pyagrum-functions:: pyagrum.graph

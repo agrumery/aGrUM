@@ -9,13 +9,13 @@ To compare Bayesian networks, one can compare their structure
 (see :class:`pyagrum.lib.bn_vs_bn.GraphicalBNComparator`).
 However BNs can also be compared as probability distributions.
 
-.. autoclass:: pyagrum.ExactBNdistance
+.. pyagrum-class:: pyagrum.ExactBNdistance
 
 
-.. autoclass:: pyagrum.GibbsBNdistance
+.. pyagrum-class:: pyagrum.GibbsBNdistance
 
 
-.. autoclass:: pyagrum.MCBNDistance
+.. pyagrum-class:: pyagrum.MCBNDistance
 
 In general, :class:`pyagrum.MCBNDistance` converges better (faster, with a smaller variance)
 than :class:`pyagrum.GibbsBNdistance` for a given number of iterations. This is expected:

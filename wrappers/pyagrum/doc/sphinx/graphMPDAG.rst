@@ -5,4 +5,4 @@ Maximally oriented PDAG (MPDAG)
     :align: center
     :alt: an MPDAG
 
-.. autoclass:: pyagrum.MPDAG
+.. pyagrum-class:: pyagrum.MPDAG

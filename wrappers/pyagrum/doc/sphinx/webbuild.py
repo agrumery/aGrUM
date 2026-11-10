@@ -182,34 +182,13 @@ def getTagVersion(datadir: str):
 
 
 def prepareSphinx(site_dir: str):
-  # copy every file and folder in the current directory to the site_dir
+  # copy every file and folder in the current directory to the site_dir (generated/ and api/ are rebuilt by Sphinx)
   for item in os.listdir("."):
-    if item not in {
-      site_dir,
-      "webbuild.py",
-      "Makefile",
-      "notebooks",
-      "Makefile",
-      "notebooks.rst",
-    }:
-      src_path = os.path.join(".", item)
-      dest_path = os.path.join(site_dir, item)
-
-      # do not copy zip files
-      if item.endswith(".zip"):
-        continue
-
-      if os.path.isdir(src_path):
-        os.makedirs(dest_path, exist_ok=True)
-        for sub_item in os.listdir(src_path):
-          sub_src = os.path.join(src_path, sub_item)
-          sub_dest = os.path.join(dest_path, sub_item)
-          if os.path.isfile(sub_src):
-            with open(sub_src, "rb") as fsrc, open(sub_dest, "wb") as fdest:
-              fdest.write(fsrc.read())
-      else:
-        with open(src_path, "rb") as fsrc, open(dest_path, "wb") as fdest:
-          fdest.write(fsrc.read())
+    if item in {site_dir, "webbuild.py", "Makefile", "notebooks", "notebooks.rst", "generated", "api"}:
+      continue
+    if item.endswith(".zip"):  # do not copy zip files
+      continue
+    recursive_copy(os.path.join(".", item), os.path.join(site_dir, item))
 
 
 def prepareNotebooks(site_dir: str):
@@ -260,7 +239,7 @@ def goRTD(site_dir: str):
   notif("Running Sphinx to build the site (RTD version)...")
   os.chdir(site_dir)
   # Run Sphinx to build the site
-  os.system("sphinx-build -M html .. RTD")
+  os.system("sphinx-build -M html .. RTD -j auto")
   # move the folders html/_static and html/_images in the folder markdown
   recursive_copy("RTD/html/_static", "markdown/_static")
   recursive_copy("RTD/html/_images", "markdown/_images")
@@ -271,8 +250,8 @@ def goSphinx(site_dir: str):
   notif("Running Sphinx to build the site (html and markdown)...")
   os.chdir(site_dir)
   # Run Sphinx to build the site
-  os.system("sphinx-build -M html . .")
-  os.system("sphinx-build -M markdown . .")
+  os.system("sphinx-build -M html . . -j auto")
+  os.system("sphinx-build -M markdown . . -j auto")
   # move the folders html/_static and html/_images in the folder markdown
 
   recursive_copy("html/_static", "markdown/_static")
@@ -284,7 +263,7 @@ def goSphinx(site_dir: str):
 def updateMarkdownFiles(site_dir: str):
   # pour tous les fichiers *.md du répéertoire markdown
   markdown_dir = os.path.join(site_dir, "markdown")
-  for md_file in glob.glob(os.path.join(markdown_dir, "*.md")):
+  for md_file in glob.glob(os.path.join(markdown_dir, "**", "*.md"), recursive=True):
     with open(md_file) as f:
       content = f.read()
     # remplacer "```pycon" par "```python"
@@ -295,10 +274,9 @@ def updateMarkdownFiles(site_dir: str):
 
 def goZipAndFinish(site_dir: str):
   # compress the site_dir into a zip file
-  zip_file = f"{site_dir}.zip"
-  os.system(f"zip -r {zip_file} {site_dir}")
-  os.system(f"rm -rf {site_dir}")
-  notif(f"Sphinx build completed and zipped in {zip_file}.")
+  zip_file = shutil.make_archive(site_dir, "zip", root_dir=".", base_dir=site_dir)
+  shutil.rmtree(site_dir)  # raises if the folder cannot be removed
+  notif(f"Sphinx build completed and zipped in {zip_file}, {site_dir} removed.")
 
 
 if __name__ == "__main__":

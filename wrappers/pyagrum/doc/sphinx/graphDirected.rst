@@ -5,4 +5,4 @@ Directed Graph
     :align: center
     :alt: a directed graph
 
-.. autoclass:: pyagrum.DiGraph
+.. pyagrum-class:: pyagrum.DiGraph

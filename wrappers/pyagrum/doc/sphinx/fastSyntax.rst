@@ -20,7 +20,9 @@ The type of the (discrete) random variables can be specifiy with different synta
       - with ``a{-0.5|5.01|0|3.1415}``, the variable is a :class:`pyagrum.NumericalDiscreteVariable` using the sorted given values.
       - with ``a{-0.5:3.1415:5}``, the variable is a :class:`pyagrum.NumericalDiscreteVariable` using the values from -0.5 to 3.1415 in 5 steps (the domain size is 5).
 
-.. autofunction:: pyagrum.fastVariable
+.. pyagrum-functions::
+
+   pyagrum.fastVariable
 
 .. _quick-specification-of-randomly-parameterized-graphical-models:
 
@@ -37,8 +39,8 @@ These `fastPrototype` aGrUM's methods have also been wrapped in functions of pya
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
 
-.. autofunction:: pyagrum.fastBN
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.fastMRF
-
-.. autofunction:: pyagrum.fastID
+   pyagrum.fastBN
+   pyagrum.fastMRF
+   pyagrum.fastID

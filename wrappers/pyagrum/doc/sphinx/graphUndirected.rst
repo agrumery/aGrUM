@@ -5,6 +5,6 @@ Undirected Graphs
     :align: center
     :alt: an undirected graph
 
-.. autoclass:: pyagrum.UndiGraph
+.. pyagrum-class:: pyagrum.UndiGraph
 
-.. autoclass:: pyagrum.CliqueGraph
+.. pyagrum-class:: pyagrum.CliqueGraph

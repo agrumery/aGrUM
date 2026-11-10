@@ -5,5 +5,5 @@ Undirected Graphical Model
 fields in pyAgrum. It stores the undirected graph structure and the potential functions (tensors) over
 its cliques.
 
-.. autoclass:: pyagrum.MarkovRandomField
+.. pyagrum-class:: pyagrum.MarkovRandomField
 			:exclude-members: setProperty, property, propertyWithDefault

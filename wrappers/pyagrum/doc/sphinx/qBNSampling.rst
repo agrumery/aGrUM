@@ -48,7 +48,7 @@ RY rotations (Section 3.2, Fig. 5):
 Measuring all qubits of the resulting circuit samples from the joint
 distribution of the network.
 
-.. autoclass:: pyagrum.qBNSampling.qBNMC
+.. pyagrum-class:: pyagrum.qBNSampling.qBNMC
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +71,7 @@ Each call to :meth:`~pyagrum.qBNSampling.qBNRejection.getSample` runs
 Algorithm 1: it applies G^{⌈2^k⌉} for increasing k until a measurement
 consistent with the evidence is obtained.
 
-.. autoclass:: pyagrum.qBNSampling.qBNRejection
+.. pyagrum-class:: pyagrum.qBNSampling.qBNRejection
    :members:
    :undoc-members:
    :show-inheritance:

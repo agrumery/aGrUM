@@ -14,46 +14,55 @@ Visualization of graphical models
 
     .. image:: _static/effect_of_Graphviz_size.png
 
-.. autofunction:: pyagrum.lib.notebook.showBN
-.. autofunction:: pyagrum.lib.notebook.getBN
-.. autofunction:: pyagrum.lib.notebook.showInfluenceDiagram
-.. autofunction:: pyagrum.lib.notebook.getInfluenceDiagram
-.. autofunction:: pyagrum.lib.notebook.showMRF
-.. autofunction:: pyagrum.lib.notebook.getMRF
-.. autofunction:: pyagrum.lib.notebook.showCN
-.. autofunction:: pyagrum.lib.notebook.getCN
-.. autofunction:: pyagrum.lib.notebook.showInference
-.. autofunction:: pyagrum.lib.notebook.getInference
-.. autofunction:: pyagrum.lib.notebook.showJunctionTree
-.. autofunction:: pyagrum.lib.notebook.getJunctionTree
+.. pyagrum-functions::
+
+   pyagrum.lib.notebook.showBN
+   pyagrum.lib.notebook.getBN
+   pyagrum.lib.notebook.showInfluenceDiagram
+   pyagrum.lib.notebook.getInfluenceDiagram
+   pyagrum.lib.notebook.showMRF
+   pyagrum.lib.notebook.getMRF
+   pyagrum.lib.notebook.showCN
+   pyagrum.lib.notebook.getCN
+   pyagrum.lib.notebook.showInference
+   pyagrum.lib.notebook.getInference
+   pyagrum.lib.notebook.showJunctionTree
+   pyagrum.lib.notebook.getJunctionTree
 
 Visualization of Tensors
 ---------------------------
 
-.. autofunction:: pyagrum.lib.notebook.showProba
-.. autofunction:: pyagrum.lib.notebook.getPosterior
-.. autofunction:: pyagrum.lib.notebook.showPosterior
-.. autofunction:: pyagrum.lib.notebook.getTensor
-.. autofunction:: pyagrum.lib.notebook.showTensor
+.. pyagrum-functions::
+
+   pyagrum.lib.notebook.showProba
+   pyagrum.lib.notebook.getPosterior
+   pyagrum.lib.notebook.showPosterior
+   pyagrum.lib.notebook.getTensor
+   pyagrum.lib.notebook.showTensor
 
 Visualization of graphs
 -----------------------
 
-.. autofunction:: pyagrum.lib.notebook.getDot
-.. autofunction:: pyagrum.lib.notebook.showDot
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.lib.notebook.getGraph
-.. autofunction:: pyagrum.lib.notebook.showGraph
+   pyagrum.lib.notebook.getDot
+   pyagrum.lib.notebook.showDot
+   pyagrum.lib.notebook.getGraph
+   pyagrum.lib.notebook.showGraph
 
 
 Visualization of approximation algorithm
 ----------------------------------------
 
-.. autofunction:: pyagrum.lib.notebook.animApproximationScheme
+.. pyagrum-functions::
+
+   pyagrum.lib.notebook.animApproximationScheme
 
 
 Helpers
 -------
 
-.. autofunction:: pyagrum.lib.notebook.configuration
-.. autofunction:: pyagrum.lib.notebook.sideBySide
+.. pyagrum-functions::
+
+   pyagrum.lib.notebook.configuration
+   pyagrum.lib.notebook.sideBySide

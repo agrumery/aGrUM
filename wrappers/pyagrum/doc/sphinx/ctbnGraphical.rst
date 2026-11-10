@@ -5,6 +5,7 @@ Graphical tools for CTBN
     :align: center
     :alt: A CTBN with its CIMs
 
-.. autofunction:: pyagrum.ctbn.plotTrajectory
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.ctbn.plotFollowVar
+   pyagrum.ctbn.plotTrajectory
+   pyagrum.ctbn.plotFollowVar

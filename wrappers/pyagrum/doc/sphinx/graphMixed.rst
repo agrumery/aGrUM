@@ -5,4 +5,4 @@ Mixed Graph
     :align: center
     :alt: a mixed graph
 
-.. autoclass:: pyagrum.MixedGraph
+.. pyagrum-class:: pyagrum.MixedGraph

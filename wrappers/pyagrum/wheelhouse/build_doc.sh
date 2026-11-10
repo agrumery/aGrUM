@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get install -y pandoc
+apt-get install -y pandoc graphviz
 
 root=$PWD
 

@@ -6,13 +6,10 @@ These functions use the aGrUM's peuso-random number generator (`mt19937`)from py
 Random functions
 ----------------
 
-.. autofunction:: pyagrum.initRandom
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.randomProba
-
-.. autofunction:: pyagrum.randomDistribution
-
-.. autofunction:: pyagrum.generateSample
-
-.. autofunction:: pyagrum.randomBN
-  :noindex:
+   pyagrum.initRandom
+   pyagrum.randomProba
+   pyagrum.randomDistribution
+   pyagrum.generateSample
+   pyagrum.randomBN

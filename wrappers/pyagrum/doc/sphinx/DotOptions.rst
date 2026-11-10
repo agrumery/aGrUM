@@ -14,5 +14,5 @@ The look of the graphs drawn by ``toDot()`` (graphs, Bayesian networks, Markov r
 
 The font color of a node is ``adaptive`` by default (black or white according to the brightness of its background color), see the keys ``nodeFgColor`` of the configuration.
 
-.. autoclass:: pyagrum.DotOptions
+.. pyagrum-class:: pyagrum.DotOptions
    :members:

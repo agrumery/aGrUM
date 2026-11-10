@@ -1,7 +1,7 @@
 Structural comparison metrics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.StructuralMetrics
+.. pyagrum-class:: pyagrum.StructuralMetrics
 
 .. seealso::
 

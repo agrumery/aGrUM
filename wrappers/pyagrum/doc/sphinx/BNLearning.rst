@@ -196,5 +196,5 @@ Class BNLearner
       -
       -
 
-.. autoclass:: pyagrum.BNLearner
+.. pyagrum-class:: pyagrum.BNLearner
   :exclude-members: asIApproximationSchemeConfiguration, thisown

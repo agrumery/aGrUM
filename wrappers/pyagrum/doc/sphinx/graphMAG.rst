@@ -5,4 +5,4 @@ Maximal Ancestral Graph (MAG)
     :align: center
     :alt: a MAG
 
-.. autoclass:: pyagrum.MAG
+.. pyagrum-class:: pyagrum.MAG

@@ -7,7 +7,7 @@ Each key is declared in the defaults with a metadata line ``### type :: document
 
 See also the tutorial :doc:`notebooks/99-Tools_configForPyAgrum`.
 
-.. autoclass:: pyagrum.pyagrumcpp._Configuration
+.. pyagrum-class:: pyagrum.pyagrumcpp._Configuration
    :members:
    :special-members: __getitem__, __setitem__
 

@@ -12,7 +12,9 @@ Dealing with independence
     :alt: independenceList in pyAgrum
 
 
-.. autofunction:: pyagrum.explain.independenceListForPairs
+.. pyagrum-functions::
+
+   pyagrum.explain.independenceListForPairs
 
 
 Dealing with mutual information and entropy
@@ -23,9 +25,11 @@ Dealing with mutual information and entropy
     :alt: showing entropy and mutual informations in pyAgrum
 
 
-.. autofunction:: pyagrum.explain.getInformation
-.. autofunction:: pyagrum.explain.getInformationGraph
-.. autofunction:: pyagrum.explain.showInformation
+.. pyagrum-functions::
+
+   pyagrum.explain.getInformation
+   pyagrum.explain.getInformationGraph
+   pyagrum.explain.showInformation
 
 Dealing with Shap Values and Shall Values
 -----------------------------------------
@@ -38,7 +42,7 @@ All attribution methods return an :class:`~pyagrum.explain.Explanation` object, 
 feature names to their individual attribution values and carries auxiliary data from the
 computation.
 
-.. autoclass:: pyagrum.explain.Explanation
+.. pyagrum-class:: pyagrum.explain.Explanation
    :no-members:
    :no-inherited-members:
 
@@ -49,19 +53,19 @@ Shap (SHapley Additive exPlanations) values decompose a model prediction into th
 contributions of each feature, based on the Shapley value from cooperative game theory.
 Three variants are available depending on how feature interactions are handled:
 
-.. autoclass:: pyagrum.explain.MarginalShapValues
+.. pyagrum-class:: pyagrum.explain.MarginalShapValues
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: pyagrum.explain.ConditionalShapValues
+.. pyagrum-class:: pyagrum.explain.ConditionalShapValues
     :members:
     :undoc-members:
     :show-inheritance:
 
 The causal Shapley values are computed following :cite:t:`heskes2020causal`.
 
-.. autoclass:: pyagrum.explain.CausalShapValues
+.. pyagrum-class:: pyagrum.explain.CausalShapValues
     :members:
     :undoc-members:
     :show-inheritance:
@@ -78,17 +82,17 @@ rather than explaining a prediction output.
 
 The same three variants (marginal, conditional, causal) are available:
 
-.. autoclass:: pyagrum.explain.MarginalShallValues
+.. pyagrum-class:: pyagrum.explain.MarginalShallValues
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: pyagrum.explain.ConditionalShallValues
+.. pyagrum-class:: pyagrum.explain.ConditionalShallValues
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: pyagrum.explain.CausalShallValues
+.. pyagrum-class:: pyagrum.explain.CausalShallValues
     :members:
     :undoc-members:
     :show-inheritance:
@@ -102,7 +106,9 @@ A structural property of Bayesian networks is the Markov boundary of a node. A M
     :align: center
     :alt: Generalized Markov Blanket in pyAgrum
 
-.. autofunction:: pyagrum.explain.generalizedMarkovBlanket
+.. pyagrum-functions::
+
+   pyagrum.explain.generalizedMarkovBlanket
 
 .. bibliography::
     :filter: docname in docnames

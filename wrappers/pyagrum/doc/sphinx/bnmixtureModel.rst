@@ -1,6 +1,6 @@
 Mixture Model
 ^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.bnmixture.BNMixture
+.. pyagrum-class:: pyagrum.bnmixture.BNMixture
 
-.. autoclass:: pyagrum.bnmixture.BootstrapMixture
+.. pyagrum-class:: pyagrum.bnmixture.BootstrapMixture

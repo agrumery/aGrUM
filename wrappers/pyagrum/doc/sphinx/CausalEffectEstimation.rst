@@ -20,7 +20,7 @@ advancements with foundational causal identification through Bayesian networks.
 It provides a pipeline for detecting suitable adjustment sets and applying the
 appropriate estimators to achieve accurate causal effect estimations.
 
-.. autoclass:: pyagrum.causalEffectEstimation.CausalEffectEstimation
+.. pyagrum-class:: pyagrum.causalEffectEstimation.CausalEffectEstimation
 
 .. bibliography::
     :filter: docname in docnames

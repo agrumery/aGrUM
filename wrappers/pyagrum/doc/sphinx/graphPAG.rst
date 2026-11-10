@@ -5,4 +5,4 @@ Partial Ancestral Graph (PAG)
     :align: center
     :alt: a PAG
 
-.. autoclass:: pyagrum.PAG
+.. pyagrum-class:: pyagrum.PAG

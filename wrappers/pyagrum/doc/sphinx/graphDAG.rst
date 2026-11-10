@@ -5,4 +5,4 @@ Directed Acyclic Graph (DAG)
     :align: center
     :alt: a DAG
 
-.. autoclass:: pyagrum.DAG
+.. pyagrum-class:: pyagrum.DAG

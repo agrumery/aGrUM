@@ -8,15 +8,18 @@ The main entry point for causal inference is :func:`pyagrum.causalImpact`, which
 causal effect of an intervention :math:`do(X=x)` on a target variable :math:`Y` within a
 :class:`pyagrum.CausalModel`, using do-calculus identification.
 
-.. autofunction:: pyagrum.causalImpact
+.. pyagrum-functions::
 
-.. autoclass:: pyagrum.CausalImpact
+   pyagrum.causalImpact
+
+.. pyagrum-class:: pyagrum.CausalImpact
 
 Counterfactual reasoning
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autofunction:: pyagrum.counterfactual
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.counterfactualModel
+   pyagrum.counterfactual
+   pyagrum.counterfactualModel
 
-.. autoclass:: pyagrum.Counterfactual
+.. pyagrum-class:: pyagrum.Counterfactual

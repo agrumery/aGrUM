@@ -1,4 +1,4 @@
 Information Theory of Bayesian network
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.InformationTheory
+.. pyagrum-class:: pyagrum.InformationTheory

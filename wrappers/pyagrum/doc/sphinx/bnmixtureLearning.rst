@@ -1,6 +1,6 @@
 Learning mixtures
 ^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.bnmixture.BNMLearner
+.. pyagrum-class:: pyagrum.bnmixture.BNMLearner
 
-.. autoclass:: pyagrum.bnmixture.BNMBootstrapLearner
+.. pyagrum-class:: pyagrum.bnmixture.BNMBootstrapLearner

@@ -7,5 +7,5 @@ Inference is a hard task (NP-complete). For now, aGrUM/pyAgrum implements only o
 Shafer-Shenoy Inference in Markov random field
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: pyagrum.ShaferShenoyMRFInference
+.. pyagrum-class:: pyagrum.ShaferShenoyMRFInference
 			:exclude-members: setTriangulation

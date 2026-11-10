@@ -56,6 +56,7 @@ wrappers/pyagrum/testunits/tests/resources/o3prm/BNO3PRMIO_file.o3prm
 wrappers/pyagrum/doc/sphinx/site.zip
 wrappers/pyagrum/doc/sphinx/site/
 wrappers/pyagrum/doc/sphinx/generated/
+wrappers/pyagrum/doc/sphinx/api/
 
 
 

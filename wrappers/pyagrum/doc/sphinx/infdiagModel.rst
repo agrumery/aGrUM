@@ -5,6 +5,6 @@ Model for Decision in PGM
     :align: center
     :alt: an influence diagram
 
-.. autoclass:: pyagrum.InfluenceDiagram
+.. pyagrum-class:: pyagrum.InfluenceDiagram
 			:members:
 			:exclude-members: setProperty, property, propertyWithDefault

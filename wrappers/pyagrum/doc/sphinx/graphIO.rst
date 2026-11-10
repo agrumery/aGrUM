@@ -6,10 +6,9 @@ class, the names of their nodes, their arcs, edges and marks. They are also pick
 :func:`pyagrum.saveGraph` / :func:`pyagrum.loadGraph` also accept ``.pkl`` files (see
 :func:`pyagrum.availableGraphExts`).
 
-.. autofunction:: pyagrum.saveGraph
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.loadGraph
-
-.. autofunction:: pyagrum.availableGraphExts
-
-.. autofunction:: pyagrum.graphFromGUMString
+   pyagrum.saveGraph
+   pyagrum.loadGraph
+   pyagrum.availableGraphExts
+   pyagrum.graphFromGUMString

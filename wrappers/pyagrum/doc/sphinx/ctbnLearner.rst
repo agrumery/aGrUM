@@ -35,17 +35,17 @@ To learn the graph of a CTBN (ie the dependence between variables) we use the CT
 from :cite:t:`bregoli20a` (and using :cite:t:`nodelam2003learningctbn`).
 The independence test used is based on Fisher and chi2 tests to compare exponential distributions.
 
-.. autoclass:: pyagrum.ctbn.Learner
+.. pyagrum-class:: pyagrum.ctbn.Learner
 
-.. autofunction:: pyagrum.ctbn.readTrajectoryCSV
+.. pyagrum-functions::
 
-.. autofunction:: pyagrum.ctbn.CTBNFromData
+   pyagrum.ctbn.readTrajectoryCSV
+   pyagrum.ctbn.CTBNFromData
+   pyagrum.ctbn.computeCIMFromStats
 
-.. autofunction:: pyagrum.ctbn.computeCIMFromStats
+.. pyagrum-class:: pyagrum.ctbn.Trajectory
 
-.. autoclass:: pyagrum.ctbn.Trajectory
-
-.. autoclass:: pyagrum.ctbn.Stats
+.. pyagrum-class:: pyagrum.ctbn.Stats
 
 .. automodule:: pyagrum.ctbn.StatsIndepTest
     :members:

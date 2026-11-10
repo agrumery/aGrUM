@@ -5,4 +5,4 @@ Completed PDAG (CPDAG)
     :align: center
     :alt: a CPDAG
 
-.. autoclass:: pyagrum.CPDAG
+.. pyagrum-class:: pyagrum.CPDAG

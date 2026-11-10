@@ -1,6 +1,6 @@
 Inference on mixtures
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pyagrum.bnmixture.BNMixtureInference
+.. pyagrum-class:: pyagrum.bnmixture.BNMixtureInference
 
-.. autoclass:: pyagrum.bnmixture.BootstrapMixtureInference
+.. pyagrum-class:: pyagrum.bnmixture.BootstrapMixtureInference

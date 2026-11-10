@@ -35,4 +35,4 @@ the computations. Finally, the Bayesian networks can be learnt from data.
    :doc:`BNTools`
       Utility tools: comparison, information theory, random generation, etc.
 
-.. autoclass:: pyagrum.BayesNet
+.. pyagrum-class:: pyagrum.BayesNet

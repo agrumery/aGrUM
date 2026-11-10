@@ -5,5 +5,5 @@ Inference for Influence Diagram
     :align: center
     :alt: an inference in an influence diagram
 
-.. autoclass:: pyagrum.ShaferShenoyLIMIDInference
+.. pyagrum-class:: pyagrum.ShaferShenoyLIMIDInference
 			:members:
