@@ -351,18 +351,6 @@ Computes the vertices of each credal set according to their interval definition 
 Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
 "
 
-%feature("docstring") gum::credal::CredalNet::intervalToCredalWithFiles
-"
-Warnings
---------
-Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).
-
-
-Computes the vertices of each credal set according to their interval definition (uses lrs).
-
-Use this method when using a single BayesNet storing counts of events.
-"
-
 %feature("docstring") gum::credal::CredalNet::isSeparatelySpecified
 "
 Returns

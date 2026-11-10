@@ -120,6 +120,8 @@
     - Same look for `PDAG`, `ChainGraph`, `CPDAG`, `MPDAG` and `EssentialGraph` in DOT: clusters for the chain
       components (of a `ChainGraph` and a `CPDAG`), compelled arcs colored; new keys `dot.chainComponentBgColor` and
       `dot.compelledArcColor` (formerly hard-coded); `CPDAG.toDot` and `MPDAG.toDot` accept `DotOptions`.
+    - `CredalNet::intervalToCredalWithFiles` (deprecated since 2013, it wrote lrs files in the current directory and
+      could crash) is removed: use `intervalToCredal`, which gives the same credal sets.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
@@ -156,6 +158,26 @@
       saved but not read).
     - `EMHistory()` could have one value less than `EMnbrIterations()` when EM stopped on consecutive decreases of the
       log-likelihood or on the time limit: plotting one against the other could fail at random.
+    - `CNLoopyPropagation` with modalities (`insertModals`, `insertModalsFile`): `makeInference` could raise `NotFound`
+      (the option of storing the vertices of the credal sets was not initialized) and `dynamicExpMin`/`dynamicExpMax`
+      raised `OperationNotAllowed` (the dynamic expectations were never computed).
+    - Sampling inferences (`MonteCarloSampling`, `WeightedSampling`, `ImportanceSampling`, `GibbsSampling` and their
+      loopy versions): with explicit targets, `makeInference` raised `NotFound`; after a change of the evidence, the
+      sampling still used the former evidence (`ImportanceSampling` never stopped, hence `evidenceImpact` too).
+    - `ctbn.ForwardSamplingInference.makeParallelInference` raised `PicklingError` (and the results of the child
+      processes were lost): it now samples in parallel processes, returns the number of runs of each sampling and gives
+      the same result as `averageInference`. The forward sampling of CTBN and `ctbn.randomCTBN` are reproducible
+      after `initRandom` (their draws did not use the generator of pyAgrum); `randomCTBN` with one variable (the
+      default) raised `ValueError`.
+    - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
+      mixture learners (without argument, the learner copies the state set by the `use...` methods).
+    - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn
+      in the current figure, without live update.
+    - Python listeners (`addStructureListener`, `PythonApproximationListener`, listeners of the database
+      generators and of the loaders): an exception raised by a callback was left set, so that the next calls to
+      Python failed with `SystemError`; it is now reported by `sys.unraisablehook`. A non-callable callback raises
+      `InvalidArgument` (it was stored anyway), the former callback is released when it is replaced, the node ids
+      and the steps are given as 64-bit integers on Windows too, and the results of the callbacks are released.
 
 ## Changelog for 3.3.2
 

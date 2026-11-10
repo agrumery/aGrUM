@@ -94,6 +94,9 @@ def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -
   """
   Show an animated version of an approximation algorithm.
 
+  In a notebook, the figure is updated at each step of the algorithm. Elsewhere, the curve is drawn in the current
+  matplotlib figure, without live update.
+
   Parameters
   ----------
   apsc: pyagrum.ApproximationScheme
@@ -104,7 +107,12 @@ def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -
   f = plt.gcf()
   # a display_id lets us update the figure in place instead of clearing and
   # redisplaying it on every progress step, which avoids a flickering effect
+  # (outside an IPython kernel, there is no display handle)
   display_handle = IPython.display.display(f, display_id=True)
+
+  def refresh():
+    if display_handle is not None:
+      display_handle.update(f)
 
   h = pyagrum.PythonApproximationListener(apsc._asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
@@ -112,7 +120,7 @@ def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -
 
   def stopper(x):
     plt.title(f"{x} \n Time : {apsc.currentTime()}s | Iterations : {apsc.nbrIterations()} | Epsilon : {apsc.epsilon()}")
-    display_handle.update(f)
+    refresh()
 
   def progresser(x, y, z):
     if len(apsc.history()) < 10:
@@ -120,7 +128,7 @@ def animApproximationScheme(apsc: pyagrum.ApproximationScheme, scale=np.log10) -
     else:
       plt.xlim(1, len(apsc.history()))
     plt.plot(scale(apsc.history()), "g")
-    display_handle.update(f)
+    refresh()
 
   h.setWhenStop(stopper)
   h.setWhenProgress(progresser)

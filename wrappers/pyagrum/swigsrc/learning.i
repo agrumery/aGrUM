@@ -45,14 +45,8 @@
 %ignore *::useK2(const Sequence< NodeId >&);
 %ignore *::useK2(const std::vector< NodeId >&);
 %ignore *::setForbiddenArcs;
-%ignore *::addForbiddenArc(const gum::Arc& arc);
-%ignore *::eraseForbiddenArc(const gum::Arc& arc);
 %ignore *::setPossibleEdges(const EdgeSet&);
-%ignore *::addPossibleEdge(const gum::Edge& edge);
-%ignore *::erasePossibleEdge(const gum::Edge& edge);
 %ignore *::setMandatoryArcs;
-%ignore *::addMandatoryArc(const gum::Arc& arc);
-%ignore *::eraseMandatoryArc(const gum::Arc& arc);
 %ignore gum::learning::BNLearner::state() const;
 %ignore gum::learning::BNLearner::EM();
 %ignore gum::learning::DAG2BNLearner::approximationScheme();

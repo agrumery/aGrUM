@@ -38,8 +38,6 @@
 #                                                                          #
 ############################################################################
 
-import random
-
 import pyagrum
 from pyagrum.ctbn.CIM import CIM
 from pyagrum.ctbn.CTBN import CTBN
@@ -97,7 +95,7 @@ def randomCIMs(ctbn: CTBN, valueRange: tuple[float, float]) -> None:
       while not I2.end():
         I1.setVals(I2)
         if I1.val(v_i) != I1.val(v_j):
-          draw = random.uniform(valueRange[0], valueRange[1])
+          draw = valueRange[0] + (valueRange[1] - valueRange[0]) * pyagrum.randomProba()
           sumCIM += draw
           ctbn.CIM(v)._pot.set(I1, draw)
         else:
@@ -146,13 +144,13 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
 
   # generating Prufer's sequence and associated tree
   if n == 2:
-    if random.random() > 0.5:
+    if pyagrum.randomProba() > 0.5:
       graph.addArc(0, 1)
     else:
       graph.addArc(1, 0)
 
   elif n > 2:
-    sequence = [random.randint(0, n - 1) for _ in range(n - 2)]
+    sequence = [pyagrum.randomValue(n) for _ in range(n - 2)]
     degree = {id: 1 for id in range(n)}
     par = {id: 0 for id in range(n)}
     for i in range(n - 2):
@@ -181,13 +179,17 @@ def randomCTBN(valueRange: tuple[float, float], n: int = 1, parMax: int = 1, mod
     graph.addEdge(u, v)
 
     # direct it
-    directTree(graph, random.randint(0, n - 1))
+    directTree(graph, pyagrum.randomValue(n))
 
-  # add/remove/invert arcs at random
-
-  for i in range(n * 3):
-    event = random.sample(range(n), k=2)
-    draw = random.randint(1, 3)
+  # add/remove/invert arcs at random (no arc with a single variable)
+  for i in range(n * 3 if n > 1 else 0):
+    # two distinct nodes, uniformly
+    first = pyagrum.randomValue(n)
+    second = pyagrum.randomValue(n - 1)
+    if second >= first:
+      second += 1
+    event = (first, second)
+    draw = 1 + pyagrum.randomValue(3)
 
     if draw == 1:
       if len(graph.parents(event[1])) < parMax:

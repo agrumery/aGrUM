@@ -46,9 +46,12 @@
  * @author Pierre-Henri WUILLEMIN
  */
 #include <Python.h>
+#include <string>
 
 #include <agrum/base/graphicalModels/UGmodel.h>
 #include <agrum/base/graphs/parts/listeners/undiGraphListener.h>
+
+#include "helpersListener.h"
 
 class PythonMRFListener: public gum::UndiGraphListener {
   private:
@@ -58,10 +61,6 @@ class PythonMRFListener: public gum::UndiGraphListener {
   PyObject* _pyWhenEdgeDeleted_;
 
   const gum::VariableNodeMap* _map_;
-
-  void _checkCallable_(PyObject* pyfunc) {
-    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-  }
 
   public:
   PythonMRFListener(const gum::UGmodel* model, const gum::VariableNodeMap* vnm) :
@@ -83,60 +82,51 @@ class PythonMRFListener: public gum::UndiGraphListener {
   virtual void whenNodeAdded(const void* source, gum::NodeId id) {
     // we could check if source==_digraph !!!
     if (_pyWhenNodeAdded_) {
-      PyObject* arglist = Py_BuildValue("(ls)", id, (*_map_)[id].name().c_str());
-      PyObject_Call(_pyWhenNodeAdded_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(
+          _pyWhenNodeAdded_,
+          Py_BuildValue("(ns)", static_cast< Py_ssize_t >(id), (*_map_)[id].name().c_str()));
     }
   }
 
   virtual void whenNodeDeleted(const void*, gum::NodeId id) {
     // we could check if source==_digraph !!!
     if (_pyWhenNodeDeleted_) {
-      PyObject* arglist = Py_BuildValue("(l)", id);
-      PyObject_Call(_pyWhenNodeDeleted_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(_pyWhenNodeDeleted_,
+                                  Py_BuildValue("(n)", static_cast< Py_ssize_t >(id)));
     }
   }
 
   virtual void whenEdgeAdded(const void*, gum::NodeId n1, gum::NodeId n2) {
     // we could check if source==_digraph !!!
     if (_pyWhenEdgeAdded_) {
-      PyObject* arglist = Py_BuildValue("(ll)", n1, n2);
-      PyObject_Call(_pyWhenEdgeAdded_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(
+          _pyWhenEdgeAdded_,
+          Py_BuildValue("(nn)", static_cast< Py_ssize_t >(n1), static_cast< Py_ssize_t >(n2)));
     }
   }
 
   virtual void whenEdgeDeleted(const void*, gum::NodeId n1, gum::NodeId n2) {
     // we could check if source==_digraph !!!
     if (_pyWhenEdgeDeleted_) {
-      PyObject* arglist = Py_BuildValue("(ll)", n1, n2);
-      PyObject_Call(_pyWhenEdgeDeleted_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(
+          _pyWhenEdgeDeleted_,
+          Py_BuildValue("(nn)", static_cast< Py_ssize_t >(n1), static_cast< Py_ssize_t >(n2)));
     }
   }
 
   void setWhenEdgeAdded(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-    _pyWhenEdgeAdded_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenEdgeAdded_, pyfunc);
   }
 
   void setWhenEdgeDeleted(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-    _pyWhenEdgeDeleted_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenEdgeDeleted_, pyfunc);
   }
 
   void setWhenNodeAdded(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-    _pyWhenNodeAdded_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenNodeAdded_, pyfunc);
   }
 
   void setWhenNodeDeleted(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-    _pyWhenNodeDeleted_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenNodeDeleted_, pyfunc);
   }
 };

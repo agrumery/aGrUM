@@ -286,21 +286,6 @@ class CredalNet(object):
         """
         return _cncpp.CredalNet_bnToCredal(self, *args)
 
-    def intervalToCredalWithFiles(self) -> None:
-        r"""
-
-        Warnings
-        --------
-        Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).
-
-
-        Computes the vertices of each credal set according to their interval definition (uses lrs).
-
-        Use this method when using a single BayesNet storing counts of events.
-
-        """
-        return _cncpp.CredalNet_intervalToCredalWithFiles(self)
-
     def intervalToCredal(self) -> None:
         r"""
 

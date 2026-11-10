@@ -481,4 +481,25 @@ namespace gum_tests {
       CHECK(false);
     }
   }
+
+  GUM_TEST(MonteCarloWithExplicitTargetAndEvidence) {
+    // the sampling BN used to drop the nodes barren for the targets, while every node is drawn
+    // (NotFound)
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.2, 0.8});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("B", 1);
+    lazy.makeInference();
+
+    gum::MonteCarloSampling< double > inf(&bn);
+    inf.setEpsilon(1e-3);
+    inf.setVerbosity(false);
+    inf.addTarget("A");
+    inf.addEvidence("B", 1);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
+  }
 }   // namespace gum_tests

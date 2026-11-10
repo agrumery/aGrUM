@@ -527,4 +527,64 @@ namespace gum_tests {
     GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
     GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("B"), inf.posterior("B"), 0.05);
   }
+
+  GUM_TEST(ImportanceAfterEvidenceChange) {
+    // the sampling BN was built once for the evidence of the first inference: after a change of
+    // the value of the evidence, the proposal kept the former value and the sampling never ended
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.2, 0.8});
+
+    gum::ImportanceSampling< double > inf(&bn);
+    inf.setEpsilon(1e-3);
+    inf.setVerbosity(false);
+    inf.addEvidence("B", 0);
+    inf.makeInference();
+    inf.chgEvidence("B", 1);
+    inf.makeInference();
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("B", 1);
+    lazy.makeInference();
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
+  }
+
+  GUM_TEST(ImportanceAfterTargetChange) {
+    // the barren nodes were computed for the targets of the first inference: a node added as a
+    // target afterwards was not installed in the sampling BN (NotFound)
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.2, 0.8});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    gum::ImportanceSampling< double > inf(&bn);
+    inf.setEpsilon(1e-3);
+    inf.setVerbosity(false);
+    inf.addTarget("A");
+    inf.addEvidence("B", 1);
+    inf.makeInference();
+    inf.addTarget("C");
+    GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("B", 1);
+    lazy.makeInference();
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("C"), inf.posterior("C"), 0.05);
+  }
+
+  GUM_TEST(ImportanceEvidenceImpact) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.2, 0.8});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    gum::LazyPropagation< double > lazy(&bn);
+    for (const auto& evs: {std::vector< std::string >{"B"}, std::vector< std::string >{"C"}}) {
+      gum::ImportanceSampling< double > inf(&bn);
+      inf.setEpsilon(1e-3);
+      inf.setVerbosity(false);
+      const auto impact = inf.evidenceImpact("A", evs);
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.evidenceImpact("A", evs), impact, 0.05);
+    }
+  }
 }   // namespace gum_tests

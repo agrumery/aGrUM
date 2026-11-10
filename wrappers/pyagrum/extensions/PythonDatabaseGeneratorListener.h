@@ -39,18 +39,17 @@
  ****************************************************************************/
 
 #include <Python.h>
+#include <string>
 
 #include <agrum/base/core/progressNotification.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
+
+#include "helpersListener.h"
 
 class PythonDatabaseGeneratorListener: public gum::ProgressListener {
   private:
   PyObject* _pyWhenProgress_;
   PyObject* _pyWhenStop_;
-
-  void _checkCallable_(PyObject* pyfunc) {
-    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-  }
 
   public:
   explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator< double >& notif) :
@@ -66,35 +65,20 @@ class PythonDatabaseGeneratorListener: public gum::ProgressListener {
 
   void whenProgress(const void* src, const gum::Size step, const double duration) {
     if (_pyWhenProgress_) {
-      PyObject* arglist = Py_BuildValue("(ld)", step, duration);
-      PyObject_Call(_pyWhenProgress_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(_pyWhenProgress_,
+                                  Py_BuildValue("(nd)", static_cast< Py_ssize_t >(step), duration));
     }
   }
 
   void whenStop(const void* src, std::string_view message) {
     if (_pyWhenStop_) {
-      PyObject* arglist = Py_BuildValue("(s)", message.data());
-      PyObject_Call(_pyWhenStop_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(_pyWhenStop_, Py_BuildValue("(s)", std::string(message).c_str()));
     }
   }
 
   void setWhenProgress(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-
-    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
-
-    _pyWhenProgress_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenProgress_, pyfunc);
   }
 
-  void setWhenStop(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-
-    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
-
-    _pyWhenStop_ = pyfunc;
-    Py_INCREF(pyfunc);
-  }
+  void setWhenStop(PyObject* pyfunc) { PyAgrumHelper::setListenerCallback(_pyWhenStop_, pyfunc); }
 };

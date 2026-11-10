@@ -1470,10 +1470,13 @@ namespace gum::credal {
         // test credal sets vertices elim
         // remove with L2U since variables are binary
         // but does the user know that ?
-        _infE_::updateCredalSets_(node,
-                                  vertices[vertex]);   // no redundancy elimination with 2 vertices
+        if (_infE_::storeVertices_)
+          _infE_::updateCredalSets_(node,
+                                    vertices[vertex]);   // no redundancy elimination with 2 vertices
       }
     }
+
+    _infE_::dynamicExpectations_();
   }
 
   template < GUM_Numeric GUM_SCALAR >

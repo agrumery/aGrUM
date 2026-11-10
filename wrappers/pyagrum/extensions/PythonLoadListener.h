@@ -46,8 +46,11 @@
  */
 
 #include <Python.h>
+#include <string>
 
 #include <agrum/base/core/signal/listener.h>
+
+#include "helpersListener.h"
 
 class PythonLoadListener: public gum::Listener {
   private:
@@ -56,9 +59,7 @@ class PythonLoadListener: public gum::Listener {
   public:
   void whenLoading(const void* buffer, int percent) {
     if (_whenLoading_) {
-      PyObject* arglist = Py_BuildValue("(i)", percent);
-      PyObject_Call(_whenLoading_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(_whenLoading_, Py_BuildValue("(i)", percent));
     }
   }
 

@@ -39,9 +39,12 @@
 ############################################################################
 
 import csv
+import os
 from concurrent.futures import ProcessPoolExecutor
+from itertools import repeat
 
-from numpy.random import choice, default_rng
+import numpy as np
+from numpy.random import Generator, default_rng
 from scipy.linalg import expm
 
 import pyagrum
@@ -58,6 +61,20 @@ def _newTensor(var: pyagrum.DiscreteVariable) -> pyagrum.Tensor:
   t = pyagrum.Tensor()
   t.add(var)
   return t
+
+
+def _drawSeed() -> int:
+  # the seeds of the trajectories come from the generator of pyAgrum (see initRandom)
+  return pyagrum.randomValue(2**31 - 1)
+
+
+def _sampleTrajectory(model: CTBN, timeHorizon: float, burnIn: int, seed: int) -> tuple[int, dict[str, np.ndarray]]:
+  # run in a child process by ForwardSamplingInference.makeParallelInference: the posteriors are
+  # given back as arrays (the tensors filled in the child are not shared with the parent)
+  ie = ForwardSamplingInference(model)
+  posteriors = {nod: _newTensor(model.variable(nod)) for nod in model.names()}
+  nbEvents = ie.makeSample(posteriors, timeHorizon, burnIn, default_rng(seed))
+  return nbEvents, {nod: posteriors[nod].toarray() for nod in model.names()}
 
 
 class CTBNInference:
@@ -180,7 +197,13 @@ class ForwardSamplingInference(CTBNInference):
       nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()
     }
 
-  def makeSample(self, posteriors: dict[str, pyagrum.Tensor], timeHorizon: float = 5000, burnIn: int = 100) -> int:
+  def makeSample(
+    self,
+    posteriors: dict[str, pyagrum.Tensor],
+    timeHorizon: float = 5000,
+    burnIn: int = 100,
+    rng: Generator | None = None,
+  ) -> int:
     """
     Fills posteriors using forward sampling.
 
@@ -192,6 +215,9 @@ class ForwardSamplingInference(CTBNInference):
         Duration of the sampling.
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
+    rng : numpy.random.Generator | None
+        The generator used for the draws. By default, a generator seeded by the generator of pyAgrum
+        (the sampling is then reproducible after ``pyagrum.initRandom``).
 
     Returns
     -------
@@ -214,7 +240,7 @@ class ForwardSamplingInference(CTBNInference):
       # initial uniform distribution for each variable
       for nod in self._model.nodes():
         v = self._model.variable(nod)
-        newval = int(choice(range(v.domainSize())))
+        newval = int(rand.choice(v.domainSize()))
         current.chgVal(v.name(), newval)
         posteriors[v.name()][newval] = 1
 
@@ -286,13 +312,13 @@ class ForwardSamplingInference(CTBNInference):
           indice.chgVal(CIM.varJ(v.name()), j)
           probas.append(self._model.CIM(nextEvt)[indice] / somme)
 
-      newval = int(choice(choices, p=probas))
+      newval = int(rand.choice(choices, p=probas))
       current.chgVal(v.name(), newval)
       return v.name()
 
     # start
     current = self._model.completeInstantiation()
-    rand = default_rng()
+    rand = default_rng(_drawSeed()) if rng is None else rng
     nb_events = 0
     indice = self._model.fullInstantiation()
     init(current)  # initialize the starting value of each variable
@@ -363,37 +389,36 @@ class ForwardSamplingInference(CTBNInference):
       self._posteriors[nam].normalize()
     return res
 
-  def makeParallelInference(self, nbTrajectories: int = 5, timeHorizon: float = 5000, burnIn: int = 100):
+  def makeParallelInference(self, nbTrajectories: int = 5, timeHorizon: float = 5000, burnIn: int = 100) -> list[int]:
     """
-    Start a given number of sample and approximate the inference over all the samples.
+    Start ``nbTrajectories`` samplings in parallel processes and approximate the inference over all the samples.
+
+    The result is the same as the one of ``averageInference`` with the same state of the random generator
+    (see ``pyagrum.initRandom``). Starting the processes has a cost: this method pays off for long samplings
+    only. The trajectories are not kept (``trajectory`` is left unchanged).
 
     Parameters
     ----------
     nbTrajectories : int
-        Number of sampling in parallel.
+        Number of samplings in parallel.
     timeHorizon : float
-        Duration of the sampling.
+        Duration of each sampling.
     burnIn : int
-        Number of runs before starting the sampling (to ensure ergodicity).
+        Number of runs before starting each sampling (to ensure ergodicity).
+
+    Returns
+    -------
+    list[int]
+        The number of runs of each sampling.
     """
-    posteriorsList = [
-      {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()} for _ in range(nbTrajectories)
-    ]
-
-    def runMakeSample(task: int):
-      res = self.makeSample(posteriorsList[task], timeHorizon, burnIn)
-      return res
-
-    with ProcessPoolExecutor(max_workers=1000) as executor:
-      future = {executor.submit(runMakeSample, task) for task in range(nbTrajectories)}
-
-    print([f.result() for f in future])
+    seeds = [_drawSeed() for _ in range(nbTrajectories)]
+    with ProcessPoolExecutor(max_workers=min(nbTrajectories, os.cpu_count() or 1)) as executor:
+      results = list(executor.map(_sampleTrajectory, repeat(self._model), repeat(timeHorizon), repeat(burnIn), seeds))
 
     for nam in self._model.names():
-      self._posteriors[nam].fillWith(0)
-      for i in range(nbTrajectories):
-        self._posteriors[nam] += posteriorsList[i][nam]
+      self._posteriors[nam].fillWith(sum(posteriors[nam] for _, posteriors in results).tolist())
       self._posteriors[nam].normalize()
+    return [nbEvents for nbEvents, _ in results]
 
   def averageInference(self, nbTrajectories: int = 5, timeHorizon: float = 5000, burnIn: int = 100):
     """
@@ -412,8 +437,8 @@ class ForwardSamplingInference(CTBNInference):
       {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()} for _ in range(nbTrajectories)
     ]
 
-    for i in range(nbTrajectories):
-      self.makeSample(posteriorsList[i], timeHorizon, burnIn)
+    for i, seed in enumerate([_drawSeed() for _ in range(nbTrajectories)]):
+      self.makeSample(posteriorsList[i], timeHorizon, burnIn, default_rng(seed))
 
     for nam in self._model.names():
       self._posteriors[nam].fillWith(0)

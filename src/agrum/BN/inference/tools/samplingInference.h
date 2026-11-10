@@ -149,16 +149,12 @@ namespace gum {
     /// @}
 
 
-    /// Simplifying the Bayesian network with relevance reasonning to lighten the
-    /// computational charge
+    /// Builds the Bayesian network used for the sampling (the evidence taken into account)
     /**
-     * Sets the reference Bayesian network as a BayesNetFragment after having
-     * eliminated nodes
-     * that are idle for simulation and computation, such as barren or d-separated
-     * nodes.
-     * Eliminates the arcs from evidence nodes to it's children, after setting new
-     * CPT's for them.
-     *
+     * Sets the reference Bayesian network as a BayesNetFragment containing all the nodes (the
+     * samplers draw every node, whatever the targets). Eliminates the arcs from evidence nodes
+     * to their children, after setting new CPTs for them. The fragment is built again at the
+     * next inference after any change of the evidence or of the model.
      */
     virtual void contextualize();
 
@@ -263,6 +259,10 @@ namespace gum {
 
     private:
     BayesNetFragment< GUM_SCALAR >* _samplingBN_;
+
+    /// forgets the contextualized Bayesian network (built for the evidence at the time of the
+    /// contextualization): the next inference contextualizes it again
+    void _discardContextualization_();
   };
 
 

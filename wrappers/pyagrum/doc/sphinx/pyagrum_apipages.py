@@ -60,6 +60,7 @@ subclass (``pyagrum.BayesNet.cpt``) are resolved to its page (``pyagrum.IBayesNe
 import inspect
 import re
 from pathlib import Path
+from types import SimpleNamespace
 
 from docutils import nodes
 from docutils.parsers.rst import directives
@@ -81,6 +82,8 @@ _DIRECTIVES = {"method": "automethod", "property": "autoproperty", "attribute": 
 _TABLES = {"method": "Methods", "property": "Attributes", "attribute": "Attributes"}
 _CITE = re.compile(r"(?<![\w:]):cite:")
 _UNDERLINE = re.compile(r"^\s*([-=~^])\1+\s*$")
+# extract_summary takes the document before Sphinx 9 (the CI builds the doc with Sphinx 8.1), the settings since
+_SUMMARY_TAKES_DOCUMENT = "document" in inspect.signature(extract_summary).parameters
 
 
 def _summary(obj, settings) -> str:
@@ -88,7 +91,8 @@ def _summary(obj, settings) -> str:
   lines = (inspect.getdoc(obj) or "").strip().splitlines()
   if not lines or (len(lines) > 1 and _UNDERLINE.match(lines[1])):
     return ""
-  return " ".join(extract_summary(lines, settings).split())
+  context = SimpleNamespace(settings=settings) if _SUMMARY_TAKES_DOCUMENT else settings
+  return " ".join(extract_summary(lines, context).split())
 
 
 def _example(path: Path) -> list[str]:

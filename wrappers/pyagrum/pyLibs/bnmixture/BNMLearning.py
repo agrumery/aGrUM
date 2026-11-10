@@ -298,9 +298,6 @@ class BNMBootstrapLearner(IMixtureLearner):
     self._template = template
     self._iter = N
 
-  def updateState(self, learner, **kargs):
-    raise NotImplementedError("Use the use... methods instead")
-
   def learnBNM(self):
     """
     Learns a reference BN from the database. Then add bootstrap-generated BNs to a BootstrapMixture object.

@@ -5682,36 +5682,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CredalNet_intervalToCredalWithFiles(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::credal::CredalNet< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CredalNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CredalNet_intervalToCredalWithFiles" "', argument " "1"" of type '" "gum::credal::CredalNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::credal::CredalNet< double > * >(argp1);
-  {
-    try {
-      (arg1)->intervalToCredalWithFiles();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_CredalNet_intervalToCredal(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::credal::CredalNet< double > *arg1 = 0 ;
@@ -10315,18 +10285,6 @@ static PyMethodDef SwigMethods[] = {
 		"    used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)\n"
 		"keepZeroes : bool\n"
 		"    used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept\n"
-		"\n"
-		""},
-	 { "CredalNet_intervalToCredalWithFiles", _wrap_CredalNet_intervalToCredalWithFiles, METH_O, "\n"
-		"\n"
-		"Warnings\n"
-		"--------\n"
-		"Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).\n"
-		"\n"
-		"\n"
-		"Computes the vertices of each credal set according to their interval definition (uses lrs).\n"
-		"\n"
-		"Use this method when using a single BayesNet storing counts of events.\n"
 		"\n"
 		""},
 	 { "CredalNet_intervalToCredal", _wrap_CredalNet_intervalToCredal, METH_O, "\n"

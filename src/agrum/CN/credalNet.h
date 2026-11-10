@@ -345,17 +345,6 @@ namespace gum {
 
 
       /**
-       * @deprecated Use intervalToCredal ( lrsWrapper with no input / output
-       *files needed ).
-       *
-       * Computes the vertices of each credal set according to their interval
-       *definition (uses lrs).
-       *
-       * Use this method when using a single BayesNet storing counts of events.
-       */
-      void intervalToCredalWithFiles();
-
-      /**
        * Computes the vertices of each credal set according to their interval
        *definition (uses lrs).
        *
@@ -589,15 +578,6 @@ namespace gum {
        * computing redundant vertices. */
       GUM_SCALAR _epsRedund_;   // core.epsilonStandard (1e-6 by default), read at construction
 
-      /** @brief Value under which a decimal number is considered to be zero
-       * when
-       * using  _farey_. */
-      GUM_SCALAR _epsF_;   // core.epsilonStandard (1e-6 by default), read at construction
-      /** @brief Highest possible denominator allowed when using  _farey_. A
-       * value too
-       * high may lead to lrs being unable to find vertices. */
-      GUM_SCALAR _denMax_;   // = 1e6; // beware LRS
-
       /** @brief Precision used by  _frac_. */
       GUM_SCALAR _precision_;   // = 1e6; // beware LRS
 
@@ -707,22 +687,6 @@ namespace gum {
        * @param bn_dest The reference to the new copy
        */
       void _bnCopy_(BayesNet< GUM_SCALAR >& bn_dest);
-
-      // void  _H2Vcdd_ ( const std::vector< std::vector< GUM_SCALAR > > & h_rep,
-      // std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
-      /**
-       * @deprecated one should use the LrsWrapper class
-       * Computes the V-representation of a credal set, i.e. it's vertices, from
-       *it's
-       *H-representation, i.e. the hyper-plan inequalities. Uses lrs.
-       *
-       * @param h_rep A constant reference to the H-representation of a credal
-       *set.
-       * @param v_rep A reference to the V-representation of the same credal
-       *set.
-       */
-      void _H2Vlrs_(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
-                    std::vector< std::vector< GUM_SCALAR > >&       v_rep) const;
     };   // CredalNet
 
 

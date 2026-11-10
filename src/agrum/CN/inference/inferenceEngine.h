@@ -137,11 +137,11 @@ namespace gum {
       /** @brief \c True if credal sets vertices are stored, \c False otherwise.
        * \c
        * False by default. */
-      bool storeVertices_;
+      bool storeVertices_ = false;
       /** @brief \c True if using repetitive independence ( dynamic network only
        * ),
        * \c False otherwise. \c False by default. */
-      bool repetitiveInd_;
+      bool repetitiveInd_ = false;
       /** @brief Iterations limit stopping rule used by some algorithms such as
        * CNMonteCarloSampling. The algorithms stops if no changes occured within
        * 1000
@@ -151,7 +151,7 @@ namespace gum {
        * each
        * modality, \c False otherwise. Not all algorithms offers this option. \c
        * False by default. */
-      bool storeBNOpt_;
+      bool storeBNOpt_ = false;
 
       /** @brief Object used to efficiently store optimal bayes net during
        * inference,

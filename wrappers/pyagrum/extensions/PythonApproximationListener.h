@@ -39,19 +39,18 @@
  ****************************************************************************/
 
 #include <Python.h>
+#include <string>
 
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/core/approximations/IApproximationSchemeConfiguration.h>
 
+#include "helpersListener.h"
+
 class PythonApproximationListener: public gum::ApproximationSchemeListener {
   private:
   PyObject* _pyWhenProgress_;
   PyObject* _pyWhenStop_;
-
-  void _checkCallable_(PyObject* pyfunc) {
-    if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!"); }
-  }
 
   public:
   PythonApproximationListener(gum::IApproximationSchemeConfiguration& algo) :
@@ -70,35 +69,21 @@ class PythonApproximationListener: public gum::ApproximationSchemeListener {
                     const double    error,
                     const double    duration) {
     if (_pyWhenProgress_) {
-      PyObject* arglist = Py_BuildValue("(ldd)", step, error, duration);
-      PyObject_Call(_pyWhenProgress_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(
+          _pyWhenProgress_,
+          Py_BuildValue("(ndd)", static_cast< Py_ssize_t >(step), error, duration));
     }
   }
 
   void whenStop(const void* src, std::string_view message) {
     if (_pyWhenStop_) {
-      PyObject* arglist = Py_BuildValue("(s)", message.data());
-      PyObject_Call(_pyWhenStop_, arglist, NULL);
-      Py_DECREF(arglist);
+      PyAgrumHelper::callListener(_pyWhenStop_, Py_BuildValue("(s)", std::string(message).c_str()));
     }
   }
 
   void setWhenProgress(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-
-    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
-
-    _pyWhenProgress_ = pyfunc;
-    Py_INCREF(pyfunc);
+    PyAgrumHelper::setListenerCallback(_pyWhenProgress_, pyfunc);
   }
 
-  void setWhenStop(PyObject* pyfunc) {
-    _checkCallable_(pyfunc);
-
-    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
-
-    _pyWhenStop_ = pyfunc;
-    Py_INCREF(pyfunc);
-  }
+  void setWhenStop(PyObject* pyfunc) { PyAgrumHelper::setListenerCallback(_pyWhenStop_, pyfunc); }
 };

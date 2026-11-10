@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import sys
 import unittest
 
 import pyagrum as gum
@@ -177,7 +178,58 @@ class TestOtherModelsListeners(pyAgrumTestCase):
       self.assertFalse(hasattr(model, "_listeners"))
 
 
+class TestListenerCallbacks(pyAgrumTestCase):
+  # an exception raised by a callback cannot go through the C++ code which notified the listener: it is
+  # reported by sys.unraisablehook and must not leave a Python exception set (SystemError afterwards)
+  def setUp(self):
+    self.reported = []
+    self._hook = sys.unraisablehook
+    sys.unraisablehook = lambda unraisable: self.reported.append(unraisable.exc_type)
+
+  def tearDown(self):
+    sys.unraisablehook = self._hook
+
+  @staticmethod
+  def _raise(*args):
+    raise ValueError("raised by the callback")
+
+  def testRaisingStructureCallback(self):
+    bn = gum.BayesNet()
+    bn.addStructureListener(whenNodeAdded=self._raise)
+    bn.add(gum.LabelizedVariable("a", "a", 2))
+    bn.add(gum.LabelizedVariable("b", "b", 2))
+    self.assertEqual(bn.size(), 2)
+    self.assertEqual(self.reported, [ValueError, ValueError])
+
+  def testRaisingApproximationCallback(self):
+    ie = gum.GibbsSampling(gum.fastBN("A->B->C"))
+    # no stop on epsilon: the progress is notified every 100 iterations
+    ie.setMaxIter(1000)
+    ie.setEpsilon(1e-9)
+    ie.setMinEpsilonRate(1e-12)
+    ie.setBurnIn(10)
+    ie.setVerbosity(True)
+    messages = []
+    listener = gum.PythonApproximationListener(ie._asIApproximationSchemeConfiguration())
+    listener.setWhenProgress(self._raise)
+    listener.setWhenStop(messages.append)
+    ie.listener = listener
+    ie.makeInference()
+    self.assertEqual(messages, [ie.messageApproximationScheme()])
+    self.assertGreater(len(self.reported), 0)
+    self.assertTrue(all(exc is ValueError for exc in self.reported))
+
+  def testNonCallableIsRefused(self):
+    ie = gum.GibbsSampling(gum.fastBN("A->B"))
+    listener = gum.PythonApproximationListener(ie._asIApproximationSchemeConfiguration())
+    with self.assertRaises(gum.InvalidArgument):
+      listener.setWhenStop(42)
+    with self.assertRaises(gum.InvalidArgument):
+      gum.BayesNet().addStructureListener(whenNodeAdded=42)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestMessagesSetting)
 addTests(ts, TestListeners)
 addTests(ts, TestOtherModelsListeners)
+addTests(ts, TestListenerCallbacks)

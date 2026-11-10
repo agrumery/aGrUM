@@ -49,8 +49,6 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
-#include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/BN/algorithms/dSeparationAlgorithm.h>
 #include <agrum/BN/BayesNetFragment.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
@@ -68,10 +66,15 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::~SamplingInference() {
     GUM_DESTRUCTOR(SamplingInference);
-    if (_samplingBN_ != nullptr) {
-      if (isContextualized) {   // otherwise  _samplingBN_==&BN()
-        delete _samplingBN_;
-      }
+    _discardContextualization_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void SamplingInference< GUM_SCALAR >::_discardContextualization_() {
+    if (isContextualized) {   // otherwise  _samplingBN_==nullptr
+      delete _samplingBN_;
+      _samplingBN_     = nullptr;
+      isContextualized = false;
     }
   }
 
@@ -114,33 +117,13 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::contextualize() {
-    // Finding Barren nodes
+    _discardContextualization_();
 
-    BarrenNodesFinder barr_nodes = BarrenNodesFinder(&this->BN().internalDag());
-    barr_nodes.setTargets(&this->targets());
-    barr_nodes.setEvidence(&this->hardEvidenceNodes());
-    const NodeSet& barren = barr_nodes.barrenNodes();
-
-    // creating BN fragment
+    // every node is kept, whatever the targets: the samplers draw all the nodes of the BN
     _samplingBN_ = new BayesNetFragment< GUM_SCALAR >(this->BN());
-    for (const auto elmt: this->BN().internalDag().asNodeSet() - barren)
-      _samplingBN_->installNode(elmt);
+    for (const auto node: this->BN().nodes())
+      _samplingBN_->installNode(node);
 
-    // D-separated nodes
-
-    dSeparationAlgorithm dsep = gum::dSeparationAlgorithm();
-    NodeSet              requisite;
-    dsep.requisiteNodes(this->BN().internalDag(),
-                        this->BN().nodes().asNodeSet(),   // no target for approximateInference
-                        this->hardEvidenceNodes(),
-                        this->softEvidenceNodes(),        // should be empty
-                        requisite);
-    requisite += this->hardEvidenceNodes();
-
-    auto nonRequisite = this->BN().internalDag().asNodeSet() - requisite;
-
-    for (const auto elmt: nonRequisite)
-      _samplingBN_->uninstallNode(elmt);
     for (const auto hard: this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
@@ -226,13 +209,18 @@ namespace gum {
     if (!isHardEvidence) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence")
     }
+    _discardContextualization_();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id, bool isHardEvidence) {}
+  void SamplingInference< GUM_SCALAR >::onEvidenceErased_(const NodeId id, bool isHardEvidence) {
+    _discardContextualization_();
+  }
 
   template < GUM_Numeric GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::onAllEvidenceErased_(bool contains_hard_evidence) {}
+  void SamplingInference< GUM_SCALAR >::onAllEvidenceErased_(bool contains_hard_evidence) {
+    _discardContextualization_();
+  }
 
   template < GUM_Numeric GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::onEvidenceChanged_(const NodeId id,
@@ -240,10 +228,13 @@ namespace gum {
     if (hasChangedSoftHard) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence")
     }
+    _discardContextualization_();
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
+  void SamplingInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {
+    _discardContextualization_();
+  }
 
   template < GUM_Numeric GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::updateOutdatedStructure_() {}

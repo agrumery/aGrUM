@@ -162,6 +162,24 @@ class TestCtbnModel(pyAgrumTestCase):
     finally:
       gum.config.pop()
 
+  def testRandomCTBNIsReproducible(self):
+    # randomCTBN draws with the generator of pyAgrum; the seed comes from the generator, so that the run stays
+    # driven by core.randomSeed
+    seed = gum.randomValue(2**31 - 1)
+    models = []
+    for _ in range(2):
+      gum.initRandom(seed)
+      models.append(ct.randomCTBN((0.5, 1.5), n=5, parMax=2, modal=3))
+    first, second = models
+    self.assertEqual(sorted(first.arcs()), sorted(second.arcs()))
+    for name in first.names():
+      self.assertEqual(first.CIM(name).asTensor().tolist(), second.CIM(name).asTensor().tolist())
+
+  def testRandomCTBNWithOneVariable(self):
+    ctbn = ct.randomCTBN((0.5, 1.5))
+    self.assertEqual(ctbn.names(), ["V1"])
+    self.assertEqual(len(ctbn.arcs()), 0)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCtbnModel)

@@ -175,13 +175,26 @@ class TestMixtureLearning(pyAgrumTestCase):
 
   # --- BNMBootstrapLearner ---
 
-  def testBNMBootstrapLearner_updateState_raises(self):
+  def testBNMBootstrapLearner_updateState_noKwargs_copiesRefLearner(self):
+    bn_ref = gum.fastBN("A->C<-B")
+    df = self._gen_df(bn_ref, n=50)
+    boot_learner = BNM.BNMBootstrapLearner(df, template=bn_ref)
+    boot_learner.useGreedyHillClimbing()
+    learner = gum.BNLearner(df)
+    learner.useMIIC()
+    self.assertTrue(learner.isConstraintBased())
+    boot_learner.updateState(learner)
+    self.assertFalse(learner.isConstraintBased())
+
+  def testBNMBootstrapLearner_updateState_withKwargs(self):
     bn_ref = gum.fastBN("A->C<-B")
     df = self._gen_df(bn_ref, n=50)
     boot_learner = BNM.BNMBootstrapLearner(df, template=bn_ref)
     learner = gum.BNLearner(df)
-    with self.assertRaises(NotImplementedError):
-      boot_learner.updateState(learner)
+    learner.useGreedyHillClimbing()
+    self.assertFalse(learner.isConstraintBased())
+    boot_learner.updateState(learner, algorithm="MIIC", correction="NML")
+    self.assertTrue(learner.isConstraintBased())
 
   def testBNMBootstrapLearner_learnBNM_basic(self):
     bn_ref = gum.fastBN("A->C<-B")

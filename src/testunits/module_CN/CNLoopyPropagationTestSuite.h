@@ -388,4 +388,34 @@ namespace gum_tests {
     clearCNet();
   }
 
+  GUM_TEST(L2UDynamicExpectationsWithoutVertices) {
+    // computeExpectations_() used to fill marginalSets_ even when the vertices are not stored
+    // (NotFound) and never computed the dynamic expectations (OperationNotAllowed)
+    initCNet();
+
+    gum::credal::CNLoopyPropagation< double > lp(*cn);
+
+    std::map< std::string, std::vector< double > > modals;
+    for (const auto node: cn->current_bn().nodes())
+      modals[cn->current_bn().variable(node).name()] = {0.0, 10.0};
+    lp.insertModals(modals);
+
+    GUM_CHECK_ASSERT_THROWS_NOTHING(lp.makeInference());
+
+    for (const auto node: cn->current_bn().nodes()) {
+      const auto& name = cn->current_bn().variable(node).name();
+      const auto  emin = lp.dynamicExpMin(name);
+      const auto  emax = lp.dynamicExpMax(name);
+      CHECK((emin.size()) == (static_cast< std::size_t >(1)));
+      CHECK((emax.size()) == (static_cast< std::size_t >(1)));
+      CHECK((emin[0]) == doctest::Approx(lp.expectationMin(name)));
+      CHECK((emax[0]) == doctest::Approx(lp.expectationMax(name)));
+      CHECK(emin[0] <= emax[0]);
+      CHECK(emin[0] >= 0.0);
+      CHECK(emax[0] <= 10.0);
+    }
+
+    clearCNet();
+  }
+
 }   // namespace gum_tests
