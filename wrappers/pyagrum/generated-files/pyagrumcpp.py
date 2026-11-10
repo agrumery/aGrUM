@@ -1089,10 +1089,35 @@ def randomProba() -> float:
     Returns
     -------
     float
-        a random number between 0 and 1 included (i.e. a proba).
+        a random number in [0, 1) (i.e. a proba).
 
     """
     return _pyagrumcpp.randomProba()
+
+def randomGamma(shape: float) -> float:
+    r"""
+
+    Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.
+
+    For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.
+
+    Parameters
+    ----------
+    shape : float
+      the shape of the distribution (> 0)
+
+    Returns
+    -------
+    float
+      a value of the Gamma distribution (its mean is `shape`).
+
+    Raises
+    ------
+    pyagrum.OutOfBounds
+      If `shape` is not > 0.
+
+    """
+    return _pyagrumcpp.randomGamma(shape)
 
 def randomGeneratorSeed() -> int:
     r"""
@@ -1114,6 +1139,8 @@ def initRandom(seed: int=0) -> None:
     Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
     This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
+
+    A given seed gives the same draws on every platform.
 
     Parameters
     ----------
@@ -15622,6 +15649,9 @@ def getNumberOfLogicalProcessors() -> int:
     """
     return _pyagrumcpp.getNumberOfLogicalProcessors()
 
+def _randomPermutation(n: int) -> object:
+    return _pyagrumcpp._randomPermutation(n)
+
 import warnings
 
 # configuration object: the aGrUM library has already loaded its defaults and the pyagrum.ini of the
@@ -15630,6 +15660,21 @@ import warnings
 config = _Configuration._instance()
 # warnings for the notices queued when the library loaded pyagrum.ini
 config._emitNotices()
+
+
+def randomShuffle(seq) -> None:
+  """Shuffle a sequence in place with the random generator of pyAgrum.
+
+  For a given seed (see ``pyagrum.initRandom``), the order is the same on every platform, and the same as the
+  shuffles of pyAgrum (such as the random order of the variables of ``BNDatabaseGenerator``).
+
+  Parameters
+  ----------
+  seq : list
+    a mutable sequence (supporting ``len``, indexing and slice assignment)
+  """
+  permutation = _randomPermutation(len(seq))
+  seq[:] = [seq[i] for i in permutation]
 
 
 def log2(p):
@@ -16251,7 +16296,7 @@ class BNGenerator(object):
         n_nodes : int
             the number of nodes (default=10)
         n_arcs : int
-            the number of arcs (default=15)
+            the maximum number of arcs (default=15)
         n_nodmax : int
             the max number of modalities for a node (default=4)
 
@@ -20537,6 +20582,18 @@ class LazyPropagation(object):
         """
         return _pyagrumcpp.LazyPropagation_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LazyPropagation_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -21402,6 +21459,18 @@ class ShaferShenoyInference(object):
 
         """
         return _pyagrumcpp.ShaferShenoyInference_eraseAllEvidence(self)
+
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.ShaferShenoyInference_invalidateTensors(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""
@@ -22301,6 +22370,18 @@ class VariableElimination(object):
         """
         return _pyagrumcpp.VariableElimination_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.VariableElimination_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -23142,6 +23223,18 @@ class GibbsSampling(object):
         """
         return _pyagrumcpp.GibbsSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.GibbsSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -23961,6 +24054,18 @@ class ImportanceSampling(object):
         """
         return _pyagrumcpp.ImportanceSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -24736,6 +24841,18 @@ class WeightedSampling(object):
         """
         return _pyagrumcpp.WeightedSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.WeightedSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -25510,6 +25627,18 @@ class MonteCarloSampling(object):
 
         """
         return _pyagrumcpp.MonteCarloSampling_eraseAllEvidence(self)
+
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_invalidateTensors(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""
@@ -26318,6 +26447,18 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrumcpp.LoopyImportanceSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -27125,6 +27266,18 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrumcpp.LoopyWeightedSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -27931,6 +28084,18 @@ class LoopyGibbsSampling(GibbsSampling):
 
         """
         return _pyagrumcpp.LoopyGibbsSampling_eraseAllEvidence(self)
+
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_invalidateTensors(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""
@@ -28805,6 +28970,18 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 
@@ -29579,6 +29756,18 @@ class LoopyBeliefPropagation(object):
 
         """
         return _pyagrumcpp.LoopyBeliefPropagation_eraseAllEvidence(self)
+
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_invalidateTensors(self)
 
     def eraseEvidence(self, *args) -> None:
         r"""

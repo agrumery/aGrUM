@@ -45,6 +45,7 @@
 #include <string>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/threads/threads.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -329,6 +330,37 @@ namespace gum_tests {
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
+    clearCNet();
+  }
+
+  // each sample has its own seed: the same samples, hence the same result, whatever the number of
+  // threads (a seed gives the same result on every machine; the inference engine of each thread may
+  // round the posteriors differently)
+  GUM_TEST(CNMonteCarloSamplingDoesNotDependOnTheNumberOfThreads) {
+    initCNet();
+    const auto runSeed = gum::randomGeneratorSeed();
+    const auto seed
+        = static_cast< unsigned int >(gum::randomValue(1u << 30)) + 1;   // not 0 (clock)
+
+    std::vector< gum::Tensor< double > > results[2];
+    for (int run = 0; run < 2; ++run) {
+      gum::initRandom(seed);
+      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+      mcs.setNumberOfThreads(run == 0 ? 1 : 4);
+      mcs.setMaxTime(60);   // stop on epsilon, never on the time
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
+      for (const auto node: cn->current_bn().nodes()) {
+        results[run].push_back(mcs.marginalMin(node));
+        results[run].push_back(mcs.marginalMax(node));
+      }
+    }
+    REQUIRE_EQ(results[0].size(), results[1].size());
+    for (std::size_t k = 0; k < results[0].size(); ++k)
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(results[0][k],
+                                                    results[1][k],
+                                                    gum::config().epsilonStandard());
+
+    gum::initRandom(runSeed);
     clearCNet();
   }
 

@@ -524,6 +524,19 @@ namespace gum {
     // compute the roots of  _JT_'s connected components
     _computeJoinTreeRoots_();
 
+    // here, we determine whether we should use schedules during the inference.
+    // the rule is: if the sum of the domain sizes of the cliques is greater
+    // than a threshold, use schedules
+    _use_schedules_ = (overall_size > _schedule_threshold_);
+
+    // compute all the tensors of the new junction tree
+    _initializeJTTensors_();
+    _is_new_jt_needed_ = false;
+  }
+
+  /// (re)compute all the tensors of the junction tree from the current factors and evidence
+  template < GUM_Numeric GUM_SCALAR >
+  void ShaferShenoyMRFInference< GUM_SCALAR >::_initializeJTTensors_() {
     // remove all the tensors stored into the cliques. Note that these include
     // the factors resulting from the projections of hard evidence as well as the
     // CPTs of the soft evidence
@@ -581,11 +594,6 @@ namespace gum {
       delete pot.second;
     _joint_target_posteriors_.clear();
 
-    // here, we determine whether we should use schedules during the inference.
-    // the rule is: if the sum of the domain sizes of the cliques is greater
-    // than a threshold, use schedules
-    _use_schedules_ = (overall_size > _schedule_threshold_);
-
     // we shall now add all the tensors of the soft evidence to the cliques
     const NodeProperty< const Tensor< GUM_SCALAR >* >& evidence = this->evidence();
     for (const auto node: this->softEvidenceNodes()) {
@@ -610,7 +618,7 @@ namespace gum {
 
     // indicate that the data structures are up to date.
     _evidence_changes_.clear();
-    _is_new_jt_needed_ = false;
+    _are_tensors_outdated_ = false;
   }
 
   /// put all the CPTs into the cliques when creating the JT without using a schedule
@@ -854,6 +862,10 @@ namespace gum {
     // check if a new JT is really needed. If so, create it
     if (_isNewJTNeeded_()) {
       _createNewJT_();
+    } else if (_are_tensors_outdated_) {
+      // the junction tree is still appropriate but the values of the factors changed: all
+      // its tensors, messages and posteriors are computed again
+      _initializeJTTensors_();
     } else {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should
@@ -1403,6 +1415,16 @@ namespace gum {
   void ShaferShenoyMRFInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* mn) {
     JointTargetedMRFInference< GUM_SCALAR >::onModelChanged_(mn);
     _partition_function_.reset();
+  }
+
+  /// fired by invalidateTensors()
+  template < GUM_Numeric GUM_SCALAR >
+  void ShaferShenoyMRFInference< GUM_SCALAR >::onTensorsChanged_() {
+    // the products of the clique tensors, the factors projected on hard evidence, the messages,
+    // the constants and the partition function are computed from the former values of the factors
+    _partition_function_.reset();
+    _are_tensors_outdated_ = true;
+    this->setOutdatedStructureState_();
   }
 
   // performs a whole inference

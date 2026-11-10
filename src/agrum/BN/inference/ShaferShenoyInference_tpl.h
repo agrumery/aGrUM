@@ -343,6 +343,15 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
+  /// fired by invalidateTensors()
+  template < GUM_Numeric GUM_SCALAR >
+  void ShaferShenoyInference< GUM_SCALAR >::onTensorsChanged_() {
+    // the products of the clique tensors, the CPTs projected on hard evidence, the messages and
+    // the constants are computed from the former values of the CPTs
+    _are_tensors_outdated_ = true;
+    this->setOutdatedStructureState_();
+  }
+
   /// fired after a new target is inserted
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyInference< GUM_SCALAR >::onMarginalTargetAdded_(const NodeId id) {
@@ -742,6 +751,14 @@ namespace gum {
     // compute the roots of  _JT_'s connected components
     _computeJoinTreeRoots_();
 
+    // compute all the tensors of the new junction tree
+    _initializeJTTensors_();
+    _is_new_jt_needed_ = false;
+  }
+
+  /// (re)compute all the tensors of the junction tree from the current CPTs and evidence
+  template < GUM_Numeric GUM_SCALAR >
+  void ShaferShenoyInference< GUM_SCALAR >::_initializeJTTensors_() {
     // remove all the tensors stored into the cliques. Note that these include
     // the CPTs resulting from the projections of hard evidence as well as the
     // CPTs of the soft evidence
@@ -835,7 +852,7 @@ namespace gum {
 
     // indicate that the data structures are up to date.
     _evidence_changes_.clear();
-    _is_new_jt_needed_ = false;
+    _are_tensors_outdated_ = false;
   }
 
   /// put all the CPTs into the cliques when creating the JT without using a schedule
@@ -1082,6 +1099,10 @@ namespace gum {
     // check if a new JT is really needed. If so, create it
     if (_isNewJTNeeded_()) {
       _createNewJT_();
+    } else if (_are_tensors_outdated_) {
+      // the junction tree is still appropriate but the values of the CPTs changed: all
+      // its tensors, messages and posteriors are computed again
+      _initializeJTTensors_();
     } else {
       // here, we can answer the next queries without reconstructing all the
       // junction tree. All we need to do is to indicate that we should

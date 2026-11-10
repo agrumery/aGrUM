@@ -45,6 +45,7 @@
 #include <string>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
@@ -701,5 +702,29 @@ namespace gum_tests {
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior(node),
                                                     lbp.posterior(node),
                                                     1e-6);
+  }
+
+  // a CPT changed in place is used by the next inference after invalidateTensors()
+  GUM_TEST(InvalidateTensors) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.2, 0.8});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.3, 0.7});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    gum::LoopyBeliefPropagation< double > ie(&bn);
+    ie.setVerbosity(false);
+    ie.makeInference();
+    (void)ie.posterior("B");
+
+    const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.7, 0.3});
+    ie.invalidateTensors();
+    ie.makeInference();
+    gum::Tensor< double > expected;
+    expected.add(bn.variable("B"));
+    expected.fillWith({0.7 * 0.9 + 0.3 * 0.3, 0.7 * 0.1 + 0.3 * 0.7});
+    // a polytree: loopy belief propagation is exact
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior("B"),
+                                                  expected,
+                                                  gum::config().epsilonStandard());
   }
 }   // namespace gum_tests

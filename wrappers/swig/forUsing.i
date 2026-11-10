@@ -310,6 +310,10 @@ ADD_MULTIDIMDECORATOR_API(gum::Tensor<double>)
     self->baseclassname::eraseAllEvidence();
   }
 
+  void invalidateTensors() {
+    self->baseclassname::invalidateTensors();
+  }
+
   void eraseEvidence( const NodeId id ) {
     self->baseclassname::eraseEvidence(id);
   }

@@ -237,6 +237,11 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  void SamplingInference< GUM_SCALAR >::onTensorsChanged_() {
+    _discardContextualization_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::updateOutdatedStructure_() {}
 
   template < GUM_Numeric GUM_SCALAR >

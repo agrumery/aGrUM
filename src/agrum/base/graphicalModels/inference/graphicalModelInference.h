@@ -198,6 +198,18 @@ namespace gum {
     /// clears all the data structures allocated for the last inference
     virtual void clear();
 
+    /**
+     * @brief Tells the engine that the values of tensors of its model changed in place.
+     *
+     * The engine is notified of the changes of the structure of its model and of the evidence, but
+     * not of the values of the tensors (CPTs, factors, utilities) modified in place, e.g. by
+     * `const_cast< Tensor& >(bn.cpt(node)).fillWith(...)`: it may keep messages or posteriors
+     * computed from the former values. After this call, the next inference uses the current values.
+     *
+     * @post the inference is neither Ready nor Done.
+     */
+    void invalidateTensors();
+
     /// returns the state of the inference engine
     virtual StateOfInference state() const noexcept final;
     /// @}
@@ -477,6 +489,15 @@ namespace gum {
 
     /// fired after a new Bayes net has been assigned to the engine
     virtual void onModelChanged_(const GraphicalModel* model) = 0;
+
+    /**
+     * @brief fired by invalidateTensors(): the values of tensors of the model changed in place
+     *
+     * By default, nothing: enough for the engines which compute everything from the tensors of the
+     * model at each inference. The engines which keep data computed from these values (messages,
+     * copies of tensors) discard them here.
+     */
+    virtual void onTensorsChanged_();
 
     /// prepares inference when the latter is in OutdatedStructure state
     /** Note that the values of evidence are not necessarily

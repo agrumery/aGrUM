@@ -53,6 +53,10 @@
       outputs of `std::mt19937` only, so the values drawn for a given seed changed once. New `randomShuffle` and
       `randomGamma` (used by `Dirichlet`); `randomValue` is unbiased up to `max` above 2^32; `randomProba` is in [0, 1).
       The PRM generators no longer use `std::rand` (they ignored `initRandom`).
+    - New `invalidateTensors()` for the inferences of Bayesian networks, Markov random fields and influence
+      diagrams (also in pyAgrum): it tells the inference that the values of tensors of its model changed in place
+      (`cpt(...).fillWith(...)`), which it is not notified of. `LazyPropagation`, `ShaferShenoyInference` and
+      `ShaferShenoyMRFInference` kept messages computed from the former values, `ImportanceSampling` its proposal.
     - New `MarkedGraph` (edges with a mark at each end: tail, arrowhead or circle; adding an existing edge updates its
       marks; directed view `parents`/`children`/`spouses`/`undirectedNeighbours`; `skeleton()`) and
       `fastMarkedGraph` (an edge described twice with different marks raises `InvalidEdge`); `PAG` derives from it
@@ -176,6 +180,10 @@
       the same result as `averageInference`. The forward sampling of CTBN and `ctbn.randomCTBN` are reproducible
       after `initRandom` (their draws did not use the generator of pyAgrum); `randomCTBN` with one variable (the
       default) raised `ValueError`.
+    - `CNMonteCarloSampling` computed wrong bounds: the CPTs of the sampled networks are changed in place and the
+      inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
+      depended on the number of threads (each sample now has its own seed) and the repetitive independence drew
+      concurrently with the shared generator.
     - `UndiGraphListener` and `MixedGraphListener` were not exported from the shared libraries (link error of the
       structure listeners of `MarkovRandomField` with the shared build on Windows).
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other

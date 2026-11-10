@@ -243,6 +243,9 @@ namespace gum {
 
     void onModelChanged_(const GraphicalModel* bn) override;
 
+    /// fired by invalidateTensors(): the sampling fragment is built again
+    void onTensorsChanged_() override;
+
     void updateOutdatedStructure_() override;
 
     void updateOutdatedTensors_() override;

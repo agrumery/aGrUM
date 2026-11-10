@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -498,5 +499,38 @@ namespace gum_tests {
     check();
     GUM_CHECK_ASSERT_THROWS_NOTHING(ie.jointMutualInformation(mn.nodeset({"A", "B"})));
     check();
+  }
+
+  // a factor changed in place is used by the next inference after invalidateTensors()
+  GUM_TEST(InvalidateTensors) {
+    auto mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+    gum::ShaferShenoyMRFInference< double > ie(&mrf);
+    ie.makeInference();
+    (void)ie.posterior("A");
+
+    const auto& factor = mrf.factor({"A", "B"});
+    const_cast< gum::Tensor< double >& >(factor).fillWith({1.0, 2.0, 3.0, 4.0});
+    ie.invalidateTensors();
+    ie.makeInference();
+
+    gum::ShaferShenoyMRFInference< double > fresh(&mrf);
+    fresh.makeInference();
+    const double epsilon = gum::config().epsilonStandard();
+    for (const auto& name: {"A", "B", "C"})
+      GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior(name),
+                                                    fresh.posterior(name),
+                                                    epsilon);
+
+    // with a hard evidence: the factor projected on B=1 changes
+    ie.addEvidence("B", 1);
+    fresh.addEvidence("B", 1);
+    ie.makeInference();
+    (void)ie.posterior("A");
+    const_cast< gum::Tensor< double >& >(factor).fillWith({1.0, 5.0, 1.0, 1.0});
+    ie.invalidateTensors();
+    ie.makeInference();
+    fresh.invalidateTensors();
+    fresh.makeInference();
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior("A"), fresh.posterior("A"), epsilon);
   }
 }   // namespace gum_tests

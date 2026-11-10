@@ -4553,6 +4553,9 @@ SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasEvidence__SWIG_1
 SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__eraseAllEvidence(gum::ShaferShenoyLIMIDInference< double > *self){
     self->gum::ShaferShenoyLIMIDInference<double >::eraseAllEvidence();
   }
+SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__invalidateTensors(gum::ShaferShenoyLIMIDInference< double > *self){
+    self->gum::ShaferShenoyLIMIDInference<double >::invalidateTensors();
+  }
 SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__eraseEvidence__SWIG_0(gum::ShaferShenoyLIMIDInference< double > *self,gum::NodeId const id){
     self->gum::ShaferShenoyLIMIDInference<double >::eraseEvidence(id);
   }
@@ -11797,6 +11800,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_invalidateTensors" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
+  {
+    try {
+      gum_ShaferShenoyLIMIDInference_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
@@ -13143,6 +13176,15 @@ static PyMethodDef SwigMethods[] = {
 	 { "ShaferShenoyLIMIDInference_eraseAllEvidence", _wrap_ShaferShenoyLIMIDInference_eraseAllEvidence, METH_O, "\n"
 		"\n"
 		"Remove all evidence.\n"
+		"\n"
+		""},
+	 { "ShaferShenoyLIMIDInference_invalidateTensors", _wrap_ShaferShenoyLIMIDInference_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``diag.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
 		"\n"
 		""},
 	 { "ShaferShenoyLIMIDInference_eraseEvidence", _wrap_ShaferShenoyLIMIDInference_eraseEvidence, METH_VARARGS, "\n"

@@ -49,7 +49,9 @@
 #ifndef GUM_CN_MONTE_CARLO_SAMPLING_H
 #define GUM_CN_MONTE_CARLO_SAMPLING_H
 
+#include <cstdint>
 #include <limits>
+#include <random>
 #include <thread>
 
 #include <agrum/CN/inference/multipleInferenceEngine.h>

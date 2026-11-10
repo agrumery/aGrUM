@@ -45,6 +45,7 @@
 #include <string>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -586,5 +587,31 @@ namespace gum_tests {
       const auto impact = inf.evidenceImpact("A", evs);
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.evidenceImpact("A", evs), impact, 0.05);
     }
+  }
+
+  // the proposal of ImportanceSampling (copies of the CPTs) follows a CPT changed in place after
+  // invalidateTensors()
+  GUM_TEST(ImportanceInvalidateTensors) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.2, 0.8});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.3, 0.7});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    gum::ImportanceSampling< double > ie(&bn);
+    ie.setEpsilon(1e-3);
+    ie.setVerbosity(false);
+    ie.addEvidence("B", 1);
+    ie.makeInference();
+
+    const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.999, 0.001});
+    ie.invalidateTensors();
+    ie.makeInference();
+
+    gum::LazyPropagation< double > lazy(&bn);
+    lazy.addEvidence("B", 1);
+    lazy.makeInference();
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"),
+                                                  ie.posterior("A"),
+                                                  gum::config().epsilonCoarse() * 5);
   }
 }   // namespace gum_tests

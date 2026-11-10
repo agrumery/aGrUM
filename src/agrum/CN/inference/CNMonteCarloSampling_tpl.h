@@ -95,21 +95,33 @@ namespace gum::credal {
       // dispatch {0,...,psize} among the threads
       const auto ranges = gum::dispatchRangeToThreads(0, psize, (unsigned int)(nb_threads));
 
+      // each sample draws with a generator seeded by (seed of the inference, index of the sample):
+      // the samples, hence the result, do not depend on the number of threads
+      const auto seed        = currentRandomGeneratorValue();
+      Size       firstSample = 0;   // index of the first sample of the current period
+
       // create the function to be executed by the threads
-      auto threadedExec
-          = [this, ranges](const std::size_t this_thread, const std::size_t nb_threads) {
-              const auto& this_range = ranges[this_thread];
-              for (Idx j = this_range.first; j < this_range.second; ++j) {
-                _threadInference_(this_thread);
-                _threadUpdate_(this_thread);
-              }
-            };
+      auto threadedExec = [this, ranges, seed, &firstSample](const std::size_t this_thread,
+                                                             const std::size_t nb_threads) {
+        auto&       generator  = this->generators_[this_thread];
+        const auto& this_range = ranges[this_thread];
+        for (Idx j = this_range.first; j < this_range.second; ++j) {
+          const auto    sample = static_cast< std::uint64_t >(firstSample + j);
+          std::seed_seq sequence{seed,
+                                 static_cast< unsigned int >(sample & 0xFFFFFFFFu),
+                                 static_cast< unsigned int >(sample >> 32)};
+          generator.seed(sequence);
+          _threadInference_(this_thread);
+          _threadUpdate_(this_thread);
+        }
+      };
 
       do {
         eps = 0;
 
         // launch the threads
         ThreadExecutor::execute(nb_threads, threadedExec);
+        firstSample += psize;
 
         this->updateApproximationScheme(int(psize));
 
@@ -157,6 +169,8 @@ namespace gum::credal {
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadInference_(Size tId) {
     _verticesSampling_(tId);
 
+    // the CPTs of the working BN were changed in place
+    this->l_inferenceEngine_[tId]->invalidateTensors();
     this->l_inferenceEngine_[tId]->eraseAllEvidence();
     _insertEvidence_(tId);
     this->l_inferenceEngine_[tId]->makeInference();
@@ -256,7 +270,7 @@ namespace gum::credal {
         Size pconfs = Size((*cpt)[elt.first].size());
 
         for (Size pconf = 0; pconf < pconfs; pconf++) {
-          Size choosen_vertex = randomValue((*cpt)[elt.first][pconf].size());
+          Size choosen_vertex = randomValue(random_generator, (*cpt)[elt.first][pconf].size());
 
           if (_infEs_::storeBNOpt_) { _binaryRep_(sample[elt.first][pconf], choosen_vertex); }
 

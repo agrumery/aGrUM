@@ -44,6 +44,7 @@
 #include <iostream>
 #include <string>
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/multidim/implementations/multiDimArray.h>
 #include <agrum/base/variables/labelizedVariable.h>
 #include <agrum/BN/BayesNet.h>
@@ -2116,5 +2117,64 @@ namespace gum_tests {
       GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS(ie.jointPosterior(bn.nodeset({"X00", "X01", "X06"})),
                                               bn_joint.sumIn(set).normalize());
     } catch (gum::Exception& e) { GUM_SHOWERROR(e); }
+  }
+
+  // a CPT changed in place is used by the next inference after invalidateTensors()
+  template < template < typename > class ENGINE >
+  void checkInvalidateTensors() {
+    const double epsilon = gum::config().epsilonStandard();
+    auto         bn      = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({0.2, 0.8});
+    bn.cpt("B").fillWith({0.9, 0.1, 0.3, 0.7});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+    ENGINE< double > ie(&bn);
+    ie.makeInference();
+    (void)ie.posterior("C");
+
+    // without evidence: P(B) = P(A) . P(B|A)
+    const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.7, 0.3});
+    ie.invalidateTensors();
+    ie.makeInference();
+    gum::Tensor< double > expected;
+    expected.add(bn.variable("B"));
+    expected.fillWith({0.7 * 0.9 + 0.3 * 0.3, 0.7 * 0.1 + 0.3 * 0.7});
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior("B"), expected, epsilon);
+
+    // with a hard evidence on B: the CPT of C projected on B=1 changes
+    ie.addEvidence("B", 1);
+    ie.makeInference();
+    (void)ie.posterior("C");
+    const_cast< gum::Tensor< double >& >(bn.cpt("C")).fillWith({0.6, 0.4, 0.5, 0.5});
+    ie.invalidateTensors();
+    ie.makeInference();
+    gum::Tensor< double > expectedC;
+    expectedC.add(bn.variable("C"));
+    expectedC.fillWith({0.5, 0.5});
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior("C"), expectedC, epsilon);
+
+    // with a soft evidence on B: the message sent to A depends on the CPT of B
+    ie.eraseAllEvidence();
+    ie.addEvidence("B", std::vector< double >{0.4, 0.6});
+    ie.makeInference();
+    (void)ie.posterior("A");
+    const_cast< gum::Tensor< double >& >(bn.cpt("B")).fillWith({0.5, 0.5, 0.2, 0.8});
+    ie.invalidateTensors();
+    ie.makeInference();
+    gum::Tensor< double > expectedA;
+    expectedA.add(bn.variable("A"));
+    expectedA.fillWith({0.7 * (0.5 * 0.4 + 0.5 * 0.6), 0.3 * (0.2 * 0.4 + 0.8 * 0.6)});
+    expectedA.normalize();
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(ie.posterior("A"), expectedA, epsilon);
+  }
+
+  GUM_TEST(InvalidateTensorsLazyPropagation) { checkInvalidateTensors< gum::LazyPropagation >(); }
+
+  GUM_TEST(InvalidateTensorsShaferShenoy) {
+    checkInvalidateTensors< gum::ShaferShenoyInference >();
+  }
+
+  GUM_TEST(InvalidateTensorsVariableElimination) {
+    checkInvalidateTensors< gum::VariableElimination >();
   }
 }   // namespace gum_tests

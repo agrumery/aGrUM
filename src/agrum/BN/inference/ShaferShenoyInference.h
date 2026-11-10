@@ -188,6 +188,9 @@ namespace gum {
     /// fired after a new Bayes net has been assigned to the inference engine
     void onModelChanged_(const GraphicalModel* bn) final;
 
+    /// fired by invalidateTensors(): the junction tree is kept, all its tensors are recomputed
+    void onTensorsChanged_() final;
+
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
     void onJointTargetAdded_(const NodeSet& set) final;
@@ -309,6 +312,11 @@ namespace gum {
      * enables us to keep track of this. */
     bool _is_new_jt_needed_{true};
 
+    /// indicates whether the values of the CPTs changed since the tensors of the JT were computed
+    /** set by invalidateTensors(): the JT is kept, but its clique tensors, the projections of
+     * hard evidence, the messages and the posteriors must be computed again. */
+    bool _are_tensors_outdated_{false};
+
     /// a clique node used as a root in each connected component of _JT_
     /** For usual probabilistic inference, roots is useless. This is useful
      * when computing the probability of evidence. In this case, we need to
@@ -417,6 +425,11 @@ namespace gum {
 
     /// create a new junction tree as well as its related data structures
     void _createNewJT_();
+
+    /// (re)compute all the tensors of the junction tree from the current CPTs and evidence
+    /** clique tensors, projections of hard evidence, soft evidence, constants, messages and
+     * posteriors: everything but the structure of the junction tree */
+    void _initializeJTTensors_();
 
     /// put all the CPTs into the cliques when creating the JT using a schedule
     void _initializeJTCliques_(Schedule& schedule);

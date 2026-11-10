@@ -1706,6 +1706,18 @@ class ShaferShenoyMRFInference(object):
         """
         return _mrfcpp.ShaferShenoyMRFInference_eraseAllEvidence(self)
 
+    def invalidateTensors(self) -> None:
+        r"""
+
+        Tells the inference that the values of tensors of its model changed in place.
+
+        The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+        modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+        values. After this call, the next inference uses the current values.
+
+        """
+        return _mrfcpp.ShaferShenoyMRFInference_invalidateTensors(self)
+
     def eraseEvidence(self, *args) -> None:
         r"""
 

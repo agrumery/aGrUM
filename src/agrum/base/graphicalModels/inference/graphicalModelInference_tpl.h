@@ -598,6 +598,17 @@ namespace gum {
   // Inference
   // ##############################################################################
 
+  // the values of tensors of the model changed in place
+  template < GUM_Numeric GUM_SCALAR >
+  void GraphicalModelInference< GUM_SCALAR >::invalidateTensors() {
+    onTensorsChanged_();
+    // the hook may already have put the inference in a more outdated state
+    if (isInferenceReady() || isInferenceDone()) setOutdatedTensorsState_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void GraphicalModelInference< GUM_SCALAR >::onTensorsChanged_() {}
+
   // put the inference into an unprepared state
   template < GUM_Numeric GUM_SCALAR >
   void GraphicalModelInference< GUM_SCALAR >::setOutdatedStructureState_() {

@@ -6420,6 +6420,18 @@ namespace gum {
 }
 
 
+  // the permutation applied by randomShuffle (Python): 0..n-1 shuffled by gum::randomShuffle
+  PyObject* _randomPermutation(gum::Size n) {
+    std::vector< gum::Idx > permutation(n);
+    std::iota(permutation.begin(), permutation.end(), gum::Idx(0));
+    gum::randomShuffle(permutation.begin(), permutation.end());
+    PyObject* list = PyList_New(static_cast< Py_ssize_t >(n));
+    for (gum::Size i = 0; i < n; ++i)
+      PyList_SetItem(list, static_cast< Py_ssize_t >(i), PyLong_FromSize_t(permutation[i]));
+    return list;
+  }
+
+
 #include "extensions/PythonBNListener.h"
 #include "extensions/PythonMRFListener.h"
 #include "extensions/PythonLoadListener.h"
@@ -6943,6 +6955,9 @@ SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasEvidence__SWIG_1(gum::LazyP
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseAllEvidence(gum::LazyPropagation< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__invalidateTensors(gum::LazyPropagation< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -7153,6 +7168,9 @@ SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasEvidence__SWIG_1(gum:
   }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseAllEvidence(gum::ShaferShenoyInference< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__invalidateTensors(gum::ShaferShenoyInference< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
   }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseEvidence__SWIG_0(gum::ShaferShenoyInference< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
@@ -7365,6 +7383,9 @@ SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasEvidence__SWIG_1(gum::V
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseAllEvidence(gum::VariableElimination< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__invalidateTensors(gum::VariableElimination< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -7532,6 +7553,9 @@ SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::GibbsSa
 SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseAllEvidence(gum::GibbsSampling< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__invalidateTensors(gum::GibbsSampling< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -7693,6 +7717,9 @@ SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::Im
 SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseAllEvidence(gum::ImportanceSampling< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__invalidateTensors(gum::ImportanceSampling< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -7849,6 +7876,9 @@ SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::Weig
   }
 SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseAllEvidence(gum::WeightedSampling< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__invalidateTensors(gum::WeightedSampling< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
   }
 SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
@@ -8007,6 +8037,9 @@ SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::Mo
 SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseAllEvidence(gum::MonteCarloSampling< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__invalidateTensors(gum::MonteCarloSampling< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -8163,6 +8196,9 @@ SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_S
   }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__eraseAllEvidence(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__invalidateTensors(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
   }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__eraseEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
@@ -8321,6 +8357,9 @@ SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg_
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__eraseAllEvidence(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__invalidateTensors(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__eraseEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::WeightedSampling > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -8477,6 +8516,9 @@ SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__ha
   }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__eraseAllEvidence(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__invalidateTensors(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
   }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__eraseEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::GibbsSampling > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
@@ -8641,6 +8683,9 @@ SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_S
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__eraseAllEvidence(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
   }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__invalidateTensors(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
+  }
 SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__eraseEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
   }
@@ -8797,6 +8842,9 @@ SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasEvidence__SWIG_1(gum
   }
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllEvidence(gum::LoopyBeliefPropagation< double > *self){
     self->gum::MarginalTargetedInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__invalidateTensors(gum::LoopyBeliefPropagation< double > *self){
+    self->gum::MarginalTargetedInference<double>::invalidateTensors();
   }
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id){
     self->gum::MarginalTargetedInference<double>::eraseEvidence(id);
@@ -22931,6 +22979,37 @@ SWIGINTERN PyObject *_wrap_randomProba(PyObject *self, PyObject *args) {
   {
     try {
       result = (double)gum::randomProba();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_randomGamma(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "randomGamma" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  {
+    try {
+      result = (double)gum::randomGamma(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -78911,6 +78990,38 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap__randomPermutation(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Size arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  PyObject *swig_obj[1] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "_randomPermutation" "', argument " "1"" of type '" "gum::Size""'");
+  } 
+  arg1 = static_cast< gum::Size >(val1);
+  {
+    try {
+      result = (PyObject *)_randomPermutation(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_PythonBNListener(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DAGmodel *arg1 = 0 ;
@@ -96915,6 +97026,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LazyPropagation_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_invalidateTensors" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LazyPropagation_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LazyPropagation_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = 0 ;
@@ -100419,6 +100560,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyInference< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_invalidateTensors" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
+  {
+    try {
+      gum_ShaferShenoyInference_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_ShaferShenoyInference_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyInference< double > *arg1 = 0 ;
@@ -103846,6 +104017,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_VariableElimination_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_invalidateTensors" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_VariableElimination_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::VariableElimination< double > *arg1 = 0 ;
@@ -107102,6 +107303,36 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_eraseAllEvidence(PyObject *self, PyObje
   {
     try {
       gum_GibbsSampling_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_invalidateTensors" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__invalidateTensors(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -110431,6 +110662,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ImportanceSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_invalidateTensors" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_ImportanceSampling_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ImportanceSampling< double > *arg1 = 0 ;
@@ -113612,6 +113873,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_WeightedSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_invalidateTensors" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_WeightedSampling_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::WeightedSampling< double > *arg1 = 0 ;
@@ -116781,6 +117072,36 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_eraseAllEvidence(PyObject *self, P
   {
     try {
       gum_MonteCarloSampling_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_invalidateTensors" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__invalidateTensors(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -120072,6 +120393,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_invalidateTensors" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
@@ -123351,6 +123702,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_invalidateTensors" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
@@ -126618,6 +126999,36 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_eraseAllEvidence(PyObject *self, P
   {
     try {
       gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_invalidateTensors" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__invalidateTensors(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -130113,6 +130524,36 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_invalidateTensors" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__invalidateTensors(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_eraseEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
@@ -133282,6 +133723,36 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_eraseAllEvidence(PyObject *sel
   {
     try {
       gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_invalidateTensors(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_invalidateTensors" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__invalidateTensors(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -147659,7 +148130,29 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"    a random number between 0 and 1 included (i.e. a proba).\n"
+		"    a random number in [0, 1) (i.e. a proba).\n"
+		"\n"
+		""},
+	 { "randomGamma", _wrap_randomGamma, METH_O, "\n"
+		"\n"
+		"Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.\n"
+		"\n"
+		"For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"shape : float\n"
+		"  the shape of the distribution (> 0)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"float\n"
+		"  a value of the Gamma distribution (its mean is `shape`).\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.OutOfBounds\n"
+		"  If `shape` is not > 0.\n"
 		"\n"
 		""},
 	 { "randomGeneratorSeed", _wrap_randomGeneratorSeed, METH_NOARGS, "\n"
@@ -147676,6 +148169,8 @@ static PyMethodDef SwigMethods[] = {
 		"Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.\n"
 		"\n"
 		"This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.\n"
+		"\n"
+		"A given seed gives the same draws on every platform.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156172,6 +156667,7 @@ static PyMethodDef SwigMethods[] = {
 		"    the number of logical processors\n"
 		"\n"
 		""},
+	 { "_randomPermutation", _wrap__randomPermutation, METH_O, NULL},
 	 { "new_PythonBNListener", _wrap_new_PythonBNListener, METH_VARARGS, "\n"
 		"\n"
 		"Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener\n"
@@ -156523,7 +157019,7 @@ static PyMethodDef SwigMethods[] = {
 		"n_nodes : int\n"
 		"    the number of nodes (default=10)\n"
 		"n_arcs : int\n"
-		"    the number of arcs (default=15)\n"
+		"    the maximum number of arcs (default=15)\n"
 		"n_nodmax : int\n"
 		"    the max number of modalities for a node (default=4)\n"
 		"\n"
@@ -159425,6 +159921,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "LazyPropagation_invalidateTensors", _wrap_LazyPropagation_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "LazyPropagation_eraseEvidence", _wrap_LazyPropagation_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -160036,6 +160541,15 @@ static PyMethodDef SwigMethods[] = {
 	 { "ShaferShenoyInference_eraseAllEvidence", _wrap_ShaferShenoyInference_eraseAllEvidence, METH_O, "\n"
 		"\n"
 		"Removes all the evidence entered into the network.\n"
+		"\n"
+		""},
+	 { "ShaferShenoyInference_invalidateTensors", _wrap_ShaferShenoyInference_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
 		"\n"
 		""},
 	 { "ShaferShenoyInference_eraseEvidence", _wrap_ShaferShenoyInference_eraseEvidence, METH_VARARGS, "\n"
@@ -160679,6 +161193,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "VariableElimination_invalidateTensors", _wrap_VariableElimination_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "VariableElimination_eraseEvidence", _wrap_VariableElimination_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -161249,6 +161772,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "GibbsSampling_invalidateTensors", _wrap_GibbsSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "GibbsSampling_eraseEvidence", _wrap_GibbsSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -161816,6 +162348,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "ImportanceSampling_invalidateTensors", _wrap_ImportanceSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "ImportanceSampling_eraseEvidence", _wrap_ImportanceSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -162351,6 +162892,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "WeightedSampling_invalidateTensors", _wrap_WeightedSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "WeightedSampling_eraseEvidence", _wrap_WeightedSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -162884,6 +163434,15 @@ static PyMethodDef SwigMethods[] = {
 	 { "MonteCarloSampling_eraseAllEvidence", _wrap_MonteCarloSampling_eraseAllEvidence, METH_O, "\n"
 		"\n"
 		"Removes all the evidence entered into the network.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_invalidateTensors", _wrap_MonteCarloSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
 		"\n"
 		""},
 	 { "MonteCarloSampling_eraseEvidence", _wrap_MonteCarloSampling_eraseEvidence, METH_VARARGS, "\n"
@@ -163444,6 +164003,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "LoopyImportanceSampling_invalidateTensors", _wrap_LoopyImportanceSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "LoopyImportanceSampling_eraseEvidence", _wrap_LoopyImportanceSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -164002,6 +164570,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "LoopyWeightedSampling_invalidateTensors", _wrap_LoopyWeightedSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "LoopyWeightedSampling_eraseEvidence", _wrap_LoopyWeightedSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -164558,6 +165135,15 @@ static PyMethodDef SwigMethods[] = {
 	 { "LoopyGibbsSampling_eraseAllEvidence", _wrap_LoopyGibbsSampling_eraseAllEvidence, METH_O, "\n"
 		"\n"
 		"Removes all the evidence entered into the network.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_invalidateTensors", _wrap_LoopyGibbsSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
 		"\n"
 		""},
 	 { "LoopyGibbsSampling_eraseEvidence", _wrap_LoopyGibbsSampling_eraseEvidence, METH_VARARGS, "\n"
@@ -165166,6 +165752,15 @@ static PyMethodDef SwigMethods[] = {
 		"Removes all the evidence entered into the network.\n"
 		"\n"
 		""},
+	 { "LoopyMonteCarloSampling_invalidateTensors", _wrap_LoopyMonteCarloSampling_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
+		"\n"
+		""},
 	 { "LoopyMonteCarloSampling_eraseEvidence", _wrap_LoopyMonteCarloSampling_eraseEvidence, METH_VARARGS, "\n"
 		"\n"
 		"Remove the evidence, if any, corresponding to the node Id or name.\n"
@@ -165699,6 +166294,15 @@ static PyMethodDef SwigMethods[] = {
 	 { "LoopyBeliefPropagation_eraseAllEvidence", _wrap_LoopyBeliefPropagation_eraseAllEvidence, METH_O, "\n"
 		"\n"
 		"Removes all the evidence entered into the network.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_invalidateTensors", _wrap_LoopyBeliefPropagation_invalidateTensors, METH_O, "\n"
+		"\n"
+		"Tells the inference that the values of tensors of its model changed in place.\n"
+		"\n"
+		"The inference is notified of the changes of the structure of its model and of the evidence, but not of the values\n"
+		"modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former\n"
+		"values. After this call, the next inference uses the current values.\n"
 		"\n"
 		""},
 	 { "LoopyBeliefPropagation_eraseEvidence", _wrap_LoopyBeliefPropagation_eraseEvidence, METH_VARARGS, "\n"

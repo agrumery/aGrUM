@@ -205,6 +205,15 @@ pyagrum.UndefinedElement
 Removes all the evidence entered into the network.
 "
 
+%feature("docstring") gum::classname::invalidateTensors
+"
+Tells the inference that the values of tensors of its model changed in place.
+
+The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
+modified in place (for instance by ``bn.cpt('A').fillWith(...)``): it may keep results computed from the former
+values. After this call, the next inference uses the current values.
+"
+
 %feature("docstring") gum::classname::eraseAllJointTargets
 "
 Clear all previously defined joint targets.

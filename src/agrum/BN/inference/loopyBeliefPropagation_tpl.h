@@ -270,6 +270,11 @@ namespace gum {
   void LoopyBeliefPropagation< GUM_SCALAR >::onModelChanged_(const GraphicalModel* bn) {}
 
   template < GUM_Numeric GUM_SCALAR >
+  void LoopyBeliefPropagation< GUM_SCALAR >::onTensorsChanged_() {
+    this->setOutdatedStructureState_();   // updateOutdatedStructure_ initializes the messages
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   void LoopyBeliefPropagation< GUM_SCALAR >::updateOutdatedTensors_() {}
 
   template < GUM_Numeric GUM_SCALAR >
