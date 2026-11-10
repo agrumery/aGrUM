@@ -101,7 +101,11 @@ namespace gum {
     /// computes the maximum length of confidence interval for each possible value
     /// of each variable
     /**
-     * @returns maximum length of confidence interval
+     * The intervals are the 95% Wilson score intervals of the Bernoulli variables (one per value
+     * of each variable), the virtual samples of the prior counting in the size n of the sample.
+     * Their length never vanishes (about 3.84/n when all the samples agree), so that a few
+     * identical samples cannot be taken for a convergence.
+     * @returns maximum length of confidence interval (the max of GUM_SCALAR if there is no sample)
      */
     GUM_SCALAR confidence();
 

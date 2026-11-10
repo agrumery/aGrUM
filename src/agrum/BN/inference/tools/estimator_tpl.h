@@ -48,6 +48,9 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <cmath>
+#include <limits>
+
 #include <agrum/BN/inference/tools/estimator.h>   // to ease IDE parser
 
 namespace gum {
@@ -199,23 +202,31 @@ namespace gum {
     return p * (1 - p);
   }
 
-  /* returns maximum length of confidence intervals for each variable, each
+  /* returns maximum length of the Wilson score intervals for each variable, each
    * parameter */
 
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::confidence() {
-    GUM_SCALAR ic_max = 0;
+    // the virtual samples of the prior (if any) count in the size of the sample
+    const double n = double(nvirtual_) + double(ntotal_);
+    if (n <= 0) return std::numeric_limits< GUM_SCALAR >::max();
 
+    // Wilson score interval at 95%: unlike the Wald interval (z.sqrt(p(1-p)/n)), its length
+    // never vanishes, even when all the samples agree (p=0 or p=1), which happens with few samples
+    constexpr double z     = 1.96;
+    constexpr double z2    = z * z;
+    const double     scale = 2 * z / (1 + z2 / n);
+    const double     shift = z2 / (4 * n * n);
+
+    double ic_max = 0;
     for (auto iter = estimator_.begin(); iter != estimator_.end(); ++iter) {
       for (Idx i = 0; i < iter.val().size(); i++) {
-        // the virtual samples of the prior (if any) count in the size of the sample
-        GUM_SCALAR ic = GUM_SCALAR(
-            2 * 1.96 * std::sqrt(variance(iter.key(), i) / (nvirtual_ + (GUM_SCALAR)ntotal_ - 1)));
+        const double ic = scale * std::sqrt(double(variance(iter.key(), i)) / n + shift);
         if (ic > ic_max) ic_max = ic;
       }
     }
 
-    return ic_max;
+    return GUM_SCALAR(ic_max);
   }
 
   template < GUM_Numeric GUM_SCALAR >

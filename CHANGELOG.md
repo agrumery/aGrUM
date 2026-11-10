@@ -184,6 +184,9 @@
       inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
       depended on the number of threads (each sample now has its own seed) and the repetitive independence drew
       concurrently with the shared generator.
+    - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few
+      identical samples (e.g. a Gibbs chain with near-deterministic CPTs and a small `burnIn`): their error, the
+      length of a Wald confidence interval, was 0. It is now the length of the Wilson score interval, never 0.
     - `UndiGraphListener` and `MixedGraphListener` were not exported from the shared libraries (link error of the
       structure listeners of `MarkovRandomField` with the shared build on Windows).
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
