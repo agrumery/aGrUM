@@ -50,6 +50,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <memory>
 #include <set>
 
 #include <agrum/base/core/debug.h>
@@ -654,6 +655,20 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot) {
+    changeTensor(idFromName(name), newPot);
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void BayesNet< GUM_SCALAR >::changeTensor(NodeId id, const Tensor< GUM_SCALAR >& newPot) {
+    // the copy is released only once the BN owns it (changeTensor may throw)
+    auto copy = std::make_unique< Tensor< GUM_SCALAR > >(newPot);
+    changeTensor(id, copy.get());
+    copy.release();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void BayesNet< GUM_SCALAR >::changeTensor(std::string_view            name,
+                                            const Tensor< GUM_SCALAR >& newPot) {
     changeTensor(idFromName(name), newPot);
   }
 

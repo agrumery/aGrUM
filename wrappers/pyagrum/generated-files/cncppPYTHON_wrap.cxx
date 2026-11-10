@@ -3785,10 +3785,9 @@ namespace Swig {
 #define SWIGTYPE_p_second_type swig_types[51]
 #define SWIGTYPE_p_size_type swig_types[52]
 #define SWIGTYPE_p_std__size_t swig_types[53]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[54]
-#define SWIGTYPE_p_value_type swig_types[55]
-static swig_type_info *swig_types[57];
-static swig_module_info swig_module = {swig_types, 56, 0, 0, 0, 0};
+#define SWIGTYPE_p_value_type swig_types[54]
+static swig_type_info *swig_types[56];
+static swig_module_info swig_module = {swig_types, 55, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -5052,8 +5051,7 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPT__SWIG_0(PyObject *self, Py_ssize_t n
   gum::Size temp3 ;
   size_t val3 ;
   int ecode3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  std::vector< std::vector< double > > _tmp_cpt4 ;
   
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
@@ -5074,14 +5072,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPT__SWIG_0(PyObject *self, Py_ssize_t n
   } 
   temp3 = static_cast< gum::Size >(val3);
   arg3 = &temp3;
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,  0  | 0);
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "CredalNet_setCPT" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
+  {
+    if (!PyAgrumHelper::NestedVectorFromPyObject(swig_obj[3], _tmp_cpt4)) SWIG_fail;
+    arg4 = &_tmp_cpt4;
   }
-  if (!argp4) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CredalNet_setCPT" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
-  }
-  arg4 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp4);
   {
     try {
       (arg1)->setCPT((gum::NodeId const &)*arg2,(gum::Size const &)*arg3,(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4);
@@ -5110,8 +5104,7 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPT__SWIG_1(PyObject *self, Py_ssize_t n
   int ecode2 = 0 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
+  std::vector< std::vector< double > > _tmp_cpt4 ;
   
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
@@ -5139,14 +5132,10 @@ SWIGINTERN PyObject *_wrap_CredalNet_setCPT__SWIG_1(PyObject *self, Py_ssize_t n
       if (SWIG_IsNewObj(res3)) delete temp;
     }
   }
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,  0  | 0);
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "CredalNet_setCPT" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
+  {
+    if (!PyAgrumHelper::NestedVectorFromPyObject(swig_obj[3], _tmp_cpt4)) SWIG_fail;
+    arg4 = &_tmp_cpt4;
   }
-  if (!argp4) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CredalNet_setCPT" "', argument " "4"" of type '" "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &""'"); 
-  }
-  arg4 = reinterpret_cast< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > * >(argp4);
   {
     try {
       (arg1)->setCPT((gum::NodeId const &)*arg2,SWIG_STD_MOVE(*(&arg3)),(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)*arg4);
@@ -10199,48 +10188,41 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "CredalNet_setCPTs", _wrap_CredalNet_setCPTs, METH_VARARGS, "\n"
 		"\n"
-		"Warnings\n"
-		"--------\n"
-		"(experimental function) - Parameters to be wrapped\n"
-		"\n"
-		"\n"
-		"Set the vertices of the credal sets (all of the conditionals) of a given node\n"
+		"Set the vertices of the credal sets (all of the conditionals) of a given node.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"id : int\n"
-		"    the NodeId of the node\n"
-		"cpt    : tbw\n"
-		"    the vertices of every credal set (for each instantiation of the parents)\n"
+		"    the id of the node\n"
+		"cpt : list[list[list[float]]]\n"
+		"    for each instantiation of the parents (by index), the vertices of its credal set (one list of probabilities per\n"
+		"    vertex)\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"DOES not change the BayesNet (s) associated to this credal net !\n"
+		"Does not change the BayesNet(s) associated to this credal net.\n"
 		"\n"
 		""},
 	 { "CredalNet_setCPT", _wrap_CredalNet_setCPT, METH_VARARGS, "\n"
 		"\n"
-		"Warnings\n"
-		"--------\n"
-		"(experimental function) - Parameters to be wrapped\n"
+		"Set the vertices of one credal set of a given node.\n"
 		"\n"
-		"\n"
-		"Set the vertices of one credal set of a given node (any instantiation index)\n"
+		"The credal set is selected either by its index or by an instantiation of the parents.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"id : int\n"
-		"    the Id of the node\n"
+		"    the id of the node\n"
 		"entry : int\n"
-		"    the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)\n"
+		"    the index of the instantiation of the parents (from 0 to K - 1, the node itself excluded)\n"
 		"ins : pyagrum.Instantiation\n"
-		"    the Instantiation (only the parents matter to find the credal set index)\n"
-		"cpt    : tbw\n"
-		"    the vertices of every credal set (for each instantiation of the parents)\n"
+		"    an instantiation (only the parents matter to find the credal set)\n"
+		"cpt : list[list[float]]\n"
+		"    the vertices of the credal set: one list of probabilities (one per value of the node) per vertex\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"DOES not change the BayesNet(s) associated to this credal net !\n"
+		"Does not change the BayesNet(s) associated to this credal net.\n"
 		"\n"
 		""},
 	 { "CredalNet_fillConstraints", _wrap_CredalNet_fillConstraints, METH_VARARGS, "\n"
@@ -11268,7 +11250,6 @@ static swig_type_info _swigt__p_node_iterator_safe = {"_p_node_iterator_safe", "
 static swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "gum::Idx *|gum::NodeId *|gum::Size *|std::size_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t = {"_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t", "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -11326,7 +11307,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_second_type,
   &_swigt__p_size_type,
   &_swigt__p_std__size_t,
-  &_swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,
   &_swigt__p_value_type,
 };
 
@@ -11384,7 +11364,6 @@ static swig_cast_info _swigc__p_node_iterator_safe[] = {  {&_swigt__p_node_itera
 static swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -11442,7 +11421,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_second_type,
   _swigc__p_size_type,
   _swigc__p_std__size_t,
-  _swigc__p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t,
   _swigc__p_value_type,
 };
 

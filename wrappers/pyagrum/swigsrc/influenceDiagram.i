@@ -48,7 +48,9 @@
 %ignore gum::InfluenceDiagram::variableNodeMap;
 %ignore gum::InfluenceDiagram::insertArc;
 %ignore gum::InfluenceDiagram::getPartialTemporalOrder;
-%ignore gum::InfluenceDiagram:: addUtilityNode ( const gum::DiscreteVariable& variable,gum::MultiDimImplementation<GUM_SCALAR>* aContent, NodeId id = 0 );
+// a signature with a default argument: each generated variant needs its own %ignore
+%ignore gum::InfluenceDiagram<double>::addUtilityNode(const DiscreteVariable&, MultiDimImplementation<double>*, NodeId);
+%ignore gum::InfluenceDiagram<double>::addUtilityNode(const DiscreteVariable&, MultiDimImplementation<double>*);
 
 %include "extensions/IDGenerator.h"
 
@@ -174,7 +176,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
   if not hasattr(self,"_listeners"):
     self._listeners=[]
 
-  nl = PythonBNListener(self, self.variableNodeMap())
+  nl = pyagrum.PythonBNListener(self, self._variableNodeMap())
   if whenNodeAdded is not None:
     nl.setWhenNodeAdded(whenNodeAdded)
   if whenNodeDeleted is not None:

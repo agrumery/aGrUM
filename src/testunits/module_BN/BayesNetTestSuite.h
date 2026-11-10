@@ -1192,6 +1192,55 @@ namespace gum_tests {
     CHECK_EQ(roots2.size(), gum::Size(1));
   }
 
+  GUM_TEST(Variables) {
+    auto       bn = gum::BayesNet< double >::fastPrototype("A->B->C;D");
+    const auto a  = bn.idFromName("A");
+    const auto c  = bn.idFromName("C");
+
+    const auto all = bn.variables();
+    CHECK_EQ(all.size(), bn.size());
+    for (const auto node: bn.nodes())
+      CHECK(all.contains(&bn.variable(node)));
+
+    const auto byNames = bn.variables(std::vector< std::string >{"A", "C"});
+    CHECK_EQ(byNames, gum::VariableSet{&bn.variable(a), &bn.variable(c)});
+    CHECK_EQ(bn.variables(gum::NodeSet{a, c}), byNames);
+
+    CHECK(bn.variables(gum::NodeSet{}).empty());
+    CHECK(gum::BayesNet< double >().variables().empty());
+    CHECK_THROWS_AS(bn.variables(std::vector< std::string >{"Z"}), const gum::NotFound&);
+    CHECK_THROWS_AS(bn.variables(gum::NodeSet{99}), const gum::NotFound&);
+  }
+
+  GUM_TEST(ChangeTensor) {
+    auto       bn = gum::BayesNet< double >::fastPrototype("A->B");
+    const auto b  = bn.idFromName("B");
+
+    // by copy: the BN does not reference the given tensor
+    {
+      gum::Tensor< double > pot(bn.cpt(b));
+      pot.fillWith({0.1, 0.9, 0.8, 0.2});
+      bn.changeTensor("B", pot);
+      CHECK_NE(&bn.cpt(b), &pot);
+      CHECK_EQ(bn.cpt(b), pot);
+    }
+    // the copy survives the given tensor
+    CHECK_EQ(bn.cpt(b).max(), doctest::Approx(0.9));
+    CHECK_EQ(bn.cpt(b).min(), doctest::Approx(0.1));
+
+    // by pointer: the BN owns the given tensor
+    auto* owned = new gum::Tensor< double >(bn.cpt(b));
+    owned->fillWith({0.5, 0.5, 0.5, 0.5});
+    bn.changeTensor(b, owned);
+    CHECK_EQ(&bn.cpt(b), owned);
+
+    // wrong signature: refused, the BN is unchanged
+    gum::Tensor< double > wrong;
+    wrong.add(bn.variable(b));
+    CHECK_THROWS_AS(bn.changeTensor(b, wrong), const gum::OperationNotAllowed&);
+    CHECK_EQ(&bn.cpt(b), owned);
+  }
+
   GUM_TEST(FamilyRelationsOfMissingNode) {
     auto       bn = gum::BayesNet< double >::fastPrototype("A->B->C;D");
     const auto a  = bn.idFromName("A");

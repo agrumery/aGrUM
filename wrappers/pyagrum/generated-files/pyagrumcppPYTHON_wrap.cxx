@@ -3749,186 +3749,187 @@ namespace Swig {
 #define SWIGTYPE_p_PythonBNListener swig_types[15]
 #define SWIGTYPE_p_PythonDatabaseGeneratorListener swig_types[16]
 #define SWIGTYPE_p_PythonLoadListener swig_types[17]
-#define SWIGTYPE_p_char swig_types[18]
-#define SWIGTYPE_p_difference_type swig_types[19]
-#define SWIGTYPE_p_first_type swig_types[20]
-#define SWIGTYPE_p_gum__AbstractScheduleMultiDim swig_types[21]
-#define SWIGTYPE_p_gum__ApproximationScheme swig_types[22]
-#define SWIGTYPE_p_gum__Arc swig_types[23]
-#define SWIGTYPE_p_gum__ArcGraphPart swig_types[24]
-#define SWIGTYPE_p_gum__ArgumentError swig_types[25]
-#define SWIGTYPE_p_gum__BNdistanceT_double_t swig_types[26]
-#define SWIGTYPE_p_gum__BayesNetFragmentT_double_t swig_types[27]
-#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[28]
-#define SWIGTYPE_p_gum__CPDAG swig_types[29]
-#define SWIGTYPE_p_gum__CPTError swig_types[30]
-#define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[31]
-#define SWIGTYPE_p_gum__ChainGraph swig_types[32]
-#define SWIGTYPE_p_gum__CliqueGraph swig_types[33]
-#define SWIGTYPE_p_gum__Configuration swig_types[34]
-#define SWIGTYPE_p_gum__DAG swig_types[35]
-#define SWIGTYPE_p_gum__DAGmodel swig_types[36]
-#define SWIGTYPE_p_gum__DatabaseError swig_types[37]
-#define SWIGTYPE_p_gum__DefaultInLabel swig_types[38]
-#define SWIGTYPE_p_gum__DiGraph swig_types[39]
-#define SWIGTYPE_p_gum__DiGraphListener swig_types[40]
-#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[41]
-#define SWIGTYPE_p_gum__DiscreteVariable swig_types[42]
-#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[43]
-#define SWIGTYPE_p_gum__DuplicateElement swig_types[44]
-#define SWIGTYPE_p_gum__DuplicateLabel swig_types[45]
-#define SWIGTYPE_p_gum__DuplicateScheduleMultiDim swig_types[46]
-#define SWIGTYPE_p_gum__Edge swig_types[47]
-#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[48]
-#define SWIGTYPE_p_gum__EssentialGraph swig_types[49]
-#define SWIGTYPE_p_gum__ExactBNdistanceT_double_t swig_types[50]
-#define SWIGTYPE_p_gum__Exception swig_types[51]
-#define SWIGTYPE_p_gum__FactoryError swig_types[52]
-#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[53]
-#define SWIGTYPE_p_gum__FatalError swig_types[54]
-#define SWIGTYPE_p_gum__FormatNotFound swig_types[55]
-#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[56]
-#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[57]
-#define SWIGTYPE_p_gum__GraphError swig_types[58]
-#define SWIGTYPE_p_gum__GraphicalModel swig_types[59]
-#define SWIGTYPE_p_gum__HedgeException swig_types[60]
-#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[61]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[62]
-#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[63]
-#define SWIGTYPE_p_gum__IOError swig_types[64]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__ChainGraph_t swig_types[65]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__MarkedGraph_t swig_types[66]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__PDAG_t swig_types[67]
-#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t swig_types[68]
-#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t swig_types[69]
-#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[70]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[71]
-#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[72]
-#define SWIGTYPE_p_gum__Instantiation swig_types[73]
-#define SWIGTYPE_p_gum__IntegerVariable swig_types[74]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[75]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[76]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[77]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[78]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[79]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[80]
-#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[81]
-#define SWIGTYPE_p_gum__IteratorError swig_types[82]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[83]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[84]
-#define SWIGTYPE_p_gum__LearningError swig_types[85]
-#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[86]
-#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[87]
-#define SWIGTYPE_p_gum__Listener swig_types[88]
-#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[89]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[90]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[91]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[92]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[93]
-#define SWIGTYPE_p_gum__MAG swig_types[94]
-#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[95]
-#define SWIGTYPE_p_gum__MPDAG swig_types[96]
-#define SWIGTYPE_p_gum__MarkedGraph swig_types[97]
-#define SWIGTYPE_p_gum__MarkovBlanket swig_types[98]
-#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[99]
-#define SWIGTYPE_p_gum__MeekRules swig_types[100]
-#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[101]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[102]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[103]
-#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[104]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[105]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[106]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[107]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[108]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[109]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[110]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[111]
-#define SWIGTYPE_p_gum__NoChild swig_types[112]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[113]
-#define SWIGTYPE_p_gum__NoParent swig_types[114]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[115]
-#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[116]
-#define SWIGTYPE_p_gum__NotFound swig_types[117]
-#define SWIGTYPE_p_gum__NotImplementedYet swig_types[118]
-#define SWIGTYPE_p_gum__NullElement swig_types[119]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[120]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[121]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[122]
-#define SWIGTYPE_p_gum__PAG swig_types[123]
-#define SWIGTYPE_p_gum__PDAG swig_types[124]
-#define SWIGTYPE_p_gum__PRMTypeError swig_types[125]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[126]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[127]
-#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[128]
-#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[129]
-#define SWIGTYPE_p_gum__ScheduledInference swig_types[130]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[131]
-#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[132]
-#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[133]
-#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[134]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[135]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[136]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[137]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[138]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[139]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[140]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[141]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[142]
-#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[143]
-#define SWIGTYPE_p_gum__SizeError swig_types[144]
-#define SWIGTYPE_p_gum__StructuralMetrics swig_types[145]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[146]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[147]
-#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[148]
-#define SWIGTYPE_p_gum__Triangulation swig_types[149]
-#define SWIGTYPE_p_gum__TypeError swig_types[150]
-#define SWIGTYPE_p_gum__UGmodel swig_types[151]
-#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[152]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[153]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[154]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[155]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[156]
-#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[157]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[158]
-#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[159]
-#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[160]
-#define SWIGTYPE_p_gum__Variable swig_types[161]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[162]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[163]
-#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[164]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[165]
-#define SWIGTYPE_p_gum__dot__DotOptions swig_types[166]
-#define SWIGTYPE_p_gum__dot__Rgb swig_types[167]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[168]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[169]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[170]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[171]
-#define SWIGTYPE_p_iterator swig_types[172]
-#define SWIGTYPE_p_iterator_category swig_types[173]
-#define SWIGTYPE_p_iterator_safe swig_types[174]
-#define SWIGTYPE_p_node_const_iterator swig_types[175]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[176]
-#define SWIGTYPE_p_node_iterator swig_types[177]
-#define SWIGTYPE_p_node_iterator_safe swig_types[178]
-#define SWIGTYPE_p_second_type swig_types[179]
-#define SWIGTYPE_p_size_type swig_types[180]
-#define SWIGTYPE_p_std__exception swig_types[181]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[182]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[183]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[184]
-#define SWIGTYPE_p_std__invalid_argument swig_types[185]
-#define SWIGTYPE_p_std__optionalT_bool_t swig_types[186]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[187]
-#define SWIGTYPE_p_std__size_t swig_types[188]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[189]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[190]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[191]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[192]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[193]
-#define SWIGTYPE_p_value_type swig_types[194]
-#define SWIGTYPE_p_void swig_types[195]
-static swig_type_info *swig_types[197];
-static swig_module_info swig_module = {swig_types, 196, 0, 0, 0, 0};
+#define SWIGTYPE_p_PythonMRFListener swig_types[18]
+#define SWIGTYPE_p_char swig_types[19]
+#define SWIGTYPE_p_difference_type swig_types[20]
+#define SWIGTYPE_p_first_type swig_types[21]
+#define SWIGTYPE_p_gum__AbstractScheduleMultiDim swig_types[22]
+#define SWIGTYPE_p_gum__ApproximationScheme swig_types[23]
+#define SWIGTYPE_p_gum__Arc swig_types[24]
+#define SWIGTYPE_p_gum__ArcGraphPart swig_types[25]
+#define SWIGTYPE_p_gum__ArgumentError swig_types[26]
+#define SWIGTYPE_p_gum__BNdistanceT_double_t swig_types[27]
+#define SWIGTYPE_p_gum__BayesNetFragmentT_double_t swig_types[28]
+#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[29]
+#define SWIGTYPE_p_gum__CPDAG swig_types[30]
+#define SWIGTYPE_p_gum__CPTError swig_types[31]
+#define SWIGTYPE_p_gum__CausalImpactT_double_t swig_types[32]
+#define SWIGTYPE_p_gum__ChainGraph swig_types[33]
+#define SWIGTYPE_p_gum__CliqueGraph swig_types[34]
+#define SWIGTYPE_p_gum__Configuration swig_types[35]
+#define SWIGTYPE_p_gum__DAG swig_types[36]
+#define SWIGTYPE_p_gum__DAGmodel swig_types[37]
+#define SWIGTYPE_p_gum__DatabaseError swig_types[38]
+#define SWIGTYPE_p_gum__DefaultInLabel swig_types[39]
+#define SWIGTYPE_p_gum__DiGraph swig_types[40]
+#define SWIGTYPE_p_gum__DiGraphListener swig_types[41]
+#define SWIGTYPE_p_gum__DiscreteGraphicalModel swig_types[42]
+#define SWIGTYPE_p_gum__DiscreteVariable swig_types[43]
+#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[44]
+#define SWIGTYPE_p_gum__DuplicateElement swig_types[45]
+#define SWIGTYPE_p_gum__DuplicateLabel swig_types[46]
+#define SWIGTYPE_p_gum__DuplicateScheduleMultiDim swig_types[47]
+#define SWIGTYPE_p_gum__Edge swig_types[48]
+#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[49]
+#define SWIGTYPE_p_gum__EssentialGraph swig_types[50]
+#define SWIGTYPE_p_gum__ExactBNdistanceT_double_t swig_types[51]
+#define SWIGTYPE_p_gum__Exception swig_types[52]
+#define SWIGTYPE_p_gum__FactoryError swig_types[53]
+#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[54]
+#define SWIGTYPE_p_gum__FatalError swig_types[55]
+#define SWIGTYPE_p_gum__FormatNotFound swig_types[56]
+#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[57]
+#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[58]
+#define SWIGTYPE_p_gum__GraphError swig_types[59]
+#define SWIGTYPE_p_gum__GraphicalModel swig_types[60]
+#define SWIGTYPE_p_gum__HedgeException swig_types[61]
+#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[62]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[63]
+#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[64]
+#define SWIGTYPE_p_gum__IOError swig_types[65]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__ChainGraph_t swig_types[66]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__MarkedGraph_t swig_types[67]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__PDAG_t swig_types[68]
+#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t swig_types[69]
+#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t swig_types[70]
+#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[71]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[72]
+#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[73]
+#define SWIGTYPE_p_gum__Instantiation swig_types[74]
+#define SWIGTYPE_p_gum__IntegerVariable swig_types[75]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[76]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[77]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[78]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[79]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[80]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[81]
+#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[82]
+#define SWIGTYPE_p_gum__IteratorError swig_types[83]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[84]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[85]
+#define SWIGTYPE_p_gum__LearningError swig_types[86]
+#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[87]
+#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[88]
+#define SWIGTYPE_p_gum__Listener swig_types[89]
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[90]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[91]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[92]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[93]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[94]
+#define SWIGTYPE_p_gum__MAG swig_types[95]
+#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[96]
+#define SWIGTYPE_p_gum__MPDAG swig_types[97]
+#define SWIGTYPE_p_gum__MarkedGraph swig_types[98]
+#define SWIGTYPE_p_gum__MarkovBlanket swig_types[99]
+#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[100]
+#define SWIGTYPE_p_gum__MeekRules swig_types[101]
+#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[102]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[103]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[104]
+#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[105]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[106]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[107]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[108]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[109]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[110]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[111]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[112]
+#define SWIGTYPE_p_gum__NoChild swig_types[113]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[114]
+#define SWIGTYPE_p_gum__NoParent swig_types[115]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[116]
+#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[117]
+#define SWIGTYPE_p_gum__NotFound swig_types[118]
+#define SWIGTYPE_p_gum__NotImplementedYet swig_types[119]
+#define SWIGTYPE_p_gum__NullElement swig_types[120]
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[121]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[122]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[123]
+#define SWIGTYPE_p_gum__PAG swig_types[124]
+#define SWIGTYPE_p_gum__PDAG swig_types[125]
+#define SWIGTYPE_p_gum__PRMTypeError swig_types[126]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[127]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[128]
+#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[129]
+#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[130]
+#define SWIGTYPE_p_gum__ScheduledInference swig_types[131]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[132]
+#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[133]
+#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[134]
+#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[135]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[136]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[137]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[138]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[139]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[140]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[141]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[142]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[143]
+#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[144]
+#define SWIGTYPE_p_gum__SizeError swig_types[145]
+#define SWIGTYPE_p_gum__StructuralMetrics swig_types[146]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[147]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[148]
+#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[149]
+#define SWIGTYPE_p_gum__Triangulation swig_types[150]
+#define SWIGTYPE_p_gum__TypeError swig_types[151]
+#define SWIGTYPE_p_gum__UGmodel swig_types[152]
+#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[153]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[154]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[155]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[156]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[157]
+#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[158]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[159]
+#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[160]
+#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[161]
+#define SWIGTYPE_p_gum__Variable swig_types[162]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[163]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[164]
+#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[165]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[166]
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[167]
+#define SWIGTYPE_p_gum__dot__Rgb swig_types[168]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[169]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[170]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[171]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[172]
+#define SWIGTYPE_p_iterator swig_types[173]
+#define SWIGTYPE_p_iterator_category swig_types[174]
+#define SWIGTYPE_p_iterator_safe swig_types[175]
+#define SWIGTYPE_p_node_const_iterator swig_types[176]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[177]
+#define SWIGTYPE_p_node_iterator swig_types[178]
+#define SWIGTYPE_p_node_iterator_safe swig_types[179]
+#define SWIGTYPE_p_second_type swig_types[180]
+#define SWIGTYPE_p_size_type swig_types[181]
+#define SWIGTYPE_p_std__exception swig_types[182]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[183]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[184]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[185]
+#define SWIGTYPE_p_std__invalid_argument swig_types[186]
+#define SWIGTYPE_p_std__optionalT_bool_t swig_types[187]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[188]
+#define SWIGTYPE_p_std__size_t swig_types[189]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[190]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[191]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[192]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[193]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[194]
+#define SWIGTYPE_p_value_type swig_types[195]
+#define SWIGTYPE_p_void swig_types[196]
+static swig_type_info *swig_types[198];
+static swig_module_info swig_module = {swig_types, 197, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -6420,6 +6421,7 @@ namespace gum {
 
 
 #include "extensions/PythonBNListener.h"
+#include "extensions/PythonMRFListener.h"
 #include "extensions/PythonLoadListener.h"
 #include "extensions/PythonApproximationListener.h"
 #include "extensions/PythonDatabaseGeneratorListener.h"
@@ -9012,7 +9014,7 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
     self->setSliceOrder(ranks);
     return  *self;
   }
-SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_Sg__useK2__SWIG_2(gum::learning::BNLearner< double > *self,PyObject *l){
+SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_Sg__useK2(gum::learning::BNLearner< double > *self,PyObject *l){
     std::vector< gum::NodeId > v;
 
     if (PyList_Check(l) == 0) {
@@ -9047,7 +9049,7 @@ SWIGINTERN PyAgrumDictState *gum_learning_BNLearner_Sl_double_Sg__state(gum::lea
 
     return res;
   }
-SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__setPossibleEdges__SWIG_1(gum::learning::BNLearner< double > *self,PyObject *soe){
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__setPossibleEdges(gum::learning::BNLearner< double > *self,PyObject *soe){
     gum::EdgeSet set;
     PyAgrumHelper::fillEdgeSetFromPyObject(set,soe);
     self->setPossibleEdges(set);
@@ -33661,11 +33663,10 @@ fail:
 SWIGINTERN PyObject *_wrap_UndiGraph_partialUndiGraph(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = 0 ;
-  SwigValueWrapper< gum::Set< std::size_t > > arg2 ;
+  gum::NodeSet *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  gum::NodeSet _ns_temp2 ;
   PyObject *swig_obj[2] ;
   gum::UndiGraph result;
   
@@ -33673,25 +33674,31 @@ SWIGINTERN PyObject *_wrap_UndiGraph_partialUndiGraph(PyObject *self, PyObject *
   if (!SWIG_Python_UnpackTuple(args, "UndiGraph_partialUndiGraph", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_partialUndiGraph" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_partialUndiGraph" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
   }
   arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
   {
-    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_std__size_t_t,  0  | 0);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "UndiGraph_partialUndiGraph" "', argument " "2"" of type '" "gum::NodeSet""'"); 
-    }  
-    if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "UndiGraph_partialUndiGraph" "', argument " "2"" of type '" "gum::NodeSet""'");
-    } else {
-      gum::NodeSet * temp = reinterpret_cast< gum::NodeSet * >(argp2);
-      arg2 = *temp;
-      if (SWIG_IsNewObj(res2)) delete temp;
+    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
     }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg2 = &_ns_temp2;
   }
   {
     try {
-      result = (arg1)->partialUndiGraph(SWIG_STD_MOVE(*(&arg2)));
+      result = ((gum::UndiGraph const *)arg1)->partialUndiGraph((gum::NodeSet const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -63473,7 +63480,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GraphicalModel_variableNodeMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GraphicalModel__variableNodeMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::GraphicalModel *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -63486,7 +63493,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variableNodeMap(PyObject *self, PyObje
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GraphicalModel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GraphicalModel_variableNodeMap" "', argument " "1"" of type '" "gum::GraphicalModel const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GraphicalModel__variableNodeMap" "', argument " "1"" of type '" "gum::GraphicalModel const *""'"); 
   }
   arg1 = reinterpret_cast< gum::GraphicalModel * >(argp1);
   {
@@ -63932,6 +63939,43 @@ fail:
 SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::GraphicalModel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  SwigValueWrapper< gum::Set< gum::DiscreteVariable const * > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GraphicalModel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GraphicalModel_variables" "', argument " "1"" of type '" "gum::GraphicalModel const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GraphicalModel * >(argp1);
+  {
+    try {
+      result = ((gum::GraphicalModel const *)arg1)->variables();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  {
+    resultobj                  = PySet_New(nullptr);
+    const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
+    for (const auto var: _vs) {
+      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      PySet_Add(resultobj, pyvar);
+      Py_DECREF(pyvar);
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::GraphicalModel *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -63968,14 +64012,22 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_0(PyObject *self, Py_s
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::VariableSet(result)), SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t, SWIG_POINTER_OWN |  0 );
+  {
+    resultobj                  = PySet_New(nullptr);
+    const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
+    for (const auto var: _vs) {
+      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      PySet_Add(resultobj, pyvar);
+      Py_DECREF(pyvar);
+    }
+  }
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::GraphicalModel *arg1 = 0 ;
   gum::NodeSet *arg2 = 0 ;
@@ -64018,7 +64070,15 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_s
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::VariableSet(result)), SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t, SWIG_POINTER_OWN |  0 );
+  {
+    resultobj                  = PySet_New(nullptr);
+    const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
+    for (const auto var: _vs) {
+      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      PySet_Add(resultobj, pyvar);
+      Py_DECREF(pyvar);
+    }
+  }
   return resultobj;
 fail:
   return NULL;
@@ -64033,6 +64093,11 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables(PyObject *self, PyObject *ar
   
   if (!(argc = SWIG_Python_UnpackTuple(args, "GraphicalModel_variables", 0, 2, argv))) SWIG_fail;
   --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_GraphicalModel_variables__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
   if (argc == 2) {
     int _v = 0;
     {
@@ -64055,13 +64120,13 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables(PyObject *self, PyObject *ar
         }
       }
     }
-    if (!_v) goto check_1;
-    return _wrap_GraphicalModel_variables__SWIG_1(self, argc, argv);
+    if (!_v) goto check_2;
+    return _wrap_GraphicalModel_variables__SWIG_2(self, argc, argv);
   }
-check_1:
+check_2:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_GraphicalModel_variables__SWIG_0(self, argc, argv);
+    PyObject *retobj = _wrap_GraphicalModel_variables__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -64069,6 +64134,7 @@ check_1:
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'GraphicalModel_variables'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    gum::GraphicalModel::variables() const\n"
     "    gum::GraphicalModel::variables(std::vector< std::string,std::allocator< std::string > > const &) const\n"
     "    gum::GraphicalModel::variables(gum::NodeSet const &) const\n");
   return 0;
@@ -64810,7 +64876,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiscreteGraphicalModel_variableNodeMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiscreteGraphicalModel__variableNodeMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiscreteGraphicalModel *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -64823,7 +64889,7 @@ SWIGINTERN PyObject *_wrap_DiscreteGraphicalModel_variableNodeMap(PyObject *self
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DiscreteGraphicalModel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiscreteGraphicalModel_variableNodeMap" "', argument " "1"" of type '" "gum::DiscreteGraphicalModel const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiscreteGraphicalModel__variableNodeMap" "', argument " "1"" of type '" "gum::DiscreteGraphicalModel const *""'"); 
   }
   arg1 = reinterpret_cast< gum::DiscreteGraphicalModel * >(argp1);
   {
@@ -78847,7 +78913,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_PythonBNListener(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
+  gum::DAGmodel *arg1 = 0 ;
   gum::VariableNodeMap *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -78858,11 +78924,11 @@ SWIGINTERN PyObject *_wrap_new_PythonBNListener(PyObject *self, PyObject *args) 
   
   (void)self;
   if (!SWIG_Python_UnpackTuple(args, "new_PythonBNListener", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DAGmodel, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_PythonBNListener" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_PythonBNListener" "', argument " "1"" of type '" "gum::DAGmodel const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::DAGmodel * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_gum__VariableNodeMap, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_PythonBNListener" "', argument " "2"" of type '" "gum::VariableNodeMap const *""'"); 
@@ -78870,7 +78936,7 @@ SWIGINTERN PyObject *_wrap_new_PythonBNListener(PyObject *self, PyObject *args) 
   arg2 = reinterpret_cast< gum::VariableNodeMap * >(argp2);
   {
     try {
-      result = (PythonBNListener *)new PythonBNListener((gum::BayesNet< double > const *)arg1,(gum::VariableNodeMap const *)arg2);
+      result = (PythonBNListener *)new PythonBNListener((gum::DAGmodel const *)arg1,(gum::VariableNodeMap const *)arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -79233,6 +79299,397 @@ SWIGINTERN PyObject *PythonBNListener_swigregister(PyObject *SWIGUNUSEDPARM(self
 }
 
 SWIGINTERN PyObject *PythonBNListener_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_new_PythonMRFListener(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::UGmodel *arg1 = 0 ;
+  gum::VariableNodeMap *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  PythonMRFListener *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_PythonMRFListener", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UGmodel, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_PythonMRFListener" "', argument " "1"" of type '" "gum::UGmodel const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UGmodel * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_gum__VariableNodeMap, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_PythonMRFListener" "', argument " "2"" of type '" "gum::VariableNodeMap const *""'"); 
+  }
+  arg2 = reinterpret_cast< gum::VariableNodeMap * >(argp2);
+  {
+    try {
+      result = (PythonMRFListener *)new PythonMRFListener((gum::UGmodel const *)arg1,(gum::VariableNodeMap const *)arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_PythonMRFListener, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_PythonMRFListener(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_PythonMRFListener" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_whenNodeAdded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  void *arg2 = 0 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_whenNodeAdded", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_whenNodeAdded" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1],SWIG_as_voidptrptr(&arg2), 0, 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PythonMRFListener_whenNodeAdded" "', argument " "2"" of type '" "void const *""'"); 
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PythonMRFListener_whenNodeAdded" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      (arg1)->whenNodeAdded((void const *)arg2,SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_whenNodeDeleted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  void *arg2 = 0 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_whenNodeDeleted", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_whenNodeDeleted" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1],SWIG_as_voidptrptr(&arg2), 0, 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PythonMRFListener_whenNodeDeleted" "', argument " "2"" of type '" "void const *""'"); 
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PythonMRFListener_whenNodeDeleted" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      (arg1)->whenNodeDeleted((void const *)arg2,SWIG_STD_MOVE(*(&arg3)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_whenEdgeAdded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  void *arg2 = 0 ;
+  gum::NodeId arg3 ;
+  gum::NodeId arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_whenEdgeAdded", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_whenEdgeAdded" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1],SWIG_as_voidptrptr(&arg2), 0, 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PythonMRFListener_whenEdgeAdded" "', argument " "2"" of type '" "void const *""'"); 
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PythonMRFListener_whenEdgeAdded" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "PythonMRFListener_whenEdgeAdded" "', argument " "4"" of type '" "gum::NodeId""'");
+  } 
+  arg4 = static_cast< gum::NodeId >(val4);
+  {
+    try {
+      (arg1)->whenEdgeAdded((void const *)arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_whenEdgeDeleted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  void *arg2 = 0 ;
+  gum::NodeId arg3 ;
+  gum::NodeId arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_whenEdgeDeleted", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_whenEdgeDeleted" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1],SWIG_as_voidptrptr(&arg2), 0, 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PythonMRFListener_whenEdgeDeleted" "', argument " "2"" of type '" "void const *""'"); 
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "PythonMRFListener_whenEdgeDeleted" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "PythonMRFListener_whenEdgeDeleted" "', argument " "4"" of type '" "gum::NodeId""'");
+  } 
+  arg4 = static_cast< gum::NodeId >(val4);
+  {
+    try {
+      (arg1)->whenEdgeDeleted((void const *)arg2,SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_setWhenEdgeAdded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_setWhenEdgeAdded", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_setWhenEdgeAdded" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      (arg1)->setWhenEdgeAdded(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_setWhenEdgeDeleted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_setWhenEdgeDeleted", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_setWhenEdgeDeleted" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      (arg1)->setWhenEdgeDeleted(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_setWhenNodeAdded(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_setWhenNodeAdded", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_setWhenNodeAdded" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      (arg1)->setWhenNodeAdded(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_PythonMRFListener_setWhenNodeDeleted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PythonMRFListener *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "PythonMRFListener_setWhenNodeDeleted", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PythonMRFListener, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PythonMRFListener_setWhenNodeDeleted" "', argument " "1"" of type '" "PythonMRFListener *""'"); 
+  }
+  arg1 = reinterpret_cast< PythonMRFListener * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      (arg1)->setWhenNodeDeleted(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *PythonMRFListener_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_PythonMRFListener, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *PythonMRFListener_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -86160,54 +86617,6 @@ SWIGINTERN PyObject *_wrap_BayesNet_add__SWIG_3(PyObject *self, Py_ssize_t nobjs
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   gum::DiscreteVariable *arg2 = 0 ;
-  gum::MultiDimImplementation< double > *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  gum::NodeId result;
-  
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_add" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNet_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_add" "', argument " "3"" of type '" "gum::MultiDimImplementation< double > *""'"); 
-  }
-  arg3 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp3);
-  {
-    try {
-      result = (arg1)->add((gum::DiscreteVariable const &)*arg2,arg3);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BayesNet_add__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  gum::DiscreteVariable *arg2 = 0 ;
   gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -86252,69 +86661,13 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_add__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = 0 ;
-  gum::DiscreteVariable *arg2 = 0 ;
-  gum::MultiDimImplementation< double > *arg3 = 0 ;
-  gum::NodeId arg4 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  size_t val4 ;
-  int ecode4 = 0 ;
-  gum::NodeId result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_add" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNet_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_add" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_add" "', argument " "3"" of type '" "gum::MultiDimImplementation< double > *""'"); 
-  }
-  arg3 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp3);
-  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "BayesNet_add" "', argument " "4"" of type '" "gum::NodeId""'");
-  } 
-  arg4 = static_cast< gum::NodeId >(val4);
-  {
-    try {
-      result = (arg1)->add((gum::DiscreteVariable const &)*arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BayesNet_add(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[5] = {
+  PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BayesNet_add", 0, 4, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "BayesNet_add", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -86340,9 +86693,10 @@ check_1:
     }
     if (!_v) goto check_3;
     {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0);
-      _v = SWIG_CheckState(res);
+      {
+        int res = SWIG_AsVal_size_t(argv[2], NULL);
+        _v = SWIG_CheckState(res);
+      }
     }
     if (!_v) goto check_3;
     return _wrap_BayesNet_add__SWIG_3(self, argc, argv);
@@ -86350,30 +86704,7 @@ check_1:
 check_3:
   
   if (argc == 3) {
-    int _v = 0;
-    {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__DiscreteVariable, SWIG_POINTER_NO_NULL | 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_4;
-    {
-      {
-        int res = SWIG_AsVal_size_t(argv[2], NULL);
-        _v = SWIG_CheckState(res);
-      }
-    }
-    if (!_v) goto check_4;
-    return _wrap_BayesNet_add__SWIG_4(self, argc, argv);
-  }
-check_4:
-  
-  if (argc == 3) {
     PyObject *retobj = _wrap_BayesNet_add__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 4) {
-    PyObject *retobj = _wrap_BayesNet_add__SWIG_5(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -86384,9 +86715,7 @@ fail:
     "    gum::BayesNet< double >::add(gum::DiscreteVariable const &)\n"
     "    gum::BayesNet< double >::add(std::string_view,unsigned int)\n"
     "    gum::BayesNet< double >::add(std::string_view)\n"
-    "    gum::BayesNet< double >::add(gum::DiscreteVariable const &,gum::MultiDimImplementation< double > *)\n"
-    "    gum::BayesNet< double >::add(gum::DiscreteVariable const &,gum::NodeId)\n"
-    "    gum::BayesNet< double >::add(gum::DiscreteVariable const &,gum::MultiDimImplementation< double > *,gum::NodeId)\n");
+    "    gum::BayesNet< double >::add(gum::DiscreteVariable const &,gum::NodeId)\n");
   return 0;
 }
 
@@ -89395,14 +89724,17 @@ SWIGINTERN PyObject *_wrap_BayesNet_changeTensor__SWIG_0(PyObject *self, Py_ssiz
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesNet_changeTensor" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > const &""'"); 
   }
   arg3 = reinterpret_cast< gum::Tensor< double > * >(argp3);
   {
     try {
-      (arg1)->changeTensor(SWIG_STD_MOVE(*(&arg2)),arg3);
+      (arg1)->changeTensor(SWIG_STD_MOVE(*(&arg2)),(gum::Tensor< double > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -89452,14 +89784,17 @@ SWIGINTERN PyObject *_wrap_BayesNet_changeTensor__SWIG_1(PyObject *self, Py_ssiz
 #endif
     arg2 = std::string_view(p, len);
   }
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_gum__TensorT_double_t,  0  | 0);
   if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BayesNet_changeTensor" "', argument " "3"" of type '" "gum::Tensor< double > const &""'"); 
   }
   arg3 = reinterpret_cast< gum::Tensor< double > * >(argp3);
   {
     try {
-      (arg1)->changeTensor(SWIG_STD_MOVE(*(&arg2)),arg3);
+      (arg1)->changeTensor(SWIG_STD_MOVE(*(&arg2)),(gum::Tensor< double > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -89510,8 +89845,8 @@ check_1:
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BayesNet_changeTensor'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::BayesNet< double >::changeTensor(gum::NodeId,gum::Tensor< double > *)\n"
-    "    gum::BayesNet< double >::changeTensor(std::string_view,gum::Tensor< double > *)\n");
+    "    gum::BayesNet< double >::changeTensor(gum::NodeId,gum::Tensor< double > const &)\n"
+    "    gum::BayesNet< double >::changeTensor(std::string_view,gum::Tensor< double > const &)\n");
   return 0;
 }
 
@@ -89717,7 +90052,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_variableNodeMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet__variableNodeMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -89730,7 +90065,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_variableNodeMap(PyObject *self, PyObject *ar
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_variableNodeMap" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet__variableNodeMap" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
@@ -92525,7 +92860,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetFragment_variableNodeMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetFragment__variableNodeMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetFragment< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -92538,7 +92873,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_variableNodeMap(PyObject *self, PyOb
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_variableNodeMap" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment__variableNodeMap" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
   {
@@ -140084,86 +140419,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useK2__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::learning::BNLearner< double > *arg1 = 0 ;
-  gum::Sequence< gum::NodeId > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  gum::learning::BNLearner< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useK2" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SequenceT_std__size_t_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_useK2" "', argument " "2"" of type '" "gum::Sequence< gum::NodeId > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner_useK2" "', argument " "2"" of type '" "gum::Sequence< gum::NodeId > const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Sequence< gum::NodeId > * >(argp2);
-  {
-    try {
-      result = (gum::learning::BNLearner< double > *) &(arg1)->useK2((gum::Sequence< gum::NodeId > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BNLearner_useK2__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::learning::BNLearner< double > *arg1 = 0 ;
-  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  gum::learning::BNLearner< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useK2" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_useK2" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner_useK2" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
-  }
-  arg2 = reinterpret_cast< std::vector< gum::NodeId,std::allocator< gum::NodeId > > * >(argp2);
-  {
-    try {
-      result = (gum::learning::BNLearner< double > *) &(arg1)->useK2((std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BNLearner_useMIIC(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
@@ -142418,46 +142673,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::learning::BNLearner< double > *arg1 = 0 ;
-  gum::EdgeSet *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  gum::learning::BNLearner< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_setPossibleEdges" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__SetT_gum__Edge_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_setPossibleEdges" "', argument " "2"" of type '" "gum::EdgeSet const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "BNLearner_setPossibleEdges" "', argument " "2"" of type '" "gum::EdgeSet const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::EdgeSet * >(argp2);
-  {
-    try {
-      result = (gum::learning::BNLearner< double > *) &(arg1)->setPossibleEdges((gum::EdgeSet const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BNLearner_setPossibleSkeleton(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
@@ -143729,16 +143944,17 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_useK2__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner_useK2(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
+  PyObject *swig_obj[2] ;
   gum::learning::BNLearner< double > *result = 0 ;
   
   (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "BNLearner_useK2", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useK2" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
@@ -143747,7 +143963,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_useK2__SWIG_2(PyObject *self, Py_ssize_t no
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::learning::BNLearner< double > *) &gum_learning_BNLearner_Sl_double_Sg__useK2__SWIG_2(arg1,arg2);
+      result = (gum::learning::BNLearner< double > *) &gum_learning_BNLearner_Sl_double_Sg__useK2(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -143757,52 +143973,6 @@ SWIGINTERN PyObject *_wrap_BNLearner_useK2__SWIG_2(PyObject *self, Py_ssize_t no
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BNLearner_useK2(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_useK2", 0, 2, argv))) SWIG_fail;
-  --argc;
-  if (argc == 2) {
-    int _v = 0;
-    {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__SequenceT_std__size_t_t, SWIG_POINTER_NO_NULL | 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    return _wrap_BNLearner_useK2__SWIG_0(self, argc, argv);
-  }
-check_1:
-  
-  if (argc == 2) {
-    int _v = 0;
-    {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, SWIG_POINTER_NO_NULL | 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_2;
-    return _wrap_BNLearner_useK2__SWIG_1(self, argc, argv);
-  }
-check_2:
-  
-  if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_useK2__SWIG_2(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_useK2'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::learning::BNLearner< double >::useK2(gum::Sequence< gum::NodeId > const &)\n"
-    "    gum::learning::BNLearner< double >::useK2(std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n"
-    "    gum::learning::BNLearner< double >::useK2(PyObject *)\n");
-  return 0;
 }
 
 
@@ -143871,15 +144041,16 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
+  PyObject *swig_obj[2] ;
   
   (void)self;
-  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  if (!SWIG_Python_UnpackTuple(args, "BNLearner_setPossibleEdges", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_setPossibleEdges" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
@@ -143888,7 +144059,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges__SWIG_1(PyObject *self, Py
   arg2 = swig_obj[1];
   {
     try {
-      gum_learning_BNLearner_Sl_double_Sg__setPossibleEdges__SWIG_1(arg1,arg2);
+      gum_learning_BNLearner_Sl_double_Sg__setPossibleEdges(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -143898,40 +144069,6 @@ SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges__SWIG_1(PyObject *self, Py
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_BNLearner_setPossibleEdges(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "BNLearner_setPossibleEdges", 0, 2, argv))) SWIG_fail;
-  --argc;
-  if (argc == 2) {
-    int _v = 0;
-    {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__SetT_gum__Edge_t, SWIG_POINTER_NO_NULL | 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_1;
-    return _wrap_BNLearner_setPossibleEdges__SWIG_0(self, argc, argv);
-  }
-check_1:
-  
-  if (argc == 2) {
-    PyObject *retobj = _wrap_BNLearner_setPossibleEdges__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'BNLearner_setPossibleEdges'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::learning::BNLearner< double >::setPossibleEdges(gum::EdgeSet const &)\n"
-    "    gum::learning::BNLearner< double >::setPossibleEdges(PyObject *)\n");
-  return 0;
 }
 
 
@@ -149066,7 +149203,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"nodesSet : Set\n"
+		"nodes : set[int]\n"
 		"    The set of nodes composing the partial graph\n"
 		"\n"
 		"Returns\n"
@@ -153512,16 +153649,7 @@ static PyMethodDef SwigMethods[] = {
 		"This method is called automatically by writers before saving the model to a file.\n"
 		"\n"
 		""},
-	 { "GraphicalModel_variableNodeMap", _wrap_GraphicalModel_variableNodeMap, METH_O, "\n"
-		"\n"
-		"Return the variable-to-node mapping of the model.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.VariableNodeMap\n"
-		"    the internal variable-to-node bijection\n"
-		"\n"
-		""},
+	 { "GraphicalModel__variableNodeMap", _wrap_GraphicalModel__variableNodeMap, METH_O, NULL},
 	 { "GraphicalModel_size", _wrap_GraphicalModel_size, METH_O, NULL},
 	 { "GraphicalModel_empty", _wrap_GraphicalModel_empty, METH_O, "\n"
 		"\n"
@@ -153590,17 +153718,23 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "GraphicalModel_variables", _wrap_GraphicalModel_variables, METH_VARARGS, "\n"
 		"\n"
-		"Return the set of variables corresponding to a list of names or a set of node ids.\n"
+		"Return the variables of the model: all of them, or those corresponding to a list of names or to a set of\n"
+		"node ids.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"args : list[str] or set[int]\n"
-		"    variable names or node ids\n"
+		"args : list[str] or set[int], optional\n"
+		"    variable names or node ids (all the variables of the model if absent)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyagrum.VariableSet\n"
-		"    the set of corresponding variables\n"
+		"set[pyagrum.DiscreteVariable]\n"
+		"    the corresponding variables\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.NotFound\n"
+		"    If a name or an id is not the one of a variable of the model.\n"
 		"\n"
 		""},
 	 { "GraphicalModel_nodes", _wrap_GraphicalModel_nodes, METH_O, NULL},
@@ -153731,16 +153865,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "GraphicalModel_family", _wrap_GraphicalModel_family, METH_VARARGS, NULL},
 	 { "GraphicalModel_swigregister", GraphicalModel_swigregister, METH_O, NULL},
 	 { "delete_DiscreteGraphicalModel", _wrap_delete_DiscreteGraphicalModel, METH_O, NULL},
-	 { "DiscreteGraphicalModel_variableNodeMap", _wrap_DiscreteGraphicalModel_variableNodeMap, METH_O, "\n"
-		"\n"
-		"Return the variable-to-node mapping of the model.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.VariableNodeMap\n"
-		"    the internal variable-to-node bijection\n"
-		"\n"
-		""},
+	 { "DiscreteGraphicalModel__variableNodeMap", _wrap_DiscreteGraphicalModel__variableNodeMap, METH_O, NULL},
 	 { "DiscreteGraphicalModel_variable", _wrap_DiscreteGraphicalModel_variable, METH_VARARGS, NULL},
 	 { "DiscreteGraphicalModel_nodeId", _wrap_DiscreteGraphicalModel_nodeId, METH_VARARGS, "\n"
 		"\n"
@@ -156049,21 +156174,23 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "new_PythonBNListener", _wrap_new_PythonBNListener, METH_VARARGS, "\n"
 		"\n"
-		"Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.\n"
+		"Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener\n"
+		"is notified when the structure of the model is changed.\n"
 		"\n"
-		"PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener\n"
+		"PythonBNListener(model:gum.DAGmodel,vnm:gum.VariableNodeMap) -> PythonBNListener\n"
 		"    default constructor\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
-		"    This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.\n"
+		"    This class is mainly instantiated automatically by the methods `addStructureListener` of\n"
+		"    pyagrum.BayesNet and pyagrum.InfluenceDiagram.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"bn : BaysNet\n"
-		"    The bayes net to listen to\n"
-		"vnm : VarNodeMap\n"
-		"    A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).\n"
+		"model : pyagrum.BayesNet | pyagrum.InfluenceDiagram\n"
+		"    The model to listen to\n"
+		"vnm : VariableNodeMap\n"
+		"    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).\n"
 		"\n"
 		""},
 	 { "delete_PythonBNListener", _wrap_delete_PythonBNListener, METH_O, NULL},
@@ -156120,7 +156247,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"pyfunc : lambda expression\n"
-		"    a function (i:int,j:int) called when when an arc (i,j) is added\n"
+		"    a function (i:int,j:int) called when an arc (i,j) is added\n"
 		"\n"
 		""},
 	 { "PythonBNListener_setWhenArcDeleted", _wrap_PythonBNListener_setWhenArcDeleted, METH_VARARGS, "\n"
@@ -156130,7 +156257,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"pyfunc : lambda expression\n"
-		"    a function (i:int,j:int) called when when an arc (i,j) is removed\n"
+		"    a function (i:int,j:int) called when an arc (i,j) is removed\n"
 		"\n"
 		""},
 	 { "PythonBNListener_setWhenNodeAdded", _wrap_PythonBNListener_setWhenNodeAdded, METH_VARARGS, "\n"
@@ -156145,16 +156272,125 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "PythonBNListener_setWhenNodeDeleted", _wrap_PythonBNListener_setWhenNodeDeleted, METH_VARARGS, "\n"
 		"\n"
-		"Add the listener in parameter to the list of existing ones for deleting an arc.\n"
+		"Add the listener in parameter to the list of existing ones for deleting a node.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"pyfunc : lambda expression\n"
-		"    a function (i:int) called when a node of id i and name s is removed.\n"
+		"    a function (i:int) called when a node of id i is removed.\n"
 		"\n"
 		""},
 	 { "PythonBNListener_swigregister", PythonBNListener_swigregister, METH_O, NULL},
 	 { "PythonBNListener_swiginit", PythonBNListener_swiginit, METH_VARARGS, NULL},
+	 { "new_PythonMRFListener", _wrap_new_PythonMRFListener, METH_VARARGS, "\n"
+		"\n"
+		"Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified\n"
+		"when the structure of the model is changed.\n"
+		"\n"
+		"PythonMRFListener(model:gum.UGmodel,vnm:gum.VariableNodeMap) -> PythonMRFListener\n"
+		"    default constructor\n"
+		"\n"
+		"Notes\n"
+		"-----\n"
+		"    This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"model : pyagrum.MarkovRandomField\n"
+		"    The model to listen to\n"
+		"vnm : VariableNodeMap\n"
+		"    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).\n"
+		"\n"
+		""},
+	 { "delete_PythonMRFListener", _wrap_delete_PythonMRFListener, METH_O, NULL},
+	 { "PythonMRFListener_whenNodeAdded", _wrap_PythonMRFListener_whenNodeAdded, METH_VARARGS, "\n"
+		"\n"
+		"Callback called when a node is added to the Markov random field.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"    the id of the new node\n"
+		"name : str\n"
+		"    the name of the new node\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_whenNodeDeleted", _wrap_PythonMRFListener_whenNodeDeleted, METH_VARARGS, "\n"
+		"\n"
+		"Callback called when a node is removed from the Markov random field.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"    the id of the deleted node\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_whenEdgeAdded", _wrap_PythonMRFListener_whenEdgeAdded, METH_VARARGS, "\n"
+		"\n"
+		"Callback called when an edge is added to the Markov random field.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"n1 : int\n"
+		"    the id of one node of the edge\n"
+		"n2 : int\n"
+		"    the id of the other node of the edge\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_whenEdgeDeleted", _wrap_PythonMRFListener_whenEdgeDeleted, METH_VARARGS, "\n"
+		"\n"
+		"Callback called when an edge is removed from the Markov random field.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"n1 : int\n"
+		"    the id of one node of the edge\n"
+		"n2 : int\n"
+		"    the id of the other node of the edge\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_setWhenEdgeAdded", _wrap_PythonMRFListener_setWhenEdgeAdded, METH_VARARGS, "\n"
+		"\n"
+		"Add the listener in parameter to the list of existing ones for adding an edge.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"pyfunc : lambda expression\n"
+		"    a function (i:int,j:int) called when an edge (i,j) is added\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_setWhenEdgeDeleted", _wrap_PythonMRFListener_setWhenEdgeDeleted, METH_VARARGS, "\n"
+		"\n"
+		"Add the listener in parameter to the list of existing ones for deleting an edge.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"pyfunc : lambda expression\n"
+		"    a function (i:int,j:int) called when an edge (i,j) is removed\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_setWhenNodeAdded", _wrap_PythonMRFListener_setWhenNodeAdded, METH_VARARGS, "\n"
+		"\n"
+		"Add the listener in parameter to the list of existing ones for adding a node.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"pyfunc : lambda expression\n"
+		"    a function (i:int,s:str) called when a node of id i and name s is added.\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_setWhenNodeDeleted", _wrap_PythonMRFListener_setWhenNodeDeleted, METH_VARARGS, "\n"
+		"\n"
+		"Add the listener in parameter to the list of existing ones for deleting a node.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"pyfunc : lambda expression\n"
+		"    a function (i:int) called when a node of id i is removed.\n"
+		"\n"
+		""},
+	 { "PythonMRFListener_swigregister", PythonMRFListener_swigregister, METH_O, NULL},
+	 { "PythonMRFListener_swiginit", PythonMRFListener_swiginit, METH_VARARGS, NULL},
 	 { "PythonLoadListener_whenLoading", _wrap_PythonLoadListener_whenLoading, METH_VARARGS, "\n"
 		"\n"
 		"Callback invoked during loading to report progress.\n"
@@ -157944,19 +158180,21 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_changeTensor", _wrap_BayesNet_changeTensor, METH_VARARGS, "\n"
 		"\n"
-		"change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.\n"
+		"Replaces the CPT of a variable by a copy of a tensor.\n"
+		"\n"
+		"The Bayesian network keeps its own copy: modifying newPot afterwards does not change the CPT.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"var : int | str\n"
 		"    the current name or the id of the variable\n"
 		"newPot : pyagrum.Tensor\n"
-		"    the new tensor\n"
+		"    the new CPT, with the same variables in the same order as the current CPT\n"
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.NotAllowed\n"
-		"    If newPot has not the same signature as __probaMap[NodeId]\n"
+		"pyagrum.OperationNotAllowed\n"
+		"    If newPot does not have the same variables, in the same order, as the current CPT\n"
 		"\n"
 		""},
 	 { "BayesNet_dag", _wrap_BayesNet_dag, METH_O, "\n"
@@ -158005,16 +158243,7 @@ static PyMethodDef SwigMethods[] = {
 		"    if no variable with this name exists in the model\n"
 		"\n"
 		""},
-	 { "BayesNet_variableNodeMap", _wrap_BayesNet_variableNodeMap, METH_O, "\n"
-		"\n"
-		"Return the variable-to-node mapping of the model.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.VariableNodeMap\n"
-		"    the internal variable-to-node bijection\n"
-		"\n"
-		""},
+	 { "BayesNet__variableNodeMap", _wrap_BayesNet__variableNodeMap, METH_O, NULL},
 	 { "BayesNet_variable", _wrap_BayesNet_variable, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
@@ -158535,14 +158764,7 @@ static PyMethodDef SwigMethods[] = {
 		"    If no variable's id matches varId.\n"
 		"\n"
 		""},
-	 { "BayesNetFragment_variableNodeMap", _wrap_BayesNetFragment_variableNodeMap, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.variableNodeMap\n"
-		"    the variable node map\n"
-		"\n"
-		""},
+	 { "BayesNetFragment__variableNodeMap", _wrap_BayesNetFragment__variableNodeMap, METH_O, NULL},
 	 { "BayesNetFragment_variable", _wrap_BayesNetFragment_variable, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
@@ -169043,6 +169265,7 @@ static swig_type_info _swigt__p_PythonApproximationListener = {"_p_PythonApproxi
 static swig_type_info _swigt__p_PythonBNListener = {"_p_PythonBNListener", "PythonBNListener *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PythonDatabaseGeneratorListener = {"_p_PythonDatabaseGeneratorListener", "PythonDatabaseGeneratorListener *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PythonLoadListener = {"_p_PythonLoadListener", "PythonLoadListener *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_PythonMRFListener = {"_p_PythonMRFListener", "PythonMRFListener *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_first_type = {"_p_first_type", "first_type *", 0, 0, (void*)0, 0};
@@ -169241,6 +169464,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_PythonBNListener,
   &_swigt__p_PythonDatabaseGeneratorListener,
   &_swigt__p_PythonLoadListener,
+  &_swigt__p_PythonMRFListener,
   &_swigt__p_char,
   &_swigt__p_difference_type,
   &_swigt__p_first_type,
@@ -169439,6 +169663,7 @@ static swig_cast_info _swigc__p_PythonApproximationListener[] = {  {&_swigt__p_P
 static swig_cast_info _swigc__p_PythonBNListener[] = {  {&_swigt__p_PythonBNListener, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PythonDatabaseGeneratorListener[] = {  {&_swigt__p_PythonDatabaseGeneratorListener, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PythonLoadListener[] = {  {&_swigt__p_PythonLoadListener, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_PythonMRFListener[] = {  {&_swigt__p_PythonMRFListener, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_first_type[] = {  {&_swigt__p_first_type, 0, 0, 0},{0, 0, 0, 0}};
@@ -169637,6 +169862,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_PythonBNListener,
   _swigc__p_PythonDatabaseGeneratorListener,
   _swigc__p_PythonLoadListener,
+  _swigc__p_PythonMRFListener,
   _swigc__p_char,
   _swigc__p_difference_type,
   _swigc__p_first_type,

@@ -222,7 +222,7 @@ namespace gum {
     bool hasUndirectedCycle() const;
 
     /// returns the partial graph formed by the nodes given in parameter
-    virtual UndiGraph partialUndiGraph(NodeSet nodes);
+    virtual UndiGraph partialUndiGraph(const NodeSet& nodes) const;
 
     /// returns a property {node:id of chain component} (edges only)
     NodeProperty< NodeId > chainComponents() const;

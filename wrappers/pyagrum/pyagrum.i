@@ -136,18 +136,20 @@ static int _pyagrum_import_numpy(void) {
 
 %{
 #include "extensions/PythonBNListener.h"
+#include "extensions/PythonMRFListener.h"
 #include "extensions/PythonLoadListener.h"
 #include "extensions/PythonApproximationListener.h"
 #include "extensions/PythonDatabaseGeneratorListener.h"
 %}
 
 %include "extensions/PythonBNListener.h"
+%include "extensions/PythonMRFListener.h"
 %include "extensions/PythonLoadListener.h"
 %include "extensions/PythonApproximationListener.h"
 %include "extensions/PythonDatabaseGeneratorListener.h"
 
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
-
+// before bayesnet.i: its %ignore of MarkovBlanket::nodes would also remove this %extend
+ADD_NODES_METHODS_TO_GRAPHCLASS(gum::MarkovBlanket);
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::MarkovBlanket::arcs const;
 %ignore gum::MarkovBlanket::parents const;

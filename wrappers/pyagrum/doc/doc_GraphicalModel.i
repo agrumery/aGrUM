@@ -217,17 +217,23 @@ value: str
 
 %feature("docstring") gum::GraphicalModel::variables
 "
-Return the set of variables corresponding to a list of names or a set of node ids.
+Return the variables of the model: all of them, or those corresponding to a list of names or to a set of
+node ids.
 
 Parameters
 ----------
-args : list[str] or set[int]
-    variable names or node ids
+args : list[str] or set[int], optional
+    variable names or node ids (all the variables of the model if absent)
 
 Returns
 -------
-pyagrum.VariableSet
-    the set of corresponding variables
+set[pyagrum.DiscreteVariable]
+    the corresponding variables
+
+Raises
+------
+pyagrum.NotFound
+    If a name or an id is not the one of a variable of the model.
 "
 
 %feature("docstring") gum::GraphicalModel::existsProperty
@@ -280,16 +286,6 @@ Raises
 ------
 pyagrum.NotFound
     if the variable does not exist in the model
-"
-
-%feature("docstring") gum::GraphicalModel::variableNodeMap
-"
-Return the variable-to-node mapping of the model.
-
-Returns
--------
-pyagrum.VariableNodeMap
-    the internal variable-to-node bijection
 "
 
 %feature("docstring") gum::GraphicalModel::idFromName

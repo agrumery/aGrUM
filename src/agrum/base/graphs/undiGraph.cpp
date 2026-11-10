@@ -117,7 +117,7 @@ namespace gum {
   }
 
   /// returns the partial graph formed by the nodes given in parameter
-  UndiGraph UndiGraph::partialUndiGraph(NodeSet nodes) {
+  UndiGraph UndiGraph::partialUndiGraph(const NodeSet& nodes) const {
     UndiGraph partialGraph;
 
     for (const auto node: nodes) {

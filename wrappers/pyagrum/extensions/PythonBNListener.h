@@ -40,14 +40,15 @@
 
 /**
  * @file
- * @brief This file contains definition for a BN listener in python
+ * @brief This file contains definition for a listener of the structure of a DAG model (BN, ID) in
+ * python
  *
  * @author Pierre-Henri WUILLEMIN
  */
 #include <Python.h>
 
+#include <agrum/base/graphicalModels/DAGmodel.h>
 #include <agrum/base/graphs/parts/listeners/diGraphListener.h>
-#include <agrum/BN/BayesNet.h>
 
 class PythonBNListener: public gum::DiGraphListener {
   private:
@@ -63,8 +64,8 @@ class PythonBNListener: public gum::DiGraphListener {
   }
 
   public:
-  PythonBNListener(const gum::BayesNet< double >* bn, const gum::VariableNodeMap* vnm) :
-      gum::DiGraphListener(&(bn->internalDag())), _map_(vnm) {
+  PythonBNListener(const gum::DAGmodel* model, const gum::VariableNodeMap* vnm) :
+      gum::DiGraphListener(&(model->internalDag())), _map_(vnm) {
     _pyWhenArcAdded_ = _pyWhenArcDeleted_ = (PyObject*)0;
     _pyWhenNodeAdded_ = _pyWhenNodeDeleted_ = (PyObject*)0;
   }

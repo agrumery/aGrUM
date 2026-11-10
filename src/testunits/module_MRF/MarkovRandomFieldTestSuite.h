@@ -45,6 +45,7 @@
 #include <string>
 #include <vector>
 
+#include <agrum/base/graphs/parts/listeners/undiGraphListener.h>
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/base/variables/discretizedVariable.h>
 #include <agrum/base/variables/labelizedVariable.h>
@@ -75,6 +76,21 @@ namespace gum_tests {
       mn.addFactor({"31", "51"}).fillWith(0.97);
       mn.addFactor({"21", "41", "51"}).fillWith(0.03);
     }
+
+    class StructureCounter: public gum::UndiGraphListener {
+      public:
+      int nodesAdded = 0, nodesDeleted = 0, edgesAdded = 0, edgesDeleted = 0;
+
+      explicit StructureCounter(const gum::UndiGraph* g) : gum::UndiGraphListener(g) {}
+
+      void whenNodeAdded(const void*, gum::NodeId) override { nodesAdded++; }
+
+      void whenNodeDeleted(const void*, gum::NodeId) override { nodesDeleted++; }
+
+      void whenEdgeAdded(const void*, gum::NodeId, gum::NodeId) override { edgesAdded++; }
+
+      void whenEdgeDeleted(const void*, gum::NodeId, gum::NodeId) override { edgesDeleted++; }
+    };
 
     public:
   };
@@ -443,6 +459,28 @@ namespace gum_tests {
     for (const auto& [node, root]: cc2)
       roots2.insert(root);
     CHECK_EQ(roots2.size(), gum::Size(1));
+  }
+
+  GUM_TEST(StructureListener) {
+    gum::MarkovRandomField< double > mn;
+    StructureCounter                 counter(&mn.internalGraph());
+
+    // each edge is signaled once, even if adding a factor rebuilds the graph
+    _fill(mn);
+    CHECK_EQ(counter.nodesAdded, 5);
+    CHECK_EQ(counter.edgesAdded, 6);
+    CHECK_EQ(counter.edgesDeleted, 0);
+
+    mn.eraseFactor({"31", "51"});
+    CHECK_EQ(counter.edgesAdded, 6);
+    CHECK_EQ(counter.edgesDeleted, 1);
+
+    // 21-41 and 21-51 disappear with the node, 41-51 remains (sub-factor {41,51})
+    mn.erase("21");
+    CHECK_EQ(counter.nodesDeleted, 1);
+    CHECK_EQ(counter.edgesAdded, 6);
+    CHECK_EQ(counter.edgesDeleted, 3);
+    CHECK(mn.existsEdge("41", "51"));
   }
 
   GUM_TEST(ChangeVariableLabel) {

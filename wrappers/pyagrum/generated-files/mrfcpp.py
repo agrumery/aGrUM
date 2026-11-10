@@ -229,6 +229,39 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
     def nodes(self) -> set[int]:
         return _mrfcpp.IMarkovRandomField_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -256,36 +289,6 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def minimalCondSet(self, *args) -> set[int]:
@@ -645,18 +648,8 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrfcpp.MarkovRandomField_idFromName(self, name)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Return the variable-to-node mapping of the model.
-
-        Returns
-        -------
-        pyagrum.VariableNodeMap
-            the internal variable-to-node bijection
-
-        """
-        return _mrfcpp.MarkovRandomField_variableNodeMap(self)
+    def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _mrfcpp.MarkovRandomField__variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -774,6 +767,39 @@ class MarkovRandomField(IMarkovRandomField):
         """
         return _mrfcpp.MarkovRandomField_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -801,36 +827,6 @@ class MarkovRandomField(IMarkovRandomField):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def minimalCondSet(self, *args) -> set[int]:
@@ -1181,7 +1177,7 @@ class MarkovRandomField(IMarkovRandomField):
        """
        return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
 
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenEdgeDeleted=None):
         """
         Add the listeners in parameters to the list of existing ones.
 
@@ -1196,21 +1192,21 @@ class MarkovRandomField(IMarkovRandomField):
         whenEdgeDeleted : lambda expression
           a function for when an edge is removed
         """
-        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenedgeDeleted]==[None,None,None,None]:
+        if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
           return
 
         if not hasattr(self,"_listeners"):
           self._listeners=[]
 
-        nl = PythonBNListener(self, self.variableNodeMap())
+        nl = pyagrum.PythonMRFListener(self, self._variableNodeMap())
         if whenNodeAdded is not None:
           nl.setWhenNodeAdded(whenNodeAdded)
         if whenNodeDeleted is not None:
           nl.setWhenNodeDeleted(whenNodeDeleted)
         if whenEdgeAdded is not None:
           nl.setWhenEdgeAdded(whenEdgeAdded)
-        if whenedgeDeleted is not None:
-          nl.setWhenArcDeleted(whenedgeDeleted)
+        if whenEdgeDeleted is not None:
+          nl.setWhenEdgeDeleted(whenEdgeDeleted)
 
         self._listeners.append(nl)
 

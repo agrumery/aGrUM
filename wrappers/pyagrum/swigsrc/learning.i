@@ -42,12 +42,12 @@
 
 
 
-%ignore *::useK2(const gum::Sequence< gum::NodeId >& order);
-%ignore *::useK2(const std::vector< gum::NodeId >& order);
+%ignore *::useK2(const Sequence< NodeId >&);
+%ignore *::useK2(const std::vector< NodeId >&);
 %ignore *::setForbiddenArcs;
 %ignore *::addForbiddenArc(const gum::Arc& arc);
 %ignore *::eraseForbiddenArc(const gum::Arc& arc);
-%ignore *::setPossibleEdges(const gum::EdgeSet& set);
+%ignore *::setPossibleEdges(const EdgeSet&);
 %ignore *::addPossibleEdge(const gum::Edge& edge);
 %ignore *::erasePossibleEdge(const gum::Edge& edge);
 %ignore *::setMandatoryArcs;

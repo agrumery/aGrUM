@@ -269,12 +269,53 @@ ADD_NODE_ITER(gum::MAG)
 }
 }
 
-%define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
+// nodes() and adjacencyMatrix(): for graphs and for graph-like objects (MarkovBlanket)
+%define ADD_NODES_METHODS_TO_GRAPHCLASS(classname)
 %extend classname {
   const gum::NodeGraphPart& nodes() const {
     return self->nodes();
   };
 
+%pythoncode {
+  def adjacencyMatrix(self):
+    """ adjacency matrix from a graph/graphical models
+
+    Compute the adjacency matrix of a pyAgrum's graph or graphical models
+    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+    a MAG, the symmetric matrix of `adjacents`)
+
+    Returns
+    -------
+    numpy.ndarray
+      adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+    """
+    import numpy  # this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+    nodes=self.nodes()
+    n=self.size()
+    am=numpy.zeros((n,n)).astype(int)
+
+    for node in nodes:
+        if hasattr(self,'adjacents'):
+            for adjacent in self.adjacents(node):
+                am[node,adjacent]=1
+            continue
+        if hasattr(self,'children'):
+            for children in self.children(node):
+                am[node,children]=1
+        if hasattr(self,'neighbours'):
+            for neighbour in self.neighbours(node):
+                am[node,neighbour]=1
+    return am
+}
+};
+%enddef // ADD_NODES_METHODS_TO_GRAPHCLASS
+
+// ADD_NODES_METHODS_TO_GRAPHCLASS + connected components (the class must have connectedComponents())
+%define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
+ADD_NODES_METHODS_TO_GRAPHCLASS(classname)
+%extend classname {
 %pythoncode {
   def connectedComponentsList(self):
     """ connected components as a dict of sets
@@ -303,36 +344,6 @@ ADD_NODE_ITER(gum::MAG)
 
     """
     return len(set(self.connectedComponents().values()))
-
-  def adjacencyMatrix(self):
-    """ adjacency matrix from a graph/graphical models
-
-    Compute the adjacency matrix of a pyAgrum's graph or graphical models
-    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-    a MAG, the symmetric matrix of `adjacents`)
-
-    Returns
-    -------
-    numpy.ndarray
-      adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-    """
-    nodes=self.nodes()
-    n=self.size()
-    am=numpy.zeros((n,n)).astype(int)
-
-    for node in nodes:
-        if hasattr(self,'adjacents'):
-            for adjacent in self.adjacents(node):
-                am[node,adjacent]=1
-            continue
-        if hasattr(self,'children'):
-            for children in self.children(node):
-                am[node,children]=1
-        if hasattr(self,'neighbours'):
-            for neighbour in self.neighbours(node):
-                am[node,neighbour]=1
-    return am
 }
 
 };
@@ -597,7 +608,6 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
 %ignore gum::CliqueGraph::clique;
 %ignore gum::CliqueGraph::separator;
 %ignore gum::CliqueGraph::addNodeWithId;
-%ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);
 
 %include "extensions/JunctionTreeGenerator.h"
 

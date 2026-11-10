@@ -625,12 +625,29 @@ namespace gum {
 
     void generateCPT(std::string_view name) const;
 
-    /// change the CPT associated to nodeId to newPot
-    /// delete the old CPT associated to nodeId.
-    /// @throw NotAllowed if newPot has not the same signature as
-    ///  _probaMap_[NodeId]
+    /**
+     * @brief Replaces the CPT of a node, the BN taking ownership of newPot.
+     *
+     * The old CPT is deleted.
+     * @param id the node whose CPT is replaced
+     * @param newPot the new CPT, allocated with new: owned (and deleted) by the BN afterwards
+     * @throw OperationNotAllowed if newPot does not have the same variables, in the same order,
+     * as the current CPT (newPot is then still owned by the caller)
+     */
     void changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot);
     void changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot);
+
+    /**
+     * @brief Replaces the CPT of a node by a copy of newPot.
+     *
+     * The old CPT is deleted, newPot is not referenced by the BN.
+     * @param id the node whose CPT is replaced
+     * @param newPot the new CPT
+     * @throw OperationNotAllowed if newPot does not have the same variables, in the same order,
+     * as the current CPT
+     */
+    void changeTensor(NodeId id, const Tensor< GUM_SCALAR >& newPot);
+    void changeTensor(std::string_view name, const Tensor< GUM_SCALAR >& newPot);
 
     /** create a contextual BN from this and a set of hard observations and hard interventions.
      *

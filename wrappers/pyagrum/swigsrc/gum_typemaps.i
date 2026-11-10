@@ -169,6 +169,18 @@ typedef PyObject PyAgrumDict;
   }
 }
 
+// gum::VariableSet -> Python set[DiscreteVariable] (DiscreteVariable is hashable: see variables.i)
+// The variables belong to the model: the proxies do not own them (as for variable()).
+%typemap(out) gum::VariableSet {
+  $result                  = PySet_New(nullptr);
+  const gum::VariableSet& _vs = $1;   // $1 may be a SwigValueWrapper
+  for (const auto var: _vs) {
+    PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), $descriptor(gum::DiscreteVariable*), 0);
+    PySet_Add($result, pyvar);
+    Py_DECREF(pyvar);
+  }
+}
+
 // std::optional<gum::NodeSet> -> Python set[int] or None
 %typemap(out) std::optional< gum::NodeSet > {
   if ($1.has_value()) {

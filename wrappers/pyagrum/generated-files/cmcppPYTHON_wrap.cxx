@@ -8587,13 +8587,12 @@ SWIGINTERN PyObject *_wrap_CausalModel_inducedCausalSubModel(PyObject *self, PyO
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   gum::CausalModel< double > *arg2 = 0 ;
-  SwigValueWrapper< gum::Set< std::size_t > > arg3 ;
+  gum::NodeSet *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
   int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
+  gum::NodeSet _ns_temp3 ;
   PyObject *swig_obj[3] ;
   SwigValueWrapper< gum::CausalModel< double > > result;
   
@@ -8613,21 +8612,27 @@ SWIGINTERN PyObject *_wrap_CausalModel_inducedCausalSubModel(PyObject *self, PyO
   }
   arg2 = reinterpret_cast< gum::CausalModel< double > * >(argp2);
   {
-    res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_gum__SetT_std__size_t_t,  0  | 0);
-    if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "CausalModel_inducedCausalSubModel" "', argument " "3"" of type '" "gum::NodeSet""'"); 
-    }  
-    if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CausalModel_inducedCausalSubModel" "', argument " "3"" of type '" "gum::NodeSet""'");
-    } else {
-      gum::NodeSet * temp = reinterpret_cast< gum::NodeSet * >(argp3);
-      arg3 = *temp;
-      if (SWIG_IsNewObj(res3)) delete temp;
+    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
+    if (!_iter) {
+      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
+      SWIG_fail;
     }
+    PyObject* _item;
+    while ((_item = PyIter_Next(_iter)) != nullptr) {
+      long _val = PyLong_AsLong(_item);
+      Py_DECREF(_item);
+      if (_val == -1 && PyErr_Occurred()) {
+        Py_DECREF(_iter); SWIG_fail; 
+      }
+      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
+    }
+    Py_DECREF(_iter);
+    if (PyErr_Occurred()) SWIG_fail;
+    arg3 = &_ns_temp3;
   }
   {
     try {
-      result = ((gum::CausalModel< double > const *)arg1)->inducedCausalSubModel((gum::CausalModel< double > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
+      result = ((gum::CausalModel< double > const *)arg1)->inducedCausalSubModel((gum::CausalModel< double > const &)*arg2,(gum::NodeSet const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;

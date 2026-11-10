@@ -8225,7 +8225,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MarkovRandomField_variableNodeMap(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_MarkovRandomField__variableNodeMap(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::MarkovRandomField< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -8238,7 +8238,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_variableNodeMap(PyObject *self, PyO
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_variableNodeMap" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField__variableNodeMap" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
   {
@@ -13361,16 +13361,7 @@ static PyMethodDef SwigMethods[] = {
 		"    if no variable with this name exists in the model\n"
 		"\n"
 		""},
-	 { "MarkovRandomField_variableNodeMap", _wrap_MarkovRandomField_variableNodeMap, METH_O, "\n"
-		"\n"
-		"Return the variable-to-node mapping of the model.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.VariableNodeMap\n"
-		"    the internal variable-to-node bijection\n"
-		"\n"
-		""},
+	 { "MarkovRandomField__variableNodeMap", _wrap_MarkovRandomField__variableNodeMap, METH_O, NULL},
 	 { "MarkovRandomField_variable", _wrap_MarkovRandomField_variable, METH_VARARGS, "\n"
 		"\n"
 		"Return the variable associated with a given node id.\n"

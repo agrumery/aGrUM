@@ -307,7 +307,7 @@ namespace gum {
      * @return A new CausalModel induced by the subset (both BN/DAG restricted appropriately).
      */
     CausalModel< GUM_SCALAR > inducedCausalSubModel(const CausalModel< GUM_SCALAR >& cm,
-                                                    NodeSet                          subset) const;
+                                                    const NodeSet&                   subset) const;
 
     /**
      * @brief DOT representation of the causal DAG (observed + latent), with the look of the

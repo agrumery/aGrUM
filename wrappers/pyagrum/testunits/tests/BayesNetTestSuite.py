@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import gc
 import unittest
 
 import numpy
@@ -248,6 +249,23 @@ class TestFeatures(BayesNetTestCase):
     self.fillTopo(bn, idList)
     topoOrder = bn.topologicalOrder()
     self.assertEqual(len(topoOrder), 5)
+
+  def testChangeTensor(self):
+    bn = gum.fastBN("A->B")
+    pot = gum.Tensor(bn.cpt("B")).fillWith([0.1, 0.9, 0.8, 0.2])
+    bn.changeTensor("B", pot)
+    # the BN keeps its own copy: freeing or modifying the given tensor has no effect on the CPT
+    pot.fillWith(0.5)
+    del pot
+    gc.collect()
+    self.assertEqual(bn.cpt("B").tolist(), [[0.1, 0.9], [0.8, 0.2]])
+
+    bn.changeTensor(bn.idFromName("B"), gum.Tensor(bn.cpt("B")).fillWith([0.3, 0.7, 0.6, 0.4]))
+    self.assertEqual(bn.cpt("B").tolist(), [[0.3, 0.7], [0.6, 0.4]])
+
+    with self.assertRaises(gum.OperationNotAllowed):
+      bn.changeTensor("B", gum.Tensor().add(bn.variable("B")))
+    self.assertEqual(bn.cpt("B").tolist(), [[0.3, 0.7], [0.6, 0.4]])
 
   def testChangeLabel(self):
     bn = gum.BayesNet()

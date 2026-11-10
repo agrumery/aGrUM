@@ -62,6 +62,13 @@
 %typemap(typecheck, precedence=SWIG_TYPECHECK_DOUBLE_ARRAY) const std::vector< std::vector< std::vector< double > > >& {
   $1 = (PySequence_Check($input) && !PyUnicode_Check($input)) ? 1 : 0;
 }
+%typemap(in) const std::vector< std::vector< double > >& (std::vector< std::vector< double > > _tmp_cpt) {
+  if (!PyAgrumHelper::NestedVectorFromPyObject($input, _tmp_cpt)) SWIG_fail;
+  $1 = &_tmp_cpt;
+}
+%typemap(typecheck, precedence=SWIG_TYPECHECK_DOUBLE_ARRAY) const std::vector< std::vector< double > >& {
+  $1 = (PySequence_Check($input) && !PyUnicode_Check($input)) ? 1 : 0;
+}
 
 %define IMPROVE_CN_INFERENCE_API(classname)
 

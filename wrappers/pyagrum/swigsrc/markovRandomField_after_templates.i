@@ -96,7 +96,7 @@ def addVariables(self,listFastVariables,default_nbr_mod=2):
    """
    return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
 
-def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenedgeDeleted=None):
+def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAdded=None,whenEdgeDeleted=None):
     """
     Add the listeners in parameters to the list of existing ones.
 
@@ -111,21 +111,21 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenEdgeAd
     whenEdgeDeleted : lambda expression
       a function for when an edge is removed
     """
-    if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenedgeDeleted]==[None,None,None,None]:
+    if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
       return
 
     if not hasattr(self,"_listeners"):
       self._listeners=[]
 
-    nl = PythonBNListener(self, self.variableNodeMap())
+    nl = pyagrum.PythonMRFListener(self, self._variableNodeMap())
     if whenNodeAdded is not None:
       nl.setWhenNodeAdded(whenNodeAdded)
     if whenNodeDeleted is not None:
       nl.setWhenNodeDeleted(whenNodeDeleted)
     if whenEdgeAdded is not None:
       nl.setWhenEdgeAdded(whenEdgeAdded)
-    if whenedgeDeleted is not None:
-      nl.setWhenArcDeleted(whenedgeDeleted)
+    if whenEdgeDeleted is not None:
+      nl.setWhenEdgeDeleted(whenEdgeDeleted)
 
     self._listeners.append(nl)
 }

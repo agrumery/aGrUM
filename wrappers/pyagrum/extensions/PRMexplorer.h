@@ -250,9 +250,6 @@ class PRMexplorer {
    * applies_label_list)
    * @param class_name : the name of the class
    */
-  std::string aggType[9]
-      = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median"};
-
   PyAgrumList* classAggregates(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
@@ -266,7 +263,7 @@ class PRMexplorer {
       PyObject* uplet = PyTuple_New(5);
       PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a->type().name().c_str()));
       PyTuple_SetItem(uplet, 1, PyUnicode_FromString(a->name().c_str()));
-      PyTuple_SetItem(uplet, 2, PyUnicode_FromString(aggType[(int)a->agg_type()].c_str()));
+      PyTuple_SetItem(uplet, 2, PyUnicode_FromString(_aggTypeNames_[static_cast< int >(a->agg_type())]));
       if (a->hasLabel()) {
         PyTuple_SetItem(uplet, 3, PyUnicode_FromString(a->labelValue().c_str()));
       } else {
@@ -628,6 +625,10 @@ class PRMexplorer {
 
 
   private:
+  // names of the values of gum::prm::PRMAggregate::AggregateType, in the order of the enum
+  static constexpr const char* _aggTypeNames_[]
+      = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median", "sum"};
+
   // PyList_Append and PyDict_SetItem do not steal: these helpers take ownership of new references
   static void appendNew_(PyObject* list, PyObject* item) {
     PyList_Append(list, item);

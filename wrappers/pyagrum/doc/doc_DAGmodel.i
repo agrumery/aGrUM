@@ -261,14 +261,6 @@ pyagrum.IndexError
     If the graph does not contain the variable
 "
 
-%feature("docstring") gum::DAGmodel::variableNodeMap
-"
-Returns
--------
-pyagrum.variableNodeMap
-    the variable node map
-"
-
 
 %feature("docstring") gum::DAGmodel::parents
 "

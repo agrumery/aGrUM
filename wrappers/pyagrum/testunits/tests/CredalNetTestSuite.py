@@ -63,6 +63,31 @@ class CredalNetTestCase(pyAgrumTestCase):
     self.assertEqual(src[a], [[[0.2, 0.8], [0.6, 0.4]]])
     self.assertEqual(src[b], [[[0.1, 0.9]], [[0.3, 0.7], [0.5, 0.5]]])
 
+  def testSetCPT(self):
+    cn = gum.CredalNet()
+    a = cn.addVariable("A", 2)
+    b = cn.addVariable("B", 2)
+    cn.addArc(a, b)
+    # by index of the instantiation of the parents
+    cn.setCPT(b, 1, [[0.3, 0.7], (0.5, 0.5)])
+    # by instantiation (only the parents matter)
+    inst = gum.Instantiation(cn.src_bn().cpt(b))
+    inst.chgVal("A", 0)
+    cn.setCPT(b, inst, ((0.1, 0.9),))
+    self.assertEqual(cn.credalNet_srcCpt()[b], [[[0.1, 0.9]], [[0.3, 0.7], [0.5, 0.5]]])
+
+  def testSetCPTInvalidArguments(self):
+    cn = gum.CredalNet()
+    a = cn.addVariable("A", 2)
+    for bad in ([0.5, 0.5], [["x", "y"]], "ab"):
+      with self.subTest(bad=bad), self.assertRaises(TypeError):
+        cn.setCPT(a, 0, bad)
+    with self.assertRaises(gum.SizeError):
+      cn.setCPT(a, 0, [[0.2, 0.3, 0.5]])
+    cn.setCPT(a, 0, [[0.5, 0.5]])
+    with self.assertRaises(gum.DuplicateElement):
+      cn.setCPT(a, 0, [[0.2, 0.8]])
+
   def testSetCPTsAcceptsTuples(self):
     cn = gum.CredalNet()
     a = cn.addVariable("A", 2)

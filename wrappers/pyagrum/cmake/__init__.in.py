@@ -80,7 +80,7 @@ __all__ = [
   "NotImplementedYet", "NullElement", "NumericalDiscreteVariable", "OperationNotAllowed",
   "OutOfBounds", "PAG", "PDAG", "PRMTypeError", "PossiblyIncompatibleScorePrior",
   "PythonApproximationListener", "PythonBNListener", "PythonDatabaseGeneratorListener",
-  "PythonLoadListener", "RangeVariable", "ScheduleMultiDimError", "ScheduleOperationError",
+  "PythonLoadListener", "PythonMRFListener", "RangeVariable", "ScheduleMultiDimError", "ScheduleOperationError",
   "ShaferShenoyInference", "SizeError", "StructuralMetrics", "Tensor",
   "UnavailableScheduleOperation", "UndefinedElement", "UndefinedIteratorKey",
   "UndefinedIteratorValue", "UndiGraph", "UnexecutedScheduleOperation", "UnknownLabelInDatabase",
@@ -323,6 +323,7 @@ from .pyagrumcpp import (
   PythonApproximationListener,
   PythonBNListener,
   PythonLoadListener,
+  PythonMRFListener,
   PythonDatabaseGeneratorListener,
 )
 from .pyagrumcpp import BNGenerator

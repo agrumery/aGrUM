@@ -269,11 +269,6 @@ class PRMexplorer(object):
 
         """
         return _prmcpp.PRMexplorer_classImplements(self, class_name)
-    aggType = property(_prmcpp.PRMexplorer_aggType_get, _prmcpp.PRMexplorer_aggType_set, doc=r"""
-
-    min/max/count/exists/forall/or/and/amplitude/median
-
-    """)
 
     def classAggregates(self, class_name: str) -> list[object]:
         r"""

@@ -46,7 +46,12 @@
 
 
 // macro from graphs.i
-%ignore gum::BayesNet<GUM_SCALAR>::add(const gum::DiscreteVariable& variable, gum::MultiDimImplementation<GUM_SCALAR> * aContent);
+// an %ignore with a signature matches only the parameter types as written in the header (no gum:: qualification)
+%ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*);
+%ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*, NodeId);
+// the BN would own (and delete) a tensor still owned by Python: only the overloads by copy are wrapped
+%ignore gum::BayesNet<double>::changeTensor(NodeId, Tensor<double>*);
+%ignore gum::BayesNet<double>::changeTensor(std::string_view, Tensor<double>*);
 
 %ignore *::beginNodes;
 %ignore *::endNodes;
@@ -110,7 +115,6 @@ IMPROVE_BAYESNET_API(gum::BayesNetFragment);
 %}
 ADD_GUM_IO_TO_GRAPH(gum::EssentialGraph)
 ADD_GUM_GRAPH_READERS(gum::EssentialGraph, EssentialGraph)
-ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(gum::MarkovBlanket);
 
 
 %define IMPROVE_CONCRETEBAYESNET_API(classname)
@@ -170,7 +174,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
     if not hasattr(self,"_listeners"):
       self._listeners=[]
 
-    nl = PythonBNListener(self, self.variableNodeMap())
+    nl = PythonBNListener(self, self._variableNodeMap())
     if whenNodeAdded is not None:
       nl.setWhenNodeAdded(whenNodeAdded)
     if whenNodeDeleted is not None:
@@ -185,7 +189,6 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
 }
 %enddef
 IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
-IMPROVE_CONCRETEBAYESNET_API(gum::BayesNetFragment);
 
 // Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can keep named arguments
 // and default indent to None: the library then uses pyagrum.config["core","jgumIndent"]

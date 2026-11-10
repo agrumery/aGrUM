@@ -298,15 +298,15 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >
       CausalModel< GUM_SCALAR >::inducedCausalSubModel(const CausalModel< GUM_SCALAR >& cm,
-                                                       NodeSet subset) const {
+                                                       const NodeSet& subset) const {
     // If caller gave an empty subset, use "all observed" nodes
-    if (subset.empty()) {
+    NodeSet nodes = subset;
+    if (nodes.empty()) {
       for (auto n: cm._observedDAG_.nodes())
-        subset.insert(n);
+        nodes.insert(n);
     }
 
     // Keep only OBSERVED nodes (drop latents explicitly)
-    NodeSet nodes = subset;
     for (auto L: cm.latentVariablesIds())
       nodes.erase(L);
 

@@ -516,11 +516,6 @@ pyagrum.IndexError
     If the InfluenceDiagram does not contain the variable
 "
 
-%feature("docstring") gum::InfluenceDiagram::variableNodeMap
-"
-TBD
-"
-
 %feature("docstring") gum::InfluenceDiagram::fastPrototype
 "
 Create an Influence Diagram with a dot-like syntax which specifies:
@@ -727,14 +722,4 @@ Should be called after beginTopologyTransformation when all modifications are do
 %feature("docstring") gum::InfluenceDiagram::clear
 "
 Clear the influence diagram, removing all nodes and arcs.
-"
-
-%feature("docstring") gum::DiscreteGraphicalModel::variableNodeMap
-"
-Return the variable-to-node mapping of the model.
-
-Returns
--------
-pyagrum.VariableNodeMap
-    the internal variable-to-node bijection
 "

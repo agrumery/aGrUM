@@ -174,14 +174,22 @@ namespace gum {
     NodeSet nodeset(const std::vector< std::string >& names) const;
 
     /**
-     * transform a vector of names into a VariableeSet
-     * @return NodeSet
+     * @brief the set of all the variables of the model
+     * @return VariableSet
+     */
+    gum::VariableSet variables() const;
+
+    /**
+     * @brief transform a vector of names into a VariableSet
+     * @return VariableSet
+     * @throw NotFound if a name is not the name of a variable of the model
      */
     gum::VariableSet variables(const std::vector< std::string >& l) const;
 
     /**
-     * transform a vector of NodeId into a VariableeSet
-     * @return NodeSet
+     * @brief transform a set of NodeId into a VariableSet
+     * @return VariableSet
+     * @throw NotFound if an id is not the id of a variable of the model
      */
     gum::VariableSet variables(const NodeSet& ids) const;
 

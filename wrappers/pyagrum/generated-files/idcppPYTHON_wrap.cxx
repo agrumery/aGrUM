@@ -6802,110 +6802,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  gum::DiscreteVariable *arg2 = 0 ;
-  gum::MultiDimImplementation< double > *arg3 = 0 ;
-  gum::NodeId arg4 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  size_t val4 ;
-  int ecode4 = 0 ;
-  gum::NodeId result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "3"" of type '" "gum::MultiDimImplementation< double > *""'"); 
-  }
-  arg3 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp3);
-  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
-  if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "4"" of type '" "gum::NodeId""'");
-  } 
-  arg4 = static_cast< gum::NodeId >(val4);
-  {
-    try {
-      result = (arg1)->addUtilityNode((gum::DiscreteVariable const &)*arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::InfluenceDiagram< double > *arg1 = 0 ;
-  gum::DiscreteVariable *arg2 = 0 ;
-  gum::MultiDimImplementation< double > *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  gum::NodeId result;
-  
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__DiscreteVariable,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "2"" of type '" "gum::DiscreteVariable const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::DiscreteVariable * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "InfluenceDiagram_addUtilityNode" "', argument " "3"" of type '" "gum::MultiDimImplementation< double > *""'"); 
-  }
-  arg3 = reinterpret_cast< gum::MultiDimImplementation< double > * >(argp3);
-  {
-    try {
-      result = (arg1)->addUtilityNode((gum::DiscreteVariable const &)*arg2,arg3);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_InfluenceDiagram_add__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
@@ -7288,7 +7184,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
   std::string_view arg2 ;
@@ -7346,11 +7242,11 @@ fail:
 
 SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[5] = {
+  PyObject *argv[4] = {
     0
   };
   
-  if (!(argc = SWIG_Python_UnpackTuple(args, "InfluenceDiagram_addUtilityNode", 0, 4, argv))) SWIG_fail;
+  if (!(argc = SWIG_Python_UnpackTuple(args, "InfluenceDiagram_addUtilityNode", 0, 3, argv))) SWIG_fail;
   --argc;
   if (argc == 2) {
     int _v = 0;
@@ -7364,29 +7260,12 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_addUtilityNode(PyObject *self, PyObj
 check_1:
   
   if (argc == 2) {
-    PyObject *retobj = _wrap_InfluenceDiagram_addUtilityNode__SWIG_4(self, argc, argv);
+    PyObject *retobj = _wrap_InfluenceDiagram_addUtilityNode__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      void *vptr = 0;
-      int res = SWIG_ConvertPtr(argv[2], &vptr, SWIGTYPE_p_gum__MultiDimImplementationT_double_t, 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_3;
-    return _wrap_InfluenceDiagram_addUtilityNode__SWIG_3(self, argc, argv);
-  }
-check_3:
-  
   if (argc == 3) {
     PyObject *retobj = _wrap_InfluenceDiagram_addUtilityNode__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 4) {
-    PyObject *retobj = _wrap_InfluenceDiagram_addUtilityNode__SWIG_2(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -7396,8 +7275,6 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    gum::InfluenceDiagram< double >::addUtilityNode(gum::DiscreteVariable const &,gum::NodeId)\n"
     "    gum::InfluenceDiagram< double >::addUtilityNode(gum::DiscreteVariable const &)\n"
-    "    gum::InfluenceDiagram< double >::addUtilityNode(gum::DiscreteVariable const &,gum::MultiDimImplementation< double > *,gum::NodeId)\n"
-    "    gum::InfluenceDiagram< double >::addUtilityNode(gum::DiscreteVariable const &,gum::MultiDimImplementation< double > *)\n"
     "    gum::InfluenceDiagram< double >::addUtilityNode(std::string_view)\n");
   return 0;
 }

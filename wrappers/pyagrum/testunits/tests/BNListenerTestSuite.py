@@ -110,6 +110,74 @@ class TestListeners(PythonBNListenerTestCase):
     self.assertTrue(f"Noeud++ a ({a})\n" in self.buffer1)
 
 
+class TestOtherModelsListeners(pyAgrumTestCase):
+  def setUp(self):
+    self.events = []
+
+  def testInfluenceDiagram(self):
+    diag = gum.InfluenceDiagram()
+    diag.addStructureListener(
+      whenNodeAdded=lambda i, s: self.events.append(("node+", i, s)),
+      whenNodeDeleted=lambda i: self.events.append(("node-", i)),
+      whenArcAdded=lambda i, j: self.events.append(("arc+", i, j)),
+      whenArcDeleted=lambda i, j: self.events.append(("arc-", i, j)),
+    )
+    c = diag.addChanceNode(gum.LabelizedVariable("c", "c", 2))
+    d = diag.addDecisionNode(gum.LabelizedVariable("d", "d", 2))
+    u = diag.addUtilityNode(gum.LabelizedVariable("u", "u", 1))
+    diag.addArc(c, u)
+    diag.addArc(d, u)
+    diag.eraseArc(c, u)
+    diag.erase(d)
+    self.assertEqual(
+      self.events,
+      [
+        ("node+", c, "c"),
+        ("node+", d, "d"),
+        ("node+", u, "u"),
+        ("arc+", c, u),
+        ("arc+", d, u),
+        ("arc-", c, u),
+        ("arc-", d, u),
+        ("node-", d),
+      ],
+    )
+
+  def testMarkovRandomField(self):
+    mrf = gum.MarkovRandomField()
+    mrf.addStructureListener(
+      whenNodeAdded=lambda i, s: self.events.append(("node+", i, s)),
+      whenNodeDeleted=lambda i: self.events.append(("node-", i)),
+      whenEdgeAdded=lambda i, j: self.events.append(("edge+", min(i, j), max(i, j))),
+      whenEdgeDeleted=lambda i, j: self.events.append(("edge-", min(i, j), max(i, j))),
+    )
+    a, b, c = (mrf.add(name, 2) for name in "abc")
+    mrf.addFactor(["a", "b"])
+    # the edge a-b is not signaled again when another factor is added
+    mrf.addFactor(["b", "c"])
+    mrf.eraseFactor(["a", "b"])
+    mrf.erase("c")
+    self.assertEqual(
+      self.events,
+      [
+        ("node+", a, "a"),
+        ("node+", b, "b"),
+        ("node+", c, "c"),
+        ("edge+", a, b),
+        ("edge+", b, c),
+        ("edge-", a, b),
+        ("edge-", b, c),
+        ("node-", c),
+      ],
+    )
+
+  def testNoListenerIsANoOp(self):
+    for model in (gum.InfluenceDiagram(), gum.MarkovRandomField()):
+      model.addStructureListener()
+      self.assertFalse(hasattr(model, "_listeners"))
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestMessagesSetting)
 addTests(ts, TestListeners)
+addTests(ts, TestOtherModelsListeners)

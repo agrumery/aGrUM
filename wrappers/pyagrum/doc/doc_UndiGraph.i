@@ -249,7 +249,7 @@ Set
 "
 Parameters
 ----------
-nodesSet : Set
+nodes : set[int]
     The set of nodes composing the partial graph
 
 Returns

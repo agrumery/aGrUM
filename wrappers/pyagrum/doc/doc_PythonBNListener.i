@@ -46,21 +46,23 @@
 
 %feature("docstring") PythonBNListener
 "
-Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
+Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
+is notified when the structure of the model is changed.
 
-PythonBNListener(bn:gum.BayesNet,vnm:gum.VariableNodeMap) -> PythonBNListener
+PythonBNListener(model:gum.DAGmodel,vnm:gum.VariableNodeMap) -> PythonBNListener
     default constructor
 
 Notes
 -----
-    This class est mainly automatically instantiated using the method gum.BayesNet.addStructureListener.
+    This class is mainly instantiated automatically by the methods `addStructureListener` of
+    pyagrum.BayesNet and pyagrum.InfluenceDiagram.
 
 Parameters
 ----------
-bn : BaysNet
-    The bayes net to listen to
-vnm : VarNodeMap
-    A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).
+model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
+    The model to listen to
+vnm : VariableNodeMap
+    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
 "
 
 
@@ -71,7 +73,7 @@ Add the listener in parameter to the list of existing ones for adding an arc.
 Parameters
 ----------
 pyfunc : lambda expression
-    a function (i:int,j:int) called when when an arc (i,j) is added
+    a function (i:int,j:int) called when an arc (i,j) is added
 "
 
 %feature("docstring") PythonBNListener::setWhenArcDeleted
@@ -81,7 +83,7 @@ Add the listener in parameter to the list of existing ones for deleting an arc.
 Parameters
 ----------
 pyfunc : lambda expression
-    a function (i:int,j:int) called when when an arc (i,j) is removed
+    a function (i:int,j:int) called when an arc (i,j) is removed
 "
 
 %feature("docstring") PythonBNListener::setWhenNodeAdded
@@ -96,12 +98,12 @@ pyfunc : lambda expression
 
 %feature("docstring") PythonBNListener::setWhenNodeDeleted
 "
-Add the listener in parameter to the list of existing ones for deleting an arc.
+Add the listener in parameter to the list of existing ones for deleting a node.
 
 Parameters
 ----------
 pyfunc : lambda expression
-    a function (i:int) called when a node of id i and name s is removed.
+    a function (i:int) called when a node of id i is removed.
 "
 
 %feature("docstring") PythonBNListener::whenArcAdded

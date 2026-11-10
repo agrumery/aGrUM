@@ -3774,10 +3774,9 @@ namespace Swig {
 #define SWIGTYPE_p_second_type swig_types[40]
 #define SWIGTYPE_p_size_type swig_types[41]
 #define SWIGTYPE_p_std__size_t swig_types[42]
-#define SWIGTYPE_p_std__string swig_types[43]
-#define SWIGTYPE_p_value_type swig_types[44]
-static swig_type_info *swig_types[46];
-static swig_module_info swig_module = {swig_types, 45, 0, 0, 0, 0};
+#define SWIGTYPE_p_value_type swig_types[43]
+static swig_type_info *swig_types[45];
+static swig_module_info swig_module = {swig_types, 44, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4854,67 +4853,6 @@ SWIGINTERN PyObject *_wrap_PRMexplorer_classImplements(PyObject *self, PyObject 
   }
   resultobj = result;
   if (!resultobj) SWIG_fail;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_PRMexplorer_aggType_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  PRMexplorer *arg1 = 0 ;
-  std::string *arg2 = (std::string *)0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "PRMexplorer_aggType_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PRMexplorer, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PRMexplorer_aggType_set" "', argument " "1"" of type '" "PRMexplorer *""'"); 
-  }
-  arg1 = reinterpret_cast< PRMexplorer * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__string, 0 |  0 );
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "PRMexplorer_aggType_set" "', argument " "2"" of type '" "std::string [9]""'"); 
-  } 
-  arg2 = reinterpret_cast< std::string * >(argp2);
-  {
-    if (arg2) {
-      size_t ii = 0;
-      for (; ii < (size_t)9; ++ii) *(std::string *)&arg1->aggType[ii] = *((std::string *)arg2 + ii);
-    } else {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in variable '""aggType""' of type '""std::string [9]""'");
-    }
-  }
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_PRMexplorer_aggType_get(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  PRMexplorer *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  std::string *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_PRMexplorer, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "PRMexplorer_aggType_get" "', argument " "1"" of type '" "PRMexplorer *""'"); 
-  }
-  arg1 = reinterpret_cast< PRMexplorer * >(argp1);
-  result = (std::string *)(std::string *) ((arg1)->aggType);
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__string, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -6064,16 +6002,6 @@ static PyMethodDef SwigMethods[] = {
 		"    the list of interfaces implemented by the class\n"
 		"\n"
 		""},
-	 { "PRMexplorer_aggType_set", _wrap_PRMexplorer_aggType_set, METH_VARARGS, "\n"
-		"\n"
-		"min/max/count/exists/forall/or/and/amplitude/median\n"
-		"\n"
-		""},
-	 { "PRMexplorer_aggType_get", _wrap_PRMexplorer_aggType_get, METH_O, "\n"
-		"\n"
-		"min/max/count/exists/forall/or/and/amplitude/median\n"
-		"\n"
-		""},
 	 { "PRMexplorer_classAggregates", _wrap_PRMexplorer_classAggregates, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
@@ -6449,7 +6377,6 @@ static swig_type_info _swigt__p_node_iterator_safe = {"_p_node_iterator_safe", "
 static swig_type_info _swigt__p_second_type = {"_p_second_type", "second_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__size_t = {"_p_std__size_t", "gum::Idx *|gum::NodeId *|gum::Size *|std::size_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__string = {"_p_std__string", "std::string *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_value_type = {"_p_value_type", "value_type *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -6496,7 +6423,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_second_type,
   &_swigt__p_size_type,
   &_swigt__p_std__size_t,
-  &_swigt__p_std__string,
   &_swigt__p_value_type,
 };
 
@@ -6543,7 +6469,6 @@ static swig_cast_info _swigc__p_node_iterator_safe[] = {  {&_swigt__p_node_itera
 static swig_cast_info _swigc__p_second_type[] = {  {&_swigt__p_second_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__size_t[] = {  {&_swigt__p_std__size_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_std__string[] = {  {&_swigt__p_std__string, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_value_type[] = {  {&_swigt__p_value_type, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -6590,7 +6515,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_second_type,
   _swigc__p_size_type,
   _swigc__p_std__size_t,
-  _swigc__p_std__string,
   _swigc__p_value_type,
 };
 

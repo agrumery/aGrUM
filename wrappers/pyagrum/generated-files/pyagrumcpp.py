@@ -4136,7 +4136,7 @@ class UndiGraph(object):
 
         Parameters
         ----------
-        nodesSet : Set
+        nodes : set[int]
             The set of nodes composing the partial graph
 
         Returns
@@ -4240,6 +4240,39 @@ class UndiGraph(object):
         """
         return _pyagrumcpp.UndiGraph_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -4267,36 +4300,6 @@ class UndiGraph(object):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def nameFromId(self, id: int) -> str:
@@ -4878,6 +4881,39 @@ class DiGraph(object):
         """
         return _pyagrumcpp.DiGraph_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -4905,36 +4941,6 @@ class DiGraph(object):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def nameFromId(self, id: int) -> str:
@@ -8252,6 +8258,39 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
         """
         return _pyagrumcpp.CPDAG_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -8279,36 +8318,6 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def _saveGUMstring(self, *args) -> str:
@@ -8577,6 +8586,39 @@ class MPDAG(_ImmutableMixedGraphPDAG):
         """
         return _pyagrumcpp.MPDAG_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -8604,36 +8646,6 @@ class MPDAG(_ImmutableMixedGraphPDAG):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def _saveGUMstring(self, *args) -> str:
@@ -9093,6 +9105,39 @@ class MarkedGraph(object):
         """
         return _pyagrumcpp.MarkedGraph_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -9120,36 +9165,6 @@ class MarkedGraph(object):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def nameFromId(self, id: int) -> str:
@@ -10148,6 +10163,39 @@ class MAG(_ImmutableGraphMarkedGraph):
         """
         return _pyagrumcpp.MAG_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -10175,36 +10223,6 @@ class MAG(_ImmutableGraphMarkedGraph):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def _saveGUMstring(self, *args) -> str:
@@ -11642,18 +11660,8 @@ class GraphicalModel(object):
         """
         return _pyagrumcpp.GraphicalModel_updateMetaData(self)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Return the variable-to-node mapping of the model.
-
-        Returns
-        -------
-        pyagrum.VariableNodeMap
-            the internal variable-to-node bijection
-
-        """
-        return _pyagrumcpp.GraphicalModel_variableNodeMap(self)
+    def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrumcpp.GraphicalModel__variableNodeMap(self)
 
     def size(self) -> int:
         return _pyagrumcpp.GraphicalModel_size(self)
@@ -11741,17 +11749,23 @@ class GraphicalModel(object):
     def variables(self, *args) -> "pyagrum.VariableSet":
         r"""
 
-        Return the set of variables corresponding to a list of names or a set of node ids.
+        Return the variables of the model: all of them, or those corresponding to a list of names or to a set of
+        node ids.
 
         Parameters
         ----------
-        args : list[str] or set[int]
-            variable names or node ids
+        args : list[str] or set[int], optional
+            variable names or node ids (all the variables of the model if absent)
 
         Returns
         -------
-        pyagrum.VariableSet
-            the set of corresponding variables
+        set[pyagrum.DiscreteVariable]
+            the corresponding variables
+
+        Raises
+        ------
+        pyagrum.NotFound
+            If a name or an id is not the one of a variable of the model.
 
         """
         return _pyagrumcpp.GraphicalModel_variables(self, *args)
@@ -11925,18 +11939,8 @@ class DiscreteGraphicalModel(GraphicalModel):
     __repr__ = _swig_repr
     __swig_destroy__ = _pyagrumcpp.delete_DiscreteGraphicalModel
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Return the variable-to-node mapping of the model.
-
-        Returns
-        -------
-        pyagrum.VariableNodeMap
-            the internal variable-to-node bijection
-
-        """
-        return _pyagrumcpp.DiscreteGraphicalModel_variableNodeMap(self)
+    def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrumcpp.DiscreteGraphicalModel__variableNodeMap(self)
 
     def variable(self, id: int) -> "pyagrum.DiscreteVariable":
         return _pyagrumcpp.DiscreteGraphicalModel_variable(self, id)
@@ -15720,48 +15724,52 @@ def Potential(*args, **kwargs):
 class PythonBNListener(object):
     r"""
 
-    Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
+    Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
+    is notified when the structure of the model is changed.
 
-    PythonBNListener(bn:pyagrum.BayesNet,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
+    PythonBNListener(model:pyagrum.DAGmodel,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
         default constructor
 
     Notes
     -----
-        This class est mainly automatically instantiated using the method pyagrum.BayesNet.addStructureListener.
+        This class is mainly instantiated automatically by the methods `addStructureListener` of
+        pyagrum.BayesNet and pyagrum.InfluenceDiagram.
 
     Parameters
     ----------
-    bn : BaysNet
-        The bayes net to listen to
-    vnm : VarNodeMap
-        A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).
+    model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
+        The model to listen to
+    vnm : VariableNodeMap
+        A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
 
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
-    def __init__(self, bn: "pyagrum.BayesNet", vnm: "pyagrum.VariableNodeMap"):
+    def __init__(self, model: "pyagrum.DAGmodel", vnm: "pyagrum.VariableNodeMap"):
         r"""
 
-        Listener for Bayesian Network's modifications. This listener is notified when the structure of the BN is changed.
+        Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
+        is notified when the structure of the model is changed.
 
-        PythonBNListener(bn:pyagrum.BayesNet,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
+        PythonBNListener(model:pyagrum.DAGmodel,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
             default constructor
 
         Notes
         -----
-            This class est mainly automatically instantiated using the method pyagrum.BayesNet.addStructureListener.
+            This class is mainly instantiated automatically by the methods `addStructureListener` of
+            pyagrum.BayesNet and pyagrum.InfluenceDiagram.
 
         Parameters
         ----------
-        bn : BaysNet
-            The bayes net to listen to
-        vnm : VarNodeMap
-            A translation unit between id of node and name of variable (usually : bn.variableNodeMap()).
+        model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
+            The model to listen to
+        vnm : VariableNodeMap
+            A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
 
         """
-        _pyagrumcpp.PythonBNListener_swiginit(self, _pyagrumcpp.new_PythonBNListener(bn, vnm))
+        _pyagrumcpp.PythonBNListener_swiginit(self, _pyagrumcpp.new_PythonBNListener(model, vnm))
     __swig_destroy__ = _pyagrumcpp.delete_PythonBNListener
 
     def whenNodeAdded(self, source: object, id: int) -> None:
@@ -15830,7 +15838,7 @@ class PythonBNListener(object):
         Parameters
         ----------
         pyfunc : lambda expression
-            a function (i:int,j:int) called when when an arc (i,j) is added
+            a function (i:int,j:int) called when an arc (i,j) is added
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenArcAdded(self, pyfunc)
@@ -15843,7 +15851,7 @@ class PythonBNListener(object):
         Parameters
         ----------
         pyfunc : lambda expression
-            a function (i:int,j:int) called when when an arc (i,j) is removed
+            a function (i:int,j:int) called when an arc (i,j) is removed
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenArcDeleted(self, pyfunc)
@@ -15864,18 +15872,179 @@ class PythonBNListener(object):
     def setWhenNodeDeleted(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for deleting an arc.
+        Add the listener in parameter to the list of existing ones for deleting a node.
 
         Parameters
         ----------
         pyfunc : lambda expression
-            a function (i:int) called when a node of id i and name s is removed.
+            a function (i:int) called when a node of id i is removed.
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
 
 # Register PythonBNListener in _pyagrumcpp:
 _pyagrumcpp.PythonBNListener_swigregister(PythonBNListener)
+class PythonMRFListener(object):
+    r"""
+
+    Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
+    when the structure of the model is changed.
+
+    PythonMRFListener(model:pyagrum.UGmodel,vnm:pyagrum.VariableNodeMap) -> PythonMRFListener
+        default constructor
+
+    Notes
+    -----
+        This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.
+
+    Parameters
+    ----------
+    model : pyagrum.MarkovRandomField
+        The model to listen to
+    vnm : VariableNodeMap
+        A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, model: "pyagrum.UGmodel", vnm: "pyagrum.VariableNodeMap"):
+        r"""
+
+        Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
+        when the structure of the model is changed.
+
+        PythonMRFListener(model:pyagrum.UGmodel,vnm:pyagrum.VariableNodeMap) -> PythonMRFListener
+            default constructor
+
+        Notes
+        -----
+            This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.
+
+        Parameters
+        ----------
+        model : pyagrum.MarkovRandomField
+            The model to listen to
+        vnm : VariableNodeMap
+            A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+
+        """
+        _pyagrumcpp.PythonMRFListener_swiginit(self, _pyagrumcpp.new_PythonMRFListener(model, vnm))
+    __swig_destroy__ = _pyagrumcpp.delete_PythonMRFListener
+
+    def whenNodeAdded(self, source: object, id: int) -> None:
+        r"""
+
+        Callback called when a node is added to the Markov random field.
+
+        Parameters
+        ----------
+        id : int
+            the id of the new node
+        name : str
+            the name of the new node
+
+        """
+        return _pyagrumcpp.PythonMRFListener_whenNodeAdded(self, source, id)
+
+    def whenNodeDeleted(self, arg2: object, id: int) -> None:
+        r"""
+
+        Callback called when a node is removed from the Markov random field.
+
+        Parameters
+        ----------
+        id : int
+            the id of the deleted node
+
+        """
+        return _pyagrumcpp.PythonMRFListener_whenNodeDeleted(self, arg2, id)
+
+    def whenEdgeAdded(self, arg2: object, n1: int, n2: int) -> None:
+        r"""
+
+        Callback called when an edge is added to the Markov random field.
+
+        Parameters
+        ----------
+        n1 : int
+            the id of one node of the edge
+        n2 : int
+            the id of the other node of the edge
+
+        """
+        return _pyagrumcpp.PythonMRFListener_whenEdgeAdded(self, arg2, n1, n2)
+
+    def whenEdgeDeleted(self, arg2: object, n1: int, n2: int) -> None:
+        r"""
+
+        Callback called when an edge is removed from the Markov random field.
+
+        Parameters
+        ----------
+        n1 : int
+            the id of one node of the edge
+        n2 : int
+            the id of the other node of the edge
+
+        """
+        return _pyagrumcpp.PythonMRFListener_whenEdgeDeleted(self, arg2, n1, n2)
+
+    def setWhenEdgeAdded(self, pyfunc: object) -> None:
+        r"""
+
+        Add the listener in parameter to the list of existing ones for adding an edge.
+
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,j:int) called when an edge (i,j) is added
+
+        """
+        return _pyagrumcpp.PythonMRFListener_setWhenEdgeAdded(self, pyfunc)
+
+    def setWhenEdgeDeleted(self, pyfunc: object) -> None:
+        r"""
+
+        Add the listener in parameter to the list of existing ones for deleting an edge.
+
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,j:int) called when an edge (i,j) is removed
+
+        """
+        return _pyagrumcpp.PythonMRFListener_setWhenEdgeDeleted(self, pyfunc)
+
+    def setWhenNodeAdded(self, pyfunc: object) -> None:
+        r"""
+
+        Add the listener in parameter to the list of existing ones for adding a node.
+
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int,s:str) called when a node of id i and name s is added.
+
+        """
+        return _pyagrumcpp.PythonMRFListener_setWhenNodeAdded(self, pyfunc)
+
+    def setWhenNodeDeleted(self, pyfunc: object) -> None:
+        r"""
+
+        Add the listener in parameter to the list of existing ones for deleting a node.
+
+        Parameters
+        ----------
+        pyfunc : lambda expression
+            a function (i:int) called when a node of id i is removed.
+
+        """
+        return _pyagrumcpp.PythonMRFListener_setWhenNodeDeleted(self, pyfunc)
+
+# Register PythonMRFListener in _pyagrumcpp:
+_pyagrumcpp.PythonMRFListener_swigregister(PythonMRFListener)
 class PythonLoadListener(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -16644,34 +16813,6 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_nodes(self)
 
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
     def adjacencyMatrix(self):
       """ adjacency matrix from a graph/graphical models
 
@@ -16685,6 +16826,8 @@ class MarkovBlanket(object):
         adjacency matrix (as numpy.ndarray) with nodeId as key.
 
       """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
       nodes=self.nodes()
       n=self.size()
       am=numpy.zeros((n,n)).astype(int)
@@ -16781,65 +16924,6 @@ class MarkovBlanket(object):
 
         """
         return _pyagrumcpp.MarkovBlanket_ancestors(self, *args)
-
-    def connectedComponentsList(self):
-      """ connected components as a dict of sets
-
-      Returns
-      -------
-      dict(int, set[int])
-        dict of connected components (as sets of nodeIds) keyed by an arbitrary root nodeId per component.
-
-      """
-      cc = self.connectedComponents()
-      result = {}
-      for node, root in cc.items():
-        if root not in result:
-          result[root] = set()
-        result[root].add(node)
-      return result
-
-    def connectedComponentsCount(self):
-      """ number of connected components
-
-      Returns
-      -------
-      int
-        the number of connected components in the graph.
-
-      """
-      return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
 
 # Register MarkovBlanket in _pyagrumcpp:
 _pyagrumcpp.MarkovBlanket_swigregister(MarkovBlanket)
@@ -17597,6 +17681,39 @@ class IBayesNet(DAGmodel):
         """
         return _pyagrumcpp.IBayesNet_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -17624,36 +17741,6 @@ class IBayesNet(DAGmodel):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
@@ -18485,19 +18572,21 @@ class BayesNet(IBayesNet):
     def changeTensor(self, *args) -> None:
         r"""
 
-        change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
+        Replaces the CPT of a variable by a copy of a tensor.
+
+        The Bayesian network keeps its own copy: modifying newPot afterwards does not change the CPT.
 
         Parameters
         ----------
         var : int | str
             the current name or the id of the variable
         newPot : pyagrum.Tensor
-            the new tensor
+            the new CPT, with the same variables in the same order as the current CPT
 
         Raises
         ------
-        pyagrum.NotAllowed
-            If newPot has not the same signature as __probaMap[NodeId]
+        pyagrum.OperationNotAllowed
+            If newPot does not have the same variables, in the same order, as the current CPT
 
         """
         return _pyagrumcpp.BayesNet_changeTensor(self, *args)
@@ -18567,18 +18656,8 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_idFromName(self, name)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Return the variable-to-node mapping of the model.
-
-        Returns
-        -------
-        pyagrum.VariableNodeMap
-            the internal variable-to-node bijection
-
-        """
-        return _pyagrumcpp.BayesNet_variableNodeMap(self)
+    def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrumcpp.BayesNet__variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -18743,6 +18822,39 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -18770,36 +18882,6 @@ class BayesNet(IBayesNet):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
@@ -18878,7 +18960,7 @@ class BayesNet(IBayesNet):
         if not hasattr(self,"_listeners"):
           self._listeners=[]
 
-        nl = PythonBNListener(self, self.variableNodeMap())
+        nl = PythonBNListener(self, self._variableNodeMap())
         if whenNodeAdded is not None:
           nl.setWhenNodeAdded(whenNodeAdded)
         if whenNodeDeleted is not None:
@@ -19452,16 +19534,8 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrumcpp.BayesNetFragment_cpt(self, *args)
 
-    def variableNodeMap(self) -> "pyagrum.VariableNodeMap":
-        r"""
-
-        Returns
-        -------
-        pyagrum.variableNodeMap
-            the variable node map
-
-        """
-        return _pyagrumcpp.BayesNetFragment_variableNodeMap(self)
+    def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
+        return _pyagrumcpp.BayesNetFragment__variableNodeMap(self)
 
     def variable(self, *args) -> "pyagrum.DiscreteVariable":
         r"""
@@ -19846,6 +19920,39 @@ class BayesNetFragment(IBayesNet, ):
         """
         return _pyagrumcpp.BayesNetFragment_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -19874,36 +19981,6 @@ class BayesNetFragment(IBayesNet, ):
       """
       return len(set(self.connectedComponents().values()))
 
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
-
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
         r"""
@@ -19926,73 +20003,6 @@ class BayesNetFragment(IBayesNet, ):
 
         """
         return _pyagrumcpp.BayesNetFragment_moralizedAncestralGraph(self, nodes)
-
-    def addVariables(self,listFastVariables,default_nbr_mod=2):
-       """
-       Add a list of variable in the form of 'fast' syntax.
-
-       Parameters
-       ----------
-       listFastVariables: list[str]
-         the list of variables in 'fast' syntax.
-       default_nbr_mod: int
-         the number of modalities for the variable if not specified following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>`. Note that default_nbr_mod=1 is
-         mandatory to create variables with only one modality (for utility for instance).
-
-       Returns
-       -------
-       list[int]
-         the list of created ids.
-       """
-       return [self.add(descr,default_nbr_mod) for descr in listFastVariables]
-
-    def addArcs(self,listArcs):
-      """
-      add a list of arcs in te model.
-
-      Parameters
-      ----------
-      listArcs : list[tuple[int|str,int|str]]
-        the list of arcs
-      """
-      self.beginTopologyTransformation()
-      for arc in listArcs:
-        self.addArc(*arc)
-      self.endTopologyTransformation()
-
-    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
-        """
-        Add the listeners in parameters to the list of existing ones.
-
-        Parameters
-        ----------
-        whenNodeAdded : lambda expression
-          a function for when a node is added
-        whenNodeDeleted : lambda expression
-          a function for when a node is removed
-        whenArcAdded : lambda expression
-          a function for when an arc is added
-        whenArcDeleted : lambda expression
-          a function for when an arc is removed
-        """
-        if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-          return
-
-        if not hasattr(self,"_listeners"):
-          self._listeners=[]
-
-        nl = PythonBNListener(self, self.variableNodeMap())
-        if whenNodeAdded is not None:
-          nl.setWhenNodeAdded(whenNodeAdded)
-        if whenNodeDeleted is not None:
-          nl.setWhenNodeDeleted(whenNodeDeleted)
-        if whenArcAdded is not None:
-          nl.setWhenArcAdded(whenArcAdded)
-        if whenArcDeleted is not None:
-          nl.setWhenArcDeleted(whenArcDeleted)
-
-        self._listeners.append(nl)
-
 
 # Register BayesNetFragment in _pyagrumcpp:
 _pyagrumcpp.BayesNetFragment_swigregister(BayesNetFragment)
@@ -32308,7 +32318,7 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_setSliceOrder(self, *args)
 
-    def useK2(self, *args) -> "pyagrum.BNLearner":
+    def useK2(self, l: object) -> "pyagrum.BNLearner":
         r"""
 
         Indicate to use the K2 algorithm (which needs a total ordering of the variables).
@@ -32319,7 +32329,7 @@ class BNLearner(object):
               sequences of (ids or name)
 
         """
-        return _pyagrumcpp.BNLearner_useK2(self, *args)
+        return _pyagrumcpp.BNLearner_useK2(self, l)
 
     def latentVariables(self) -> list[tuple[int,int]]:
         r"""
@@ -32351,7 +32361,7 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_state(self)
 
-    def setPossibleEdges(self, *args):
+    def setPossibleEdges(self, soe: object) -> None:
         r"""
 
         Adds a constraint to the structure learning algorithm by fixing the set of possible edges.
@@ -32362,7 +32372,7 @@ class BNLearner(object):
             a set of edges as couples of nodeIds.
 
         """
-        return _pyagrumcpp.BNLearner_setPossibleEdges(self, *args)
+        return _pyagrumcpp.BNLearner_setPossibleEdges(self, soe)
 
     def pseudoCount(self,vars):
         """ access to pseudo-count (priors taken into account)

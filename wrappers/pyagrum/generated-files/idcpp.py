@@ -744,6 +744,39 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         """
         return _idcpp.InfluenceDiagram_nodes(self)
 
+    def adjacencyMatrix(self):
+      """ adjacency matrix from a graph/graphical models
+
+      Compute the adjacency matrix of a pyAgrum's graph or graphical models
+      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
+      a MAG, the symmetric matrix of `adjacents`)
+
+      Returns
+      -------
+      numpy.ndarray
+        adjacency matrix (as numpy.ndarray) with nodeId as key.
+
+      """
+      import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
+
+      nodes=self.nodes()
+      n=self.size()
+      am=numpy.zeros((n,n)).astype(int)
+
+      for node in nodes:
+          if hasattr(self,'adjacents'):
+              for adjacent in self.adjacents(node):
+                  am[node,adjacent]=1
+              continue
+          if hasattr(self,'children'):
+              for children in self.children(node):
+                  am[node,children]=1
+          if hasattr(self,'neighbours'):
+              for neighbour in self.neighbours(node):
+                  am[node,neighbour]=1
+      return am
+
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -771,36 +804,6 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
 
       """
       return len(set(self.connectedComponents().values()))
-
-    def adjacencyMatrix(self):
-      """ adjacency matrix from a graph/graphical models
-
-      Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
-
-      Returns
-      -------
-      numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
-
-      """
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
-
-      for node in nodes:
-          if hasattr(self,'adjacents'):
-              for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
-              continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
-              for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
-      return am
 
 
     def moralizedAncestralGraph(self, nodes: object) -> "pyagrum.UndiGraph":
@@ -1009,7 +1012,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       if not hasattr(self,"_listeners"):
         self._listeners=[]
 
-      nl = PythonBNListener(self, self.variableNodeMap())
+      nl = pyagrum.PythonBNListener(self, self._variableNodeMap())
       if whenNodeAdded is not None:
         nl.setWhenNodeAdded(whenNodeAdded)
       if whenNodeDeleted is not None:

@@ -424,48 +424,41 @@ max_path : str
 
 %feature("docstring") gum::credal::CredalNet::setCPT
 "
-Warnings
---------
-(experimental function) - Parameters to be wrapped
+Set the vertices of one credal set of a given node.
 
-
-Set the vertices of one credal set of a given node (any instantiation index)
+The credal set is selected either by its index or by an instantiation of the parents.
 
 Parameters
 ----------
 id : int
-    the Id of the node
+    the id of the node
 entry : int
-    the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
+    the index of the instantiation of the parents (from 0 to K - 1, the node itself excluded)
 ins : pyagrum.Instantiation
-    the Instantiation (only the parents matter to find the credal set index)
-cpt    : tbw
-    the vertices of every credal set (for each instantiation of the parents)
+    an instantiation (only the parents matter to find the credal set)
+cpt : list[list[float]]
+    the vertices of the credal set: one list of probabilities (one per value of the node) per vertex
 
 Warnings
 --------
-DOES not change the BayesNet(s) associated to this credal net !
+Does not change the BayesNet(s) associated to this credal net.
 "
 
 %feature("docstring") gum::credal::CredalNet::setCPTs
 "
-Warnings
---------
-(experimental function) - Parameters to be wrapped
-
-
-Set the vertices of the credal sets (all of the conditionals) of a given node
+Set the vertices of the credal sets (all of the conditionals) of a given node.
 
 Parameters
 ----------
 id : int
-    the NodeId of the node
-cpt    : tbw
-    the vertices of every credal set (for each instantiation of the parents)
+    the id of the node
+cpt : list[list[list[float]]]
+    for each instantiation of the parents (by index), the vertices of its credal set (one list of probabilities per
+    vertex)
 
 Warnings
 --------
-DOES not change the BayesNet (s) associated to this credal net !
+Does not change the BayesNet(s) associated to this credal net.
 "
 
 %feature("docstring") gum::credal::CredalNet::src_bn

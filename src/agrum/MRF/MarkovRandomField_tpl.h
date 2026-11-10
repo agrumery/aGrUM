@@ -166,7 +166,9 @@ namespace gum {
       UGmodel::operator=(std::move(source));
       _topologyTransformationInProgress_ = false;
       _factors_                          = std::move(source._factors_);
-      source._rebuildGraph_();
+      // source has no factor left and its graph is moved-from: drop its edges without any
+      // incremental update
+      source.graph_.clearEdges();
       GUM_OP_MOV(MarkovRandomField);
     }
     return *this;
@@ -174,7 +176,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >::~MarkovRandomField() {
-    _clearFactors_();
+    // only the factors are released: the graph dies with the model (and may be moved-from)
+    for (const auto& kv: _factors_)
+      delete kv.second;
     GUM_DESTRUCTOR(MarkovRandomField);
   }
 
@@ -261,14 +265,20 @@ namespace gum {
   void MarkovRandomField< GUM_SCALAR >::_rebuildGraph_() {
     if (_topologyTransformationInProgress_) return;
 
-    this->graph_.clearEdges();
-
+    // incremental update: the listeners of graph_ only see the edges that really change
+    EdgeSet target;
     for (const auto& kv: _factors_) {
       auto& c = *kv.second;
       for (Idx i = 0; i < c.nbrDim(); i++)
         for (Idx j = i + 1; j < c.nbrDim(); j++)
-          this->graph_.addEdge(this->varMap_.get(c.variable(i)), this->varMap_.get(c.variable(j)));
+          target.insert(Edge(this->varMap_.get(c.variable(i)), this->varMap_.get(c.variable(j))));
     }
+
+    const EdgeSet current = this->graph_.edges();
+    for (const auto& edge: current)
+      if (!target.contains(edge)) this->graph_.eraseEdge(edge);
+    for (const auto& edge: target)
+      if (!this->graph_.existsEdge(edge)) this->graph_.addEdge(edge.first(), edge.second());
   }
 
   template < GUM_Numeric GUM_SCALAR >

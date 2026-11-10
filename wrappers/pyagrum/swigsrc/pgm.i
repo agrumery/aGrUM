@@ -47,6 +47,11 @@
  // defines some macro for PGM classes
 
 
+// VariableNodeMap is not wrapped: private accessor, only handed back to C++ (e.g. PythonBNListener)
+%rename(_variableNodeMap) gum::GraphicalModel::variableNodeMap;
+%rename(_variableNodeMap) gum::DiscreteGraphicalModel::variableNodeMap;
+%rename(_variableNodeMap) gum::BayesNetFragment::variableNodeMap;
+
 %pythonappend gum::DAGmodel::dag %{
   from pyagrum import DAG
   val = DAG(val) # copying the DAG
