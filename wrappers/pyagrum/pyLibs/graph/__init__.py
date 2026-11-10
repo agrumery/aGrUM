@@ -159,16 +159,6 @@ def topologicalOrder(g) -> list[int]:
   ------
   pyagrum.InvalidDirectedCycle
     if the arcs of the graph contain a directed cycle
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.topologicalOrder(gum.fastDAG("C->B->A"))
-    # [0, 1, 2]
   """
   _check("topologicalOrder", g, "A")
   return list(_cpp._graph_topologicalOrder(g))
@@ -187,18 +177,6 @@ def hasDirectedCycle(g) -> bool:
   -------
   bool
     True if a directed cycle exists
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.hasDirectedCycle(gum.fastDiGraph("A->B->C->A"))
-    # True
-    gg.hasDirectedCycle(gum.fastMixedGraph("A->B-C-A"))  # the edges are ignored
-    # False
   """
   _check("hasDirectedCycle", g, "A")
   return _cpp._graph_hasDirectedCycle(g)
@@ -224,19 +202,6 @@ def ancestors(g, nodes) -> set[int]:
   -------
   set[int]
     the ancestors
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastDAG("A->B->C;D->C")
-    gg.ancestors(g, "C")
-    # {0, 1, 3}
-    gg.ancestors(g, ["B", "C"])  # B is an ancestor of C
-    # {0, 1, 3}
   """
   _check("ancestors", g, "A", "K")
   return set(_cpp._graph_ancestors(g, _nodes(g, nodes)))
@@ -262,23 +227,6 @@ def descendants(g, nodes) -> set[int]:
   -------
   set[int]
     the descendants
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastDAG("A->B->C;A->D")
-    gg.descendants(g, "A")
-    # {1, 2, 3}
-    gg.descendants(g, {"A", "B"})  # B is a descendant of A
-    # {1, 2, 3}
-    gg.descendants(gum.fastDiGraph("A->B->A"), "A")  # a directed cycle
-    # {0, 1}
-    gg.descendants(gum.fastMarkedGraph("A->B<->C;B->D"), "A")
-    # {1, 3}
   """
   _check("descendants", g, "A", "K")
   return set(_cpp._graph_descendants(g, _nodes(g, nodes)))
@@ -301,19 +249,6 @@ def directedPath(g, source, target) -> list[int] | None:
   -------
   list[int] | None
     the nodes of the path, from ``source`` to ``target``, or None if there is no directed path
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastDAG("A->B->C;A->D->E->C")
-    gg.directedPath(g, "A", "C")
-    # [0, 1, 2]
-    print(gg.directedPath(g, "C", "A"))
-    # None
   """
   _check("directedPath", g, "A")
   return _cpp._graph_directedPath(g, _node(g, source), _node(g, target))
@@ -336,19 +271,6 @@ def hasDirectedPath(g, source, target) -> bool:
   -------
   bool
     True if there is a directed path from ``source`` to ``target``
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastPDAG("A->B-C")
-    gg.hasDirectedPath(g, "A", "B")
-    # True
-    gg.hasDirectedPath(g, "A", "C")  # the edge B-C is ignored
-    # False
   """
   _check("hasDirectedPath", g, "A")
   return _cpp._graph_hasDirectedPath(g, _node(g, source), _node(g, target))
@@ -370,18 +292,6 @@ def hasUndirectedCycle(g) -> bool:
   -------
   bool
     True if a cycle of edges exists
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.hasUndirectedCycle(gum.fastUndiGraph("A-B-C-A"))
-    # True
-    gg.hasUndirectedCycle(gum.fastMixedGraph("A-B-C->A"))  # the arcs are ignored
-    # False
   """
   _check("hasUndirectedCycle", g, "E")
   return _cpp._graph_hasUndirectedCycle(g)
@@ -408,18 +318,6 @@ def isChordal(g) -> bool:
   ----------
   D. J. Rose, R. E. Tarjan, G. S. Lueker. Algorithmic aspects of vertex elimination on graphs. SIAM
   Journal on Computing 5(2):266-283, 1976.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.isChordal(gum.fastUndiGraph("A-B-C-D-A"))
-    # False
-    gg.isChordal(gum.fastUndiGraph("A-B-C-D-A;A-C"))
-    # True
   """
   _check("isChordal", g, "E")
   return _cpp._graph_isChordal(g)
@@ -452,19 +350,6 @@ def lexBFS(g, first=None) -> list[int]:
   ----------
   D. J. Rose, R. E. Tarjan, G. S. Lueker. Algorithmic aspects of vertex elimination on graphs. SIAM
   Journal on Computing 5(2):266-283, 1976.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastUndiGraph("A-B-C;B-D")
-    gg.lexBFS(g)
-    # [0, 1, 3, 2]
-    gg.lexBFS(g, first=["D"])
-    # [3, 1, 0, 2]
   """
   _check("lexBFS", g, "E")
   return list(_cpp._graph_lexBFS(g, [] if first is None else _ordering(g, first)))
@@ -492,16 +377,6 @@ def maximumCardinalitySearch(g) -> list[int]:
   R. E. Tarjan, M. Yannakakis. Simple linear-time algorithms to test chordality of graphs, test
   acyclicity of hypergraphs, and selectively reduce acyclic hypergraphs. SIAM Journal on Computing
   13(3):566-579, 1984.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.maximumCardinalitySearch(gum.fastUndiGraph("A-B-C;B-D;C-D"))
-    # [0, 1, 3, 2]
   """
   _check("maximumCardinalitySearch", g, "E")
   return list(_cpp._graph_maximumCardinalitySearch(g))
@@ -528,19 +403,6 @@ def isPerfectEliminationOrdering(g, order) -> bool:
   ------
   pyagrum.InvalidArgument
     if ``order`` does not contain exactly the nodes of the graph
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastUndiGraph("A-B-C;A-C;C-D")
-    gg.isPerfectEliminationOrdering(g, ["D", "A", "B", "C"])
-    # True
-    gg.isPerfectEliminationOrdering(g, ["C", "A", "B", "D"])
-    # False
   """
   _check("isPerfectEliminationOrdering", g, "E")
   return _cpp._graph_isPerfectEliminationOrdering(g, _ordering(g, order))
@@ -563,19 +425,6 @@ def undirectedPath(g, source, target) -> list[int] | None:
   -------
   list[int] | None
     the nodes of the path, from ``source`` to ``target``, or None if there is no path
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastMixedGraph("A-B-C;A->D")
-    gg.undirectedPath(g, "C", "A")
-    # [2, 1, 0]
-    print(gg.undirectedPath(g, "A", "D"))  # the arc A->D is ignored
-    # None
   """
   _check("undirectedPath", g, "E")
   return _cpp._graph_undirectedPath(g, _node(g, source), _node(g, target))
@@ -600,18 +449,6 @@ def hasPartiallyDirectedCycle(g) -> bool:
   -------
   bool
     True if a partially directed cycle exists
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.hasPartiallyDirectedCycle(gum.fastMixedGraph("A->B-C-A"))
-    # True
-    gg.hasPartiallyDirectedCycle(gum.fastMixedGraph("A->B-C;A->C"))
-    # False
   """
   _check("hasPartiallyDirectedCycle", g, "AE")
   return _cpp._graph_hasPartiallyDirectedCycle(g)
@@ -634,19 +471,6 @@ def mixedOrientedPath(g, source, target) -> list[int] | None:
   -------
   list[int] | None
     the nodes of the path, from ``source`` to ``target``, or None if there is no such path
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastPDAG("A->B-C")
-    gg.mixedOrientedPath(g, "A", "C")
-    # [0, 1, 2]
-    print(gg.mixedOrientedPath(g, "C", "A"))
-    # None
   """
   _check("mixedOrientedPath", g, "AE")
   return _cpp._graph_mixedOrientedPath(g, _node(g, source), _node(g, target))
@@ -673,17 +497,6 @@ def degeneracyOrdering(g) -> list[int]:
   ----------
   D. W. Matula, L. L. Beck. Smallest-last ordering and clustering and graph coloring algorithms.
   Journal of the ACM 30(3):417-427, 1983.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    order = gg.degeneracyOrdering(gum.fastMixedGraph("A-B-C-A;C->D"))
-    sorted(order)
-    # [0, 1, 2, 3]
   """
   _check("degeneracyOrdering", g, "AE")
   return list(_cpp._graph_degeneracyOrdering(g))
@@ -718,23 +531,6 @@ def anteriors(g, nodes) -> set[int]:
   ----------
   T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030,
   2002.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    g = gum.fastMarkedGraph("A-B->C<->D")
-    gg.anteriors(g, "C")
-    # {0, 1}
-    gg.ancestors(g, "C")
-    # {1}
-    gg.anteriors(gum.fastPDAG("A-B->C"), "A")  # A-B-A is not a cycle
-    # {1}
-    gg.anteriors(gum.fastMixedGraph("A-B-C-A"), "A")  # a cycle
-    # {0, 1, 2}
   """
   _check("anteriors", g, "AE", "K")
   return set(_cpp._graph_anteriors(g, _nodes(g, nodes)))
@@ -759,18 +555,6 @@ def isAncestral(g) -> bool:
   ----------
   T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030,
   2002.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.isAncestral(gum.fastMarkedGraph("A->B<->C"))
-    # True
-    gg.isAncestral(gum.fastMarkedGraph("A->B->C;A<->C"))
-    # False
   """
   _check("isAncestral", g, "K")
   return _cpp._graph_isAncestral(g)
@@ -795,18 +579,6 @@ def isMaximal(g) -> bool:
   ----------
   T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030,
   2002.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.isMaximal(gum.fastMarkedGraph("A->B<->C"))
-    # True
-    gg.isMaximal(gum.fastMarkedGraph("A<->B<->C<->D;B->D;C->A"))  # inducing path A<->B<->C<->D
-    # False
   """
   _check("isMaximal", g, "K")
   return _cpp._graph_isMaximal(g)
@@ -835,17 +607,6 @@ def cpdag(dag) -> "pyagrum.CPDAG":
   ----------
   D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures.
   Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 87-98.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    c = gg.cpdag(gum.fastDAG("A->B->C;D->C"))
-    sorted(c.arcs()), sorted(c.edges())
-    # ([(1, 2), (3, 2)], [(0, 1)])
   """
   if not isinstance(dag, pyagrum.DAG):
     raise TypeError(f"cpdag needs a DAG, got {type(dag).__name__}")
@@ -871,18 +632,6 @@ def consistentExtension(g) -> "pyagrum.DAG | None":
   ----------
   D. Dor, M. Tarsi. A simple algorithm to construct a consistent extension of a partially oriented
   graph. UCLA Cognitive Systems Laboratory, Technical Report R-185, 1992.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.consistentExtension(gum.fastPDAG("A->B-C")).arcs()
-    # {(0, 1), (1, 2)}
-    print(gg.consistentExtension(gum.fastPDAG("A->B-C;D->C")))  # a new v-structure is unavoidable
-    # None
   """
   if not isinstance(g, (pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG)):
     raise TypeError(
@@ -912,16 +661,6 @@ def meekClosure(pdag) -> "pyagrum.PDAG | None":
   ----------
   C. Meek. Causal inference and causal explanation with background knowledge. Proceedings of the 11th
   Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.meekClosure(gum.fastPDAG("A->B-C")).arcs()  # rule R1
-    # {(0, 1), (1, 2)}
   """
   if not isinstance(pdag, pyagrum.PDAG):
     raise TypeError(f"meekClosure needs a PDAG (PDAG, ChainGraph), got {type(pdag).__name__}")
@@ -948,16 +687,6 @@ def orientAsDAG(pdag, domainSizes: dict[int, int]) -> "pyagrum.DAG":
   ------
   pyagrum.InvalidArgument
     if a node has no domain size, or a domain size 0
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    gg.orientAsDAG(gum.fastPDAG("A->B-C"), {0: 2, 1: 2, 2: 2}).arcs()
-    # {(0, 1), (1, 2)}
   """
   if not isinstance(pdag, pyagrum.PDAG):
     raise TypeError(f"orientAsDAG needs a PDAG (PDAG, ChainGraph), got {type(pdag).__name__}")
@@ -1010,22 +739,6 @@ def separation(g, X, Y, Z=None) -> bool:
     pp. 69-76 (c-separation).
   - T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics
     30(4):962-1030, 2002 (m-separation).
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    import pyagrum.graph as gg
-
-    dag = gum.fastDAG("A->C<-B")
-    gg.separation(dag, "A", "B")
-    # True
-    gg.separation(dag, "A", "B", "C")
-    # False
-    chain = gum.fastChainGraph("A->B-C<-D")  # the parents of the chain component {B, C} are married
-    gg.separation(chain, "A", "D", "B")
-    # False
   """
   if not isinstance(g, (pyagrum.DAG, pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG, pyagrum.MAG)):
     raise TypeError(

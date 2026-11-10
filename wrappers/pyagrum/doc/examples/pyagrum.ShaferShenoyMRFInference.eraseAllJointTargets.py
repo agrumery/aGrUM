@@ -1,0 +1,11 @@
+import pyagrum as gum
+
+mrf = gum.fastMRF("A--B;B--C;C--D")
+ie = gum.ShaferShenoyMRFInference(mrf)
+ie.addJointTarget({"A", "C"})
+ie.addJointTarget({"B", "D"})
+ie.nbrJointTargets()
+# 2
+ie.eraseAllJointTargets()
+ie.nbrJointTargets()
+# 0

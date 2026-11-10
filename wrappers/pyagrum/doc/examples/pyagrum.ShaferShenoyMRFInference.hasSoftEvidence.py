@@ -1,0 +1,9 @@
+import pyagrum as gum
+
+mrf = gum.fastMRF("A--B;B--C;C--D")
+ie = gum.ShaferShenoyMRFInference(mrf)
+ie.setEvidence({"A": 1, "C": [0.2, 0.9]})
+ie.hasSoftEvidence("C")
+# True
+ie.hasSoftEvidence("A")
+# False

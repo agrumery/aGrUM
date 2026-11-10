@@ -1,0 +1,7 @@
+import pyagrum as gum
+
+bn = gum.fastBN("F->A->B->C<-D;C->E")
+mb = gum.MarkovBlanket(bn, "C")  # parents, children and parents of children of C
+c = bn.idFromName("C")
+[bn.variable(i).name() for i in mb.children(c)]
+# ['E']

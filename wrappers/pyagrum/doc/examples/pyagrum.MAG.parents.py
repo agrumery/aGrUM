@@ -1,0 +1,6 @@
+import pyagrum as gum
+
+dag = gum.fastDAG("A->X;Y<-B;X<-T->Y")
+mag = gum.MAG.fromDAG(dag, {4})  # T latent: A->X<->Y<-B
+mag.parents(2)  # X<->Y: X is not a parent of Y
+# {3}

@@ -1,0 +1,12 @@
+# requires: pandas
+import pyagrum as gum
+
+a, b = gum.LabelizedVariable("a", "a", 2), gum.LabelizedVariable("b", "b", 3)
+p = gum.Tensor().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6])
+print(p.topandas())
+#      a
+#      0    1
+# b
+# 0  1.0  2.0
+# 1  3.0  4.0
+# 2  5.0  6.0

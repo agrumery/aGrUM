@@ -39,7 +39,6 @@
 ############################################################################
 
 import contextlib
-import inspect
 import io
 import textwrap
 import unittest
@@ -265,19 +264,12 @@ class TestGraphAlgorithms(pyAgrumTestCase):
     self.assertIs(gg.load, gum.loadGraph)
     self.assertIs(gg.save, gum.saveGraph)
 
-  def testExamplesOfTheDocstrings(self):
-    """Every function has an example, and the results shown in the examples are the actual ones."""
-    documented = [("pyagrum.graph", gg.__doc__)] + [
-      (name, getattr(gg, name).__doc__)
-      for name in gg.__all__
-      if inspect.isfunction(getattr(gg, name)) and getattr(gg, name).__module__ == "pyagrum.graph"
-    ]
-    for name, doc in documented:
-      with self.subTest(function=name):
-        blocks = _codeBlocks(doc)
-        self.assertTrue(blocks, f"{name} has no example")
-        for block in blocks:
-          self._checkExample(block)
+  def testExampleOfTheModuleDocstring(self):
+    """The example of the module (the examples of the functions are in doc/examples, see ExamplesTestSuite)."""
+    blocks = _codeBlocks(gg.__doc__)
+    self.assertTrue(blocks)
+    for block in blocks:
+      self._checkExample(block)
 
   def testExampleOfTheSphinxPage(self):
     with open("../doc/sphinx/graphAlgorithms.rst", encoding="utf-8") as f:

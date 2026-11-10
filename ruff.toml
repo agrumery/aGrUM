@@ -42,6 +42,9 @@ ignore = ["E741", "N999"]
 "**/__init__.py" = ["I001", "F401"]
 # Notebooks: `from ... import *` and imports in later cells are presentation choices of the tutorials.
 "*.ipynb" = ["F403", "F405", "E402"]
+# Examples of the documentation: imports may come where they are used; an import may only add methods to a class.
+"wrappers/pyagrum/doc/examples/*.py" = ["E402"]
+"wrappers/pyagrum/doc/examples/pyagrum.clg.CLG.toDot.py" = ["F401"]
 
 [lint.isort]
 known-first-party = ["pyagrum"]

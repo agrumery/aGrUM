@@ -1,0 +1,7 @@
+import pyagrum as gum
+
+bn = gum.fastBN("Z->X->Y;Z->Y")
+cm = gum.CausalModel(bn)
+ci = gum.CausalImpact(cm, on="Y", doing="X")
+ci.latexQuery()
+# 'P\\left(Y \\mid do(X)\\right)'
