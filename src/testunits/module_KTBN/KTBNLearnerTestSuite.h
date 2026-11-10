@@ -44,6 +44,7 @@
 #include <cmath>
 #include <fstream>
 #include <functional>
+#include <set>
 #include <string>
 #include <type_traits>
 #include <unordered_set>
@@ -562,8 +563,8 @@ namespace gum_tests {
     const auto m = _learn_(l);
 
     CHECK_EQ(m.k(), gum::Size(2));
-    CHECK_EQ(m.temporalVarNames(), std::unordered_set< std::string >{"X"});
-    CHECK_EQ(m.atemporalVarNames(), (std::unordered_set< std::string >{"C", "D"}));
+    CHECK_EQ(m.temporalVarNames(), std::set< std::string >{"X"});
+    CHECK_EQ(m.atemporalVarNames(), (std::set< std::string >{"C", "D"}));
     _checkTemporalValidity_(m);
 
     CHECK(m.existsArc("X", 0, "X", 1));
@@ -604,8 +605,8 @@ namespace gum_tests {
       const auto m = l.learnKTBN();
 
       CHECK_EQ(m.k(), gum::Size(4));
-      CHECK_EQ(m.temporalVarNames(), (std::unordered_set< std::string >{"X", "Y", "Z", "W"}));
-      CHECK_EQ(m.atemporalVarNames(), (std::unordered_set< std::string >{"C", "D"}));
+      CHECK_EQ(m.temporalVarNames(), (std::set< std::string >{"X", "Y", "Z", "W"}));
+      CHECK_EQ(m.atemporalVarNames(), (std::set< std::string >{"C", "D"}));
       _checkTemporalValidity_(m);
 
       // every planted arc recovered; time forces the temporal directions, the
@@ -628,7 +629,7 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(mono.eraseNoParentNode("C"));
 
     const auto m = _learn_(mono);
-    CHECK_EQ(m.atemporalVarNames(), std::unordered_set< std::string >{"C"});
+    CHECK_EQ(m.atemporalVarNames(), std::set< std::string >{"C"});
     CHECK(m.parents("C", AT).empty());   // an atemporal variable stays a root
     _checkTemporalValidity_(m);
 

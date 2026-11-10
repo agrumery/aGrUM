@@ -546,7 +546,7 @@ class KTBN(object):
         Returns
         -------
         tuple[tuple[tuple[str, int], tuple[str, int]]]
-            all arcs, each as a (tail, head) pair of (base, slice) endpoints
+            all arcs, each as a (tail, head) pair of (base, slice) endpoints, in sorted order
 
         """
         return _ktbncpp.KTBN_arcs(self)

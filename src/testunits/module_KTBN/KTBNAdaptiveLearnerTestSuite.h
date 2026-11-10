@@ -44,6 +44,7 @@
 #include <cmath>
 #include <fstream>
 #include <map>
+#include <set>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
@@ -448,7 +449,7 @@ namespace gum_tests {
     // BN-schema constructor: domains fixed up front, learning succeeds
     auto       bnl = _solo_(2);
     const auto m   = _learn_(bnl);
-    CHECK_EQ(m.atemporalVarNames(), (std::unordered_set< std::string >{"C", "D"}));
+    CHECK_EQ(m.atemporalVarNames(), (std::set< std::string >{"C", "D"}));
     _checkTemporalValidity_(m);
   }
 

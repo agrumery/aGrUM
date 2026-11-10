@@ -9,10 +9,10 @@ learner.useGreedyHillClimbing()
 print("\n".join(f"{key}: {value}" for key, value, comment in learner.state()))
 # Filename: -
 # Size: (450,4)
-# Variables: Y[2], X[2]
+# Variables: X[2], Y[2]
 # Induced types: False
 # Missing values: False
 # Algorithm: Greedy Hill Climbing
 # Score: BDeu
 # Prior: -
-# Constraint No Parent Nodes: {Y[0], X[0]}
+# Constraint No Parent Nodes: {X[0], Y[0]}

@@ -661,9 +661,9 @@ namespace gum {
 
       // ----- name encoding -----
 
-      /// atemporal base names for IKTBNLearner's shared _encode_/_determineNode_;
-      /// the set recorded at construction.
-      const std::unordered_set< std::string >& _atemporalVarNames_() const override;
+      /// whether @p base is atemporal, for IKTBNLearner's shared
+      /// _encode_/_determineNode_; read from the set recorded at construction.
+      bool _isAtemporalBase_(std::string_view base) const override;
 
       /// whether @p base is one of this learner's variables; the base names read
       /// at construction, from the CSV header or the schema BN.

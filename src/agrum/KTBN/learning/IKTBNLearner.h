@@ -318,18 +318,18 @@ namespace gum {
       // #######################################################################
       /// @{
 
-      /// @brief The base names of the atemporal (static) variables.
+      /// @brief Whether @p base is one of the atemporal (static) variables.
       /// The only subclass-specific input to _determineNode_(): the fixed-k
       /// learner reads it from its prior k-TBN, the adaptive learner from the
-      /// atemporal set recorded at construction.
-      virtual const std::unordered_set< std::string >& _atemporalVarNames_() const = 0;
+      /// atemporal set recorded at construction. A predicate rather than a set
+      /// accessor: the two learners store these names in different containers.
+      virtual bool _isAtemporalBase_(std::string_view base) const = 0;
 
       /// @brief Whether @p base is one of this learner's variables, temporal or
       /// atemporal. The second subclass-specific input to the shared helpers.
-      /// A predicate rather than a _temporalVarNames_() counterpart to
-      /// _atemporalVarNames_(): the adaptive learner holds the base names and
-      /// the atemporal ones but never a temporal-only set, and would have to
-      /// materialise and cache a third one just to return a reference.
+      /// A predicate for the same reason as _isAtemporalBase_(): the adaptive
+      /// learner holds the base names and the atemporal ones but never a
+      /// temporal-only set.
       virtual bool _isKnownBase_(std::string_view base) const = 0;
 
       /// @brief (base, slice) -> engine name ("A[1]" / atemporal engine name).
@@ -338,7 +338,7 @@ namespace gum {
 
       /// @brief engine name -> (base, slice); atemporal names map to KTBN::ATEMPORAL.
       /// Shared by every learner; only the atemporal test varies (via
-      /// _atemporalVarNames_()).
+      /// _isAtemporalBase_()).
       std::pair< std::string, int > _determineNode_(const std::string& name) const;
 
       /// @brief Reject an arc the k-TBN definition can never contain, so

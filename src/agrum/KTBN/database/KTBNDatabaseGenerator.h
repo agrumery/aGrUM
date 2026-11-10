@@ -81,9 +81,9 @@
 #define GUM_KTBN_DATABASE_GENERATOR_H
 
 #include <cstddef>
+#include <set>
 #include <string>
 #include <string_view>
-#include <unordered_set>
 #include <vector>
 
 #include <agrum/base/core/progressNotification.h>
@@ -248,8 +248,8 @@ namespace gum {
       /// decodes a template node name into (base, slice): "B[t]" with B a known
       /// temporal process -> (B, t); anything else (bare or bracket-named
       /// atemporal node) -> (name, ATEMPORAL).
-      static std::pair< std::string, int >
-          _decode_(const std::string& name, const std::unordered_set< std::string >& temporalSet);
+      static std::pair< std::string, int > _decode_(const std::string&             name,
+                                                    const std::set< std::string >& temporalSet);
 
       /// one-shot initialisation called by the constructor: fills the column index
       /// (_baseCols_, _nbVars_), the topological node/parent cache (_nodes_,

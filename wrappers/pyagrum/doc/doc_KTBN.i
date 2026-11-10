@@ -425,7 +425,7 @@ bool
 Returns
 -------
 tuple[tuple[tuple[str, int], tuple[str, int]]]
-    all arcs, each as a (tail, head) pair of (base, slice) endpoints
+    all arcs, each as a (tail, head) pair of (base, slice) endpoints, in sorted order
 "
 
 %feature("docstring") gum::KTBN::cpt

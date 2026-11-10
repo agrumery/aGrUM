@@ -96,7 +96,7 @@ namespace gum {
         IKTBNLearner< GUM_SCALAR >::_determineNode_(const std::string& name) const {
       // check atemporal set first: a name registered as atemporal always maps
       // to ATEMPORAL, even if it syntactically looks like "base[t]"
-      if (_atemporalVarNames_().contains(name)) return {name, KTBN< GUM_SCALAR >::ATEMPORAL};
+      if (_isAtemporalBase_(name)) return {name, KTBN< GUM_SCALAR >::ATEMPORAL};
 
       // syntactic parse: look for a trailing "[digits]" suffix
       const std::size_t bracketPos = name.rfind('[');
@@ -232,7 +232,7 @@ namespace gum {
         GUM_ERROR(InvalidArgument,
                   "unknown base variable '" << base
                                             << "': it is not one of this learner's variables")
-      if (_atemporalVarNames_().contains(b))
+      if (_isAtemporalBase_(b))
         GUM_ERROR(InvalidArgument,
                   "atemporal variable '" << base << "' cannot appear in " << context
                                          << ": it has no per-slice instance")

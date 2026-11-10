@@ -8,4 +8,4 @@ model.addArc("X", 0, "X", 1)
 model.addArc("C", ktbn.KTBN.ATEMPORAL, "X", 1)
 model.addArc("C", "X[0]")  # with engine names
 model.arcs()
-# ((('X', 0), ('X', 1)), (('C', -1), ('X', 1)), (('C', -1), ('X', 0)))
+# ((('C', -1), ('X', 0)), (('C', -1), ('X', 1)), (('X', 0), ('X', 1)))

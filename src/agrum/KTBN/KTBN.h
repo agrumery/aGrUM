@@ -56,6 +56,7 @@
 #include <concepts>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -167,9 +168,9 @@ namespace gum {
    * detection, topological ordering and the existing I/O readers/writers are
    * reused as-is. The gum::BayesNet is the @b single source of truth; the class
    * only caches two name sets (the temporal processes and the atemporal
-   * variables) for fast O(1) membership queries. These sets are
-   * std::unordered_set, so their iteration order is unspecified; methods that
-   * need a deterministic order must sort explicitly.
+   * variables). These sets are std::set, so they are iterated in lexicographic
+   * order: node ids, column orders and every listing derived from them are the
+   * same on every platform.
    *
    * @par Name collision rule
    * All base names must be @b globally @b unique: a name cannot be used for
@@ -322,10 +323,10 @@ namespace gum {
     bool exists(std::string_view base) const;
 
     /// @return The set of temporal process base names.
-    const std::unordered_set< std::string >& temporalVarNames() const;
+    const std::set< std::string >& temporalVarNames() const;
 
     /// @return The set of atemporal variable base names.
-    const std::unordered_set< std::string >& atemporalVarNames() const;
+    const std::set< std::string >& atemporalVarNames() const;
 
     /// @return The number of temporal processes.
     Size nbTemporalVars() const;
@@ -427,7 +428,7 @@ namespace gum {
     /// @throw NotFound if an endpoint name is unknown.
     bool existsArc(std::string_view tail, std::string_view head) const;
 
-    /// @return All arcs as (tail, head) pairs of (base, slice).
+    /// @return All arcs as (tail, head) pairs of (base, slice), in lexicographic order.
     std::vector< std::pair< std::pair< std::string, int >, std::pair< std::string, int > > >
         arcs() const;
 
@@ -720,10 +721,10 @@ namespace gum {
     BayesNet< GUM_SCALAR > _bn_;
 
     /// Base names of the registered temporal processes.
-    std::unordered_set< std::string > _temporal_;
+    std::set< std::string > _temporal_;
 
     /// Base names of the registered atemporal variables.
-    std::unordered_set< std::string > _atemporal_;
+    std::set< std::string > _atemporal_;
 
     /// @brief Encodes (base, slice) → engine name: <tt>base[t]</tt>, or
     /// <tt>base</tt> if atemporal.

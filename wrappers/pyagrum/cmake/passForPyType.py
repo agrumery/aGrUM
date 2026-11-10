@@ -172,6 +172,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("std::vector< gum::Size,std::allocator< gum::Size > >", "tuple[int, ...]"),
   ("std::vector< std::size_t,std::allocator< std::size_t > >", "tuple[int, ...]"),
   ("std::unordered_set< std::string >", "set[str]"),
+  ("std::set< std::string >", "set[str]"),
   (
     "std::vector< std::pair< std::string,int >,std::allocator< std::pair< std::string,int > > >",
     "tuple[tuple[str, int], ...]",

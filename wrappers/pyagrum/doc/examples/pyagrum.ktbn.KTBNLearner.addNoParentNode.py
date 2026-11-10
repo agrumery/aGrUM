@@ -7,4 +7,4 @@ ktbn.KTBNDatabaseGenerator(model).drawSamples(50, 10, ".", "traj")  # traj1.csv 
 learner = ktbn.KTBNLearner(".", "traj", 50, 2, gum.fastBN("X;Y"))  # k=2, variables X and Y
 learner.addNoParentNode("Y[1]")
 dict(s[:2] for s in learner.state())["Constraint No Parent Nodes"]
-# '{Y[1], Y[0], X[0]}'
+# '{X[0], Y[0], Y[1]}'

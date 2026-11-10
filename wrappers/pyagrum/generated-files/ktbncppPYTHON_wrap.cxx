@@ -6142,7 +6142,7 @@ SWIGINTERN PyObject *_wrap_KTBN_temporalVarNames(PyObject *self, PyObject *args)
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::unordered_set< std::string > *result = 0 ;
+  std::set< std::string > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -6154,7 +6154,7 @@ SWIGINTERN PyObject *_wrap_KTBN_temporalVarNames(PyObject *self, PyObject *args)
   arg1 = reinterpret_cast< gum::KTBN< double > * >(argp1);
   {
     try {
-      result = (std::unordered_set< std::string > *) &((gum::KTBN< double > const *)arg1)->temporalVarNames();
+      result = (std::set< std::string > *) &((gum::KTBN< double > const *)arg1)->temporalVarNames();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -6181,7 +6181,7 @@ SWIGINTERN PyObject *_wrap_KTBN_atemporalVarNames(PyObject *self, PyObject *args
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::unordered_set< std::string > *result = 0 ;
+  std::set< std::string > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -6193,7 +6193,7 @@ SWIGINTERN PyObject *_wrap_KTBN_atemporalVarNames(PyObject *self, PyObject *args
   arg1 = reinterpret_cast< gum::KTBN< double > * >(argp1);
   {
     try {
-      result = (std::unordered_set< std::string > *) &((gum::KTBN< double > const *)arg1)->atemporalVarNames();
+      result = (std::set< std::string > *) &((gum::KTBN< double > const *)arg1)->atemporalVarNames();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -25079,7 +25079,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"tuple[tuple[tuple[str, int], tuple[str, int]]]\n"
-		"    all arcs, each as a (tail, head) pair of (base, slice) endpoints\n"
+		"    all arcs, each as a (tail, head) pair of (base, slice) endpoints, in sorted order\n"
 		"\n"
 		""},
 	 { "KTBN_cpt", _wrap_KTBN_cpt, METH_VARARGS, "\n"

@@ -710,12 +710,13 @@ namespace gum {
 
       // ----- name encoding -----
 
-      /// atemporal base names for IKTBNLearner's shared _encode_/_determineNode_;
-      /// read straight from the prior k-TBN (the single source of truth).
-      const std::unordered_set< std::string >& _atemporalVarNames_() const override;
+      /// whether @p base is atemporal, for IKTBNLearner's shared
+      /// _encode_/_determineNode_; read straight from the prior k-TBN (the single
+      /// source of truth).
+      bool _isAtemporalBase_(std::string_view base) const override;
 
       /// whether @p base is one of this learner's variables; read straight from
-      /// the prior k-TBN, like _atemporalVarNames_() above.
+      /// the prior k-TBN, like _isAtemporalBase_() above.
       bool _isKnownBase_(std::string_view base) const override;
 
       /// bring the shared helpers of the dependent base into unqualified scope,

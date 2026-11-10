@@ -322,12 +322,12 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::unordered_set< std::string >& KTBN< GUM_SCALAR >::temporalVarNames() const {
+  INLINE const std::set< std::string >& KTBN< GUM_SCALAR >::temporalVarNames() const {
     return _temporal_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  INLINE const std::unordered_set< std::string >& KTBN< GUM_SCALAR >::atemporalVarNames() const {
+  INLINE const std::set< std::string >& KTBN< GUM_SCALAR >::atemporalVarNames() const {
     return _atemporal_;
   }
 
@@ -556,6 +556,9 @@ namespace gum {
       result.emplace_back(_determineNode_(_bn_.variable(arc.tail()).name()),
                           _determineNode_(_bn_.variable(arc.head()).name()));
     }
+    // ArcSet is iterated in node-id order: sort so that the listing only depends on
+    // the structure, not on how the underlying BN was built.
+    std::ranges::sort(result);
     return result;
   }
 
@@ -801,7 +804,7 @@ namespace gum {
     // load() restores the k-DBN exactly, instead of re-deriving it heuristically from
     // node names (ambiguous for k=1 processes and bracket-named atemporal variables).
     // Separator is ','; '\' and ',' inside names are backslash-escaped so any name is safe.
-    auto join = [](const std::unordered_set< std::string >& names) {
+    auto join = [](const std::set< std::string >& names) {
       std::string out;
       for (const auto& n: names) {
         if (!out.empty()) out += ',';
@@ -841,7 +844,7 @@ namespace gum {
           && bn.existsProperty("KTBN.atemporal")))
       return fromBN(bn);
 
-    auto split = [](std::string_view csv, std::unordered_set< std::string >& out) {
+    auto split = [](std::string_view csv, std::set< std::string >& out) {
       std::string current;
       bool        escaped = false;
       for (const char c: csv) {

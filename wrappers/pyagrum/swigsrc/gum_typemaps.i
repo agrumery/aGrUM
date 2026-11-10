@@ -460,6 +460,17 @@ typedef PyObject PyAgrumDict;
   $result = _s;
 }
 
+// std::set<std::string> -> Python frozenset[str]
+%typemap(out) const std::set<std::string>& {
+  PyObject* _s = PyFrozenSet_New(NULL);
+  for (const auto& _e : *$1) {
+    PyObject* _pystr = PyUnicode_FromString(_e.c_str());
+    PySet_Add(_s, _pystr);
+    Py_DECREF(_pystr);
+  }
+  $result = _s;
+}
+
 // std::vector<gum::NodeId> -> Python list[int]
 %typemap(out) std::vector<gum::NodeId> {
   $result = PyAgrumHelper::PyListFromNodeVect($1);

@@ -86,9 +86,9 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  std::pair< std::string, int > KTBNDatabaseGenerator< GUM_SCALAR >::_decode_(
-      const std::string&                       name,
-      const std::unordered_set< std::string >& temporalSet) {
+  std::pair< std::string, int >
+      KTBNDatabaseGenerator< GUM_SCALAR >::_decode_(const std::string&             name,
+                                                    const std::set< std::string >& temporalSet) {
     if (!name.empty() && name.back() == ']') {
       const auto p = name.rfind('[');
       if (p != std::string::npos && p + 1 < name.size() - 1) {
@@ -106,7 +106,7 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   void KTBNDatabaseGenerator< GUM_SCALAR >::_build_(const KTBN< GUM_SCALAR >& kdbn) {
-    const std::unordered_set< std::string >& temporalSet = kdbn.temporalVarNames();
+    const std::set< std::string >& temporalSet = kdbn.temporalVarNames();
 
     // 1) canonical column numbering: one column per base variable (temporal
     //    variables first, then atemporal ones).

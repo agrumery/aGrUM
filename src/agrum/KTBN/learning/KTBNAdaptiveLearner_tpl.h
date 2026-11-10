@@ -1082,9 +1082,8 @@ namespace gum::learning {
   // =========================================================================
 
   template < GUM_Numeric GUM_SCALAR >
-  const std::unordered_set< std::string >&
-      KTBNAdaptiveLearner< GUM_SCALAR >::_atemporalVarNames_() const {
-    return _atemporalVars_;
+  bool KTBNAdaptiveLearner< GUM_SCALAR >::_isAtemporalBase_(std::string_view base) const {
+    return _atemporalVars_.contains(std::string{base});
   }
 
   template < GUM_Numeric GUM_SCALAR >
