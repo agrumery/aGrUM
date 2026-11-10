@@ -243,6 +243,10 @@ namespace gum_tests {
       genere.toCSV(GET_RESSOURCES_PATH("outputs/bnlearner_dirichlet.csv"));
 
       auto bn2 = gum::BayesNet< double >::fastPrototype("A->B->C->D->E");
+      // uniform CPTs: every label appears in the 100 rows, otherwise the induced range of a
+      // variable misses labels found in the Dirichlet database and the translation throws
+      for (const auto node: bn2.nodes())
+        bn2.cpt(node).fillWith(1).normalizeAsCPT();
       gum::learning::BNDatabaseGenerator< double > genere2(bn2);
       genere2.drawSamples(100);
       genere2.toCSV(GET_RESSOURCES_PATH("outputs/bnlearner_database.csv"));
