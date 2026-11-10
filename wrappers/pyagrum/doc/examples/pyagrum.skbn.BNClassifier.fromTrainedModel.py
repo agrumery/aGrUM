@@ -10,4 +10,4 @@ clf = skbn.BNClassifier(type_processor=DiscreteTypeProcessor())
 clf.fromTrainedModel(bn, "Y")  # no learning: bn is used as is
 X, y = clf.XYfromCSV("data.csv", target="Y")
 clf.predict(X.head(4)).tolist()  # the labels of Y
-# ['0', '0', '0', '1']
+# ['1', '1', '0', '1']

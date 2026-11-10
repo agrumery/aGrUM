@@ -9,6 +9,6 @@ gum.generateSample(bn, 500, "data.csv")
 clf = skbn.BNClassifier(type_processor=DiscreteTypeProcessor())
 X, y = clf.XYfromCSV("data.csv", target="Y")
 list(X.columns)
-# ['A', 'B', 'C']
+# ['C', 'B', 'A']
 y.name, len(y)
 # ('Y', 500)

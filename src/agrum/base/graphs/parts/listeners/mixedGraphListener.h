@@ -66,7 +66,7 @@ namespace gum {
    *  - void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )
    *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
    */
-  class MixedGraphListener: public Listener {
+  class GUM_SHARED_PUBLIC MixedGraphListener: public Listener {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

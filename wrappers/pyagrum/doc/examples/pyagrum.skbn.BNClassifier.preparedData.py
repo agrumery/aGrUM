@@ -10,7 +10,7 @@ clf = skbn.BNClassifier(type_processor=DiscreteTypeProcessor())
 X, y = clf.XYfromCSV("data.csv", target="Y")
 clf.fit(X, y)
 clf.preparedData(X.head(3), y.head(3))  # the data as seen by the BN
-#    A  B  C  Y
-# 0  0  0  0  0
-# 1  0  1  0  0
-# 2  0  1  0  0
+#    C  B  A  Y
+# 0  0  0  0  1
+# 1  1  1  0  1
+# 2  1  0  1  1

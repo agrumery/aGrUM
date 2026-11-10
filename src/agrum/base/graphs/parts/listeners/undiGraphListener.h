@@ -64,7 +64,7 @@ namespace gum {
    *  - void whenEdgeAdded( const void *,gum::NodeId,gum::NodeId )
    *  - void whenEdgeDeleted( const void *,gum::NodeId,gum::NodeId )
    */
-  class UndiGraphListener: public Listener {
+  class GUM_SHARED_PUBLIC UndiGraphListener: public Listener {
     public:
     // ############################################################################
     /// @name Constructors / Destructors

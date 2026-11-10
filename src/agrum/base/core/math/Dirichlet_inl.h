@@ -58,14 +58,12 @@ namespace gum {
   }
 
   // copy constructor
-  INLINE Dirichlet::Dirichlet(const Dirichlet& from) :
-      _gamma_(from._gamma_), _params_(from._params_) {
+  INLINE Dirichlet::Dirichlet(const Dirichlet& from) : _params_(from._params_) {
     GUM_CONS_CPY(Dirichlet);
   }
 
   // move constructor
-  INLINE Dirichlet::Dirichlet(Dirichlet&& from) :
-      _gamma_(std::move(from._gamma_)), _params_(std::move(from._params_)) {
+  INLINE Dirichlet::Dirichlet(Dirichlet&& from) : _params_(std::move(from._params_)) {
     GUM_CONS_MOV(Dirichlet);
   }
 
@@ -74,19 +72,13 @@ namespace gum {
 
   // copy operator
   INLINE Dirichlet& Dirichlet::operator=(const Dirichlet& from) {
-    if (&from != this) {
-      _gamma_  = from._gamma_;
-      _params_ = from._params_;
-    }
+    if (&from != this) { _params_ = from._params_; }
     return *this;
   }
 
   // move operator
   INLINE Dirichlet& Dirichlet::operator=(Dirichlet&& from) {
-    if (&from != this) {
-      _gamma_  = std::move(from._gamma_);
-      _params_ = std::move(from._params_);
-    }
+    if (&from != this) { _params_ = std::move(from._params_); }
     return *this;
   }
 
@@ -98,8 +90,7 @@ namespace gum {
     float sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-        _gamma_.param(std::gamma_distribution< float >::param_type(_params_[i], 1));
-        res[i] = _gamma_(gum::randomGenerator());
+        res[i] = float(gum::randomGamma(_params_[i]));
         sum += res[i];
       }
     }
@@ -117,8 +108,7 @@ namespace gum {
     float sum = 0.0f;
     while (sum == 0.0f) {
       for (Idx i = 0; i < size; ++i) {
-        _gamma_.param(std::gamma_distribution< float >::param_type(parm[i], 1));
-        res[i] = _gamma_(gum::randomGenerator());
+        res[i] = float(gum::randomGamma(parm[i]));
         sum += res[i];
       }
     }

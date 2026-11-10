@@ -50,6 +50,8 @@ Initialize random generator seed. If `seed=0`, the generator is initialized from
 
 This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
 
+A given seed gives the same draws on every platform.
+
 Parameters
 ----------
 seed : int
@@ -61,7 +63,29 @@ seed : int
 Returns
 -------
 float
-    a random number between 0 and 1 included (i.e. a proba).
+    a random number in [0, 1) (i.e. a proba).
+"
+
+%feature("docstring") gum::randomGamma
+"
+Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.
+
+For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.
+
+Parameters
+----------
+shape : float
+  the shape of the distribution (> 0)
+
+Returns
+-------
+float
+  a value of the Gamma distribution (its mean is `shape`).
+
+Raises
+------
+pyagrum.OutOfBounds
+  If `shape` is not > 0.
 "
 
 %feature("docstring") gum::randomDistribution

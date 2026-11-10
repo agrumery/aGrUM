@@ -12,4 +12,4 @@ clf.fit(X, y)
 clf.target_
 # 'Y'
 clf.predict(X.head(4)).tolist()
-# [0.0, 0.0, 0.0, 1.0]
+# [1.0, 1.0, 1.0, 1.0]

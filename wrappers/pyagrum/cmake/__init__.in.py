@@ -91,7 +91,8 @@ __all__ = [
   "fastGraph", "fastMarkedGraph", "fastMixedGraph", "fastPAG", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
   "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior", "graphFromGUMString",
   "initRandom", "isOMP", "loadBN", "loadGraph", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
-  "randomDistribution", "randomGeneratorSeed", "randomProba", "randomValue", "saveBN", "saveGraph",
+  "randomDistribution", "randomGamma", "randomGeneratorSeed", "randomProba", "randomShuffle", "randomValue", "saveBN",
+  "saveGraph",
   "setNumberOfThreads", "statsObj",
 ]
 
@@ -225,7 +226,9 @@ from .pyagrumcpp import (
   initRandom,
   randomProba,
   randomDistribution,
+  randomGamma,
   randomGeneratorSeed,
+  randomShuffle,
   randomValue,
 )
 from .pyagrumcpp import (

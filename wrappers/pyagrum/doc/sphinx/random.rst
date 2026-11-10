@@ -10,6 +10,8 @@ Random functions
 
    pyagrum.initRandom
    pyagrum.randomProba
+   pyagrum.randomGamma
+   pyagrum.randomShuffle
    pyagrum.randomDistribution
    pyagrum.generateSample
    pyagrum.randomBN

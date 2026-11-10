@@ -45,6 +45,19 @@
 
 
 
+%inline %{
+  // the permutation applied by randomShuffle (Python): 0..n-1 shuffled by gum::randomShuffle
+  PyObject* _randomPermutation(gum::Size n) {
+    std::vector< gum::Idx > permutation(n);
+    std::iota(permutation.begin(), permutation.end(), gum::Idx(0));
+    gum::randomShuffle(permutation.begin(), permutation.end());
+    PyObject* list = PyList_New(static_cast< Py_ssize_t >(n));
+    for (gum::Size i = 0; i < n; ++i)
+      PyList_SetItem(list, static_cast< Py_ssize_t >(i), PyLong_FromSize_t(permutation[i]));
+    return list;
+  }
+%}
+
 %pythoncode %{
 import warnings
 
@@ -54,6 +67,21 @@ import warnings
 config = _Configuration._instance()
 # warnings for the notices queued when the library loaded pyagrum.ini
 config._emitNotices()
+
+
+def randomShuffle(seq) -> None:
+  """Shuffle a sequence in place with the random generator of pyAgrum.
+
+  For a given seed (see ``pyagrum.initRandom``), the order is the same on every platform, and the same as the
+  shuffles of pyAgrum (such as the random order of the variables of ``BNDatabaseGenerator``).
+
+  Parameters
+  ----------
+  seq : list
+    a mutable sequence (supporting ``len``, indexing and slice assignment)
+  """
+  permutation = _randomPermutation(len(seq))
+  seq[:] = [seq[i] for i in permutation]
 
 
 def log2(p):

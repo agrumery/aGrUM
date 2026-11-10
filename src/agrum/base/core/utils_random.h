@@ -49,10 +49,14 @@
 #ifndef GUM_UTILS_RANDOM_H
 #define GUM_UTILS_RANDOM_H
 
+#include <algorithm>
 #include <chrono>
+#include <cmath>
+#include <cstdint>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <limits>
 #include <numeric>
 #include <random>
 #include <utility>
@@ -69,18 +73,73 @@ namespace gum {
   /// @ingroup utilities_group
   /// @{
 
+  /*
+   * All the draws of aGrUM are computed from the raw outputs of the generator (std::mt19937, whose
+   * sequence is fixed by the standard), never through the distributions of <random> (whose
+   * algorithms depend on the standard library): a given seed gives the same draws on every
+   * platform.
+   */
+
   /**
    * @brief Returns a random Idx between 0 and max-1 included.
    * @return Returns a random idx between 0 and max-1 included .
    * By default, max=2
+   * @throw OutOfBounds if max is 0
    */
   GUM_SHARED_PUBLIC Idx randomValue(const Size max = 2);
 
   /**
-   * @brief Returns a random double between 0 and 1 included (i.e. a proba).
-   * @return Returns a random double between 0 and 1 included (i.e. a proba).
+   * @brief Returns a random Idx between 0 and max-1 included, drawn with generator.
+   * @tparam GENERATOR a generator of 32-bit values (such as std::mt19937)
+   * @throw OutOfBounds if max is 0
+   *
+   * Unbiased (rejection sampling); one output of the generator if max <= 2^32, two otherwise.
+   */
+  template < typename GENERATOR >
+  Idx randomValue(GENERATOR& generator, const Size max);
+
+  /**
+   * @brief Returns a random double in [0, 1) (i.e. a proba).
+   * @return Returns a random double in [0, 1) (i.e. a proba), with a precision of 2^-53.
    */
   GUM_SHARED_PUBLIC double randomProba();
+
+  /**
+   * @brief Returns a random double in [0, 1), drawn with generator (two outputs of the generator).
+   * @tparam GENERATOR a generator of 32-bit values (such as std::mt19937)
+   */
+  template < typename GENERATOR >
+  double randomProba(GENERATOR& generator);
+
+  /**
+   * @brief Shuffles the range [first, last) (Fisher-Yates with randomValue).
+   */
+  template < typename RANDOM_IT >
+  void randomShuffle(RANDOM_IT first, RANDOM_IT last);
+
+  /**
+   * @brief Shuffles the range [first, last) with generator (Fisher-Yates with randomValue).
+   * @tparam GENERATOR a generator of 32-bit values (such as std::mt19937)
+   */
+  template < typename RANDOM_IT, typename GENERATOR >
+  void randomShuffle(RANDOM_IT first, RANDOM_IT last, GENERATOR& generator);
+
+  /**
+   * @brief Returns a random value of the Gamma distribution of parameters (shape, 1).
+   * @throw OutOfBounds if shape is not > 0
+   *
+   * Marsaglia and Tsang's method (ACM TOMS 26(3), 2000), with the boost U^(1/shape) for shape < 1.
+   */
+  GUM_SHARED_PUBLIC double randomGamma(double shape);
+
+  /**
+   * @brief Returns a random value of the Gamma distribution of parameters (shape, 1), drawn with
+   * generator.
+   * @tparam GENERATOR a generator of 32-bit values (such as std::mt19937)
+   * @throw OutOfBounds if shape is not > 0
+   */
+  template < typename GENERATOR >
+  double randomGamma(double shape, GENERATOR& generator);
 
   /**
    * @brief Return a random discrete distribution.

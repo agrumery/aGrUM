@@ -10,7 +10,7 @@ clf = skbn.BNClassifier(type_processor=DiscreteTypeProcessor())
 X, y = clf.XYfromCSV("data.csv", target="Y")
 clf.fit(X, y)
 clf.predict_proba(X.head(4)).round(3)  # one column per class
-# array([[0.874, 0.126],
-#        [0.874, 0.126],
-#        [0.874, 0.126],
-#        [0.117, 0.883]])
+# array([[0.269, 0.731],
+#        [0.345, 0.655],
+#        [0.478, 0.522],
+#        [0.219, 0.781]])

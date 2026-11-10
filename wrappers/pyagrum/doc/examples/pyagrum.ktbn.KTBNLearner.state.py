@@ -15,4 +15,4 @@ print("\n".join(f"{key}: {value}" for key, value, comment in learner.state()))
 # Algorithm: Greedy Hill Climbing
 # Score: BDeu
 # Prior: -
-# Constraint No Parent Nodes: {X[0], Y[0]}
+# Constraint No Parent Nodes: {Y[0], X[0]}

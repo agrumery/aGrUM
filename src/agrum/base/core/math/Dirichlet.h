@@ -176,8 +176,6 @@ namespace gum {
     private:
     /// The gamma distribution used to compute the Dirichlet unnormalized
     /// samples.
-    std::gamma_distribution< float > _gamma_;
-
     /// The parameters of the distribution.
     param_type _params_;
   };

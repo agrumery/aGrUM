@@ -160,7 +160,7 @@ namespace gum {
               sum = 0.0;
 
               for (size_t idx = 0; idx < getDomainSize(); ++idx) {
-                val[idx] = 1 + std::rand();
+                val[idx] = GUM_SCALAR(1 + randomValue(0x7FFFFFFF));
                 sum += val[idx];
               }
 

@@ -42,16 +42,18 @@
 
 An example is a Python script. A comment block right after an expression shows its result: ``# <repr of the value>``
 (``#`` alone for an empty line), or the printed text for a ``print(...)`` call. Other comments must not directly
-follow an expression. A first line ``# requires: module1, module2`` names optional modules needed by the example.
+follow an expression. A first line ``# requires: module1, module2`` names optional modules needed by the example
+(``graphviz`` for the ``dot`` program).
 
 Usable as a script to check examples while writing them: ``python examplesRunner.py file1.py file2.py ...``.
 """
 
 import ast
 import contextlib
-import importlib.util
+import importlib
 import io
 import os
+import shutil
 import sys
 import tempfile
 import warnings
@@ -71,8 +73,18 @@ def requirements(source: str) -> list[str]:
   ]
 
 
+def _available(requirement: str) -> bool:
+  if requirement == "graphviz":  # the dot program (pydot only calls it)
+    return shutil.which("dot") is not None
+  try:
+    importlib.import_module(requirement)
+  except (ImportError, OSError):  # OSError: a native library is missing (cairosvg without cairo)
+    return False
+  return True
+
+
 def missingRequirements(source: str) -> list[str]:
-  return [module for module in requirements(source) if importlib.util.find_spec(module) is None]
+  return [requirement for requirement in requirements(source) if not _available(requirement)]
 
 
 def _shown(lines: list[str], start: int) -> list[str] | None:

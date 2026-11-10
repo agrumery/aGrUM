@@ -394,7 +394,7 @@ namespace gum::learning {
       std::vector< Idx >& colOrder) const {
     colOrder.resize(_nbVars_);
     std::iota(colOrder.begin(), colOrder.end(), 0);
-    std::shuffle(colOrder.begin(), colOrder.end(), gum::randomGenerator());
+    gum::randomShuffle(colOrder.begin(), colOrder.end());
   }
 
   template < GUM_Numeric GUM_SCALAR >

@@ -10,4 +10,4 @@ clf = skbn.BNClassifier(type_processor=DiscreteTypeProcessor())
 X, y = clf.XYfromCSV("data.csv", target="Y")
 clf.fit(X, y)
 clf.predict(X.head(4)).tolist()
-# [0.0, 0.0, 0.0, 1.0]
+# [1.0, 1.0, 1.0, 1.0]

@@ -61,7 +61,7 @@ Parameters
 n_nodes : int
     the number of nodes (default=10)
 n_arcs : int
-    the number of arcs (default=15)
+    the maximum number of arcs (default=15)
 n_nodmax : int
     the max number of modalities for a node (default=4)
 

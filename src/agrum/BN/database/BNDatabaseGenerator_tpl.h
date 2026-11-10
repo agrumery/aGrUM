@@ -439,7 +439,7 @@ namespace gum::learning {
     for (const auto& var: _bn_.internalDag()) {
       varOrder.push_back(_bn_.variable(var).name());
     }
-    std::shuffle(varOrder.begin(), varOrder.end(), gum::randomGenerator());
+    gum::randomShuffle(varOrder.begin(), varOrder.end());
     setVarOrder(varOrder);
   }
 

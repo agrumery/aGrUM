@@ -4,6 +4,7 @@
 
 - pyAgrum
 
+    - New `randomShuffle` and `randomGamma` (the draws of aGrUM, the same on every platform for a given seed).
     - `initRandom` now reaches the draws of all the modules (`KTBNGenerator`, ...: each module had its own generator,
       with a fixed seed). A new `pyagrum.ini` key `core.randomSeed` gives the seed at start (see aGrUM below) and
       `randomGeneratorSeed()` returns the seed in use. `import pyagrum` no longer calls `initRandom(0)`.
@@ -46,6 +47,12 @@
       is now one generator for all the shared modules, and `randomGeneratorSeed()` returns the seed in use. The CMake
       variable `GUM_RANDOMSEED` and the option `act --fixed_seed`, which had no effect on the draws, are removed. The
       test runs display their seed.
+    - Behaviour change: a seed gives the same draws on every platform. `randomValue`, `randomProba` and the shuffles
+      of the database generators used the distributions of `<random>`, whose algorithms depend on the standard
+      library (the same seed gave other values with libc++, libstdc++ or MSVC); the draws are now computed from the
+      outputs of `std::mt19937` only, so the values drawn for a given seed changed once. New `randomShuffle` and
+      `randomGamma` (used by `Dirichlet`); `randomValue` is unbiased up to `max` above 2^32; `randomProba` is in [0, 1).
+      The PRM generators no longer use `std::rand` (they ignored `initRandom`).
     - New `MarkedGraph` (edges with a mark at each end: tail, arrowhead or circle; adding an existing edge updates its
       marks; directed view `parents`/`children`/`spouses`/`undirectedNeighbours`; `skeleton()`) and
       `fastMarkedGraph` (an edge described twice with different marks raises `InvalidEdge`); `PAG` derives from it
@@ -169,6 +176,8 @@
       the same result as `averageInference`. The forward sampling of CTBN and `ctbn.randomCTBN` are reproducible
       after `initRandom` (their draws did not use the generator of pyAgrum); `randomCTBN` with one variable (the
       default) raised `ValueError`.
+    - `UndiGraphListener` and `MixedGraphListener` were not exported from the shared libraries (link error of the
+      structure listeners of `MarkovRandomField` with the shared build on Windows).
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
       mixture learners (without argument, the learner copies the state set by the `use...` methods).
     - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn

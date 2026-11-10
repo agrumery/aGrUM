@@ -1,4 +1,4 @@
-# requires: IPython, matplotlib, pydot
+# requires: IPython, matplotlib, pydot, graphviz
 import pydot as dot
 
 import pyagrum as gum

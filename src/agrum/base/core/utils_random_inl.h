@@ -55,17 +55,13 @@
 
 namespace gum {
   INLINE
-  Idx randomValue(const Size max) {
-    if (max == 0) { GUM_ERROR(OutOfBounds, "randomValue: max must be > 0") }
-    std::uniform_int_distribution< Idx > uni_int(0, int(max) - 1);
-    return uni_int(_rand_namespace_::generator());
-  }
+  Idx randomValue(const Size max) { return randomValue(_rand_namespace_::generator(), max); }
 
   INLINE
-  double randomProba() {
-    std::uniform_real_distribution uni_real(0.0, 1.0);
-    return uni_real(_rand_namespace_::generator());
-  }
+  double randomProba() { return randomProba(_rand_namespace_::generator()); }
+
+  INLINE
+  double randomGamma(double shape) { return randomGamma(shape, _rand_namespace_::generator()); }
 
   /// returns the current generator's value
   INLINE

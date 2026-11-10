@@ -79,10 +79,104 @@ namespace gum {
     return res;
   }
 
+  namespace _rand_namespace_ {
+    template < typename GENERATOR >
+    constexpr bool is32Bits() {
+      return GENERATOR::min() == 0 && GENERATOR::max() == 0xFFFFFFFFu;
+    }
+
+    // a value of the standard normal distribution (Marsaglia's polar method)
+    template < typename GENERATOR >
+    double standardNormal(GENERATOR& generator) {
+      double u, v, s;
+      do {
+        u = 2.0 * randomProba(generator) - 1.0;
+        v = 2.0 * randomProba(generator) - 1.0;
+        s = u * u + v * v;
+      } while (s >= 1.0 || s == 0.0);
+      return u * std::sqrt(-2.0 * std::log(s) / s);
+    }
+  }   // namespace _rand_namespace_
+
   template < typename GENERATOR >
   Idx randomValue(GENERATOR& generator, const Size max) {
-    std::uniform_int_distribution< Idx > uni_int(0, max - 1);
-    return uni_int(generator);
+    static_assert(_rand_namespace_::is32Bits< GENERATOR >(),
+                  "a generator of 32-bit values is needed");
+    if (max == 0) { GUM_ERROR(OutOfBounds, "randomValue: max must be > 0") }
+
+    const auto bound = static_cast< std::uint64_t >(max);
+    if (bound <= 0x100000000ull) {
+      // the outputs above the largest multiple of bound are rejected (no modulo bias)
+      const std::uint64_t limit = 0x100000000ull - 0x100000000ull % bound;
+      std::uint64_t       draw;
+      do {
+        draw = static_cast< std::uint64_t >(generator());
+      } while (draw >= limit);
+      return static_cast< Idx >(draw % bound);
+    }
+
+    // 64 bits from two outputs; rest = 2^64 mod bound
+    const std::uint64_t all  = std::numeric_limits< std::uint64_t >::max();
+    const std::uint64_t rest = (all % bound + 1) % bound;
+    std::uint64_t       draw;
+    do {
+      const auto high = static_cast< std::uint64_t >(generator());
+      const auto low  = static_cast< std::uint64_t >(generator());
+      draw            = (high << 32) | low;
+    } while (rest != 0 && draw > all - rest);
+    return static_cast< Idx >(draw % bound);
+  }
+
+  template < typename GENERATOR >
+  double randomProba(GENERATOR& generator) {
+    static_assert(_rand_namespace_::is32Bits< GENERATOR >(),
+                  "a generator of 32-bit values is needed");
+    // 53 bits (the precision of a double) from two outputs, drawn in this order
+    const auto high = static_cast< std::uint64_t >(generator()) >> 5;
+    const auto low  = static_cast< std::uint64_t >(generator()) >> 6;
+    return (static_cast< double >(high) * 67108864.0 + static_cast< double >(low))
+         * (1.0 / 9007199254740992.0);
+  }
+
+  template < typename RANDOM_IT >
+  void randomShuffle(RANDOM_IT first, RANDOM_IT last) {
+    randomShuffle(first, last, _rand_namespace_::generator());
+  }
+
+  template < typename RANDOM_IT, typename GENERATOR >
+  void randomShuffle(RANDOM_IT first, RANDOM_IT last, GENERATOR& generator) {
+    for (auto i = static_cast< Size >(last - first); i > 1; --i) {
+      std::iter_swap(first + (i - 1), first + randomValue(generator, i));
+    }
+  }
+
+  template < typename GENERATOR >
+  double randomGamma(double shape, GENERATOR& generator) {
+    if (!(shape > 0.0)) { GUM_ERROR(OutOfBounds, "randomGamma: shape must be > 0") }
+
+    if (shape < 1.0) {
+      // Gamma(shape) = Gamma(shape + 1) * U^(1/shape)
+      const double gamma = randomGamma(shape + 1.0, generator);
+      double       u;
+      do {
+        u = randomProba(generator);
+      } while (u == 0.0);
+      return gamma * std::pow(u, 1.0 / shape);
+    }
+
+    const double d = shape - 1.0 / 3.0;
+    const double c = 1.0 / std::sqrt(9.0 * d);
+    while (true) {
+      double x, v;
+      do {
+        x = _rand_namespace_::standardNormal(generator);
+        v = 1.0 + c * x;
+      } while (v <= 0.0);
+      v              = v * v * v;
+      const double u = randomProba(generator);
+      if (u < 1.0 - 0.0331 * (x * x) * (x * x)) return d * v;
+      if (u > 0.0 && std::log(u) < 0.5 * x * x + d * (1.0 - v + std::log(v))) return d * v;
+    }
   }
 
 

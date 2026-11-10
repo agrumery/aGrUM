@@ -223,12 +223,13 @@ namespace gum {
     for (const auto& node: this->BN().nodes())
       shuffleIds.push_back(node);
 
-    auto engine = std::default_random_engine{};
+    // a generator with a fixed seed: the same order of the nodes for each inference
+    auto engine = std::mt19937{};
 
     GUM_SCALAR error = 0.0;
     do {
       error = 0.0;   // error of the current sweep only
-      std::shuffle(std::begin(shuffleIds), std::end(shuffleIds), engine);
+      gum::randomShuffle(std::begin(shuffleIds), std::end(shuffleIds), engine);
       this->updateApproximationScheme();
       for (const auto& node: shuffleIds) {
         GUM_SCALAR e = _updateNodeMessage_(node);

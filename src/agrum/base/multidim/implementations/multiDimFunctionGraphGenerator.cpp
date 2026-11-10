@@ -163,8 +163,9 @@ namespace gum {
     Idx randOut = 0;
 
     if (span != 0) {
-      std::weibull_distribution< double > distribution(double(span), 1.0);
-      randOut = (Idx)(distribution(gum::randomGenerator()) * span / 2);
+      // Weibull distribution of shape span and scale 1, by inversion of its cumulative function
+      const double weibull = std::pow(-std::log(1.0 - gum::randomProba()), 1.0 / double(span));
+      randOut              = (Idx)(weibull * span / 2);
       if (randOut > span) randOut = span;
     }
 

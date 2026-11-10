@@ -41,6 +41,11 @@
 #pragma once
 
 
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <vector>
+
 #include <agrum/config.h>
 
 #include <agrum/base/core/configuration/configuration.h>
@@ -207,6 +212,91 @@ namespace gum_tests {
       const auto v = gum::randomValue(5);
       CHECK(v < gum::Idx(5));
     }
+    gum::initRandom(seed);
+  }
+
+  // the draws depend only on the outputs of std::mt19937 (fixed by the standard): the same values
+  // on every platform (the distributions of <random> differ between the standard libraries)
+  GUM_TEST(PortableDraws) {
+    const auto seed = gum::randomGeneratorSeed();
+    gum::initRandom(42);
+
+    std::vector< gum::Idx > values;
+    for (int i = 0; i < 8; ++i)
+      values.push_back(gum::randomValue(10));
+    CHECK_EQ(values, std::vector< gum::Idx >{0, 4, 8, 0, 0, 0, 8, 6});
+
+    CHECK_EQ(gum::randomValue(gum::Size(1) << 40), gum::Idx(201990867249));
+
+    CHECK_EQ(gum::randomProba(), 0.29793956029886792);
+    CHECK_EQ(gum::randomProba(), 0.78780346920631805);
+
+    std::vector< int > shuffled{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    gum::randomShuffle(shuffled.begin(), shuffled.end());
+    CHECK_EQ(shuffled, std::vector< int >{6, 8, 2, 5, 0, 3, 7, 9, 1, 4});
+
+    // std::log and std::pow may differ in the last bit between the libraries
+    CHECK(std::fabs(gum::randomGamma(2.5) - 3.4218334707071598) < 1e-12);
+    CHECK(std::fabs(gum::randomGamma(0.5) - 0.095172959702188795) < 1e-12);
+
+    gum::initRandom(seed);
+  }
+
+  GUM_TEST(RandomValueIsUniform) {
+    const auto seed = gum::randomGeneratorSeed();
+    gum::initRandom(42);
+    std::vector< int > counts(7, 0);
+    for (int i = 0; i < 70000; ++i)
+      ++counts[gum::randomValue(7)];
+    for (const auto count: counts)
+      CHECK(std::abs(count - 10000) < 500);   // about 5 standard deviations
+    for (int i = 0; i < 1000; ++i)
+      CHECK(gum::randomValue((gum::Size(1) << 40) + 3) < (gum::Size(1) << 40) + 3);
+    gum::initRandom(seed);
+  }
+
+  GUM_TEST(RandomProbaRange) {
+    const auto seed = gum::randomGeneratorSeed();
+    gum::initRandom(42);
+    double sum = 0.0;
+    for (int i = 0; i < 100000; ++i) {
+      const double p = gum::randomProba();
+      CHECK((p >= 0.0 && p < 1.0));
+      sum += p;
+    }
+    CHECK(std::fabs(sum / 100000 - 0.5) < 0.01);
+    gum::initRandom(seed);
+  }
+
+  GUM_TEST(RandomShuffleIsAPermutation) {
+    std::vector< int > values(50);
+    std::iota(values.begin(), values.end(), 0);
+    gum::randomShuffle(values.begin(), values.end());
+    std::vector< int > sorted = values;
+    std::sort(sorted.begin(), sorted.end());
+    std::vector< int > expected(50);
+    std::iota(expected.begin(), expected.end(), 0);
+    CHECK_EQ(sorted, expected);
+
+    std::vector< int > empty;
+    gum::randomShuffle(empty.begin(), empty.end());
+    CHECK(empty.empty());
+  }
+
+  GUM_TEST(RandomGammaMean) {
+    const auto seed = gum::randomGeneratorSeed();
+    gum::initRandom(42);
+    for (const double shape: {0.3, 1.0, 2.5, 10.0}) {
+      double sum = 0.0;
+      for (int i = 0; i < 20000; ++i) {
+        const double g = gum::randomGamma(shape);
+        CHECK(g >= 0.0);
+        sum += g;
+      }
+      CHECK(std::fabs(sum / 20000 - shape) < 0.05 * shape + 0.02);   // the mean of Gamma(shape, 1)
+    }
+    CHECK_THROWS_AS(gum::randomGamma(0.0), const gum::OutOfBounds&);
+    CHECK_THROWS_AS(gum::randomGamma(-1.0), const gum::OutOfBounds&);
     gum::initRandom(seed);
   }
 
