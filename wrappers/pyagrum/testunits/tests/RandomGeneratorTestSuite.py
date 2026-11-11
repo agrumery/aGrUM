@@ -46,13 +46,20 @@ from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class RandomGeneratorTestCase(pyAgrumTestCase):
+  @classmethod
+  def setUpClass(cls):
+    cls._seed = gum.randomGeneratorSeed()
+
+  @classmethod
+  def tearDownClass(cls):
+    gum.initRandom(cls._seed)  # the next suites are driven by the displayed seed again
+
   def testInitSeed0(self):
     gum.initRandom(0)
     bn1 = gum.fastBN("A->B->C")
     gum.initRandom(0)
     bn2 = gum.fastBN("A->B->C")
     self.assertNotEqual(bn1.cpt("B").min(), bn2.cpt("B").min())  # may fail but highly unlikely
-    gum.initRandom(0)
 
   def testInitSeed1(self):
     gum.initRandom(1)
@@ -60,7 +67,6 @@ class RandomGeneratorTestCase(pyAgrumTestCase):
     gum.initRandom(1)
     bn2 = gum.fastBN("A->B->C")
     self.assertEqual(bn1.cpt("B").min(), bn2.cpt("B").min())
-    gum.initRandom(0)
 
   def testInitSeed42(self):
     gum.initRandom(42)
@@ -68,7 +74,6 @@ class RandomGeneratorTestCase(pyAgrumTestCase):
     gum.initRandom(42)
     bn2 = gum.fastBN("A->B->C")
     self.assertEqual(bn1.cpt("B").min(), bn2.cpt("B").min())
-    gum.initRandom(0)
 
 
 ts = unittest.TestSuite()

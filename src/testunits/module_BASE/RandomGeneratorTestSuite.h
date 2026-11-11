@@ -134,19 +134,24 @@ namespace gum_tests {
     gum::initRandom(seed);
   }
 
-  GUM_TEST(RandomSeeForStructure) {
+  GUM_TEST(RandomSeedForStructure) {
+    // the same seed gives the same generated structure
     const auto seed = gum::randomGeneratorSeed();
-    try {
-      const auto n_nodes  = 100;
-      const auto n_arcs   = 150;
-      const auto n_modmax = 3;
 
-      gum::MCBayesNetGenerator< double > gen(n_nodes, n_arcs, n_modmax);
+    const auto generate = [] {
+      gum::MCBayesNetGenerator< double > gen(100, 150, 3);
       gum::BayesNet< double >            bn;
-
       gum::initRandom(20);
       gen.generateBN(bn);
-    } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+      return bn;
+    };
+    const auto bn1 = generate();
+    const auto bn2 = generate();
+    CHECK_EQ(bn1.size(), static_cast< gum::Size >(100));
+    CHECK(bn1.dag() == bn2.dag());
+    for (const auto node: bn1.nodes())
+      CHECK_EQ(bn1.variable(node).name(), bn2.variable(node).name());
+
     gum::initRandom(seed);
   }
 

@@ -59,6 +59,8 @@ import tempfile
 import warnings
 from pathlib import Path
 
+import pyagrum as gum
+
 os.environ.setdefault("MPLBACKEND", "Agg")  # no window for the examples drawing with matplotlib
 
 
@@ -106,11 +108,17 @@ def _trimmed(text: str) -> str:
 
 
 def runExample(source: str, name: str = "<example>") -> None:
-  """Execute an example; raise AssertionError if a result differs from the one shown."""
+  """Execute an example; raise AssertionError if a result differs from the one shown.
+
+  The example is isolated: the seed of the random generator, the configuration and the figures of matplotlib are
+  restored or closed afterwards (the hooks added to the configuration cannot be removed).
+  """
   tree = ast.parse(source, name)
   lines = source.splitlines()
   env = {"__name__": "__main__"}
   cwd = os.getcwd()
+  seed = gum.randomGeneratorSeed()
+  gum.config.push()
   with tempfile.TemporaryDirectory() as tmp, warnings.catch_warnings():
     warnings.simplefilter("ignore")  # deprecated members are documented too
     os.chdir(tmp)  # the files written by the example
@@ -135,6 +143,10 @@ def runExample(source: str, name: str = "<example>") -> None:
           raise AssertionError(f"{name}:{stmt.lineno}: {code}\n  shown : {expected!r}\n  actual: {result!r}")
     finally:
       os.chdir(cwd)
+      gum.config.pop()
+      gum.initRandom(seed)  # many examples call initRandom(42): the next ones are driven by the run's seed again
+      if "matplotlib.pyplot" in sys.modules:  # never imported here only to close figures
+        sys.modules["matplotlib.pyplot"].close("all")
 
 
 def runExampleFile(path: Path) -> None:
