@@ -2,6 +2,7 @@ import glob
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -184,7 +185,17 @@ def getTagVersion(datadir: str):
 def prepareSphinx(site_dir: str):
   # copy every file and folder in the current directory to the site_dir (generated/ and api/ are rebuilt by Sphinx)
   for item in os.listdir("."):
-    if item in {site_dir, "webbuild.py", "Makefile", "notebooks", "notebooks.rst", "generated", "api"}:
+    if item in {
+      site_dir,
+      "webbuild.py",
+      "Makefile",
+      "notebooks",
+      "notebooks.rst",
+      "generated",
+      "api",
+      "_build",
+      "__pycache__",
+    }:
       continue
     if item.endswith(".zip"):  # do not copy zip files
       continue
@@ -246,12 +257,21 @@ def goRTD(site_dir: str):
   os.chdir("..")
 
 
+# doc/, resolved before any chdir (__file__ may be relative)
+_DOC = Path(__file__).resolve().parent.parent
+
+
 def goSphinx(site_dir: str):
   notif("Running Sphinx to build the site (html and markdown)...")
   os.chdir(site_dir)
+  # the sources are a copy in site_dir: the examples and the science fragments are given by their absolute path
+  dirs = " ".join(
+    f"-D {name}={shlex.quote(str(_DOC / folder))}"
+    for name, folder in (("pyagrum_examples_dir", "examples"), ("pyagrum_science_dir", "science"))
+  )
   # Run Sphinx to build the site
-  os.system("sphinx-build -M html . . -j auto")
-  os.system("sphinx-build -M markdown . . -j auto")
+  os.system(f"sphinx-build -M html . . -j auto {dirs}")
+  os.system(f"sphinx-build -M markdown . . -j auto {dirs}")
   # move the folders html/_static and html/_images in the folder markdown
 
   recursive_copy("html/_static", "markdown/_static")

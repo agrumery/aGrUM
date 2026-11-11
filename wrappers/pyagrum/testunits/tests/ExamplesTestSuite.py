@@ -42,6 +42,7 @@
 one (doc/examples/<class name>.class.py), and every example is right."""
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -52,11 +53,16 @@ _DOC = Path(__file__).resolve().parents[2] / "doc"
 _EXCLUDED = {"_build", "site", "Web"}  # outputs of the documentation builds, inside the Sphinx sources
 
 
-def _inventory():
+def _apiinventory():
   sys.path.append(str(_DOC / "sphinx"))  # appended: no shadowing of an installed module
-  from pyagrum_apiinventory import Inventory, scan  # noqa: PLC0415 (module of the Sphinx sources)
+  import pyagrum_apiinventory  # noqa: PLC0415 (module of the Sphinx sources)
 
-  return Inventory(scan(_DOC / "sphinx", lambda rel: rel.split("/")[0] in _EXCLUDED))
+  return pyagrum_apiinventory
+
+
+def _inventory():
+  api = _apiinventory()
+  return api.Inventory(api.scan(_DOC / "sphinx", lambda rel: rel.split("/")[0] in _EXCLUDED))
 
 
 class TestExamples(pyAgrumTestCase):
@@ -92,6 +98,19 @@ class TestExamples(pyAgrumTestCase):
       byLowerCase.setdefault(name.lower(), []).append(name)
     clashes = sorted(sorted(names) for names in byLowerCase.values() if len(names) > 1)
     self.assertFalse(clashes, f"example names differing only by case: {clashes}")
+
+  def testUnavailableFunctions(self):
+    # a module or a function of pyagrum-functions that cannot be imported is reported, it does not stop the build
+    api = _apiinventory()
+    with tempfile.TemporaryDirectory() as tmp:
+      Path(tmp, "page.rst").write_text(
+        ".. pyagrum-functions:: pyagrum.noSuchModule\n\n.. pyagrum-functions::\n\n   pyagrum.noSuchFunction\n",
+        encoding="utf-8",
+      )
+      inventory = api.Inventory(api.scan(Path(tmp), lambda rel: False))
+    self.assertEqual(inventory.unavailable, {"pyagrum.noSuchModule", "pyagrum.noSuchFunction"})
+    self.assertEqual(len(inventory.problems), 2)
+    self.assertEqual(inventory.functions, {})
 
   def testExamples(self):
     for stem, path in sorted(self.files.items()):

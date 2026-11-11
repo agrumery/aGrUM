@@ -55,8 +55,9 @@ from collections.abc import Callable
 from pathlib import Path
 
 API_DIR = "api"
-EXAMPLES_DIR = "../examples"  # relative to the Sphinx sources: one file <page name>.py per generated page
-SCIENCE_DIR = "../science"  # relative to the Sphinx sources: optional <class name>.rst, references of a class
+# defaults of the Sphinx config values pyagrum_examples_dir and pyagrum_science_dir, relative to the Sphinx sources
+EXAMPLES_DIR = "../examples"  # one file <page name>.py per generated page
+SCIENCE_DIR = "../science"  # optional <class name>.rst, references of a class
 _DIRECTIVE = re.compile(r"^[ \t]*\.\. pyagrum-(?P<kind>class|functions)::[ \t]*(?P<name>\S*)[ \t]*$")
 _OPTION = re.compile(r"^[ \t]+:(?P<key>[a-z-]+):[ \t]*(?P<value>.*)$")
 _SKIPPED = {"thisown", "clone"}  # SWIG ownership flag, and members hidden by conf.skip
@@ -117,6 +118,8 @@ def moduleFunctions(module: str) -> list[str]:
 def scan(srcdir: Path, excluded: Callable[[str], bool]) -> list[tuple[str, str, dict[str, str], str]]:
   """(kind, name, options, docname) of every pyagrum-class and of every function of the pyagrum-functions.
 
+  A module of pyagrum-functions that cannot be imported is given as ("functions", module, {}, docname).
+
   excluded tells whether a source path (relative to srcdir, as for Sphinx exclude_patterns) is excluded.
   """
   found = []
@@ -149,7 +152,11 @@ def scan(srcdir: Path, excluded: Callable[[str], bool]) -> list[tuple[str, str, 
       if match["kind"] == "class":
         found.append(("class", match["name"], options, docname))
         continue
-      names = moduleFunctions(match["name"]) if match["name"] else []
+      try:
+        names = moduleFunctions(match["name"]) if match["name"] else []
+      except ImportError:  # reported by Inventory, which cannot import the module either
+        found.append(("functions", match["name"], {}, docname))
+        continue
       for line in body[j + 1 :] if not match["name"] else []:  # content: one function per line
         if line.strip() and line[:1] not in " \t":
           break
@@ -182,6 +189,8 @@ class Inventory:
       except (ImportError, AttributeError):
         self.problems.append((docname, f"pyagrum-{kind}: cannot import {name}"))
         self.unavailable.add(name)
+        continue
+      if kind == "functions":  # a module of pyagrum-functions, listed only if it cannot be imported
         continue
       if kind == "function":
         self.functions.setdefault(name, docname)

@@ -223,9 +223,8 @@ class PyagrumClass(SphinxDirective):
       return []  # import failure already reported by the scan
     options = {key: value or "" for key, value in self.options.items()}
     container = nodes.container()
-    srcdir = Path(self.env.srcdir)
-    example = _example(srcdir / EXAMPLES_DIR / f"{Inventory.classExampleName(name)}.py")
-    science = _science(srcdir / SCIENCE_DIR / f"{name}.rst")
+    example = _example(_docDir(self.env.app, "pyagrum_examples_dir") / f"{Inventory.classExampleName(name)}.py")
+    science = _science(_docDir(self.env.app, "pyagrum_science_dir") / f"{name}.rst")
     settings = self.state.document.settings
     lines = classSource(inventory, name, options, self.env.docname, settings, example, science)
     self.state.nested_parse(
@@ -242,7 +241,13 @@ class PyagrumFunctions(SphinxDirective):
 
   def run(self) -> list[nodes.Node]:
     inventory: Inventory = self.env.app._pyagrumInventory
-    names = moduleFunctions(self.arguments[0]) if self.arguments else [n for line in self.content for n in line.split()]
+    if not self.arguments:
+      names = [n for line in self.content for n in line.split()]
+    elif self.arguments[0] in inventory.unavailable:  # import failure already reported by the scan
+      names = []
+    else:
+      names = moduleFunctions(self.arguments[0])
+    names = [name for name in names if name not in inventory.unavailable]
     container = nodes.container()
     lines = functionsSource(inventory, names, self.env.docname, self.state.document.settings)
     self.state.nested_parse(
@@ -251,8 +256,17 @@ class PyagrumFunctions(SphinxDirective):
     return container.children
 
 
+def _docDir(app, configValue: str) -> Path:
+  """The folder given by a config value: relative to the Sphinx sources, or absolute (the website is built from a
+  copy of the sources, see webbuild.py)."""
+  return Path(app.srcdir) / getattr(app.config, configValue)
+
+
 def _generate(app) -> None:
   srcdir = Path(app.srcdir)
+  for configValue in ("pyagrum_examples_dir", "pyagrum_science_dir"):
+    if not _docDir(app, configValue).is_dir():
+      logger.warning(f"pyagrum-class: {configValue} = {_docDir(app, configValue)} is not a folder")
   with mock(app.config.autodoc_mock_imports):  # same imports as autodoc (qiskit for pyagrum.qBNSampling)
     inventory = Inventory(scan(srcdir, Matcher(app.config.exclude_patterns)))
   app._pyagrumInventory = inventory
@@ -265,7 +279,7 @@ def _generate(app) -> None:
 
   apidir = srcdir / API_DIR
   apidir.mkdir(parents=True, exist_ok=True)
-  examples = srcdir / EXAMPLES_DIR
+  examples = _docDir(app, "pyagrum_examples_dir")
   sources = {
     f"{owner}.{member}.rst": pageSource(inventory, owner, member, _example(examples / f"{owner}.{member}.py"))
     for owner, member in inventory.pages
@@ -287,7 +301,7 @@ def _generate(app) -> None:
   for path in sorted(examples.glob("*.py")):
     if path.stem not in names:  # renamed or removed member or class, or typo in the file name
       logger.warning(f"pyagrum-class: example {path.name} matches no documented member, function or class")
-  for path in sorted((srcdir / SCIENCE_DIR).glob("*.rst")):
+  for path in sorted(_docDir(app, "pyagrum_science_dir").glob("*.rst")):
     if path.stem not in inventory.classes:  # renamed or removed class, or typo in the file name
       logger.warning(f"pyagrum-class: science fragment {path.name} matches no documented class")
   missing = len(pages - {path.stem for path in examples.glob("*.py")})
@@ -348,6 +362,8 @@ def setup(app):
   # markdown (website): no image map; the classes are listed in text just above the diagram
   app.add_node(inheritance_diagram, override=True, markdown=(_skipNode, None))
   app.add_node(addnodes.toctree, override=True, markdown=(_markdownToctree, None))
+  app.add_config_value("pyagrum_examples_dir", EXAMPLES_DIR, "env")
+  app.add_config_value("pyagrum_science_dir", SCIENCE_DIR, "env")
   app.add_directive("pyagrum-class", PyagrumClass)
   app.add_directive("pyagrum-functions", PyagrumFunctions)
   app.connect("builder-inited", _generate)
