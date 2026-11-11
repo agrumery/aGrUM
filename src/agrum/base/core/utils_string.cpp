@@ -111,16 +111,17 @@ namespace gum {
   }
 
   bool isIntegerWithResult(std::string_view val, int* res) {
-    if (val.empty()) return false;
-    std::size_t pos = 0;
-    if ((val[0] == '+') || (val[0] == '-')) { pos = 1; }
-    if (val.find_first_not_of("0123456789", pos) != std::string_view::npos) return false;
+    // an optional sign followed by at least one digit, and nothing else
+    const std::size_t digits = (!val.empty() && (val[0] == '+' || val[0] == '-')) ? 1 : 0;
+    if (val.size() == digits) return false;
+    if (val.find_first_not_of("0123456789", digits) != std::string_view::npos) return false;
 
-    if (res != nullptr) {
-      // from_chars handles '-' natively but not '+'
-      const std::size_t from_pos = (val[0] == '+') ? 1 : 0;
-      std::from_chars(val.data() + from_pos, val.data() + val.size(), *res);
-    }
+    // from_chars handles '-' natively but not '+'; a value out of the range of an int is refused
+    const std::size_t from  = (val[0] == '+') ? 1 : 0;
+    int               value = 0;
+    if (std::from_chars(val.data() + from, val.data() + val.size(), value).ec != std::errc())
+      return false;
+    if (res != nullptr) *res = value;
     return true;
   }
 

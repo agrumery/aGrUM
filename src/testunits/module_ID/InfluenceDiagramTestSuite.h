@@ -854,6 +854,14 @@ namespace gum_tests {
     CHECK_EQ(infdiag.sizeArcs(), static_cast< gum::Size >(4));
   }
 
+  GUM_TEST(FastPrototypeLineBreaksAndBlankChains) {
+    for (const std::string_view desc: {"A->*B\nC->$D", "A->*B; ;C->$D"}) {
+      const auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(desc);
+      CHECK_EQ(infdiag.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(infdiag.sizeArcs(), static_cast< gum::Size >(2));
+    }
+  }
+
   GUM_TEST(FastPrototypeVarType) {
     auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
         "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");

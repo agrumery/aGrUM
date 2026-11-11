@@ -169,6 +169,15 @@
       were not checked).
     - `core.randomSeed` is now refused outside [0,4294967295] (it was truncated without a message: 4294967296 gave 0,
       hence a seed taken from the clock). New type `uint32` for the keys of the configuration (`int[0,4294967295]`).
+    - `fastGraph`, `fastMarkedGraph` and the `fastPrototype` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField`
+      (`fastBN`, `fastID`, `fastMRF`...): a line break separates two chains, as `;` (it glued the names around it:
+      `"A->B\nC->D"` created a node `BC`); a blank chain (`"; ;"`) is ignored (`fastBN`/`fastID` raised `InvalidArc`,
+      `fastMRF` created a variable with an empty name).
+    - `fastGraph`, `fastMarkedGraph`: a node is given by its id only if its token is written with digits only and fits in
+      an `int`, else all the tokens are names (`"99999999999->1"` created the arc 0->1; `"+5"` and `"5"` were the same
+      node).
+      `isInteger`/`isIntegerWithResult` refuse a sign alone and a value out of the range of an `int` (which was
+      truncated).
     - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
       `MRFinference2FactorGraphdot`, `LIMIDinference2dot`, the inferences of CTBN and BNMixture): `nodeColor` keyed by
       the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory

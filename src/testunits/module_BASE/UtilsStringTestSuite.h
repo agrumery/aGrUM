@@ -140,6 +140,20 @@ namespace gum_tests {
     CHECK(gum::isIntegerWithResult("-12", &res));
     CHECK_EQ(res, -12);
     CHECK(!gum::isIntegerWithResult("1-2", &res));
+
+    // a sign alone, two signs or a value out of the range of an int are not integers, and res is
+    // left unchanged
+    res = 7;
+    for (const char* bad:
+         {"", "+", "-", "+-1", "--1", "2147483648", "-2147483649", "99999999999"}) {
+      CHECK_MESSAGE(!gum::isIntegerWithResult(bad, &res), bad);
+      CHECK_MESSAGE(!gum::isInteger(bad), bad);
+    }
+    CHECK_EQ(res, 7);
+    CHECK(gum::isIntegerWithResult("2147483647", &res));
+    CHECK_EQ(res, 2147483647);
+    CHECK(gum::isIntegerWithResult("-2147483648", &res));
+    CHECK_EQ(res, -2147483648);
   }
 
   GUM_TEST(isNumericalWithResWithResult) {

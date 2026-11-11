@@ -52,6 +52,7 @@
 #include <limits>
 #include <set>
 
+#include <agrum/base/graphs/fastGraph.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/count.h>
@@ -97,7 +98,7 @@ namespace gum {
     MarkovRandomField< GUM_SCALAR > mn;
 
 
-    for (const auto& clikchain: split(remove_newline(dotlike), ";")) {
+    for (const auto& clikchain: graph::detail::fastGraphChains(dotlike)) {
       NodeSet cliq;
       for (auto& node: split(clikchain, "--")) {
         auto idVar = build_node_for_MN(mn, node, domain);

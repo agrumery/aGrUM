@@ -386,6 +386,17 @@ namespace gum_tests {
     CHECK_EQ(mn.variable("f").varType(), gum::VarType::NUMERICAL);
   }
 
+  GUM_TEST(FastPrototypeLineBreaksAndBlankChains) {
+    // a line break separates two factors (it used to glue B and C), a blank chain is ignored (it
+    // created a variable with an empty name)
+    for (const std::string_view desc: {"A--B\nC--D", "A--B\r\nC--D", "A--B; ;C--D"}) {
+      const auto mn = gum::MarkovRandomField< double >::fastPrototype(desc);
+      CHECK_EQ(mn.size(), static_cast< gum::Size >(4));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mn.factor({"A", "B"}));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mn.factor({"C", "D"}));
+    }
+  }
+
   GUM_TEST(MonoClique) {
     auto mn2 = gum::MarkovRandomField< float >::fastPrototype("A--B");
     GUM_CHECK_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}));

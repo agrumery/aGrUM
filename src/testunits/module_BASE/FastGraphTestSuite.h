@@ -96,6 +96,19 @@ namespace gum_tests {
     CHECK_FALSE(g.hasName(1));
   }
 
+  GUM_TEST(NodeIdModeNeedsUnsignedDigits) {
+    // a sign, or an id out of the range of an int (it was truncated: "99999999999" was the node 0),
+    // makes the tokens names
+    // ("-0" cannot be a token: a leading '-' is the edge operator)
+    for (const std::string_view desc: {"+5->1", "99999999999->1", "2147483648->1"}) {
+      auto g = gum::fastGraph< gum::DiGraph >(desc);
+      CHECK_EQ(g.size(), static_cast< gum::Size >(2));
+      CHECK(g.idFromName("1").has_value());
+    }
+    // "+5" and "5" are two different nodes
+    CHECK_EQ(gum::fastGraph< gum::DiGraph >("+5->5").size(), static_cast< gum::Size >(2));
+  }
+
   GUM_TEST(NameMode) {
     auto       g   = gum::fastGraph< gum::DiGraph >("A->B->C");
     const auto idA = g.idFromName("A");
@@ -161,6 +174,25 @@ namespace gum_tests {
     CHECK_EQ(isolated.size(), static_cast< gum::Size >(1));
     CHECK_EQ(isolated.sizeArcs(), static_cast< gum::Size >(0));
     CHECK_EQ(isolated.sizeEdges(), static_cast< gum::Size >(0));
+  }
+
+  GUM_TEST(LineBreaksSeparateChains) {
+    // a line break separates two chains, as ';' (it used to glue B and C into a node BC)
+    for (const std::string_view desc:
+         {"A->B\nC->D", "A->B\r\nC->D", "A->B;\nC->D", "A->B; ;C->D"}) {
+      const auto g = gum::fastGraph< gum::DiGraph >(desc);
+      CHECK_EQ(g.size(), static_cast< gum::Size >(4));
+      CHECK_EQ(g.sizeArcs(), static_cast< gum::Size >(2));
+      CHECK(g.existsArc(*g.idFromName("A"), *g.idFromName("B")));
+      CHECK(g.existsArc(*g.idFromName("C"), *g.idFromName("D")));
+    }
+  }
+
+  GUM_TEST(LineBreakInsideBrackets) {
+    // inside the domain of a variable, a line break does not separate two chains
+    const auto g = gum::fastGraph< gum::DiGraph >("A->B[1,\n5]->C\nD");
+    CHECK_EQ(g.size(), static_cast< gum::Size >(4));
+    CHECK(g.idFromName("B[1,5]").has_value());
   }
 
   GUM_TEST(TrailingOperatorThrows) {

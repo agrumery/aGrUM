@@ -109,15 +109,18 @@ namespace gum {
 
   /**
    * @brief return true is a string contains an integer value
-   * @param s A string
-   * @return true if s exactly contains an int (s can start with "-" or "+")
+   * @param val A string
+   * @return true if val exactly contains an int (val can start with "-" or "+", followed by at
+   * least one digit) in the range of an int
    */
   GUM_SHARED_PUBLIC bool isInteger(std::string_view val);
 
   /**
    * @brief return true is a string contains an integer value
-   * @param s A string
-   * @return true if s exactly contains an int (s can start with "-" or "+")
+   * @param val A string
+   * @param res if not null and val contains an int, receives its value (unchanged otherwise)
+   * @return true if val exactly contains an int (val can start with "-" or "+", followed by at
+   * least one digit) in the range of an int
    */
   GUM_SHARED_PUBLIC bool isIntegerWithResult(std::string_view val, int* res);
 

@@ -107,7 +107,7 @@ namespace gum {
                                    << "does not support edges")
     };
 
-    for (const auto& chaine: split(remove_newline(dotlike), ";")) {
+    for (const auto& chaine: graph::detail::fastGraphChains(dotlike)) {
       using namespace graph::detail;
       fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
     }

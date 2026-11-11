@@ -61,8 +61,8 @@ namespace gum {
     };
 
     /**
-     * @brief Splits a description into its ";"-delimited chains of tokens and decides how to
-     * read the nodes: as NodeIds if every token is a non-negative integer, else as names.
+     * @brief Splits a description into its chains of tokens (see fastGraphChains()) and decides how
+     * to read the nodes: as NodeIds if every token is a non-negative integer, else as names.
      *
      * @param desc the description.
      * @param tokenize `std::vector< TOKEN > tokenize(std::string_view chain)`.
@@ -75,13 +75,12 @@ namespace gum {
                               TOKEN_NAME       tokenName,
                               ON_EMPTY_TOKEN   onEmptyToken) {
       FastGraphChains< typename decltype(tokenize(desc))::value_type > parsed;
-      for (const auto& chainStr: split(remove_newline(desc), ";")) {
-        if (trim_copy(chainStr).empty()) { continue; }
+      for (const auto& chainStr: fastGraphChains(desc)) {
         auto tokens = tokenize(chainStr);
         for (const auto& token: tokens) {
           const std::string& name = tokenName(token);
           if (name.empty()) { onEmptyToken(); }
-          if (!fastGraphIsNodeIdToken(name)) { parsed.useIds = false; }
+          if (!fastGraphNodeId(name)) { parsed.useIds = false; }
         }
         parsed.chains.push_back(std::move(tokens));
       }
@@ -92,9 +91,7 @@ namespace gum {
     template < typename GRAPH_TYPE >
     NodeId fastGraphBuildNode(GRAPH_TYPE& g, const std::string& token, bool useIds) {
       if (useIds) {
-        int value = 0;
-        isIntegerWithResult(token, &value);
-        const auto id = static_cast< NodeId >(value);
+        const NodeId id = *fastGraphNodeId(token);   // checked by fastGraphParseChains
         if (!g.existsNode(id)) { g.addNodeWithId(id); }
         return id;
       }

@@ -49,6 +49,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -93,8 +94,20 @@ namespace gum {
      */
     std::size_t fastGraphFindDash(std::string_view chain, std::size_t from);
 
-    /// true if token must be read as a NodeId (non-negative integer)
-    GUM_SHARED_PUBLIC bool fastGraphIsNodeIdToken(const std::string& token);
+    /// the NodeId denoted by token if it is written with digits only (no sign) and is in the range
+    /// of an int, std::nullopt otherwise
+    GUM_SHARED_PUBLIC std::optional< NodeId > fastGraphNodeId(std::string_view token);
+
+    /**
+     * @brief Splits a fast description into its chains, separated by ';' or by a line break.
+     *
+     * Shared by fastGraph(), fastMarkedGraph() and the fastPrototype() of BayesNet,
+     * InfluenceDiagram and MarkovRandomField: a line break separates two chains (it is not
+     * removed, which would glue the names around it), except inside a '['...']' or '{'...'}'
+     * span (the domain of a variable, which may be written on several lines), where it is
+     * ignored; the blank chains (e.g. between ";;" or "; ;") are ignored.
+     */
+    GUM_SHARED_PUBLIC std::vector< std::string > fastGraphChains(std::string_view desc);
 
   }   // namespace graph::detail
 #endif   // SWIG
@@ -104,7 +117,7 @@ namespace gum {
    *
    * Syntax: "->" separates two node tokens with a directed arc, "<-" with a
    * directed arc in the other direction, "-" separates them with an
-   * undirected edge, ";" separates independent chains, e.g. "A->B->C; B->E"
+   * undirected edge, ";" or a line break separates independent chains, e.g. "A->B->C; B->E"
    * or "A->B<-C" (both A and C point to B) or "A->B-C".
    *
    * "-" (not "--") is used for edges on purpose: MRF's own fast syntax

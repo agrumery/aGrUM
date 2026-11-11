@@ -999,6 +999,17 @@ namespace gum_tests {
     } catch (const gum::Exception& e) { GUM_SHOWERROR(e) }
   }
 
+  GUM_TEST(FastPrototypeLineBreaksAndBlankChains) {
+    // a line break separates two chains (it used to glue B and C), a blank chain is ignored (it
+    // raised InvalidArc)
+    for (const std::string_view desc: {"A->B\nC->D", "A->B\r\nC->D", "A->B; ;C->D"}) {
+      const auto bn = gum::BayesNet< double >::fastPrototype(desc);
+      CHECK_EQ(bn.size(), static_cast< gum::Size >(4));
+      CHECK(bn.existsArc("A", "B"));
+      CHECK(bn.existsArc("C", "D"));
+    }
+  }
+
   GUM_TEST(FastPrototypeVarType) {
     auto bn = gum::BayesNet< float >::fastPrototype("a");
     CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");

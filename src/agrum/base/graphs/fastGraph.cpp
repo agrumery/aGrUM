@@ -38,6 +38,8 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <charconv>
+
 #include <agrum/base/graphs/fastGraph.h>
 
 #include <agrum/base/core/utils_string.h>
@@ -95,9 +97,39 @@ namespace gum {
       return tokens;
     }
 
-    bool fastGraphIsNodeIdToken(const std::string& token) {
-      int value = 0;
-      return isIntegerWithResult(token, &value) && (value >= 0);
+    std::optional< NodeId > fastGraphNodeId(std::string_view token) {
+      if (token.empty() || token.find_first_not_of("0123456789") != std::string_view::npos)
+        return std::nullopt;
+      // in the range of an int: a larger id would make addNodeWithId() reserve every smaller id
+      int id = 0;
+      if (std::from_chars(token.data(), token.data() + token.size(), id).ec != std::errc())
+        return std::nullopt;
+      return static_cast< NodeId >(id);
+    }
+
+    std::vector< std::string > fastGraphChains(std::string_view desc) {
+      // a line break separates two chains at bracket-depth 0; inside a '['...']' or '{'...'}' span
+      // (the domain of a variable, e.g. "B[1,\n5]"), it is ignored
+      std::string separated;
+      separated.reserve(desc.size());
+      int depth = 0;
+      for (const char c: desc) {
+        if (c == '[' || c == '{') {
+          ++depth;
+        } else if ((c == ']' || c == '}') && depth > 0) {
+          --depth;
+        }
+        if (c == '\n' || c == '\r') {
+          if (depth == 0) { separated.push_back(';'); }
+        } else {
+          separated.push_back(c);
+        }
+      }
+      std::vector< std::string > chains;
+      for (auto& chain: split(separated, ";")) {
+        if (!trim_copy(chain).empty()) { chains.push_back(std::move(chain)); }
+      }
+      return chains;
     }
 
   }   // namespace graph::detail
