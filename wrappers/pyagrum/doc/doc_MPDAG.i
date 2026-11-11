@@ -51,16 +51,6 @@ An MPDAG cannot be modified: it is built by :meth:`MPDAG.meekClosure`, :meth:`MP
 checked by :meth:`MPDAG.fromPDAG`. The represented DAGs are Markov equivalent: :meth:`dSeparation` is
 the d-separation of any of them.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C'))
-  mpdag = gum.MPDAG.fromCPDAG(cpdag, [(0, 1)])  # A->B imposed, then B->C by the Meek rules
-  mpdag.arcs()
-  {(0, 1), (1, 2)}
-
 References
 ----------
 C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th

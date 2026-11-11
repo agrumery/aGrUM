@@ -170,16 +170,6 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
           effect is not identifiable.
         - A string explaining the identification method used or why
           identification failed.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
-      print(expl)
     """
     if isinstance(on, str):
         on = {on}
@@ -229,16 +219,6 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
     pyagrum.Tensor
         The counterfactual distribution P(on | do(whatif)) evaluated on the
         twin model, optionally sliced by *values*.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      t = gum.counterfactual(cm, on='Z', whatif='X',
-                             profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
@@ -272,15 +252,6 @@ def counterfactualModel(cm, profile=None, whatif=None):
     -------
     pyagrum.CausalModel
         The twin causal model ready for the prediction step.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},

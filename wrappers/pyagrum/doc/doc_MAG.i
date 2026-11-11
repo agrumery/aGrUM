@@ -56,14 +56,6 @@ J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Re
 
 J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
 selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  dag = gum.fastDAG('A->X<-T->Y<-B')
-  mag = gum.MAG.fromDAG(dag, {dag.idFromName('T')})  # T latent: A->X<->Y<-B
 "
 
 %feature("docstring") gum::MAG::fromDAG

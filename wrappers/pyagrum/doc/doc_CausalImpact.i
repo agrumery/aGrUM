@@ -68,16 +68,6 @@ CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
         - **knowing** (*str or set of str, optional*) -- observed variable(s)
           to condition on. A single string is automatically converted to a
           one-element set. Default is empty. Keyword-only.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet.fastPrototype('X->Y->Z')
-  cm = gum.CausalModel(bn)
-  formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
-  print(expl)
 "
 
 %feature("docstring") gum::CausalImpact::toDict
@@ -103,17 +93,6 @@ Returns
 -------
 dict or None
     The AST as a nested dict, or None if not identifiable.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet.fastPrototype('X->Y->Z')
-  cm = gum.CausalModel(bn)
-  ci = gum.CausalImpact(cm, on='Z', doing='X')
-  import json
-  print(json.dumps(ci.toDict(), indent=2))
 "
 
 %feature("docstring") gum::CausalImpact::isIdentified

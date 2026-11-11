@@ -57,26 +57,6 @@ IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
 IntegerVariable(aIDRV) -> IntegerVariable
     Parameters:
         - **aIDRV** (*pyagrum.IntegerVariable*) -- The pyagrum.IntegerVariable that will be copied
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  # creating a variable with 3 values : 1,34,142
-  va=gum.IntegerVariable('a','a integer variable',[1,34,142])
-  print(va)
-  a:Integer(<1,34,142>)
-  va.addValue(25)
-  (pyagrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
-  va.changeValue(34,43)
-  print(va)
-  a:Integer(<1,25,43,142>)
-  vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
-  print(vb)
-  b:Integer(<1,34,142>)
-  vb.labels()
-  ('1', '34', '142')
 "
 
 %feature("docstring") gum::IntegerVariable::integerDomain

@@ -51,18 +51,6 @@ a causal model, a credal network, a junction tree... beyond the look given by ``
 What is not given is taken from the configuration. The nodes are designated by their identifiers, the arcs by the
 identifiers of their tail and of their head (an undirected edge by its two ends, in any order) and the factor of a
 factor graph by the identifiers of its variables.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.fastBN('A->B->C')
-  options = gum.DotOptions()
-  options.setSize('12!')
-  options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
-  options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
-  dot = bn.toDot(options)
 "
 
 %feature("docstring") gum::dot::DotOptions::setSize

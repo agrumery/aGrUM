@@ -38,7 +38,9 @@
 #                                                                          #
 ############################################################################
 
+import os
 import sys
+import tempfile
 import unittest
 
 import pyagrum as gum
@@ -226,6 +228,30 @@ class TestListenerCallbacks(pyAgrumTestCase):
       listener.setWhenStop(42)
     with self.assertRaises(gum.InvalidArgument):
       gum.BayesNet().addStructureListener(whenNodeAdded=42)
+
+  def testLoadListenerKeepsNoReference(self):
+    progress = []
+    listener = progress.append
+    before = sys.getrefcount(listener)
+    bn = gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=[listener])
+    self.assertEqual(bn.size(), 37)
+    self.assertGreater(len(progress), 0)
+    self.assertEqual(sys.getrefcount(listener), before)
+
+    with tempfile.TemporaryDirectory() as tmp:
+      mrfFile = os.path.join(tmp, "mrf.uai")
+      gum.fastMRF("A--B;B--C").saveUAI(mrfFile)
+      progress.clear()
+      mrf = gum.loadMRF(mrfFile, listeners=[listener])
+    self.assertEqual(mrf.size(), 3)
+    self.assertGreater(len(progress), 0)
+    self.assertEqual(sys.getrefcount(listener), before)
+
+  def testNonCallableLoadListenerIsRefused(self):
+    with self.assertRaises(gum.InvalidArgument):
+      gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=[print, 42])
+    with self.assertRaises(gum.InvalidArgument):
+      gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=42)
 
 
 ts = unittest.TestSuite()

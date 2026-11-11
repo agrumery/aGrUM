@@ -1053,7 +1053,7 @@ class DiscreteTypeProcessor:
     """
     return a graphical model discretized using the suggestion of the Discretized for date source X (and for target y).
     This graphical model only contains the discretized variables.
-    For instance, it can be used as a template for a BNLearner.
+    It can be used as a template for a BNLearner.
 
     Parameters
     ----------
@@ -1071,15 +1071,6 @@ class DiscreteTypeProcessor:
     -------
         pyagrum.BayesNet or other graphical model:
           the discretized graphical model (only (discretized) random variables are created in the model)
-
-    Examples
-    --------
-    .. code-block:: python
-
-      discretizer = DiscreteTypeProcessor(
-        defaultDiscretizationMethod="uniform", defaultParamDiscretizationMethod=7, discretizationThreshold=10
-      )
-      learner = pyagrum.BNLearner(data, discretizer.discretizedTemplate(data))
     """
     if template is None:
       template = pyagrum.BayesNet()

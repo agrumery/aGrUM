@@ -112,16 +112,6 @@ pyagrum.GumTypeError
     If the variable cannot be used for this aggregator. The parents, added afterwards with
     :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
     and the arc is not added.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet()
-  w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
-  for name in 'ABC':
-    bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
 "
 
 %feature("docstring") gum::BayesNet::addAND
@@ -262,19 +252,6 @@ pyagrum.GumTypeError
     If the variable cannot be used for this aggregator. The parents, added afterwards with
     :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
     and the arc is not added.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet()
-  levels = ['low', 'medium', 'high']
-  a = bn.add(gum.LabelizedVariable('A', '', levels))
-  b = bn.add(gum.LabelizedVariable('B', '', levels))
-  m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
-  bn.addArc(a, m)
-  bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
 "
 
 %feature("docstring") gum::BayesNet::addMEDIAN
@@ -307,16 +284,6 @@ pyagrum.GumTypeError
     If the variable cannot be used for this aggregator. The parents, added afterwards with
     :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
     and the arc is not added.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet()
-  m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
-  for name in 'ABC':
-    bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
 "
 
 %feature("docstring") gum::BayesNet::addMIN
@@ -346,18 +313,6 @@ pyagrum.GumTypeError
     If the variable cannot be used for this aggregator. The parents, added afterwards with
     :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
     and the arc is not added.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet()
-  a = bn.add(gum.RangeVariable('A', '', 0, 1))
-  c = bn.add(gum.RangeVariable('C', '', 10, 11))
-  m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
-  bn.addArc(a, m)
-  bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
 "
 
 %feature("docstring") gum::BayesNet::addSUM
@@ -386,16 +341,6 @@ pyagrum.GumTypeError
     If the variable cannot be used for this aggregator. The parents, added afterwards with
     :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
     and the arc is not added.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet()
-  s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
-  for name in 'AB':
-    bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
 "
 
 %feature("docstring") gum::BayesNet::addNoisyAND
@@ -681,13 +626,6 @@ Notes
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
   - see also the function pyagrum.fastBN.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
 Parameters
 ----------
@@ -1031,18 +969,6 @@ Notes
   - see also Tensor.evEq
   - see also BayesNet.evGt, BayesNet.evLt, BayesNet.evIn
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-  print(bn.evEqu('A',5)
-    A                                                                                                                                                                                                    |
-  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
-
 Parameters
 ----------
 var : int | str
@@ -1063,18 +989,6 @@ Notes
 -----
   - see also Tensor.evGt
   - see also BayesNet.evEq, BayesNet.evLt, BayesNet.evIn
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-  print(bn.evGt('A',5)
-    A                                                                                                                                                                                                    |
-  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
 
 Parameters
 ----------

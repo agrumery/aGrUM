@@ -91,15 +91,6 @@ any accepted boolean spelling (``yes``/``on``/``1``/...) is stored as ``True`` o
 enumerated value is stored with the casing declared in ``defaults.ini``.
 
 See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum
-  pyagrum.config[\"dynamicBN\", \"graphSize\"] = 10
-  pyagrum.config[\"dynamicBN\", \"graphSize\"]
-  \"10\"
 "
 
 %extend gum::Configuration {
@@ -263,14 +254,6 @@ def run_hooks(self):
 def set(self, section, option, value, no_hook=False):
   """set a property in a section. Preferably use ``__getitem__`` and ``__setitem__``.
 
-  Examples
-  --------
-  .. code-block:: python
-
-    pyagrum.config["dynamicBN", "graphSize"] = 10
-    pyagrum.config["dynamicBN", "graphSize"]
-    "10"
-
   Parameters
   ----------
   section : str
@@ -294,14 +277,6 @@ def set(self, section, option, value, no_hook=False):
 def get(self, section, option):
   """Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
 
-  Examples
-  --------
-  .. code-block:: python
-
-    pyagrum.config["dynamicBN", "graphSize"] = 10
-    pyagrum.config["dynamicBN", "graphSize"]
-    "10"
-
   Parameters
   ----------
   section : str
@@ -318,13 +293,6 @@ def get(self, section, option):
 
 def doc(self, section, option):
   """Give the type and the one-line documentation declared for section.option in defaults.
-
-  Examples
-  --------
-  .. code-block:: python
-
-    pyagrum.config.doc("tensor", "visibleDigits")
-    "int :: number of visible digits when displaying a tensor"
 
   Parameters
   ----------
@@ -351,15 +319,6 @@ def getTyped(self, section, option):
   in defaults: ``int`` and ``float`` are converted, ``bool`` gives a Python bool, enumerations
   and ``str`` stay strings. Preferably use the ``typed`` accessor: ``config.typed[section, option]``.
 
-  Examples
-  --------
-  .. code-block:: python
-
-    pyagrum.config.typed["tensor", "visibleDigits"]
-    4
-    pyagrum.config.typed["tensor", "withColors"]
-    True
-
   Parameters
   ----------
   section : str
@@ -376,13 +335,6 @@ def getTyped(self, section, option):
 
 def schema(self):
   """Iterate over the whole configuration schema (in the order of the defaults).
-
-  Examples
-  --------
-  .. code-block:: python
-
-    for section, option, meta, default in pyagrum.config.schema():
-      print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
 
   Yields
   ------

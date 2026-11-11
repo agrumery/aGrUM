@@ -59,29 +59,6 @@ fast_description: str
 default_nbrmod: int
   nbr of modality if fast_description does not indicate it.
   `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).
-
-Examples
---------
-.. code-block:: python
-
-  print(gum.fastVariable('A{On|Off|Defun}'))
-  A:Labelized({On|Off|Defun})
-  print(gum.fastVariable('A{3.14|0|1.15}'))
-  A:NumericalDiscrete({0|1.15|3.14})
-  print(gum.fastVariable('A{1.2:5.2:5}}'))
-  A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})
-  print(gum.fastVariable('A{1|3|9}'))
-  A:Integer({1|3|9})
-  print(gum.fastVariable('A[4,6]'))
-  A:Range([4,6])
-  print(gum.fastVariable('A[5]'))
-  A:Range([0,4])
-  print(gum.fastVariable('A[4,6,10]'))
-  A:Discretized(<[4;6[,[6;10]>)
-  print(gum.fastVariable('A[1:6:5]'))
-  A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)
-
-
 "
 
 %feature("docstring") gum::Variable

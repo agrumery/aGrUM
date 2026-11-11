@@ -223,8 +223,8 @@ class GraphicalBNComparator:
     dotted black line: the arc is added in _bn2
     dotted red line: the arc is removed in _bn2
 
-    Warning
-    -------
+    Warnings
+    --------
     if pydot is not installed, this function just returns None
 
     Returns
@@ -389,8 +389,8 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
     - the arc is removed in _bn2
 
   See graphDiffLegend() to add a legend to the graph.
-  Warning
-  -------
+  Warnings
+  --------
   if pydot is not installed, this function just returns None
 
   Returns

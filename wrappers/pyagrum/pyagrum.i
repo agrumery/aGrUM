@@ -144,6 +144,8 @@ static int _pyagrum_import_numpy(void) {
 
 %include "extensions/PythonBNListener.h"
 %include "extensions/PythonMRFListener.h"
+// internal copy (std::vector of listeners), not for Python
+%ignore PythonLoadListener::PythonLoadListener(const PythonLoadListener&);
 %include "extensions/PythonLoadListener.h"
 %include "extensions/PythonApproximationListener.h"
 %include "extensions/PythonDatabaseGeneratorListener.h"

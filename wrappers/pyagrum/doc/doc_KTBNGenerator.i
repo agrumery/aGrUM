@@ -54,17 +54,6 @@ cycles among same-slice (temporal, lag 0) and atemporal-to-atemporal arcs, which
 it does by drawing one random ranking per family and only admitting arcs from
 lower to higher rank.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  import pyagrum.ktbn as ktbn
-  gum.initRandom(42)                          # reproducible
-  gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
-  gen.setDensity(0.15).setMaxParents(4)
-  model = gen.generate()
-
 KTBNGenerator(k, nbTemporal, nbAtemporal=0, maxArcs=0, maxModality=2) -> KTBNGenerator
     Parameters:
         - **k** (*int*) -- order of the generated k-TBN (number of template

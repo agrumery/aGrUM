@@ -63,15 +63,6 @@ pyagrum.Instantiation
     An empty tuple or a copy of the one in parameters
 
 Instantiation is subscriptable therefore values can be easily accessed/modified.
-
-Examples
---------
-.. code-block:: python
-
-  ## Access the value of A in an instantiation aI
-  valueOfA = aI['A']
-  ## Modify the value
-  aI['A'] = newValueOfA
 "
 
 %feature("docstring") gum::Instantiation::add

@@ -7236,6 +7236,14 @@ SWIGINTERN PyObject *_wrap_CausalModel_addLatentVariable__SWIG_0(PyObject *self,
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -7313,6 +7321,14 @@ SWIGINTERN PyObject *_wrap_CausalModel_addLatentVariable__SWIG_1(PyObject *self,
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -13334,15 +13350,6 @@ static PyMethodDef SwigMethods[] = {
 		"str\n"
 		"    A dot-format string representation of the causal model.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet.fastPrototype('X->Y->Z')\n"
-		"  cm = gum.CausalModel(bn)\n"
-		"  print(cm.toDot())\n"
-		"\n"
 		""},
 	 { "CausalModel_hasObservationalBN", _wrap_CausalModel_hasObservationalBN, METH_O, "\n"
 		"\n"
@@ -13719,17 +13726,6 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"dict or None\n"
 		"    The AST as a nested dict, or None if not identifiable.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet.fastPrototype('X->Y->Z')\n"
-		"  cm = gum.CausalModel(bn)\n"
-		"  ci = gum.CausalImpact(cm, on='Z', doing='X')\n"
-		"  import json\n"
-		"  print(json.dumps(ci.toDict(), indent=2))\n"
 		"\n"
 		""},
 	 { "delete_CausalImpact", _wrap_delete_CausalImpact, METH_O, NULL},

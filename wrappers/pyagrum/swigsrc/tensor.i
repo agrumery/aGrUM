@@ -253,17 +253,6 @@ if len(args)>1:
       Generator to iterate inside a Tensor.
 
       Yield an pyagrum.Instantiation that iterates over all the possible values for the pyagrum.Tensor
-
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN("A[3]->B[3]<-C[3]")
-        for i in bn.cpt("B").loopIn():
-              print(i)
-              print(bn.cpt("B").get(i))
-              bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -278,21 +267,13 @@ if len(args)>1:
 
       The symbolic expression s_fn gives a value for each parameters of the Tensor
 
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn.cpt('B').fillFromFunction('(B+A+C)/2')
-
       Parameters
       ----------
       s_fn : str
           a symbolic expression using the name of the variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
-      Warning
-      -------
+      Warnings
+      --------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
 
 
@@ -327,21 +308,13 @@ if len(args)>1:
       The symbolic expression s_fn gives a value for the first variable, depending on the following variables.
       The computed CPT is deterministic.
 
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn.cpt('B').fillFromFunction('(A+C)/2')
-
       Parameters
       ----------
       s_fn : str
           a symbolic expression using the name of the second and following variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
-      Warning
-      -------
+      Warnings
+      --------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
 
 
@@ -386,15 +359,6 @@ if len(args)>1:
       Automatically fills the tensor as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
 
       The symbolic expressions s_fns gives a value for the named parameters of the distributions.
-
-      Examples
-      --------
-      .. code-block:: python
-
-        import scipy.stats as stats
-        import pyagrum as gum
-        bn=gum.fastBN('A[10]->B[10]<-C[10]')
-        bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------
@@ -460,25 +424,17 @@ if len(args)>1:
       """
       Create a copy of the Tensor with the same variables as in p.
 
-      Warning
-      -------
-      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Potential, an Instantiation or a Graphical Model (Bayesian Network,...).
+      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same: use
+      ``bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A')`` instead.
 
-      Examples
+      Warnings
       --------
-      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same:
-
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn1=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
-        bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A') # OK
+      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
 
       Returns
       -------
-        pyagrum.Tensor
-            a copy of the Potential with the same variables as p.
+      pyagrum.Tensor
+          a copy of the Tensor with the same variables as p.
       """
       res=Tensor()
       for i in self.names:
@@ -640,17 +596,6 @@ if len(args)>1:
         -------
         numpy.ndarray
             New float64 array; modifying it does not affect the Tensor.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-          t.fillWith([1,2,3,4,5,6])
-          t.toarray()          # shape (3, 2)
-          array([[1., 2.],
-                 [3., 4.],
-                 [5., 6.]])
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
@@ -671,17 +616,6 @@ if len(args)>1:
         -------
         numpy.ndarray
             float64 view, shape ``tuple(reversed(self.shape))``, C-contiguous.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-          t.fillWith([1,2,3,4,5,6])
-          v = t.as_nparray()   # shape (3, 2), shares buffer with t
-          v[0, 0] = 99
-          t[{"a": 0, "b": 0}]  # 99.0
-          99.0
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:

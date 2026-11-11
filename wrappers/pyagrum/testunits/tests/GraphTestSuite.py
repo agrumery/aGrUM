@@ -684,11 +684,6 @@ class TestGraph(pyAgrumTestCase):
     self.assertIn("pyagrum.PAG@", repr(gum.fastPAG("A o-> B")))
     self.assertIn("pyagrum.MarkedGraph@", repr(gum.fastMarkedGraph("A o-> B")))
 
-  def testDocstringExamplesUseTheGumAlias(self):
-    # the examples read "import pyagrum as gum": the module name must not be rewritten in them
-    self.assertIn("gum.fastBN(", gum.DotOptions.__doc__)
-    self.assertNotIn("pyagrum.fastBN(", gum.DotOptions.__doc__)
-
   def testFastPAG(self):
     p = gum.fastPAG("0 o-o 1;1 o-> 2;2<->3")
     self.assertIsInstance(p, gum.PAG)

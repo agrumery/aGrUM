@@ -56,15 +56,6 @@ also the c-separation of the chain graph of the CPDAG (a DAG and its essential g
 equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Bouckaert and
 Studený 1998).
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C;D->C'))
-  cpdag.arcs(), cpdag.edges()
-  ({(1, 2), (3, 2)}, {(0, 1)})
-
 References
 ----------
 T. Verma, J. Pearl. Equivalence and Synthesis of Causal Models. Proceedings of the 6th Conference on

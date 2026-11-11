@@ -216,8 +216,8 @@ def CTBNFromData(data: dict[int, list[tuple[float, str, str]]]) -> CTBN:
   """
   Constructs a CTBN and add the corresponding variables found in the trajectories.
 
-  Warning
-  -------
+  Warnings
+  --------
   If data is too short, some variables or state labels might be missed.
 
   Parameters

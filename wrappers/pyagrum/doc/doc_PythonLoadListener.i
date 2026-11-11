@@ -46,7 +46,17 @@
 
 %feature("docstring") PythonLoadListener::setPythonListener
 "
+Set the function called with the loading progress.
 
+Parameters
+----------
+l : Callable[[int], Any]
+    the function called with the progress of the loading (in %)
+
+Raises
+------
+pyagrum.InvalidArgument
+    If l is not callable.
 "
 %feature("docstring") PythonLoadListener::whenLoading
 "

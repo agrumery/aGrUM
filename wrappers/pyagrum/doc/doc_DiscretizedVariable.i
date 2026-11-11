@@ -48,34 +48,26 @@
 "
 DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
 
-DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyagrum.DiscretizedVariable Parameters:
+DiscretizedVariable(aName, aDesc) -> DiscretizedVariable
+    Parameters:
 
         - **aName** (``str``) -- the name of the variable
         - **aDesc** (``str``) -- the description of the variable
-        - **ticks** (``list[float]``) -- the list of ticks to add
-        - **is_empirical** (``bool``) -- if False, raise an error if a value is out of bound.
+
+DiscretizedVariable(aName, aDesc, ticks[, is_empirical]) -> DiscretizedVariable
+    Parameters:
+
+        - **aName** (``str``) -- the name of the variable
+        - **aDesc** (``str``) -- the description of the variable
+        - **ticks** (``list[float]``) -- the list of ticks (limits of the intervals)
+        - **is_empirical** (``bool``) -- if False (default), a value out of the bounds raises an error; positional
+          only (not a keyword argument)
 
 
 DiscretizedVariable(aDDRV) -> DiscretizedVariable
     Parameters:
 
         - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
-  print(vX)
-  X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
-  vX.isTick(4)
-  False
-  vX.labels()
-  ('[1;2[', '[2;3[', '[3;3.1415]')
-  # where is the real value 2.5 ?
-  vX.index('2.5')
-  1
 "
 
 %feature("docstring") gum::DiscretizedVariable::domain

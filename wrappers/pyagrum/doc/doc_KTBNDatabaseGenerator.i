@@ -54,16 +54,6 @@ Bayesian-network database generator, but never unrolls the k-TBN: it keeps only
 the k-slice template and slides it forward in time, so memory stays independent
 of the number of trajectories and their length.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum.ktbn as ktbn
-  kdbn = ...                                          # a k-TBN
-  gen = ktbn.KTBNDatabaseGenerator(kdbn)
-  # 1000 trajectories of length 10 -> out_dir/traj1.csv ... out_dir/traj1000.csv
-  ll = gen.drawSamples(1000, 10, \"out_dir\", \"traj\")
-
 KTBNDatabaseGenerator(kdbn) -> KTBNDatabaseGenerator
     Parameters:
         - **kdbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to sample from (only its
@@ -77,13 +67,6 @@ names are csvBaseName followed by the 1-based trajectory index and ``.csv``
 (e.g. ``traj1.csv``, ``traj2.csv``, ...). Either every trajectory shares the
 same horizon, or each trajectory gets its own (pass a list of horizons instead
 of a sample count and a single horizon).
-
-Examples
---------
-.. code-block:: python
-
-  gen.drawSamples(100, 10, \"out_dir\", \"traj\")            # 100 trajectories, length 10
-  gen.drawSamples([8, 10, 12], \"out_dir\", \"traj\")        # 3 trajectories, own lengths
 
 Parameters
 ----------

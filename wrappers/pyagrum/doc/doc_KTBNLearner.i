@@ -56,19 +56,6 @@ learning problems, solved with the same score/algorithm/prior machinery as
 variables. Temporal ordering and no-backward-arc constraints are applied
 automatically.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum.ktbn as ktbn
-  # atemporal variables inferred from the data
-  learner = ktbn.KTBNLearner(\"trajs/\", \"traj\", 500, 2)
-  learner.useScoreBIC().useGreedyHillClimbing()
-  model = learner.learnKTBN()
-
-  # or state the classification explicitly (pass an actual `set`, not a list)
-  learner2 = ktbn.KTBNLearner(\"trajs/\", \"traj\", 500, 2, {\"C\", \"D\"})
-
 KTBNLearner(dirPath, csvBaseName, nbSamples, k, atemporalVars, missingSymbols=['?'], induceTypes=True, ignoreMissingSymbols=False) -> KTBNLearner
     Structure-learning constructor with the temporal/atemporal classification
     supplied explicitly.

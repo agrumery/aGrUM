@@ -97,16 +97,6 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
           effect is not identifiable.
         - A string explaining the identification method used or why
           identification failed.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
-      print(expl)
     """
     if isinstance(on, str):
         on = {on}
@@ -156,16 +146,6 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
     pyagrum.Tensor
         The counterfactual distribution P(on | do(whatif)) evaluated on the
         twin model, optionally sliced by *values*.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      t = gum.counterfactual(cm, on='Z', whatif='X',
-                             profile={'Y': 'True'}, values={'X': 'False'})
     """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
@@ -199,15 +179,6 @@ def counterfactualModel(cm, profile=None, whatif=None):
     -------
     pyagrum.CausalModel
         The twin causal model ready for the prediction step.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      twin = gum.counterfactualModel(cm, profile={'Y': 'True'}, whatif='X')
     """
     p=_counterfactualModel(cm,
                            profile if profile is not None else {},
@@ -236,19 +207,6 @@ class DoorCriteria(object):
     High-level search for a single valid set is available via
     :meth:`pyagrum.CausalModel.backDoor` and
     :meth:`pyagrum.CausalModel.frontDoor`.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Z->Y')
-      dag = bn.dag()
-      x, y, z = bn.idFromName('X'), bn.idFromName('Y'), bn.idFromName('Z')
-      gum.DoorCriteria.satisfiesBackdoorCriterion(dag, x, y, set())
-      True
-      gum.DoorCriteria.enumerateFrontdoorSets(dag, x, y)
-      [{z}]
 
     """
 
@@ -603,26 +561,6 @@ class CausalModel(object):
 
         :func:`hasObservationalBN` returns False on the resulting model.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
-      cm = gum.CausalModel(bn)
-
-      # create a model with a latent confounder U between X and Y
-
-      cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
-
-      # build a causal model from a DAG only (no CPTs needed for structural queries)
-
-      dag = gum.fastDAG('X->Y->Z')
-      cm = gum.CausalModel(dag)
-      cm.hasObservationalBN()
-      False
-      cm.backDoor('X', 'Z')  # structural queries work without a BN
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -842,15 +780,6 @@ class CausalModel(object):
         -------
         str
             A dot-format string representation of the causal model.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet.fastPrototype('X->Y->Z')
-          cm = gum.CausalModel(bn)
-          print(cm.toDot())
 
         """
         return _cmcpp.CausalModel_toDot(self, *args)
@@ -1143,16 +1072,6 @@ class CausalImpact(object):
               to condition on. A single string is automatically converted to a
               one-element set. Default is empty. Keyword-only.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      formula, tensor, expl = gum.causalImpact(cm, on='Z', doing='X')
-      print(expl)
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -1441,17 +1360,6 @@ class CausalImpact(object):
         dict or None
             The AST as a nested dict, or None if not identifiable.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet.fastPrototype('X->Y->Z')
-          cm = gum.CausalModel(bn)
-          ci = gum.CausalImpact(cm, on='Z', doing='X')
-          import json
-          print(json.dumps(ci.toDict(), indent=2))
-
         """
         return _cmcpp.CausalImpact_toDict(self)
     __swig_destroy__ = _cmcpp.delete_CausalImpact
@@ -1495,16 +1403,6 @@ class Counterfactual(object):
               *whatif* variables, given as ``{variable_name: value_name}``.
               If omitted, the full joint distribution over all *whatif* values
               is returned.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.BayesNet.fastPrototype('X->Y->Z')
-      cm = gum.CausalModel(bn)
-      t = gum.counterfactual(cm, on='Z', whatif='X',
-                             profile={'Y': 'True'}, values={'X': 'False'})
 
     """
 

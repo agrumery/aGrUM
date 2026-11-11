@@ -1048,7 +1048,7 @@ _pyagrumcpp.UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 def setNumberOfThreads(number: int) -> None:
     r"""
 
-    To aNone spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value).
+    To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value).
 
     Returns
     -------
@@ -1171,15 +1171,6 @@ class _Configuration(object):
     enumerated value is stored with the casing declared in ``defaults.ini``.
 
     See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum
-      pyagrum.config["dynamicBN", "graphSize"] = 10
-      pyagrum.config["dynamicBN", "graphSize"]
-      "10"
 
     """
 
@@ -1335,14 +1326,6 @@ class _Configuration(object):
     def set(self, section, option, value, no_hook=False):
       """set a property in a section. Preferably use ``__getitem__`` and ``__setitem__``.
 
-      Examples
-      --------
-      .. code-block:: python
-
-        pyagrum.config["dynamicBN", "graphSize"] = 10
-        pyagrum.config["dynamicBN", "graphSize"]
-        "10"
-
       Parameters
       ----------
       section : str
@@ -1366,14 +1349,6 @@ class _Configuration(object):
     def get(self, section, option):
       """Give the value associated to section.option. Preferably use ``__getitem__`` and ``__setitem__``.
 
-      Examples
-      --------
-      .. code-block:: python
-
-        pyagrum.config["dynamicBN", "graphSize"] = 10
-        pyagrum.config["dynamicBN", "graphSize"]
-        "10"
-
       Parameters
       ----------
       section : str
@@ -1390,13 +1365,6 @@ class _Configuration(object):
 
     def doc(self, section, option):
       """Give the type and the one-line documentation declared for section.option in defaults.
-
-      Examples
-      --------
-      .. code-block:: python
-
-        pyagrum.config.doc("tensor", "visibleDigits")
-        "int :: number of visible digits when displaying a tensor"
 
       Parameters
       ----------
@@ -1423,15 +1391,6 @@ class _Configuration(object):
       in defaults: ``int`` and ``float`` are converted, ``bool`` gives a Python bool, enumerations
       and ``str`` stay strings. Preferably use the ``typed`` accessor: ``config.typed[section, option]``.
 
-      Examples
-      --------
-      .. code-block:: python
-
-        pyagrum.config.typed["tensor", "visibleDigits"]
-        4
-        pyagrum.config.typed["tensor", "withColors"]
-        True
-
       Parameters
       ----------
       section : str
@@ -1448,13 +1407,6 @@ class _Configuration(object):
 
     def schema(self):
       """Iterate over the whole configuration schema (in the order of the defaults).
-
-      Examples
-      --------
-      .. code-block:: python
-
-        for section, option, meta, default in pyagrum.config.schema():
-          print(f"{section}.{option} ({meta.kind}) = {default} : {meta.doc}")
 
       Yields
       ------
@@ -1581,18 +1533,6 @@ class DotOptions(object):
     What is not given is taken from the configuration. The nodes are designated by their identifiers, the arcs by the
     identifiers of their tail and of their head (an undirected edge by its two ends, in any order) and the factor of a
     factor graph by the identifiers of its variables.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      bn = gum.fastBN('A->B->C')
-      options = gum.DotOptions()
-      options.setSize('12!')
-      options.setNodeBgColor(bn.idFromName('A'), '#FF7F64')
-      options.setArcWidth(bn.idFromName('A'), bn.idFromName('B'), 3)
-      dot = bn.toDot(options)
 
     """
 
@@ -2665,33 +2605,6 @@ class LabelizedVariable(DiscreteVariable):
         Parameters:
             - **aLDRV** (*pyagrum.LabelizedVariable*) -- The pyagrum.LabelizedVariable that will be copied
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      # creating a variable with 3 labels : '0', '1' and '2'
-      va=gum.LabelizedVariable('a','a labelized variable',3)
-      print(va)
-      a:Labelized(<0,1,2>)
-      va.addLabel('foo')
-      (pyagrum.LabelizedVariable@0x7fc4c840dd90) a:Labelized(<0,1,2,foo>)
-      va.changeLabel(1,'bar')
-      print(va)
-      a:Labelized(<0,bar,2,foo>)
-      vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
-      print(vb)
-      b:Labelized(<A,B,C>)
-      vb.labels()
-      ('A', 'B', 'C')
-      vb.isLabel('E')
-      False
-      vb.label(2)
-      'C'
-      vc=gum.LabelizedVariable('b','b',['one','two','three'])
-      vc
-      (pyagrum.LabelizedVariable@0x7fc4c840c130) b:Labelized(<one,two,three>)
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -2973,24 +2886,6 @@ class RangeVariable(DiscreteVariable):
         Parameters:
             - **aDV** (*RangeVariable*) -- the pyagrum.RangeVariable that will be copied
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      vI=gum.RangeVariable('I','I in [4,10]',4,10)
-      print(vI)
-      I:Range([4,10])
-      vI.maxVal()
-      10
-      vI.belongs(1)
-      False
-      # where is the value 5 ?
-      vI.index('5')
-      1
-      vI.labels()
-      ('4', '5', '6', '7', '8', '9', '10')
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -3240,26 +3135,6 @@ class IntegerVariable(DiscreteVariable):
     IntegerVariable(aIDRV) -> IntegerVariable
         Parameters:
             - **aIDRV** (*pyagrum.IntegerVariable*) -- The pyagrum.IntegerVariable that will be copied
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      # creating a variable with 3 values : 1,34,142
-      va=gum.IntegerVariable('a','a integer variable',[1,34,142])
-      print(va)
-      a:Integer(<1,34,142>)
-      va.addValue(25)
-      (pyagrum.IntegerVariable@000001E4F5D07490) a:Integer(<1,25,34,142>)
-      va.changeValue(34,43)
-      print(va)
-      a:Integer(<1,25,43,142>)
-      vb=gum.IntegerVariable('b','b').addValue(34).addValue(142).addValue(1)
-      print(vb)
-      b:Integer(<1,34,142>)
-      vb.labels()
-      ('1', '34', '142')
 
     """
 
@@ -3552,29 +3427,6 @@ class NumericalDiscreteVariable(DiscreteVariable):
     NumericalDiscreteVariable(aNDRV) -> NumericalDiscreteVariable
         Parameters:
             - **aNDRV** (*pyagrum.NumericalDiscreteVariable*) -- The pyagrum.NumericalDiscreteVariable that will be copied
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      # creating a variable with 3 values : 1.5,3.14,1.42
-      va=gum.NumericalDiscreteVariable('a','a numerica variable',[1.5,3.14,1.42])
-      print(va)
-      a:NumericalDiscrete({1.42|1.5|3.14})
-      va.addValue(2.01)
-      (pyagrum.NumericalDiscreteVariable@0x55ea157b8d60) a:NumericalDiscrete({1.42|1.5|2.01|3.14})
-      va.changeValue(3.14,3.1415)
-      print(va)
-      a:NumericalDiscrete({1.42|1.5|2.01|3.1415})
-      vb=gum.NumericalDiscreteVariable('b','b').addValue(3.14).addValue(1.42).addValue(1.5)
-      print(vb)
-      b:NumericalDiscrete({1.42|1.5|3.14})
-      vb.labels()
-      ('1.42', '1.5', '3.14')
-      vc=gum.NumericalDiscreteVariable('c','c',1.2,3.8,5)
-      print(vc)
-      c:NumericalDiscrete({1.2|1.85|2.5|3.15|3.8})
 
     """
 
@@ -8142,15 +7994,6 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
     equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Bouckaert and
     Studený 1998).
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C;D->C'))
-      cpdag.arcs(), cpdag.edges()
-      ({(1, 2), (3, 2)}, {(0, 1)})
-
     References
     ----------
     T. Verma, J. Pearl. Equivalence and Synthesis of Causal Models. Proceedings of the 6th Conference on
@@ -8422,16 +8265,6 @@ class MPDAG(_ImmutableMixedGraphPDAG):
     An MPDAG cannot be modified: it is built by :meth:`MPDAG.meekClosure`, :meth:`MPDAG.fromCPDAG` or
     checked by :meth:`MPDAG.fromPDAG`. The represented DAGs are Markov equivalent: :meth:`dSeparation` is
     the d-separation of any of them.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      cpdag = gum.CPDAG.fromDAG(gum.fastDAG('A->B->C'))
-      mpdag = gum.MPDAG.fromCPDAG(cpdag, [(0, 1)])  # A->B imposed, then B->C by the Meek rules
-      mpdag.arcs()
-      {(0, 1), (1, 2)}
 
     References
     ----------
@@ -9916,14 +9749,6 @@ class MAG(_ImmutableGraphMarkedGraph):
     J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
     selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      dag = gum.fastDAG('A->X<-T->Y<-B')
-      mag = gum.MAG.fromDAG(dag, {dag.idFromName('T')})  # T latent: A->X<->Y<-B
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -10860,15 +10685,6 @@ class Instantiation(object):
 
     Instantiation is subscriptable therefore values can be easily accessed/modified.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      ## Access the value of A in an instantiation aI
-      valueOfA = aI['A']
-      ## Modify the value
-      aI['A'] = newValueOfA
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -11543,18 +11359,6 @@ class Instantiation(object):
         Generator to iterate on an Instantiation.
 
         Yield an pyagrum.Instantiation (copy of self) that iterates over all the possible values for the Instantiation.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.fastBN("A[3]->B[3]<-C[3]")
-          I=gum.Instantiation(bn.cpt("B"))
-          for i in I.loopIn():
-                print(i)
-                print(bn.cpt("B").get(i))
-                bn.cpt("B").set(i,0.3)
         """
         J=Instantiation(self)
         J.setFirst()
@@ -12998,29 +12802,6 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
       nbr of modality if fast_description does not indicate it.
       `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).
 
-    Examples
-    --------
-    .. code-block:: python
-
-      print(gum.fastVariable('A{On|Off|Defun}'))
-      A:Labelized({On|Off|Defun})
-      print(gum.fastVariable('A{3.14|0|1.15}'))
-      A:NumericalDiscrete({0|1.15|3.14})
-      print(gum.fastVariable('A{1.2:5.2:5}}'))
-      A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})
-      print(gum.fastVariable('A{1|3|9}'))
-      A:Integer({1|3|9})
-      print(gum.fastVariable('A[4,6]'))
-      A:Range([4,6])
-      print(gum.fastVariable('A[5]'))
-      A:Range([0,4])
-      print(gum.fastVariable('A[4,6,10]'))
-      A:Discretized(<[4;6[,[6;10]>)
-      print(gum.fastVariable('A[1:6:5]'))
-      A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)
-
-
-
     """
     return _pyagrumcpp.fastVariable(*args)
 
@@ -13341,34 +13122,26 @@ class DiscretizedVariable(IDiscretizedVariable):
 
     DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
 
-    DiscretizedVariable(aName, aDesc ,ticks=None,is_empirical=False) -> pyagrum.DiscretizedVariable Parameters:
+    DiscretizedVariable(aName, aDesc) -> DiscretizedVariable
+        Parameters:
 
             - **aName** (``str``) -- the name of the variable
             - **aDesc** (``str``) -- the description of the variable
-            - **ticks** (``list[float]``) -- the list of ticks to add
-            - **is_empirical** (``bool``) -- if False, raise an error if a value is out of bound.
+
+    DiscretizedVariable(aName, aDesc, ticks[, is_empirical]) -> DiscretizedVariable
+        Parameters:
+
+            - **aName** (``str``) -- the name of the variable
+            - **aDesc** (``str``) -- the description of the variable
+            - **ticks** (``list[float]``) -- the list of ticks (limits of the intervals)
+            - **is_empirical** (``bool``) -- if False (default), a value out of the bounds raises an error; positional
+              only (not a keyword argument)
 
 
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
 
             - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      vX=gum.DiscretizedVariable('X','X has been discretized').addTick(1).addTick(2).addTick(3).addTick(3.1415)
-      print(vX)
-      X:Discretized(<[1;2[,[2;3[,[3;3.1415]>)
-      vX.isTick(4)
-      False
-      vX.labels()
-      ('[1;2[', '[2;3[', '[3;3.1415]')
-      # where is the real value 2.5 ?
-      vX.index('2.5')
-      1
 
     """
 
@@ -14465,19 +14238,6 @@ class Tensor(object):
           - see also :meth:`BayesNet.evEq`
           - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
 
-        Examples
-        --------
-        .. code-block:: python
-
-          A=gum.fastVariable('A[0:10:20]')
-          p=gum.Tensor.evEq(A,5)
-          p
-          (pyagrum.Tensor@000001D7FAB06AD0)
-            A                                                                                                                                                                                                    |
-          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
-
         Parameters
         ----------
         var : pyagrum.DiscretizedVariable
@@ -14532,19 +14292,6 @@ class Tensor(object):
         -----
           - see also :meth:`BayesNet.evGt`
           - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`
-
-        Examples
-        --------
-        .. code-block:: python
-
-          A=gum.fastVariable('A[0:10:20]')
-          p=gum.Tensor.evGt(A,5)
-          p
-          (pyagrum.Tensor@000001D7FAB06AD0)
-            A                                                                                                                                                                                                    |
-          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
 
         Parameters
         ----------
@@ -14605,14 +14352,6 @@ class Tensor(object):
         Warnings
         --------
         The `pyagrum.Tensor` is assumed to contain a joint distribution.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          def log2cptA(x):
-            return -math.log2(bn.cpt('A')[x])
-          entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.
 
         Returns
         -------
@@ -14877,17 +14616,6 @@ class Tensor(object):
       Generator to iterate inside a Tensor.
 
       Yield an pyagrum.Instantiation that iterates over all the possible values for the pyagrum.Tensor
-
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN("A[3]->B[3]<-C[3]")
-        for i in bn.cpt("B").loopIn():
-              print(i)
-              print(bn.cpt("B").get(i))
-              bn.cpt("B").set(i,0.3)
       """
       i=Instantiation(self)
       i.setFirst()
@@ -14902,21 +14630,13 @@ class Tensor(object):
 
       The symbolic expression s_fn gives a value for each parameters of the Tensor
 
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn.cpt('B').fillFromFunction('(B+A+C)/2')
-
       Parameters
       ----------
       s_fn : str
           a symbolic expression using the name of the variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
-      Warning
-      -------
+      Warnings
+      --------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
 
 
@@ -14951,21 +14671,13 @@ class Tensor(object):
       The symbolic expression s_fn gives a value for the first variable, depending on the following variables.
       The computed CPT is deterministic.
 
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn.cpt('B').fillFromFunction('(A+C)/2')
-
       Parameters
       ----------
       s_fn : str
           a symbolic expression using the name of the second and following variables of the Tensor and giving a value to the first variable of the Tensor. This evaluation is done in a context that inclides 'math' module.
 
-      Warning
-      -------
+      Warnings
+      --------
           The expression may have any numerical values, but will be then transformed to the closest correct value for the range of the variable.
 
 
@@ -15010,15 +14722,6 @@ class Tensor(object):
       Automatically fills the tensor as a familly of distributions whose parameters are found using evaluation of the expressions s_fns.
 
       The symbolic expressions s_fns gives a value for the named parameters of the distributions.
-
-      Examples
-      --------
-      .. code-block:: python
-
-        import scipy.stats as stats
-        import pyagrum as gum
-        bn=gum.fastBN('A[10]->B[10]<-C[10]')
-        bn.cpt("B").fillFromDistribution(stats.norm,loc="(A+C)/2",scale=1)
 
       Parameters
       ----------
@@ -15084,25 +14787,17 @@ class Tensor(object):
       """
       Create a copy of the Tensor with the same variables as in p.
 
-      Warning
-      -------
-      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Potential, an Instantiation or a Graphical Model (Bayesian Network,...).
+      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same: use
+      ``bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A')`` instead.
 
-      Examples
+      Warnings
       --------
-      ``bn1.cpt('A')+bn2.cpt('A')`` does not work since the variables 'A' of bn1 and bn2 are not the same:
-
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn1=gum.fastBN('A[3]->B[3]<-C[3]')
-        bn2=gum.fastBN('A[3]<-B[3]<-C[3]')
-        bn1.cpt('A').toVarsIn(bn2)+bn2.cpt('A') # OK
+      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
 
       Returns
       -------
-        pyagrum.Tensor
-            a copy of the Potential with the same variables as p.
+      pyagrum.Tensor
+          a copy of the Tensor with the same variables as p.
       """
       res=Tensor()
       for i in self.names:
@@ -15264,17 +14959,6 @@ class Tensor(object):
         -------
         numpy.ndarray
             New float64 array; modifying it does not affect the Tensor.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-          t.fillWith([1,2,3,4,5,6])
-          t.toarray()          # shape (3, 2)
-          array([[1., 2.],
-                 [3., 4.],
-                 [5., 6.]])
         """
         arr = self._toarray_raw()
         if self.nbrDim() > 0:
@@ -15295,17 +14979,6 @@ class Tensor(object):
         -------
         numpy.ndarray
             float64 view, shape ``tuple(reversed(self.shape))``, C-contiguous.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          t = gum.Tensor().add(gum.LabelizedVariable("a","",2)).add(gum.LabelizedVariable("b","",3))
-          t.fillWith([1,2,3,4,5,6])
-          v = t.as_nparray()   # shape (3, 2), shares buffer with t
-          v[0, 0] = 99
-          t[{"a": 0, "b": 0}]  # 99.0
-          99.0
         """
         arr = self._as_nparray_raw(self)
         if self.nbrDim() > 0:
@@ -16109,10 +15782,20 @@ class PythonLoadListener(object):
         """
         return _pyagrumcpp.PythonLoadListener_whenLoading(self, buffer, percent)
 
-    def setPythonListener(self, l: object) -> bool:
+    def setPythonListener(self, l: object) -> None:
         r"""
 
+        Set the function called with the loading progress.
 
+        Parameters
+        ----------
+        l : Callable[[int], Any]
+            the function called with the progress of the loading (in %)
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If l is not callable.
 
         """
         return _pyagrumcpp.PythonLoadListener_setPythonListener(self, l)
@@ -16354,19 +16037,6 @@ class InformationTheory(object):
         Z :  : int or str or iterable[int or str] (optional)
           a third (an optional) nodeset
 
-    Examples
-    --------
-          .. code:: python
-
-              import pyagrum as gum
-              bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
-              ie=gum.LazyPropagation(bn)
-              it=gum.InformationTheory(ie,'A',['B','G'],['C'])
-              print(f'Entropy(A)={it.entropyX()}')
-              print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
-              print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
-              print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -16390,19 +16060,6 @@ class InformationTheory(object):
               a second nodeset
             Z :  : int or str or iterable[int or str] (optional)
               a third (an optional) nodeset
-
-        Examples
-        --------
-              .. code:: python
-
-                  import pyagrum as gum
-                  bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')
-                  ie=gum.LazyPropagation(bn)
-                  it=gum.InformationTheory(ie,'A',['B','G'],['C'])
-                  print(f'Entropy(A)={it.entropyX()}')
-                  print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')
-                  print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')
-                  print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')
 
         """
         _pyagrumcpp.InformationTheory_swiginit(self, _pyagrumcpp.new_InformationTheory(*args))
@@ -16983,18 +16640,6 @@ class StructuralMetrics(object):
     (:meth:`tp`, :meth:`fp`, :meth:`fn`, :meth:`tn` and their ``_skeleton``
     variants) become available, as do all derived metrics.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      ref = gum.fastBN('A->B->C;A->C')
-      test = gum.fastBN('A->B;C->B;A->C')
-      comp = gum.StructuralMetrics()
-      comp.compare(ref, test)
-      comp.precision()
-      comp.sid(ref, test)
-
     StructuralMetrics() -> StructuralMetrics
         default constructor
 
@@ -17506,18 +17151,6 @@ class IBayesNet(DAGmodel):
           - see also Tensor.evEq
           - see also BayesNet.evGt, BayesNet.evLt, BayesNet.evIn
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-          print(bn.evEqu('A',5)
-            A                                                                                                                                                                                                    |
-          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |
-
         Parameters
         ----------
         var : int | str
@@ -17592,18 +17225,6 @@ class IBayesNet(DAGmodel):
         -----
           - see also Tensor.evGt
           - see also BayesNet.evEq, BayesNet.evLt, BayesNet.evIn
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps
-          print(bn.evGt('A',5)
-            A                                                                                                                                                                                                    |
-          [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |
-          ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
-           0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |
 
         Parameters
         ----------
@@ -17857,13 +17478,6 @@ class BayesNet(IBayesNet):
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the CPTs are randomly generated.
           - see also the function pyagrum.fastBN.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
         Parameters
         ----------
@@ -18327,16 +17941,6 @@ class BayesNet(IBayesNet):
             :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
             and the arc is not added.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet()
-          w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))
-          for name in 'ABC':
-            bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)
-
         """
         return _pyagrumcpp.BayesNet_addAMPLITUDE(self, var)
 
@@ -18423,19 +18027,6 @@ class BayesNet(IBayesNet):
             :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
             and the arc is not added.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet()
-          levels = ['low', 'medium', 'high']
-          a = bn.add(gum.LabelizedVariable('A', '', levels))
-          b = bn.add(gum.LabelizedVariable('B', '', levels))
-          m = bn.addMAX(gum.LabelizedVariable('M', '', levels))
-          bn.addArc(a, m)
-          bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high
-
         """
         return _pyagrumcpp.BayesNet_addMAX(self, var)
 
@@ -18471,16 +18062,6 @@ class BayesNet(IBayesNet):
             :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
             and the arc is not added.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet()
-          m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))
-          for name in 'ABC':
-            bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)
-
         """
         return _pyagrumcpp.BayesNet_addMEDIAN(self, var)
 
@@ -18513,18 +18094,6 @@ class BayesNet(IBayesNet):
             :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
             and the arc is not added.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet()
-          a = bn.add(gum.RangeVariable('A', '', 0, 1))
-          c = bn.add(gum.RangeVariable('C', '', 10, 11))
-          m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))
-          bn.addArc(a, m)
-          bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10
-
         """
         return _pyagrumcpp.BayesNet_addMIN(self, var)
 
@@ -18555,16 +18124,6 @@ class BayesNet(IBayesNet):
             If the variable cannot be used for this aggregator. The parents, added afterwards with
             :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`
             and the arc is not added.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn = gum.BayesNet()
-          s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))
-          for name in 'AB':
-            bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)
 
         """
         return _pyagrumcpp.BayesNet_addSUM(self, var)
@@ -30637,26 +30196,6 @@ class BNDatabaseGenerator(object):
 
         Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.discretizedVariable` will give a random value from the uniform distribution on that interval.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-          g=gum.BNDatabaseGenerator(bn)
-          g.setRandomVarOrder()
-          g.drawSamples(5,
-                        {'B':'yes','E':'1'})
-          -122.98754206579288
-          g.setDiscretizedLabelModeRandom() # By default
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes  2.802302  0  0  1  0
-          1  yes  1.761605  0  0  1  0
-          2  yes  2.507535  0  0  1  1
-          3  yes  2.815282  0  1  1  0
-          4  yes  5.548571  1  0  1  1
-
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
 
@@ -30665,26 +30204,6 @@ class BNDatabaseGenerator(object):
 
         Set the discretized label mode to MEDIAN : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-          g=gum.BNDatabaseGenerator(bn)
-          g.setRandomVarOrder()
-          g.drawSamples(5,
-                        {'B':'yes','E':'1'})
-          -122.98754206579288
-          g.setDiscretizedLabelModeMedian()
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes  2.250000  0  0  1  0
-          1  yes  2.250000  0  0  1  0
-          2  yes  2.250000  0  0  1  1
-          3  yes  2.250000  0  1  1  0
-          4  yes  6.600000  1  0  1  1
-
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
 
@@ -30692,26 +30211,6 @@ class BNDatabaseGenerator(object):
         r"""
 
         Set the discretized label mode to INTERVAL : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the string representation of the interval.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-          g=gum.BNDatabaseGenerator(bn)
-          g.setRandomVarOrder()
-          g.drawSamples(5,
-                        {'B':'yes','E':'1'})
-          -122.98754206579288
-          g.setDiscretizedLabelModeInterval()
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes   [1.5;3[  0  0  1  0
-          1  yes   [1.5;3[  0  0  1  0
-          2  yes   [1.5;3[  0  0  1  1
-          3  yes   [1.5;3[  0  1  1  0
-          4  yes  [3;10.2]  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
@@ -30929,42 +30428,6 @@ class BNDatabaseGenerator(object):
         - INTERVAL : the value is the interval itself (for instance `« [0,1[ »`)
 
         The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')
-          g=gum.BNDatabaseGenerator(bn)
-          g.setRandomVarOrder()
-          g.drawSamples(5,
-                        {'B':'yes','E':'1'})
-          -122.98754206579288
-          g.setDiscretizedLabelModeRandom() # By default
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes  2.802302  0  0  1  0
-          1  yes  1.761605  0  0  1  0
-          2  yes  2.507535  0  0  1  1
-          3  yes  2.815282  0  1  1  0
-          4  yes  5.548571  1  0  1  1
-          g.setDiscretizedLabelModeMedian()
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes  2.250000  0  0  1  0
-          1  yes  2.250000  0  0  1  0
-          2  yes  2.250000  0  0  1  1
-          3  yes  2.250000  0  1  1  0
-          4  yes  6.600000  1  0  1  1
-          g.setDiscretizedLabelModeInterval()
-          g.to_pandas()
-               B         F  A  C  E  D
-          0  yes   [1.5;3[  0  0  1  0
-          1  yes   [1.5;3[  0  0  1  0
-          2  yes   [1.5;3[  0  0  1  1
-          3  yes   [1.5;3[  0  1  1  0
-          4  yes  [3;10.2]  1  0  1  1
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_drawSamples(self, *args)
@@ -33711,6 +33174,11 @@ def loadBN(
   pyagrum.BayesNet
       a BN from a file using one of the availableBNExts() suffixes.
 
+  Raises
+  ------
+  pyagrum.InvalidArgument
+      If a listener is not callable.
+
   Notes
   -----
       Listeners could be added in order to monitor its loading.
@@ -33718,34 +33186,6 @@ def loadBN(
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
-
-  Examples
-  --------
-  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
-  ``.........#.........#.........#.........#..50%`` then
-  ``.......#.........#.........#.........#.........#.........% | BN loaded``:
-
-  .. code-block:: python
-
-    import pyagrum as gum
-
-    def foo_listener(progress):
-       if progress==200:
-           print(' BN loaded ')
-           return
-       elif progress==100:
-           car='%'
-       elif progress%10==0:
-           car='#'
-       else:
-           car='.'
-       print(car,end='',flush=True)
-
-    def bar_listener(progress):
-       if progress==50:
-           print('50%')
-
-    gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
   """
   bn = BayesNet()
 
@@ -33842,13 +33282,6 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
       - the type of the variables with different syntax (cf documentation).
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -33965,23 +33398,6 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
 
-  Warning
-  -------
-  Number of nodes given with arg `n`or `names` must be bigger than 4, in order to be consistant
-
-  Examples
-  --------
-  .. code-block:: python
-
-    bn=gum.randomBN()
-    bn=gum.randomBN(n=10)
-    bn=gum.randomBN(names="ABCDEF")
-    bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
-
-  Warnings
-  --------
-  This function has only keyword parameters (no positional).
-
   Parameters
   ----------
   n : int
@@ -33995,7 +33411,17 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
 
   Returns
   -------
-    pyagrum.BayesNet
+  pyagrum.BayesNet
+      the random Bayesian network
+
+  Raises
+  ------
+  pyagrum.ArgumentError
+      If the BN would have less than 4 nodes (given by `n` or by `names`).
+
+  Warnings
+  --------
+  This function has only keyword parameters (no positional).
   """
   nbr = n if names is None else len(names)
   if nbr <= 3:

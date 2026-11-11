@@ -38,7 +38,8 @@
 #                                                                          #
 ############################################################################
 
-"""Every documented member and function has an example (doc/examples/<page name>.py), and every example is right."""
+"""Every documented member and function has an example (doc/examples/<page name>.py), a documented class may have
+one (doc/examples/<class name>.class.py), and every example is right."""
 
 import sys
 import unittest
@@ -63,6 +64,7 @@ class TestExamples(pyAgrumTestCase):
   def setUpClass(cls):
     cls.inventory = _inventory()
     cls.pages = set(cls.inventory.pageNames())
+    cls.names = cls.inventory.exampleNames()
     cls.files = {path.stem: path for path in (_DOC / "examples").glob("*.py")}
 
   def testEveryPageHasAnExample(self):
@@ -73,11 +75,23 @@ class TestExamples(pyAgrumTestCase):
     )
 
   def testNoOrphanExample(self):
-    unavailable = tuple(f"{name}." for name in self.inventory.unavailable)  # optional dependency missing here
-    orphans = sorted(stem for stem in set(self.files) - self.pages if not stem.startswith(unavailable))
-    self.assertFalse(
-      orphans, "examples of no documented member or function (renamed? removed?):\n  " + "\n  ".join(orphans)
+    unavailable = self.inventory.unavailable  # optional dependency missing here
+    prefixes = tuple(f"{name}." for name in unavailable)
+    orphans = sorted(
+      stem for stem in set(self.files) - self.names if stem not in unavailable and not stem.startswith(prefixes)
     )
+    self.assertFalse(
+      orphans,
+      "examples of no documented member, function or class (renamed? removed?):\n  " + "\n  ".join(orphans),
+    )
+
+  def testNoNamesDifferingOnlyByCase(self):
+    # on a case-insensitive file system (macOS, Windows), such examples would be the same file
+    byLowerCase = {}
+    for name in self.names:
+      byLowerCase.setdefault(name.lower(), []).append(name)
+    clashes = sorted(sorted(names) for names in byLowerCase.values() if len(names) > 1)
+    self.assertFalse(clashes, f"example names differing only by case: {clashes}")
 
   def testExamples(self):
     for stem, path in sorted(self.files.items()):

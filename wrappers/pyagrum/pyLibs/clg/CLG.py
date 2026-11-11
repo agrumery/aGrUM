@@ -84,8 +84,8 @@ class CLG:
     pyagrum.BayesNet
       A BN with the same structure as the CLG.
 
-    Warning
-    -------
+    Warnings
+    --------
     The returned BN is not a faithful representation of the CLG since the variables in the CLG are Gaussian and the variables in the returned BN are discrete. In particular, the CPTs are not defined in the returned BN.
     """
     bn = pyagrum.BayesNet()

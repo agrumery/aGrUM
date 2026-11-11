@@ -81,6 +81,11 @@ def loadBN(
   pyagrum.BayesNet
       a BN from a file using one of the availableBNExts() suffixes.
 
+  Raises
+  ------
+  pyagrum.InvalidArgument
+      If a listener is not callable.
+
   Notes
   -----
       Listeners could be added in order to monitor its loading.
@@ -88,34 +93,6 @@ def loadBN(
       pkl suffix is used to load a pickled BN. In this case, listeners and options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
-
-  Examples
-  --------
-  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
-  ``.........#.........#.........#.........#..50%`` then
-  ``.......#.........#.........#.........#.........#.........% | BN loaded``:
-
-  .. code-block:: python
-
-    import pyagrum as gum
-
-    def foo_listener(progress):
-       if progress==200:
-           print(' BN loaded ')
-           return
-       elif progress==100:
-           car='%'
-       elif progress%10==0:
-           car='#'
-       else:
-           car='.'
-       print(car,end='',flush=True)
-
-    def bar_listener(progress):
-       if progress==50:
-           print('50%')
-
-    gum.loadBN('./bn.bif',listeners=[foo_listener,bar_listener])
   """
   bn = BayesNet()
 
@@ -212,13 +189,6 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
       - the type of the variables with different syntax (cf documentation).
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    bn=gum.fastBN('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)
 
   Parameters
   ----------
@@ -335,23 +305,6 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   Creates a random BN using the (forced) keyword parameters. This function use :class:`pyagrum.BNGenerator` but the random
   variables will be named w.r.t. a topological order.
 
-  Warning
-  -------
-  Number of nodes given with arg `n`or `names` must be bigger than 4, in order to be consistant
-
-  Examples
-  --------
-  .. code-block:: python
-
-    bn=gum.randomBN()
-    bn=gum.randomBN(n=10)
-    bn=gum.randomBN(names="ABCDEF")
-    bn=gum.randomBN(names=["Asia","Tuberculosis","Smoking"],ratio_arc=1.5,domain_size=3)
-
-  Warnings
-  --------
-  This function has only keyword parameters (no positional).
-
   Parameters
   ----------
   n : int
@@ -365,7 +318,17 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
 
   Returns
   -------
-    pyagrum.BayesNet
+  pyagrum.BayesNet
+      the random Bayesian network
+
+  Raises
+  ------
+  pyagrum.ArgumentError
+      If the BN would have less than 4 nodes (given by `n` or by `names`).
+
+  Warnings
+  --------
+  This function has only keyword parameters (no positional).
   """
   nbr = n if names is None else len(names)
   if nbr <= 3:

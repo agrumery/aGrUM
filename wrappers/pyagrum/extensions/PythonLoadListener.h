@@ -54,7 +54,7 @@
 
 class PythonLoadListener: public gum::Listener {
   private:
-  PyObject* _whenLoading_;
+  PyObject* _whenLoading_ = nullptr;
 
   public:
   void whenLoading(const void* buffer, int percent) {
@@ -63,46 +63,45 @@ class PythonLoadListener: public gum::Listener {
     }
   }
 
-  bool setPythonListener(PyObject* l) {
-    if (!PyCallable_Check(l)) {
-      return false;
-    } else {
-      _whenLoading_ = l;
-      Py_INCREF(l);
-      return true;
-    }
+  /// keeps its own reference to l
+  /// @throw gum::InvalidArgument if l is not callable
+  void setPythonListener(PyObject* l) { PyAgrumHelper::setListenerCallback(_whenLoading_, l); }
+
+  PythonLoadListener() = default;
+
+  PythonLoadListener(const PythonLoadListener& from) :
+      gum::Listener(from), _whenLoading_(from._whenLoading_) {
+    Py_XINCREF(_whenLoading_);
   }
 
-  PythonLoadListener() { _whenLoading_ = (PyObject*)0; }
+  PythonLoadListener& operator=(const PythonLoadListener&) = delete;
 
-  ~PythonLoadListener() {
-    if (_whenLoading_) Py_DECREF(_whenLoading_);
-  }
+  ~PythonLoadListener() { Py_XDECREF(_whenLoading_); }
 };
 
+/// fills py_listener with l (a callable or a sequence of callables) and returns the number of listeners
+/// @throw gum::InvalidArgument if a listener is not callable
 int _fillLoadListeners_(std::vector< PythonLoadListener >& py_listener, PyObject* l) {
-  if (!l) return 0;
+  if (!l || l == Py_None) return 0;
 
-  if (l == Py_None) return 0;
-
-  int       l_size = 0;
-  PyObject* item;
-
-  if (PySequence_Check(l)) {
-    l_size = (int)PySequence_Size(l);
-    py_listener.resize(l_size);
-
-    for (int i = 0; i < l_size; i++) {
-      item = PySequence_GetItem(l, i);
-
-      if (!py_listener[i].setPythonListener(item)) return 0;
-    }
-  } else {
-    l_size = 1;
-    py_listener.resize(l_size);
-
-    if (!py_listener[0].setPythonListener(l)) return 0;
+  if (!PySequence_Check(l)) {
+    py_listener.resize(1);
+    py_listener[0].setPythonListener(l);
+    return 1;
   }
 
+  const auto l_size = static_cast< int >(PySequence_Size(l));
+  py_listener.resize(l_size);
+  for (int i = 0; i < l_size; i++) {
+    PyObject* item = PySequence_GetItem(l, i);   // new reference
+    if (item == nullptr) {
+      PyErr_Clear();
+      GUM_ERROR(gum::InvalidArgument, "Cannot read the listener #" << i)
+    }
+    const bool callable = PyCallable_Check(item);
+    if (callable) py_listener[i].setPythonListener(item);
+    Py_DECREF(item);
+    if (!callable) GUM_ERROR(gum::InvalidArgument, "The listener #" << i << " is not callable")
+  }
   return l_size;
 }

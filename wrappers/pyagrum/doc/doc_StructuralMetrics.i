@@ -49,18 +49,6 @@ After calling :meth:`compare`, the confusion-matrix accessors
 (:meth:`tp`, :meth:`fp`, :meth:`fn`, :meth:`tn` and their ``_skeleton``
 variants) become available, as do all derived metrics.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  ref = gum.fastBN('A->B->C;A->C')
-  test = gum.fastBN('A->B;C->B;A->C')
-  comp = gum.StructuralMetrics()
-  comp.compare(ref, test)
-  comp.precision()
-  comp.sid(ref, test)
-
 StructuralMetrics() -> StructuralMetrics
     default constructor
 "

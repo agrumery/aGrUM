@@ -327,8 +327,9 @@ _RULES_PYTHON_RAW: list[tuple] = [
   ("PyAgrumNone", "None"),
   ("PyAgrumDict", "dict[str, object]"),
   ("PyObject", "object"),
-  ("void const", "object"),
-  ("void", "None"),
+  # \b: not inside a word ("avoid" became "aNone")
+  ("\\bvoid const\\b", "object"),
+  ("\\bvoid\\b", "None"),
   ("std::string_view", "str"),
   ("std::string", "str"),
   ("char const *", "str"),

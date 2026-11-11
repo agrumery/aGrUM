@@ -13801,6 +13801,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_0(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[5], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs6.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -13940,6 +13948,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_1(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[5], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs6.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14071,6 +14087,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_2(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[5], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs6.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14294,6 +14318,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_4(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[4], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs5.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14415,6 +14447,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_5(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[4], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs5.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14528,6 +14568,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_6(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[4], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs5.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14759,6 +14807,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_8(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[6], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs7.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -14901,6 +14957,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_9(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[6], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs7.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -19495,6 +19559,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_0(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[5], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs6.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -19626,6 +19698,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_1(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[5], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs6.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -19846,6 +19926,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[4], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs5.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -19959,6 +20047,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_4(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[4], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs5.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -20187,6 +20283,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_6(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[6], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs7.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -25212,26 +25316,6 @@ static PyMethodDef SwigMethods[] = {
 		"``atemporalNodes`` to silence it. When no temporal process survives, k falls\n"
 		"back to 1.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  # bracket-free convention (a plain, hand-built or foreign BN)\n"
-		"\n"
-		"  bn = gum.BayesNet()\n"
-		"  bn.add(gum.LabelizedVariable('X0', '', 2))\n"
-		"  bn.add(gum.LabelizedVariable('X1', '', 2))\n"
-		"  bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit\n"
-		"  bn.addArc('X0', 'X1')\n"
-		"  bn.addArc('C', 'X1')\n"
-		"  ktbn = gum.KTBN.fromBN(bn)\n"
-		"  ktbn.k()\n"
-		"  2\n"
-		"\n"
-		"  # bracket convention (round-tripping a KTBN's own storage BN)\n"
-		"\n"
-		"  ktbn2 = gum.KTBN.fromBN(ktbn.toBN())\n"
-		"\n"
 		"Parameters\n"
 		"----------\n"
 		"bn : pyagrum.BayesNet\n"
@@ -25352,14 +25436,6 @@ static PyMethodDef SwigMethods[] = {
 		"   An unquoted integer is always a modality **index**, a quoted string always a\n"
 		"   modality **label**. The two differ for a variable whose modalities are\n"
 		"   themselves numeric.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  m.fillCPT(\"C\", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents\n"
-		"  m.fillCPT(\"X\", 1, {(\"X\", 0): 1, (\"C\", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)\n"
-		"  m.fillCPT(\"X[1]\", {\"X[0]\": \"1\", \"C\": 0}, [0.6, 0.4])         # same, engine names\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -25811,15 +25887,6 @@ static PyMethodDef SwigMethods[] = {
 		"``\"X[5]\"``) or a ``(base, slice)`` tuple, all-or-nothing validated before\n"
 		"anything is recorded.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  ie.addIntervention(\"X\", 5, 0)                       # by (base, slice), index\n"
-		"  ie.addIntervention(\"X\", 5, \"high\")                  # by (base, slice), label\n"
-		"  ie.addIntervention(\"X[5]\", 0)                        # by engine name\n"
-		"  ie.addIntervention({\"X[5]\": 0, (\"Z\", 2): \"high\"})    # batch\n"
-		"\n"
 		"Parameters\n"
 		"----------\n"
 		"base : str\n"
@@ -25854,15 +25921,6 @@ static PyMethodDef SwigMethods[] = {
 		"The batch form (``addObservations``) takes a dict {node: value} of hard\n"
 		"observations only, node keyed by an engine name or a (base, slice) tuple,\n"
 		"all-or-nothing validated before anything is recorded.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  ie.addObservation(\"X\", 5, 0)                 # hard, by index\n"
-		"  ie.addObservation(\"X\", 5, \"high\")            # hard, by label\n"
-		"  ie.addObservation(\"X\", 5, [0.1, 0.9])         # soft (likelihoods)\n"
-		"  ie.addObservations({\"X[5]\": 0, (\"Z\", 2): 1})  # batch, hard only\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -25925,13 +25983,6 @@ static PyMethodDef SwigMethods[] = {
 		"(e.g. ``traj1.csv``, ``traj2.csv``, ...). Either every trajectory shares the\n"
 		"same horizon, or each trajectory gets its own (pass a list of horizons instead\n"
 		"of a sample count and a single horizon).\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  gen.drawSamples(100, 10, \"out_dir\", \"traj\")            # 100 trajectories, length 10\n"
-		"  gen.drawSamples([8, 10, 12], \"out_dir\", \"traj\")        # 3 trajectories, own lengths\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

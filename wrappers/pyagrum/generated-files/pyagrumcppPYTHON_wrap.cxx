@@ -28090,6 +28090,14 @@ SWIGINTERN PyObject *_wrap_new_LabelizedVariable__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -63944,6 +63952,14 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_ids(PyObject *self, PyObject *args) {
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -63993,6 +64009,14 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_nodeset(PyObject *self, PyObject *args
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -64078,6 +64102,14 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_s
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -65981,6 +66013,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_3(PyObject *self, Py_ssize_t n
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -66390,6 +66430,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_3(PyObject *self, Py_ssize_t 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -66833,6 +66881,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_moralizedAncestralGraph__SWIG_1(PyObject *se
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67129,6 +67185,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_2(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67191,6 +67255,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67206,6 +67278,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67221,6 +67301,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67726,6 +67814,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67782,6 +67878,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -67797,6 +67901,14 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -68932,6 +69044,14 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_2(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -68994,6 +69114,14 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -69009,6 +69137,14 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -69024,6 +69160,14 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -74825,6 +74969,14 @@ SWIGINTERN PyObject *_wrap_Tensor_reorganize__SWIG_1(PyObject *self, Py_ssize_t 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -75053,6 +75205,14 @@ SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_1(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -79854,7 +80014,6 @@ SWIGINTERN PyObject *_wrap_PythonLoadListener_setPythonListener(PyObject *self, 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[2] ;
-  bool result;
   
   (void)self;
   if (!SWIG_Python_UnpackTuple(args, "PythonLoadListener_setPythonListener", 2, 2, swig_obj)) SWIG_fail;
@@ -79866,13 +80025,13 @@ SWIGINTERN PyObject *_wrap_PythonLoadListener_setPythonListener(PyObject *self, 
   arg2 = swig_obj[1];
   {
     try {
-      result = (bool)(arg1)->setPythonListener(arg2);
+      (arg1)->setPythonListener(arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -98212,6 +98371,14 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_evidenceJointImpact__SWIG_1(PyObject 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -98227,6 +98394,14 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_evidenceJointImpact__SWIG_1(PyObject 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -101746,6 +101921,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_evidenceJointImpact__SWIG_1(PyO
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -101761,6 +101944,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_evidenceJointImpact__SWIG_1(PyO
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -137518,6 +137709,14 @@ SWIGINTERN PyObject *_wrap_BNDatabaseGenerator_setVarOrder__SWIG_1(PyObject *sel
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -138096,6 +138295,14 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_0(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -138166,6 +138373,14 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_1(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -138322,6 +138537,14 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_4(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -141748,6 +141971,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_setTotalOrder__SWIG_0(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -144029,6 +144260,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_chi2__SWIG_0(PyObject *self, Py_ssize_t nob
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -144194,6 +144433,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_G2__SWIG_0(PyObject *self, Py_ssize_t nobjs
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -145729,6 +145976,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -145744,6 +145999,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -145790,6 +146053,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -145999,6 +146270,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_score__SWIG_2(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -146311,6 +146590,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_mutualInformation__SWIG_2(PyObject *self, P
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -146670,6 +146957,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_correctedMutualInformation__SWIG_2(PyObject
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs4.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -146932,6 +147227,14 @@ SWIGINTERN PyObject *_wrap_BNLearner_rawPseudoCount__SWIG_1(PyObject *self, Py_s
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -155136,29 +155439,6 @@ static PyMethodDef SwigMethods[] = {
 		"  nbr of modality if fast_description does not indicate it.\n"
 		"  `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  print(gum.fastVariable('A{On|Off|Defun}'))\n"
-		"  A:Labelized({On|Off|Defun})\n"
-		"  print(gum.fastVariable('A{3.14|0|1.15}'))\n"
-		"  A:NumericalDiscrete({0|1.15|3.14})\n"
-		"  print(gum.fastVariable('A{1.2:5.2:5}}'))\n"
-		"  A:NumericalDiscrete({1.2|2.2|3.2|4.2|5.2})\n"
-		"  print(gum.fastVariable('A{1|3|9}'))\n"
-		"  A:Integer({1|3|9})\n"
-		"  print(gum.fastVariable('A[4,6]'))\n"
-		"  A:Range([4,6])\n"
-		"  print(gum.fastVariable('A[5]'))\n"
-		"  A:Range([0,4])\n"
-		"  print(gum.fastVariable('A[4,6,10]'))\n"
-		"  A:Discretized(<[4;6[,[6;10]>)\n"
-		"  print(gum.fastVariable('A[1:6:5]'))\n"
-		"  A:Discretized(<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>)\n"
-		"\n"
-		"\n"
-		"\n"
 		""},
 	 { "fastDiGraph", _wrap_fastDiGraph, METH_O, "\n"
 		"\n"
@@ -156159,19 +156439,6 @@ static PyMethodDef SwigMethods[] = {
 		"  - see also :meth:`BayesNet.evEq`\n"
 		"  - see also :meth:`Tensor.evGt`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  A=gum.fastVariable('A[0:10:20]')\n"
-		"  p=gum.Tensor.evEq(A,5)\n"
-		"  p\n"
-		"  (pyagrum.Tensor@000001D7FAB06AD0)\n"
-		"    A                                                                                                                                                                                                    |\n"
-		"  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |\n"
-		"  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|\n"
-		"   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |\n"
-		"\n"
 		"Parameters\n"
 		"----------\n"
 		"var : pyagrum.DiscretizedVariable\n"
@@ -156218,19 +156485,6 @@ static PyMethodDef SwigMethods[] = {
 		"-----\n"
 		"  - see also :meth:`BayesNet.evGt`\n"
 		"  - see also :meth:`Tensor.evEq`, :meth:`Tensor.evLt`, :meth:`Tensor.evIn`\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  A=gum.fastVariable('A[0:10:20]')\n"
-		"  p=gum.Tensor.evGt(A,5)\n"
-		"  p\n"
-		"  (pyagrum.Tensor@000001D7FAB06AD0)\n"
-		"    A                                                                                                                                                                                                    |\n"
-		"  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |\n"
-		"  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|\n"
-		"   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156280,14 +156534,6 @@ static PyMethodDef SwigMethods[] = {
 		"Warnings\n"
 		"--------\n"
 		"The `pyagrum.Tensor` is assumed to contain a joint distribution.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  def log2cptA(x):\n"
-		"    return -math.log2(bn.cpt('A')[x])\n"
-		"  entropy_of_A=bn.cpt('A').expectedValue(log2cptA) # OK it A has no parents.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -156901,7 +157147,17 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "PythonLoadListener_setPythonListener", _wrap_PythonLoadListener_setPythonListener, METH_VARARGS, "\n"
 		"\n"
+		"Set the function called with the loading progress.\n"
 		"\n"
+		"Parameters\n"
+		"----------\n"
+		"l : Callable[[int], Any]\n"
+		"    the function called with the progress of the loading (in %)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"    If l is not callable.\n"
 		"\n"
 		""},
 	 { "new_PythonLoadListener", _wrap_new_PythonLoadListener, METH_NOARGS, NULL},
@@ -157066,19 +157322,6 @@ static PyMethodDef SwigMethods[] = {
 		"      a second nodeset\n"
 		"    Z :  : int or str or iterable[int or str] (optional)\n"
 		"      a third (an optional) nodeset\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		"      .. code:: python\n"
-		"\n"
-		"          import pyagrum as gum\n"
-		"          bn=gum.fastBN('A->B<-C<-D->E<-F->G->A')\n"
-		"          ie=gum.LazyPropagation(bn)\n"
-		"          it=gum.InformationTheory(ie,'A',['B','G'],['C'])\n"
-		"          print(f'Entropy(A)={it.entropyX()}')\n"
-		"          print(f'MutualInformation(A;B,G)={it.mutualInformationXY()}')\n"
-		"          print(f'MutualInformation(A;B,G| C)={it.mutualInformationXYgivenZ()}')\n"
-		"          print(f'VariationOfInformation(A;B,G)={it.variationOfInformationXY()}')\n"
 		"\n"
 		""},
 	 { "InformationTheory_entropyXY", _wrap_InformationTheory_entropyXY, METH_O, "\n"
@@ -157793,18 +158036,6 @@ static PyMethodDef SwigMethods[] = {
 		"  - see also Tensor.evEq\n"
 		"  - see also BayesNet.evGt, BayesNet.evLt, BayesNet.evIn\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps\n"
-		"  print(bn.evEqu('A',5)\n"
-		"    A                                                                                                                                                                                                    |\n"
-		"  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |\n"
-		"  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|\n"
-		"   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  |\n"
-		"\n"
 		"Parameters\n"
 		"----------\n"
 		"var : int | str\n"
@@ -157870,18 +158101,6 @@ static PyMethodDef SwigMethods[] = {
 		"-----\n"
 		"  - see also Tensor.evGt\n"
 		"  - see also BayesNet.evEq, BayesNet.evLt, BayesNet.evIn\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.fastBN('A[0:10:20]'') # DiscretizedVariable from 0 to 10 in 20 steps\n"
-		"  print(bn.evGt('A',5)\n"
-		"    A                                                                                                                                                                                                    |\n"
-		"  [0;0.5[  |[0.5;1[  |[1;1.5[  |[1.5;2[  |[2;2.5[  |[2.5;3[  |[3;3.5[  |[3.5;4[  |[4;4.5[  |[4.5;5[  |[5;5.5[  |[5.5;6[  |[6;6.5[  |[6.5;7[  |[7;7.5[  |[7.5;8[  |[8;8.5[  |[8.5;9[  |[9;9.5[  |[9.5;10] |\n"
-		"  ---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|\n"
-		"   0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 0.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  | 1.0000  |\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -158008,13 +158227,6 @@ static PyMethodDef SwigMethods[] = {
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
 		"  - the CPTs are randomly generated.\n"
 		"  - see also the function pyagrum.fastBN.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.BayesNet.fastPrototype('A->B[1,3]<-C{yes|No}->D[2,4]<-E[1,2.5,3.9]',6)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -158419,16 +158631,6 @@ static PyMethodDef SwigMethods[] = {
 		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
 		"    and the arc is not added.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet()\n"
-		"  w = bn.addAMPLITUDE(gum.RangeVariable('W', '', 0, 2))\n"
-		"  for name in 'ABC':\n"
-		"    bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), w)\n"
-		"\n"
 		""},
 	 { "BayesNet_addCOUNT", _wrap_BayesNet_addCOUNT, METH_VARARGS, "\n"
 		"\n"
@@ -158503,19 +158705,6 @@ static PyMethodDef SwigMethods[] = {
 		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
 		"    and the arc is not added.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet()\n"
-		"  levels = ['low', 'medium', 'high']\n"
-		"  a = bn.add(gum.LabelizedVariable('A', '', levels))\n"
-		"  b = bn.add(gum.LabelizedVariable('B', '', levels))\n"
-		"  m = bn.addMAX(gum.LabelizedVariable('M', '', levels))\n"
-		"  bn.addArc(a, m)\n"
-		"  bn.addArc(b, m)  # M = max(A, B) w.r.t. low < medium < high\n"
-		"\n"
 		""},
 	 { "BayesNet_addMEDIAN", _wrap_BayesNet_addMEDIAN, METH_VARARGS, "\n"
 		"\n"
@@ -158548,16 +158737,6 @@ static PyMethodDef SwigMethods[] = {
 		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
 		"    and the arc is not added.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet()\n"
-		"  m = bn.addMEDIAN(gum.RangeVariable('M', '', 10, 12))\n"
-		"  for name in 'ABC':\n"
-		"    bn.addArc(bn.add(gum.RangeVariable(name, '', 10, 12)), m)\n"
-		"\n"
 		""},
 	 { "BayesNet_addMIN", _wrap_BayesNet_addMIN, METH_VARARGS, "\n"
 		"\n"
@@ -158587,18 +158766,6 @@ static PyMethodDef SwigMethods[] = {
 		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
 		"    and the arc is not added.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet()\n"
-		"  a = bn.add(gum.RangeVariable('A', '', 0, 1))\n"
-		"  c = bn.add(gum.RangeVariable('C', '', 10, 11))\n"
-		"  m = bn.addMIN(gum.RangeVariable('M', '', 0, 11))\n"
-		"  bn.addArc(a, m)\n"
-		"  bn.addArc(c, m)  # M = min(A, C): M=1 when A=1 and C=10\n"
-		"\n"
 		""},
 	 { "BayesNet_addSUM", _wrap_BayesNet_addSUM, METH_VARARGS, "\n"
 		"\n"
@@ -158626,16 +158793,6 @@ static PyMethodDef SwigMethods[] = {
 		"    If the variable cannot be used for this aggregator. The parents, added afterwards with\n"
 		"    :meth:`addArc`, are checked in the same way: a refused parent raises `pyagrum.GumTypeError`\n"
 		"    and the arc is not added.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn = gum.BayesNet()\n"
-		"  s = bn.addSUM(gum.RangeVariable('S', '', 0, 4))\n"
-		"  for name in 'AB':\n"
-		"    bn.addArc(bn.add(gum.RangeVariable(name, '', 0, 2)), s)\n"
 		"\n"
 		""},
 	 { "BayesNet_addWeightedArc", _wrap_BayesNet_addWeightedArc, METH_VARARGS, "\n"
@@ -166902,75 +167059,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.discretizedVariable` will give a random value from the uniform distribution on that interval.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')\n"
-		"  g=gum.BNDatabaseGenerator(bn)\n"
-		"  g.setRandomVarOrder()\n"
-		"  g.drawSamples(5,\n"
-		"                {'B':'yes','E':'1'})\n"
-		"  -122.98754206579288\n"
-		"  g.setDiscretizedLabelModeRandom() # By default\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes  2.802302  0  0  1  0\n"
-		"  1  yes  1.761605  0  0  1  0\n"
-		"  2  yes  2.507535  0  0  1  1\n"
-		"  3  yes  2.815282  0  1  1  0\n"
-		"  4  yes  5.548571  1  0  1  1\n"
-		"\n"
 		""},
 	 { "BNDatabaseGenerator_setDiscretizedLabelModeMedian", _wrap_BNDatabaseGenerator_setDiscretizedLabelModeMedian, METH_O, "\n"
 		"\n"
 		"Set the discretized label mode to MEDIAN : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.\n"
 		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')\n"
-		"  g=gum.BNDatabaseGenerator(bn)\n"
-		"  g.setRandomVarOrder()\n"
-		"  g.drawSamples(5,\n"
-		"                {'B':'yes','E':'1'})\n"
-		"  -122.98754206579288\n"
-		"  g.setDiscretizedLabelModeMedian()\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes  2.250000  0  0  1  0\n"
-		"  1  yes  2.250000  0  0  1  0\n"
-		"  2  yes  2.250000  0  0  1  1\n"
-		"  3  yes  2.250000  0  1  1  0\n"
-		"  4  yes  6.600000  1  0  1  1\n"
-		"\n"
 		""},
 	 { "BNDatabaseGenerator_setDiscretizedLabelModeInterval", _wrap_BNDatabaseGenerator_setDiscretizedLabelModeInterval, METH_O, "\n"
 		"\n"
 		"Set the discretized label mode to INTERVAL : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the string representation of the interval.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')\n"
-		"  g=gum.BNDatabaseGenerator(bn)\n"
-		"  g.setRandomVarOrder()\n"
-		"  g.drawSamples(5,\n"
-		"                {'B':'yes','E':'1'})\n"
-		"  -122.98754206579288\n"
-		"  g.setDiscretizedLabelModeInterval()\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes   [1.5;3[  0  0  1  0\n"
-		"  1  yes   [1.5;3[  0  0  1  0\n"
-		"  2  yes   [1.5;3[  0  0  1  1\n"
-		"  3  yes   [1.5;3[  0  1  1  0\n"
-		"  4  yes  [3;10.2]  1  0  1  1\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_toCSV", _wrap_BNDatabaseGenerator_toCSV, METH_VARARGS, "\n"
@@ -167143,42 +167240,6 @@ static PyMethodDef SwigMethods[] = {
 		"- INTERVAL : the value is the interval itself (for instance `« [0,1[ »`)\n"
 		"\n"
 		"The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.fastBN('A->B{yes|maybe|no}<-C->D->E<-F[1,1.5,3,10.2]<-B')\n"
-		"  g=gum.BNDatabaseGenerator(bn)\n"
-		"  g.setRandomVarOrder()\n"
-		"  g.drawSamples(5,\n"
-		"                {'B':'yes','E':'1'})\n"
-		"  -122.98754206579288\n"
-		"  g.setDiscretizedLabelModeRandom() # By default\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes  2.802302  0  0  1  0\n"
-		"  1  yes  1.761605  0  0  1  0\n"
-		"  2  yes  2.507535  0  0  1  1\n"
-		"  3  yes  2.815282  0  1  1  0\n"
-		"  4  yes  5.548571  1  0  1  1\n"
-		"  g.setDiscretizedLabelModeMedian()\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes  2.250000  0  0  1  0\n"
-		"  1  yes  2.250000  0  0  1  0\n"
-		"  2  yes  2.250000  0  0  1  1\n"
-		"  3  yes  2.250000  0  1  1  0\n"
-		"  4  yes  6.600000  1  0  1  1\n"
-		"  g.setDiscretizedLabelModeInterval()\n"
-		"  g.to_pandas()\n"
-		"       B         F  A  C  E  D\n"
-		"  0  yes   [1.5;3[  0  0  1  0\n"
-		"  1  yes   [1.5;3[  0  0  1  0\n"
-		"  2  yes   [1.5;3[  0  0  1  1\n"
-		"  3  yes   [1.5;3[  0  1  1  0\n"
-		"  4  yes  [3;10.2]  1  0  1  1\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_swigregister", BNDatabaseGenerator_swigregister, METH_O, NULL},

@@ -48,7 +48,8 @@ class that owns it, with the list and the inheritance diagram of all the classes
 ``.. pyagrum-functions::`` (a module as argument, or the function names as content) replaces ``.. autofunction::``:
 a table of the functions, each one with its own page.
 
-Each generated page shows the example of its member, if any: the file ``doc/examples/<page name>.py``.
+Each generated page shows the example of its member, if any: the file ``doc/examples/<page name>.py``. A class
+shows its own example, if any, after its docstring: the file ``doc/examples/<class name>.class.py``.
 
 Citations (``:cite:``) of the docstrings become footnote citations in the generated pages, each page ending with its
 own ``footbibliography``; the hand-written page holding their toctree ends with the list of all these references.
@@ -149,10 +150,13 @@ def pageSource(inventory: Inventory, owner: str, member: str, example: list[str]
   return "\n".join(lines)
 
 
-def classSource(inventory: Inventory, name: str, options: dict[str, str], docname: str, settings) -> list[str]:
+def classSource(
+  inventory: Inventory, name: str, options: dict[str, str], docname: str, settings, example: list[str]
+) -> list[str]:
   lines = [f".. autoclass:: {name}", "   :no-members:"]
   lines += [f"   :{key}:" for key in _PASSED_OPTIONS if key in options]
   lines.append("")
+  lines += example
   groups: dict[str, dict[str, list[str]]] = {}  # owner -> table -> members
   for member in inventory.members.get(name, []):
     owner = inventory.owner[(name, member)]
@@ -203,7 +207,8 @@ class PyagrumClass(SphinxDirective):
       return []  # import failure already reported by the scan
     options = {key: value or "" for key, value in self.options.items()}
     container = nodes.container()
-    lines = classSource(inventory, name, options, self.env.docname, self.state.document.settings)
+    example = _example(Path(self.env.srcdir) / EXAMPLES_DIR / f"{Inventory.classExampleName(name)}.py")
+    lines = classSource(inventory, name, options, self.env.docname, self.state.document.settings, example)
     self.state.nested_parse(
       StringList(lines, source=self.env.doc2path(self.env.docname)), self.content_offset, container
     )
@@ -259,9 +264,10 @@ def _generate(app) -> None:
     if path.name not in sources:
       path.unlink()
   pages = set(inventory.pageNames())
+  names = inventory.exampleNames()
   for path in sorted(examples.glob("*.py")):
-    if path.stem not in pages:  # renamed or removed member, or typo in the file name
-      logger.warning(f"pyagrum-class: example {path.name} matches no documented member or function")
+    if path.stem not in names:  # renamed or removed member or class, or typo in the file name
+      logger.warning(f"pyagrum-class: example {path.name} matches no documented member, function or class")
   missing = len(pages - {path.stem for path in examples.glob("*.py")})
   logger.info(
     f"pyagrum-class: {len(inventory.classes)} classes, {len(inventory.pages)} member pages, "

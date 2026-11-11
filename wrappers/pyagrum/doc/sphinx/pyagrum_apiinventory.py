@@ -244,3 +244,13 @@ class Inventory:
   def pageNames(self) -> list[str]:
     """Names of all the generated pages (without directory): ``owner.member`` and ``module.function``."""
     return sorted([f"{owner}.{member}" for owner, member in self.pages] + list(self.functions))
+
+  @staticmethod
+  def classExampleName(name: str) -> str:
+    """Name of the (optional) example of a class: ``pyagrum.CPDAG.class``. Not ``pyagrum.CPDAG``: on a
+    case-insensitive file system, ``pyagrum.CausalImpact.py`` would be the example of the function causalImpact."""
+    return f"{name}.class"
+
+  def exampleNames(self) -> set[str]:
+    """Names an example file may have: a generated page (example required) or a documented class (optional)."""
+    return set(self.pageNames()) | {self.classExampleName(name) for name in self.classes}

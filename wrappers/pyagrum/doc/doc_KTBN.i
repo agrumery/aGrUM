@@ -472,14 +472,6 @@ modality index (int) or its modality label (str).
    modality **label**. The two differ for a variable whose modalities are
    themselves numeric.
 
-Examples
---------
-.. code-block:: python
-
-  m.fillCPT(\"C\", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
-  m.fillCPT(\"X\", 1, {(\"X\", 0): 1, (\"C\", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
-  m.fillCPT(\"X[1]\", {\"X[0]\": \"1\", \"C\": 0}, [0.6, 0.4])         # same, engine names
-
 Parameters
 ----------
 base : str
@@ -614,26 +606,6 @@ index found. A group of same-base nodes that does not cover every slice
 variable (original name kept), with a warning -- pass the name explicitly in
 ``atemporalNodes`` to silence it. When no temporal process survives, k falls
 back to 1.
-
-Examples
---------
-.. code-block:: python
-
-  # bracket-free convention (a plain, hand-built or foreign BN)
-
-  bn = gum.BayesNet()
-  bn.add(gum.LabelizedVariable('X0', '', 2))
-  bn.add(gum.LabelizedVariable('X1', '', 2))
-  bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
-  bn.addArc('X0', 'X1')
-  bn.addArc('C', 'X1')
-  ktbn = gum.KTBN.fromBN(bn)
-  ktbn.k()
-  2
-
-  # bracket convention (round-tripping a KTBN's own storage BN)
-
-  ktbn2 = gum.KTBN.fromBN(ktbn.toBN())
 
 Parameters
 ----------

@@ -9,3 +9,10 @@ bn.variable("D").labels()
 # ('1', '2', '3', '4', '5')
 sorted(bn.variable(i).name() for i in bn.parents("B"))
 # ['A', 'C']
+
+# the second argument is the default domain size of the variables without specification
+bn = gum.fastBN("A->B[1,3]<-C{yes|No}->D<-E[1,2.5,3.9]", 6)
+print(bn.variable("A"))
+# A:Range([0,5])
+print(bn.variable("E"))
+# E:Discretized(<[1;2.5[,[2.5;3.9]>)

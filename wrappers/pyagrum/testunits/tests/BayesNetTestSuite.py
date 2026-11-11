@@ -125,6 +125,20 @@ class TestConstructors(BayesNetTestCase):
 
 
 class TestInsertions(BayesNetTestCase):
+  def testVariablesByIdsOrNames(self):
+    bn = gum.fastBN("A->B->C")
+    expected = {bn.variable("A").name(), bn.variable("C").name()}
+    self.assertEqual({v.name() for v in bn.variables({0, 2})}, expected)
+    self.assertEqual({v.name() for v in bn.variables(["A", "C"])}, expected)
+    self.assertEqual(len(bn.variables()), 3)
+    with self.assertRaises(gum.NotFound):
+      bn.variables(["A", "Z"])
+    # a list of ids is not a list of names (former misleading NotFound "<>")
+    with self.assertRaisesRegex(TypeError, "item 0 is not a string"):
+      bn.variables([0, 2])
+    with self.assertRaisesRegex(TypeError, "item 1 is not a string"):
+      bn.variables(["A", 2])
+
   def testVariables(self):
     bn = gum.BayesNet()
     idList = []

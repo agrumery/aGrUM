@@ -198,6 +198,11 @@
       Python failed with `SystemError`; it is now reported by `sys.unraisablehook`. A non-callable callback raises
       `InvalidArgument` (it was stored anyway), the former callback is released when it is replaced, the node ids
       and the steps are given as 64-bit integers on Windows too, and the results of the callbacks are released.
+      The listeners of `loadBN`/`loadMRF`: a non-callable one raises `InvalidArgument` (all of them were silently
+      ignored) and each listener of the list leaked one reference.
+    - A list of non-strings given where a list of names is expected was read as empty names: `variables([0, 2])`
+      raised `NotFound` with the key `<>`; it now raises `TypeError` (`variables` takes a set of ids).
+    - `ctbn.CTBN.equals` no longer prints why the two CTBNs differ.
     - `BNDatabaseGenerator.drawSamples` with evidence returned a wrong log2-likelihood: the rejected samples were
       partly counted (and, at the timeout, the last kept sample was counted but dropped from the database).
 

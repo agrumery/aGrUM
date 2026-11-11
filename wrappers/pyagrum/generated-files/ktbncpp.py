@@ -705,26 +705,6 @@ class KTBN(object):
         ``atemporalNodes`` to silence it. When no temporal process survives, k falls
         back to 1.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          # bracket-free convention (a plain, hand-built or foreign BN)
-
-          bn = gum.BayesNet()
-          bn.add(gum.LabelizedVariable('X0', '', 2))
-          bn.add(gum.LabelizedVariable('X1', '', 2))
-          bn.add(gum.LabelizedVariable('C', '', 2))   # atemporal: no trailing digit
-          bn.addArc('X0', 'X1')
-          bn.addArc('C', 'X1')
-          ktbn = gum.KTBN.fromBN(bn)
-          ktbn.k()
-          2
-
-          # bracket convention (round-tripping a KTBN's own storage BN)
-
-          ktbn2 = gum.KTBN.fromBN(ktbn.toBN())
-
         Parameters
         ----------
         bn : pyagrum.BayesNet
@@ -864,14 +844,6 @@ class KTBN(object):
            modality **label**. The two differ for a variable whose modalities are
            themselves numeric.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          m.fillCPT("C", ktbn.KTBN.ATEMPORAL, {}, [0.4, 0.6])         # P(C), no parents
-          m.fillCPT("X", 1, {("X", 0): 1, ("C", -1): 0}, [0.6, 0.4])  # P(X[1] | X[0]=1, C=0)
-          m.fillCPT("X[1]", {"X[0]": "1", "C": 0}, [0.6, 0.4])         # same, engine names
-
         Parameters
         ----------
         base : str
@@ -913,21 +885,10 @@ class KTBNGenerator(object):
     back, and compare.
 
     Acyclicity comes for free: a cross-slice arc can never close a cycle since the
-    slice index strictly increases along it, so the generator only needs to aNone
+    slice index strictly increases along it, so the generator only needs to avoid
     cycles among same-slice (temporal, lag 0) and atemporal-to-atemporal arcs, which
     it does by drawing one random ranking per family and only admitting arcs from
     lower to higher rank.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum as gum
-      import pyagrum.ktbn as ktbn
-      gum.initRandom(42)                          # reproducible
-      gen = ktbn.KTBNGenerator(3, 4, 1)            # k=3, 4 temporal, 1 atemporal
-      gen.setDensity(0.15).setMaxParents(4)
-      model = gen.generate()
 
     KTBNGenerator(k, nbTemporal, nbAtemporal=0, maxArcs=0, maxModality=2) -> KTBNGenerator
         Parameters:
@@ -1157,20 +1118,6 @@ class KTBNInference(object):
 
     .. warning::
        The k-TBN is referenced, not copied: it must outlive the inference engine.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum.ktbn as ktbn
-      ie = ktbn.KTBNInference(model)
-      ie.addObservation("Y", 3, 1)      # observe Y[3] = 1
-      ie.addIntervention("X", 2, 1)     # do(X[2] = 1)
-      ie.addTarget("X")                 # want the whole P(X[t] | ...) series
-      ie.makeInference(10)               # compute slices 0..9
-      p3 = ie.posterior("X", 3)
-      px = ie.posteriors("X")
-      logpe = ie.logObservationProbability()
 
     KTBNInference(ktbn) -> KTBNInference
         Parameters:
@@ -1509,15 +1456,6 @@ class KTBNInference(object):
         ``"X[5]"``) or a ``(base, slice)`` tuple, all-or-nothing validated before
         anything is recorded.
 
-        Examples
-        --------
-        .. code-block:: python
-
-          ie.addIntervention("X", 5, 0)                       # by (base, slice), index
-          ie.addIntervention("X", 5, "high")                  # by (base, slice), label
-          ie.addIntervention("X[5]", 0)                        # by engine name
-          ie.addIntervention({"X[5]": 0, ("Z", 2): "high"})    # batch
-
         Parameters
         ----------
         base : str
@@ -1555,15 +1493,6 @@ class KTBNInference(object):
         The batch form (``addObservations``) takes a dict {node: value} of hard
         observations only, node keyed by an engine name or a (base, slice) tuple,
         all-or-nothing validated before anything is recorded.
-
-        Examples
-        --------
-        .. code-block:: python
-
-          ie.addObservation("X", 5, 0)                 # hard, by index
-          ie.addObservation("X", 5, "high")            # hard, by label
-          ie.addObservation("X", 5, [0.1, 0.9])         # soft (likelihoods)
-          ie.addObservations({"X[5]": 0, ("Z", 2): 1})  # batch, hard only
 
         Parameters
         ----------
@@ -1631,16 +1560,6 @@ class KTBNDatabaseGenerator(object):
     the k-slice template and slides it forward in time, so memory stays independent
     of the number of trajectories and their length.
 
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum.ktbn as ktbn
-      kdbn = ...                                          # a k-TBN
-      gen = ktbn.KTBNDatabaseGenerator(kdbn)
-      # 1000 trajectories of length 10 -> out_dir/traj1.csv ... out_dir/traj1000.csv
-      ll = gen.drawSamples(1000, 10, "out_dir", "traj")
-
     KTBNDatabaseGenerator(kdbn) -> KTBNDatabaseGenerator
         Parameters:
             - **kdbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to sample from (only its
@@ -1706,13 +1625,6 @@ class KTBNDatabaseGenerator(object):
         same horizon, or each trajectory gets its own (pass a list of horizons instead
         of a sample count and a single horizon).
 
-        Examples
-        --------
-        .. code-block:: python
-
-          gen.drawSamples(100, 10, "out_dir", "traj")            # 100 trajectories, length 10
-          gen.drawSamples([8, 10, 12], "out_dir", "traj")        # 3 trajectories, own lengths
-
         Parameters
         ----------
         nbSamples : int
@@ -1763,19 +1675,6 @@ class KTBNLearner(object):
     **atemporal** table (one row per trajectory) learns the arcs between atemporal
     variables. Temporal ordering and no-backward-arc constraints are applied
     automatically.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum.ktbn as ktbn
-      # atemporal variables inferred from the data
-      learner = ktbn.KTBNLearner("trajs/", "traj", 500, 2)
-      learner.useScoreBIC().useGreedyHillClimbing()
-      model = learner.learnKTBN()
-
-      # or state the classification explicitly (pass an actual `set`, not a list)
-      learner2 = ktbn.KTBNLearner("trajs/", "traj", 500, 2, {"C", "D"})
 
     KTBNLearner(dirPath, csvBaseName, nbSamples, k, atemporalVars, missingSymbols=['?'], induceTypes=True, ignoreMissingSymbols=False) -> KTBNLearner
         Structure-learning constructor with the temporal/atemporal classification
@@ -2874,17 +2773,6 @@ class KTBNAdaptiveLearner(object):
     here too), except settings are only *recorded* and replayed on each per-k
     learner at :func:`learnKTBN` time; a constraint whose slice does not fit a given
     candidate is silently skipped for that candidate only.
-
-    Examples
-    --------
-    .. code-block:: python
-
-      import pyagrum.ktbn as ktbn
-      learner = ktbn.KTBNAdaptiveLearner("trajs/", "traj", 500, kMax=4)
-      learner.useScoreBIC().useGreedyHillClimbing()
-      model = learner.learnKTBN()
-      learner.bestK()
-      learner.scorePerCandidateK()
 
     KTBNAdaptiveLearner(dirPath, csvBaseName, nbSamples, kMax, atemporalVars, missingSymbols=['?'], induceTypes=True) -> KTBNAdaptiveLearner
         Parameters:

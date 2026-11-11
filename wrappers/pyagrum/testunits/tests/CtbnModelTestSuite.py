@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import contextlib
+import io
 import unittest
 
 import pyagrum as gum
@@ -179,6 +181,25 @@ class TestCtbnModel(pyAgrumTestCase):
     ctbn = ct.randomCTBN((0.5, 1.5))
     self.assertEqual(ctbn.names(), ["V1"])
     self.assertEqual(len(ctbn.arcs()), 0)
+
+  def testEqualsIsSilent(self):
+    def model(names, arcs):
+      ctbn = ct.CTBN()
+      for name in names:
+        ctbn.add(gum.LabelizedVariable(name, name, 2))
+      for tail, head in arcs:
+        ctbn.addArc(tail, head)
+      return ctbn
+
+    ref = model("AB", [("A", "B")])
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+      self.assertTrue(ref.equals(model("AB", [("A", "B")])))
+      self.assertFalse(ref.equals(model("ABC", [("A", "B")])))  # other nodes
+      self.assertFalse(ref.equals(model("AB", [])))  # other arcs
+      self.assertFalse(ref.equals(model("AC", [("A", "C")])))  # other names
+      self.assertFalse(ref.equals(model("AB", [("B", "A")])))  # other orientation
+    self.assertEqual(out.getvalue(), "")
 
 
 ts = unittest.TestSuite()

@@ -81,26 +81,6 @@ CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
         - **assumeNonSpurious** (*bool*) -- same meaning as above.
 
     :func:`hasObservationalBN` returns False on the resulting model.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet.fastPrototype('X->Y;X->Z;Y->Z')
-  cm = gum.CausalModel(bn)
-
-  # create a model with a latent confounder U between X and Y
-
-  cm = gum.CausalModel(bn, [('U', ['X', 'Y'])], assumeNonSpurious=False)
-
-  # build a causal model from a DAG only (no CPTs needed for structural queries)
-
-  dag = gum.fastDAG('X->Y->Z')
-  cm = gum.CausalModel(dag)
-  cm.hasObservationalBN()
-  False
-  cm.backDoor('X', 'Z')  # structural queries work without a BN
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable
@@ -456,15 +436,6 @@ Returns
 -------
 str
     A dot-format string representation of the causal model.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet.fastPrototype('X->Y->Z')
-  cm = gum.CausalModel(bn)
-  print(cm.toDot())
 "
 
 %feature("docstring") gum::CausalModel::variable

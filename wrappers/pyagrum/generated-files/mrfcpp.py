@@ -357,13 +357,6 @@ class MarkovRandomField(IMarkovRandomField):
             - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
             - the type of the variables with different syntax (cf documentation).
 
-        Examples
-        --------
-        .. code-block:: python
-
-          import pyagrum as gum
-          bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)
-
         Parameters
         ----------
         dotlike : str
@@ -2063,39 +2056,16 @@ def loadMRF(
   pyagrum.MarkovRandomField
     a MRF from a file using one of the availableMNExts() suffixes.
 
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    If a listener is not callable.
+
   Listeners could be added in order to monitor its loading.
 
   pkl suffix is used to load a pickled MRF. In this case, options are ignored.
 
   jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore listeners.
-
-  Examples
-  --------
-  The loading is monitored by a list of listeners (functions of the progress, in %), here printing
-  ``.........#.........#.........#.........#..50%`` then
-  ``.......#.........#.........#.........#.........#.........% | MRF loaded``:
-
-  .. code-block:: python
-
-    import pyagrum as gum
-
-    def foo_listener(progress):
-       if progress==200:
-           print(' MRF loaded ')
-           return
-       elif progress==100:
-           car='%'
-       elif progress%10==0:
-           car='#'
-       else:
-           car='.'
-       print(car,end='',flush=True)
-
-    def bar_listener(progress):
-       if progress==50:
-           print('50%')
-
-    gum.loadMRF('./bn.uai',listeners=[foo_listener,bar_listener])
   """
   mn = MarkovRandomField()
 
@@ -2155,13 +2125,6 @@ def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
       - the type of the variables with different syntax (cf documentation).
-
-  Examples
-  --------
-  .. code-block:: python
-
-    import pyagrum as gum
-    bn=gum.fastMRF('A--B[1,3]--C{yes|No};C--D[2,4]--E[1,2.5,3.9]',6)
 
   Parameters
   ----------

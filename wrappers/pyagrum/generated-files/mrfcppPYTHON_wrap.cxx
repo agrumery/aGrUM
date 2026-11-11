@@ -6657,6 +6657,14 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factor__SWIG_1(PyObject *self, Py_s
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -7734,6 +7742,14 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_addFactor__SWIG_0(PyObject *self, P
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -7918,6 +7934,14 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_eraseFactor__SWIG_1(PyObject *self,
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -12900,6 +12924,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_1(
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -12915,6 +12947,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_evidenceJointImpact__SWIG_1(
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs3.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -13155,13 +13195,6 @@ static PyMethodDef SwigMethods[] = {
 		"Create a Markov random field with a modified dot-like syntax which specifies:\n"
 		"    - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).\n"
 		"    - the type of the variables with different syntax (cf documentation).\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.MarkovRandomField.fastPrototype('A--B[1,3]--C{yes|No}--D[2,4]--E[1,2.5,3.9]',6)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

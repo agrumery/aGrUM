@@ -75,16 +75,6 @@ Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
           *whatif* variables, given as ``{variable_name: value_name}``.
           If omitted, the full joint distribution over all *whatif* values
           is returned.
-
-Examples
---------
-.. code-block:: python
-
-  import pyagrum as gum
-  bn = gum.BayesNet.fastPrototype('X->Y->Z')
-  cm = gum.CausalModel(bn)
-  t = gum.counterfactual(cm, on='Z', whatif='X',
-                         profile={'Y': 'True'}, values={'X': 'False'})
 "
 
 %feature("docstring") gum::Counterfactual::counterFactualModel

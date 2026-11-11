@@ -164,18 +164,6 @@
       Generator to iterate on an Instantiation.
 
       Yield an pyagrum.Instantiation (copy of self) that iterates over all the possible values for the Instantiation.
-
-      Examples
-      --------
-      .. code-block:: python
-
-        import pyagrum as gum
-        bn=gum.fastBN("A[3]->B[3]<-C[3]")
-        I=gum.Instantiation(bn.cpt("B"))
-        for i in I.loopIn():
-              print(i)
-              print(bn.cpt("B").get(i))
-              bn.cpt("B").set(i,0.3)
       """
       J=Instantiation(self)
       J.setFirst()

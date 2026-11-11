@@ -8,3 +8,12 @@ generator.drawSamples(10)  # the log2-likelihood of the database: each row has p
 # -10.0
 generator.samplesNbRows()
 # 10
+
+# only the samples compatible with the evidence B=0 are kept (hence A=1)
+ll = generator.drawSamples(5, {"B": 0})
+generator.samplesNbRows()
+# 5
+generator.varOrderNames()
+# ('A', 'B')
+sorted({(generator.samplesLabelAt(row, 0), generator.samplesLabelAt(row, 1)) for row in range(5)})
+# [('1', '0')]

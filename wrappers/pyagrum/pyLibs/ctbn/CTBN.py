@@ -493,18 +493,15 @@ class CTBN:
 
     # Checks the number of nodes
     if len(names1) != len(names2):
-      print("difference de taille")
       return False
 
     # Checks the number of arcs
     if len(arcs1) != len(arcs2):
-      print("difference de taille")
       return False
 
     # Checks if all nodes from current CTBN are in the other one
     for name in names1:
       if name not in names2:
-        print("nom non present dans le ctbn en parametres")
         return False
 
     # Checks if all arcs from current CTBN are in the other one
@@ -512,8 +509,6 @@ class CTBN:
       if not ctbn._graph.existsArc(
         ctbn._graph.idFromName(self._id2var[arc[0]].name()), ctbn._graph.idFromName(self._id2var[arc[1]].name())
       ):
-        print(self._id2var[arc[0]].name(), self._id2var[arc[1]].name())
-        print("arc non present dans le ctbn en parametres")
         return False
 
     return True

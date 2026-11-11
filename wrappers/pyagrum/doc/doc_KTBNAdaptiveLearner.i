@@ -55,17 +55,6 @@ here too), except settings are only *recorded* and replayed on each per-k
 learner at :func:`learnKTBN` time; a constraint whose slice does not fit a given
 candidate is silently skipped for that candidate only.
 
-Examples
---------
-.. code-block:: python
-
-  import pyagrum.ktbn as ktbn
-  learner = ktbn.KTBNAdaptiveLearner(\"trajs/\", \"traj\", 500, kMax=4)
-  learner.useScoreBIC().useGreedyHillClimbing()
-  model = learner.learnKTBN()
-  learner.bestK()
-  learner.scorePerCandidateK()
-
 KTBNAdaptiveLearner(dirPath, csvBaseName, nbSamples, kMax, atemporalVars, missingSymbols=['?'], induceTypes=True) -> KTBNAdaptiveLearner
     Parameters:
         - **dirPath** (*str*) -- directory holding the trajectory CSV files

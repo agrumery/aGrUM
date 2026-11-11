@@ -9668,6 +9668,14 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_addNoForgettingAssumption_
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
+      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+        // a non-string item would be read as "" (misleading NotFound "<>" later)
+        PyErr_Format(PyExc_TypeError,
+          "expected a sequence of strings (item %zd is not a string)",
+          _i);
+        Py_DECREF(_item);
+        SWIG_fail;
+      }
       _tmp_vs2.push_back(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
@@ -12302,13 +12310,6 @@ static PyMethodDef SwigMethods[] = {
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
 		"  - the tensors (probabilities, utilities) are randomly generated.\n"
 		"  - see also pyagrum.fastID.\n"
-		"\n"
-		"Examples\n"
-		"--------\n"
-		".. code-block:: python\n"
-		"\n"
-		"  import pyagrum as gum\n"
-		"  bn=gum.fastID('A->B[1,3]<-*C{yes|No}->$D<-E[1,2.5,3.9]',6)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
