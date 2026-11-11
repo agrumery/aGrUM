@@ -49,9 +49,6 @@
 // an %ignore with a signature matches only the parameter types as written in the header (no gum:: qualification)
 %ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*);
 %ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*, NodeId);
-// the BN would own (and delete) a tensor still owned by Python: only the overloads by copy are wrapped
-%ignore gum::BayesNet<double>::changeTensor(NodeId, Tensor<double>*);
-%ignore gum::BayesNet<double>::changeTensor(std::string_view, Tensor<double>*);
 
 %ignore *::beginNodes;
 %ignore *::endNodes;

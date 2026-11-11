@@ -625,30 +625,6 @@ namespace gum {
 
     void generateCPT(std::string_view name) const;
 
-    /**
-     * @brief Replaces the CPT of a node, the BN taking ownership of newPot.
-     *
-     * The old CPT is deleted.
-     * @param id the node whose CPT is replaced
-     * @param newPot the new CPT, allocated with new: owned (and deleted) by the BN afterwards
-     * @throw OperationNotAllowed if newPot does not have the same variables, in the same order,
-     * as the current CPT (newPot is then still owned by the caller)
-     */
-    void changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot);
-    void changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot);
-
-    /**
-     * @brief Replaces the CPT of a node by a copy of newPot.
-     *
-     * The old CPT is deleted, newPot is not referenced by the BN.
-     * @param id the node whose CPT is replaced
-     * @param newPot the new CPT
-     * @throw OperationNotAllowed if newPot does not have the same variables, in the same order,
-     * as the current CPT
-     */
-    void changeTensor(NodeId id, const Tensor< GUM_SCALAR >& newPot);
-    void changeTensor(std::string_view name, const Tensor< GUM_SCALAR >& newPot);
-
     /** create a contextual BN from this and a set of hard observations and hard interventions.
      *
      * @param observations the hard observations
@@ -676,7 +652,6 @@ namespace gum {
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
-    /// @see changeTensor
     void _unsafeChangeTensor_(NodeId id, Tensor< GUM_SCALAR >* newPot);
 
     /// Generic factory for aggregator nodes, dispatching on the aggregator's name.

@@ -18084,28 +18084,6 @@ class BayesNet(IBayesNet):
         """
         return _pyagrumcpp.BayesNet_generateCPT(self, *args)
 
-    def changeTensor(self, *args) -> None:
-        r"""
-
-        Replaces the CPT of a variable by a copy of a tensor.
-
-        The Bayesian network keeps its own copy: modifying newPot afterwards does not change the CPT.
-
-        Parameters
-        ----------
-        var : int | str
-            the current name or the id of the variable
-        newPot : pyagrum.Tensor
-            the new CPT, with the same variables in the same order as the current CPT
-
-        Raises
-        ------
-        pyagrum.OperationNotAllowed
-            If newPot does not have the same variables, in the same order, as the current CPT
-
-        """
-        return _pyagrumcpp.BayesNet_changeTensor(self, *args)
-
     def dag(self) -> "pyagrum.DAG":
         r"""
 

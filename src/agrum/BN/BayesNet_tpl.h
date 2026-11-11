@@ -628,48 +628,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(NodeId id, Tensor< GUM_SCALAR >* newPot) {
-    if (cpt(id).nbrDim() != newPot->nbrDim()) {
-      GUM_ERROR(OperationNotAllowed,
-                "cannot exchange tensors with different "
-                "dimensions for variable with id "
-                    << id)
-    }
-
-    for (Idx i = 0; i < cpt(id).nbrDim(); i++) {
-      if (&cpt(id).variable(i) != &(newPot->variable(i))) {
-        GUM_ERROR(OperationNotAllowed,
-                  "cannot exchange tensors because, for variable with id " << id << ", dimension "
-                                                                           << i << " differs. ")
-      }
-    }
-
-    _unsafeChangeTensor_(id, newPot);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::_unsafeChangeTensor_(NodeId id, Tensor< GUM_SCALAR >* newPot) {
     delete _probaMap_[id];
     _probaMap_[id] = newPot;
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(std::string_view name, Tensor< GUM_SCALAR >* newPot) {
-    changeTensor(idFromName(name), newPot);
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(NodeId id, const Tensor< GUM_SCALAR >& newPot) {
-    // the copy is released only once the BN owns it (changeTensor may throw)
-    auto copy = std::make_unique< Tensor< GUM_SCALAR > >(newPot);
-    changeTensor(id, copy.get());
-    copy.release();
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
-  void BayesNet< GUM_SCALAR >::changeTensor(std::string_view            name,
-                                            const Tensor< GUM_SCALAR >& newPot) {
-    changeTensor(idFromName(name), newPot);
   }
 
   template < GUM_Numeric GUM_SCALAR >

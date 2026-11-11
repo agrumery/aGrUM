@@ -502,25 +502,6 @@ begin Multiple Change for all CPTs
 These functions delay the CPTs change to be done just once at the end of a sequence of topology modification, begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
 "
 
-%feature("docstring") gum::BayesNet::changeTensor
-"
-Replaces the CPT of a variable by a copy of a tensor.
-
-The Bayesian network keeps its own copy: modifying newPot afterwards does not change the CPT.
-
-Parameters
-----------
-var : int | str
-    the current name or the id of the variable
-newPot : pyagrum.Tensor
-    the new CPT, with the same variables in the same order as the current CPT
-
-Raises
-------
-pyagrum.OperationNotAllowed
-    If newPot does not have the same variables, in the same order, as the current CPT
-"
-
 %feature("docstring") gum::BayesNet::changeVariableName
 "
 Changes a variable's name in the `pyagrum.BayesNet`.

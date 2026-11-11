@@ -38,6 +38,7 @@
       `orientAsDAG`, and `separation` (d-, c- or m-separation according to the class of the graph). The immutable
       graphs (`CPDAG`, `MPDAG`, `EssentialGraph`, `MAG`) are accepted as the other graphs. Nodes by id or by name. New
       notebook `03-Tutorial_graphs`.
+    - `BayesNet.changeTensor` is removed: use `bn.cpt(node).fillWith(tensor)`.
 
 - aGrUM
 
@@ -133,6 +134,8 @@
       `dot.compelledArcColor` (formerly hard-coded); `CPDAG.toDot` and `MPDAG.toDot` accept `DotOptions`.
     - `CredalNet::intervalToCredalWithFiles` (deprecated since 2013, it wrote lrs files in the current directory and
       could crash) is removed: use `intervalToCredal`, which gives the same credal sets.
+    - `BayesNet::changeTensor` is removed (it deleted the CPT, leaving dangling the references to it): use
+      `cpt(node).fillWith(tensor)`, which changes the parameters and keeps the CPT.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
