@@ -194,10 +194,10 @@ class TLearner:
         If not provided, defaults to LinearRegression.
     control_learner: str or Any, optional
         Estimator for control group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_learner: str or Any, optional
         Estimator for treatment group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     """
 
     if learner is None:
@@ -327,16 +327,16 @@ class XLearner:
         If not provided, defaults to LinearRegression.
     control_outcome_learner: str or Any, optional
         Estimator for control group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_outcome_learner: str or Any, optional
         Estimator for treatment group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     control_effect_learner: str or Any, optional
         Estimator for control group effect.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_effect_learner: str or Any, optional
         Estimator for treatment group effect.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     propensity_score_learner: str or Any, optional
         Estimator for propensity score.
         If not provided, defaults to LogisticRegression.

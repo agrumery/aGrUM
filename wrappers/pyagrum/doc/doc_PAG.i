@@ -43,7 +43,7 @@
 "
 PAG represents a Partial Ancestral Graph, the output of the FCI algorithm.
 
-A PAG is a ``pyagrum.MarkedGraph`` representing a Markov equivalence class of maximal ancestral
+A PAG is a `pyagrum.MarkedGraph` representing a Markov equivalence class of maximal ancestral
 graphs: an arrowhead or a tail is in all the graphs of the class, a circle varies across the class
 (Zhang 2008). No invariant is checked (the output of FCI on finite data may not be a valid PAG).
 
@@ -52,7 +52,7 @@ PAG() -> PAG
 
 PAG(src) -> PAG
     Parameters:
-        - **src** (*pyagrum.PAG*) -- the PAG to copy
+        - **src** (`pyagrum.PAG`) -- the PAG to copy
 
-Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
+Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by `pyagrum.fastPAG`.
 "

@@ -46,7 +46,7 @@
 
 %feature("docstring") gum::Arc
 "
-pyagrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
+`pyagrum.Arc` is the representation of an arc between two nodes represented by int : the head and the tail.
 
 Arc(tail, head) -> Arc
     Parameters:
@@ -55,7 +55,7 @@ Arc(tail, head) -> Arc
 
 Arc(src) -> Arc
     Parameters:
-        - **src** (*Arc*) -- the pyagrum.Arc to copy
+        - **src** (*Arc*) -- the `pyagrum.Arc` to copy
 "
 
 %feature("docstring") gum::Arc::tail

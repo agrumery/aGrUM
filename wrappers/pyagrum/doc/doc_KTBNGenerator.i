@@ -74,7 +74,7 @@ pyagrum.InvalidArgument
 %feature("docstring") gum::KTBNGenerator::generateKTBN
 "
 Fill out with a freshly drawn model (its previous content is discarded). Seed
-with ``pyagrum.initRandom()`` for reproducibility.
+with `pyagrum.initRandom` for reproducibility.
 
 Parameters
 ----------

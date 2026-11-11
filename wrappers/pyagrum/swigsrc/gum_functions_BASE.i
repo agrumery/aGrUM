@@ -72,7 +72,7 @@ config._emitNotices()
 def randomShuffle(seq) -> None:
   """Shuffle a sequence in place with the random generator of pyAgrum.
 
-  For a given seed (see ``pyagrum.initRandom``), the order is the same on every platform, and the same as the
+  For a given seed (see `pyagrum.initRandom`), the order is the same on every platform, and the same as the
   shuffles of pyAgrum (such as the random order of the variables of ``BNDatabaseGenerator``).
 
   Parameters
@@ -104,13 +104,13 @@ def fastGraph(
 ) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
-  graph type from a quick read of `desc`.
+  graph type from a quick read of ``desc``.
 
-  If `desc` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
+  If ``desc`` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
   attempted first, falling back to a :class:`pyagrum.DiGraph` if that would create a
-  directed cycle. If `desc` mixes arcs and undirected edges (``'-'``), a
+  directed cycle. If ``desc`` mixes arcs and undirected edges (``'-'``), a
   :class:`pyagrum.PDAG` is attempted first, falling back to a :class:`pyagrum.MixedGraph`
-  on the same condition. If `desc` only contains undirected edges, a
+  on the same condition. If ``desc`` only contains undirected edges, a
   :class:`pyagrum.UndiGraph` is returned.
 
   For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,

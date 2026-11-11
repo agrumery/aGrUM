@@ -54,12 +54,12 @@ BayesNet(name='') -> BayesNet
 
 BayesNet(source) -> BayesNet
     Parameters:
-      - **source** (*pyagrum.BayesNet*) -- the Bayesian network to copy
+      - **source** (`pyagrum.BayesNet`) -- the Bayesian network to copy
 "
 
 %feature("docstring") gum::BayesNet::add
 "
-Add a variable to the pyagrum.BayesNet.
+Add a variable to the `pyagrum.BayesNet`.
 
 Parameters
 ----------
@@ -70,7 +70,7 @@ descr : str
 nbrmod : int
     the number of modalities for the new variable
 id : int
-    the variable forced id in the pyagrum.BayesNet
+    the variable forced id in the `pyagrum.BayesNet`
 
 Returns
 -------
@@ -80,7 +80,7 @@ int
 Raises
 ------
 pyagrum.DuplicateLabel
-    If variable.name() or id is already used in this pyagrum.BayesNet.
+    If variable.name() or id is already used in this `pyagrum.BayesNet`.
 pyagrum.NotAllowed
     If nbrmod is less than 2
 "
@@ -90,8 +90,8 @@ pyagrum.NotAllowed
 Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its
 parents.
 
-The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
-`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.
+The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,
+`pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones.
 
 If the computed value is not in the domain of the aggregator, the closest value of the domain is used
 (in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.
@@ -319,8 +319,8 @@ pyagrum.GumTypeError
 "
 Add a deterministic variable whose value is the sum of the values of its parents.
 
-The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
-`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
+The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,
+`pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
 
 If the computed value is not in the domain of the aggregator, the closest value of the domain is used
 (in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.
@@ -523,9 +523,9 @@ pyagrum.OperationNotAllowed
 
 %feature("docstring") gum::BayesNet::changeVariableName
 "
-Changes a variable's name in the pyagrum.BayesNet.
+Changes a variable's name in the `pyagrum.BayesNet`.
 
-This will change the pyagrum.DiscreteVariable names in the pyagrum.BayesNet.
+This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.BayesNet`.
 
 Parameters
 ----------
@@ -578,9 +578,9 @@ Clear the whole BayesNet
 
 %feature("docstring") gum::BayesNet::erase
 "
-Remove a variable from the pyagrum.BayesNet.
+Remove a variable from the `pyagrum.BayesNet`.
 
-Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.
+Removes the corresponding variable from the `pyagrum.BayesNet` and from all of it's children `pyagrum.Tensor`.
 
 If no variable matches the given id, then nothing is done.
 
@@ -625,7 +625,7 @@ Notes
 -----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - the CPTs are randomly generated.
-  - see also the function pyagrum.fastBN.
+  - see also the function `pyagrum.fastBN`.
 
 Parameters
 ----------
@@ -938,8 +938,8 @@ pyagrum.NotFound
 "
 Check if the BayesNet is consistent (variables, CPT, ...)
 
-A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`
-(1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`
+A distribution is considered normalized if its sum is within ``pyagrum.config['core','epsilonStandard']``
+(1e-6 by default) of 1. A sum that is further away but within ``pyagrum.config['core','epsilonCoarse']``
 (1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a
 rounding problem rather than an error in the parameters.
 
@@ -962,7 +962,7 @@ int
 
 %feature("docstring") gum::IBayesNet::evEq
 "
-This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
+This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is equal to a given value.
 
 Notes
 -----
@@ -978,12 +978,12 @@ value: float
 Returns
 -------
 pyagrum.Tensor
-  The representation of the evidence as a pyagrum.Tensor.
+  The representation of the evidence as a `pyagrum.Tensor`.
 "
 
 %feature("docstring") gum::IBayesNet::evGt
 "
-This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
+This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is greater than a given value.
 
 Notes
 -----
@@ -999,13 +999,13 @@ value: float
 Returns
 -------
 pyagrum.Tensor
-  The representation of the evidence as a pyagrum.Tensor.
+  The representation of the evidence as a `pyagrum.Tensor`.
 "
 
 
 %feature("docstring") gum::IBayesNet::evLt
 "
-This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
+This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
 
 Notes
 -----
@@ -1021,13 +1021,13 @@ value: float
 Returns
 -------
 pyagrum.Tensor
-  The representation of the evidence as a pyagrum.Tensor.
+  The representation of the evidence as a `pyagrum.Tensor`.
 "
 
 
 %feature("docstring") gum::IBayesNet::evIn
 "
-This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
+This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is in a given range.
 
 Notes
 -----
@@ -1046,7 +1046,7 @@ valueMax: float
 Returns
 -------
 pyagrum.Tensor
-  The representation of the evidence as a pyagrum.Tensor.
+  The representation of the evidence as a `pyagrum.Tensor`.
 "
 
 %feature("docstring") gum::BayesNet::loadGUM

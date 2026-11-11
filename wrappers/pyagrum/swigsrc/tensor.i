@@ -252,7 +252,7 @@ if len(args)>1:
       """
       Generator to iterate inside a Tensor.
 
-      Yield an pyagrum.Instantiation that iterates over all the possible values for the pyagrum.Tensor
+      Yield an `pyagrum.Instantiation` that iterates over all the possible values for the `pyagrum.Tensor`
       """
       i=Instantiation(self)
       i.setFirst()
@@ -429,7 +429,7 @@ if len(args)>1:
 
       Warnings
       --------
-      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
+      p is a pyAgrum's object that can refer to variables through a method ``p.variable(name:str)``. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
 
       Returns
       -------
@@ -568,8 +568,8 @@ if len(args)>1:
         """
         Iterate over the data of the Tensor
 
-        Yield
-        -----
+        Yields
+        ------
         tuple[pyagrum.Instantiation,float]
           The instantiation and the value in the Tensor
         """
@@ -645,7 +645,7 @@ if len(args)>1:
         """
         Render object to a LaTeX tabular.
 
-        Requires to include `booktabs` package in the LaTeX document.
+        Requires to include ``booktabs`` package in the LaTeX document.
 
         Returns
         -------
@@ -691,7 +691,7 @@ if len(args)>1:
 
         Warnings
         --------
-            `p.shape` and `p[:].shape` list the dimensions in different order
+            ``p.shape`` and ``p[:].shape`` list the dimensions in different order
         """
         return tuple([self.variable(i).domainSize() for i in range(self.nbrDim())])
   }

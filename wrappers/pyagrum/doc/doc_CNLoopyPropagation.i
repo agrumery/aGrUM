@@ -50,5 +50,5 @@ Class used for inferences in credal networks with Loopy Propagation algorithm.
 
 CNLoopyPropagation(cn) -> CNLoopyPropagation
     Parameters:
-      - **cn** (*pyagrum.CredalNet*) -- a Credal network
+      - **cn** (`pyagrum.CredalNet`) -- a Credal network
 "

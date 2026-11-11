@@ -15,7 +15,7 @@ to switch state at any time. To depict the time a variable spends in a state bef
 
 **Tutorials**
 
-* `Notebooks on CTBNs in pyAgrum <notebooks/71-PyModels_CTBN>`_.
+* `Notebooks on CTBNs in pyAgrum <notebooks/71-PyModels_CTBN.ipynb>`_.
 
 **Reference**
 

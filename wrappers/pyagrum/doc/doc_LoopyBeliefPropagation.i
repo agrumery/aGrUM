@@ -50,5 +50,5 @@ Class used for inferences using loopy belief propagation algorithm.
 
 LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

@@ -67,14 +67,14 @@ class CausalShallValues(ShallValues, CausalComputation):
     background : tuple[pandas.DataFrame, bool] | None
         A tuple containing a pandas DataFrame and a boolean indicating whether the DataFrame includes labels or positional values.
     sample_size : int
-        The size of the background sample to generate if `background` is None.
+        The size of the background sample to generate if ``background`` is None.
     log : bool
         If True, applies a logarithmic transformation to the probabilities.
 
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance, background is not a tuple.
+        If bn is not a `pyagrum.BayesNet` instance, background is not a tuple.
     ValueError
         If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.

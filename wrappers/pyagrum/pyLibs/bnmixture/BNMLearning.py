@@ -61,9 +61,9 @@ class IMixtureLearner:
     order : list[str or int]
         Order for K2 algorithm.
     tabu_size : int
-        size for local search with tabu list (by default, `pyagrum.config['learning', 'tabuListSize']`).
+        size for local search with tabu list (by default, ``pyagrum.config['learning', 'tabuListSize']``).
     nb_decrease : int
-        decrease for local search with tabu list (by default, `pyagrum.config['learning', 'tabuNbDecrease']`).
+        decrease for local search with tabu list (by default, ``pyagrum.config['learning', 'tabuNbDecrease']``).
     score : str
         Type of score to use.
     correction : str
@@ -73,7 +73,7 @@ class IMixtureLearner:
     source : str | pyagrum.BayesNet
         Source for dirichlet prior
     prior_weight : float
-        Weight used for prior (by default, `pyagrum.config['learning', 'priorWeight']`).
+        Weight used for prior (by default, ``pyagrum.config['learning', 'priorWeight']``).
     """
     if len(kargs) == 0 and self._ref_learner is not None:
       learner.copyState(self._ref_learner)
@@ -160,9 +160,9 @@ class BNMLearner(IMixtureLearner):
       Weights of each sample of the database.
   source : list[str] | list[pandas.DataFrame]
       Samples to learn from (csv format for now).
-  states : list["state"]
+  states : list[dict], optional
       List of learners state.
-  template : pyagrum.BayesNet | Optional
+  template : pyagrum.BayesNet, optional
           BN to use to find modalities.
 
   Raises

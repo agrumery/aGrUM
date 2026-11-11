@@ -114,6 +114,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("ConfigTestSuite", True),
         ("CredalNetTestSuite", True),
         ("DiscreteTypeProcessorTestSuite", _pd, "[pyAgrum] pyagrum.lib.discreteTypeProcessor needs pandas"),
+        ("DocstringReferencesTestSuite", True),
         ("DotOptionsTestSuite", True),
         ("EssentialGraphTestSuite", True),
         ("EvidenceTestSuite", True),

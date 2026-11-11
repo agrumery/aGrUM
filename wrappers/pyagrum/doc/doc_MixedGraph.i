@@ -53,7 +53,7 @@ MixedGraph() -> MixedGraph
 
 MixedGraph(src) -> MixedGraph
     Parameters:
-        - **src** (*pyagrum.MixedGraph*) --the MixedGraph to copy
+        - **src** (`pyagrum.MixedGraph`) --the MixedGraph to copy
 "
 
 %feature("docstring") gum::MixedGraph::addNode
@@ -240,7 +240,7 @@ int
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------
@@ -400,7 +400,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the ancestors of node `norid`.
+  the set of ids of the ancestors of node ``norid``.
 "
 
 %feature("docstring") gum::MixedGraph::descendants
@@ -415,7 +415,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the descendants of node `norid`.
+  the set of ids of the descendants of node ``norid``.
 "
 
 %feature("docstring") gum::MixedGraph::addArc

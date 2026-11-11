@@ -46,7 +46,7 @@ from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class TestEvidence(pyAgrumTestCase):
-  def tesIsEvidence(self):
+  def testIsEvidence(self):
     bn = gum.fastBN("A[10]->B;C")
     p1 = gum.Tensor(bn.cpt("A"))
 
@@ -58,7 +58,7 @@ class TestEvidence(pyAgrumTestCase):
     p1.fillWith(1.0)
     self.assertTrue(p1.isEvidence())
 
-  def tesCombine(self):
+  def testCombine(self):
     bn = gum.fastBN("A[10]->B;C")
     p1 = gum.Tensor(bn.cpt("A"))
     p2 = gum.Tensor(bn.cpt("A"))
@@ -103,6 +103,27 @@ class TestEvidence(pyAgrumTestCase):
     self.assertEqual(gpot.evLt(vC, 1.0).tolist(), [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     self.assertEqual(gpot.evGt(vC, 7.0).tolist(), [0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
     self.assertEqual(gpot.evGt(vC, 20.0).tolist(), [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
+
+  def testEvidencePredicatesByIdAndByName(self):
+    bn = gum.fastBN("A->B->C")
+    mrf = gum.fastMRF("A--B;B--C")
+    diag = gum.fastID("A->*D->$U;A->$U;B")
+    for model, ie in (
+      (bn, gum.LazyPropagation(bn)),
+      (bn, gum.LoopyBeliefPropagation(bn)),  # sampling inferences accept only hard evidence
+      (mrf, gum.ShaferShenoyMRFInference(mrf)),
+      (diag, gum.ShaferShenoyLIMIDInference(diag)),
+    ):
+      with self.subTest(inference=type(ie).__name__):
+        idA, idB = model.idFromName("A"), model.idFromName("B")
+        ie.addEvidence("A", 0)
+        ie.addEvidence("B", [0.3, 0.7])
+        for node, hard, soft in ((idA, True, False), ("A", True, False), (idB, False, True), ("B", False, True)):
+          self.assertTrue(ie.hasEvidence(node))
+          self.assertEqual(ie.hasHardEvidence(node), hard)
+          self.assertEqual(ie.hasSoftEvidence(node), soft)
+        with self.assertRaises(gum.NotFound):
+          ie.hasHardEvidence("Z")
 
 
 ts = unittest.TestSuite()

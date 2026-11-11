@@ -97,7 +97,7 @@ def computeScores(
   Parameters
   ----------
   bn_name : pyagrum.BayesNet | str
-    a pyagrum.BayesianNetwork or a filename for a BN
+    a `pyagrum.BayesNet` or a filename for a BN
   csv_name : str
      a filename for the CSV database
   visible: bool

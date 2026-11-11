@@ -46,9 +46,9 @@
 
 %feature("docstring") gum::initRandom
 "
-Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
+Initialize random generator seed. If ``seed=0``, the generator is initialized from the current time in ms. ``seed!=0`` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
-This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
+This is the way to act directly on the generator at any time. At start, pyAgrum uses the key ``core.randomSeed`` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
 
 A given seed gives the same draws on every platform.
 
@@ -68,7 +68,7 @@ float
 
 %feature("docstring") gum::randomGamma
 "
-Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.
+Draws a value of the Gamma distribution of shape ``shape`` and scale 1, with the random generator of pyAgrum.
 
 For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.
 
@@ -80,12 +80,12 @@ shape : float
 Returns
 -------
 float
-  a value of the Gamma distribution (its mean is `shape`).
+  a value of the Gamma distribution (its mean is ``shape``).
 
 Raises
 ------
 pyagrum.OutOfBounds
-  If `shape` is not > 0.
+  If ``shape`` is not > 0.
 "
 
 %feature("docstring") gum::randomDistribution
@@ -162,7 +162,7 @@ Only active in debug build mode (GUM_DEBUG_MODE). No output in release mode.
 Returns
 -------
 int
-  the seed of the generator: the value given to the last call to `initRandom` or, if it was 0, the value taken from the current time. Used as `core.randomSeed` in a file `pyagrum.ini`, it repeats the same pseudo-random numbers sequence.
+  the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.
 "
 
 %feature("docstring") gum::randomValue
@@ -186,7 +186,7 @@ name.
 
 Note
 ----
-A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
 already uses ``'--'`` to list the variables of a single factor (a clique), a
 different construct from a chain of pairwise edges. ``'A--B'`` is therefore
 rejected here rather than silently misread.
@@ -209,7 +209,7 @@ desc : str
 
 %define FAST_MARKED_GRAPH_DOC_HEAD
 "
-Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+Create a marked graph (`pyagrum.MarkedGraph`, or `pyagrum.PAG` for ``fastPAG``) from a dot-like
 description.
 
 An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a

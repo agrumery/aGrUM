@@ -39,7 +39,7 @@
 ############################################################################
 
 """
-collection of utilities for pyagrum.lib
+collection of utilities for `pyagrum.lib`
 """
 
 import csv
@@ -185,7 +185,7 @@ def apply_dot_layout(g: dot.Dot, layout: dict[str, DotPoint]) -> None:
 async def async_html2image(htmlcontent: str, filename: str):
   """
   convert an html content to an image. The format is determined by the extension of the filename.
-  This function is asynchronous and uses playwright. To install playwright, use `pip install playwright` and then `playwright install`.
+  This function is asynchronous and uses playwright. To install playwright, use *pip install playwright* and then *playwright install*.
 
   Parameters
   ----------
@@ -236,7 +236,7 @@ async def async_html2image(htmlcontent: str, filename: str):
 def html2image(htmlcontent: str, filename: str) -> None:
   """
   convert an html content to an image. The format is determined by the extension of the filename.
-  This function is synchronous and uses playwright. To install playwright, use `pip install playwright` and then `playwright install`.
+  This function is synchronous and uses playwright. To install playwright, use *pip install playwright* and then *playwright install*.
 
   Parameters
   ----------

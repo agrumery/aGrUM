@@ -125,7 +125,7 @@ import enum as _enum
 
 class EdgeMark(_enum.IntEnum):
   """
-  The mark at an end of an edge of a marked graph (pyagrum.MarkedGraph, pyagrum.PAG).
+  The mark at an end of an edge of a marked graph (`pyagrum.MarkedGraph`, `pyagrum.PAG`).
 
   An edge x-y carries one mark at x and one at y: ``x->y`` has a tail at x and an arrowhead at y,
   ``x<->y`` an arrowhead at both ends, ``x--y`` a tail at both ends; a circle is an end whose mark
@@ -412,7 +412,7 @@ def saveGraph(graph, filename: str) -> None:
   Parameters
   ----------
   graph : pyagrum.DiGraph or pyagrum.DAG or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.PDAG or pyagrum.ChainGraph or pyagrum.MarkedGraph or pyagrum.PAG or pyagrum.CPDAG or pyagrum.MPDAG or pyagrum.MAG or pyagrum.EssentialGraph
-    the graph (any class of graph; pickle only for pyagrum.CliqueGraph)
+    the graph (any class of graph; pickle only for `pyagrum.CliqueGraph`)
   filename : str
     the name of the file (see :func:`pyagrum.availableGraphExts`)
 
@@ -421,8 +421,8 @@ def saveGraph(graph, filename: str) -> None:
   pyagrum.InvalidArgument
     if the extension is unknown (see :func:`pyagrum.availableGraphExts`)
   NotImplementedError
-    if graph is a pyagrum.CliqueGraph (or a pyagrum.JunctionTree) and the format is GUM (a
-    pyagrum.CliqueGraph can be pickled)
+    if graph is a `pyagrum.CliqueGraph` (a junction tree included) and the format is GUM (a
+    `pyagrum.CliqueGraph` can be pickled)
   """
   name = str(filename)
   extension = name.split(".")[-1].upper()
@@ -1097,7 +1097,7 @@ def randomProba() -> float:
 def randomGamma(shape: float) -> float:
     r"""
 
-    Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.
+    Draws a value of the Gamma distribution of shape ``shape`` and scale 1, with the random generator of pyAgrum.
 
     For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.
 
@@ -1109,12 +1109,12 @@ def randomGamma(shape: float) -> float:
     Returns
     -------
     float
-      a value of the Gamma distribution (its mean is `shape`).
+      a value of the Gamma distribution (its mean is ``shape``).
 
     Raises
     ------
     pyagrum.OutOfBounds
-      If `shape` is not > 0.
+      If ``shape`` is not > 0.
 
     """
     return _pyagrumcpp.randomGamma(shape)
@@ -1125,7 +1125,7 @@ def randomGeneratorSeed() -> int:
     Returns
     -------
     int
-      the seed of the generator: the value given to the last call to `initRandom` or, if it was 0, the value taken from the current time. Used as `core.randomSeed` in a file `pyagrum.ini`, it repeats the same pseudo-random numbers sequence.
+      the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.
 
     """
     return _pyagrumcpp.randomGeneratorSeed()
@@ -1136,9 +1136,9 @@ def currentRandomGeneratorValue() -> int:
 def initRandom(seed: int=0) -> None:
     r"""
 
-    Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
+    Initialize random generator seed. If ``seed=0``, the generator is initialized from the current time in ms. ``seed!=0`` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.
 
-    This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
+    This is the way to act directly on the generator at any time. At start, pyAgrum uses the key ``core.randomSeed`` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.
 
     A given seed gives the same draws on every platform.
 
@@ -1152,8 +1152,8 @@ def initRandom(seed: int=0) -> None:
 class _Configuration(object):
     r"""
 
-    The configuration of pyAgrum (``pyagrum.config`` is the configuration singleton of the aGrUM C++ library,
-    ``pyagrum.Configuration``). The configuration is a read-only structure of sections and keys: a value is
+    The configuration of pyAgrum (`pyagrum.config` is the configuration singleton of the aGrUM C++ library,
+    C++ class ``Configuration``). The configuration is a read-only structure of sections and keys: a value is
     adressable using a double key: ``[section,key]``. Section names are case-sensitive, key names are not.
 
     The sections and keys are created by the defaults, in this order: ``defaults.ini`` of aGrUM, then
@@ -1435,17 +1435,17 @@ class _Configuration(object):
       self._run("_reset")
 
     def load(self):
-      """load pyagrum.ini in the current directory, and change the properties if needed.
-      If pyagrum.ini contains deprecated keys or invalid values, a warning is emitted.
-      pyagrum.ini is never modified by ``load()``: a deprecated key is applied to its
-      replacement, and ``save()`` writes pyagrum.ini with the new key names.
+      """load ``pyagrum.ini`` in the current directory, and change the properties if needed.
+      If ``pyagrum.ini`` contains deprecated keys or invalid values, a warning is emitted.
+      ``pyagrum.ini`` is never modified by ``load()``: a deprecated key is applied to its
+      replacement, and ``save()`` writes ``pyagrum.ini`` with the new key names.
 
       Raises
       ------
       FileNotFoundError
-          If there is no readable pyagrum.ini in the current directory.
+          If there is no readable ``pyagrum.ini`` in the current directory.
       SyntaxError
-          If pyagrum.ini contains a malformed line (in this case, nothing is changed).
+          If ``pyagrum.ini`` contains a malformed line (in this case, nothing is changed).
       """
       try:
         self._run("_load", self.userFileName())
@@ -1464,7 +1464,7 @@ class _Configuration(object):
       print(self._run("_grep", search))
 
     def diff(self):
-      """print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `save()`"""
+      """print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method ``save()``"""
       print(self._run("_diff"))
 
     def __getitem__(self, key):
@@ -1527,7 +1527,7 @@ class DotOptions(object):
     r"""
 
     What you give to the ``toDot(options)`` of a graph, a Bayesian network, a Markov random field, an influence diagram,
-    a causal model, a credal network, a junction tree... beyond the look given by ``pyagrum.config`` (sections
+    a causal model, a credal network, a junction tree... beyond the look given by `pyagrum.config` (sections
     ``notebook``, ``factorgraph``, ``dynamicBN``, ``influenceDiagram``, ``credalnet`` and ``causal``).
 
     What is not given is taken from the configuration. The nodes are designated by their identifiers, the arcs by the
@@ -2051,7 +2051,7 @@ class DiscreteVariable(Variable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2060,12 +2060,12 @@ class DiscreteVariable(Variable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.DiscreteVariable_closestIndex(self, val)
@@ -2073,7 +2073,7 @@ class DiscreteVariable(Variable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2082,12 +2082,12 @@ class DiscreteVariable(Variable):
         Returns
         -------
         str
-          the label of the closest value to `value` in the variable's domain
+          the label of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.DiscreteVariable_closestLabel(self, val)
@@ -2220,19 +2220,19 @@ class DiscreteVariable(Variable):
     # Labelized
     def posLabel(self,s:str)->int:
       """
-      Returns the index of the label `s` in the variable's domain (if the variable is a pyagrum.LabelizedVariable)
+      Returns the index of the label ``s`` in the variable's domain (if the variable is a `pyagrum.LabelizedVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.LabelizedVariable
+          If the variable is not a `pyagrum.LabelizedVariable`
         NotFoundError
-          If the variable does not contain the label `s`
+          If the variable does not contain the label ``s``
 
       Returns
       -------
         int
-          the index of the label `s` in the variable's domain
+          the index of the label ``s`` in the variable's domain
       """
       try:
         return self.asLabelizedVar().posLabel(s)
@@ -2245,7 +2245,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.LabelizedVariable
+          If the variable is not a `pyagrum.LabelizedVariable`
 
       Returns
       -------
@@ -2260,7 +2260,7 @@ class DiscreteVariable(Variable):
     # Range
     def belongs(self,x:int)->bool:
       """
-      returns whether x belongs to the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns whether x belongs to the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Parameters
       ----------
@@ -2270,7 +2270,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -2283,12 +2283,12 @@ class DiscreteVariable(Variable):
          raise NotImplementedError(f"belongs not implemented for {self}")
     def minVal(self)->int:
       """
-      returns the minimum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns the minimum value of the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -2301,12 +2301,12 @@ class DiscreteVariable(Variable):
          raise NotImplementedError(f"minVal not implemented for {self}")
     def maxVal(self)->int:
       """
-      returns the maximum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns the maximum value of the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -2321,12 +2321,12 @@ class DiscreteVariable(Variable):
     # NumericalDiscreteVariable and/or IntegerVariable
     def numericalDomain(self)->tuple[float,...]:
       """
-      Returns the numerical domain of the variable (if the variable is a pyagrum.NumericalDiscreteVariable)
+      Returns the numerical domain of the variable (if the variable is a `pyagrum.NumericalDiscreteVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.NumericalDiscreteVariable
+          If the variable is not a `pyagrum.NumericalDiscreteVariable`
 
       Returns
       -------
@@ -2340,12 +2340,12 @@ class DiscreteVariable(Variable):
 
     def integerDomain(self)->tuple[int,...]:
       """
-      Returns the integer domain of the variable (if the variable is a pyagrum.integerVariable)
+      Returns the integer domain of the variable (if the variable is a `pyagrum.IntegerVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.IntegerVariable
+          If the variable is not a `pyagrum.IntegerVariable`
 
       Returns
       -------
@@ -2369,7 +2369,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.NumericalDiscreteVariable or a pyagrum.IntegerVariable
+          If the variable is not a `pyagrum.NumericalDiscreteVariable` or a `pyagrum.IntegerVariable`
 
       Returns
       -------
@@ -2398,7 +2398,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -2416,7 +2416,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -2429,12 +2429,12 @@ class DiscreteVariable(Variable):
         raise NotImplementedError(f"ticks not implemented for {self}")
     def isEmpirical(self)->bool:
       """
-      Returns whether the variable is empirical (if the variable is a pyagrum.DiscretizedVariable). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
+      Returns whether the variable is empirical (if the variable is a `pyagrum.DiscretizedVariable`). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -2447,7 +2447,7 @@ class DiscreteVariable(Variable):
         raise NotImplementedError(f"isEmpirical not implemented for {self}")
     def tick(self,x:int):
       """
-      Returns the x-th tick of the variable (if the variable is a pyagrum.DiscretizedVariable)
+      Returns the x-th tick of the variable (if the variable is a `pyagrum.DiscretizedVariable`)
 
       Parameters
       ----------
@@ -2457,7 +2457,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
         pyagrum.OutOfBounds
           If x is not a valid index for the ticks of the variable
 
@@ -2472,7 +2472,7 @@ class DiscreteVariable(Variable):
         raise NotImplementedError(f"tick not implemented for {self}")
     def draw(self,x):
       """
-      Draw a random float value from the x-th interval of the variable (only for pyagrum.DiscretizedVariable).
+      Draw a random float value from the x-th interval of the variable (only for `pyagrum.DiscretizedVariable`).
 
       Parameters
       ----------
@@ -2487,7 +2487,7 @@ class DiscreteVariable(Variable):
       Raises
       ------
       NotImplementedError
-          if the variable is not a pyagrum.DiscretizedVariable
+          if the variable is not a `pyagrum.DiscretizedVariable`
       pyagrum.OutOfBounds
           if x is not a valid interval index
       """
@@ -2500,7 +2500,7 @@ class DiscreteVariable(Variable):
     def asLabelizedVar(self) -> "pyagrum.LabelizedVariable":
         r"""
 
-        Tries to cast the variable as a `pyagrum.LabelizedVar`.
+        Tries to cast the variable as a `pyagrum.LabelizedVariable`.
 
         Raises
         ------
@@ -2508,8 +2508,8 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyagrum.LabelizedVar
-          the variable as a pyagrum.LabelizedVar
+        pyagrum.LabelizedVariable
+          the variable as a `pyagrum.LabelizedVariable`
 
         """
         return _pyagrumcpp.DiscreteVariable_asLabelizedVar(self)
@@ -2517,7 +2517,7 @@ class DiscreteVariable(Variable):
     def asRangeVar(self) -> "pyagrum.RangeVariable":
         r"""
 
-        Tries to cast the variable as a `pyagrum.RangeVar`.
+        Tries to cast the variable as a `pyagrum.RangeVariable`.
 
         Raises
         ------
@@ -2525,8 +2525,8 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyagrum.RangeVar
-          the variable as a pyagrum.RangeVar
+        pyagrum.RangeVariable
+          the variable as a `pyagrum.RangeVariable`
 
         """
         return _pyagrumcpp.DiscreteVariable_asRangeVar(self)
@@ -2534,7 +2534,7 @@ class DiscreteVariable(Variable):
     def asIntegerVar(self) -> "pyagrum.IntegerVariable":
         r"""
 
-        Tries to cast the variable as a `pyagrum.IntegerVar`.
+        Tries to cast the variable as a `pyagrum.IntegerVariable`.
 
         Raises
         ------
@@ -2542,8 +2542,8 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyagrum.IntegerVar
-          the variable as a pyagrum.IntegerVar
+        pyagrum.IntegerVariable
+          the variable as a `pyagrum.IntegerVariable`
 
         """
         return _pyagrumcpp.DiscreteVariable_asIntegerVar(self)
@@ -2551,7 +2551,7 @@ class DiscreteVariable(Variable):
     def asNumericalDiscreteVar(self) -> "pyagrum.NumericalDiscreteVariable":
         r"""
 
-        Tries to cast the variable as a `pyagrum.NumericalDiscreteVar`.
+        Tries to cast the variable as a `pyagrum.NumericalDiscreteVariable`.
 
         Raises
         ------
@@ -2559,8 +2559,8 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyagrum.NumericalDiscreteVar
-          the variable as a pyagrum.NumericalDiscreteVar
+        pyagrum.NumericalDiscreteVariable
+          the variable as a `pyagrum.NumericalDiscreteVariable`
 
         """
         return _pyagrumcpp.DiscreteVariable_asNumericalDiscreteVar(self)
@@ -2568,7 +2568,7 @@ class DiscreteVariable(Variable):
     def asDiscretizedVar(self) -> "pyagrum.DiscretizedVariable":
         r"""
 
-        Tries to cast the variable as a `pyagrum.DiscretizedVar`.
+        Tries to cast the variable as a `pyagrum.DiscretizedVariable`.
 
         Raises
         ------
@@ -2576,8 +2576,8 @@ class DiscreteVariable(Variable):
 
         Returns
         -------
-        pyagrum.DiscretizedVar
-          the variable as a pyagrum.DiscretizedVar
+        pyagrum.DiscretizedVariable
+          the variable as a `pyagrum.DiscretizedVariable`
 
         """
         return _pyagrumcpp.DiscreteVariable_asDiscretizedVar(self)
@@ -2603,7 +2603,7 @@ class LabelizedVariable(DiscreteVariable):
 
     LabelizedVariable(aLDRV) -> LabelizedVariable
         Parameters:
-            - **aLDRV** (*pyagrum.LabelizedVariable*) -- The pyagrum.LabelizedVariable that will be copied
+            - **aLDRV** (`pyagrum.LabelizedVariable`) -- The `pyagrum.LabelizedVariable` that will be copied
 
     """
 
@@ -2775,7 +2775,7 @@ class LabelizedVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -2784,12 +2784,12 @@ class LabelizedVariable(DiscreteVariable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.LabelizedVariable_closestIndex(self, val)
@@ -2884,7 +2884,7 @@ class RangeVariable(DiscreteVariable):
 
     RangeVariable(aRV) -> RangeVariable
         Parameters:
-            - **aDV** (*RangeVariable*) -- the pyagrum.RangeVariable that will be copied
+            - **aDV** (*RangeVariable*) -- the `pyagrum.RangeVariable` that will be copied
 
     """
 
@@ -3072,7 +3072,7 @@ class RangeVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -3081,12 +3081,12 @@ class RangeVariable(DiscreteVariable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.RangeVariable_closestIndex(self, val)
@@ -3134,7 +3134,7 @@ class IntegerVariable(DiscreteVariable):
 
     IntegerVariable(aIDRV) -> IntegerVariable
         Parameters:
-            - **aIDRV** (*pyagrum.IntegerVariable*) -- The pyagrum.IntegerVariable that will be copied
+            - **aIDRV** (`pyagrum.IntegerVariable`) -- The `pyagrum.IntegerVariable` that will be copied
 
     """
 
@@ -3213,7 +3213,7 @@ class IntegerVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -3222,12 +3222,12 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.IntegerVariable_closestIndex(self, val)
@@ -3378,7 +3378,7 @@ class IntegerVariable(DiscreteVariable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -3387,12 +3387,12 @@ class IntegerVariable(DiscreteVariable):
         Returns
         -------
         str
-          the label of the closest value to `value` in the variable's domain
+          the label of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.IntegerVariable_closestLabel(self, val)
@@ -3414,19 +3414,19 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Parameters:
             - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **values** (list of float) -- the values to create equivalent to *fast* syntax `{v1|v2|v3|...|vn}`
+            - **values** (list of float) -- the values to create equivalent to *fast* syntax ``{v1|v2|v3|...|vn}``
 
     NumericalDiscreteVariable(aName, aDesc='', first, last, nbr) -> NumericalDiscreteVariable
         Parameters:
             - **aName** (str) -- the name of the variable
             - **aDesc** (str) -- the (optional) description of the variable
-            - **first** (float) -- specify a list of floats from `first` to `last` in `nbr` steps.
+            - **first** (float) -- specify a list of floats from ``first`` to ``last`` in ``nbr`` steps.
             - **last** (float) --
-            - **nbr** (int)  -- equivalent to fast syntax `{first:last:nbr}`
+            - **nbr** (int)  -- equivalent to fast syntax ``{first:last:nbr}``
 
     NumericalDiscreteVariable(aNDRV) -> NumericalDiscreteVariable
         Parameters:
-            - **aNDRV** (*pyagrum.NumericalDiscreteVariable*) -- The pyagrum.NumericalDiscreteVariable that will be copied
+            - **aNDRV** (`pyagrum.NumericalDiscreteVariable`) -- The `pyagrum.NumericalDiscreteVariable` that will be copied
 
     """
 
@@ -3505,7 +3505,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -3514,12 +3514,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.NumericalDiscreteVariable_closestIndex(self, val)
@@ -3670,7 +3670,7 @@ class NumericalDiscreteVariable(DiscreteVariable):
     def closestLabel(self, val: float) -> str:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -3679,12 +3679,12 @@ class NumericalDiscreteVariable(DiscreteVariable):
         Returns
         -------
         str
-          the label of the closest value to `value` in the variable's domain
+          the label of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.InvalidArgument
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.NumericalDiscreteVariable_closestLabel(self, val)
@@ -3760,7 +3760,7 @@ _pyagrumcpp.IDiscretizedVariable_swigregister(IDiscretizedVariable)
 class Edge(object):
     r"""
 
-    pyagrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
+    `pyagrum.Edge` is the representation of an arc between two nodes represented by int : the first and the second.
 
     Edge(aN1,aN2) -> Edge
         Parameters:
@@ -3827,7 +3827,7 @@ _pyagrumcpp.Edge_swigregister(Edge)
 class Arc(object):
     r"""
 
-    pyagrum.Arc is the representation of an arc between two nodes represented by int : the head and the tail.
+    `pyagrum.Arc` is the representation of an arc between two nodes represented by int : the head and the tail.
 
     Arc(tail, head) -> Arc
         Parameters:
@@ -3836,7 +3836,7 @@ class Arc(object):
 
     Arc(src) -> Arc
         Parameters:
-            - **src** (*Arc*) -- the pyagrum.Arc to copy
+            - **src** (*Arc*) -- the `pyagrum.Arc` to copy
 
     """
 
@@ -3923,7 +3923,7 @@ class UndiGraph(object):
 
     UndiGraph(src) -> UndiGraph
         Parameters!
-            - **src** (*UndiGraph*) -- the pyagrum.UndiGraph to copy
+            - **src** (*UndiGraph*) -- the `pyagrum.UndiGraph` to copy
 
 
     """
@@ -3983,7 +3983,7 @@ class UndiGraph(object):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -4123,8 +4123,8 @@ class UndiGraph(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -4352,7 +4352,7 @@ class UndiGraph(object):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -4555,7 +4555,7 @@ class DiGraph(object):
 
     DiGraph(src) -> DiGraph
         Parameters:
-            - **src** (*pyagrum.DiGraph*) -- the digraph to copy
+            - **src** (`pyagrum.DiGraph`) -- the digraph to copy
 
     """
 
@@ -4614,7 +4614,7 @@ class DiGraph(object):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -4764,8 +4764,8 @@ class DiGraph(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -4990,7 +4990,7 @@ class DiGraph(object):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         See Also
         --------
@@ -5012,7 +5012,7 @@ class DiGraph(object):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         See Also
         --------
@@ -5055,7 +5055,7 @@ class DiGraph(object):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -5269,11 +5269,11 @@ class DAG(DiGraph):
 
     DAG(src) -> DAG
         Parameters:
-            - **src** (*pyagrum.DAG*) -- the DAG to copy
+            - **src** (`pyagrum.DAG`) -- the DAG to copy
 
     DAG(src) -> DAG
         Parameters:
-            - **src** (*pyagrum.DiGraph*) -- a directed graph without directed cycle (for a mixed graph, only its arcs are copied)
+            - **src** (`pyagrum.DiGraph`) -- a directed graph without directed cycle (for a mixed graph, only its arcs are copied)
 
         Raises:
             - **pyagrum.InvalidDirectedCycle** -- if src has a directed cycle
@@ -5456,7 +5456,7 @@ class DAG(DiGraph):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.DAG_descendants(self, id)
@@ -5474,7 +5474,7 @@ class DAG(DiGraph):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.DAG_ancestors(self, id)
@@ -5513,7 +5513,7 @@ class DAG(DiGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -5555,7 +5555,7 @@ class DAG(DiGraph):
         ------
           pyagrum.InvalidNode
             If head or tail does not belong to the graph nodes.
-          pyagrum.CycleDetected
+          pyagrum.InvalidDirectedCycle
             If a cycle is detected
 
 
@@ -5659,7 +5659,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     MixedGraph(src) -> MixedGraph
         Parameters:
-            - **src** (*pyagrum.MixedGraph*) --the MixedGraph to copy
+            - **src** (`pyagrum.MixedGraph`) --the MixedGraph to copy
 
     """
 
@@ -5719,7 +5719,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -5881,7 +5881,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.MixedGraph_descendants(self, id)
@@ -5899,7 +5899,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.MixedGraph_ancestors(self, id)
@@ -6020,7 +6020,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -6332,7 +6332,7 @@ class PDAG(MixedGraph):
 
     PDAG(src) -> PDAG
         Parameters:
-            - **src** (*pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+            - **src** (`pyagrum.PDAG`, `pyagrum.DAG`, `pyagrum.UndiGraph` or `pyagrum.MixedGraph`) -- the graph to copy
 
     Raises
     ------
@@ -6549,7 +6549,7 @@ class PDAG(MixedGraph):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.PDAG_descendants(self, id)
@@ -6567,7 +6567,7 @@ class PDAG(MixedGraph):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.PDAG_ancestors(self, id)
@@ -6688,7 +6688,7 @@ class PDAG(MixedGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -7014,15 +7014,15 @@ class ChainGraph(PDAG):
     graphs.
 
     This class is the graph only: the independence model read from a chain graph depends on its
-    interpretation (LWF, AMP or MVR). The methods `moralGraph`, `moralizedAncestralGraph` and
-    `cSeparation` follow the LWF interpretation.
+    interpretation (LWF, AMP or MVR). The methods ``moralGraph``, ``moralizedAncestralGraph`` and
+    ``cSeparation`` follow the LWF interpretation.
 
     ChainGraph() -> ChainGraph
         default constructor
 
     ChainGraph(src) -> ChainGraph
         Parameters:
-            - **src** (*pyagrum.ChainGraph*, *pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+            - **src** (`pyagrum.ChainGraph`, `pyagrum.PDAG`, `pyagrum.DAG`, `pyagrum.UndiGraph` or `pyagrum.MixedGraph`) -- the graph to copy
 
     Raises
     ------
@@ -7151,7 +7151,7 @@ class ChainGraph(PDAG):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -7228,7 +7228,7 @@ class ChainGraph(PDAG):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -7582,13 +7582,13 @@ class _ImmutableMixedGraphChainGraph(_ImmutableGraphChainGraph):
         r"""
 
         The chain components (nodes linked by undirected edges) are drawn in clusters (color of the key
-        ``dot.chainComponentBgColor`` of ``pyagrum.config``) and the compelled arcs with the color of the key
+        ``dot.chainComponentBgColor`` of `pyagrum.config`) and the compelled arcs with the color of the key
         ``dot.compelledArcColor``.
 
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
 
         Returns
         -------
@@ -7925,13 +7925,13 @@ class _ImmutableMixedGraphPDAG(_ImmutableGraphPDAG):
     def toDot(self, *args) -> str:
         r"""
 
-        The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of ``pyagrum.config``. No
+        The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of `pyagrum.config`. No
         cluster is drawn: an MPDAG is not always a chain graph.
 
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
 
         Returns
         -------
@@ -8085,8 +8085,8 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -8177,7 +8177,7 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -8390,8 +8390,8 @@ class MPDAG(_ImmutableMixedGraphPDAG):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -8482,7 +8482,7 @@ class MPDAG(_ImmutableMixedGraphPDAG):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -8518,7 +8518,7 @@ class MarkedGraph(object):
 
     MarkedGraph represents a graph whose edges carry a mark at each of their ends.
 
-    Each edge between nodes x and y has two marks, one at each end (``pyagrum.EdgeMark``):
+    Each edge between nodes x and y has two marks, one at each end (`pyagrum.EdgeMark`):
 
     - ``EdgeMark.Circle`` (o): undetermined end
     - ``EdgeMark.Tail`` (-): tail
@@ -8533,9 +8533,9 @@ class MarkedGraph(object):
 
     MarkedGraph(src) -> MarkedGraph
         Parameters:
-            - **src** (*pyagrum.MarkedGraph*) -- the marked graph to copy
+            - **src** (`pyagrum.MarkedGraph`) -- the marked graph to copy
 
-    See also ``pyagrum.fastMarkedGraph``, ``pyagrum.PAG`` and ``pyagrum.MAG``.
+    See also `pyagrum.fastMarkedGraph`, `pyagrum.PAG` and `pyagrum.MAG`.
 
     """
 
@@ -8604,7 +8604,7 @@ class MarkedGraph(object):
         Returns
         -------
         pyagrum.EdgeMark
-            the mark (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+            the mark (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
 
         """
         val = _pyagrumcpp.MarkedGraph_markAt(self, src, dst)
@@ -8640,7 +8640,7 @@ class MarkedGraph(object):
         Parameters
         ----------
         mark : pyagrum.EdgeMark
-            the mark to set everywhere (``pyagrum.EdgeMark.Circle``, ``Tail`` or ``Arrowhead``)
+            the mark to set everywhere (`pyagrum.EdgeMark.Circle`, ``Tail`` or ``Arrowhead``)
 
         """
         return _pyagrumcpp.MarkedGraph_reorientAllWith(self, mark)
@@ -8869,7 +8869,7 @@ class MarkedGraph(object):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -8900,8 +8900,8 @@ class MarkedGraph(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -9129,7 +9129,7 @@ class MarkedGraph(object):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -9251,9 +9251,9 @@ class MarkedGraph(object):
         y : int
             id of the second node
         markAtX : pyagrum.EdgeMark, optional
-            mark at the x endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+            mark at the x endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
         markAtY : pyagrum.EdgeMark, optional
-            mark at the y endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+            mark at the y endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
 
         """
         return _pyagrumcpp.MarkedGraph_addEdge(self, *args)
@@ -9337,7 +9337,7 @@ class PAG(MarkedGraph):
 
     PAG represents a Partial Ancestral Graph, the output of the FCI algorithm.
 
-    A PAG is a ``pyagrum.MarkedGraph`` representing a Markov equivalence class of maximal ancestral
+    A PAG is a `pyagrum.MarkedGraph` representing a Markov equivalence class of maximal ancestral
     graphs: an arrowhead or a tail is in all the graphs of the class, a circle varies across the class
     (Zhang 2008). No invariant is checked (the output of FCI on finite data may not be a valid PAG).
 
@@ -9346,9 +9346,9 @@ class PAG(MarkedGraph):
 
     PAG(src) -> PAG
         Parameters:
-            - **src** (*pyagrum.PAG*) -- the PAG to copy
+            - **src** (`pyagrum.PAG`) -- the PAG to copy
 
-    Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
+    Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by `pyagrum.fastPAG`.
 
     """
 
@@ -9420,7 +9420,7 @@ class PAG(MarkedGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -9861,12 +9861,12 @@ class MAG(_ImmutableGraphMarkedGraph):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and edges...)
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and edges...)
 
         Returns
         -------
         str
-            a representation of the MAG in the DOT format (see pyagrum.MarkedGraph.toDot)
+            a representation of the MAG in the DOT format (see `pyagrum.MarkedGraph.toDot`)
 
         """
         return _pyagrumcpp.MAG_toDot(self, *args)
@@ -9936,8 +9936,8 @@ class MAG(_ImmutableGraphMarkedGraph):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -10028,7 +10028,7 @@ class MAG(_ImmutableGraphMarkedGraph):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -10135,7 +10135,7 @@ class CliqueGraph(UndiGraph):
 
     CliqueGraph(src) -> CliqueGraph
         Parameter
-            - **src** (*pyagrum.CliqueGraph*) -- the CliqueGraph to copy
+            - **src** (`pyagrum.CliqueGraph`) -- the CliqueGraph to copy
 
     """
 
@@ -10355,7 +10355,7 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (keys ``junctionTree*`` of the
+            what is given to the drawing beyond the look of `pyagrum.config` (keys ``junctionTree*`` of the
             section ``notebook``). The options of a clique are the ones of its node; the options of an edge are
             the ones of its separator (label, tooltip, color, attributes, and width of the two links).
 
@@ -10538,7 +10538,7 @@ class MeekRules(object):
     def propagateToDAG(self, *args) -> "pyagrum.DAG":
         r"""
 
-        Calls `propagateToCPDAG` and then orients the remaining edges: into a consistent extension if the propagated graph
+        Calls ``propagateToCPDAG`` and then orients the remaining edges: into a consistent extension if the propagated graph
         has one, else with new v-structures. The orientation looks for small CPTs: with ``domainSizes``, it uses the domain
         size of each node; without, all the domains are considered equal (nodes with few parents). The DAG contains all the
         arcs of the propagated graph. `pyagrum.MeekRules.choices` returns the list of the arbitrary choices made by the last
@@ -10593,7 +10593,7 @@ class Instantiation(object):
 
     Instantiation(aI) -> Instantiation
         Parameters:
-          - **aI** (*pyagrum.Instantiation*) -- the Instantiation we copy
+          - **aI** (`pyagrum.Instantiation`) -- the Instantiation we copy
 
     Returns
     -------
@@ -11199,7 +11199,7 @@ class Instantiation(object):
     def todict(self, withLabels: bool=False) -> dict[str, int | str]:
         r"""
 
-        Create a dictionary `{variable_name:value}` from an instantiation
+        Create a dictionary ``{variable_name:value}`` from an instantiation
 
         Parameters
         ----------
@@ -11220,7 +11220,7 @@ class Instantiation(object):
     def fromdict(self, dict: object) -> None:
       r"""
 
-      Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
+      Change the values in an instantiation from a dictionary ``{variable_name:value}`` where value can be a position (int) or a label (string).
 
       If a variable_name does not occur in the instantiation, nothing is done.
 
@@ -11275,7 +11275,7 @@ class Instantiation(object):
         """
         Generator to iterate on an Instantiation.
 
-        Yield an pyagrum.Instantiation (copy of self) that iterates over all the possible values for the Instantiation.
+        Yield an `pyagrum.Instantiation` (copy of self) that iterates over all the possible values for the Instantiation.
         """
         J=Instantiation(self)
         J.setFirst()
@@ -11874,7 +11874,7 @@ class DAGmodel(DiscreteGraphicalModel):
         Returns
         -------
         bool
-          True if `tail->head` is an arc.
+          True if ``tail->head`` is an arc.
 
         """
         return _pyagrumcpp.DAGmodel_existsArc(self, *args)
@@ -11910,7 +11910,7 @@ class DAGmodel(DiscreteGraphicalModel):
         Returns
         -------
         set
-          the set of nodeId of the family of the node `norid`
+          the set of nodeId of the family of the node ``norid``
 
         """
         return _pyagrumcpp.DAGmodel_family(self, *args)
@@ -11946,7 +11946,7 @@ class DAGmodel(DiscreteGraphicalModel):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.DAGmodel_descendants(self, *args)
@@ -11964,7 +11964,7 @@ class DAGmodel(DiscreteGraphicalModel):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.DAGmodel_ancestors(self, *args)
@@ -11981,7 +11981,7 @@ class DAGmodel(DiscreteGraphicalModel):
 
         Warnings
         --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
@@ -12313,10 +12313,10 @@ class ApproximationScheme(object):
     ApproximationScheme(verbosity) -> ApproximationScheme
         Parameters:
           - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons). If it is
-            not given, the key `verbosity` of the section `approximation` of `pyagrum.config` is used.
+            not given, the key ``verbosity`` of the section ``approximation`` of `pyagrum.config` is used.
 
         The other parameters (epsilon, minimal epsilon rate, maximum number of iterations, maximum time, burn-in and period size)
-        are the ones of the section `approximation` of `pyagrum.config`.
+        are the ones of the section ``approximation`` of `pyagrum.config`.
 
     """
 
@@ -12717,7 +12717,7 @@ def fastVariable(*args) -> "pyagrum.DiscreteVariable":
       string following *fast* syntax description
     default_nbrmod: int
       nbr of modality if fast_description does not indicate it.
-      `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).
+      ``default_nbrmod=1`` is the way to create a variable with only one value (for instance for reward in influence diagram).
 
     """
     return _pyagrumcpp.fastVariable(*args)
@@ -12736,7 +12736,7 @@ def fastDiGraph(desc: str) -> "pyagrum.DiGraph":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12776,7 +12776,7 @@ def fastUndiGraph(desc: str) -> "pyagrum.UndiGraph":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12816,7 +12816,7 @@ def fastMixedGraph(desc: str) -> "pyagrum.MixedGraph":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12856,7 +12856,7 @@ def fastDAG(desc: str) -> "pyagrum.DAG":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12896,7 +12896,7 @@ def fastPDAG(desc: str) -> "pyagrum.PDAG":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12936,7 +12936,7 @@ def fastChainGraph(desc: str) -> "pyagrum.ChainGraph":
 
     Note
     ----
-    A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``
+    A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`
     already uses ``'--'`` to list the variables of a single factor (a clique), a
     different construct from a chain of pairwise edges. ``'A--B'`` is therefore
     rejected here rather than silently misread.
@@ -12965,7 +12965,7 @@ def fastChainGraph(desc: str) -> "pyagrum.ChainGraph":
 def fastMarkedGraph(desc: str) -> "pyagrum.MarkedGraph":
     r"""
 
-    Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+    Create a marked graph (`pyagrum.MarkedGraph`, or `pyagrum.PAG` for ``fastPAG``) from a dot-like
     description.
 
     An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
@@ -12994,7 +12994,7 @@ def fastMarkedGraph(desc: str) -> "pyagrum.MarkedGraph":
 def fastPAG(desc: str) -> "pyagrum.PAG":
     r"""
 
-    Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like
+    Create a marked graph (`pyagrum.MarkedGraph`, or `pyagrum.PAG` for ``fastPAG``) from a dot-like
     description.
 
     An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
@@ -13037,7 +13037,7 @@ def randomDistribution(n: int) -> tuple[float, ...]:
 class DiscretizedVariable(IDiscretizedVariable):
     r"""
 
-    DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
+    DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervals.
 
     DiscretizedVariable(aName, aDesc) -> DiscretizedVariable
         Parameters:
@@ -13058,7 +13058,7 @@ class DiscretizedVariable(IDiscretizedVariable):
     DiscretizedVariable(aDDRV) -> DiscretizedVariable
         Parameters:
 
-            - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
+            - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the `pyagrum.DiscretizedVariable` that will be copied
 
     """
 
@@ -13281,7 +13281,7 @@ class DiscretizedVariable(IDiscretizedVariable):
     def closestIndex(self, val: float) -> int:
         r"""
 
-        For numerical discrete variables (all except pyagrum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+        For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
         Parameters
         ----------
@@ -13290,12 +13290,12 @@ class DiscretizedVariable(IDiscretizedVariable):
         Returns
         -------
         int
-          the index of the closest value to `value` in the variable's domain
+          the index of the closest value to ``value`` in the variable's domain
 
         Raises
         ------
         pyagrum.NotImplementedYet
-          if the variable is not numerical discrete (i.e., if it is a pyagrum.LabelizedVariable).
+          if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 
         """
         return _pyagrumcpp.DiscretizedVariable_closestIndex(self, val)
@@ -13386,11 +13386,11 @@ class Tensor(object):
 
     Tensor(src) -> Tensor
         Parameters:
-            - **src** (``pyagrum.Tensor``) -- the Tensor to copy
+            - **src** (`pyagrum.Tensor`) -- the Tensor to copy
 
     Tensor(v1,v2, ...) -> Tensor
         Parameters:
-            - v1,v2... (``pyagrum.DiscreteVariable``) -- the variables to be added to the tensor
+            - v1,v2... (`pyagrum.DiscreteVariable`) -- the variables to be added to the tensor
 
     """
 
@@ -13542,7 +13542,7 @@ class Tensor(object):
         Returns
         -------
         pyagrum.Tensor
-          a boolean-like tensor using the predicate `isNonZero`.
+          a boolean-like tensor using the predicate ``isNonZero``.
 
         """
         return _pyagrumcpp.Tensor_isNonZeroMap(self)
@@ -13759,15 +13759,15 @@ class Tensor(object):
 
         Warnings
         --------
-            - if `v` is a list, the size of the list must be the size of the tensor
+            - if ``v`` is a list, the size of the list must be the size of the tensor
 
-            - if `v` is a ref:pyagrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
+            - if ``v`` is a ref:`pyagrum.Tensor`, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
 
-            - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.
+            - If the second argument ``mapping`` is given, ``mapping`` explains how to map the variables of the tensor source to the variables of the tensor destination.
 
-            - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
+            - If ``mapping`` is a sequence, the order follows the same order as ``destination.names``. If ``mapping`` is a dict, the keys are the names in the destination and the values are the names in the source.
 
-            - if `v` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
+            - if ``v`` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
 
         Returns
         -------
@@ -13849,7 +13849,7 @@ class Tensor(object):
 
         Warnings
         --------
-        When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+        When the Tensor contains 0 or negative values, no exception are raised but ``-inf`` or ``nan`` values are assigned.
 
         """
         val = _pyagrumcpp.Tensor_log2(self)
@@ -13953,7 +13953,7 @@ class Tensor(object):
     def KL(self, p: "Tensor") -> float:
         r"""
 
-        Check the compatibility and compute the Kullback-Leibler divergence between the tensor and `p`.
+        Check the compatibility and compute the Kullback-Leibler divergence between the tensor and ``p``.
 
         Parameters
         ----------
@@ -14285,7 +14285,7 @@ class Tensor(object):
 
         Parameters
         ----------
-        inst : pyagrum.instantiation
+        inst : pyagrum.Instantiation
           a partial instantiation
         dict : dict
           a dictionnary containing values for some discrete variables.
@@ -14353,7 +14353,7 @@ class Tensor(object):
     def maxOut(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Projection using `max` as operation.
+        Projection using ``max`` as operation.
 
         Parameters
         ----------
@@ -14376,7 +14376,7 @@ class Tensor(object):
     def minOut(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Projection using `min` as operation.
+        Projection using ``min`` as operation.
 
         Parameters
         ----------
@@ -14434,7 +14434,7 @@ class Tensor(object):
     def maxIn(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Projection using `max` as operation.
+        Projection using ``max`` as operation.
 
         Parameters
         ----------
@@ -14452,7 +14452,7 @@ class Tensor(object):
     def minIn(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Projection using `min` as operation.
+        Projection using ``min`` as operation.
 
         Parameters
         ----------
@@ -14532,7 +14532,7 @@ class Tensor(object):
       """
       Generator to iterate inside a Tensor.
 
-      Yield an pyagrum.Instantiation that iterates over all the possible values for the pyagrum.Tensor
+      Yield an `pyagrum.Instantiation` that iterates over all the possible values for the `pyagrum.Tensor`
       """
       i=Instantiation(self)
       i.setFirst()
@@ -14709,7 +14709,7 @@ class Tensor(object):
 
       Warnings
       --------
-      p is a pyAgrum's object that can refer to variables through a method `p.variable(name:str)`. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
+      p is a pyAgrum's object that can refer to variables through a method ``p.variable(name:str)``. For instance, a Tensor, an Instantiation or a Graphical Model (Bayesian Network,...).
 
       Returns
       -------
@@ -14848,8 +14848,8 @@ class Tensor(object):
         """
         Iterate over the data of the Tensor
 
-        Yield
-        -----
+        Yields
+        ------
         tuple[pyagrum.Instantiation,float]
           The instantiation and the value in the Tensor
         """
@@ -14925,7 +14925,7 @@ class Tensor(object):
         """
         Render object to a LaTeX tabular.
 
-        Requires to include `booktabs` package in the LaTeX document.
+        Requires to include ``booktabs`` package in the LaTeX document.
 
         Returns
         -------
@@ -14971,7 +14971,7 @@ class Tensor(object):
 
         Warnings
         --------
-            `p.shape` and `p[:].shape` list the dimensions in different order
+            ``p.shape`` and ``p[:].shape`` list the dimensions in different order
         """
         return tuple([self.variable(i).domainSize() for i in range(self.nbrDim())])
 
@@ -15255,7 +15255,7 @@ config._emitNotices()
 def randomShuffle(seq) -> None:
   """Shuffle a sequence in place with the random generator of pyAgrum.
 
-  For a given seed (see ``pyagrum.initRandom``), the order is the same on every platform, and the same as the
+  For a given seed (see `pyagrum.initRandom`), the order is the same on every platform, and the same as the
   shuffles of pyAgrum (such as the random order of the variables of ``BNDatabaseGenerator``).
 
   Parameters
@@ -15287,13 +15287,13 @@ def fastGraph(
 ) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
-  graph type from a quick read of `desc`.
+  graph type from a quick read of ``desc``.
 
-  If `desc` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
+  If ``desc`` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
   attempted first, falling back to a :class:`pyagrum.DiGraph` if that would create a
-  directed cycle. If `desc` mixes arcs and undirected edges (``'-'``), a
+  directed cycle. If ``desc`` mixes arcs and undirected edges (``'-'``), a
   :class:`pyagrum.PDAG` is attempted first, falling back to a :class:`pyagrum.MixedGraph`
-  on the same condition. If `desc` only contains undirected edges, a
+  on the same condition. If ``desc`` only contains undirected edges, a
   :class:`pyagrum.UndiGraph` is returned.
 
   For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
@@ -15367,8 +15367,8 @@ class PythonBNListener(object):
 
     Notes
     -----
-        This class is mainly instantiated automatically by the methods `addStructureListener` of
-        pyagrum.BayesNet and pyagrum.InfluenceDiagram.
+        This class is mainly instantiated automatically by the methods ``addStructureListener`` of
+        `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
 
     Parameters
     ----------
@@ -15393,8 +15393,8 @@ class PythonBNListener(object):
 
         Notes
         -----
-            This class is mainly instantiated automatically by the methods `addStructureListener` of
-            pyagrum.BayesNet and pyagrum.InfluenceDiagram.
+            This class is mainly instantiated automatically by the methods ``addStructureListener`` of
+            `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
 
         Parameters
         ----------
@@ -15530,7 +15530,7 @@ class PythonMRFListener(object):
 
     Notes
     -----
-        This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.
+        This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
 
     Parameters
     ----------
@@ -15555,7 +15555,7 @@ class PythonMRFListener(object):
 
         Notes
         -----
-            This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.
+            This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
 
         Parameters
         ----------
@@ -16093,7 +16093,7 @@ class EssentialGraph(CPDAG):
     network: the Bayesian networks with the same independence model. Its arcs have the same orientation
     in all the Bayesian networks of the class; its undirected edges may have both orientations.
 
-    An EssentialGraph is a ``pyagrum.CPDAG`` (immutable, with all its methods). The names of the nodes
+    An EssentialGraph is a `pyagrum.CPDAG` (immutable, with all its methods). The names of the nodes
     are stored in the essential graph: it does not depend on the model it was built from.
 
     EssentialGraph(m) -> EssentialGraph
@@ -16103,15 +16103,15 @@ class EssentialGraph(CPDAG):
     EssentialGraph(m, pdag) -> EssentialGraph
         Parameters:
           - **m** (*pyagrum.DAGmodel*) -- the model giving the names of the nodes
-          - **pdag** (*pyagrum.PDAG*) -- the essential graph: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+          - **pdag** (`pyagrum.PDAG`) -- the essential graph: it must be a CPDAG (`pyagrum.InvalidArgument` otherwise)
 
     EssentialGraph(pdag) -> EssentialGraph
         Parameters:
-          - **pdag** (*pyagrum.PDAG*) -- the essential graph, with the names of its nodes: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+          - **pdag** (`pyagrum.PDAG`) -- the essential graph, with the names of its nodes: it must be a CPDAG (`pyagrum.InvalidArgument` otherwise)
 
     EssentialGraph(cpdag) -> EssentialGraph
         Parameters:
-          - **cpdag** (*pyagrum.CPDAG*) -- the essential graph, with the names of its nodes
+          - **cpdag** (`pyagrum.CPDAG`) -- the essential graph, with the names of its nodes
 
     """
 
@@ -16166,7 +16166,7 @@ class EssentialGraph(CPDAG):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.EssentialGraph_descendants(self, id)
@@ -16184,7 +16184,7 @@ class EssentialGraph(CPDAG):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.EssentialGraph_ancestors(self, id)
@@ -16225,13 +16225,13 @@ class EssentialGraph(CPDAG):
     def toDot(self, *args) -> str:
         r"""
 
-        Drawn as a ``pyagrum.CPDAG`` (chain components in clusters, compelled arcs with the color of the key
-        ``dot.compelledArcColor`` of ``pyagrum.config``), the nodes being labelled with the names of the variables.
+        Drawn as a `pyagrum.CPDAG` (chain components in clusters, compelled arcs with the color of the key
+        ``dot.compelledArcColor`` of `pyagrum.config`), the nodes being labelled with the names of the variables.
 
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -16281,7 +16281,7 @@ class EssentialGraph(CPDAG):
 
     def saveGUMstring(self, indent: int | None = None) -> str:
       """
-      Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+      Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
       Parameters
       ----------
@@ -16356,7 +16356,7 @@ class MarkovBlanket(object):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -16430,8 +16430,8 @@ class MarkovBlanket(object):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -16515,7 +16515,7 @@ class MarkovBlanket(object):
         Returns
         -------
         set
-          the set of ids of the descendants of node `norid`.
+          the set of ids of the descendants of node ``norid``.
 
         """
         return _pyagrumcpp.MarkovBlanket_descendants(self, *args)
@@ -16533,7 +16533,7 @@ class MarkovBlanket(object):
         Returns
         -------
         set
-          the set of ids of the ancestors of node `norid`.
+          the set of ids of the ancestors of node ``norid``.
 
         """
         return _pyagrumcpp.MarkovBlanket_ancestors(self, *args)
@@ -16890,9 +16890,9 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         VarId : int
-            A variable's id in the pyagrum.IBayesNet.
+            A variable's id in the Bayesian network.
         name : str
-            A variable's name in the pyagrum.IBayesNet.
+            A variable's name in the Bayesian network.
 
         Returns
         -------
@@ -16912,7 +16912,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        i : pyagrum.instantiation
+        i : pyagrum.Instantiation
             an instantiation of the variables
 
         Returns
@@ -16932,7 +16932,7 @@ class IBayesNet(DAGmodel):
 
         Parameters
         ----------
-        i : pyagrum.instantiation
+        i : pyagrum.Instantiation
             an instantiation of the variables
 
         Returns
@@ -16952,8 +16952,8 @@ class IBayesNet(DAGmodel):
 
         Check if the BayesNet is consistent (variables, CPT, ...)
 
-        A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`
-        (1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`
+        A distribution is considered normalized if its sum is within ``pyagrum.config['core','epsilonStandard']``
+        (1e-6 by default) of 1. A sum that is further away but within ``pyagrum.config['core','epsilonCoarse']``
         (1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a
         rounding problem rather than an error in the parameters.
 
@@ -17042,7 +17042,7 @@ class IBayesNet(DAGmodel):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -17055,7 +17055,7 @@ class IBayesNet(DAGmodel):
     def evEq(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.
+        This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is equal to a given value.
 
         Notes
         -----
@@ -17071,7 +17071,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.Tensor
-          The representation of the evidence as a pyagrum.Tensor.
+          The representation of the evidence as a `pyagrum.Tensor`.
 
         """
         return _pyagrumcpp.IBayesNet_evEq(self, name, value)
@@ -17079,7 +17079,7 @@ class IBayesNet(DAGmodel):
     def evIn(self, name: str, val1: float, val2: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.
+        This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is in a given range.
 
         Notes
         -----
@@ -17098,7 +17098,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.Tensor
-          The representation of the evidence as a pyagrum.Tensor.
+          The representation of the evidence as a `pyagrum.Tensor`.
 
         """
         return _pyagrumcpp.IBayesNet_evIn(self, name, val1, val2)
@@ -17106,7 +17106,7 @@ class IBayesNet(DAGmodel):
     def evLt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.
+        This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.
 
         Notes
         -----
@@ -17122,7 +17122,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.Tensor
-          The representation of the evidence as a pyagrum.Tensor.
+          The representation of the evidence as a `pyagrum.Tensor`.
 
         """
         return _pyagrumcpp.IBayesNet_evLt(self, name, value)
@@ -17130,7 +17130,7 @@ class IBayesNet(DAGmodel):
     def evGt(self, name: str, value: float) -> "pyagrum.Tensor":
         r"""
 
-        This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.
+        This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is greater than a given value.
 
         Notes
         -----
@@ -17146,7 +17146,7 @@ class IBayesNet(DAGmodel):
         Returns
         -------
         pyagrum.Tensor
-          The representation of the evidence as a pyagrum.Tensor.
+          The representation of the evidence as a `pyagrum.Tensor`.
 
         """
         return _pyagrumcpp.IBayesNet_evGt(self, name, value)
@@ -17262,8 +17262,8 @@ class IBayesNet(DAGmodel):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -17332,7 +17332,7 @@ class IBayesNet(DAGmodel):
 
         Warnings
         --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
@@ -17361,7 +17361,7 @@ class BayesNet(IBayesNet):
 
     BayesNet(source) -> BayesNet
         Parameters:
-          - **source** (*pyagrum.BayesNet*) -- the Bayesian network to copy
+          - **source** (`pyagrum.BayesNet`) -- the Bayesian network to copy
 
     """
 
@@ -17388,7 +17388,7 @@ class BayesNet(IBayesNet):
         -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the CPTs are randomly generated.
-          - see also the function pyagrum.fastBN.
+          - see also the function `pyagrum.fastBN`.
 
         Parameters
         ----------
@@ -17435,7 +17435,7 @@ class BayesNet(IBayesNet):
     def add(self, *args) -> int:
         r"""
 
-        Add a variable to the pyagrum.BayesNet.
+        Add a variable to the `pyagrum.BayesNet`.
 
         Parameters
         ----------
@@ -17446,7 +17446,7 @@ class BayesNet(IBayesNet):
         nbrmod : int
             the number of modalities for the new variable
         id : int
-            the variable forced id in the pyagrum.BayesNet
+            the variable forced id in the `pyagrum.BayesNet`
 
         Returns
         -------
@@ -17456,7 +17456,7 @@ class BayesNet(IBayesNet):
         Raises
         ------
         pyagrum.DuplicateLabel
-            If variable.name() or id is already used in this pyagrum.BayesNet.
+            If variable.name() or id is already used in this `pyagrum.BayesNet`.
         pyagrum.NotAllowed
             If nbrmod is less than 2
 
@@ -17474,9 +17474,9 @@ class BayesNet(IBayesNet):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the pyagrum.BayesNet.
+        Remove a variable from the `pyagrum.BayesNet`.
 
-        Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.
+        Removes the corresponding variable from the `pyagrum.BayesNet` and from all of it's children `pyagrum.Tensor`.
 
         If no variable matches the given id, then nothing is done.
 
@@ -17491,9 +17491,9 @@ class BayesNet(IBayesNet):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the pyagrum.BayesNet.
+        Changes a variable's name in the `pyagrum.BayesNet`.
 
-        This will change the pyagrum.DiscreteVariable names in the pyagrum.BayesNet.
+        This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.BayesNet`.
 
         Parameters
         ----------
@@ -17829,8 +17829,8 @@ class BayesNet(IBayesNet):
         Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its
         parents.
 
-        The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
-        `NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.
+        The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,
+        `pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones.
 
         If the computed value is not in the domain of the aggregator, the closest value of the domain is used
         (in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.
@@ -18013,8 +18013,8 @@ class BayesNet(IBayesNet):
 
         Add a deterministic variable whose value is the sum of the values of its parents.
 
-        The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,
-        `NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
+        The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,
+        `pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.
 
         If the computed value is not in the domain of the aggregator, the closest value of the domain is used
         (in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.
@@ -18191,7 +18191,7 @@ class BayesNet(IBayesNet):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the graph does not contain the variable
 
         """
@@ -18341,8 +18341,8 @@ class BayesNet(IBayesNet):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -18411,7 +18411,7 @@ class BayesNet(IBayesNet):
 
         Warnings
         --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
@@ -18949,7 +18949,7 @@ class BayesNetFragment(IBayesNet, ):
 
     BayesNetFragment(BayesNet bn) -> BayesNetFragment
         Parameters:
-          - **bn** (*pyagrum.BayesNet*) -- the bn refered by the fragment
+          - **bn** (`pyagrum.BayesNet`) -- the bn refered by the fragment
 
     """
 
@@ -19032,9 +19032,9 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         VarId : int
-            A variable's id in the pyagrum.IBayesNet.
+            A variable's id in the Bayesian network.
         name : str
-            A variable's name in the pyagrum.IBayesNet.
+            A variable's name in the Bayesian network.
 
         Returns
         -------
@@ -19069,7 +19069,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the graph does not contain the variable
 
         """
@@ -19090,7 +19090,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the graph does not contain the variable
 
         """
@@ -19138,7 +19138,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the graph does not contain the variable
 
         """
@@ -19150,7 +19150,7 @@ class BayesNetFragment(IBayesNet, ):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -19439,8 +19439,8 @@ class BayesNetFragment(IBayesNet, ):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -19509,7 +19509,7 @@ class BayesNetFragment(IBayesNet, ):
 
         Warnings
         --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
@@ -19528,7 +19528,7 @@ class LazyPropagation(object):
 
     LazyPropagation(bn) -> LazyPropagation
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -19803,7 +19803,7 @@ class LazyPropagation(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -19902,7 +19902,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -19925,7 +19925,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -20038,7 +20038,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -20078,13 +20078,13 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LazyPropagation_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -20101,11 +20101,11 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LazyPropagation_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LazyPropagation_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -20124,7 +20124,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -20215,7 +20215,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -20240,7 +20240,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -20348,7 +20348,7 @@ class LazyPropagation(object):
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -20364,7 +20364,7 @@ class LazyPropagation(object):
 
         Raises
         ------
-        pyagrum.Exception
+        pyagrum.IncompatibleEvidence
           If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
@@ -20432,7 +20432,7 @@ class ShaferShenoyInference(object):
 
     ShaferShenoyInference(bn) -> ShaferShenoyInference
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -20681,7 +20681,7 @@ class ShaferShenoyInference(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -20780,7 +20780,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -20803,7 +20803,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -20916,7 +20916,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -20956,13 +20956,13 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.ShaferShenoyInference_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -20979,11 +20979,11 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.ShaferShenoyInference_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.ShaferShenoyInference_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -21002,7 +21002,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -21093,7 +21093,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -21118,7 +21118,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -21226,7 +21226,7 @@ class ShaferShenoyInference(object):
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -21242,7 +21242,7 @@ class ShaferShenoyInference(object):
 
         Raises
         ------
-        pyagrum.Exception
+        pyagrum.IncompatibleEvidence
           If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
@@ -21314,7 +21314,7 @@ class VariableElimination(object):
 
     VariableElimination(bn) -> VariableElimination
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -21541,7 +21541,7 @@ class VariableElimination(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -21585,7 +21585,7 @@ class VariableElimination(object):
     def evidenceJointImpact(self, targets: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -21601,7 +21601,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.Exception
+        pyagrum.IncompatibleEvidence
           If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
@@ -21665,7 +21665,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -21688,7 +21688,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -21826,7 +21826,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -21866,13 +21866,13 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.VariableElimination_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -21889,11 +21889,11 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.VariableElimination_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.VariableElimination_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -21912,7 +21912,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -22003,7 +22003,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -22028,7 +22028,7 @@ class VariableElimination(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -22143,7 +22143,7 @@ class GibbsSampling(object):
 
     GibbsSampling(bn) -> GibbsSampling
         Parameters:
-          - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+          - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     Notes
     -----
@@ -22154,12 +22154,12 @@ class GibbsSampling(object):
     repaired.
 
     - If the removal of impossible values proves that the evidence is incompatible with the model,
-      `makeInference()` raises :class:`pyagrum.IncompatibleEvidence`.
-    - If no compatible configuration is found, `makeInference()` raises
+      ``makeInference()`` raises :class:`pyagrum.IncompatibleEvidence`.
+    - If no compatible configuration is found, ``makeInference()`` raises
       :class:`pyagrum.OperationNotAllowed`. This does not prove that the evidence is impossible: with
       very rare compatible configurations (e.g. long chains of deterministic constraints), the search
       may fail and its outcome may depend on the random seed. An exact inference such as
-      :class:`pyagrum.LazyPropagation` can check it (`evidenceProbability()` is positive).
+      :class:`pyagrum.LazyPropagation` can check it (``evidenceProbability()`` is positive).
 
     """
 
@@ -22330,7 +22330,7 @@ class GibbsSampling(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -22679,7 +22679,7 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -22719,13 +22719,13 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.GibbsSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -22742,11 +22742,11 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.GibbsSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.GibbsSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -22765,7 +22765,7 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -22856,7 +22856,7 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -22881,7 +22881,7 @@ class GibbsSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -23012,7 +23012,7 @@ class ImportanceSampling(object):
 
     ImportanceSampling(bn) -> ImportanceSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -23161,7 +23161,7 @@ class ImportanceSampling(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -23510,7 +23510,7 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -23550,13 +23550,13 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.ImportanceSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -23573,11 +23573,11 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.ImportanceSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.ImportanceSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -23596,7 +23596,7 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -23687,7 +23687,7 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -23712,7 +23712,7 @@ class ImportanceSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -23799,7 +23799,7 @@ class WeightedSampling(object):
 
     WeightedSampling(bn) -> WeightedSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -23948,7 +23948,7 @@ class WeightedSampling(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -24297,7 +24297,7 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -24337,13 +24337,13 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.WeightedSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -24360,11 +24360,11 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.WeightedSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.WeightedSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -24383,7 +24383,7 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -24474,7 +24474,7 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -24499,7 +24499,7 @@ class WeightedSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -24586,7 +24586,7 @@ class MonteCarloSampling(object):
 
     MonteCarloSampling(bn) -> MonteCarloSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -24735,7 +24735,7 @@ class MonteCarloSampling(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -25084,7 +25084,7 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -25124,13 +25124,13 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.MonteCarloSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -25147,11 +25147,11 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.MonteCarloSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.MonteCarloSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -25170,7 +25170,7 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -25261,7 +25261,7 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -25286,7 +25286,7 @@ class MonteCarloSampling(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -25373,7 +25373,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -25416,7 +25416,7 @@ class LoopyImportanceSampling(ImportanceSampling):
         Returns
         -------
         float
-          the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+          the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).
 
         """
         return _pyagrumcpp.LoopyImportanceSampling_virtualLBPSize(self)
@@ -25554,7 +25554,7 @@ class LoopyImportanceSampling(ImportanceSampling):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -25903,7 +25903,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -25943,13 +25943,13 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LoopyImportanceSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -25966,11 +25966,11 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LoopyImportanceSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LoopyImportanceSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -25989,7 +25989,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -26080,7 +26080,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -26105,7 +26105,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -26192,7 +26192,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -26235,7 +26235,7 @@ class LoopyWeightedSampling(WeightedSampling):
         Returns
         -------
         float
-          the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+          the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).
 
         """
         return _pyagrumcpp.LoopyWeightedSampling_virtualLBPSize(self)
@@ -26373,7 +26373,7 @@ class LoopyWeightedSampling(WeightedSampling):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -26722,7 +26722,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -26762,13 +26762,13 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LoopyWeightedSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -26785,11 +26785,11 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LoopyWeightedSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LoopyWeightedSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -26808,7 +26808,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -26899,7 +26899,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -26924,7 +26924,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -27011,7 +27011,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -27054,7 +27054,7 @@ class LoopyGibbsSampling(GibbsSampling):
         Returns
         -------
         float
-          the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+          the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).
 
         """
         return _pyagrumcpp.LoopyGibbsSampling_virtualLBPSize(self)
@@ -27192,7 +27192,7 @@ class LoopyGibbsSampling(GibbsSampling):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -27541,7 +27541,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -27581,13 +27581,13 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LoopyGibbsSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -27604,11 +27604,11 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LoopyGibbsSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LoopyGibbsSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -27627,7 +27627,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -27718,7 +27718,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -27743,7 +27743,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -27896,7 +27896,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
     LoopyImportanceSampling(bn) -> LoopyImportanceSampling
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -27939,7 +27939,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         Returns
         -------
         float
-          the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+          the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).
 
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_virtualLBPSize(self)
@@ -28077,7 +28077,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -28426,7 +28426,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -28466,13 +28466,13 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -28489,11 +28489,11 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LoopyMonteCarloSampling_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LoopyMonteCarloSampling_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -28512,7 +28512,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -28603,7 +28603,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -28628,7 +28628,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -28715,7 +28715,7 @@ class LoopyBeliefPropagation(object):
 
     LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+            - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
     """
 
@@ -28864,7 +28864,7 @@ class LoopyBeliefPropagation(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -29213,7 +29213,7 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -29253,13 +29253,13 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _pyagrumcpp.LoopyBeliefPropagation_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -29276,11 +29276,11 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _pyagrumcpp.LoopyBeliefPropagation_hasHardEvidence(self, nodeName)
+        return _pyagrumcpp.LoopyBeliefPropagation_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -29299,7 +29299,7 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -29390,7 +29390,7 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -29415,7 +29415,7 @@ class LoopyBeliefPropagation(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -29477,14 +29477,14 @@ class ExactBNdistance(object):
 
     ExactBNdistance(P,Q) -> ExactBNdistance
         Parameters:
-            - **P** (*pyagrum.BayesNet*)
+            - **P** (`pyagrum.BayesNet`)
               a Bayesian network
-            - **Q** (*pyagrum.BayesNet*)
+            - **Q** (`pyagrum.BayesNet`)
               another Bayesian network to compare with the first one
 
     ExactBNdistance(ebnd) -> ExactBNdistance
         Parameters:
-            - **ebnd** (*pyagrum.ExactBNdistance*)
+            - **ebnd** (`pyagrum.ExactBNdistance`)
               the exact BNdistance to copy
 
     Raises
@@ -29522,12 +29522,12 @@ class GibbsBNdistance(ApproximationScheme):
 
     GibbsBNdistance(P,Q) -> GibbsBNdistance
         Parameters:
-            - **P** (*pyagrum.BayesNet*) -- a Bayesian network
-            - **Q** (*pyagrum.BayesNet*) -- another Bayesian network to compare with the first one
+            - **P** (`pyagrum.BayesNet`) -- a Bayesian network
+            - **Q** (`pyagrum.BayesNet`) -- another Bayesian network to compare with the first one
 
     GibbsBNdistance(gbnd) -> GibbsBNdistance
         Parameters:
-            - **gbnd** (*pyagrum.GibbsBNdistance*) -- the Gibbs BNdistance to copy
+            - **gbnd** (`pyagrum.GibbsBNdistance`) -- the Gibbs BNdistance to copy
 
     Raises
     ------
@@ -29840,12 +29840,12 @@ class MCBNDistance(ApproximationScheme):
 
     MCBNDistance(P,Q) -> MCBNDistance
         Parameters:
-            - **P** (*pyagrum.BayesNet*) -- a Bayesian network
-            - **Q** (*pyagrum.BayesNet*) -- another Bayesian network to compare with the first one
+            - **P** (`pyagrum.BayesNet`) -- a Bayesian network
+            - **Q** (`pyagrum.BayesNet`) -- another Bayesian network to compare with the first one
 
     MCBNDistance(mcbnd) -> MCBNDistance
         Parameters:
-            - **mcbnd** (*pyagrum.MCBNDistance*) -- the Monte Carlo BNdistance to copy
+            - **mcbnd** (`pyagrum.MCBNDistance`) -- the Monte Carlo BNdistance to copy
 
     Raises
     ------
@@ -30086,7 +30086,7 @@ _pyagrumcpp.MCBNDistance_swigregister(MCBNDistance)
 class BNDatabaseGenerator(object):
     r"""
 
-    BNDatabaseGenerator is used to easily generate databases from a pyagrum.BayesNet.
+    BNDatabaseGenerator is used to easily generate databases from a `pyagrum.BayesNet`.
 
     Parameters
     ----------
@@ -30105,7 +30105,7 @@ class BNDatabaseGenerator(object):
     def setDiscretizedLabelModeRandom(self) -> None:
         r"""
 
-        Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.discretizedVariable` will give a random value from the uniform distribution on that interval.
+        Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.DiscretizedVariable` will give a random value from the uniform distribution on that interval.
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeRandom(self)
@@ -30113,7 +30113,7 @@ class BNDatabaseGenerator(object):
     def setDiscretizedLabelModeMedian(self) -> None:
         r"""
 
-        Set the discretized label mode to MEDIAN : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.
+        Set the discretized label mode to MEDIAN : sampling a `pyagrum.DiscretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeMedian(self)
@@ -30121,7 +30121,7 @@ class BNDatabaseGenerator(object):
     def setDiscretizedLabelModeInterval(self) -> None:
         r"""
 
-        Set the discretized label mode to INTERVAL : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the string representation of the interval.
+        Set the discretized label mode to INTERVAL : sampling a `pyagrum.DiscretizedVariable` will give a deterministic value : the string representation of the interval.
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_setDiscretizedLabelModeInterval(self)
@@ -30272,7 +30272,7 @@ class BNDatabaseGenerator(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-          if nothing has been sampled yet (using `pyagrum.BNDatabaseGenerator.drawSamples()` for instance)
+          if nothing has been sampled yet (using `pyagrum.BNDatabaseGenerator.drawSamples` for instance)
 
         Returns
         -------
@@ -30314,7 +30314,7 @@ class BNDatabaseGenerator(object):
 
         Generate and stock a database generated by sampling the Bayesian network.
 
-        If `evs` is specified, the samples are stored only if there are compatible with these observations.
+        If ``evs`` is specified, the samples are stored only if there are compatible with these observations.
 
         Returns the log2likelihood of this database.
 
@@ -30329,16 +30329,16 @@ class BNDatabaseGenerator(object):
 
         Warnings
         --------
-        `nbSamples` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than `nbSamples` (even equal to 0).
+        ``nbSamples`` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than ``nbSamples`` (even equal to 0).
 
         Warnings
         --------
         For discretized variable, aGrum/pyAgrum defines 3 behaviors when generating sample with labels :
         - RANDOM (default) : the value is chosen randomly in the interval
         - MEDIAN : the value is the median of the interval
-        - INTERVAL : the value is the interval itself (for instance `« [0,1[ »`)
+        - INTERVAL : the value is the interval itself (for instance ``« [0,1[ »``)
 
-        The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.
+        The behavior can be set using ``setDiscretizedLabelMode{Random|Median|Interval}``.
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_drawSamples(self, *args)
@@ -30375,18 +30375,18 @@ class BNLearner(object):
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
+            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : ``?``)
             - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
     BNLearner(filename,src) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-            - **src** (*pyagrum.BayesNet*) -- the Bayesian network used to find those modalities
-            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
+            - **src** (`pyagrum.BayesNet`) -- the Bayesian network used to find those modalities
+            - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : ``?``)
 
     BNLearner(learner) -> BNLearner
         Parameters:
-            - **learner** (*pyagrum.BNLearner*) -- the BNLearner to copy
+            - **learner** (`pyagrum.BNLearner`) -- the BNLearner to copy
 
     """
 
@@ -30442,17 +30442,17 @@ class BNLearner(object):
         r"""
 
         Creates a Bayes net whose structure corresponds to that passed in argument or to
-        the last structure learnt by Method `learnDAG()`, and whose parameters are learnt
+        the last structure learnt by Method ``learnDAG()``, and whose parameters are learnt
         from the BNLearner's database.
 
         Usage:
-          1. `learnParameters(dag, take_into_account_score=True)`
-          2. `learnParameters(bn, take_into_account_score=True)`
-          3. `learnParameters(take_into_account_score=True)`
+          1. ``learnParameters(dag, take_into_account_score=True)``
+          2. ``learnParameters(bn, take_into_account_score=True)``
+          3. ``learnParameters(take_into_account_score=True)``
 
-        When the first argument of Method `learnParameters()` is a DAG or a Bayes net
+        When the first argument of Method ``learnParameters()`` is a DAG or a Bayes net
         (usages 1. and 2.), this one specifies the graphical structure of the returned
-        Bayes net. Otherwise (usage 3.), Method `learnParameters()` is called implicitly
+        Bayes net. Otherwise (usage 3.), Method ``learnParameters()`` is called implicitly
         with the last DAG learnt by the BNLearner.
 
         The difference between calling this method with a DAG (usages 1. and 3.) or a
@@ -30461,7 +30461,7 @@ class BNLearner(object):
         distributions (CPT) before iterating the expectation/maximimzation steps. When a
         DAG is passed in argument, these initializations are performed using a specific
         estimator that does not take into account the missing values in the database. The
-        resulting CPTs are then perturbed randomly (see the noise in method `useEM()`).
+        resulting CPTs are then perturbed randomly (see the noise in method ``useEM()``).
         When a Bayes net is passed in argument, its CPT for a node A can be either filled
         exclusively with zeroes or not. In the first case, the initialization is performed
         as described above. In the second case, the value of A's CPT is used as is, and
@@ -30482,10 +30482,10 @@ class BNLearner(object):
             structure learning. In this case, if the score used to learn the structure
             has an implicit prior (like K2 which has a 1-smoothing prior), it is important
             to also take into account this implicit prior for parameter learning. By
-            default (`take_into_account_score=True`), we will learn parameters by taking
+            default (``take_into_account_score=True``), we will learn parameters by taking
             into account the prior specified by methods usePriorXXX() + the implicit prior
-            of the score (if any). If `take_into_account_score=False`, we just take into
-            account the prior specified by `usePriorXXX()`.
+            of the score (if any). If ``take_into_account_score=False``, we just take into
+            account the prior specified by ``usePriorXXX()``.
 
         Returns
         -------
@@ -30524,7 +30524,7 @@ class BNLearner(object):
     def copyState(self, learner: "BNLearner") -> None:
         r"""
 
-        Copy the state of the given pyagrum.BNLearner (as argument).
+        Copy the state of the given `pyagrum.BNLearner` (as argument).
 
         Parameters
         ----------
@@ -30548,7 +30548,7 @@ class BNLearner(object):
         Parameters
         ----------
         dag : pyagrum.DAG
-            an initial pyagrum.DAG structure
+            an initial `pyagrum.DAG` structure
 
         """
         return _pyagrumcpp.BNLearner_setInitialDAG(self, dag)
@@ -30734,8 +30734,8 @@ class BNLearner(object):
         r"""
 
         Enables a limit on the number of iterations performed by EM. This number is
-        equal to the last number specified with Method `EMsetMaxIter()`.
-        See Method `EMMaxIter()` to get its current value.
+        equal to the last number specified with Method ``EMsetMaxIter()``.
+        See Method ``EMMaxIter()`` to get its current value.
 
         Returns
         -------
@@ -30832,7 +30832,7 @@ class BNLearner(object):
         Sets or unsets the verbosity of the EM parameter learning algorithm.
 
         Verbosity is necessary for keeping track of the history of the learning.
-        See Method `EMHistory()`.
+        See Method ``EMHistory()``.
 
         Parameters
         ----------
@@ -30997,9 +30997,9 @@ class BNLearner(object):
         independence tests. Three phases: skeleton discovery, v-structure orientation,
         and Meek rules propagation.
 
-        After calling `usePC()`, configure the independence test with `useChi2Test()`
-        (default) or `useG2Test()`, and optionally tune the significance threshold with
-        `setPCAlpha()`.
+        After calling ``usePC()``, configure the independence test with ``useChi2Test()``
+        (default) or ``useG2Test()``, and optionally tune the significance threshold with
+        ``setPCAlpha()``.
 
         Returns
         -------
@@ -31016,10 +31016,10 @@ class BNLearner(object):
 
         FCI is a constraint-based structure learning algorithm that, unlike PC, handles
         latent confounders and selection bias. It learns a PAG (Partial Ancestral Graph)
-        from data via conditional independence tests. Use `learnPAG()` to retrieve the result.
+        from data via conditional independence tests. Use ``learnPAG()`` to retrieve the result.
 
-        After calling `useFCI()`, configure the independence test with `useFCIChi2Test()`
-        (default) or `useFCIG2Test()`, and tune the significance threshold with `setFCIAlpha()`.
+        After calling ``useFCI()``, configure the independence test with ``useFCIChi2Test()``
+        (default) or ``useFCIG2Test()``, and tune the significance threshold with ``setFCIAlpha()``.
 
         Returns
         -------
@@ -31040,7 +31040,7 @@ class BNLearner(object):
 
         Select the chi-squared (χ²) independence test for the FCI algorithm.
 
-        This is the default test when `useFCI()` is called.
+        This is the default test when ``useFCI()`` is called.
 
         Returns
         -------
@@ -31050,7 +31050,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         val = _pyagrumcpp.BNLearner_useFCIChi2Test(self)
@@ -31074,7 +31074,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         val = _pyagrumcpp.BNLearner_useFCIG2Test(self)
@@ -31094,7 +31094,7 @@ class BNLearner(object):
         ----------
         alpha : float
             significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses
-            `pyagrum.config['learning', 'alpha']` (0.05) as it was when the learner was created.
+            ``pyagrum.config['learning', 'alpha']`` (0.05) as it was when the learner was created.
 
         Returns
         -------
@@ -31104,7 +31104,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
         pyagrum.OutOfBounds
             If alpha is not strictly between 0 and 1.
 
@@ -31135,7 +31135,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         val = _pyagrumcpp.BNLearner_setFCIMaxPathLength(self, max_len)
@@ -31170,7 +31170,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         val = _pyagrumcpp.BNLearner_setFCIExhaustiveSepSet(self, exhaustive)
@@ -31194,7 +31194,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         return _pyagrumcpp.BNLearner_fciExhaustiveSepSet(self)
@@ -31209,12 +31209,12 @@ class BNLearner(object):
         cycle, which may happen with conflicting independence tests), either an error is raised (``True``) or the former
         approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
         symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
-        The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).
+        The default value is the key ``learning.fciErrorOnInvalidPAG`` of `pyagrum.config` (``False``).
 
         Parameters
         ----------
         error : bool
-            ``True`` to raise ``pyagrum.InvalidArgument`` on an invalid PAG.
+            ``True`` to raise `pyagrum.InvalidArgument` on an invalid PAG.
 
         Returns
         -------
@@ -31224,7 +31224,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         val = _pyagrumcpp.BNLearner_setFCIErrorOnInvalidPAG(self, error)
@@ -31247,7 +31247,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If FCI has not been selected (call `useFCI()` first).
+            If FCI has not been selected (call ``useFCI()`` first).
 
         """
         return _pyagrumcpp.BNLearner_fciErrorOnInvalidPAG(self)
@@ -31257,7 +31257,7 @@ class BNLearner(object):
 
         Select the chi-squared (χ²) independence test for the PC algorithm.
 
-        This is the default test when `usePC()` is called. The test measures
+        This is the default test when ``usePC()`` is called. The test measures
         whether two variables are conditionally independent given a set of
         conditioning variables by comparing observed and expected counts under
         the independence hypothesis.
@@ -31270,7 +31270,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the PC algorithm has not been selected (call `usePC()` first).
+            If the PC algorithm has not been selected (call ``usePC()`` first).
 
         """
         return _pyagrumcpp.BNLearner_useChi2Test(self)
@@ -31292,7 +31292,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the PC algorithm has not been selected (call `usePC()` first).
+            If the PC algorithm has not been selected (call ``usePC()`` first).
 
         """
         return _pyagrumcpp.BNLearner_useG2Test(self)
@@ -31310,7 +31310,7 @@ class BNLearner(object):
         Parameters
         ----------
         alpha : float
-            significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)
+            significance threshold in (0, 1). If it is never set, the learner uses ``pyagrum.config['learning', 'alpha']`` (0.05)
             as it was when the learner was created.
 
         Returns
@@ -31321,7 +31321,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the PC algorithm has not been selected (call `usePC()` first).
+            If the PC algorithm has not been selected (call ``usePC()`` first).
         pyagrum.OutOfBounds
             If alpha is not strictly between 0 and 1.
 
@@ -31338,7 +31338,7 @@ class BNLearner(object):
         are deferred until the end of that level. This makes the result
         order-independent within each depth level.
 
-        In unstable PC (`stable=False`), edges are removed immediately and
+        In unstable PC (``stable=False``), edges are removed immediately and
         adjacency sets are updated on the fly, which may cause the result to
         depend on the order in which edges are processed.
 
@@ -31355,7 +31355,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the PC algorithm has not been selected (call `usePC()` first).
+            If the PC algorithm has not been selected (call ``usePC()`` first).
 
         """
         return _pyagrumcpp.BNLearner_setPCStable(self, stable)
@@ -31384,7 +31384,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the PC algorithm has not been selected (call `usePC()` first).
+            If the PC algorithm has not been selected (call ``usePC()`` first).
 
         """
         return _pyagrumcpp.BNLearner_setPCMaxCondSetSize(self, max_k)
@@ -31449,8 +31449,8 @@ class BNLearner(object):
 
         The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,
         MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:
-        if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it
-        with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` does not check the
+        if the learned DAG exceeds the bound, ``learnDAG()`` and ``learnBN()`` raise `pyagrum.OperationNotAllowed`, or return it
+        with a warning (see ``setErrorOnExceededMaxIndegree``). ``learnPDAG()`` does not check the
         bound.
 
         Parameters
@@ -31466,15 +31466,15 @@ class BNLearner(object):
 
         Choose what the constraint-based algorithms (PC, FCI, MIIC) do when the learned DAG exceeds the maximum indegree.
 
-        These algorithms never remove an edge kept by their independence tests to satisfy the bound given by `setMaxIndegree`.
-        If the DAG of `learnDAG()` or `learnBN()` has a node with more parents than this bound, either an error is raised
+        These algorithms never remove an edge kept by their independence tests to satisfy the bound given by ``setMaxIndegree``.
+        If the DAG of ``learnDAG()`` or ``learnBN()`` has a node with more parents than this bound, either an error is raised
         (``True``) or the DAG is returned with a warning (``False``). The default value is the key
-        ``learning.errorOnExceededMaxIndegree`` of ``pyagrum.config`` (``True``).
+        ``learning.errorOnExceededMaxIndegree`` of `pyagrum.config` (``True``).
 
         Parameters
         ----------
         error : bool
-            ``True`` to raise ``pyagrum.OperationNotAllowed`` when the learned DAG exceeds the maximum indegree.
+            ``True`` to raise `pyagrum.OperationNotAllowed` when the learned DAG exceeds the maximum indegree.
 
         Returns
         -------
@@ -31510,7 +31510,7 @@ class BNLearner(object):
         r"""
 
         Forbid the arc passed in argument to be added during structure learning
-        (methods `learnDAG()` or `learnBN()`).
+        (methods ``learnDAG()`` or ``learnBN()``).
 
         Usage:
           1. addForbiddenArc(tail, head)
@@ -31549,7 +31549,7 @@ class BNLearner(object):
         r"""
 
         Allow an arc to be added if necessary during structure learning
-        (methods `learnDAG()` or `learnBN()`).
+        (methods ``learnDAG()`` or ``learnBN()``).
 
         Usage:
           1. addMandatoryArc(tail, head)
@@ -31629,7 +31629,7 @@ class BNLearner(object):
     def setPossibleSkeleton(self, skeleton: "pyagrum.UndiGraph") -> "pyagrum.BNLearner":
         r"""
 
-        Add a constraint by fixing the set of possible edges as a pyagrum.UndiGraph.
+        Add a constraint by fixing the set of possible edges as a `pyagrum.UndiGraph`.
 
         Parameters
         ----------
@@ -31812,7 +31812,7 @@ class BNLearner(object):
         set can be empty. In this case, no need to specify it.
 
         Usage:
-          * `chi2(name1, name2, knowing=[])`
+          * ``chi2(name1, name2, knowing=[])``
 
         Parameters
         ----------
@@ -31844,7 +31844,7 @@ class BNLearner(object):
         set can be empty. In this case, no need to specify it.
 
         Usage:
-          * `G2(name1, name2, knowing=[])`
+          * ``G2(name1, name2, knowing=[])``
 
         Parameters
         ----------
@@ -31994,8 +31994,8 @@ class BNLearner(object):
       is a threshold on the log-likelihood evolution rate, i.e., if llc and llo refer to
       the log-likelihoods at the current and previous EM steps respectively, EM will stop
       when (llc - llo) / llc drops below epsilon. If you wish to be more specific on which
-      stopping criterion to use, you may prefer exploiting methods `useEMWithRateCriterion()`
-      or `useEMWithDiffCriterion()`.
+      stopping criterion to use, you may prefer exploiting methods ``useEMWithRateCriterion()``
+      or ``useEMWithDiffCriterion()``.
 
       Parameters
       ----------
@@ -32004,11 +32004,11 @@ class BNLearner(object):
         consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
 
         if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-        executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
+        executing Method ``forbidEM()`` rather than useEM(0.0) as it is more unequivocal.
       noise : float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+        to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
       Returns
       -------
@@ -32018,7 +32018,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].
+        if ``epsilon`` is strictly negative or if ``noise`` does not belong to interval [0,1].
       """
       if noise is None:
         self._useEM(epsilon)
@@ -32040,7 +32040,7 @@ class BNLearner(object):
       noise : float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+        to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
       Returns
       -------
@@ -32050,7 +32050,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
+        if ``epsilon`` is not strictly positive or if ``noise`` does not belong to interval [0,1].
       """
       if noise is None:
         self._useEMWithRateCriterion(epsilon)
@@ -32072,7 +32072,7 @@ class BNLearner(object):
       noise : float, optional
         During EM's initialization, the CPTs are randomly perturbed using the following formula:
         new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-        to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+        to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
       Returns
       -------
@@ -32082,7 +32082,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
+        if ``epsilon`` is not strictly positive or if ``noise`` does not belong to interval [0,1].
       """
       if noise is None:
         self._useEMWithDiffCriterion(epsilon)
@@ -32099,7 +32099,7 @@ class BNLearner(object):
       Parameters
       ----------
       weight : float, optional
-        the prior weight, which must not be negative. By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+        the prior weight, which must not be negative. By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
       Returns
       -------
@@ -32109,7 +32109,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `weight` is negative.
+        if ``weight`` is negative.
       """
       if weight is None:
         self._useBDeuPrior()
@@ -32125,7 +32125,7 @@ class BNLearner(object):
       ----------
       weight : float, optional
         the weight of the smoothing, which must not be negative. By default, it is
-        `pyagrum.config['learning', 'priorWeight']` (1.0).
+        ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
       Returns
       -------
@@ -32135,7 +32135,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `weight` is negative.
+        if ``weight`` is negative.
       """
       if weight is None:
         self._useSmoothingPrior()
@@ -32153,7 +32153,7 @@ class BNLearner(object):
         the Dirichlet related source (filename of a database or a Bayesian network)
       weight : float, optional
         the weight of the prior (the 'size' of the corresponding 'virtual database'), which must not be negative.
-        By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+        By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
       Returns
       -------
@@ -32163,7 +32163,7 @@ class BNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `weight` is negative.
+        if ``weight`` is negative.
       """
       if weight is None:
         self._useDirichletPrior(source)
@@ -32178,10 +32178,10 @@ class BNLearner(object):
       Parameters
       ----------
       tabu_size : int, optional
-        The size of the tabu list. By default, it is `pyagrum.config['learning', 'tabuListSize']` (100).
+        The size of the tabu list. By default, it is ``pyagrum.config['learning', 'tabuListSize']`` (100).
       nb_decrease : int, optional
         The max number of changes decreasing the score consecutively that we allow to apply.
-        By default, it is `pyagrum.config['learning', 'tabuNbDecrease']` (2).
+        By default, it is ``pyagrum.config['learning', 'tabuNbDecrease']`` (2).
 
       Returns
       -------
@@ -32450,8 +32450,8 @@ class BNLearner(object):
         -----
           With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs
           are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o
-          become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).
-          Use `learnPAG` to get the learned structure with its uncertain marks.
+          become arcs), and an undirected edge may stand for a latent confounder (see ``latentVariables``).
+          Use ``learnPAG`` to get the learned structure with its uncertain marks.
 
         """
         return _pyagrumcpp.BNLearner_learnPDAG(self)
@@ -32461,8 +32461,8 @@ class BNLearner(object):
 
         learn the essential graph of the Markov equivalence class of the data
 
-        The essential graph (CPDAG) of the learned DAG (see `learnDAG`), whatever the algorithm. With a
-        constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by `learnPDAG` (it may not
+        The essential graph (CPDAG) of the learned DAG (see ``learnDAG``), whatever the algorithm. With a
+        constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by ``learnPDAG`` (it may not
         be a CPDAG).
 
         Returns
@@ -32475,8 +32475,8 @@ class BNLearner(object):
         pyagrum.MissingValueInDatabase
             if the database contains missing values
         pyagrum.OperationNotAllowed
-            as `learnDAG`, if the learned DAG exceeds the maximum number of parents (see
-            `setMaxIndegree` and `setErrorOnExceededMaxIndegree`)
+            as ``learnDAG``, if the learned DAG exceeds the maximum number of parents (see
+            ``setMaxIndegree`` and ``setErrorOnExceededMaxIndegree``)
 
         """
         return _pyagrumcpp.BNLearner_learnEssentialGraph(self)
@@ -32494,7 +32494,7 @@ class BNLearner(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If `useFCI()` has not been called first.
+            If ``useFCI()`` has not been called first.
 
         See Also
         --------
@@ -32507,7 +32507,7 @@ class BNLearner(object):
         r"""
 
         Return whether the constraint-based algorithms raise an error when the learned DAG exceeds the maximum indegree (see
-        `setErrorOnExceededMaxIndegree`).
+        ``setErrorOnExceededMaxIndegree``).
 
         Returns
         -------
@@ -32519,7 +32519,7 @@ class BNLearner(object):
     def maxIndegreeExceeded(self) -> bool:
         r"""
 
-        Return whether the last DAG learned (by `learnDAG()` or `learnBN()`) by the selected constraint-based algorithm exceeds
+        Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds
         the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
 
         Returns
@@ -32585,7 +32585,7 @@ class BNLearner(object):
         Warnings
         --------
         The same weight is assigned to all the rows of the learning database so that the sum of their
-        weights is equal to the value of the parameter `weight`.
+        weights is equal to the value of the parameter ``weight``.
 
         Parameters
         ----------
@@ -32715,7 +32715,7 @@ class BNLearner(object):
         Warnings
         --------
         This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use
-        pyagrum.BNLearner.correctedMutualInformation
+        `pyagrum.BNLearner.correctedMutualInformation`
 
         Parameters
         ----------
@@ -32744,7 +32744,7 @@ class BNLearner(object):
         Warnings
         --------
         This function takes into account correction and prior. If you want the 'raw' mutual information, use
-        pyagrum.BNLearner.mutualInformation
+        `pyagrum.BNLearner.mutualInformation`
 
 
         Parameters
@@ -32957,11 +32957,11 @@ class BNLearner(object):
 
         Returns a list containing the values recorded after each
         expectation/maximization iteration of the EM parameter learning algorithm:
-        the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),
-        its variation with the difference criterion (`useEMWithDiffCriterion()`).
+        the opposite of the log-likelihood with the rate criterion (``useEMWithRateCriterion()``),
+        its variation with the difference criterion (``useEMWithDiffCriterion()``).
 
-        The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as
-        the period size is left at its default value of 1 (see `EMsetPeriodSize()`).
+        The list has ``EMnbrIterations()`` values, whatever the reason why EM stopped, as long as
+        the period size is left at its default value of 1 (see ``EMsetPeriodSize()``).
 
         Returns
         -------
@@ -32971,7 +32971,7 @@ class BNLearner(object):
         Warnings
         --------
         Recording these values is enabled only when EM is executed in verbose
-        mode. See method `EMsetVerbosity()`.
+        mode. See method ``EMsetVerbosity()``.
 
         """
         return _pyagrumcpp.BNLearner_EMHistory(self)
@@ -33149,7 +33149,7 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, ``pyagrum.config["core","allowModificationWhenSaving"]`` is used.
 
   Notes
   -----
@@ -33328,7 +33328,7 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   Raises
   ------
   pyagrum.ArgumentError
-      If the BN would have less than 4 nodes (given by `n` or by `names`).
+      If the BN would have less than 4 nodes (given by ``n`` or by ``names``).
 
   Warnings
   --------

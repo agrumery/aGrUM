@@ -125,7 +125,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
 
     InfluenceDiagram(source) -> InfluenceDiagram
         Parameters:
-            - **source** (*pyagrum.InfluenceDiagram*) -- the InfluenceDiagram to copy
+            - **source** (`pyagrum.InfluenceDiagram`) -- the InfluenceDiagram to copy
 
     """
 
@@ -139,25 +139,25 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
             - the structure 'a->b<-c;b->d;c<-e;'.
             - a prefix for the type of node (chance/decision/utiliy nodes):
 
-              - `a` : a chance node named 'a' (by default)
-              - `$a` : a utility node named 'a'
-              - `*a` : a decision node named 'a'
+              - ``a`` : a chance node named 'a' (by default)
+              - ``$a`` : a utility node named 'a'
+              - ``*a`` : a decision node named 'a'
 
             - the type of the variables with different syntax as postfix:
 
-              - by default, a variable is a pyagrum.RangeVariable using the default domain size (second argument)
-              - with `'a[10]'`, the variable is a pyagrum.RangeVariable using 10 as domain size (from 0 to 9)
-              - with `'a[3,7]'`, the variable is a pyagrum.RangeVariable using a domainSize from 3 to 7
-              - with `'a[1,3.14,5,6.2]'`, the variable is a pyagrum.DiscretizedVariable using the given ticks (at least 3 values)
-              - with `'a{top|middle|bottom}'`, the variable is a pyagrum.LabelizedVariable using the given labels.
-              - with 'a{-1|5|0|3}', the variable is a pyagrum.IntegerVariable using the sorted given values.
-              - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyagrum.NumericalDiscreteVariable using the sorted given values.
+              - by default, a variable is a `pyagrum.RangeVariable` using the default domain size (second argument)
+              - with ``'a[10]'``, the variable is a `pyagrum.RangeVariable` using 10 as domain size (from 0 to 9)
+              - with ``'a[3,7]'``, the variable is a `pyagrum.RangeVariable` using a domainSize from 3 to 7
+              - with ``'a[1,3.14,5,6.2]'``, the variable is a `pyagrum.DiscretizedVariable` using the given ticks (at least 3 values)
+              - with ``'a{top|middle|bottom}'``, the variable is a `pyagrum.LabelizedVariable` using the given labels.
+              - with 'a{-1|5|0|3}', the variable is a `pyagrum.IntegerVariable` using the sorted given values.
+              - with 'a{-0.5|5.01|0|3.1415}', the variable is a `pyagrum.NumericalDiscreteVariable` using the sorted given values.
 
         Notes
         -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - the tensors (probabilities, utilities) are randomly generated.
-          - see also pyagrum.fastID.
+          - see also `pyagrum.fastID`.
 
         Parameters
         ----------
@@ -187,7 +187,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -243,7 +243,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the InfluenceDiagram does not contain the variable
 
         """
@@ -344,8 +344,8 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         descr: str
           the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.
         nbr_mod_or_id : int
-            if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities
-            for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.
+            if the first argument is ``variable``, this set an optional fixed id for the node. If the first argument is ``descr``, this gives the default number of modalities
+            for the variable. Note that if a utility node is described in ``descr``, this value is overriden by 1.
 
         Returns
         -------
@@ -741,8 +741,8 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -811,7 +811,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
 
         Warnings
         --------
-          pyagrum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+          `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
         Returns
         -------
@@ -1138,7 +1138,7 @@ class ShaferShenoyLIMIDInference(object):
     implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
     by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
     decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
-    cf. pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption).
+    cf. `pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption`).
 
     """
 
@@ -1532,7 +1532,7 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -1572,13 +1572,13 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _idcpp.ShaferShenoyLIMIDInference_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -1595,11 +1595,11 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _idcpp.ShaferShenoyLIMIDInference_hasHardEvidence(self, nodeName)
+        return _idcpp.ShaferShenoyLIMIDInference_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -1618,7 +1618,7 @@ class ShaferShenoyLIMIDInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -1693,7 +1693,7 @@ def availableIDExts() -> str:
 
 def loadID(filename: str) -> InfluenceDiagram:
   """
-  read a pyagrum.InfluenceDiagram from a ID file
+  read a `pyagrum.InfluenceDiagram` from a ID file
 
   Parameters
   ----------

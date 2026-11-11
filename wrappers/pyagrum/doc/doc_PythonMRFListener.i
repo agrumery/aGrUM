@@ -54,7 +54,7 @@ PythonMRFListener(model:gum.UGmodel,vnm:gum.VariableNodeMap) -> PythonMRFListene
 
 Notes
 -----
-    This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.
+    This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
 
 Parameters
 ----------

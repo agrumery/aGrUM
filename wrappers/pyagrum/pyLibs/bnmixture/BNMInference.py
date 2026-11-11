@@ -96,7 +96,7 @@ class BNMixtureInference(IMixtureInference):
   bnm : BNM.BNMixture
       Model used.
   engine : Optional
-      Inference tool used to compute inference. You shuold give the class and not an initialized object. Example : engine=pyagrum.LazyPropagation is ok
+      Inference tool used to compute inference. You shuold give the class and not an initialized object. Example : ``engine=pyagrum.LazyPropagation`` is ok
       but not engine=pyagrum.LazyPropagation(bnm).
   """
 
@@ -107,7 +107,7 @@ class BNMixtureInference(IMixtureInference):
     bnm : BNM.BNMixture
       Model used.
     engine : Optional
-      Inference tool used to compute inference. You shuold give the class and not an initialized object. Example : engine=pyagrum.LazyPropagation is ok
+      Inference tool used to compute inference. You shuold give the class and not an initialized object. Example : ``engine=pyagrum.LazyPropagation`` is ok
       but not engine=pyagrum.LazyPropagation(bnm).
     """
     self._bnm = bnm
@@ -152,7 +152,7 @@ class BootstrapMixtureInference(IMixtureInference):
   bnm : BNM.BootstrapMixture
       Model used.
   engine : Optional
-      Inference tool used to compute inference. You shold give the class and not an initialized object. Example : engine=pyagrum.LazyPropagation is ok
+      Inference tool used to compute inference. You shold give the class and not an initialized object. Example : ``engine=pyagrum.LazyPropagation`` is ok
       but not engine=pyagrum.LazyPropagation(bnm).
   """
 

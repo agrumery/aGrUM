@@ -212,7 +212,7 @@ bool
 
 %feature("docstring") gum::DiscreteVariable::asLabelizedVar
 "
-Tries to cast the variable as a `gum.LabelizedVar`.
+Tries to cast the variable as a `pyagrum.LabelizedVariable`.
 
 Raises
 ------
@@ -220,13 +220,13 @@ gum.OperationNotAllowed if this is not possible
 
 Returns
 -------
-gum.LabelizedVar
-  the variable as a gum.LabelizedVar
+pyagrum.LabelizedVariable
+  the variable as a `pyagrum.LabelizedVariable`
 "
 
 %feature("docstring") gum::DiscreteVariable::asRangeVar
 "
-Tries to cast the variable as a `gum.RangeVar`.
+Tries to cast the variable as a `pyagrum.RangeVariable`.
 
 Raises
 ------
@@ -234,13 +234,13 @@ gum.OperationNotAllowed if this is not possible
 
 Returns
 -------
-gum.RangeVar
-  the variable as a gum.RangeVar
+pyagrum.RangeVariable
+  the variable as a `pyagrum.RangeVariable`
 "
 
 %feature("docstring") gum::DiscreteVariable::asIntegerVar
 "
-Tries to cast the variable as a `gum.IntegerVar`.
+Tries to cast the variable as a `pyagrum.IntegerVariable`.
 
 Raises
 ------
@@ -248,13 +248,13 @@ gum.OperationNotAllowed if this is not possible
 
 Returns
 -------
-gum.IntegerVar
-  the variable as a gum.IntegerVar
+pyagrum.IntegerVariable
+  the variable as a `pyagrum.IntegerVariable`
 "
 
 %feature("docstring") gum::DiscreteVariable::asNumericalDiscreteVar
 "
-Tries to cast the variable as a `gum.NumericalDiscreteVar`.
+Tries to cast the variable as a `pyagrum.NumericalDiscreteVariable`.
 
 Raises
 ------
@@ -262,13 +262,13 @@ gum.OperationNotAllowed if this is not possible
 
 Returns
 -------
-gum.NumericalDiscreteVar
-  the variable as a gum.NumericalDiscreteVar
+pyagrum.NumericalDiscreteVariable
+  the variable as a `pyagrum.NumericalDiscreteVariable`
 "
 
 %feature("docstring") gum::DiscreteVariable::asDiscretizedVar
 "
-Tries to cast the variable as a `gum.DiscretizedVar`.
+Tries to cast the variable as a `pyagrum.DiscretizedVariable`.
 
 Raises
 ------
@@ -276,13 +276,13 @@ gum.OperationNotAllowed if this is not possible
 
 Returns
 -------
-gum.DiscretizedVar
-  the variable as a gum.DiscretizedVar
+pyagrum.DiscretizedVariable
+  the variable as a `pyagrum.DiscretizedVariable`
 "
 
 %feature("docstring") gum::DiscreteVariable::closestIndex
 "
-For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.
+For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.
 
 Parameters
 ----------
@@ -291,12 +291,12 @@ val : float
 Returns
 -------
 int
-  the index of the closest value to `value` in the variable's domain
+  the index of the closest value to ``value`` in the variable's domain
 
 Raises
 ------
 pyagrum.NotImplementedYet
-  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
+  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 "
 
 %feature("docstring") gum::DiscreteVariable::draw
@@ -311,7 +311,7 @@ int
 
 %feature("docstring") gum::DiscreteVariable::closestLabel
 "
-For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.
+For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.
 
 Parameters
 ----------
@@ -320,12 +320,12 @@ val : float
 Returns
 -------
 str
-  the label of the closest value to `value` in the variable's domain
+  the label of the closest value to ``value`` in the variable's domain
 
 Raises
 ------
 gum.InvalidArgument
-  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).
+  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).
 "
 
 %feature("docstring") gum::DiscreteVariable::toFast

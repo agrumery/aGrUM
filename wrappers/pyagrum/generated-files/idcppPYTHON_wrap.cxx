@@ -4565,7 +4565,10 @@ SWIGINTERN void gum_ShaferShenoyLIMIDInference_Sl_double_Sg__eraseEvidence__SWIG
 SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::ShaferShenoyLIMIDInference< double > const *self,gum::NodeId const id){
     return self->gum::ShaferShenoyLIMIDInference<double >::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence(gum::ShaferShenoyLIMIDInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::ShaferShenoyLIMIDInference< double > const *self,gum::NodeId const id){
+    return self->gum::ShaferShenoyLIMIDInference<double >::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::ShaferShenoyLIMIDInference< double > const *self,std::string const &nodeName){
     return self->gum::ShaferShenoyLIMIDInference<double >::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::ShaferShenoyLIMIDInference< double > const *self,std::string const &nodeName){
@@ -11990,18 +11993,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyLIMIDInference< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShaferShenoyLIMIDInference_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::ShaferShenoyLIMIDInference< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyLIMIDInference< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ShaferShenoyLIMIDInference_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyLIMIDInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyLIMIDInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyLIMIDInference< double > const *""'"); 
@@ -12020,7 +12059,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence(PyObject *
   }
   {
     try {
-      result = (bool)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence((gum::ShaferShenoyLIMIDInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_ShaferShenoyLIMIDInference_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::ShaferShenoyLIMIDInference< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -12032,6 +12071,42 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence(PyObject *
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyLIMIDInference_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_ShaferShenoyLIMIDInference_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_ShaferShenoyLIMIDInference_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyLIMIDInference_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ShaferShenoyLIMIDInference< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::ShaferShenoyLIMIDInference< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -12291,25 +12366,25 @@ static PyMethodDef SwigMethods[] = {
 		"    - the structure 'a->b<-c;b->d;c<-e;'.\n"
 		"    - a prefix for the type of node (chance/decision/utiliy nodes):\n"
 		"\n"
-		"      - `a` : a chance node named 'a' (by default)\n"
-		"      - `$a` : a utility node named 'a'\n"
-		"      - `*a` : a decision node named 'a'\n"
+		"      - ``a`` : a chance node named 'a' (by default)\n"
+		"      - ``$a`` : a utility node named 'a'\n"
+		"      - ``*a`` : a decision node named 'a'\n"
 		"\n"
 		"    - the type of the variables with different syntax as postfix:\n"
 		"\n"
-		"      - by default, a variable is a pyagrum.RangeVariable using the default domain size (second argument)\n"
-		"      - with `'a[10]'`, the variable is a pyagrum.RangeVariable using 10 as domain size (from 0 to 9)\n"
-		"      - with `'a[3,7]'`, the variable is a pyagrum.RangeVariable using a domainSize from 3 to 7\n"
-		"      - with `'a[1,3.14,5,6.2]'`, the variable is a pyagrum.DiscretizedVariable using the given ticks (at least 3 values)\n"
-		"      - with `'a{top|middle|bottom}'`, the variable is a pyagrum.LabelizedVariable using the given labels.\n"
-		"      - with 'a{-1|5|0|3}', the variable is a pyagrum.IntegerVariable using the sorted given values.\n"
-		"      - with 'a{-0.5|5.01|0|3.1415}', the variable is a pyagrum.NumericalDiscreteVariable using the sorted given values.\n"
+		"      - by default, a variable is a `pyagrum.RangeVariable` using the default domain size (second argument)\n"
+		"      - with ``'a[10]'``, the variable is a `pyagrum.RangeVariable` using 10 as domain size (from 0 to 9)\n"
+		"      - with ``'a[3,7]'``, the variable is a `pyagrum.RangeVariable` using a domainSize from 3 to 7\n"
+		"      - with ``'a[1,3.14,5,6.2]'``, the variable is a `pyagrum.DiscretizedVariable` using the given ticks (at least 3 values)\n"
+		"      - with ``'a{top|middle|bottom}'``, the variable is a `pyagrum.LabelizedVariable` using the given labels.\n"
+		"      - with 'a{-1|5|0|3}', the variable is a `pyagrum.IntegerVariable` using the sorted given values.\n"
+		"      - with 'a{-0.5|5.01|0|3.1415}', the variable is a `pyagrum.NumericalDiscreteVariable` using the sorted given values.\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
 		"  - the tensors (probabilities, utilities) are randomly generated.\n"
-		"  - see also pyagrum.fastID.\n"
+		"  - see also `pyagrum.fastID`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -12332,7 +12407,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -12379,7 +12454,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the InfluenceDiagram does not contain the variable\n"
 		"\n"
 		""},
@@ -12459,8 +12534,8 @@ static PyMethodDef SwigMethods[] = {
 		"descr: str\n"
 		"  the descr of the variable following :ref:`fast syntax<Quick specification of (randomly parameterized) graphical models>` extended for :func:`pyagrum.fastID`.\n"
 		"nbr_mod_or_id : int\n"
-		"    if the first argument is `variable`, this set an optional fixed id for the node. If the first argument is `descr`, this gives the default number of modalities\n"
-		"    for the variable. Note that if a utility node is described in `descr`, this value is overriden by 1.\n"
+		"    if the first argument is ``variable``, this set an optional fixed id for the node. If the first argument is ``descr``, this gives the default number of modalities\n"
+		"    for the variable. Note that if a utility node is described in ``descr``, this value is overriden by 1.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -12783,7 +12858,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
+		"  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13170,7 +13245,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -13201,7 +13276,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -13221,7 +13296,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -13241,7 +13316,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},

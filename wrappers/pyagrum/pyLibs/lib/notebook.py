@@ -385,11 +385,11 @@ def getBNDiff(
   """
   get a HTML string representation of a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
-  if `noStyle` is False use 4 styles (fixed in pyagrum.config) :
+  if ``noStyle`` is False use 4 styles (fixed in `pyagrum.config`) :
     - the arc is common for both
-    - the arc is common but inverted in `bn2`
-    - the arc is added in `bn2`
-    - the arc is removed in `bn2`
+    - the arc is common but inverted in ``bn2``
+    - the arc is added in ``bn2``
+    - the arc is removed in ``bn2``
 
   Parameters
   ----------
@@ -419,11 +419,11 @@ def showBNDiff(
   """
   show a graphical diff between the arcs of _bn1 (reference) with those of _bn2.
 
-  if `noStyle` is False use 4 styles (fixed in pyagrum.config) :
+  if ``noStyle`` is False use 4 styles (fixed in `pyagrum.config`) :
     - the arc is common for both
-    - the arc is common but inverted in `bn2`
-    - the arc is added in `bn2`
-    - the arc is removed in `bn2`
+    - the arc is common but inverted in ``bn2``
+    - the arc is added in ``bn2``
+    - the arc is removed in ``bn2``
 
   Parameters
   ----------
@@ -1072,9 +1072,9 @@ def showInference(model: pyagrum.PGM, **kwargs) -> None:
   Parameters
   ----------
   model: pyagrum.GraphicalModel
-    the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
+    the model in which to infer (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField` or `pyagrum.InfluenceDiagram`)
   engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
-    inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
+    inference algorithm used. If None, `pyagrum.LazyPropagation` will be used for BayesNet, `pyagrum.ShaferShenoyMRFInference` for `pyagrum.MarkovRandomField` and `pyagrum.ShaferShenoyLIMIDInference` for `pyagrum.InfluenceDiagram`.
   evs: dict[int|str,int|str|list[float]]
     map of evidence
   targets: Set[str]
@@ -1117,9 +1117,9 @@ def getInference(model: pyagrum.PGM, **kwargs) -> str:
   Parameters
   ----------
   model: pyagrum.GraphicalModel
-    the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
+    the model in which to infer (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField` or `pyagrum.InfluenceDiagram`)
   engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
-    inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet, pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
+    inference algorithm used. If None, `pyagrum.LazyPropagation` will be used for BayesNet, `pyagrum.ShaferShenoyMRFInference` for `pyagrum.MarkovRandomField` and `pyagrum.ShaferShenoyLIMIDInference` for `pyagrum.InfluenceDiagram`.
   evs: dict[int|str,int|str|list[float]]
     map of evidence
   targets: Set[str]
@@ -1164,7 +1164,7 @@ def _reprTensor(
   asString: bool = False,
 ) -> "str | IPython.display.HTML":
   """
-  return a representation of a pyagrum.Tensor as a HTML table.
+  return a representation of a `pyagrum.Tensor` as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
@@ -1359,7 +1359,7 @@ def showTensor(
   pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
 ) -> None:
   """
-  show a pyagrum.Tensor as a HTML table.
+  show a `pyagrum.Tensor` as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
@@ -1387,7 +1387,7 @@ def getTensor(
   pot: pyagrum.Tensor, digits: int | None = None, withColors: bool | None = None, varnames: list[str] | None = None
 ) -> str:
   """
-  return a HTML string of a pyagrum.Tensor as a HTML table.
+  return a HTML string of a `pyagrum.Tensor` as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
   Parameters
@@ -1565,10 +1565,10 @@ def getJT(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
 
 def getCliqueGraph(cg: pyagrum.CliqueGraph, size: float | str | None = None) -> str:
   """get a representation for clique graph. Special case for junction tree
-  (clique graph with an attribute `_engine`)
+  (clique graph with an attribute ``_engine``)
 
   Parameters
-      cg (pyagrum.CliqueGraph): the clique graph (maybe junction tree for a _model) to
+      cg (`pyagrum.CliqueGraph`): the clique graph (maybe junction tree for a _model) to
                             represent
 
   Returns
@@ -1589,7 +1589,7 @@ def show(model, **kwargs) -> None:
   Parameters
   ----------
   model
-    the model to show (pyagrum.BayesNet, pyagrum.MarkovRandomField, pyagrum.InfluenceDiagram or pyagrum.Tensor) or a dot string, or a `pydot.Dot` or even just an object with a method `toDot()`.
+    the model to show (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField`, `pyagrum.InfluenceDiagram` or `pyagrum.Tensor`) or a dot string, or a ``pydot.Dot`` or even just an object with a method ``toDot()``.
 
   size: str
     size (for graphviz) to represent the graphical model (no effect for Tensor)

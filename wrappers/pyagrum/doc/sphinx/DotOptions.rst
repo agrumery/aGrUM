@@ -1,7 +1,7 @@
 Drawing options for toDot
 =========================
 
-The look of the graphs drawn by ``toDot()`` (graphs, Bayesian networks, Markov random fields, influence diagrams, causal models, credal networks, junction trees...) is given by the keys of ``pyagrum.config`` (sections ``notebook``, ``factorgraph``, ``dynamicBN``, ``influenceDiagram``, ``credalnet`` and ``causal``, see :doc:`PyAgrumConfiguration`). A :class:`pyagrum.DotOptions` gives, for one drawing, what the configuration cannot: the size or the label of the graph, the color of some nodes, the width or the color of some arcs...
+The look of the graphs drawn by ``toDot()`` (graphs, Bayesian networks, Markov random fields, influence diagrams, causal models, credal networks, junction trees...) is given by the keys of `pyagrum.config` (sections ``notebook``, ``factorgraph``, ``dynamicBN``, ``influenceDiagram``, ``credalnet`` and ``causal``, see :doc:`PyAgrumConfiguration`). A :class:`pyagrum.DotOptions` gives, for one drawing, what the configuration cannot: the size or the label of the graph, the color of some nodes, the width or the color of some arcs...
 
 .. code-block:: python
 

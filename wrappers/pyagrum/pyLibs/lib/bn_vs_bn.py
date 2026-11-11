@@ -249,7 +249,7 @@ class GraphicalBNComparator:
 
     Note
     ----
-    Delegates to pyagrum.StructuralMetrics (aGrUM C++): comparison runs on the
+    Delegates to `pyagrum.StructuralMetrics` (aGrUM C++): comparison runs on the
     essential graphs of the two BNs, with nodes matched by variable name. For a
     DAG-level skeleton comparison, align NodeIds manually and call
     ``pyagrum.StructuralMetrics.compare(bn1.dag(), aligned_bn2.dag())`` directly.
@@ -299,7 +299,7 @@ class GraphicalBNComparator:
 
     Note
     ----
-    Delegates to pyagrum.StructuralMetrics (aGrUM C++) with nodes matched by
+    Delegates to `pyagrum.StructuralMetrics` (aGrUM C++) with nodes matched by
     variable name. Precision/recall/F-score/SHD are computed on the essential
     graphs of the two BNs; SID is computed on their DAGs (it is the only
     DAG-level metric here). Misoriented arcs are counted once (in fp, not in fn).
@@ -382,7 +382,7 @@ def graphDiff(bnref, bncmp, noStyle: bool = False) -> dot.Dot:
 
   It is a diff of DAGs: bnref and bncmp can be any model which is a DAG with named nodes (a Bayesian network, a CLG...).
 
-  if noStyle is False use 4 styles (fixed in pyagrum.config) :
+  if noStyle is False use 4 styles (fixed in `pyagrum.config`) :
     - the arc is common for both
     - the arc is common but inverted in _bn2
     - the arc is added in _bn2

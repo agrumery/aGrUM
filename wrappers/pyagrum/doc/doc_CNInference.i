@@ -125,7 +125,7 @@ list
 
 Raises
 ------
-  pyagrum.IndexError
+  pyagrum.NotFound
     If the node does not belong to the Credal network
 "
 
@@ -147,7 +147,7 @@ list
 
 Raises
 ------
-  pyagrum.IndexError
+  pyagrum.NotFound
     If the node does not belong to the Credal network
 "
 

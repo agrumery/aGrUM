@@ -244,7 +244,7 @@ nodeName : int
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -259,7 +259,7 @@ list
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If one of the node does not belong to the Bayesian network
 pyagrum.UndefinedElement
   If node Id is not in the Bayesian network
@@ -278,7 +278,7 @@ nodeName : int
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If one of the node does not belong to the Bayesian network
 pyagrum.UndefinedElement
   If node Id is not in the Bayesian network
@@ -286,7 +286,7 @@ pyagrum.UndefinedElement
 
 %feature("docstring") gum::classname::evidenceImpact
 "
-Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
 Parameters
 ----------
@@ -307,7 +307,7 @@ pyagrum.Tensor
 
 %feature("docstring") gum::classname::evidenceJointImpact
 "
-Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)
 
 Parameters
 ----------
@@ -323,7 +323,7 @@ pyagrum.Tensor
 
 Raises
 ------
-pyagrum.Exception
+pyagrum.IncompatibleEvidence
   If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 "
 
@@ -359,7 +359,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -379,7 +379,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -399,7 +399,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -417,7 +417,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 pyagrum.UndefinedElement
   If node Id is not in the Bayesian network
@@ -439,7 +439,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 pyagrum.UndefinedElement
   If node Id is not in the Bayesian network
@@ -663,7 +663,7 @@ vlbpsize : float
 Returns
 -------
 float
-  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).
+  the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).
 "
 
 %feature("docstring") gum::classname::setRelevantTensorsFinderType

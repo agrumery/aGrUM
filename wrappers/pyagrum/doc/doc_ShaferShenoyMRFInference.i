@@ -50,7 +50,7 @@ Class used for Shafer-Shenoy inferences for Markov random field.
 
 ShaferShenoyMRFInference(bn) -> ShaferShenoyMRFInference
     Parameters:
-        - **mrf** (*pyagrum.MarkovRandomField*) -- a Markov random field
+        - **mrf** (`pyagrum.MarkovRandomField`) -- a Markov random field
 "
 
 %feature("docstring") gum::ShaferShenoyMRFInference<double>::MRF

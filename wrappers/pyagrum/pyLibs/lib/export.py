@@ -41,7 +41,7 @@
 """
 Tools for exporting graphical models and inference as other formats.
 
-For each function `pyagrum.lib.export.to...(model,filename)`, it is assumed that the filename is complete (including the correct suffix).
+For each function ``pyagrum.lib.export.to...(model,filename)``, it is assumed that the filename is complete (including the correct suffix).
 """
 
 import sys

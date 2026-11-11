@@ -46,7 +46,7 @@
 
 %feature("docstring") gum::DiscretizedVariable
 "
-DiscretizedVariable is a discrete random variable with a set of `ticks` defining intervals.
+DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervals.
 
 DiscretizedVariable(aName, aDesc) -> DiscretizedVariable
     Parameters:
@@ -67,7 +67,7 @@ DiscretizedVariable(aName, aDesc, ticks[, is_empirical]) -> DiscretizedVariable
 DiscretizedVariable(aDDRV) -> DiscretizedVariable
     Parameters:
 
-        - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the pyagrum.DiscretizedVariable that will be copied
+        - **aDDRV** (:class:`pyagrum.DiscretizedVariable`) -- the `pyagrum.DiscretizedVariable` that will be copied
 "
 
 %feature("docstring") gum::DiscretizedVariable::domain

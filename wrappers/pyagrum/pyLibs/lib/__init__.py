@@ -39,7 +39,7 @@
 ############################################################################
 
 """
-pyagrum.lib is a set of python tools for pyagrum.
+`pyagrum.lib` is a set of python tools for pyagrum.
 """
 
 __author__ = "Pierre-Henri Wuillemin"

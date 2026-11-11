@@ -54,7 +54,7 @@ Warnings
 
 VariableElimination(bn) -> VariableElimination
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "
 
 %feature("docstring") gum::VariableElimination::jointMutualInformation

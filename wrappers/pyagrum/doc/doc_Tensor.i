@@ -53,16 +53,16 @@ Tensor() -> Tensor
 
 Tensor(src) -> Tensor
     Parameters:
-        - **src** (``pyagrum.Tensor``) -- the Tensor to copy
+        - **src** (`pyagrum.Tensor`) -- the Tensor to copy
 
 Tensor(v1,v2, ...) -> Tensor
     Parameters:
-        - v1,v2... (``pyagrum.DiscreteVariable``) -- the variables to be added to the tensor
+        - v1,v2... (`pyagrum.DiscreteVariable`) -- the variables to be added to the tensor
 "
 
 %feature("docstring") gum::Tensor::KL
 "
-Check the compatibility and compute the Kullback-Leibler divergence between the tensor and `p`.
+Check the compatibility and compute the Kullback-Leibler divergence between the tensor and ``p``.
 
 Parameters
 ----------
@@ -196,7 +196,7 @@ create a new Tensor extracted from self given a partial instantiation.
 
 Parameters
 ----------
-inst : pyagrum.instantiation
+inst : pyagrum.Instantiation
   a partial instantiation
 dict : dict
   a dictionnary containing values for some discrete variables.
@@ -224,7 +224,7 @@ v : number or list or pyagrum.Tensor the number of parameters of the Tensor
 Warnings
 --------
     if v is a list, the size of the list must be equal to the domain size of the tensor.
-    if v is a pyagrum.Tensor. It must contain variables with exactly the same names and labels but not necessarily the same variables.
+    if v is a `pyagrum.Tensor`. It must contain variables with exactly the same names and labels but not necessarily the same variables.
 
 Returns
 -------
@@ -250,15 +250,15 @@ mapping : list|tuple|dict
 
 Warnings
 --------
-    - if `v` is a list, the size of the list must be the size of the tensor
+    - if ``v`` is a list, the size of the list must be the size of the tensor
 
-    - if `v` is a ref:pyagrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
+    - if ``v`` is a ref:`pyagrum.Tensor`, it must contain variables with exactly the same names and labels but not necessarily the same variables. If
 
-    - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.
+    - If the second argument ``mapping`` is given, ``mapping`` explains how to map the variables of the tensor source to the variables of the tensor destination.
 
-    - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.
+    - If ``mapping`` is a sequence, the order follows the same order as ``destination.names``. If ``mapping`` is a dict, the keys are the names in the destination and the values are the names in the source.
 
-    - if `v` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
+    - if ``v`` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.
 
 Returns
 -------
@@ -299,12 +299,12 @@ float
 Returns
 -------
 pyagrum.Tensor
-  a boolean-like tensor using the predicate `isNonZero`.
+  a boolean-like tensor using the predicate ``isNonZero``.
 "
 
 %feature("docstring") gum::Tensor::maxIn
 "
-Projection using `max` as operation.
+Projection using ``max`` as operation.
 
 Parameters
 ----------
@@ -319,7 +319,7 @@ pyagrum.Tensor
 
 %feature("docstring") gum::Tensor::maxOut
 "
-Projection using `max` as operation.
+Projection using ``max`` as operation.
 
 Parameters
 ----------
@@ -339,7 +339,7 @@ pyagrum.InvalidArgument
 
 %feature("docstring") gum::Tensor::minIn
 "
-Projection using `min` as operation.
+Projection using ``min`` as operation.
 
 Parameters
 ----------
@@ -354,7 +354,7 @@ pyagrum.Tensor
 
 %feature("docstring") gum::Tensor::minOut
 "
-Projection using `min` as operation.
+Projection using ``min`` as operation.
 
 Parameters
 ----------
@@ -645,7 +645,7 @@ log2 all the values in the Tensor
 
 Warnings
 --------
-When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.
+When the Tensor contains 0 or negative values, no exception are raised but ``-inf`` or ``nan`` values are assigned.
 "
 
 %feature("docstring") gum::Tensor::sum
@@ -705,7 +705,7 @@ Calculate the mathematical expected value of a (joint) random variable using the
 Parameters
 ----------
 func : function(dict)->float
-    A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.
+    A function that takes a single argument, representing the value of a python representation of a `pyagrum.Instantiation` (as a dictionary), and returns a float.
 
 Warnings
 --------

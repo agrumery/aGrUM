@@ -45,7 +45,7 @@
 %feature("docstring") gum::dot::DotOptions
 "
 What you give to the ``toDot(options)`` of a graph, a Bayesian network, a Markov random field, an influence diagram,
-a causal model, a credal network, a junction tree... beyond the look given by ``pyagrum.config`` (sections
+a causal model, a credal network, a junction tree... beyond the look given by `pyagrum.config` (sections
 ``notebook``, ``factorgraph``, ``dynamicBN``, ``influenceDiagram``, ``credalnet`` and ``causal``).
 
 What is not given is taken from the configuration. The nodes are designated by their identifiers, the arcs by the

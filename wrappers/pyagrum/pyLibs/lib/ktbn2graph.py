@@ -51,7 +51,7 @@ def getFollowKTBN(
   """
   Builds the evolution of the posterior distribution of a set of variables in a KTBN model as an HTML (img) fragment.
 
-  This HTML fragment can then be combined with other pyagrum.lib.notebook fragments, e.g. in
+  This HTML fragment can then be combined with other `pyagrum.lib.notebook` fragments, e.g. in
   `pyagrum.lib.notebook.sideBySide` or `pyagrum.lib.notebook.flow`.
 
   Parameters

@@ -105,6 +105,7 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+napoleon_preprocess_types = True
 
 always_document_param_types = True
 
@@ -158,7 +159,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "site", "notebooks/.virt
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
 #
-# default_role = None
+# numpydoc convention: `pyagrum.X` is a reference to a pyagrum object, ``code`` a literal
+default_role = "py:obj"
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #

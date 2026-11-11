@@ -52,10 +52,10 @@ ApproximationScheme() -> ApproximationScheme
 ApproximationScheme(verbosity) -> ApproximationScheme
     Parameters:
       - **verbosity** (*bool*) -- to keep (or not) tracks of the learning process (history of epsilons). If it is
-        not given, the key `verbosity` of the section `approximation` of `pyagrum.config` is used.
+        not given, the key ``verbosity`` of the section ``approximation`` of `pyagrum.config` is used.
 
     The other parameters (epsilon, minimal epsilon rate, maximum number of iterations, maximum time, burn-in and period size)
-    are the ones of the section `approximation` of `pyagrum.config`.
+    are the ones of the section ``approximation`` of `pyagrum.config`.
 "
 
 %feature("docstring") gum::ApproximationScheme::disableEpsilon

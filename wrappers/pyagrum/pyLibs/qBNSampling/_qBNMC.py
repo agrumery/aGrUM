@@ -294,8 +294,8 @@ class qBNMC:
   ) -> None:
     """Add multi-qubit RY rotations to the circuit (Fig9/eq18).
 
-    Recursively encodes the CPT probabilities of `node` into controlled
-    RY rotations on `target_qbs`.
+    Recursively encodes the CPT probabilities of ``node`` into controlled
+    RY rotations on ``target_qbs``.
 
     Parameters
     ----------

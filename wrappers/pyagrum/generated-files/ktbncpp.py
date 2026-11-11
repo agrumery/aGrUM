@@ -770,7 +770,7 @@ class KTBN(object):
             if True, shade the replicated slices (>= k) differently from the template
             slices (default False)
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (section ``dynamicBN``):
+            what is given to the drawing beyond the look of `pyagrum.config` (section ``dynamicBN``):
             the nodes and the arcs are designated by their ids in the unrolled :class:`pyagrum.BayesNet`
 
         Returns
@@ -919,7 +919,7 @@ class KTBNGenerator(object):
         r"""
 
         Fill out with a freshly drawn model (its previous content is discarded). Seed
-        with ``pyagrum.initRandom()`` for reproducibility.
+        with `pyagrum.initRandom` for reproducibility.
 
         Parameters
         ----------
@@ -1121,7 +1121,7 @@ class KTBNInference(object):
 
     KTBNInference(ktbn) -> KTBNInference
         Parameters:
-            - **ktbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to reason about
+            - **ktbn** (`pyagrum.ktbn.KTBN`) -- the k-TBN to reason about
               (referenced, not copied)
 
     Raises
@@ -1426,7 +1426,7 @@ class KTBNInference(object):
 
         Returns
         -------
-        pyagrum.JunctionTree
+        pyagrum.CliqueGraph
             the window's junction tree
 
         """
@@ -1562,7 +1562,7 @@ class KTBNDatabaseGenerator(object):
 
     KTBNDatabaseGenerator(kdbn) -> KTBNDatabaseGenerator
         Parameters:
-            - **kdbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to sample from (only its
+            - **kdbn** (`pyagrum.ktbn.KTBN`) -- the k-TBN to sample from (only its
               k-slice template is copied; the k-TBN itself is not retained)
 
     """
@@ -1712,7 +1712,7 @@ class KTBNLearner(object):
         atemporal variables, which only ever show one value per trajectory.
 
         Parameters:
-            - **bn** (*pyagrum.BayesNet*) -- a BayesNet with one node per base
+            - **bn** (`pyagrum.BayesNet`) -- a BayesNet with one node per base
               variable, providing the variable types and domains
 
     """
@@ -1977,7 +1977,7 @@ class KTBNLearner(object):
 
         Use the constraint-based PC algorithm for structure search.
 
-        The significance threshold is the key `alpha` of the section `learning` of the configuration.
+        The significance threshold is the key ``alpha`` of the section ``learning`` of the configuration.
 
         Returns
         -------
@@ -1998,7 +1998,7 @@ class KTBNLearner(object):
 
         Use the constraint-based FCI algorithm for structure search.
 
-        The significance threshold is the key `alpha` of the section `learning` of the configuration.
+        The significance threshold is the key ``alpha`` of the section ``learning`` of the configuration.
 
         Returns
         -------
@@ -2709,7 +2709,7 @@ class KTBNLearner(object):
       Parameters
       ----------
       weight : float, optional
-        the prior weight, which must not be negative. By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+        the prior weight, which must not be negative. By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
       Returns
       -------
@@ -2719,7 +2719,7 @@ class KTBNLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `weight` is negative.
+        if ``weight`` is negative.
       """
       if weight is None:
         self._useSmoothingPrior()
@@ -2734,10 +2734,10 @@ class KTBNLearner(object):
       Parameters
       ----------
       tabu_size : int, optional
-        the tabu list size. By default, it is `pyagrum.config['learning', 'tabuListSize']` (100).
+        the tabu list size. By default, it is ``pyagrum.config['learning', 'tabuListSize']`` (100).
       nb_decrease : int, optional
         the number of non-improving moves tolerated before stopping. By default, it is
-        `pyagrum.config['learning', 'tabuNbDecrease']` (2).
+        ``pyagrum.config['learning', 'tabuNbDecrease']`` (2).
 
       Returns
       -------
@@ -3437,7 +3437,7 @@ class KTBNAdaptiveLearner(object):
       Parameters
       ----------
       weight : float, optional
-        the prior weight, which must not be negative. By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+        the prior weight, which must not be negative. By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
       Returns
       -------
@@ -3447,7 +3447,7 @@ class KTBNAdaptiveLearner(object):
       Raises
       ------
       pyagrum.OutOfBounds
-        if `weight` is negative.
+        if ``weight`` is negative.
       """
       if weight is None:
         self._useSmoothingPrior()
@@ -3462,10 +3462,10 @@ class KTBNAdaptiveLearner(object):
       Parameters
       ----------
       tabu_size : int, optional
-        the tabu list size. By default, it is `pyagrum.config['learning', 'tabuListSize']` (100).
+        the tabu list size. By default, it is ``pyagrum.config['learning', 'tabuListSize']`` (100).
       nb_decrease : int, optional
         the number of non-improving moves tolerated before stopping. By default, it is
-        `pyagrum.config['learning', 'tabuNbDecrease']` (2).
+        ``pyagrum.config['learning', 'tabuNbDecrease']`` (2).
 
       Returns
       -------

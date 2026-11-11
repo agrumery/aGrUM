@@ -50,14 +50,14 @@ Class representing exacte computation of divergence and distance between BNs
 
 ExactBNdistance(P,Q) -> ExactBNdistance
     Parameters:
-        - **P** (*pyagrum.BayesNet*)
+        - **P** (`pyagrum.BayesNet`)
           a Bayesian network
-        - **Q** (*pyagrum.BayesNet*)
+        - **Q** (`pyagrum.BayesNet`)
           another Bayesian network to compare with the first one
 
 ExactBNdistance(ebnd) -> ExactBNdistance
     Parameters:
-        - **ebnd** (*pyagrum.ExactBNdistance*)
+        - **ebnd** (`pyagrum.ExactBNdistance`)
           the exact BNdistance to copy
 
 Raises

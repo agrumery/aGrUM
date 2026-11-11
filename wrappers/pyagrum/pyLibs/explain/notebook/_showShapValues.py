@@ -68,7 +68,7 @@ def showShapValues(
       Name of the Matplotlib colormap used for coloring the nodes.
   y: int
       The target class for which the Shap values are computed (default is 1).
-      y is ignored if `expl` is a dict.
+      y is ignored if ``expl`` is a dict.
   show_legend: bool
       If True, display a colorbar showing the importance scale (default is False).
   filename : str, optional
@@ -77,7 +77,7 @@ def showShapValues(
   Raises
   ------
   TypeError
-      If bn is not a pyagrum.BayesNet, if expl is neither an Explanation nor a dict, or if expl is an Explanation and y is not an integer.
+      If bn is not a `pyagrum.BayesNet`, if expl is neither an Explanation nor a dict, or if expl is an Explanation and y is not an integer.
   IndexError
       If expl is an Explanation and y is outside the valid class range.
   """

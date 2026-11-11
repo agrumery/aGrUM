@@ -63,7 +63,7 @@ Get an instantiation over all the variables of the model.
 
 Returns
 -------
-  pyagrum.instantiation
+  pyagrum.Instantiation
     the complete instantiation
 "
 
@@ -183,7 +183,7 @@ name : str
 
 Notes
 -----
-  A convenient shortcut for `g.variableFromName(name)` is `g[name]`.
+  A convenient shortcut for ``g.variableFromName(name)`` is ``g[name]``.
 
 Returns
 -------
@@ -210,7 +210,7 @@ pyagrum.DiscreteVariable
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
     If the graph does not contain the variable
 "
 
@@ -229,7 +229,7 @@ int
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
     If the graph does not contain the variable
 "
 
@@ -257,7 +257,7 @@ pyagrum.DiscreteVariable
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
     If the graph does not contain the variable
 "
 
@@ -306,7 +306,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the ancestors of node `norid`.
+  the set of ids of the ancestors of node ``norid``.
 "
 
 
@@ -322,7 +322,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the descendants of node `norid`.
+  the set of ids of the descendants of node ``norid``.
 "
 
 %feature("docstring") gum::DAGmodel::existsArc
@@ -340,7 +340,7 @@ head : str|int
 Returns
 -------
 bool
-  True if `tail->head` is an arc.
+  True if ``tail->head`` is an arc.
 "
 
 %feature("docstring") gum::DAGmodel::family
@@ -355,7 +355,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of nodeId of the family of the node `norid`
+  the set of nodeId of the family of the node ``norid``
 "
 
 %feature("docstring") gum::DAGmodel::moralizedAncestralGraph
@@ -369,7 +369,7 @@ nodes : str|int|list of str|int
 
 Warnings
 --------
-  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
+  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph
 
 Returns
 -------

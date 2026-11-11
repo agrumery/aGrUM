@@ -56,7 +56,7 @@ IntegerVariable(aName, aDesc='', values=None) -> IntegerVariable
 
 IntegerVariable(aIDRV) -> IntegerVariable
     Parameters:
-        - **aIDRV** (*pyagrum.IntegerVariable*) -- The pyagrum.IntegerVariable that will be copied
+        - **aIDRV** (`pyagrum.IntegerVariable`) -- The `pyagrum.IntegerVariable` that will be copied
 "
 
 %feature("docstring") gum::IntegerVariable::integerDomain

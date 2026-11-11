@@ -53,7 +53,7 @@ CliqueGraph() -> CliqueGraph
 
 CliqueGraph(src) -> CliqueGraph
     Parameter
-        - **src** (*pyagrum.CliqueGraph*) -- the CliqueGraph to copy
+        - **src** (`pyagrum.CliqueGraph`) -- the CliqueGraph to copy
 "
 
 %feature("docstring") gum::CliqueGraph::toDot
@@ -61,7 +61,7 @@ CliqueGraph(src) -> CliqueGraph
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (keys ``junctionTree*`` of the
+    what is given to the drawing beyond the look of `pyagrum.config` (keys ``junctionTree*`` of the
     section ``notebook``). The options of a clique are the ones of its node; the options of an edge are
     the ones of its separator (label, tooltip, color, attributes, and width of the two links).
 

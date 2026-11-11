@@ -50,5 +50,5 @@ Class used for Weighted sampling inference algorithm.
 
 WeightedSampling(bn) -> WeightedSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

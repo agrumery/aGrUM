@@ -4758,7 +4758,10 @@ SWIGINTERN void gum_ShaferShenoyMRFInference_Sl_double_Sg__eraseEvidence__SWIG_1
 SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::ShaferShenoyMRFInference< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedMRFInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence(gum::ShaferShenoyMRFInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::ShaferShenoyMRFInference< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedMRFInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::ShaferShenoyMRFInference< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedMRFInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_ShaferShenoyMRFInference_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::ShaferShenoyMRFInference< double > const *self,std::string const &nodeName){
@@ -11920,18 +11923,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyMRFInference< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyMRFInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyMRFInference< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyMRFInference< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShaferShenoyMRFInference_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::ShaferShenoyMRFInference< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyMRFInference< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ShaferShenoyMRFInference_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyMRFInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyMRFInference< double > const *""'"); 
@@ -11950,7 +11989,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence(PyObject *se
   }
   {
     try {
-      result = (bool)gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence((gum::ShaferShenoyMRFInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_ShaferShenoyMRFInference_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::ShaferShenoyMRFInference< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -11962,6 +12001,42 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence(PyObject *se
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyMRFInference_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_ShaferShenoyMRFInference_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_ShaferShenoyMRFInference_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyMRFInference_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ShaferShenoyMRFInference< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::ShaferShenoyMRFInference< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -13127,7 +13202,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13142,7 +13217,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13253,12 +13328,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"dict\n"
-		"    a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor\n"
+		"    a dict mapping frozenset[int] (node id sets) to `pyagrum.Tensor`\n"
 		"\n"
 		""},
 	 { "MarkovRandomField_add", _wrap_MarkovRandomField_add, METH_VARARGS, "\n"
 		"\n"
-		"Add a variable to the pyagrum.MarkovRandomField.\n"
+		"Add a variable to the `pyagrum.MarkovRandomField`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -13269,7 +13344,7 @@ static PyMethodDef SwigMethods[] = {
 		"nbrmod : int\n"
 		"    the number of modalities for the new variable\n"
 		"id : int\n"
-		"    the variable forced id in the pyagrum.MarkovRandomField\n"
+		"    the variable forced id in the `pyagrum.MarkovRandomField`\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13279,7 +13354,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.DuplicateLabel\n"
-		"    If variable.name() is already used in this pyagrum.MarkovRandomField.\n"
+		"    If variable.name() is already used in this `pyagrum.MarkovRandomField`.\n"
 		"pyagrum.OperationNotAllowed\n"
 		"    If nbrmod is less than 2\n"
 		"pyagrum.DuplicateElement\n"
@@ -13293,9 +13368,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "MarkovRandomField_erase", _wrap_MarkovRandomField_erase, METH_VARARGS, "\n"
 		"\n"
-		"Remove a variable from the pyagrum.MarkovRandomField.\n"
+		"Remove a variable from the `pyagrum.MarkovRandomField`.\n"
 		"\n"
-		"Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.\n"
+		"Removes the corresponding variable from the `pyagrum.MarkovRandomField` and from all of it's children `pyagrum.Tensor`.\n"
 		"\n"
 		"If no variable matches the given id, then nothing is done.\n"
 		"\n"
@@ -13307,9 +13382,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "MarkovRandomField_changeVariableName", _wrap_MarkovRandomField_changeVariableName, METH_VARARGS, "\n"
 		"\n"
-		"Changes a variable's name in the pyagrum.MarkovRandomField.\n"
+		"Changes a variable's name in the `pyagrum.MarkovRandomField`.\n"
 		"\n"
-		"This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.\n"
+		"This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.MarkovRandomField`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -13532,7 +13607,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"vars : set\n"
-		"    A set of ids or names of variable the pyagrum.MarkovRandomField.\n"
+		"    A set of ids or names of variable the `pyagrum.MarkovRandomField`.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -13773,7 +13848,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ShaferShenoyMRFInference_evidenceImpact", _wrap_ShaferShenoyMRFInference_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -13858,7 +13933,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -13878,7 +13953,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -14017,7 +14092,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -14048,7 +14123,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -14068,7 +14143,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -14088,7 +14163,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -14158,7 +14233,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -14180,7 +14255,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -14261,7 +14336,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ShaferShenoyMRFInference_evidenceJointImpact", _wrap_ShaferShenoyMRFInference_evidenceJointImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)\n"
+		"Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -14277,7 +14352,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.Exception\n"
+		"pyagrum.IncompatibleEvidence\n"
 		"  If some evidene entered into the Bayes net are incompatible (their joint proba = 0)\n"
 		"\n"
 		""},

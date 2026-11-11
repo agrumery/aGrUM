@@ -63,7 +63,7 @@ int
 "
 Parameters
 ----------
-i : pyagrum.instantiation
+i : pyagrum.Instantiation
     an instantiation of the variables
 
 Returns
@@ -80,7 +80,7 @@ a variable not present in the instantiation is assumed to be instantiated to 0
 "
 Parameters
 ----------
-i : pyagrum.instantiation
+i : pyagrum.Instantiation
     an instantiation of the variables
 
 Returns
@@ -138,7 +138,7 @@ float
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------
@@ -161,9 +161,9 @@ Returns the CPT of a variable.
 Parameters
 ----------
 VarId : int
-    A variable's id in the pyagrum.IBayesNet.
+    A variable's id in the Bayesian network.
 name : str
-    A variable's name in the pyagrum.IBayesNet.
+    A variable's name in the Bayesian network.
 
 Returns
 -------

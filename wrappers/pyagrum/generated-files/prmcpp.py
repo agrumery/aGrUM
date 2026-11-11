@@ -181,7 +181,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -204,9 +204,9 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the class is not in the PRM
-        pyagrum.IndexError
+        pyagrum.NotFound
             If att_name is not an element of class_name
 
         """
@@ -227,7 +227,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -248,7 +248,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -285,7 +285,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -306,7 +306,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             if the class is not in the PRM
 
         """
@@ -327,7 +327,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -359,7 +359,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -380,7 +380,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the class is not in the PRM
 
         """
@@ -405,10 +405,10 @@ class PRMexplorer(object):
         Raises
         ------
         pyagrum.OperationNotAllowed
-            If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).
-        pyagrum.IndexError
+            If the class element doesn't have any `pyagrum.Tensor` (like a reference slot).
+        pyagrum.NotFound
             If the class is not in the PRM
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the attribute in parameters does not exist
 
         """
@@ -440,7 +440,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -461,7 +461,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -482,7 +482,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -503,7 +503,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -538,7 +538,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -559,7 +559,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the type is not in the PRM
 
         """
@@ -580,7 +580,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the interface is not in the PRM
 
         """
@@ -601,7 +601,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the interface is not in the PRM
 
         """
@@ -622,7 +622,7 @@ class PRMexplorer(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
             If the interface is not in the PRM
 
         """

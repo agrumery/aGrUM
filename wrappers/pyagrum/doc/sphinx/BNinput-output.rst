@@ -79,10 +79,10 @@ Other Supported Formats
 
 The following formats are supported but may not preserve all model features:
 
-- **Net** (`.net`): Standard format for Bayesian networks but may lose some metadata.
-- **DSL** (`.dsl`): GeNIe format with some limitations.
-- **UAI** (`.uai`): Very simple format for Bayesian networks and Markov networks with limitations.
-- **BIF** (`.bif`): Format for Bayesian networks with limitations.
+- **Net** (``.net``): Standard format for Bayesian networks but may lose some metadata.
+- **DSL** (``.dsl``): GeNIe format with some limitations.
+- **UAI** (``.uai``): Very simple format for Bayesian networks and Markov networks with limitations.
+- **BIF** (``.bif``): Format for Bayesian networks with limitations.
 - etc. (see :func:`pyagrum.availableBNExts()` for a complete list).
 
 .. seealso::

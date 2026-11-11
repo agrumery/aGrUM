@@ -1,7 +1,7 @@
 Quantum Bayesian Network Sampling
 ==================================
 
-``pyagrum.qBNSampling`` provides a quantum-circuit encoding of Bayesian networks
+`pyagrum.qBNSampling` provides a quantum-circuit encoding of Bayesian networks
 and a quantum rejection-sampling inference engine, built on top of
 `Qiskit <https://www.ibm.com/quantum/qiskit>`_ and the Aer simulator.
 

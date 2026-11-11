@@ -66,7 +66,7 @@ class Explainer(ABC):
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet.
+        If bn is not a `pyagrum.BayesNet`.
     """
     super().__init__()
     if not isinstance(bn, pyagrum.BayesNet):

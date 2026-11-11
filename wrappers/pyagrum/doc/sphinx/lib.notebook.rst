@@ -1,7 +1,7 @@
 Jupyter notebook with Graphical Models
 ======================================
 
-``pyagrum.lib.notebook`` aims to facilitate the use of pyAgrum with jupyter notebook (or lab).
+`pyagrum.lib.notebook` aims to facilitate the use of pyAgrum with jupyter notebook (or lab).
 
 .. image:: _static/pyAgrum_all.png
 
@@ -10,7 +10,7 @@ Visualization of graphical models
 
 .. important::
 
-    For many graphical representations functions, the parameter `size` is directly transferred to `graphviz`. Hence, Its format is a string containing an int. However if `size` ends in an exclamation point "!" (such as `size="4!"`), then `size` is taken to be the desired minimum size. In this case, if both dimensions of the drawing are less than size, the drawing is scaled up uniformly until at least one dimension equals its dimension in size.
+    For many graphical representations functions, the parameter ``size`` is directly transferred to ``graphviz``. Hence, Its format is a string containing an int. However if ``size`` ends in an exclamation point "!" (such as ``size="4!"``), then ``size`` is taken to be the desired minimum size. In this case, if both dimensions of the drawing are less than size, the drawing is scaled up uniformly until at least one dimension equals its dimension in size.
 
     .. image:: _static/effect_of_Graphviz_size.png
 

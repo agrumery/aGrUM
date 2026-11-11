@@ -5927,7 +5927,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -5947,9 +5947,9 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If att_name is not an element of class_name\n"
 		"\n"
 		""},
@@ -5967,7 +5967,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -5985,7 +5985,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6016,7 +6016,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6034,7 +6034,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    if the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6052,7 +6052,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6078,7 +6078,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6096,7 +6096,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
 		"\n"
 		""},
@@ -6118,10 +6118,10 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the class element doesn't have any pyagrum.Tensor (like a pyagrum.PRMReferenceSlot).\n"
-		"pyagrum.IndexError\n"
+		"    If the class element doesn't have any `pyagrum.Tensor` (like a reference slot).\n"
+		"pyagrum.NotFound\n"
 		"    If the class is not in the PRM\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the attribute in parameters does not exist\n"
 		"\n"
 		""},
@@ -6147,7 +6147,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6165,7 +6165,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6183,7 +6183,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6201,7 +6201,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6230,7 +6230,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6248,7 +6248,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the type is not in the PRM\n"
 		"\n"
 		""},
@@ -6266,7 +6266,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the interface is not in the PRM\n"
 		"\n"
 		""},
@@ -6284,7 +6284,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the interface is not in the PRM\n"
 		"\n"
 		""},
@@ -6302,7 +6302,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the interface is not in the PRM\n"
 		"\n"
 		""},

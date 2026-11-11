@@ -92,7 +92,7 @@ KTBNLearner(dirPath, csvBaseName, nbSamples, k, bn, atemporalVars=set(), missing
     atemporal variables, which only ever show one value per trajectory.
 
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a BayesNet with one node per base
+        - **bn** (`pyagrum.BayesNet`) -- a BayesNet with one node per base
           variable, providing the variable types and domains
 "
 
@@ -243,7 +243,7 @@ pyagrum.ktbn.KTBNLearner
 "
 Use the constraint-based PC algorithm for structure search.
 
-The significance threshold is the key `alpha` of the section `learning` of the configuration.
+The significance threshold is the key ``alpha`` of the section ``learning`` of the configuration.
 
 Returns
 -------
@@ -255,7 +255,7 @@ pyagrum.ktbn.KTBNLearner
 "
 Use the constraint-based FCI algorithm for structure search.
 
-The significance threshold is the key `alpha` of the section `learning` of the configuration.
+The significance threshold is the key ``alpha`` of the section ``learning`` of the configuration.
 
 Returns
 -------

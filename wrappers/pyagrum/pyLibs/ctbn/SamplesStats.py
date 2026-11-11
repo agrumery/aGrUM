@@ -421,7 +421,7 @@ class Trajectory:
 
   def computeStats(self, X: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor]:
     """
-    Computes time spent and number of transitions values of ``X`` and returns them as ``pyagrum.Tensor``.
+    Computes time spent and number of transitions values of ``X`` and returns them as `pyagrum.Tensor`.
 
     Parameters
     ----------
@@ -576,7 +576,7 @@ class Trajectory:
   def computeStatsForTests(self, X: str, Y: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` when conditioned by ``Y`` and ``U`` and
-    returns them as ``pyagrum.Tensor``. Used for independence testing.
+    returns them as `pyagrum.Tensor`. Used for independence testing.
 
     Parameters
     ----------

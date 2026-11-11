@@ -62,7 +62,7 @@ LabelizedVariable(aName, aDesc='', labels) -> LabelizedVariable
 
 LabelizedVariable(aLDRV) -> LabelizedVariable
     Parameters:
-        - **aLDRV** (*pyagrum.LabelizedVariable*) -- The pyagrum.LabelizedVariable that will be copied
+        - **aLDRV** (`pyagrum.LabelizedVariable`) -- The `pyagrum.LabelizedVariable` that will be copied
 "
 
 %feature("docstring") gum::LabelizedVariable::changeLabel

@@ -50,7 +50,7 @@ This file contains the CIM class (Conditional Intensity Matrix).
 class CIM:
   """
   This class is used to represent a CIM (random variables and parameters of transition time).
-  A CIM is mainly a pyagrum.Tensor that contains the parameters of an exponential distribution.
+  A CIM is mainly a `pyagrum.Tensor` that contains the parameters of an exponential distribution.
   This class contains also contains the ``amalgamation`` operator, used for merging CIMs into one.
 
   Notes

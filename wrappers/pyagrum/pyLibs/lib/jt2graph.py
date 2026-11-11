@@ -68,7 +68,7 @@ def _junctionTreeOptions(
 
 
 def _junctionTreeDot(jt: pyagrum.CliqueGraph, size: float | str | None = None) -> dot.Dot:
-  """The pydot graph of a junction tree built for a model (the attribute `_engine` of the junction tree)."""
+  """The pydot graph of a junction tree built for a model (the attribute ``_engine`` of the junction tree)."""
   model = jt._engine._model
   withNames = pyagrum.config.typed["junctionTree", "withNames"]
   return gds.dotFromAgrum(jt.toDot(_junctionTreeOptions(jt, model, withNames, size)))

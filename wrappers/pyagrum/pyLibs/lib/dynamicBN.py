@@ -39,7 +39,7 @@
 ############################################################################
 
 """
-This module is deprecated. Please use "import pyagrum.ktbn"
+This module is deprecated. Please use ``import pyagrum.ktbn``
 """
 
 import warnings

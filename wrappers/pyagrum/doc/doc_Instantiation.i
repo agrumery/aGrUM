@@ -55,7 +55,7 @@ Instantiation() -> Instantiation
 
 Instantiation(aI) -> Instantiation
     Parameters:
-      - **aI** (*pyagrum.Instantiation*) -- the Instantiation we copy
+      - **aI** (`pyagrum.Instantiation`) -- the Instantiation we copy
 
 Returns
 -------
@@ -489,7 +489,7 @@ List
 
 %feature("docstring") gum::Instantiation::todict
 "
-Create a dictionary `{variable_name:value}` from an instantiation
+Create a dictionary ``{variable_name:value}`` from an instantiation
 
 Parameters
 ----------
@@ -504,7 +504,7 @@ dict
 
 %feature("docstring") gum::Instantiation::fromdict
 "
-Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
+Change the values in an instantiation from a dictionary ``{variable_name:value}`` where value can be a position (int) or a label (string).
 
 If a variable_name does not occur in the instantiation, nothing is done.
 

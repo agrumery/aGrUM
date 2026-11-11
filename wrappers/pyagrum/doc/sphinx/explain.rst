@@ -1,7 +1,7 @@
 pyagrum.explain
 ===============
 
-The purpose of ``pyagrum.explain`` is to give tools to explain and interpret the structure and
+The purpose of `pyagrum.explain` is to give tools to explain and interpret the structure and
 parameters of a Bayesian network.
 
 Dealing with independence

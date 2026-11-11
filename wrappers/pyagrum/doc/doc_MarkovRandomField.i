@@ -54,12 +54,12 @@ MarkovRandomField(name='') -> MarkovRandomField
 
 MarkovRandomField(source) -> MarkovRandomField
     Parameters:
-      - **source** (*pyagrum.MarkovRandomField*) -- the Markov random field to copy
+      - **source** (`pyagrum.MarkovRandomField`) -- the Markov random field to copy
 "
 
 %feature("docstring") gum::MarkovRandomField::add
 "
-Add a variable to the pyagrum.MarkovRandomField.
+Add a variable to the `pyagrum.MarkovRandomField`.
 
 Parameters
 ----------
@@ -70,7 +70,7 @@ name : str
 nbrmod : int
     the number of modalities for the new variable
 id : int
-    the variable forced id in the pyagrum.MarkovRandomField
+    the variable forced id in the `pyagrum.MarkovRandomField`
 
 Returns
 -------
@@ -80,7 +80,7 @@ int
 Raises
 ------
 pyagrum.DuplicateLabel
-    If variable.name() is already used in this pyagrum.MarkovRandomField.
+    If variable.name() is already used in this `pyagrum.MarkovRandomField`.
 pyagrum.OperationNotAllowed
     If nbrmod is less than 2
 pyagrum.DuplicateElement
@@ -99,9 +99,9 @@ seq : sequence (list or set) of int or string
 
 %feature("docstring") gum::MarkovRandomField::changeVariableName
 "
-Changes a variable's name in the pyagrum.MarkovRandomField.
+Changes a variable's name in the `pyagrum.MarkovRandomField`.
 
-This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.
+This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.MarkovRandomField`.
 
 Parameters
 ----------
@@ -154,9 +154,9 @@ Clear the whole MarkovRandomField
 
 %feature("docstring") gum::MarkovRandomField::erase
 "
-Remove a variable from the pyagrum.MarkovRandomField.
+Remove a variable from the `pyagrum.MarkovRandomField`.
 
-Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
+Removes the corresponding variable from the `pyagrum.MarkovRandomField` and from all of it's children `pyagrum.Tensor`.
 
 If no variable matches the given id, then nothing is done.
 
@@ -252,7 +252,7 @@ Returns the factor of a set of variables (if existing).
 Parameters
 ----------
 vars : set
-    A set of ids or names of variable the pyagrum.MarkovRandomField.
+    A set of ids or names of variable the `pyagrum.MarkovRandomField`.
 
 Returns
 -------
@@ -401,7 +401,7 @@ pyagrum.DiscreteVariable
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
     If the graph does not contain the variable
 "
 
@@ -437,7 +437,7 @@ Return the table of all factors in the Markov random field.
 Returns
 -------
 dict
-    a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
+    a dict mapping frozenset[int] (node id sets) to `pyagrum.Tensor`
 "
 
 %feature("docstring") gum::MarkovRandomField::fromBN
@@ -693,7 +693,7 @@ Return a Graphviz dot representation of the Markov random field.
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------
@@ -708,7 +708,7 @@ Return a Graphviz dot representation of the Markov random field as a factor grap
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------

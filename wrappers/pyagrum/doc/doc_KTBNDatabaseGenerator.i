@@ -56,7 +56,7 @@ of the number of trajectories and their length.
 
 KTBNDatabaseGenerator(kdbn) -> KTBNDatabaseGenerator
     Parameters:
-        - **kdbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to sample from (only its
+        - **kdbn** (`pyagrum.ktbn.KTBN`) -- the k-TBN to sample from (only its
           k-slice template is copied; the k-TBN itself is not retained)
 "
 

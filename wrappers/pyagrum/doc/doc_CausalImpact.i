@@ -58,7 +58,7 @@ instead of constructing a CausalImpact object directly.
 
 CausalImpact(cm, \*, on, doing, knowing=None) -> CausalImpact
     Parameters:
-        - **cm** (*pyagrum.CausalModel*) -- the causal model.
+        - **cm** (`pyagrum.CausalModel`) -- the causal model.
         - **on** (*str or set of str*) -- target variable(s) of the query.
           A single string is automatically converted to a one-element set.
           Keyword-only.

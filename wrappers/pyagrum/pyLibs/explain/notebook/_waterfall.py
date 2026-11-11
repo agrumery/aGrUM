@@ -84,12 +84,12 @@ def waterfall(
       The keys of the dictionary must match the keys in the Explanation object, and the values are the values you want to display on the plot.
   filename : str, optional
       If provided, save the figure to this path instead of displaying it (default is None).
-      Ignored when `ax` is supplied by the caller.
+      Ignored when ``ax`` is supplied by the caller.
 
   Raises
   ------
   TypeError
-      If `explanation` is not an Explanation object or if `y` is not an integer.
+      If ``explanation`` is not an Explanation object or if ``y`` is not an integer.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.
   """
 

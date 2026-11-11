@@ -164,7 +164,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -182,7 +182,7 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+            what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
         Returns
         -------
@@ -233,8 +233,8 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -343,7 +343,7 @@ class MarkovRandomField(IMarkovRandomField):
 
     MarkovRandomField(source) -> MarkovRandomField
         Parameters:
-          - **source** (*pyagrum.MarkovRandomField*) -- the Markov random field to copy
+          - **source** (`pyagrum.MarkovRandomField`) -- the Markov random field to copy
 
     """
 
@@ -426,7 +426,7 @@ class MarkovRandomField(IMarkovRandomField):
         Returns
         -------
         dict
-            a dict mapping frozenset[int] (node id sets) to pyagrum.Tensor
+            a dict mapping frozenset[int] (node id sets) to `pyagrum.Tensor`
 
         """
         return _mrfcpp.MarkovRandomField_factors(self)
@@ -434,7 +434,7 @@ class MarkovRandomField(IMarkovRandomField):
     def add(self, *args) -> int:
         r"""
 
-        Add a variable to the pyagrum.MarkovRandomField.
+        Add a variable to the `pyagrum.MarkovRandomField`.
 
         Parameters
         ----------
@@ -445,7 +445,7 @@ class MarkovRandomField(IMarkovRandomField):
         nbrmod : int
             the number of modalities for the new variable
         id : int
-            the variable forced id in the pyagrum.MarkovRandomField
+            the variable forced id in the `pyagrum.MarkovRandomField`
 
         Returns
         -------
@@ -455,7 +455,7 @@ class MarkovRandomField(IMarkovRandomField):
         Raises
         ------
         pyagrum.DuplicateLabel
-            If variable.name() is already used in this pyagrum.MarkovRandomField.
+            If variable.name() is already used in this `pyagrum.MarkovRandomField`.
         pyagrum.OperationNotAllowed
             If nbrmod is less than 2
         pyagrum.DuplicateElement
@@ -475,9 +475,9 @@ class MarkovRandomField(IMarkovRandomField):
     def erase(self, *args) -> None:
         r"""
 
-        Remove a variable from the pyagrum.MarkovRandomField.
+        Remove a variable from the `pyagrum.MarkovRandomField`.
 
-        Removes the corresponding variable from the pyagrum.MarkovRandomField and from all of it's children pyagrum.Tensor.
+        Removes the corresponding variable from the `pyagrum.MarkovRandomField` and from all of it's children `pyagrum.Tensor`.
 
         If no variable matches the given id, then nothing is done.
 
@@ -492,9 +492,9 @@ class MarkovRandomField(IMarkovRandomField):
     def changeVariableName(self, *args) -> None:
         r"""
 
-        Changes a variable's name in the pyagrum.MarkovRandomField.
+        Changes a variable's name in the `pyagrum.MarkovRandomField`.
 
-        This will change the pyagrum.DiscreteVariable names in the pyagrum.MarkovRandomField.
+        This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.MarkovRandomField`.
 
         Parameters
         ----------
@@ -764,8 +764,8 @@ class MarkovRandomField(IMarkovRandomField):
       """ adjacency matrix from a graph/graphical models
 
       Compute the adjacency matrix of a pyAgrum's graph or graphical models
-      (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-      a MAG, the symmetric matrix of `adjacents`)
+      (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+      a MAG, the symmetric matrix of ``adjacents``)
 
       Returns
       -------
@@ -850,7 +850,7 @@ class MarkovRandomField(IMarkovRandomField):
         Parameters
         ----------
         vars : set
-            A set of ids or names of variable the pyagrum.MarkovRandomField.
+            A set of ids or names of variable the `pyagrum.MarkovRandomField`.
 
         Returns
         -------
@@ -1213,7 +1213,7 @@ class ShaferShenoyMRFInference(object):
 
     ShaferShenoyMRFInference(bn) -> ShaferShenoyMRFInference
         Parameters:
-            - **mrf** (*pyagrum.MarkovRandomField*) -- a Markov random field
+            - **mrf** (`pyagrum.MarkovRandomField`) -- a Markov random field
 
     """
 
@@ -1399,7 +1399,7 @@ class ShaferShenoyMRFInference(object):
     def evidenceImpact(self, target: object, evs: object) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)
+        Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)
 
         Parameters
         ----------
@@ -1496,7 +1496,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -1519,7 +1519,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -1685,7 +1685,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -1725,13 +1725,13 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
         return _mrfcpp.ShaferShenoyMRFInference_eraseEvidence(self, *args)
 
-    def hasHardEvidence(self, nodeName: str) -> bool:
+    def hasHardEvidence(self, *args) -> bool:
         r"""
 
         Parameters
@@ -1748,11 +1748,11 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
-        return _mrfcpp.ShaferShenoyMRFInference_hasHardEvidence(self, nodeName)
+        return _mrfcpp.ShaferShenoyMRFInference_hasHardEvidence(self, *args)
 
     def hasSoftEvidence(self, *args) -> bool:
         r"""
@@ -1771,7 +1771,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
 
         """
@@ -1862,7 +1862,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If one of the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -1887,7 +1887,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.IndexError
+        pyagrum.NotFound
           If the node does not belong to the Bayesian network
         pyagrum.UndefinedElement
           If node Id is not in the Bayesian network
@@ -1992,7 +1992,7 @@ class ShaferShenoyMRFInference(object):
     def evidenceJointImpact(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)
+        Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)
 
         Parameters
         ----------
@@ -2008,7 +2008,7 @@ class ShaferShenoyMRFInference(object):
 
         Raises
         ------
-        pyagrum.Exception
+        pyagrum.IncompatibleEvidence
           If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
@@ -2061,6 +2061,8 @@ def loadMRF(
   pyagrum.InvalidArgument
     If a listener is not callable.
 
+  Notes
+  -----
   Listeners could be added in order to monitor its loading.
 
   pkl suffix is used to load a pickled MRF. In this case, options are ignored.

@@ -83,6 +83,8 @@ def loadMRF(
   pyagrum.InvalidArgument
     If a listener is not callable.
 
+  Notes
+  -----
   Listeners could be added in order to monitor its loading.
 
   pkl suffix is used to load a pickled MRF. In this case, options are ignored.

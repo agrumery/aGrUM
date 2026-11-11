@@ -70,12 +70,12 @@ def bar(
     if True, the importance plot is shown in percent.
   filename : str, optional
       If provided, save the figure to this path instead of displaying it (default is None).
-      Ignored when `ax` is supplied by the caller.
+      Ignored when ``ax`` is supplied by the caller.
 
   Raises
   ------
   TypeError
-      If `explanation` is not an Explanation object or if `y` is not an integer or None.
+      If ``explanation`` is not an Explanation object or if ``y`` is not an integer or None.
   IndexError : If `y` is an integer but out of bounds for the explanation keys.
   """
 

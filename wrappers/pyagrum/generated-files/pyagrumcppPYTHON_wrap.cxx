@@ -6967,7 +6967,10 @@ SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(gum::Laz
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::LazyPropagation< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence(gum::LazyPropagation< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::LazyPropagation< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::LazyPropagation< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::LazyPropagation< double > const *self,std::string const &nodeName){
@@ -7181,7 +7184,10 @@ SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseEvidence__SWIG_1(gu
 SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::ShaferShenoyInference< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence(gum::ShaferShenoyInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::ShaferShenoyInference< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::ShaferShenoyInference< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::ShaferShenoyInference< double > const *self,std::string const &nodeName){
@@ -7395,7 +7401,10 @@ SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_1(gum:
 SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::VariableElimination< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasHardEvidence(gum::VariableElimination< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::VariableElimination< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::VariableElimination< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::VariableElimination< double > const *self,std::string const &nodeName){
@@ -7565,7 +7574,10 @@ SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::Gibbs
 SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::GibbsSampling< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasHardEvidence(gum::GibbsSampling< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::GibbsSampling< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::GibbsSampling< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::GibbsSampling< double > const *self,std::string const &nodeName){
@@ -7729,7 +7741,10 @@ SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::
 SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::ImportanceSampling< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::ImportanceSampling< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
@@ -7889,7 +7904,10 @@ SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::We
 SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::WeightedSampling< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasHardEvidence(gum::WeightedSampling< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::WeightedSampling< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::WeightedSampling< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::WeightedSampling< double > const *self,std::string const &nodeName){
@@ -8049,7 +8067,10 @@ SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::
 SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::MonteCarloSampling< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::MonteCarloSampling< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
@@ -8209,7 +8230,10 @@ SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_S
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasSoftEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasSoftEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self,std::string const &nodeName){
@@ -8369,7 +8393,10 @@ SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg_
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasSoftEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasSoftEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self,std::string const &nodeName){
@@ -8529,7 +8556,10 @@ SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__er
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasSoftEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasSoftEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self,std::string const &nodeName){
@@ -8695,7 +8725,10 @@ SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_S
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasSoftEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence__SWIG_0(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasSoftEvidence__SWIG_1(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self,std::string const &nodeName){
@@ -8855,7 +8888,10 @@ SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(g
 SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > const *self,gum::NodeId const id){
     return self->gum::MarginalTargetedInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > const *self,gum::NodeId const id){
+    return self->gum::MarginalTargetedInference<double>::hasHardEvidence(id);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
     return self->gum::MarginalTargetedInference<double>::hasHardEvidence(nodeName);
   }
 SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
@@ -97367,18 +97403,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_hasHardEvidence" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::LazyPropagation< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LazyPropagation_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_hasHardEvidence" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
@@ -97397,7 +97469,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence(PyObject *self, PyObj
   }
   {
     try {
-      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence((gum::LazyPropagation< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LazyPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::LazyPropagation< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -97409,6 +97481,42 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence(PyObject *self, PyObj
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LazyPropagation_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LazyPropagation_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LazyPropagation_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LazyPropagation_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LazyPropagation< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LazyPropagation< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -100917,18 +101025,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyInference< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ShaferShenoyInference_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::ShaferShenoyInference< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyInference< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ShaferShenoyInference_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_hasHardEvidence" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
@@ -100947,7 +101091,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence(PyObject *self,
   }
   {
     try {
-      result = (bool)gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence((gum::ShaferShenoyInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_ShaferShenoyInference_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::ShaferShenoyInference< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -100959,6 +101103,42 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence(PyObject *self,
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ShaferShenoyInference_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_ShaferShenoyInference_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_ShaferShenoyInference_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ShaferShenoyInference_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ShaferShenoyInference< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::ShaferShenoyInference< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -104390,18 +104570,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_hasHardEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::VariableElimination< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::VariableElimination< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "VariableElimination_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_hasHardEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
@@ -104420,7 +104636,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence(PyObject *self, P
   }
   {
     try {
-      result = (bool)gum_VariableElimination_Sl_double_Sg__hasHardEvidence((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -104432,6 +104648,42 @@ SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence(PyObject *self, P
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "VariableElimination_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_VariableElimination_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_VariableElimination_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'VariableElimination_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::VariableElimination< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -107688,18 +107940,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::GibbsSampling< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::GibbsSampling< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "GibbsSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
@@ -107718,7 +108006,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence(PyObject *self, PyObjec
   }
   {
     try {
-      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasHardEvidence((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -107730,6 +108018,42 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence(PyObject *self, PyObjec
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "GibbsSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_GibbsSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_GibbsSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'GibbsSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::GibbsSampling< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::GibbsSampling< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -111035,18 +111359,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::ImportanceSampling< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ImportanceSampling< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "ImportanceSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
@@ -111065,7 +111425,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence(PyObject *self, Py
   }
   {
     try {
-      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -111077,6 +111437,42 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence(PyObject *self, Py
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "ImportanceSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_ImportanceSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_ImportanceSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'ImportanceSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::ImportanceSampling< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -114246,18 +114642,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::WeightedSampling< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::WeightedSampling< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "WeightedSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
@@ -114276,7 +114708,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence(PyObject *self, PyOb
   }
   {
     try {
-      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasHardEvidence((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -114288,6 +114720,42 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence(PyObject *self, PyOb
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "WeightedSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_WeightedSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_WeightedSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'WeightedSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::WeightedSampling< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -117457,18 +117925,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::MonteCarloSampling< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MonteCarloSampling< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "MonteCarloSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
@@ -117487,7 +117991,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence(PyObject *self, Py
   }
   {
     try {
-      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -117499,6 +118003,42 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence(PyObject *self, Py
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MonteCarloSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_MonteCarloSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_MonteCarloSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'MonteCarloSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::MonteCarloSampling< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -120766,18 +121306,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyImportanceSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence__SWIG_0((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LoopyImportanceSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
@@ -120796,7 +121372,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence(PyObject *sel
   }
   {
     try {
-      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__hasHardEvidence__SWIG_1((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -120808,6 +121384,42 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence(PyObject *sel
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LoopyImportanceSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LoopyImportanceSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LoopyImportanceSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LoopyImportanceSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopySamplingInference< double,gum::ImportanceSampling >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LoopySamplingInference< double,gum::ImportanceSampling >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -124075,18 +124687,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyWeightedSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence__SWIG_0((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LoopyWeightedSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
@@ -124105,7 +124753,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence(PyObject *self,
   }
   {
     try {
-      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__hasHardEvidence__SWIG_1((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -124117,6 +124765,42 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence(PyObject *self,
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LoopyWeightedSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LoopyWeightedSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LoopyWeightedSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LoopyWeightedSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopySamplingInference< double,gum::WeightedSampling >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LoopySamplingInference< double,gum::WeightedSampling >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -127384,18 +128068,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyGibbsSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence__SWIG_0((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LoopyGibbsSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
@@ -127414,7 +128134,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence(PyObject *self, Py
   }
   {
     try {
-      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__hasHardEvidence__SWIG_1((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -127426,6 +128146,42 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence(PyObject *self, Py
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LoopyGibbsSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LoopyGibbsSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LoopyGibbsSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LoopyGibbsSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopySamplingInference< double,gum::GibbsSampling >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LoopySamplingInference< double,gum::GibbsSampling >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -130897,18 +131653,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyMonteCarloSampling_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence__SWIG_0((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LoopyMonteCarloSampling_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
@@ -130927,7 +131719,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence(PyObject *sel
   }
   {
     try {
-      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__hasHardEvidence__SWIG_1((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -130939,6 +131731,42 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence(PyObject *sel
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LoopyMonteCarloSampling_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LoopyMonteCarloSampling_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LoopyMonteCarloSampling_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LoopyMonteCarloSampling_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopySamplingInference< double,gum::MonteCarloSampling >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LoopySamplingInference< double,gum::MonteCarloSampling >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -134108,18 +134936,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  bool result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_hasHardEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence__SWIG_0((gum::LoopyBeliefPropagation< double > const *)arg1,SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[2] ;
   bool result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "LoopyBeliefPropagation_hasHardEvidence", 2, 2, swig_obj)) SWIG_fail;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
@@ -134138,7 +135002,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence(PyObject *self
   }
   {
     try {
-      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence__SWIG_1((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -134150,6 +135014,42 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence(PyObject *self
 fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hasHardEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "LoopyBeliefPropagation_hasHardEvidence", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+    }
+    if (!_v) goto check_1;
+    return _wrap_LoopyBeliefPropagation_hasHardEvidence__SWIG_0(self, argc, argv);
+  }
+check_1:
+  
+  if (argc == 2) {
+    PyObject *retobj = _wrap_LoopyBeliefPropagation_hasHardEvidence__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_hasHardEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::hasHardEvidence(gum::NodeId const) const\n"
+    "    gum::LoopyBeliefPropagation< double >::hasHardEvidence(std::string const &) const\n");
+  return 0;
 }
 
 
@@ -148438,7 +149338,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "randomGamma", _wrap_randomGamma, METH_O, "\n"
 		"\n"
-		"Draws a value of the Gamma distribution of shape `shape` and scale 1, with the random generator of pyAgrum.\n"
+		"Draws a value of the Gamma distribution of shape ``shape`` and scale 1, with the random generator of pyAgrum.\n"
 		"\n"
 		"For a given seed (see `pyagrum.initRandom`), the value is the same on every platform.\n"
 		"\n"
@@ -148450,12 +149350,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  a value of the Gamma distribution (its mean is `shape`).\n"
+		"  a value of the Gamma distribution (its mean is ``shape``).\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.OutOfBounds\n"
-		"  If `shape` is not > 0.\n"
+		"  If ``shape`` is not > 0.\n"
 		"\n"
 		""},
 	 { "randomGeneratorSeed", _wrap_randomGeneratorSeed, METH_NOARGS, "\n"
@@ -148463,15 +149363,15 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the seed of the generator: the value given to the last call to `initRandom` or, if it was 0, the value taken from the current time. Used as `core.randomSeed` in a file `pyagrum.ini`, it repeats the same pseudo-random numbers sequence.\n"
+		"  the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.\n"
 		"\n"
 		""},
 	 { "currentRandomGeneratorValue", _wrap_currentRandomGeneratorValue, METH_NOARGS, NULL},
 	 { "initRandom", _wrap_initRandom, METH_VARARGS, "\n"
 		"\n"
-		"Initialize random generator seed. If `seed=0`, the generator is initialized from the current time in ms. `seed!=0` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.\n"
+		"Initialize random generator seed. If ``seed=0``, the generator is initialized from the current time in ms. ``seed!=0`` allows to fix the generator in a certain stage and then allows to repeat the same pseudo-random numbers sequence.\n"
 		"\n"
-		"This is the way to act directly on the generator at any time. At start, pyAgrum uses the key `core.randomSeed` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.\n"
+		"This is the way to act directly on the generator at any time. At start, pyAgrum uses the key ``core.randomSeed`` of the configuration (0, the current time, by default): changing this key later has no effect on the generator.\n"
 		"\n"
 		"A given seed gives the same draws on every platform.\n"
 		"\n"
@@ -148886,7 +149786,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "DiscreteVariable_closestIndex", _wrap_DiscreteVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -148895,17 +149795,17 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_closestLabel", _wrap_DiscreteVariable_closestLabel, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -148914,12 +149814,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"  the label of the closest value to `value` in the variable's domain\n"
+		"  the label of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"gum.InvalidArgument\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_varType", _wrap_DiscreteVariable_varType, METH_O, "\n"
@@ -149003,7 +149903,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "DiscreteVariable___str__", _wrap_DiscreteVariable___str__, METH_O, NULL},
 	 { "DiscreteVariable_asLabelizedVar", _wrap_DiscreteVariable_asLabelizedVar, METH_O, "\n"
 		"\n"
-		"Tries to cast the variable as a `gum.LabelizedVar`.\n"
+		"Tries to cast the variable as a `pyagrum.LabelizedVariable`.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -149011,13 +149911,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"gum.LabelizedVar\n"
-		"  the variable as a gum.LabelizedVar\n"
+		"pyagrum.LabelizedVariable\n"
+		"  the variable as a `pyagrum.LabelizedVariable`\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_asRangeVar", _wrap_DiscreteVariable_asRangeVar, METH_O, "\n"
 		"\n"
-		"Tries to cast the variable as a `gum.RangeVar`.\n"
+		"Tries to cast the variable as a `pyagrum.RangeVariable`.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -149025,13 +149925,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"gum.RangeVar\n"
-		"  the variable as a gum.RangeVar\n"
+		"pyagrum.RangeVariable\n"
+		"  the variable as a `pyagrum.RangeVariable`\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_asIntegerVar", _wrap_DiscreteVariable_asIntegerVar, METH_O, "\n"
 		"\n"
-		"Tries to cast the variable as a `gum.IntegerVar`.\n"
+		"Tries to cast the variable as a `pyagrum.IntegerVariable`.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -149039,13 +149939,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"gum.IntegerVar\n"
-		"  the variable as a gum.IntegerVar\n"
+		"pyagrum.IntegerVariable\n"
+		"  the variable as a `pyagrum.IntegerVariable`\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_asNumericalDiscreteVar", _wrap_DiscreteVariable_asNumericalDiscreteVar, METH_O, "\n"
 		"\n"
-		"Tries to cast the variable as a `gum.NumericalDiscreteVar`.\n"
+		"Tries to cast the variable as a `pyagrum.NumericalDiscreteVariable`.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -149053,13 +149953,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"gum.NumericalDiscreteVar\n"
-		"  the variable as a gum.NumericalDiscreteVar\n"
+		"pyagrum.NumericalDiscreteVariable\n"
+		"  the variable as a `pyagrum.NumericalDiscreteVariable`\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_asDiscretizedVar", _wrap_DiscreteVariable_asDiscretizedVar, METH_O, "\n"
 		"\n"
-		"Tries to cast the variable as a `gum.DiscretizedVar`.\n"
+		"Tries to cast the variable as a `pyagrum.DiscretizedVariable`.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -149067,8 +149967,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"gum.DiscretizedVar\n"
-		"  the variable as a gum.DiscretizedVar\n"
+		"pyagrum.DiscretizedVariable\n"
+		"  the variable as a `pyagrum.DiscretizedVariable`\n"
 		"\n"
 		""},
 	 { "DiscreteVariable_swigregister", DiscreteVariable_swigregister, METH_O, NULL},
@@ -149188,7 +150088,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LabelizedVariable_closestIndex", _wrap_LabelizedVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149197,12 +150097,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "LabelizedVariable_domainSize", _wrap_LabelizedVariable_domainSize, METH_O, "\n"
@@ -149398,7 +150298,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "RangeVariable_closestIndex", _wrap_RangeVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149407,12 +150307,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "RangeVariable_domain", _wrap_RangeVariable_domain, METH_O, "\n"
@@ -149490,7 +150390,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "IntegerVariable_closestIndex", _wrap_IntegerVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149499,12 +150399,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "IntegerVariable_label", _wrap_IntegerVariable_label, METH_VARARGS, "\n"
@@ -149602,7 +150502,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "IntegerVariable_closestLabel", _wrap_IntegerVariable_closestLabel, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149611,12 +150511,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"  the label of the closest value to `value` in the variable's domain\n"
+		"  the label of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"gum.InvalidArgument\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "IntegerVariable___repr__", _wrap_IntegerVariable___repr__, METH_O, NULL},
@@ -149678,7 +150578,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "NumericalDiscreteVariable_closestIndex", _wrap_NumericalDiscreteVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149687,12 +150587,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "NumericalDiscreteVariable_label", _wrap_NumericalDiscreteVariable_label, METH_VARARGS, "\n"
@@ -149790,7 +150690,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "NumericalDiscreteVariable_closestLabel", _wrap_NumericalDiscreteVariable_closestLabel, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the label of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the label of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -149799,12 +150699,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"  the label of the closest value to `value` in the variable's domain\n"
+		"  the label of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"gum.InvalidArgument\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "NumericalDiscreteVariable___repr__", _wrap_NumericalDiscreteVariable___repr__, METH_O, NULL},
@@ -149975,7 +150875,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150359,7 +151259,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150608,7 +151508,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -150627,7 +151527,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -150908,7 +151808,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "DAG_ancestors", _wrap_DAG_ancestors, METH_VARARGS, "\n"
@@ -150923,7 +151823,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "DAG__saveGUMstring", _wrap_DAG__saveGUMstring, METH_VARARGS, NULL},
@@ -150943,7 +151843,7 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"  pyagrum.InvalidNode\n"
 		"    If head or tail does not belong to the graph nodes.\n"
-		"  pyagrum.CycleDetected\n"
+		"  pyagrum.InvalidDirectedCycle\n"
 		"    If a cycle is detected\n"
 		"\n"
 		"\n"
@@ -151057,7 +151957,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -151178,7 +152078,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "MixedGraph_ancestors", _wrap_MixedGraph_ancestors, METH_VARARGS, "\n"
@@ -151193,7 +152093,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "MixedGraph_edges", _wrap_MixedGraph_edges, METH_O, "\n"
@@ -151547,7 +152447,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "PDAG_ancestors", _wrap_PDAG_ancestors, METH_VARARGS, "\n"
@@ -151562,7 +152462,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "PDAG_edges", _wrap_PDAG_edges, METH_O, "\n"
@@ -151964,7 +152864,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -152239,13 +153139,13 @@ static PyMethodDef SwigMethods[] = {
 	 { "_ImmutableMixedGraphChainGraph_toDot", _wrap__ImmutableMixedGraphChainGraph_toDot, METH_VARARGS, "\n"
 		"\n"
 		"The chain components (nodes linked by undirected edges) are drawn in clusters (color of the key\n"
-		"``dot.chainComponentBgColor`` of ``pyagrum.config``) and the compelled arcs with the color of the key\n"
+		"``dot.chainComponentBgColor`` of `pyagrum.config`) and the compelled arcs with the color of the key\n"
 		"``dot.compelledArcColor``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -152490,13 +153390,13 @@ static PyMethodDef SwigMethods[] = {
 	 { "_ImmutableMixedGraphPDAG_dSeparation", _wrap__ImmutableMixedGraphPDAG_dSeparation, METH_VARARGS, NULL},
 	 { "_ImmutableMixedGraphPDAG_toDot", _wrap__ImmutableMixedGraphPDAG_toDot, METH_VARARGS, "\n"
 		"\n"
-		"The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of ``pyagrum.config``. No\n"
+		"The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of `pyagrum.config`. No\n"
 		"cluster is drawn: an MPDAG is not always a chain graph.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -152731,7 +153631,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.EdgeMark\n"
-		"    the mark (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)\n"
+		"    the mark (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)\n"
 		"\n"
 		""},
 	 { "MarkedGraph_setMarkAt", _wrap_MarkedGraph_setMarkAt, METH_VARARGS, "\n"
@@ -152755,7 +153655,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"mark : pyagrum.EdgeMark\n"
-		"    the mark to set everywhere (``pyagrum.EdgeMark.Circle``, ``Tail`` or ``Arrowhead``)\n"
+		"    the mark to set everywhere (`pyagrum.EdgeMark.Circle`, ``Tail`` or ``Arrowhead``)\n"
 		"\n"
 		""},
 	 { "MarkedGraph_isArrowhead", _wrap_MarkedGraph_isArrowhead, METH_VARARGS, "\n"
@@ -152942,7 +153842,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -153145,9 +154045,9 @@ static PyMethodDef SwigMethods[] = {
 		"y : int\n"
 		"    id of the second node\n"
 		"markAtX : pyagrum.EdgeMark, optional\n"
-		"    mark at the x endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)\n"
+		"    mark at the x endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)\n"
 		"markAtY : pyagrum.EdgeMark, optional\n"
-		"    mark at the y endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)\n"
+		"    mark at the y endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)\n"
 		"\n"
 		""},
 	 { "MarkedGraph_eraseEdge", _wrap_MarkedGraph_eraseEdge, METH_VARARGS, "\n"
@@ -153520,12 +154420,12 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and edges...)\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and edges...)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"    a representation of the MAG in the DOT format (see pyagrum.MarkedGraph.toDot)\n"
+		"    a representation of the MAG in the DOT format (see `pyagrum.MarkedGraph.toDot`)\n"
 		"\n"
 		""},
 	 { "MAG___repr__", _wrap_MAG___repr__, METH_O, NULL},
@@ -153764,7 +154664,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (keys ``junctionTree*`` of the\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (keys ``junctionTree*`` of the\n"
 		"    section ``notebook``). The options of a clique are the ones of its node; the options of an edge are\n"
 		"    the ones of its separator (label, tooltip, color, attributes, and width of the two links).\n"
 		"\n"
@@ -153857,7 +154757,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "MeekRules_propagateToDAG", _wrap_MeekRules_propagateToDAG, METH_VARARGS, "\n"
 		"\n"
-		"Calls `propagateToCPDAG` and then orients the remaining edges: into a consistent extension if the propagated graph\n"
+		"Calls ``propagateToCPDAG`` and then orients the remaining edges: into a consistent extension if the propagated graph\n"
 		"has one, else with new v-structures. The orientation looks for small CPTs: with ``domainSizes``, it uses the domain\n"
 		"size of each node; without, all the domains are considered equal (nodes with few parents). The DAG contains all the\n"
 		"arcs of the propagated graph. `pyagrum.MeekRules.choices` returns the list of the arbitrary choices made by the last\n"
@@ -154343,7 +155243,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Instantiation_todict", _wrap_Instantiation_todict, METH_VARARGS, "\n"
 		"\n"
-		"Create a dictionary `{variable_name:value}` from an instantiation\n"
+		"Create a dictionary ``{variable_name:value}`` from an instantiation\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -154798,7 +155698,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"bool\n"
-		"  True if `tail->head` is an arc.\n"
+		"  True if ``tail->head`` is an arc.\n"
 		"\n"
 		""},
 	 { "DAGmodel_parents", _wrap_DAGmodel_parents, METH_VARARGS, "\n"
@@ -154828,7 +155728,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of nodeId of the family of the node `norid`\n"
+		"  the set of nodeId of the family of the node ``norid``\n"
 		"\n"
 		""},
 	 { "DAGmodel_children", _wrap_DAGmodel_children, METH_VARARGS, "\n"
@@ -154858,7 +155758,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "DAGmodel_ancestors", _wrap_DAGmodel_ancestors, METH_VARARGS, "\n"
@@ -154873,7 +155773,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "DAGmodel_moralizedAncestralGraph", _wrap_DAGmodel_moralizedAncestralGraph, METH_VARARGS, "\n"
@@ -154887,7 +155787,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
+		"  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -155437,7 +156337,7 @@ static PyMethodDef SwigMethods[] = {
 		"  string following *fast* syntax description\n"
 		"default_nbrmod: int\n"
 		"  nbr of modality if fast_description does not indicate it.\n"
-		"  `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).\n"
+		"  ``default_nbrmod=1`` is the way to create a variable with only one value (for instance for reward in influence diagram).\n"
 		"\n"
 		""},
 	 { "fastDiGraph", _wrap_fastDiGraph, METH_O, "\n"
@@ -155453,7 +156353,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155490,7 +156390,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155527,7 +156427,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155564,7 +156464,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155601,7 +156501,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155638,7 +156538,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Note\n"
 		"----\n"
-		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : ``pyagrum.fastMRF``\n"
+		"A single ``'-'`` (not ``'--'``) is used for edges on purpose : `pyagrum.fastMRF`\n"
 		"already uses ``'--'`` to list the variables of a single factor (a clique), a\n"
 		"different construct from a chain of pairwise edges. ``'A--B'`` is therefore\n"
 		"rejected here rather than silently misread.\n"
@@ -155664,7 +156564,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "fastMarkedGraph", _wrap_fastMarkedGraph, METH_O, "\n"
 		"\n"
-		"Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like\n"
+		"Create a marked graph (`pyagrum.MarkedGraph`, or `pyagrum.PAG` for ``fastPAG``) from a dot-like\n"
 		"description.\n"
 		"\n"
 		"An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a\n"
@@ -155690,7 +156590,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "fastPAG", _wrap_fastPAG, METH_O, "\n"
 		"\n"
-		"Create a marked graph (``pyagrum.MarkedGraph``, or ``pyagrum.PAG`` for ``fastPAG``) from a dot-like\n"
+		"Create a marked graph (`pyagrum.MarkedGraph`, or `pyagrum.PAG` for ``fastPAG``) from a dot-like\n"
 		"description.\n"
 		"\n"
 		"An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a\n"
@@ -155897,7 +156797,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "DiscretizedVariable_closestIndex", _wrap_DiscretizedVariable_closestIndex, METH_VARARGS, "\n"
 		"\n"
-		"For numerical discrete variables (all except gum.LabelizedVariable), this method returns the index of the closest value to a given float value in the variable's domain.\n"
+		"For numerical discrete variables (all except `pyagrum.LabelizedVariable`), this method returns the index of the closest value to a given float value in the variable's domain.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -155906,12 +156806,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the index of the closest value to `value` in the variable's domain\n"
+		"  the index of the closest value to ``value`` in the variable's domain\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.NotImplementedYet\n"
-		"  if the variable is not numerical discrete (i.e., if it is a gum.LabelizedVariable).\n"
+		"  if the variable is not numerical discrete (i.e., if it is a `pyagrum.LabelizedVariable`).\n"
 		"\n"
 		""},
 	 { "DiscretizedVariable_toFast", _wrap_DiscretizedVariable_toFast, METH_O, "\n"
@@ -156029,7 +156929,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.Tensor\n"
-		"  a boolean-like tensor using the predicate `isNonZero`.\n"
+		"  a boolean-like tensor using the predicate ``isNonZero``.\n"
 		"\n"
 		""},
 	 { "Tensor_sum", _wrap_Tensor_sum, METH_O, "\n"
@@ -156204,15 +157104,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"    - if `v` is a list, the size of the list must be the size of the tensor\n"
+		"    - if ``v`` is a list, the size of the list must be the size of the tensor\n"
 		"\n"
-		"    - if `v` is a ref:pyagrum.Tensor, it must contain variables with exactly the same names and labels but not necessarily the same variables. If\n"
+		"    - if ``v`` is a ref:`pyagrum.Tensor`, it must contain variables with exactly the same names and labels but not necessarily the same variables. If\n"
 		"\n"
-		"    - If the second argument `mapping` is given, `mapping` explains how to map the variables of the tensor source to the variables of the tensor destination.\n"
+		"    - If the second argument ``mapping`` is given, ``mapping`` explains how to map the variables of the tensor source to the variables of the tensor destination.\n"
 		"\n"
-		"    - If `mapping` is a sequence, the order follows the same order as `destination.names`. If `mapping` is a dict, the keys are the names in the destination and the values are the names in the source.\n"
+		"    - If ``mapping`` is a sequence, the order follows the same order as ``destination.names``. If ``mapping`` is a dict, the keys are the names in the destination and the values are the names in the source.\n"
 		"\n"
-		"    - if `v` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.\n"
+		"    - if ``v`` is a ``numpy.ndarray``, it must be C-contiguous, dtype ``float64``, and its total size must equal the domain size. If it is N-D, its shape must equal ``tuple(reversed(self.shape))``. Copies the data in a single ``memcpy``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -156248,7 +157148,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"When the Tensor contains 0 or negative values, no exception are raised but `-inf` or `nan` values are assigned.\n"
+		"When the Tensor contains 0 or negative values, no exception are raised but ``-inf`` or ``nan`` values are assigned.\n"
 		"\n"
 		""},
 	 { "Tensor_sgn", _wrap_Tensor_sgn, METH_O, "\n"
@@ -156313,7 +157213,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Tensor_KL", _wrap_Tensor_KL, METH_VARARGS, "\n"
 		"\n"
-		"Check the compatibility and compute the Kullback-Leibler divergence between the tensor and `p`.\n"
+		"Check the compatibility and compute the Kullback-Leibler divergence between the tensor and ``p``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156529,7 +157429,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"func : function(dict)->float\n"
-		"    A function that takes a single argument, representing the value of a python representation of a `gum.Instantiation` (as a dictionary), and returns a float.\n"
+		"    A function that takes a single argument, representing the value of a python representation of a `pyagrum.Instantiation` (as a dictionary), and returns a float.\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
@@ -156547,7 +157447,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"inst : pyagrum.instantiation\n"
+		"inst : pyagrum.Instantiation\n"
 		"  a partial instantiation\n"
 		"dict : dict\n"
 		"  a dictionnary containing values for some discrete variables.\n"
@@ -156606,7 +157506,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Tensor_maxOut", _wrap_Tensor_maxOut, METH_VARARGS, "\n"
 		"\n"
-		"Projection using `max` as operation.\n"
+		"Projection using ``max`` as operation.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156626,7 +157526,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Tensor_minOut", _wrap_Tensor_minOut, METH_VARARGS, "\n"
 		"\n"
-		"Projection using `min` as operation.\n"
+		"Projection using ``min`` as operation.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156675,7 +157575,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Tensor_maxIn", _wrap_Tensor_maxIn, METH_VARARGS, "\n"
 		"\n"
-		"Projection using `max` as operation.\n"
+		"Projection using ``max`` as operation.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156690,7 +157590,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Tensor_minIn", _wrap_Tensor_minIn, METH_VARARGS, "\n"
 		"\n"
-		"Projection using `min` as operation.\n"
+		"Projection using ``min`` as operation.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156924,8 +157824,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Notes\n"
 		"-----\n"
-		"    This class is mainly instantiated automatically by the methods `addStructureListener` of\n"
-		"    pyagrum.BayesNet and pyagrum.InfluenceDiagram.\n"
+		"    This class is mainly instantiated automatically by the methods ``addStructureListener`` of\n"
+		"    `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -157034,7 +157934,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Notes\n"
 		"-----\n"
-		"    This class is mainly instantiated automatically by the method pyagrum.MarkovRandomField.addStructureListener.\n"
+		"    This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -157439,7 +158339,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "EssentialGraph_ancestors", _wrap_EssentialGraph_ancestors, METH_VARARGS, "\n"
@@ -157454,7 +158354,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "EssentialGraph_sizeNodes", _wrap_EssentialGraph_sizeNodes, METH_O, "\n"
@@ -157483,13 +158383,13 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "EssentialGraph_toDot", _wrap_EssentialGraph_toDot, METH_VARARGS, "\n"
 		"\n"
-		"Drawn as a ``pyagrum.CPDAG`` (chain components in clusters, compelled arcs with the color of the key\n"
-		"``dot.compelledArcColor`` of ``pyagrum.config``), the nodes being labelled with the names of the variables.\n"
+		"Drawn as a `pyagrum.CPDAG` (chain components in clusters, compelled arcs with the color of the key\n"
+		"``dot.compelledArcColor`` of `pyagrum.config`), the nodes being labelled with the names of the variables.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -157520,7 +158420,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -157619,7 +158519,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the descendants of node `norid`.\n"
+		"  the set of ids of the descendants of node ``norid``.\n"
 		"\n"
 		""},
 	 { "MarkovBlanket_ancestors", _wrap_MarkovBlanket_ancestors, METH_VARARGS, "\n"
@@ -157634,7 +158534,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"set\n"
-		"  the set of ids of the ancestors of node `norid`.\n"
+		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
 	 { "MarkovBlanket_swigregister", MarkovBlanket_swigregister, METH_O, NULL},
@@ -157899,9 +158799,9 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"VarId : int\n"
-		"    A variable's id in the pyagrum.IBayesNet.\n"
+		"    A variable's id in the Bayesian network.\n"
 		"name : str\n"
-		"    A variable's name in the pyagrum.IBayesNet.\n"
+		"    A variable's name in the Bayesian network.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -157918,7 +158818,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"i : pyagrum.instantiation\n"
+		"i : pyagrum.Instantiation\n"
 		"    an instantiation of the variables\n"
 		"\n"
 		"Returns\n"
@@ -157935,7 +158835,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"i : pyagrum.instantiation\n"
+		"i : pyagrum.Instantiation\n"
 		"    an instantiation of the variables\n"
 		"\n"
 		"Returns\n"
@@ -157952,8 +158852,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Check if the BayesNet is consistent (variables, CPT, ...)\n"
 		"\n"
-		"A distribution is considered normalized if its sum is within `pyagrum.config['core','epsilonStandard']`\n"
-		"(1e-6 by default) of 1. A sum that is further away but within `pyagrum.config['core','epsilonCoarse']`\n"
+		"A distribution is considered normalized if its sum is within ``pyagrum.config['core','epsilonStandard']``\n"
+		"(1e-6 by default) of 1. A sum that is further away but within ``pyagrum.config['core','epsilonCoarse']``\n"
 		"(1e-2 by default) of 1 is reported with the hint '(normalization problem ?)', since it is probably a\n"
 		"rounding problem rather than an error in the parameters.\n"
 		"\n"
@@ -158019,7 +158919,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -158029,7 +158929,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "IBayesNet_evEq", _wrap_IBayesNet_evEq, METH_VARARGS, "\n"
 		"\n"
-		"This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is equal to a given value.\n"
+		"This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is equal to a given value.\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -158045,12 +158945,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.Tensor\n"
-		"  The representation of the evidence as a pyagrum.Tensor.\n"
+		"  The representation of the evidence as a `pyagrum.Tensor`.\n"
 		"\n"
 		""},
 	 { "IBayesNet_evIn", _wrap_IBayesNet_evIn, METH_VARARGS, "\n"
 		"\n"
-		"This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is in a given range.\n"
+		"This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is in a given range.\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -158069,12 +158969,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.Tensor\n"
-		"  The representation of the evidence as a pyagrum.Tensor.\n"
+		"  The representation of the evidence as a `pyagrum.Tensor`.\n"
 		"\n"
 		""},
 	 { "IBayesNet_evLt", _wrap_IBayesNet_evLt, METH_VARARGS, "\n"
 		"\n"
-		"This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is less than a given value.\n"
+		"This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is less than a given value.\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -158090,12 +158990,12 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.Tensor\n"
-		"  The representation of the evidence as a pyagrum.Tensor.\n"
+		"  The representation of the evidence as a `pyagrum.Tensor`.\n"
 		"\n"
 		""},
 	 { "IBayesNet_evGt", _wrap_IBayesNet_evGt, METH_VARARGS, "\n"
 		"\n"
-		"This method is used to set an observation on a quasi-continuous variables (pyagrum.DiscretizedVariable with a large number of ticks) that the variable is greater than a given value.\n"
+		"This method is used to set an observation on a quasi-continuous variables (`pyagrum.DiscretizedVariable` with a large number of ticks) that the variable is greater than a given value.\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -158111,7 +159011,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"pyagrum.Tensor\n"
-		"  The representation of the evidence as a pyagrum.Tensor.\n"
+		"  The representation of the evidence as a `pyagrum.Tensor`.\n"
 		"\n"
 		""},
 	 { "IBayesNet_memoryFootprint", _wrap_IBayesNet_memoryFootprint, METH_O, "\n"
@@ -158196,7 +159096,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
+		"  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -158226,7 +159126,7 @@ static PyMethodDef SwigMethods[] = {
 		"-----\n"
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
 		"  - the CPTs are randomly generated.\n"
-		"  - see also the function pyagrum.fastBN.\n"
+		"  - see also the function `pyagrum.fastBN`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -158265,7 +159165,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_add", _wrap_BayesNet_add, METH_VARARGS, "\n"
 		"\n"
-		"Add a variable to the pyagrum.BayesNet.\n"
+		"Add a variable to the `pyagrum.BayesNet`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -158276,7 +159176,7 @@ static PyMethodDef SwigMethods[] = {
 		"nbrmod : int\n"
 		"    the number of modalities for the new variable\n"
 		"id : int\n"
-		"    the variable forced id in the pyagrum.BayesNet\n"
+		"    the variable forced id in the `pyagrum.BayesNet`\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -158286,7 +159186,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.DuplicateLabel\n"
-		"    If variable.name() or id is already used in this pyagrum.BayesNet.\n"
+		"    If variable.name() or id is already used in this `pyagrum.BayesNet`.\n"
 		"pyagrum.NotAllowed\n"
 		"    If nbrmod is less than 2\n"
 		"\n"
@@ -158298,9 +159198,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_erase", _wrap_BayesNet_erase, METH_VARARGS, "\n"
 		"\n"
-		"Remove a variable from the pyagrum.BayesNet.\n"
+		"Remove a variable from the `pyagrum.BayesNet`.\n"
 		"\n"
-		"Removes the corresponding variable from the pyagrum.BayesNet and from all of it's children pyagrum.Tensor.\n"
+		"Removes the corresponding variable from the `pyagrum.BayesNet` and from all of it's children `pyagrum.Tensor`.\n"
 		"\n"
 		"If no variable matches the given id, then nothing is done.\n"
 		"\n"
@@ -158312,9 +159212,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BayesNet_changeVariableName", _wrap_BayesNet_changeVariableName, METH_VARARGS, "\n"
 		"\n"
-		"Changes a variable's name in the pyagrum.BayesNet.\n"
+		"Changes a variable's name in the `pyagrum.BayesNet`.\n"
 		"\n"
-		"This will change the pyagrum.DiscreteVariable names in the pyagrum.BayesNet.\n"
+		"This will change the `pyagrum.DiscreteVariable` names in the `pyagrum.BayesNet`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -158608,8 +159508,8 @@ static PyMethodDef SwigMethods[] = {
 		"Add a deterministic variable whose value is the amplitude (maximum minus minimum) of the values of its\n"
 		"parents.\n"
 		"\n"
-		"The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,\n"
-		"`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones.\n"
+		"The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,\n"
+		"`pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones.\n"
 		"\n"
 		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
 		"(in particular, the result is saturated at both bounds of the domain). Without parent, the amplitude is 0.\n"
@@ -158771,8 +159671,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Add a deterministic variable whose value is the sum of the values of its parents.\n"
 		"\n"
-		"The aggregator and its parents must be numerical variables (`RangeVariable`, `IntegerVariable`,\n"
-		"`NumericalDiscreteVariable`, `DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.\n"
+		"The aggregator and its parents must be numerical variables (`pyagrum.RangeVariable`, `pyagrum.IntegerVariable`,\n"
+		"`pyagrum.NumericalDiscreteVariable`, `pyagrum.DiscretizedVariable`...), not labelized ones. To count the parents in a given state (e.g. the true booleans), use :meth:`addCOUNT`.\n"
 		"\n"
 		"If the computed value is not in the domain of the aggregator, the closest value of the domain is used\n"
 		"(in particular, the result is saturated at both bounds of the domain). The domain of the aggregator should therefore cover the possible sums.\n"
@@ -158913,7 +159813,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the graph does not contain the variable\n"
 		"\n"
 		""},
@@ -159029,7 +159929,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
+		"  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -159402,9 +160302,9 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"VarId : int\n"
-		"    A variable's id in the pyagrum.IBayesNet.\n"
+		"    A variable's id in the Bayesian network.\n"
 		"name : str\n"
-		"    A variable's name in the pyagrum.IBayesNet.\n"
+		"    A variable's name in the Bayesian network.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -159434,7 +160334,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the graph does not contain the variable\n"
 		"\n"
 		""},
@@ -159452,7 +160352,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the graph does not contain the variable\n"
 		"\n"
 		""},
@@ -159494,7 +160394,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"    If the graph does not contain the variable\n"
 		"\n"
 		""},
@@ -159503,7 +160403,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -159727,7 +160627,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"  gum.UndiGraph only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
+		"  `pyagrum.UndiGraph` only knows NodeId. Hence the moralized ancestral graph does not include the names of the variables.graph\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -159864,7 +160764,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LazyPropagation_evidenceImpact", _wrap_LazyPropagation_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -159951,7 +160851,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -159971,7 +160871,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160069,7 +160969,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160100,7 +161000,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160120,7 +161020,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160140,7 +161040,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160210,7 +161110,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160232,7 +161132,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160316,7 +161216,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LazyPropagation_evidenceJointImpact", _wrap_LazyPropagation_evidenceJointImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)\n"
+		"Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -160332,7 +161232,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.Exception\n"
+		"pyagrum.IncompatibleEvidence\n"
 		"  If some evidene entered into the Bayes net are incompatible (their joint proba = 0)\n"
 		"\n"
 		""},
@@ -160486,7 +161386,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ShaferShenoyInference_evidenceImpact", _wrap_ShaferShenoyInference_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -160573,7 +161473,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160593,7 +161493,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160691,7 +161591,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160722,7 +161622,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160742,7 +161642,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160762,7 +161662,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -160832,7 +161732,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160854,7 +161754,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -160938,7 +161838,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ShaferShenoyInference_evidenceJointImpact", _wrap_ShaferShenoyInference_evidenceJointImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)\n"
+		"Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -160954,7 +161854,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.Exception\n"
+		"pyagrum.IncompatibleEvidence\n"
 		"  If some evidene entered into the Bayes net are incompatible (their joint proba = 0)\n"
 		"\n"
 		""},
@@ -161092,7 +161992,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "VariableElimination_evidenceImpact", _wrap_VariableElimination_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -161130,7 +162030,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "VariableElimination_evidenceJointImpact", _wrap_VariableElimination_evidenceJointImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(joint targets|evs) (for all instanciation of targets and evs)\n"
+		"Create a `pyagrum.Tensor` for P(joint targets|evs) (for all instanciation of targets and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -161146,7 +162046,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.Exception\n"
+		"pyagrum.IncompatibleEvidence\n"
 		"  If some evidene entered into the Bayes net are incompatible (their joint proba = 0)\n"
 		"\n"
 		""},
@@ -161201,7 +162101,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -161221,7 +162121,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -161341,7 +162241,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161372,7 +162272,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161392,7 +162292,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161412,7 +162312,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161482,7 +162382,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -161504,7 +162404,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -161636,7 +162536,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "GibbsSampling_evidenceImpact", _wrap_GibbsSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -161920,7 +162820,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161951,7 +162851,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161971,7 +162871,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -161991,7 +162891,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -162061,7 +162961,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -162083,7 +162983,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -162212,7 +163112,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "ImportanceSampling_evidenceImpact", _wrap_ImportanceSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -162496,7 +163396,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -162527,7 +163427,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -162547,7 +163447,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -162567,7 +163467,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -162637,7 +163537,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -162659,7 +163559,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -162756,7 +163656,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "WeightedSampling_evidenceImpact", _wrap_WeightedSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -163040,7 +163940,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163071,7 +163971,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163091,7 +163991,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163111,7 +164011,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163181,7 +164081,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -163203,7 +164103,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -163300,7 +164200,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "MonteCarloSampling_evidenceImpact", _wrap_MonteCarloSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -163584,7 +164484,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163615,7 +164515,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163635,7 +164535,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163655,7 +164555,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -163725,7 +164625,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -163747,7 +164647,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -163835,7 +164735,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"  the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyImportanceSampling_setEvidence", _wrap_LoopyImportanceSampling_setEvidence, METH_VARARGS, NULL},
@@ -163867,7 +164767,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LoopyImportanceSampling_evidenceImpact", _wrap_LoopyImportanceSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -164151,7 +165051,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164182,7 +165082,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164202,7 +165102,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164222,7 +165122,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164292,7 +165192,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -164314,7 +165214,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -164402,7 +165302,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"  the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyWeightedSampling_setEvidence", _wrap_LoopyWeightedSampling_setEvidence, METH_VARARGS, NULL},
@@ -164434,7 +165334,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LoopyWeightedSampling_evidenceImpact", _wrap_LoopyWeightedSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -164718,7 +165618,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164749,7 +165649,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164769,7 +165669,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164789,7 +165689,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -164859,7 +165759,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -164881,7 +165781,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -164969,7 +165869,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"  the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyGibbsSampling_setEvidence", _wrap_LoopyGibbsSampling_setEvidence, METH_VARARGS, NULL},
@@ -165001,7 +165901,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LoopyGibbsSampling_evidenceImpact", _wrap_LoopyGibbsSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -165285,7 +166185,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165316,7 +166216,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165336,7 +166236,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165356,7 +166256,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165426,7 +166326,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -165448,7 +166348,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -165584,7 +166484,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"float\n"
-		"  the size of the virtual LBP. By default, it is `pyagrum.config['loopySampling', 'virtualLBPSize']` (5000).\n"
+		"  the size of the virtual LBP. By default, it is ``pyagrum.config['loopySampling', 'virtualLBPSize']`` (5000).\n"
 		"\n"
 		""},
 	 { "LoopyMonteCarloSampling_setEvidence", _wrap_LoopyMonteCarloSampling_setEvidence, METH_VARARGS, NULL},
@@ -165616,7 +166516,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LoopyMonteCarloSampling_evidenceImpact", _wrap_LoopyMonteCarloSampling_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -165900,7 +166800,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165931,7 +166831,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165951,7 +166851,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -165971,7 +166871,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -166041,7 +166941,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -166063,7 +166963,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -166160,7 +167060,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LoopyBeliefPropagation_evidenceImpact", _wrap_LoopyBeliefPropagation_evidenceImpact, METH_VARARGS, "\n"
 		"\n"
-		"Create a pyagrum.Tensor for P(target|evs) (for all instanciation of target and evs)\n"
+		"Create a `pyagrum.Tensor` for P(target|evs) (for all instanciation of target and evs)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -166444,7 +167344,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -166475,7 +167375,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -166495,7 +167395,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -166515,7 +167415,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"\n"
 		""},
@@ -166585,7 +167485,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If one of the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -166607,7 +167507,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"pyagrum.IndexError\n"
+		"pyagrum.NotFound\n"
 		"  If the node does not belong to the Bayesian network\n"
 		"pyagrum.UndefinedElement\n"
 		"  If node Id is not in the Bayesian network\n"
@@ -167057,17 +167957,17 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_BNDatabaseGenerator", _wrap_delete_BNDatabaseGenerator, METH_O, NULL},
 	 { "BNDatabaseGenerator_setDiscretizedLabelModeRandom", _wrap_BNDatabaseGenerator_setDiscretizedLabelModeRandom, METH_O, "\n"
 		"\n"
-		"Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.discretizedVariable` will give a random value from the uniform distribution on that interval.\n"
+		"Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.DiscretizedVariable` will give a random value from the uniform distribution on that interval.\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_setDiscretizedLabelModeMedian", _wrap_BNDatabaseGenerator_setDiscretizedLabelModeMedian, METH_O, "\n"
 		"\n"
-		"Set the discretized label mode to MEDIAN : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.\n"
+		"Set the discretized label mode to MEDIAN : sampling a `pyagrum.DiscretizedVariable` will give a deterministic value : the median of the uniform distribution on that interval.\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_setDiscretizedLabelModeInterval", _wrap_BNDatabaseGenerator_setDiscretizedLabelModeInterval, METH_O, "\n"
 		"\n"
-		"Set the discretized label mode to INTERVAL : sampling a `pyagrum.discretizedVariable` will give a deterministic value : the string representation of the interval.\n"
+		"Set the discretized label mode to INTERVAL : sampling a `pyagrum.DiscretizedVariable` will give a deterministic value : the string representation of the interval.\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_toCSV", _wrap_BNDatabaseGenerator_toCSV, METH_VARARGS, "\n"
@@ -167182,7 +168082,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"  if nothing has been sampled yet (using `gum.BNDatabaseGenerator.drawSamples()` for instance)\n"
+		"  if nothing has been sampled yet (using `pyagrum.BNDatabaseGenerator.drawSamples` for instance)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167215,7 +168115,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Generate and stock a database generated by sampling the Bayesian network.\n"
 		"\n"
-		"If `evs` is specified, the samples are stored only if there are compatible with these observations.\n"
+		"If ``evs`` is specified, the samples are stored only if there are compatible with these observations.\n"
 		"\n"
 		"Returns the log2likelihood of this database.\n"
 		"\n"
@@ -167230,16 +168130,16 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Warnings\n"
 		"--------\n"
-		"`nbSamples` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than `nbSamples` (even equal to 0).\n"
+		"``nbSamples`` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than ``nbSamples`` (even equal to 0).\n"
 		"\n"
 		"Warnings\n"
 		"--------\n"
 		"For discretized variable, aGrum/pyAgrum defines 3 behaviors when generating sample with labels :\n"
 		"- RANDOM (default) : the value is chosen randomly in the interval\n"
 		"- MEDIAN : the value is the median of the interval\n"
-		"- INTERVAL : the value is the interval itself (for instance `« [0,1[ »`)\n"
+		"- INTERVAL : the value is the interval itself (for instance ``« [0,1[ »``)\n"
 		"\n"
-		"The behavior can be set using `setDiscretizedLabelMode{Random|Median|Interval}`.\n"
+		"The behavior can be set using ``setDiscretizedLabelMode{Random|Median|Interval}``.\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_swigregister", BNDatabaseGenerator_swigregister, METH_O, NULL},
@@ -167259,17 +168159,17 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_learnParameters", _wrap_BNLearner_learnParameters, METH_VARARGS, "\n"
 		"\n"
 		"Creates a Bayes net whose structure corresponds to that passed in argument or to\n"
-		"the last structure learnt by Method `learnDAG()`, and whose parameters are learnt\n"
+		"the last structure learnt by Method ``learnDAG()``, and whose parameters are learnt\n"
 		"from the BNLearner's database.\n"
 		"\n"
 		"Usage:\n"
-		"  1. `learnParameters(dag, take_into_account_score=True)`\n"
-		"  2. `learnParameters(bn, take_into_account_score=True)`\n"
-		"  3. `learnParameters(take_into_account_score=True)`\n"
+		"  1. ``learnParameters(dag, take_into_account_score=True)``\n"
+		"  2. ``learnParameters(bn, take_into_account_score=True)``\n"
+		"  3. ``learnParameters(take_into_account_score=True)``\n"
 		"\n"
-		"When the first argument of Method `learnParameters()` is a DAG or a Bayes net\n"
+		"When the first argument of Method ``learnParameters()`` is a DAG or a Bayes net\n"
 		"(usages 1. and 2.), this one specifies the graphical structure of the returned\n"
-		"Bayes net. Otherwise (usage 3.), Method `learnParameters()` is called implicitly\n"
+		"Bayes net. Otherwise (usage 3.), Method ``learnParameters()`` is called implicitly\n"
 		"with the last DAG learnt by the BNLearner.\n"
 		"\n"
 		"The difference between calling this method with a DAG (usages 1. and 3.) or a\n"
@@ -167278,7 +168178,7 @@ static PyMethodDef SwigMethods[] = {
 		"distributions (CPT) before iterating the expectation/maximimzation steps. When a\n"
 		"DAG is passed in argument, these initializations are performed using a specific\n"
 		"estimator that does not take into account the missing values in the database. The\n"
-		"resulting CPTs are then perturbed randomly (see the noise in method `useEM()`).\n"
+		"resulting CPTs are then perturbed randomly (see the noise in method ``useEM()``).\n"
 		"When a Bayes net is passed in argument, its CPT for a node A can be either filled\n"
 		"exclusively with zeroes or not. In the first case, the initialization is performed\n"
 		"as described above. In the second case, the value of A's CPT is used as is, and\n"
@@ -167299,10 +168199,10 @@ static PyMethodDef SwigMethods[] = {
 		"    structure learning. In this case, if the score used to learn the structure\n"
 		"    has an implicit prior (like K2 which has a 1-smoothing prior), it is important\n"
 		"    to also take into account this implicit prior for parameter learning. By\n"
-		"    default (`take_into_account_score=True`), we will learn parameters by taking\n"
+		"    default (``take_into_account_score=True``), we will learn parameters by taking\n"
 		"    into account the prior specified by methods usePriorXXX() + the implicit prior\n"
-		"    of the score (if any). If `take_into_account_score=False`, we just take into\n"
-		"    account the prior specified by `usePriorXXX()`.\n"
+		"    of the score (if any). If ``take_into_account_score=False``, we just take into\n"
+		"    account the prior specified by ``usePriorXXX()``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167330,7 +168230,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNLearner_copyState", _wrap_BNLearner_copyState, METH_VARARGS, "\n"
 		"\n"
-		"Copy the state of the given pyagrum.BNLearner (as argument).\n"
+		"Copy the state of the given `pyagrum.BNLearner` (as argument).\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -167345,7 +168245,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"dag : pyagrum.DAG\n"
-		"    an initial pyagrum.DAG structure\n"
+		"    an initial `pyagrum.DAG` structure\n"
 		"\n"
 		""},
 	 { "BNLearner__useEM", _wrap_BNLearner__useEM, METH_VARARGS, NULL},
@@ -167495,8 +168395,8 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_EMenableMaxIter", _wrap_BNLearner_EMenableMaxIter, METH_O, "\n"
 		"\n"
 		"Enables a limit on the number of iterations performed by EM. This number is\n"
-		"equal to the last number specified with Method `EMsetMaxIter()`.\n"
-		"See Method `EMMaxIter()` to get its current value.\n"
+		"equal to the last number specified with Method ``EMsetMaxIter()``.\n"
+		"See Method ``EMMaxIter()`` to get its current value.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167575,7 +168475,7 @@ static PyMethodDef SwigMethods[] = {
 		"Sets or unsets the verbosity of the EM parameter learning algorithm.\n"
 		"\n"
 		"Verbosity is necessary for keeping track of the history of the learning.\n"
-		"See Method `EMHistory()`.\n"
+		"See Method ``EMHistory()``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -167690,9 +168590,9 @@ static PyMethodDef SwigMethods[] = {
 		"independence tests. Three phases: skeleton discovery, v-structure orientation,\n"
 		"and Meek rules propagation.\n"
 		"\n"
-		"After calling `usePC()`, configure the independence test with `useChi2Test()`\n"
-		"(default) or `useG2Test()`, and optionally tune the significance threshold with\n"
-		"`setPCAlpha()`.\n"
+		"After calling ``usePC()``, configure the independence test with ``useChi2Test()``\n"
+		"(default) or ``useG2Test()``, and optionally tune the significance threshold with\n"
+		"``setPCAlpha()``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167706,10 +168606,10 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"FCI is a constraint-based structure learning algorithm that, unlike PC, handles\n"
 		"latent confounders and selection bias. It learns a PAG (Partial Ancestral Graph)\n"
-		"from data via conditional independence tests. Use `learnPAG()` to retrieve the result.\n"
+		"from data via conditional independence tests. Use ``learnPAG()`` to retrieve the result.\n"
 		"\n"
-		"After calling `useFCI()`, configure the independence test with `useFCIChi2Test()`\n"
-		"(default) or `useFCIG2Test()`, and tune the significance threshold with `setFCIAlpha()`.\n"
+		"After calling ``useFCI()``, configure the independence test with ``useFCIChi2Test()``\n"
+		"(default) or ``useFCIG2Test()``, and tune the significance threshold with ``setFCIAlpha()``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167721,7 +168621,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Select the chi-squared (χ²) independence test for the FCI algorithm.\n"
 		"\n"
-		"This is the default test when `useFCI()` is called.\n"
+		"This is the default test when ``useFCI()`` is called.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167731,7 +168631,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_useFCIG2Test", _wrap_BNLearner_useFCIG2Test, METH_O, "\n"
@@ -167746,7 +168646,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setFCIAlpha", _wrap_BNLearner_setFCIAlpha, METH_VARARGS, "\n"
@@ -167757,7 +168657,7 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"alpha : float\n"
 		"    significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses\n"
-		"    `pyagrum.config['learning', 'alpha']` (0.05) as it was when the learner was created.\n"
+		"    ``pyagrum.config['learning', 'alpha']`` (0.05) as it was when the learner was created.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167767,7 +168667,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"pyagrum.OutOfBounds\n"
 		"    If alpha is not strictly between 0 and 1.\n"
 		"\n"
@@ -167789,7 +168689,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setFCIExhaustiveSepSet", _wrap_BNLearner_setFCIExhaustiveSepSet, METH_VARARGS, "\n"
@@ -167815,7 +168715,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_fciExhaustiveSepSet", _wrap_BNLearner_fciExhaustiveSepSet, METH_O, "\n"
@@ -167830,7 +168730,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setFCIErrorOnInvalidPAG", _wrap_BNLearner_setFCIErrorOnInvalidPAG, METH_VARARGS, "\n"
@@ -167842,12 +168742,12 @@ static PyMethodDef SwigMethods[] = {
 		"cycle, which may happen with conflicting independence tests), either an error is raised (``True``) or the former\n"
 		"approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this\n"
 		"symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.\n"
-		"The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).\n"
+		"The default value is the key ``learning.fciErrorOnInvalidPAG`` of `pyagrum.config` (``False``).\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"error : bool\n"
-		"    ``True`` to raise ``pyagrum.InvalidArgument`` on an invalid PAG.\n"
+		"    ``True`` to raise `pyagrum.InvalidArgument` on an invalid PAG.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -167857,7 +168757,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_fciErrorOnInvalidPAG", _wrap_BNLearner_fciErrorOnInvalidPAG, METH_O, "\n"
@@ -167871,14 +168771,14 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If FCI has not been selected (call `useFCI()` first).\n"
+		"    If FCI has not been selected (call ``useFCI()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_useChi2Test", _wrap_BNLearner_useChi2Test, METH_O, "\n"
 		"\n"
 		"Select the chi-squared (χ²) independence test for the PC algorithm.\n"
 		"\n"
-		"This is the default test when `usePC()` is called. The test measures\n"
+		"This is the default test when ``usePC()`` is called. The test measures\n"
 		"whether two variables are conditionally independent given a set of\n"
 		"conditioning variables by comparing observed and expected counts under\n"
 		"the independence hypothesis.\n"
@@ -167891,7 +168791,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the PC algorithm has not been selected (call `usePC()` first).\n"
+		"    If the PC algorithm has not been selected (call ``usePC()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_useG2Test", _wrap_BNLearner_useG2Test, METH_O, "\n"
@@ -167910,7 +168810,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the PC algorithm has not been selected (call `usePC()` first).\n"
+		"    If the PC algorithm has not been selected (call ``usePC()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setPCAlpha", _wrap_BNLearner_setPCAlpha, METH_VARARGS, "\n"
@@ -167925,7 +168825,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"alpha : float\n"
-		"    significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)\n"
+		"    significance threshold in (0, 1). If it is never set, the learner uses ``pyagrum.config['learning', 'alpha']`` (0.05)\n"
 		"    as it was when the learner was created.\n"
 		"\n"
 		"Returns\n"
@@ -167936,7 +168836,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the PC algorithm has not been selected (call `usePC()` first).\n"
+		"    If the PC algorithm has not been selected (call ``usePC()`` first).\n"
 		"pyagrum.OutOfBounds\n"
 		"    If alpha is not strictly between 0 and 1.\n"
 		"\n"
@@ -167950,7 +168850,7 @@ static PyMethodDef SwigMethods[] = {
 		"are deferred until the end of that level. This makes the result\n"
 		"order-independent within each depth level.\n"
 		"\n"
-		"In unstable PC (`stable=False`), edges are removed immediately and\n"
+		"In unstable PC (``stable=False``), edges are removed immediately and\n"
 		"adjacency sets are updated on the fly, which may cause the result to\n"
 		"depend on the order in which edges are processed.\n"
 		"\n"
@@ -167967,7 +168867,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the PC algorithm has not been selected (call `usePC()` first).\n"
+		"    If the PC algorithm has not been selected (call ``usePC()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setPCMaxCondSetSize", _wrap_BNLearner_setPCMaxCondSetSize, METH_VARARGS, "\n"
@@ -167993,7 +168893,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If the PC algorithm has not been selected (call `usePC()` first).\n"
+		"    If the PC algorithm has not been selected (call ``usePC()`` first).\n"
 		"\n"
 		""},
 	 { "BNLearner_setPCUnshieldedColliderSorted", _wrap_BNLearner_setPCUnshieldedColliderSorted, METH_VARARGS, "\n"
@@ -168043,8 +168943,8 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,\n"
 		"MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:\n"
-		"if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it\n"
-		"with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` does not check the\n"
+		"if the learned DAG exceeds the bound, ``learnDAG()`` and ``learnBN()`` raise `pyagrum.OperationNotAllowed`, or return it\n"
+		"with a warning (see ``setErrorOnExceededMaxIndegree``). ``learnPDAG()`` does not check the\n"
 		"bound.\n"
 		"\n"
 		"Parameters\n"
@@ -168057,15 +168957,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Choose what the constraint-based algorithms (PC, FCI, MIIC) do when the learned DAG exceeds the maximum indegree.\n"
 		"\n"
-		"These algorithms never remove an edge kept by their independence tests to satisfy the bound given by `setMaxIndegree`.\n"
-		"If the DAG of `learnDAG()` or `learnBN()` has a node with more parents than this bound, either an error is raised\n"
+		"These algorithms never remove an edge kept by their independence tests to satisfy the bound given by ``setMaxIndegree``.\n"
+		"If the DAG of ``learnDAG()`` or ``learnBN()`` has a node with more parents than this bound, either an error is raised\n"
 		"(``True``) or the DAG is returned with a warning (``False``). The default value is the key\n"
-		"``learning.errorOnExceededMaxIndegree`` of ``pyagrum.config`` (``True``).\n"
+		"``learning.errorOnExceededMaxIndegree`` of `pyagrum.config` (``True``).\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"error : bool\n"
-		"    ``True`` to raise ``pyagrum.OperationNotAllowed`` when the learned DAG exceeds the maximum indegree.\n"
+		"    ``True`` to raise `pyagrum.OperationNotAllowed` when the learned DAG exceeds the maximum indegree.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -168089,7 +168989,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_addForbiddenArc", _wrap_BNLearner_addForbiddenArc, METH_VARARGS, "\n"
 		"\n"
 		"Forbid the arc passed in argument to be added during structure learning\n"
-		"(methods `learnDAG()` or `learnBN()`).\n"
+		"(methods ``learnDAG()`` or ``learnBN()``).\n"
 		"\n"
 		"Usage:\n"
 		"  1. addForbiddenArc(tail, head)\n"
@@ -168122,7 +169022,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_addMandatoryArc", _wrap_BNLearner_addMandatoryArc, METH_VARARGS, "\n"
 		"\n"
 		"Allow an arc to be added if necessary during structure learning\n"
-		"(methods `learnDAG()` or `learnBN()`).\n"
+		"(methods ``learnDAG()`` or ``learnBN()``).\n"
 		"\n"
 		"Usage:\n"
 		"  1. addMandatoryArc(tail, head)\n"
@@ -168190,7 +169090,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNLearner_setPossibleSkeleton", _wrap_BNLearner_setPossibleSkeleton, METH_VARARGS, "\n"
 		"\n"
-		"Add a constraint by fixing the set of possible edges as a pyagrum.UndiGraph.\n"
+		"Add a constraint by fixing the set of possible edges as a `pyagrum.UndiGraph`.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -168336,7 +169236,7 @@ static PyMethodDef SwigMethods[] = {
 		"set can be empty. In this case, no need to specify it.\n"
 		"\n"
 		"Usage:\n"
-		"  * `chi2(name1, name2, knowing=[])`\n"
+		"  * ``chi2(name1, name2, knowing=[])``\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -168365,7 +169265,7 @@ static PyMethodDef SwigMethods[] = {
 		"set can be empty. In this case, no need to specify it.\n"
 		"\n"
 		"Usage:\n"
-		"  * `G2(name1, name2, knowing=[])`\n"
+		"  * ``G2(name1, name2, knowing=[])``\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -168626,16 +169526,16 @@ static PyMethodDef SwigMethods[] = {
 		"-----\n"
 		"  With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs\n"
 		"  are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o\n"
-		"  become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).\n"
-		"  Use `learnPAG` to get the learned structure with its uncertain marks.\n"
+		"  become arcs), and an undirected edge may stand for a latent confounder (see ``latentVariables``).\n"
+		"  Use ``learnPAG`` to get the learned structure with its uncertain marks.\n"
 		"\n"
 		""},
 	 { "BNLearner_learnEssentialGraph", _wrap_BNLearner_learnEssentialGraph, METH_O, "\n"
 		"\n"
 		"learn the essential graph of the Markov equivalence class of the data\n"
 		"\n"
-		"The essential graph (CPDAG) of the learned DAG (see `learnDAG`), whatever the algorithm. With a\n"
-		"constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by `learnPDAG` (it may not\n"
+		"The essential graph (CPDAG) of the learned DAG (see ``learnDAG``), whatever the algorithm. With a\n"
+		"constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by ``learnPDAG`` (it may not\n"
 		"be a CPDAG).\n"
 		"\n"
 		"Returns\n"
@@ -168648,8 +169548,8 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.MissingValueInDatabase\n"
 		"    if the database contains missing values\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    as `learnDAG`, if the learned DAG exceeds the maximum number of parents (see\n"
-		"    `setMaxIndegree` and `setErrorOnExceededMaxIndegree`)\n"
+		"    as ``learnDAG``, if the learned DAG exceeds the maximum number of parents (see\n"
+		"    ``setMaxIndegree`` and ``setErrorOnExceededMaxIndegree``)\n"
 		"\n"
 		""},
 	 { "BNLearner_learnPAG", _wrap_BNLearner_learnPAG, METH_O, "\n"
@@ -168664,7 +169564,7 @@ static PyMethodDef SwigMethods[] = {
 		"Raises\n"
 		"------\n"
 		"pyagrum.OperationNotAllowed\n"
-		"    If `useFCI()` has not been called first.\n"
+		"    If ``useFCI()`` has not been called first.\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -168674,7 +169574,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_errorOnExceededMaxIndegree", _wrap_BNLearner_errorOnExceededMaxIndegree, METH_O, "\n"
 		"\n"
 		"Return whether the constraint-based algorithms raise an error when the learned DAG exceeds the maximum indegree (see\n"
-		"`setErrorOnExceededMaxIndegree`).\n"
+		"``setErrorOnExceededMaxIndegree``).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -168683,7 +169583,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNLearner_maxIndegreeExceeded", _wrap_BNLearner_maxIndegreeExceeded, METH_O, "\n"
 		"\n"
-		"Return whether the last DAG learned (by `learnDAG()` or `learnBN()`) by the selected constraint-based algorithm exceeds\n"
+		"Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds\n"
 		"the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.\n"
 		"\n"
 		"Returns\n"
@@ -168737,7 +169637,7 @@ static PyMethodDef SwigMethods[] = {
 		"Warnings\n"
 		"--------\n"
 		"The same weight is assigned to all the rows of the learning database so that the sum of their\n"
-		"weights is equal to the value of the parameter `weight`.\n"
+		"weights is equal to the value of the parameter ``weight``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -168846,7 +169746,7 @@ static PyMethodDef SwigMethods[] = {
 		"Warnings\n"
 		"--------\n"
 		"This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use\n"
-		"gum.BNLearner.correctedMutualInformation\n"
+		"`pyagrum.BNLearner.correctedMutualInformation`\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -168872,7 +169772,7 @@ static PyMethodDef SwigMethods[] = {
 		"Warnings\n"
 		"--------\n"
 		"This function takes into account correction and prior. If you want the 'raw' mutual information, use\n"
-		"gum.BNLearner.mutualInformation\n"
+		"`pyagrum.BNLearner.mutualInformation`\n"
 		"\n"
 		"\n"
 		"Parameters\n"
@@ -169037,11 +169937,11 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Returns a list containing the values recorded after each\n"
 		"expectation/maximization iteration of the EM parameter learning algorithm:\n"
-		"the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),\n"
-		"its variation with the difference criterion (`useEMWithDiffCriterion()`).\n"
+		"the opposite of the log-likelihood with the rate criterion (``useEMWithRateCriterion()``),\n"
+		"its variation with the difference criterion (``useEMWithDiffCriterion()``).\n"
 		"\n"
-		"The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as\n"
-		"the period size is left at its default value of 1 (see `EMsetPeriodSize()`).\n"
+		"The list has ``EMnbrIterations()`` values, whatever the reason why EM stopped, as long as\n"
+		"the period size is left at its default value of 1 (see ``EMsetPeriodSize()``).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -169051,7 +169951,7 @@ static PyMethodDef SwigMethods[] = {
 		"Warnings\n"
 		"--------\n"
 		"Recording these values is enabled only when EM is executed in verbose\n"
-		"mode. See method `EMsetVerbosity()`.\n"
+		"mode. See method ``EMsetVerbosity()``.\n"
 		"\n"
 		""},
 	 { "BNLearner_EMStateApproximationScheme", _wrap_BNLearner_EMStateApproximationScheme, METH_O, "\n"

@@ -39,7 +39,7 @@
 ############################################################################
 
 """
-Deprecated module: use pyagrum.lib.dotstyle instead.
+Deprecated module: use `pyagrum.lib.dotstyle` instead.
 """
 
 import warnings

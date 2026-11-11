@@ -66,23 +66,17 @@ def export(obj: Any, filename: str | None = None, **kwargs) -> Any:
   Parameters
   ----------
   obj: pyAgrum:GraphicalModel or str
-      the model to export (pyagrum.BayesNet, pyagrum.MarkovRandomField, pyagrum.InfluenceDiagram or pyagrum.Tensor) or a string in dot format or an object with a method _repr_html_()
+      the model to export (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField`, `pyagrum.InfluenceDiagram` or `pyagrum.Tensor`) or a string in dot format or an object with a method _repr_html_()
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 
   Note
   ----
-    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
+    Model can also just possess a method ``toDot()`` or even be a simple string in dot syntax.
 
   Note
   ----
-    When exporting in pdf, you can adjust the margin with the config parameters `notebook.exportPdfMarginX` and `notebook.exportPdfMarginY` (in pixels, default 50 and 37 resp.). You can also adjust the size of the exported graph with the parameter `size` (default "8,5!").
-
-    pdf export with custom margin :
-    ```
-    pyagrum.config.typed["notebook", "exportPdfMarginX"] = 40
-    pyagrum.config.typed["notebook", "exportPdfMarginY"] = 37
-    ```
+    When exporting in pdf, you can adjust the margin with the config parameters ``notebook.exportPdfMarginX`` and ``notebook.exportPdfMarginY`` (in pixels, default 50 and 37 resp.), e.g. ``pyagrum.config.typed["notebook", "exportPdfMarginX"] = 40``. You can also adjust the size of the exported graph with the parameter ``size`` (default "8,5!").
   """
   try:
     return exportModel(obj, filename=filename, **kwargs)
@@ -113,7 +107,7 @@ def exportHTML(htmlobj: str, filename: str | None = None) -> None:
 
   Note
   ----
-    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
+    Model can also just possess a method ``toDot()`` or even be a simple string in dot syntax.
   """
   if filename is None:
     raise NameError(f"{filename} is not a correct filename for export.")
@@ -134,13 +128,13 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
   Parameters
   ----------
   model: pyagrum.GraphicalModel
-      the model to show (pyagrum.BayesNet, pyagrum.MarkovRandomField, pyagrum.InfluenceDiagram or pyagrum.Tensor)
+      the model to show (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField`, `pyagrum.InfluenceDiagram` or `pyagrum.Tensor`)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'fig', 'jpg', 'svg', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
 
   Note
   ----
-    Model can also just possess a method `toDot()` or even be a simple string in dot syntax.
+    Model can also just possess a method ``toDot()`` or even be a simple string in dot syntax.
   """
   if filename is None:
     tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
@@ -212,11 +206,11 @@ def prepareShowInference(
   Parameters
   ----------
   model: pyAgrum:GraphicalModel
-      the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
+      the model in which to infer (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField` or `pyagrum.InfluenceDiagram`)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
-      inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
+      inference algorithm used. If None, `pyagrum.LazyPropagation` will be used for BayesNet, `pyagrum.ShaferShenoyMRFInference` for `pyagrum.MarkovRandomField` and `pyagrum.ShaferShenoyLIMIDInference` for `pyagrum.InfluenceDiagram`.
   evs: dict[str,str|int]
       map of evidence
   targets: Set[str|int]
@@ -401,11 +395,11 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
   Parameters
   ----------
   model: pyAgrum:GraphicalModel
-      the model in which to infer (pyagrum.BayesNet, pyagrum.MarkovRandomField or pyagrum.InfluenceDiagram)
+      the model in which to infer (`pyagrum.BayesNet`, `pyagrum.MarkovRandomField` or `pyagrum.InfluenceDiagram`)
   filename: str
       the name of the resulting file (suffix in ['pdf', 'png', 'ps']). If filename is None, the result is a np.array ready to be used with imshow().
   engine: pyagrum.BNInference | pyagrum.MRFInference | pyagrum.CNInference | pyagrum.IDInference
-      inference algorithm used. If None, pyagrum.LazyPropagation will be used for BayesNet,pyagrum.ShaferShenoy for pyagrum.MarkovRandomField and pyagrum.ShaferShenoyLIMIDInference for pyagrum.InfluenceDiagram.
+      inference algorithm used. If None, `pyagrum.LazyPropagation` will be used for BayesNet, `pyagrum.ShaferShenoyMRFInference` for `pyagrum.MarkovRandomField` and `pyagrum.ShaferShenoyLIMIDInference` for `pyagrum.InfluenceDiagram`.
   evs: dict[str,str|int]
       map of evidence
   targets: Set[str|int]

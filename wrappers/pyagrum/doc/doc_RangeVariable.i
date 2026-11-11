@@ -64,7 +64,7 @@ RangeVariable(aName, aDesc='') -> RangeVariable
 
 RangeVariable(aRV) -> RangeVariable
     Parameters:
-        - **aDV** (*RangeVariable*) -- the pyagrum.RangeVariable that will be copied
+        - **aDV** (*RangeVariable*) -- the `pyagrum.RangeVariable` that will be copied
 "
 
 %feature("docstring") gum::RangeVariable::clone

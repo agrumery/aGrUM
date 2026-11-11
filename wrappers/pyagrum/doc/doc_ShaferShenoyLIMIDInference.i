@@ -50,7 +50,7 @@ This inference considers the provided model as a LIMID rather than an influence 
 implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
 by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
 decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
-cf. pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption).
+cf. `pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption`).
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::eraseAllEvidence
@@ -65,19 +65,6 @@ Tells the inference that the values of tensors of its model changed in place.
 The inference is notified of the changes of the structure of its model and of the evidence, but not of the values
 modified in place (for instance by ``diag.cpt('A').fillWith(...)``): it may keep results computed from the former
 values. After this call, the next inference uses the current values.
-"
-
-%feature("docstring") gum::ShaferShenoyLIMIDInference::eraseEvidence
-"
-Parameters
-----------
-evidence : pyagrum.Tensor
-    the evidence to remove
-
-Raises
-------
-  pyagrum.IndexError
-    If the evidence does not belong to the influence diagram
 "
 
 %feature("docstring") gum::ShaferShenoyLIMIDInference::optimalDecision
@@ -224,7 +211,7 @@ nodeName : int
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -254,7 +241,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -274,7 +261,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 
@@ -294,7 +281,7 @@ bool
 
 Raises
 ------
-pyagrum.IndexError
+pyagrum.NotFound
   If the node does not belong to the Bayesian network
 "
 

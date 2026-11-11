@@ -50,5 +50,5 @@ Class used for inferences using the Importance Sampling algorithm.
 
 ImportanceSampling(bn) -> ImportanceSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

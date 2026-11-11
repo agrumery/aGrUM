@@ -48,7 +48,7 @@ import pyagrum
 
 def _independenceListForPairs(bn, target=None):
   """
-  returns a list of triples `(i,j,k)` for each non arc `(i,j)` such that `i` is independent of `j` given `k`.
+  returns a list of triples ``(i,j,k)`` for each non arc ``(i,j)`` such that ``i`` is independent of ``j`` given ``k``.
 
   Parameters
   ----------

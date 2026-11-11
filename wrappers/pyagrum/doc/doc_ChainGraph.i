@@ -49,15 +49,15 @@ arcs that form a directed acyclic graph over the components. DAGs and undirected
 graphs.
 
 This class is the graph only: the independence model read from a chain graph depends on its
-interpretation (LWF, AMP or MVR). The methods `moralGraph`, `moralizedAncestralGraph` and
-`cSeparation` follow the LWF interpretation.
+interpretation (LWF, AMP or MVR). The methods ``moralGraph``, ``moralizedAncestralGraph`` and
+``cSeparation`` follow the LWF interpretation.
 
 ChainGraph() -> ChainGraph
     default constructor
 
 ChainGraph(src) -> ChainGraph
     Parameters:
-        - **src** (*pyagrum.ChainGraph*, *pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+        - **src** (`pyagrum.ChainGraph`, `pyagrum.PDAG`, `pyagrum.DAG`, `pyagrum.UndiGraph` or `pyagrum.MixedGraph`) -- the graph to copy
 
 Raises
 ------

@@ -179,7 +179,7 @@ pyagrum.CredalNet
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):
+    what is given to the drawing beyond the look of `pyagrum.config` (section ``credalnet``):
     size, label, colors of some nodes, width of some arcs...
 
 Returns

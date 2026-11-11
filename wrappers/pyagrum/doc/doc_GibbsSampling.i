@@ -50,7 +50,7 @@ Class for making Gibbs sampling inference in Bayesian networks.
 
 GibbsSampling(bn) -> GibbsSampling
     Parameters:
-      - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+      - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
 Notes
 -----
@@ -61,10 +61,10 @@ impossible values are first removed, then a few random configurations are tried 
 repaired.
 
 - If the removal of impossible values proves that the evidence is incompatible with the model,
-  `makeInference()` raises :class:`pyagrum.IncompatibleEvidence`.
-- If no compatible configuration is found, `makeInference()` raises
+  ``makeInference()`` raises :class:`pyagrum.IncompatibleEvidence`.
+- If no compatible configuration is found, ``makeInference()`` raises
   :class:`pyagrum.OperationNotAllowed`. This does not prove that the evidence is impossible: with
   very rare compatible configurations (e.g. long chains of deterministic constraints), the search
   may fail and its outcome may depend on the random seed. An exact inference such as
-  :class:`pyagrum.LazyPropagation` can check it (`evidenceProbability()` is positive).
+  :class:`pyagrum.LazyPropagation` can check it (``evidenceProbability()`` is positive).
 "

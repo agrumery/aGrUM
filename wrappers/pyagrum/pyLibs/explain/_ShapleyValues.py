@@ -68,7 +68,7 @@ class ShapleyValues(Explainer):
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet or target is not an integer or string.
+        If bn is not a `pyagrum.BayesNet` or target is not an integer or string.
     ValueError
         If target is not a valid node id in the Bayesian Network.
     """

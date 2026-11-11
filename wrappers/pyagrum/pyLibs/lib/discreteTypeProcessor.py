@@ -110,12 +110,12 @@ class DiscreteTypeProcessor:
   Parameters
   ----------
       defaultDiscretizationMethod: str
-            sets the default method of discretization for this discretizer. Possible values are: `quantile`, `uniform`,
-            `kmeans`, `NML`, `CAIM` and `MDLP`. This method will be used if the user has not specified another method
+            sets the default method of discretization for this discretizer. Possible values are: ``quantile``, ``uniform``,
+            ``kmeans``, ``NML``, ``CAIM`` and ``MDLP``. This method will be used if the user has not specified another method
             for that specific variable using the setDiscretizationParameters method.
       defaultNumberOfBins: str or int
-          sets the number of bins if the method used is `quantile`, `kmeans`, `uniform`. In this case this parameter can also
-          be set to the string `elbowMethod` so that the best number of bins is found automatically.
+          sets the number of bins if the method used is ``quantile``, ``kmeans``, ``uniform``. In this case this parameter can also
+          be set to the string ``elbowMethod`` so that the best number of bins is found automatically.
           If the method used is NML, this parameter sets the the maximum number of bins up to which the NML algorithm
           searches for the optimal number of bins. In this case this parameter must be an int
           If any other discretization method is used, this parameter is ignored.
@@ -1063,7 +1063,7 @@ class DiscreteTypeProcessor:
             Target values
         possibleValuesY: ndarray
             An ndarray containing all the unique values of y
-        template: a graphical model such as pyagrum.BayesNet, pyagrum.MRF, etc...
+        template: a graphical model such as `pyagrum.BayesNet`, `pyagrum.MarkovRandomField`, etc...
             the template that will contain the discretized variables.
             If None, a new Bayesian network is created.
 

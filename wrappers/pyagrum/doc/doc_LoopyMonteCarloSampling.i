@@ -50,5 +50,5 @@ Class used for inferences using a loopy version of Monte Carlo sampling.
 
 LoopyMonteCarloSampling(bn) -> LoopyMonteCarloSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

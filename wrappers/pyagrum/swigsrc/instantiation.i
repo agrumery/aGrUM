@@ -108,7 +108,7 @@
   def fromdict(self, dict: object) -> None:
     r"""
 
-    Change the values in an instantiation from a dictionary `{variable_name:value}` where value can be a position (int) or a label (string).
+    Change the values in an instantiation from a dictionary ``{variable_name:value}`` where value can be a position (int) or a label (string).
 
     If a variable_name does not occur in the instantiation, nothing is done.
 
@@ -163,7 +163,7 @@
       """
       Generator to iterate on an Instantiation.
 
-      Yield an pyagrum.Instantiation (copy of self) that iterates over all the possible values for the Instantiation.
+      Yield an `pyagrum.Instantiation` (copy of self) that iterates over all the possible values for the Instantiation.
       """
       J=Instantiation(self)
       J.setFirst()

@@ -157,12 +157,12 @@ pyagrum.MarkedGraph
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and edges...)
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and edges...)
 
 Returns
 -------
 str
-    a representation of the MAG in the DOT format (see pyagrum.MarkedGraph.toDot)
+    a representation of the MAG in the DOT format (see `pyagrum.MarkedGraph.toDot`)
 "
 
 %feature("docstring") gum::MAG::parents

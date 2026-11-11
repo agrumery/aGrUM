@@ -63,7 +63,7 @@ instead of constructing a Counterfactual object directly.
 
 Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
     Parameters:
-        - **cm** (*pyagrum.CausalModel*) -- the causal model.
+        - **cm** (`pyagrum.CausalModel`) -- the causal model.
         - **on** (*set of str or set of int*) -- target variables of the
           counterfactual query.
         - **whatif** (*set of str or set of int*) -- variables whose values

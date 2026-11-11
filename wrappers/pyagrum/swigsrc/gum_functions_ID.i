@@ -65,7 +65,7 @@ def availableIDExts() -> str:
 
 def loadID(filename: str) -> InfluenceDiagram:
   """
-  read a gum.InfluenceDiagram from a ID file
+  read a `pyagrum.InfluenceDiagram` from a ID file
 
   Parameters
   ----------

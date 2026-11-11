@@ -54,8 +54,8 @@ PythonBNListener(model:gum.DAGmodel,vnm:gum.VariableNodeMap) -> PythonBNListener
 
 Notes
 -----
-    This class is mainly instantiated automatically by the methods `addStructureListener` of
-    pyagrum.BayesNet and pyagrum.InfluenceDiagram.
+    This class is mainly instantiated automatically by the methods ``addStructureListener`` of
+    `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
 
 Parameters
 ----------

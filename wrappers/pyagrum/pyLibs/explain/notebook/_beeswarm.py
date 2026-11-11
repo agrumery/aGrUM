@@ -74,14 +74,14 @@ def beeswarm(
       If True, sorts the features by their importance before plotting (default is True).
   filename : str, optional
       If provided, save the figure to this path instead of displaying it (default is None).
-      Ignored when `ax` is supplied by the caller.
+      Ignored when ``ax`` is supplied by the caller.
 
   Raises
   ------
   TypeError
-      If `explanation` is not an Explanation object, if `y` is not an integer or if the explanation is not global (i.e., does not contain lists of contributions for each feature).
+      If ``explanation`` is not an Explanation object, if ``y`` is not an integer or if the explanation is not global (i.e., does not contain lists of contributions for each feature).
   IndexError
-      If `y` is out of bounds for the explanation keys.
+      If ``y`` is out of bounds for the explanation keys.
   """
   # Check parameters
   if not isinstance(explanation, Explanation):

@@ -72,7 +72,7 @@ pyagrum.PDAG
 
 %feature("docstring") gum::MeekRules::propagateToDAG
 "
-Calls `propagateToCPDAG` and then orients the remaining edges: into a consistent extension if the propagated graph
+Calls ``propagateToCPDAG`` and then orients the remaining edges: into a consistent extension if the propagated graph
 has one, else with new v-structures. The orientation looks for small CPTs: with ``domainSizes``, it uses the domain
 size of each node; without, all the domains are considered equal (nodes with few parents). The DAG contains all the
 arcs of the propagated graph. `pyagrum.MeekRules.choices` returns the list of the arbitrary choices made by the last

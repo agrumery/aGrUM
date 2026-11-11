@@ -50,5 +50,5 @@ Class used for inferences using a loopy version of weighted sampling.
 
 LoopyWeightedSampling(bn) -> LoopyWeightedSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

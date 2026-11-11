@@ -50,7 +50,7 @@ Class used for inferences using a loopy version of Gibbs sampling.
 
 LoopyGibbsSampling(bn) -> LoopyGibbsSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "
 
 %feature("docstring") gum::LoopySamplingInference::makeInference_

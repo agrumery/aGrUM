@@ -58,11 +58,11 @@ raises :class:`pyagrum.OperationNotAllowed` when the model has no BayesNet.
 
 CausalModel(bn) -> CausalModel
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
+        - **bn** (`pyagrum.BayesNet`) -- the observational Bayesian network.
 
 CausalModel(bn, latents, assumeNonSpurious=False) -> CausalModel
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- the observational Bayesian network.
+        - **bn** (`pyagrum.BayesNet`) -- the observational Bayesian network.
         - **latents** (*list of (str, list of str)*) -- description of latent
           variables. Each entry is a pair ``(name, children)`` where ``name``
           is the latent variable name and ``children`` is the list of observed
@@ -76,7 +76,7 @@ CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
     Build a causal model from a plain (named) DAG, without any BayesNet.
 
     Parameters:
-        - **dag** (*pyagrum.DAG*) -- a named DAG (every node must have a name).
+        - **dag** (`pyagrum.DAG`) -- a named DAG (every node must have a name).
         - **latents** (*list of (str, list of str)*, optional) -- same format as above.
         - **assumeNonSpurious** (*bool*) -- same meaning as above.
 
@@ -410,14 +410,14 @@ pyagrum.CausalModel
 "
 Return a Graphviz dot string representing the causal model.
 
-The look is the one of the section ``causal`` of ``pyagrum.config``: observed nodes
+The look is the one of the section ``causal`` of `pyagrum.config`: observed nodes
 (``nodeBgColor``, ``nodeFgColor``), latent nodes (``latentBgColor``, ``latentFgColor``), whose
 names are hidden unless ``showLatentNames`` is True, and the color of the arcs (``dot.arcColor``).
 
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some
     nodes, width of some arcs...).
 SHOW_LATENT_NAMES : bool, optional
     Deprecated: use ``pyagrum.config['causal', 'showLatentNames']``.

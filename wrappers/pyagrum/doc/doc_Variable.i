@@ -58,7 +58,7 @@ fast_description: str
   string following *fast* syntax description
 default_nbrmod: int
   nbr of modality if fast_description does not indicate it.
-  `default_nbrmod=1` is the way to create a variable with only one value (for instance for reward in influence diagram).
+  ``default_nbrmod=1`` is the way to create a variable with only one value (for instance for reward in influence diagram).
 "
 
 %feature("docstring") gum::Variable

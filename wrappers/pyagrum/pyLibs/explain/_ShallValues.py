@@ -70,14 +70,14 @@ class ShallValues(Explainer):
         Background data. A plain DataFrame is treated as (df, True) (labels assumed).
         A tuple allows explicit control: (DataFrame, with_labels).
     sample_size : int
-        The size of the background sample to generate if `background` is None.
+        The size of the background sample to generate if ``background`` is None.
     log : bool
         If True, applies a logarithmic transformation to the probabilities.
 
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance.
+        If bn is not a `pyagrum.BayesNet` instance.
     ValueError
         If background data does not contain all variables present in the Bayesian Network or if
         background data is empty after rows with NaNs were dropped.
@@ -155,7 +155,7 @@ class ShallValues(Explainer):
 
     Notes
     -----
-    1. Since this is a partial explanation, all rows in `data` must contain all variables present in the initialized Bayesian Network.
+    1. Since this is a partial explanation, all rows in ``data`` must contain all variables present in the initialized Bayesian Network.
     2. All rows containing NaN values in columns corresponding to variables in the Bayesian Network will be dropped.
 
     Parameters

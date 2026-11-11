@@ -53,7 +53,7 @@ DiGraph() -> DiGraph
 
 DiGraph(src) -> DiGraph
     Parameters:
-        - **src** (*pyagrum.DiGraph*) -- the digraph to copy
+        - **src** (`pyagrum.DiGraph`) -- the digraph to copy
 "
 
 %feature("docstring") gum::DiGraph::addArc
@@ -274,7 +274,7 @@ int
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------
@@ -410,7 +410,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the ancestors of node `norid`.
+  the set of ids of the ancestors of node ``norid``.
 
 See Also
 --------
@@ -429,7 +429,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the descendants of node `norid`.
+  the set of ids of the descendants of node ``norid``.
 
 See Also
 --------

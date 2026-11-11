@@ -50,7 +50,7 @@ Class used for Shafer-Shenoy inferences.
 
 ShaferShenoyInference(bn) -> ShaferShenoyInference
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "
 
 %feature("docstring") gum::ShaferShenoyInference::jointMutualInformation

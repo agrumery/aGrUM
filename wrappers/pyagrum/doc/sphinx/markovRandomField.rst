@@ -17,7 +17,7 @@ Where the :math:`\phi_i` are tensors over the :math:`n_c` cliques of the undirec
 Moreover, inference algorithms can also use this graph to speed up the computations.
 
 .. note::
-  `Markov Random Field` are also called `Markov Network`. After tag 1.5.2, pyAgrum uses the terminology `Markov Random Field`.
+  *Markov Random Field* are also called *Markov Network*. After tag 1.5.2, pyAgrum uses the terminology *Markov Random Field*.
   
 **Tutorial**
 

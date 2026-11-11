@@ -187,7 +187,7 @@ class CausalEffectEstimation:
     -----
     This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
-    `.identifyAdjustment()` to automatically determine the correct
+    ``.identifyAdjustment()`` to automatically determine the correct
     adjustment set.
 
     Parameters
@@ -216,7 +216,7 @@ class CausalEffectEstimation:
     -----
     This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
-    `.identifyAdjustment()` to automatically determine the correct
+    ``.identifyAdjustment()`` to automatically determine the correct
     adjustment set.
 
     Parameters
@@ -248,7 +248,7 @@ class CausalEffectEstimation:
     -----
     This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
-    `.identifyAdjustment()` to automatically determine the correct
+    ``.identifyAdjustment()`` to automatically determine the correct
     adjustment set.
 
     Parameters
@@ -284,7 +284,7 @@ class CausalEffectEstimation:
     -----
     This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
-    `.identifyAdjustment()` to automatically determine the correct
+    ``.identifyAdjustment()`` to automatically determine the correct
     adjustment set.
 
     Parameters
@@ -318,7 +318,7 @@ class CausalEffectEstimation:
     -----
     This method does not verify if the specified adjustment is
     appropriate within the causal graph. If unsure, use
-    `.identifyAdjustment()` to automatically determine the correct
+    ``.identifyAdjustment()`` to automatically determine the correct
     adjustment set.
 
     Parameters
@@ -509,8 +509,8 @@ class CausalEffectEstimation:
 
   def fitCustomEstimator(self, estimator: Any) -> Any:
     """
-    Fits the specified `estimator` object, which must implement
-    `.fit()`, `.predict()`, and `.estimate_ate()` methods consistent
+    Fits the specified ``estimator`` object, which must implement
+    ``.fit()``, ``.predict()``, and ``.estimate_ate()`` methods consistent
     with CausalML estimators.
     :cite:t:`chen2020causalml`.
 
@@ -590,10 +590,10 @@ class CausalEffectEstimation:
         If not provided, defaults to LinearRegression.
     control_learner: str or Any, optional
         Estimator for control group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_learner: str or Any, optional
         Estimator for treatment group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     """
 
     if self._adjustment is self._IV:
@@ -620,16 +620,16 @@ class CausalEffectEstimation:
         If not provided, defaults to LinearRegression.
     control_outcome_learner: str or Any, optional
         Estimator for control group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_outcome_learner: str or Any, optional
         Estimator for treatment group outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     control_effect_learner: str or Any, optional
         Estimator for control group effect.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     treatment_effect_learner: str or Any, optional
         Estimator for treatment group effect.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     propensity_score_learner: str or Any, optional
         Estimator for propensity score.
         If not provided, defaults to LogisticRegression.
@@ -835,7 +835,7 @@ class CausalEffectEstimation:
     Fit the Two Stage Least Squares Estimator.
 
     A basic implementation of the Two Stage Least-Squares Estimator.
-    Only supports Linear Models, must have `.coef_` attribute.
+    Only supports Linear Models, must have ``.coef_`` attribute.
     :cite:t:`angrist1995two`.
 
     Parameters
@@ -845,10 +845,10 @@ class CausalEffectEstimation:
         If not provided, defaults to LinearRegression.
     treatment_learner: str or Any, optional
         Estimator for treatment assignment.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     outcome_learner: str or Any, optional
         Estimator for outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     """
 
     if self._adjustment is self._RCT:
@@ -874,25 +874,25 @@ class CausalEffectEstimation:
     conditional: pd.DataFrame, str, or None, optional
         Specifies conditions for estimating causal effects.
 
-        - If `pd.DataFrame`, estimates the Individual Causal Effect (ICE)
+        - If ``pd.DataFrame``, estimates the Individual Causal Effect (ICE)
             for each row.
-        - If `str`, estimates the Conditional Average Causal Effect (CACE).
+        - If ``str``, estimates the Conditional Average Causal Effect (CACE).
             The string must be a valid pandas query.
-        - If `None`, estimates the Average Causal Effect (ACE).
-            Default is `None`.
+        - If ``None``, estimates the Average Causal Effect (ACE).
+            Default is ``None``.
 
     estimation_params: dict of str to Any, optional
         Additional parameters for the estimation method.
         Keys are parameter names, and values are the corresponding
-        parameter values. Default is `None`.
+        parameter values. Default is ``None``.
 
     Returns
     -------
     float or np.ndarray
-        If `return_ci` is `False`, returns the estimated causal effect
+        If ``return_ci`` is ``False``, returns the estimated causal effect
             as a float.
 
-        If `return_ci` is `True`, returns a tuple containing:
+        If ``return_ci`` is ``True``, returns a tuple containing:
           - The estimated causal effect (float)
           - The lower and upper bounds of the confidence interval
             (tuple of floats)

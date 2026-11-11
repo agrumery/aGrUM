@@ -141,13 +141,13 @@ bool
 
 %feature("docstring") gum::ImmutableMixedGraph< gum::PDAG >::toDot
 "
-The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of ``pyagrum.config``. No
+The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of `pyagrum.config`. No
 cluster is drawn: an MPDAG is not always a chain graph.
 
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
 
 Returns
 -------

@@ -72,8 +72,8 @@
 
 %feature("docstring") gum::Configuration
 "
-The configuration of pyAgrum (``pyagrum.config`` is the configuration singleton of the aGrUM C++ library,
-``gum::Configuration``). The configuration is a read-only structure of sections and keys: a value is
+The configuration of pyAgrum (`pyagrum.config` is the configuration singleton of the aGrUM C++ library,
+C++ class ``Configuration``). The configuration is a read-only structure of sections and keys: a value is
 adressable using a double key: ``[section,key]``. Section names are case-sensitive, key names are not.
 
 The sections and keys are created by the defaults, in this order: ``defaults.ini`` of aGrUM, then
@@ -363,17 +363,17 @@ def reset(self):
   self._run("_reset")
 
 def load(self):
-  """load pyagrum.ini in the current directory, and change the properties if needed.
-  If pyagrum.ini contains deprecated keys or invalid values, a warning is emitted.
-  pyagrum.ini is never modified by ``load()``: a deprecated key is applied to its
-  replacement, and ``save()`` writes pyagrum.ini with the new key names.
+  """load ``pyagrum.ini`` in the current directory, and change the properties if needed.
+  If ``pyagrum.ini`` contains deprecated keys or invalid values, a warning is emitted.
+  ``pyagrum.ini`` is never modified by ``load()``: a deprecated key is applied to its
+  replacement, and ``save()`` writes ``pyagrum.ini`` with the new key names.
 
   Raises
   ------
   FileNotFoundError
-      If there is no readable pyagrum.ini in the current directory.
+      If there is no readable ``pyagrum.ini`` in the current directory.
   SyntaxError
-      If pyagrum.ini contains a malformed line (in this case, nothing is changed).
+      If ``pyagrum.ini`` contains a malformed line (in this case, nothing is changed).
   """
   try:
     self._run("_load", self.userFileName())
@@ -392,7 +392,7 @@ def grep(self, search):
   print(self._run("_grep", search))
 
 def diff(self):
-  """print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method `save()`"""
+  """print the diff between actual configuration and the defaults. This is what is saved in the file ``pyagrum.ini`` by the method ``save()``"""
   print(self._run("_diff"))
 
 def __getitem__(self, key):

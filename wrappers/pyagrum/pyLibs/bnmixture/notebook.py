@@ -343,7 +343,7 @@ def BootstrapInference2dot(
   dag : pyagrum.DAG
       only shows nodes that have their id in the dag (and not in the whole BN)
   quantiles : bool
-      if True, shows quantiles on tensors. Quantiles default values can be set using pyagrum.config.
+      if True, shows quantiles on tensors. Quantiles default values can be set using `pyagrum.config`.
 
   Returns
   -------
@@ -510,7 +510,7 @@ def showBootstrapMixtureInference(
   dag : pyagrum.DAG
       only shows nodes that have their id in the dag.
   quantiles : bool
-      if True, shows quantiles on tensors. Quantiles default values can be set using pyagrum.config.
+      if True, shows quantiles on tensors. Quantiles default values can be set using `pyagrum.config`.
   """
   html = BootstrapInference2dot(
     bnm,

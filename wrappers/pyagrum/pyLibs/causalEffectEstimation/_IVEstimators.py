@@ -419,7 +419,7 @@ class TSLS:
   ) -> None:
     """
     Initialize an TSLS estimator.
-    Only supports Linear Models, must have `.coef_` attribute.
+    Only supports Linear Models, must have ``.coef_`` attribute.
 
     Parameters
     ----------
@@ -428,10 +428,10 @@ class TSLS:
         If not provided, defaults to LinearRegression.
     treatment_learner: str or Any, optional
         Estimator for treatment assignment.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     outcome_learner: str or Any, optional
         Estimator for outcome.
-        Overrides `learner` if specified.
+        Overrides ``learner`` if specified.
     """
 
     if learner is None:

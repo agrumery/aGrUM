@@ -258,8 +258,8 @@ def useEM(self, epsilon: float, noise: float | None = None) -> "pyagrum.BNLearne
   is a threshold on the log-likelihood evolution rate, i.e., if llc and llo refer to
   the log-likelihoods at the current and previous EM steps respectively, EM will stop
   when (llc - llo) / llc drops below epsilon. If you wish to be more specific on which
-  stopping criterion to use, you may prefer exploiting methods `useEMWithRateCriterion()`
-  or `useEMWithDiffCriterion()`.
+  stopping criterion to use, you may prefer exploiting methods ``useEMWithRateCriterion()``
+  or ``useEMWithDiffCriterion()``.
 
   Parameters
   ----------
@@ -268,11 +268,11 @@ def useEM(self, epsilon: float, noise: float | None = None) -> "pyagrum.BNLearne
     consecutive log-likelihoods (log-likelihood evolution rate) drops below epsilon.
 
     if epsilon=0.0 then EM is not used. But if you wish to forbid the use of EM, prefer
-    executing Method `forbidEM()` rather than useEM(0.0) as it is more unequivocal.
+    executing Method ``forbidEM()`` rather than useEM(0.0) as it is more unequivocal.
   noise : float, optional
     During EM's initialization, the CPTs are randomly perturbed using the following formula:
     new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-    to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+    to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
   Returns
   -------
@@ -282,7 +282,7 @@ def useEM(self, epsilon: float, noise: float | None = None) -> "pyagrum.BNLearne
   Raises
   ------
   pyagrum.OutOfBounds
-    if `epsilon` is strictly negative or if `noise` does not belong to interval [0,1].
+    if ``epsilon`` is strictly negative or if ``noise`` does not belong to interval [0,1].
   """
   if noise is None:
     self._useEM(epsilon)
@@ -304,7 +304,7 @@ def useEMWithRateCriterion(self, epsilon: float, noise: float | None = None) -> 
   noise : float, optional
     During EM's initialization, the CPTs are randomly perturbed using the following formula:
     new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-    to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+    to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
   Returns
   -------
@@ -314,7 +314,7 @@ def useEMWithRateCriterion(self, epsilon: float, noise: float | None = None) -> 
   Raises
   ------
   pyagrum.OutOfBounds
-    if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
+    if ``epsilon`` is not strictly positive or if ``noise`` does not belong to interval [0,1].
   """
   if noise is None:
     self._useEMWithRateCriterion(epsilon)
@@ -336,7 +336,7 @@ def useEMWithDiffCriterion(self, epsilon: float, noise: float | None = None) -> 
   noise : float, optional
     During EM's initialization, the CPTs are randomly perturbed using the following formula:
     new_CPT = (1-noise) * CPT + noise * random_CPT. Parameter noise must belong
-    to interval [0,1]. By default, noise is given by `pyagrum.config['learning', 'emNoise']` (0.1).
+    to interval [0,1]. By default, noise is given by ``pyagrum.config['learning', 'emNoise']`` (0.1).
 
   Returns
   -------
@@ -346,7 +346,7 @@ def useEMWithDiffCriterion(self, epsilon: float, noise: float | None = None) -> 
   Raises
   ------
   pyagrum.OutOfBounds
-    if `epsilon` is not strictly positive or if `noise` does not belong to interval [0,1].
+    if ``epsilon`` is not strictly positive or if ``noise`` does not belong to interval [0,1].
   """
   if noise is None:
     self._useEMWithDiffCriterion(epsilon)
@@ -363,7 +363,7 @@ def useBDeuPrior(self, weight: float | None = None) -> "pyagrum.BNLearner":
   Parameters
   ----------
   weight : float, optional
-    the prior weight, which must not be negative. By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+    the prior weight, which must not be negative. By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
   Returns
   -------
@@ -373,7 +373,7 @@ def useBDeuPrior(self, weight: float | None = None) -> "pyagrum.BNLearner":
   Raises
   ------
   pyagrum.OutOfBounds
-    if `weight` is negative.
+    if ``weight`` is negative.
   """
   if weight is None:
     self._useBDeuPrior()
@@ -389,7 +389,7 @@ def useSmoothingPrior(self, weight: float | None = None) -> "pyagrum.BNLearner":
   ----------
   weight : float, optional
     the weight of the smoothing, which must not be negative. By default, it is
-    `pyagrum.config['learning', 'priorWeight']` (1.0).
+    ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
   Returns
   -------
@@ -399,7 +399,7 @@ def useSmoothingPrior(self, weight: float | None = None) -> "pyagrum.BNLearner":
   Raises
   ------
   pyagrum.OutOfBounds
-    if `weight` is negative.
+    if ``weight`` is negative.
   """
   if weight is None:
     self._useSmoothingPrior()
@@ -417,7 +417,7 @@ def useDirichletPrior(self, source, weight: float | None = None) -> "pyagrum.BNL
     the Dirichlet related source (filename of a database or a Bayesian network)
   weight : float, optional
     the weight of the prior (the 'size' of the corresponding 'virtual database'), which must not be negative.
-    By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+    By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
   Returns
   -------
@@ -427,7 +427,7 @@ def useDirichletPrior(self, source, weight: float | None = None) -> "pyagrum.BNL
   Raises
   ------
   pyagrum.OutOfBounds
-    if `weight` is negative.
+    if ``weight`` is negative.
   """
   if weight is None:
     self._useDirichletPrior(source)
@@ -442,10 +442,10 @@ def useLocalSearchWithTabuList(self, tabu_size: int | None = None, nb_decrease: 
   Parameters
   ----------
   tabu_size : int, optional
-    The size of the tabu list. By default, it is `pyagrum.config['learning', 'tabuListSize']` (100).
+    The size of the tabu list. By default, it is ``pyagrum.config['learning', 'tabuListSize']`` (100).
   nb_decrease : int, optional
     The max number of changes decreasing the score consecutively that we allow to apply.
-    By default, it is `pyagrum.config['learning', 'tabuNbDecrease']` (2).
+    By default, it is ``pyagrum.config['learning', 'tabuNbDecrease']`` (2).
 
   Returns
   -------

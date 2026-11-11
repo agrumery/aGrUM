@@ -9,7 +9,7 @@ A CTBN is :
 A CIM is :
     - A Conditional Intensity Matrix. The CIM of a variable :math:`X` contains at least two variables :math:`X_i` and :math:`X_j`, from/to states.
     - Diagonal coefficients :math:`q_{i,j}`.
-    - :math:`D_{i,j}` ~ :math:`exp(q_{i,j})` and :math:`D_i` ~ :math:`exp(\sum_jq_{i,j})`, waiting time before going from state `i` to state `j` (resp. before leaving state `i`).
+    - :math:`D_{i,j}` ~ :math:`exp(q_{i,j})` and :math:`D_i` ~ :math:`exp(\sum_jq_{i,j})`, waiting time before going from state ``i`` to state ``j`` (resp. before leaving state ``i``).
 
 Properties :
     - :math:`P_X(x_1\rightarrow x_2) = \frac{q_{i,j}}{q_i}`

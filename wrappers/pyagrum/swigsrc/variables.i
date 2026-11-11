@@ -75,19 +75,19 @@
     # Labelized
     def posLabel(self,s:str)->int:
       """
-      Returns the index of the label `s` in the variable's domain (if the variable is a pyagrum.LabelizedVariable)
+      Returns the index of the label ``s`` in the variable's domain (if the variable is a `pyagrum.LabelizedVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.LabelizedVariable
+          If the variable is not a `pyagrum.LabelizedVariable`
         NotFoundError
-          If the variable does not contain the label `s`
+          If the variable does not contain the label ``s``
 
       Returns
       -------
         int
-          the index of the label `s` in the variable's domain
+          the index of the label ``s`` in the variable's domain
       """
       try:
         return self.asLabelizedVar().posLabel(s)
@@ -100,7 +100,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.LabelizedVariable
+          If the variable is not a `pyagrum.LabelizedVariable`
 
       Returns
       -------
@@ -115,7 +115,7 @@
     # Range
     def belongs(self,x:int)->bool:
       """
-      returns whether x belongs to the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns whether x belongs to the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Parameters
       ----------
@@ -125,7 +125,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -138,12 +138,12 @@
          raise NotImplementedError(f"belongs not implemented for {self}")
     def minVal(self)->int:
       """
-      returns the minimum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns the minimum value of the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -156,12 +156,12 @@
          raise NotImplementedError(f"minVal not implemented for {self}")
     def maxVal(self)->int:
       """
-      returns the maximum value of the variable domain (if the variable is a pyagrum.RangeVariable)
+      returns the maximum value of the variable domain (if the variable is a `pyagrum.RangeVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.RangeVariable
+          If the variable is not a `pyagrum.RangeVariable`
 
       Returns
       -------
@@ -176,12 +176,12 @@
     # NumericalDiscreteVariable and/or IntegerVariable
     def numericalDomain(self)->tuple[float,...]:
       """
-      Returns the numerical domain of the variable (if the variable is a pyagrum.NumericalDiscreteVariable)
+      Returns the numerical domain of the variable (if the variable is a `pyagrum.NumericalDiscreteVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.NumericalDiscreteVariable
+          If the variable is not a `pyagrum.NumericalDiscreteVariable`
 
       Returns
       -------
@@ -195,12 +195,12 @@
 
     def integerDomain(self)->tuple[int,...]:
       """
-      Returns the integer domain of the variable (if the variable is a pyagrum.integerVariable)
+      Returns the integer domain of the variable (if the variable is a `pyagrum.IntegerVariable`)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.IntegerVariable
+          If the variable is not a `pyagrum.IntegerVariable`
 
       Returns
       -------
@@ -224,7 +224,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.NumericalDiscreteVariable or a pyagrum.IntegerVariable
+          If the variable is not a `pyagrum.NumericalDiscreteVariable` or a `pyagrum.IntegerVariable`
 
       Returns
       -------
@@ -253,7 +253,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -271,7 +271,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -284,12 +284,12 @@
         raise NotImplementedError(f"ticks not implemented for {self}")
     def isEmpirical(self)->bool:
       """
-      Returns whether the variable is empirical (if the variable is a pyagrum.DiscretizedVariable). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
+      Returns whether the variable is empirical (if the variable is a `pyagrum.DiscretizedVariable`). I.e. whether its limits (max and min) are defined by data and accept any values below or above these limits, contrary to non-empirical discretized variables for which the limits are fixed and values outside of these limits are not accepted)
 
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
 
       Returns
       -------
@@ -302,7 +302,7 @@
         raise NotImplementedError(f"isEmpirical not implemented for {self}")
     def tick(self,x:int):
       """
-      Returns the x-th tick of the variable (if the variable is a pyagrum.DiscretizedVariable)
+      Returns the x-th tick of the variable (if the variable is a `pyagrum.DiscretizedVariable`)
 
       Parameters
       ----------
@@ -312,7 +312,7 @@
       Raises
       ------
         NotImplementedError
-          If the variable is not a pyagrum.DiscretizedVariable
+          If the variable is not a `pyagrum.DiscretizedVariable`
         pyagrum.OutOfBounds
           If x is not a valid index for the ticks of the variable
 
@@ -327,7 +327,7 @@
         raise NotImplementedError(f"tick not implemented for {self}")
     def draw(self,x):
       """
-      Draw a random float value from the x-th interval of the variable (only for pyagrum.DiscretizedVariable).
+      Draw a random float value from the x-th interval of the variable (only for `pyagrum.DiscretizedVariable`).
 
       Parameters
       ----------
@@ -342,7 +342,7 @@
       Raises
       ------
       NotImplementedError
-          if the variable is not a pyagrum.DiscretizedVariable
+          if the variable is not a `pyagrum.DiscretizedVariable`
       pyagrum.OutOfBounds
           if x is not a valid interval index
       """

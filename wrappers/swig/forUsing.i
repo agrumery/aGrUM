@@ -325,6 +325,9 @@ ADD_MULTIDIMDECORATOR_API(gum::Tensor<double>)
     return self->baseclassname::hasSoftEvidence(id);
   }
 
+  bool hasHardEvidence( const NodeId id ) const {
+    return self->baseclassname::hasHardEvidence(id);
+  }
   bool hasHardEvidence( const std::string& nodeName ) const {
     return self->baseclassname::hasHardEvidence(nodeName);
   }

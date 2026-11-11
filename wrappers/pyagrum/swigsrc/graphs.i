@@ -281,8 +281,8 @@ ADD_NODE_ITER(gum::MAG)
     """ adjacency matrix from a graph/graphical models
 
     Compute the adjacency matrix of a pyAgrum's graph or graphical models
-    (more generally an object that has `nodes`, `children`/`parents` or `neighbours` methods; for
-    a MAG, the symmetric matrix of `adjacents`)
+    (more generally an object that has ``nodes``, ``children``/``parents`` or ``neighbours`` methods; for
+    a MAG, the symmetric matrix of ``adjacents``)
 
     Returns
     -------
@@ -500,7 +500,7 @@ import enum as _enum
 
 class EdgeMark(_enum.IntEnum):
   """
-  The mark at an end of an edge of a marked graph (pyagrum.MarkedGraph, pyagrum.PAG).
+  The mark at an end of an edge of a marked graph (`pyagrum.MarkedGraph`, `pyagrum.PAG`).
 
   An edge x-y carries one mark at x and one at y: ``x->y`` has a tail at x and an arrowhead at y,
   ``x<->y`` an arrowhead at both ends, ``x--y`` a tail at both ends; a circle is an end whose mark
@@ -657,7 +657,7 @@ ADD_MIXED_METHOD_TO_GRAPHCLASS(gum::PDAG);
 
   def saveGUMstring(self, indent: int | None = None) -> str:
     """
-    Save the graph as a jgum string (see ``pyagrum.graphFromGUMString`` to read it back).
+    Save the graph as a jgum string (see `pyagrum.graphFromGUMString` to read it back).
 
     Parameters
     ----------
@@ -823,7 +823,7 @@ def saveGraph(graph, filename: str) -> None:
   Parameters
   ----------
   graph : pyagrum.DiGraph or pyagrum.DAG or pyagrum.UndiGraph or pyagrum.MixedGraph or pyagrum.PDAG or pyagrum.ChainGraph or pyagrum.MarkedGraph or pyagrum.PAG or pyagrum.CPDAG or pyagrum.MPDAG or pyagrum.MAG or pyagrum.EssentialGraph
-    the graph (any class of graph; pickle only for pyagrum.CliqueGraph)
+    the graph (any class of graph; pickle only for `pyagrum.CliqueGraph`)
   filename : str
     the name of the file (see :func:`pyagrum.availableGraphExts`)
 
@@ -832,8 +832,8 @@ def saveGraph(graph, filename: str) -> None:
   pyagrum.InvalidArgument
     if the extension is unknown (see :func:`pyagrum.availableGraphExts`)
   NotImplementedError
-    if graph is a pyagrum.CliqueGraph (or a pyagrum.JunctionTree) and the format is GUM (a
-    pyagrum.CliqueGraph can be pickled)
+    if graph is a `pyagrum.CliqueGraph` (a junction tree included) and the format is GUM (a
+    `pyagrum.CliqueGraph` can be pickled)
   """
   name = str(filename)
   extension = name.split(".")[-1].upper()

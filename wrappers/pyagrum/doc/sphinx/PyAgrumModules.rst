@@ -17,14 +17,14 @@ pyAgrum's modular architecture
   fundamental component -- graphs, variables, tensors...) plus six
   **optional submodules**, each compiled as its own independent extension --
   one per probabilistic graphical model family beyond BN, plus
-  ``pyagrum.ktbn`` (k-order dynamic Bayesian networks). All six are
+  `pyagrum.ktbn` (k-order dynamic Bayesian networks). All six are
   reachable lazily (see below).
 
   pyAgrum also ships several **pure-Python** modules -- :doc:`pyagrum.lib
   <pyAgrum.lib>` (notebook display, image export, ...),
   :doc:`pyagrum.causal <CausalModel>`, :doc:`pyagrum.ctbn <ctbn>`,
   :doc:`pyagrum.clg <clg>`, :doc:`pyagrum.bnmixture <bnmixture>`,
-  ``pyagrum.skbn``, :doc:`pyagrum.explain <explain>`... These are ordinary
+  `pyagrum.skbn`, :doc:`pyagrum.explain <explain>`... These are ordinary
   Python packages layered on top of the compiled core: plain ``import``
   statements, no lazy-loading shim, nothing described on this page applies
   to them.
@@ -153,15 +153,15 @@ When a submodule was left out, accessing any of its names raises a plain
 The ``pyagrum.prm`` special case
 ----------------------------------
 
-``pyagrum.prm`` behaves slightly differently from the five fully-lazy submodules above.
+`pyagrum.prm` behaves slightly differently from the five fully-lazy submodules above.
 Its ``PRMexplorer`` class is reachable lazily like everything else, but
 O3PRM file support on :class:`~pyagrum.BayesNet` --
 ``BayesNet.loadO3PRM``/``saveO3PRM``, and the ``"O3PRM"`` extension of
 :func:`~pyagrum.loadBN`/:func:`~pyagrum.saveBN` -- is *not*: these methods
-only exist once ``pyagrum.prm`` has actually been imported, because
-``pyagrum.prm`` attaches them onto the core ``BayesNet`` class itself on
+only exist once `pyagrum.prm` has actually been imported, because
+`pyagrum.prm` attaches them onto the core ``BayesNet`` class itself on
 import rather than exposing them as free-standing names. Calling
-``gum.loadBN("model.o3prm")`` without ever having imported ``pyagrum.prm``
+``gum.loadBN("model.o3prm")`` without ever having imported `pyagrum.prm`
 raises an explicit error asking for ``import pyagrum.prm``:
 
 .. code-block:: python

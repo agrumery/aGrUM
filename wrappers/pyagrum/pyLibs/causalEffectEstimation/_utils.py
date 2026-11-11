@@ -305,7 +305,7 @@ def _findPath(
   b: int,
 ) -> list[int]:
   """
-  Find a path in the mixed graph `G` from node `a` to node `b`.
+  Find a path in the mixed graph ``G`` from node ``a`` to node ``b``.
 
   Parameters
   ----------
@@ -319,7 +319,7 @@ def _findPath(
   Returns
   -------
   list[int]
-      The path from node `a` to `b`.
+      The path from node ``a`` to ``b``.
   """
 
   stack: deque[tuple[int, list[int]]] = deque()
@@ -344,7 +344,7 @@ def _findPath(
 
 def _nearestSeparator(obn: pyagrum.DAG, cbn: pyagrum.DAG, t: int, y: int, z: int) -> set[int] | None:
   """
-  Find the nearest separator set in the `causal_model` according to `(y,w)`.
+  Find the nearest separator set in the ``causal_model`` according to ``(y,w)``.
 
   (see https://www.ijcai.org/Proceedings/15/Papers/457.pdf)
 
@@ -363,7 +363,7 @@ def _nearestSeparator(obn: pyagrum.DAG, cbn: pyagrum.DAG, t: int, y: int, z: int
   -------
   set[int]
       The nearest separator set in the mutilated graph of
-      `causal_model` with respect to `t`.
+      ``causal_model`` with respect to ``t``.
   """
 
   M = obn.nodes()
@@ -394,8 +394,8 @@ def _nearestSeparator(obn: pyagrum.DAG, cbn: pyagrum.DAG, t: int, y: int, z: int
 
 def _ancestralInstrument(causal_model: pyagrum.CausalModel, t: int, y: int, z: int) -> set[int] | None:
   """
-  Find the ancetral instrument conditioning set `W` in the `causal_model`
-  with `t` as intervention, `y` as outcome and `z` as instrument.
+  Find the ancetral instrument conditioning set ``W`` in the ``causal_model``
+  with ``t`` as intervention, ``y`` as outcome and ``z`` as instrument.
 
   (see https://www.ijcai.org/Proceedings/15/Papers/457.pdf)
 
@@ -413,7 +413,7 @@ def _ancestralInstrument(causal_model: pyagrum.CausalModel, t: int, y: int, z: i
   Returns
   -------
   set[int]
-      the ancetral instrument conditioning set `W`.
+      the ancetral instrument conditioning set ``W``.
   """
 
   mutilated_obn = pyagrum.DAG(causal_model.observationalBN().dag())

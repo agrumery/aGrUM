@@ -145,7 +145,7 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
   filename : str
     the name of the output file
   allowModificationWhenSaving: bool
-      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, `pyagrum.config["core","allowModificationWhenSaving"]` is used.
+      whether syntax errors in the BN should throw a FatalError or can be corrected. If None, ``pyagrum.config["core","allowModificationWhenSaving"]`` is used.
 
   Notes
   -----
@@ -324,7 +324,7 @@ def randomBN(*, n: int = 5, names: list[str] | None = None, ratio_arc: float = 1
   Raises
   ------
   pyagrum.ArgumentError
-      If the BN would have less than 4 nodes (given by `n` or by `names`).
+      If the BN would have less than 4 nodes (given by ``n`` or by ``names``).
 
   Warnings
   --------

@@ -53,7 +53,7 @@ PDAG() -> PDAG
 
 PDAG(src) -> PDAG
     Parameters:
-        - **src** (*pyagrum.PDAG*, *pyagrum.DAG*, *pyagrum.UndiGraph* or *pyagrum.MixedGraph*) -- the graph to copy
+        - **src** (`pyagrum.PDAG`, `pyagrum.DAG`, `pyagrum.UndiGraph` or `pyagrum.MixedGraph`) -- the graph to copy
 
 Raises
 ------
@@ -145,7 +145,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the ancestors of node `norid`.
+  the set of ids of the ancestors of node ``norid``.
 "
 
 %feature("docstring") gum::PDAG::descendants
@@ -160,7 +160,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the descendants of node `norid`.
+  the set of ids of the descendants of node ``norid``.
 "
 
 %feature("docstring") gum::PDAG::addNode

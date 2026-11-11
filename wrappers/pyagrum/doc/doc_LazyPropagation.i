@@ -50,7 +50,7 @@ Class used for Lazy Propagation
 
 LazyPropagation(bn) -> LazyPropagation
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "
 
 %feature("docstring") gum::LazyPropagation<double>::mpe

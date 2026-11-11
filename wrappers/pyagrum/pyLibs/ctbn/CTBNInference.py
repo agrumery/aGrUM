@@ -217,7 +217,7 @@ class ForwardSamplingInference(CTBNInference):
         Number of runs before starting the sampling (to ensure ergodicity).
     rng : numpy.random.Generator | None
         The generator used for the draws. By default, a generator seeded by the generator of pyAgrum
-        (the sampling is then reproducible after ``pyagrum.initRandom``).
+        (the sampling is then reproducible after `pyagrum.initRandom`).
 
     Returns
     -------
@@ -394,7 +394,7 @@ class ForwardSamplingInference(CTBNInference):
     Start ``nbTrajectories`` samplings in parallel processes and approximate the inference over all the samples.
 
     The result is the same as the one of ``averageInference`` with the same state of the random generator
-    (see ``pyagrum.initRandom``). Starting the processes has a cost: this method pays off for long samplings
+    (see `pyagrum.initRandom`). Starting the processes has a cost: this method pays off for long samplings
     only. The trajectories are not kept (``trajectory`` is left unchanged).
 
     Parameters

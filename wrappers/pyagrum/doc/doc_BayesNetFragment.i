@@ -50,7 +50,7 @@ BayesNetFragment represents a part of a Bayesian network (subset of nodes). By d
 
 BayesNetFragment(BayesNet bn) -> BayesNetFragment
     Parameters:
-      - **bn** (*pyagrum.BayesNet*) -- the bn refered by the fragment
+      - **bn** (`pyagrum.BayesNet`) -- the bn refered by the fragment
 "
 
 %feature("docstring") gum::BayesNetFragment::checkConsistency

@@ -46,18 +46,18 @@ This class provides functionality for learning Bayesian Networks from data.
 BNLearner(filename,inducedTypes=True) -> BNLearner
     Parameters:
         - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
+        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : ``?``)
         - **inducedTypes** (*Bool*) -- whether BNLearner should try to automatically find the type of each variable
 
 BNLearner(filename,src) -> BNLearner
     Parameters:
         - **source** (*str* or *pandas.DataFrame*) -- the data to learn from
-        - **src** (*pyagrum.BayesNet*) -- the Bayesian network used to find those modalities
-        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : `?`)
+        - **src** (`pyagrum.BayesNet`) -- the Bayesian network used to find those modalities
+        - **missingSymbols** (*list of str*) -- list of strings that will be interpreted as missing values (by default : ``?``)
 
 BNLearner(learner) -> BNLearner
     Parameters:
-        - **learner** (*pyagrum.BNLearner*) -- the BNLearner to copy
+        - **learner** (`pyagrum.BNLearner`) -- the BNLearner to copy
 "
 
 
@@ -91,8 +91,8 @@ pyagrum.DAG
 "
 learn the essential graph of the Markov equivalence class of the data
 
-The essential graph (CPDAG) of the learned DAG (see `learnDAG`), whatever the algorithm. With a
-constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by `learnPDAG` (it may not
+The essential graph (CPDAG) of the learned DAG (see ``learnDAG``), whatever the algorithm. With a
+constraint-based method (MIIC, PC, FCI), the learned PDAG itself is given by ``learnPDAG`` (it may not
 be a CPDAG).
 
 Returns
@@ -105,8 +105,8 @@ Raises
 pyagrum.MissingValueInDatabase
     if the database contains missing values
 pyagrum.OperationNotAllowed
-    as `learnDAG`, if the learned DAG exceeds the maximum number of parents (see
-    `setMaxIndegree` and `setErrorOnExceededMaxIndegree`)
+    as ``learnDAG``, if the learned DAG exceeds the maximum number of parents (see
+    ``setMaxIndegree`` and ``setErrorOnExceededMaxIndegree``)
 "
 
 %feature("docstring") gum::learning::IBNLearner::learnPDAG
@@ -127,8 +127,8 @@ Notes
 -----
   With FCI, the result is one representative of the learned PAG, not all that FCI knows: some arcs
   are not established by the data (the edges o-o are oriented to get a DAG, the edges o-> and --o
-  become arcs), and an undirected edge may stand for a latent confounder (see `latentVariables`).
-  Use `learnPAG` to get the learned structure with its uncertain marks.
+  become arcs), and an undirected edge may stand for a latent confounder (see ``latentVariables``).
+  Use ``learnPAG`` to get the learned structure with its uncertain marks.
 "
 
 
@@ -144,7 +144,7 @@ pyagrum.PAG
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If `useFCI()` has not been called first.
+    If ``useFCI()`` has not been called first.
 
 See Also
 --------
@@ -158,10 +158,10 @@ Indicate that we wish to use the FCI (Fast Causal Inference) algorithm.
 
 FCI is a constraint-based structure learning algorithm that, unlike PC, handles
 latent confounders and selection bias. It learns a PAG (Partial Ancestral Graph)
-from data via conditional independence tests. Use `learnPAG()` to retrieve the result.
+from data via conditional independence tests. Use ``learnPAG()`` to retrieve the result.
 
-After calling `useFCI()`, configure the independence test with `useFCIChi2Test()`
-(default) or `useFCIG2Test()`, and tune the significance threshold with `setFCIAlpha()`.
+After calling ``useFCI()``, configure the independence test with ``useFCIChi2Test()``
+(default) or ``useFCIG2Test()``, and tune the significance threshold with ``setFCIAlpha()``.
 
 Returns
 -------
@@ -174,7 +174,7 @@ pyagrum.BNLearner
 "
 Select the chi-squared (χ²) independence test for the FCI algorithm.
 
-This is the default test when `useFCI()` is called.
+This is the default test when ``useFCI()`` is called.
 
 Returns
 -------
@@ -184,7 +184,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -200,7 +200,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -212,7 +212,7 @@ Parameters
 ----------
 alpha : float
     significance level in (0, 1). Lower values produce sparser graphs. If it is never set, the learner uses
-    `pyagrum.config['learning', 'alpha']` (0.05) as it was when the learner was created.
+    ``pyagrum.config['learning', 'alpha']`` (0.05) as it was when the learner was created.
 
 Returns
 -------
@@ -222,7 +222,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 pyagrum.OutOfBounds
     If alpha is not strictly between 0 and 1.
 "
@@ -245,7 +245,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -272,7 +272,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -288,7 +288,7 @@ bool
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -301,12 +301,12 @@ Choose what FCI does when the learned PAG is not valid.
 cycle, which may happen with conflicting independence tests), either an error is raised (``True``) or the former
 approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
 symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
-The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).
+The default value is the key ``learning.fciErrorOnInvalidPAG`` of `pyagrum.config` (``False``).
 
 Parameters
 ----------
 error : bool
-    ``True`` to raise ``pyagrum.InvalidArgument`` on an invalid PAG.
+    ``True`` to raise `pyagrum.InvalidArgument` on an invalid PAG.
 
 Returns
 -------
@@ -316,7 +316,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
@@ -331,24 +331,24 @@ bool
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If FCI has not been selected (call `useFCI()` first).
+    If FCI has not been selected (call ``useFCI()`` first).
 "
 
 
 %feature("docstring") gum::learning::BNLearner::learnParameters
 "
 Creates a Bayes net whose structure corresponds to that passed in argument or to
-the last structure learnt by Method `learnDAG()`, and whose parameters are learnt
+the last structure learnt by Method ``learnDAG()``, and whose parameters are learnt
 from the BNLearner's database.
 
 Usage:
-  1. `learnParameters(dag, take_into_account_score=True)`
-  2. `learnParameters(bn, take_into_account_score=True)`
-  3. `learnParameters(take_into_account_score=True)`
+  1. ``learnParameters(dag, take_into_account_score=True)``
+  2. ``learnParameters(bn, take_into_account_score=True)``
+  3. ``learnParameters(take_into_account_score=True)``
 
-When the first argument of Method `learnParameters()` is a DAG or a Bayes net
+When the first argument of Method ``learnParameters()`` is a DAG or a Bayes net
 (usages 1. and 2.), this one specifies the graphical structure of the returned
-Bayes net. Otherwise (usage 3.), Method `learnParameters()` is called implicitly
+Bayes net. Otherwise (usage 3.), Method ``learnParameters()`` is called implicitly
 with the last DAG learnt by the BNLearner.
 
 The difference between calling this method with a DAG (usages 1. and 3.) or a
@@ -357,7 +357,7 @@ used to learn the parameters. EM needs to initialize the conditional probability
 distributions (CPT) before iterating the expectation/maximimzation steps. When a
 DAG is passed in argument, these initializations are performed using a specific
 estimator that does not take into account the missing values in the database. The
-resulting CPTs are then perturbed randomly (see the noise in method `useEM()`).
+resulting CPTs are then perturbed randomly (see the noise in method ``useEM()``).
 When a Bayes net is passed in argument, its CPT for a node A can be either filled
 exclusively with zeroes or not. In the first case, the initialization is performed
 as described above. In the second case, the value of A's CPT is used as is, and
@@ -378,10 +378,10 @@ take_into_account_score : bool, default=True
     structure learning. In this case, if the score used to learn the structure
     has an implicit prior (like K2 which has a 1-smoothing prior), it is important
     to also take into account this implicit prior for parameter learning. By
-    default (`take_into_account_score=True`), we will learn parameters by taking
+    default (``take_into_account_score=True``), we will learn parameters by taking
     into account the prior specified by methods usePriorXXX() + the implicit prior
-    of the score (if any). If `take_into_account_score=False`, we just take into
-    account the prior specified by `usePriorXXX()`.
+    of the score (if any). If ``take_into_account_score=False``, we just take into
+    account the prior specified by ``usePriorXXX()``.
 
 Returns
 -------
@@ -432,9 +432,9 @@ take_into_account_score : bool
   The dag passed in argument may have been learnt from a structure learning. In this case,
   if the score used to learn the structure has an implicit prior (like K2 which has a 1-smoothing prior),
   it is important to also take into account this implicit prior for parameter learning. By default
-  (`take_into_account_score=True`), we will learn parameters by taking into account the prior specified
-  by methods usePriorXXX () + the implicit prior of the score (if any). If `take_into_account_score=False`,
-  we just take into account the prior specified by `usePriorXXX()`.
+  (``take_into_account_score=True``), we will learn parameters by taking into account the prior specified
+  by methods usePriorXXX () + the implicit prior of the score (if any). If ``take_into_account_score=False``,
+  we just take into account the prior specified by ``usePriorXXX()``.
 
 Returns
 -------
@@ -552,9 +552,9 @@ PC is a constraint-based structure learning algorithm. It learns a CPDAG
 independence tests. Three phases: skeleton discovery, v-structure orientation,
 and Meek rules propagation.
 
-After calling `usePC()`, configure the independence test with `useChi2Test()`
-(default) or `useG2Test()`, and optionally tune the significance threshold with
-`setPCAlpha()`.
+After calling ``usePC()``, configure the independence test with ``useChi2Test()``
+(default) or ``useG2Test()``, and optionally tune the significance threshold with
+``setPCAlpha()``.
 
 Returns
 -------
@@ -567,7 +567,7 @@ pyagrum.BNLearner
 "
 Select the chi-squared (χ²) independence test for the PC algorithm.
 
-This is the default test when `usePC()` is called. The test measures
+This is the default test when ``usePC()`` is called. The test measures
 whether two variables are conditionally independent given a set of
 conditioning variables by comparing observed and expected counts under
 the independence hypothesis.
@@ -580,7 +580,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If the PC algorithm has not been selected (call `usePC()` first).
+    If the PC algorithm has not been selected (call ``usePC()`` first).
 "
 
 
@@ -600,7 +600,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If the PC algorithm has not been selected (call `usePC()` first).
+    If the PC algorithm has not been selected (call ``usePC()`` first).
 "
 
 
@@ -616,7 +616,7 @@ conditional independence test exceeds α. Smaller α removes more edges
 Parameters
 ----------
 alpha : float
-    significance threshold in (0, 1). If it is never set, the learner uses `pyagrum.config['learning', 'alpha']` (0.05)
+    significance threshold in (0, 1). If it is never set, the learner uses ``pyagrum.config['learning', 'alpha']`` (0.05)
     as it was when the learner was created.
 
 Returns
@@ -627,7 +627,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If the PC algorithm has not been selected (call `usePC()` first).
+    If the PC algorithm has not been selected (call ``usePC()`` first).
 pyagrum.OutOfBounds
     If alpha is not strictly between 0 and 1.
 "
@@ -642,7 +642,7 @@ subsets are frozen at the start of each depth level and edge removals
 are deferred until the end of that level. This makes the result
 order-independent within each depth level.
 
-In unstable PC (`stable=False`), edges are removed immediately and
+In unstable PC (``stable=False``), edges are removed immediately and
 adjacency sets are updated on the fly, which may cause the result to
 depend on the order in which edges are processed.
 
@@ -659,7 +659,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If the PC algorithm has not been selected (call `usePC()` first).
+    If the PC algorithm has not been selected (call ``usePC()`` first).
 "
 
 
@@ -686,7 +686,7 @@ pyagrum.BNLearner
 Raises
 ------
 pyagrum.OperationNotAllowed
-    If the PC algorithm has not been selected (call `usePC()` first).
+    If the PC algorithm has not been selected (call ``usePC()`` first).
 "
 
 
@@ -890,7 +890,7 @@ tail : int | str
 %feature("docstring") gum::learning::BNLearner::addForbiddenArc
 "
 Forbid the arc passed in argument to be added during structure learning
-(methods `learnDAG()` or `learnBN()`).
+(methods ``learnDAG()`` or ``learnBN()``).
 
 Usage:
   1. addForbiddenArc(tail, head)
@@ -930,7 +930,7 @@ arcs : set
 %feature("docstring") gum::learning::BNLearner::addMandatoryArc
 "
 Allow an arc to be added if necessary during structure learning
-(methods `learnDAG()` or `learnBN()`).
+(methods ``learnDAG()`` or ``learnBN()``).
 
 Usage:
   1. addMandatoryArc(tail, head)
@@ -1001,15 +1001,15 @@ l : list
 "
 Choose what the constraint-based algorithms (PC, FCI, MIIC) do when the learned DAG exceeds the maximum indegree.
 
-These algorithms never remove an edge kept by their independence tests to satisfy the bound given by `setMaxIndegree`.
-If the DAG of `learnDAG()` or `learnBN()` has a node with more parents than this bound, either an error is raised
+These algorithms never remove an edge kept by their independence tests to satisfy the bound given by ``setMaxIndegree``.
+If the DAG of ``learnDAG()`` or ``learnBN()`` has a node with more parents than this bound, either an error is raised
 (``True``) or the DAG is returned with a warning (``False``). The default value is the key
-``learning.errorOnExceededMaxIndegree`` of ``pyagrum.config`` (``True``).
+``learning.errorOnExceededMaxIndegree`` of `pyagrum.config` (``True``).
 
 Parameters
 ----------
 error : bool
-    ``True`` to raise ``pyagrum.OperationNotAllowed`` when the learned DAG exceeds the maximum indegree.
+    ``True`` to raise `pyagrum.OperationNotAllowed` when the learned DAG exceeds the maximum indegree.
 
 Returns
 -------
@@ -1021,7 +1021,7 @@ pyagrum.BNLearner
 %feature("docstring") gum::learning::IBNLearner::errorOnExceededMaxIndegree
 "
 Return whether the constraint-based algorithms raise an error when the learned DAG exceeds the maximum indegree (see
-`setErrorOnExceededMaxIndegree`).
+``setErrorOnExceededMaxIndegree``).
 
 Returns
 -------
@@ -1031,7 +1031,7 @@ bool
 
 %feature("docstring") gum::learning::IBNLearner::maxIndegreeExceeded
 "
-Return whether the last DAG learned (by `learnDAG()` or `learnBN()`) by the selected constraint-based algorithm exceeds
+Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds
 the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
 
 Returns
@@ -1046,8 +1046,8 @@ Set the maximum number of parents of a node of the learned structure.
 
 The score-based algorithms only explore the structures satisfying this bound. The constraint-based algorithms (PC, FCI,
 MIIC) use it when orienting the v-structures, but never remove an edge kept by their independence tests to satisfy it:
-if the learned DAG exceeds the bound, `learnDAG()` and `learnBN()` raise `pyagrum.OperationNotAllowed`, or return it
-with a warning (see `setErrorOnExceededMaxIndegree`). `learnPDAG()` does not check the
+if the learned DAG exceeds the bound, ``learnDAG()`` and ``learnBN()`` raise `pyagrum.OperationNotAllowed`, or return it
+with a warning (see ``setErrorOnExceededMaxIndegree``). ``learnPDAG()`` does not check the
 bound.
 
 Parameters
@@ -1334,8 +1334,8 @@ pyagrum.BNLearner
 %feature("docstring") gum::learning::BNLearner::EMenableMaxIter
 "
 Enables a limit on the number of iterations performed by EM. This number is
-equal to the last number specified with Method `EMsetMaxIter()`.
-See Method `EMMaxIter()` to get its current value.
+equal to the last number specified with Method ``EMsetMaxIter()``.
+See Method ``EMMaxIter()`` to get its current value.
 
 Returns
 -------
@@ -1431,7 +1431,7 @@ an EM stopping criterion.
 Sets or unsets the verbosity of the EM parameter learning algorithm.
 
 Verbosity is necessary for keeping track of the history of the learning.
-See Method `EMHistory()`.
+See Method ``EMHistory()``.
 
 Parameters
 ----------
@@ -1464,7 +1464,7 @@ bool
 "
 Returns a message specifying the current state of the EM parameter learning algorithm.
 
-See Method `EMStateApproximationScheme` for more details. To make it short, it may be
+See Method ``EMStateApproximationScheme`` for more details. To make it short, it may be
 interesting, when EM has completed, to determine for which reason it stopped, i.e.,
 which stopping criterion made it stop. In particular, although it is fortunately quite
 seldom, it can be stopped due the log-likelihood diverging (decreasing) instead of
@@ -1503,11 +1503,11 @@ Returns the number of iterations performed by the EM parameter learning algorith
 "
 Returns a list containing the values recorded after each
 expectation/maximization iteration of the EM parameter learning algorithm:
-the opposite of the log-likelihood with the rate criterion (`useEMWithRateCriterion()`),
-its variation with the difference criterion (`useEMWithDiffCriterion()`).
+the opposite of the log-likelihood with the rate criterion (``useEMWithRateCriterion()``),
+its variation with the difference criterion (``useEMWithDiffCriterion()``).
 
-The list has `EMnbrIterations()` values, whatever the reason why EM stopped, as long as
-the period size is left at its default value of 1 (see `EMsetPeriodSize()`).
+The list has ``EMnbrIterations()`` values, whatever the reason why EM stopped, as long as
+the period size is left at its default value of 1 (see ``EMsetPeriodSize()``).
 
 Returns
 -------
@@ -1517,7 +1517,7 @@ list of float
 Warnings
 --------
 Recording these values is enabled only when EM is executed in verbose
-mode. See method `EMsetVerbosity()`.
+mode. See method ``EMsetVerbosity()``.
 "
 
 
@@ -1591,7 +1591,7 @@ Set the database weight which is given as an equivalent sample size.
 Warnings
 --------
 The same weight is assigned to all the rows of the learning database so that the sum of their
-weights is equal to the value of the parameter `weight`.
+weights is equal to the value of the parameter ``weight``.
 
 Parameters
 ----------
@@ -1757,7 +1757,7 @@ names of these columns in the database. The list of variables in the conditionin
 set can be empty. In this case, no need to specify it.
 
 Usage:
-  * `chi2(name1, name2, knowing=[])`
+  * ``chi2(name1, name2, knowing=[])``
 
 Parameters
 ----------
@@ -1787,7 +1787,7 @@ names of these columns in the database. The list of variables in the conditionin
 set can be empty. In this case, no need to specify it.
 
 Usage:
-  * `G2(name1, name2, knowing=[])`
+  * ``G2(name1, name2, knowing=[])``
 
 Parameters
 ----------
@@ -1814,7 +1814,7 @@ computes the (log2) mutual information between two columns, given a list of othe
 Warnings
 --------
 This function gives the 'raw' mutual information. If you want a version taking into account correction and prior, use
-gum.BNLearner.correctedMutualInformation
+`pyagrum.BNLearner.correctedMutualInformation`
 
 Parameters
 ----------
@@ -1841,7 +1841,7 @@ computes the mutual information between two columns, given a list of other colum
 Warnings
 --------
 This function takes into account correction and prior. If you want the 'raw' mutual information, use
-gum.BNLearner.mutualInformation
+`pyagrum.BNLearner.mutualInformation`
 
 
 Parameters
@@ -1936,7 +1936,7 @@ edges : set
 
 %feature("docstring") gum::learning::BNLearner::setPossibleSkeleton
 "
-Add a constraint by fixing the set of possible edges as a pyagrum.UndiGraph.
+Add a constraint by fixing the set of possible edges as a `pyagrum.UndiGraph`.
 
 Parameters
 ----------
@@ -1952,7 +1952,7 @@ Sets the initial structure (DAG) used by the structure learning algorithm.
 Parameters
 ----------
 dag : pyagrum.DAG
-    an initial pyagrum.DAG structure
+    an initial `pyagrum.DAG` structure
 "
 
 
@@ -2008,7 +2008,7 @@ bool
 
 %feature("docstring") gum::learning::BNLearner::copyState
 "
-Copy the state of the given pyagrum.BNLearner (as argument).
+Copy the state of the given `pyagrum.BNLearner` (as argument).
 
 Parameters
 ----------

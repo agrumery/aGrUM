@@ -52,12 +52,12 @@ Unlike GibbsBNdistance, each sample is drawn independently (forward sampling in 
 
 MCBNDistance(P,Q) -> MCBNDistance
     Parameters:
-        - **P** (*pyagrum.BayesNet*) -- a Bayesian network
-        - **Q** (*pyagrum.BayesNet*) -- another Bayesian network to compare with the first one
+        - **P** (`pyagrum.BayesNet`) -- a Bayesian network
+        - **Q** (`pyagrum.BayesNet`) -- another Bayesian network to compare with the first one
 
 MCBNDistance(mcbnd) -> MCBNDistance
     Parameters:
-        - **mcbnd** (*pyagrum.MCBNDistance*) -- the Monte Carlo BNdistance to copy
+        - **mcbnd** (`pyagrum.MCBNDistance`) -- the Monte Carlo BNdistance to copy
 
 Raises
 ------

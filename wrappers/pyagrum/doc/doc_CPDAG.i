@@ -134,13 +134,13 @@ bool
 %feature("docstring") gum::ImmutableMixedGraph< gum::ChainGraph >::toDot
 "
 The chain components (nodes linked by undirected edges) are drawn in clusters (color of the key
-``dot.chainComponentBgColor`` of ``pyagrum.config``) and the compelled arcs with the color of the key
+``dot.chainComponentBgColor`` of `pyagrum.config`) and the compelled arcs with the color of the key
 ``dot.compelledArcColor``.
 
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes and arcs...); a color given for an arc wins over the color of the compelled arcs.
 
 Returns
 -------

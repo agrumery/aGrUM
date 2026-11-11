@@ -53,7 +53,7 @@ The essential graph (or completed PDAG) represents the Markov equivalence class 
 network: the Bayesian networks with the same independence model. Its arcs have the same orientation
 in all the Bayesian networks of the class; its undirected edges may have both orientations.
 
-An EssentialGraph is a ``pyagrum.CPDAG`` (immutable, with all its methods). The names of the nodes
+An EssentialGraph is a `pyagrum.CPDAG` (immutable, with all its methods). The names of the nodes
 are stored in the essential graph: it does not depend on the model it was built from.
 
 EssentialGraph(m) -> EssentialGraph
@@ -63,15 +63,15 @@ EssentialGraph(m) -> EssentialGraph
 EssentialGraph(m, pdag) -> EssentialGraph
     Parameters:
       - **m** (*pyagrum.DAGmodel*) -- the model giving the names of the nodes
-      - **pdag** (*pyagrum.PDAG*) -- the essential graph: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+      - **pdag** (`pyagrum.PDAG`) -- the essential graph: it must be a CPDAG (`pyagrum.InvalidArgument` otherwise)
 
 EssentialGraph(pdag) -> EssentialGraph
     Parameters:
-      - **pdag** (*pyagrum.PDAG*) -- the essential graph, with the names of its nodes: it must be a CPDAG (pyagrum.InvalidArgument otherwise)
+      - **pdag** (`pyagrum.PDAG`) -- the essential graph, with the names of its nodes: it must be a CPDAG (`pyagrum.InvalidArgument` otherwise)
 
 EssentialGraph(cpdag) -> EssentialGraph
     Parameters:
-      - **cpdag** (*pyagrum.CPDAG*) -- the essential graph, with the names of its nodes
+      - **cpdag** (`pyagrum.CPDAG`) -- the essential graph, with the names of its nodes
 "
 
 %feature("docstring") gum::EssentialGraph::cpdag
@@ -110,13 +110,13 @@ Set
 
 %feature("docstring") gum::EssentialGraph::toDot
 "
-Drawn as a ``pyagrum.CPDAG`` (chain components in clusters, compelled arcs with the color of the key
-``dot.compelledArcColor`` of ``pyagrum.config``), the nodes being labelled with the names of the variables.
+Drawn as a `pyagrum.CPDAG` (chain components in clusters, compelled arcs with the color of the key
+``dot.compelledArcColor`` of `pyagrum.config`), the nodes being labelled with the names of the variables.
 
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------
@@ -152,7 +152,7 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the ancestors of node `norid`.
+  the set of ids of the ancestors of node ``norid``.
 "
 
 %feature("docstring") gum::EssentialGraph::descendants
@@ -167,5 +167,5 @@ norid : str|int
 Returns
 -------
 set
-  the set of ids of the descendants of node `norid`.
+  the set of ids of the descendants of node ``norid``.
 "

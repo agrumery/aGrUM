@@ -3,7 +3,7 @@ k-order Dynamic Bayesian Networks (k-TBN)
 
 A dynamic Bayesian network models a stochastic process by describing how the
 distribution over a set of variables at time :math:`t` depends on the past. The
-classical `2-TBN` limits that dependency to a single step backward
+classical ``2-TBN`` limits that dependency to a single step backward
 (:math:`t-1`). A **k-order dynamic Bayesian network** (k-TBN) generalizes this:
 a variable at time :math:`t` may depend on any of the :math:`k` most recent
 time slices :math:`t, t-1, \ldots, t-k+1`.

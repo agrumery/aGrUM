@@ -362,7 +362,7 @@ class CredalNet(object):
         Parameters
         ----------
         options : pyagrum.DotOptions, optional
-            what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):
+            what is given to the drawing beyond the look of `pyagrum.config` (section ``credalnet``):
             size, label, colors of some nodes, width of some arcs...
 
         Returns
@@ -569,7 +569,7 @@ class CNMonteCarloSampling(object):
 
     CNMonteCarloSampling(cn) -> CNMonteCarloSampling
         Parameters:
-            - **cn** (*pyagrum.CredalNet*) -- a credal network
+            - **cn** (`pyagrum.CredalNet`) -- a credal network
 
     """
 
@@ -878,7 +878,7 @@ class CNMonteCarloSampling(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the node does not belong to the Credal network
 
         """
@@ -903,7 +903,7 @@ class CNMonteCarloSampling(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the node does not belong to the Credal network
 
         """
@@ -1005,7 +1005,7 @@ class CNLoopyPropagation(object):
 
     CNLoopyPropagation(cn) -> CNLoopyPropagation
         Parameters:
-          - **cn** (*pyagrum.CredalNet*) -- a Credal network
+          - **cn** (`pyagrum.CredalNet`) -- a Credal network
 
     """
 
@@ -1341,7 +1341,7 @@ class CNLoopyPropagation(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the node does not belong to the Credal network
 
         """
@@ -1366,7 +1366,7 @@ class CNLoopyPropagation(object):
 
         Raises
         ------
-          pyagrum.IndexError
+          pyagrum.NotFound
             If the node does not belong to the Credal network
 
         """

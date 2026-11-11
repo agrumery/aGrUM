@@ -68,14 +68,14 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         Background data. A plain DataFrame is treated as (df, True) (labels assumed).
         A tuple allows explicit control: (DataFrame, with_labels).
     sample_size : int
-        The size of the background sample to generate if `background` is None.
+        The size of the background sample to generate if ``background`` is None.
     logit : bool
         If True, applies the logit transformation to the probabilities.
 
     Raises
     ------
     TypeError
-        If bn is not a pyagrum.BayesNet instance or target is not an integer or string.
+        If bn is not a `pyagrum.BayesNet` instance or target is not an integer or string.
     ValueError
         If target is not a valid node id in the Bayesian Network or if sample_size is not a positive integer.
     """

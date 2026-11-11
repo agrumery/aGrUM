@@ -136,7 +136,7 @@ def useSmoothingPrior(self, weight: float | None = None) -> "pyagrum.ktbn.PYCLAS
   Parameters
   ----------
   weight : float, optional
-    the prior weight, which must not be negative. By default, it is `pyagrum.config['learning', 'priorWeight']` (1.0).
+    the prior weight, which must not be negative. By default, it is ``pyagrum.config['learning', 'priorWeight']`` (1.0).
 
   Returns
   -------
@@ -146,7 +146,7 @@ def useSmoothingPrior(self, weight: float | None = None) -> "pyagrum.ktbn.PYCLAS
   Raises
   ------
   pyagrum.OutOfBounds
-    if `weight` is negative.
+    if ``weight`` is negative.
   """
   if weight is None:
     self._useSmoothingPrior()
@@ -161,10 +161,10 @@ def useLocalSearchWithTabuList(self, tabu_size: int | None = None, nb_decrease: 
   Parameters
   ----------
   tabu_size : int, optional
-    the tabu list size. By default, it is `pyagrum.config['learning', 'tabuListSize']` (100).
+    the tabu list size. By default, it is ``pyagrum.config['learning', 'tabuListSize']`` (100).
   nb_decrease : int, optional
     the number of non-improving moves tolerated before stopping. By default, it is
-    `pyagrum.config['learning', 'tabuNbDecrease']` (2).
+    ``pyagrum.config['learning', 'tabuNbDecrease']`` (2).
 
   Returns
   -------

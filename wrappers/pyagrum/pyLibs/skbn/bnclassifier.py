@@ -99,7 +99,7 @@ def createBNClassifier(
       Ignored for fixed-structure algorithms (Chow-Liu, TAN, NaiveBayes).
   constraints : dict, optional
   priorWeight : float, optional
-      Weight of the prior. By default (None), `pyagrum.config['learning', 'priorWeight']` is used when the classifier is fitted.
+      Weight of the prior. By default (None), ``pyagrum.config['learning', 'priorWeight']`` is used when the classifier is fitted.
   possibleSkeleton : pyagrum.UndiGraph, optional
   DirichletCsv : str, optional
   discretizationStrategy : str, default="quantile"
@@ -192,9 +192,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 to be added to the Bayesian network, while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a prior. If None, `pyagrum.config['learning', 'priorWeight']` is used.
+                The weight used for a prior. If None, ``pyagrum.config['learning', 'priorWeight']`` is used.
 
-            possibleSkeleton: pyagrum.undigraph
+            possibleSkeleton: pyagrum.UndiGraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
@@ -291,9 +291,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 while the others are not symmetric.
 
             priorWeight: double
-                The weight used for a prior. If None, `pyagrum.config['learning', 'priorWeight']` is used.
+                The weight used for a prior. If None, ``pyagrum.config['learning', 'priorWeight']`` is used.
 
-            possibleSkeleton: pyagrum.undigraph
+            possibleSkeleton: pyagrum.UndiGraph
                 An undirected graph that serves as a possible skeleton for the Bayesian network
 
             DirichletCsv: str
@@ -363,8 +363,8 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     y,
   ):
     """
-    Fits the model to the training data provided. The two possible uses of this function are `fit(X,y)`
-    and `fit(data=...,targetName=...)`. Any other combination will raise a ValueError
+    Fits the model to the training data provided. The two possible uses of this function are ``fit(X,y)``
+    and ``fit(data=...,targetName=...)``. Any other combination will raise a ValueError
 
     Parameters
     ----------
@@ -571,7 +571,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
   ):
     """
     parameters:
-        bn: pyagrum.BayesNet
+        bn: `pyagrum.BayesNet`
             The Bayesian network we want to use for this classifier
         targetAttribute: str
             the attribute that will be the target in this classifier

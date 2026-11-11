@@ -46,7 +46,7 @@
 
 %feature("docstring") gum::Edge
 "
-pyagrum.Edge is the representation of an arc between two nodes represented by int : the first and the second.
+`pyagrum.Edge` is the representation of an arc between two nodes represented by int : the first and the second.
 
 Edge(aN1,aN2) -> Edge
     Parameters:

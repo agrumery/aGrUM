@@ -50,5 +50,5 @@ Class used for Monte Carlo sampling inference algorithm.
 
 MonteCarloSampling(bn) -> MonteCarloSampling
     Parameters:
-        - **bn** (*pyagrum.BayesNet*) -- a Bayesian network
+        - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 "

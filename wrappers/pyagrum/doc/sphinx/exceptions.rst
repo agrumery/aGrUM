@@ -4,7 +4,7 @@ Exceptions from aGrUM
 Exception in pyAgrum
 --------------------
 
-All the exception classes inherit pyagrum.GumException's functions.
+All the exception classes inherit `pyagrum.GumException`'s functions.
 
 .. autoexception:: pyagrum.GumException
 
@@ -119,7 +119,7 @@ with the name of the file, the line and the column of the error.
 Deprecated names
 ----------------
 
-- ``pyagrum.IOError`` is deprecated after 3.2.1: use ``pyagrum.GumIOError`` (``IOError`` shadowed the
+- `pyagrum.IOError` is deprecated after 3.2.1: use `pyagrum.GumIOError` (``IOError`` shadowed the
   Python builtin).
-- ``pyagrum.SyntaxError`` is deprecated after 3.2.1: use the builtin ``SyntaxError`` (the class
-  ``pyagrum.SyntaxError`` was never raised).
+- `pyagrum.SyntaxError` is deprecated after 3.2.1: use the builtin ``SyntaxError`` (the class
+  `pyagrum.SyntaxError` was never raised).

@@ -43,7 +43,7 @@
 "
 MarkedGraph represents a graph whose edges carry a mark at each of their ends.
 
-Each edge between nodes x and y has two marks, one at each end (``pyagrum.EdgeMark``):
+Each edge between nodes x and y has two marks, one at each end (`pyagrum.EdgeMark`):
 
 - ``EdgeMark.Circle`` (o): undetermined end
 - ``EdgeMark.Tail`` (-): tail
@@ -58,9 +58,9 @@ MarkedGraph() -> MarkedGraph
 
 MarkedGraph(src) -> MarkedGraph
     Parameters:
-        - **src** (*pyagrum.MarkedGraph*) -- the marked graph to copy
+        - **src** (`pyagrum.MarkedGraph`) -- the marked graph to copy
 
-See also ``pyagrum.fastMarkedGraph``, ``pyagrum.PAG`` and ``pyagrum.MAG``.
+See also `pyagrum.fastMarkedGraph`, `pyagrum.PAG` and `pyagrum.MAG`.
 "
 
 %feature("docstring") gum::MarkedGraph::addEdge
@@ -83,9 +83,9 @@ x : int
 y : int
     id of the second node
 markAtX : pyagrum.EdgeMark, optional
-    mark at the x endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+    mark at the x endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
 markAtY : pyagrum.EdgeMark, optional
-    mark at the y endpoint (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+    mark at the y endpoint (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
 "
 
 
@@ -105,7 +105,7 @@ dst : int
 Returns
 -------
 pyagrum.EdgeMark
-    the mark (``pyagrum.EdgeMark.Circle``, ``.Tail`` or ``.Arrowhead``)
+    the mark (`pyagrum.EdgeMark.Circle`, ``.Tail`` or ``.Arrowhead``)
 "
 
 
@@ -226,7 +226,7 @@ Set all endpoint marks in the graph to the given mark.
 Parameters
 ----------
 mark : pyagrum.EdgeMark
-    the mark to set everywhere (``pyagrum.EdgeMark.Circle``, ``Tail`` or ``Arrowhead``)
+    the mark to set everywhere (`pyagrum.EdgeMark.Circle`, ``Tail`` or ``Arrowhead``)
 "
 
 
@@ -243,7 +243,7 @@ Endpoint marks are rendered as:
 Parameters
 ----------
 options : pyagrum.DotOptions, optional
-    what is given to the drawing beyond the look of ``pyagrum.config`` (size, label, colors of some nodes, width of some arcs...).
+    what is given to the drawing beyond the look of `pyagrum.config` (size, label, colors of some nodes, width of some arcs...).
 
 Returns
 -------

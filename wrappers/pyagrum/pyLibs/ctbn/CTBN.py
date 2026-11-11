@@ -51,7 +51,7 @@ CTBN : Continous-Time Bayesian Network
 class CTBN:
   """
   This class is used to represent a CTBN.
-  A CTBN is : a set of random variables, a CIM for each one of them and a pyagrum.DiGraph to represent dependency relations.
+  A CTBN is : a set of random variables, a CIM for each one of them and a `pyagrum.DiGraph` to represent dependency relations.
 
   Attributes
   ----------

@@ -10347,7 +10347,7 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"options : pyagrum.DotOptions, optional\n"
-		"    what is given to the drawing beyond the look of ``pyagrum.config`` (section ``credalnet``):\n"
+		"    what is given to the drawing beyond the look of `pyagrum.config` (section ``credalnet``):\n"
 		"    size, label, colors of some nodes, width of some arcs...\n"
 		"\n"
 		"Returns\n"
@@ -10701,7 +10701,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the node does not belong to the Credal network\n"
 		"\n"
 		""},
@@ -10723,7 +10723,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the node does not belong to the Credal network\n"
 		"\n"
 		""},
@@ -11018,7 +11018,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the node does not belong to the Credal network\n"
 		"\n"
 		""},
@@ -11040,7 +11040,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
-		"  pyagrum.IndexError\n"
+		"  pyagrum.NotFound\n"
 		"    If the node does not belong to the Credal network\n"
 		"\n"
 		""},

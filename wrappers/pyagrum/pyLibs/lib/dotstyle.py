@@ -40,7 +40,7 @@
 
 """
 Look of the graphs drawn with graphviz: colors and their conversions, theme, reading of the dot written by aGrUM,
-completion of the dot graphs built in Python by pyAgrum (prepareDot) and filling of pyagrum.DotOptions.
+completion of the dot graphs built in Python by pyAgrum (prepareDot) and filling of `pyagrum.DotOptions`.
 """
 
 import hashlib
@@ -291,7 +291,7 @@ def fontFromMatplotlib() -> tuple[str, float]:
 
 def dotFromAgrum(dotstring: str) -> dot.Dot:
   """
-  The pydot graph of a dot string written by a `toDot()` of aGrUM. Such a graph is already complete (see prepareDot).
+  The pydot graph of a dot string written by a ``toDot()`` of aGrUM. Such a graph is already complete (see prepareDot).
 
   Parameters
   ----------
@@ -316,7 +316,7 @@ def setNodesOptions(
   showMsg: dict | None,
 ) -> None:
   """
-  Gives to a pyagrum.DotOptions the colors of the nodes of a model computed from values with a color map.
+  Gives to a `pyagrum.DotOptions` the colors of the nodes of a model computed from values with a color map.
 
   Parameters
   ----------
@@ -352,7 +352,7 @@ def setLinksOptions(
   separator: str,
 ) -> None:
   """
-  Gives to a pyagrum.DotOptions the width, color and label of the arcs (or edges) of a model.
+  Gives to a `pyagrum.DotOptions` the width, color and label of the arcs (or edges) of a model.
 
   Parameters
   ----------
@@ -386,7 +386,7 @@ def setLinksOptions(
 
 def _dotDefaults(dotgraph: dot.Dot) -> dict[str, dict[str, str]]:
   """
-  The attributes given by the statements `graph [...]`, `node [...]` and `edge [...]` of a graph (pydot reads them
+  The attributes given by the statements ``graph [...]``, ``node [...]`` and ``edge [...]`` of a graph (pydot reads them
   as nodes with these names).
   """
   defaults: dict[str, dict[str, str]] = {"graph": {}, "node": {}, "edge": {}}
@@ -461,7 +461,7 @@ def inferenceImageFilename(temp_dir: TemporaryDirectory, name: str) -> str:
   Returns
   -------
   str
-    the name of the file, in the format of the key ``notebook.graphFormat`` of ``pyagrum.config``
+    the name of the file, in the format of the key ``notebook.graphFormat`` of `pyagrum.config`
   """
   return os.path.join(
     temp_dir.name, hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
@@ -507,7 +507,7 @@ def inferenceNodeDot(
   """
   The dot text of a node in the graph of an inference: the image of its posterior for a target, a colored node else.
 
-  The colors come from the configuration, then from `nodeColor`, then from the evidence.
+  The colors come from the configuration, then from ``nodeColor``, then from the evidence.
 
   Parameters
   ----------
@@ -518,7 +518,7 @@ def inferenceNodeDot(
   targets: set
     the names or ids of the targets (empty: all the nodes are targets)
   nodeColor: dict[str | int, float], optional
-    the values of some nodes, keyed by names or by ids, colored with `cmapNode`
+    the values of some nodes, keyed by names or by ids, colored with ``cmapNode``
   cmapNode: matplotlib.colors.Colormap
     the colormap of the nodes
   isEvidence: bool
@@ -570,7 +570,7 @@ def inferenceArcsDot(arcs, nameOf, arcWidth: dict | None, arcColor: dict | None,
   arcWidth: dict[tuple[int, int], float], optional
     the values of some arcs, shown by their width and in their tooltip
   arcColor: dict[tuple[int, int], float], optional
-    the values of some arcs, colored with `cmapArc`
+    the values of some arcs, colored with ``cmapArc``
   cmapArc: matplotlib.colors.Colormap
     the colormap of the arcs
   oriented: bool
@@ -615,12 +615,12 @@ def inferenceDotGraph(
   dotstr: str
     the dot text
   size: str or int, optional
-    the size of the graph (the value of the key ``sizeKey`` of ``pyagrum.config`` if None)
+    the size of the graph (the value of the key ``sizeKey`` of `pyagrum.config` if None)
   temp_dir: tempfile.TemporaryDirectory
     the temporary directory of the images of the nodes (see :func:`inferenceTemporaryDirectory`): kept in the graph,
     it is removed with the graph
   sizeKey: tuple[str, str]
-    the key of the default size in ``pyagrum.config``
+    the key of the default size in `pyagrum.config`
 
   Returns
   -------
@@ -644,10 +644,10 @@ def prepareDot(dotgraph: dot.Dot) -> dot.Dot:
   background color).
 
   It is meant for the graphs built in Python by pyAgrum: each of these builders returns a graph already completed by
-  this function. The graphs written by the `toDot()` of aGrUM are already complete, and the functions which show or
+  this function. The graphs written by the ``toDot()`` of aGrUM are already complete, and the functions which show or
   export a graph (showGraph, export...) only apply its size: a graph given by the user is shown as it is.
 
-  What the graph already gives (for an element or by default for all of them: `node [...]`) is respected, so calling it
+  What the graph already gives (for an element or by default for all of them: ``node [...]``) is respected, so calling it
   on a complete graph changes nothing.
 
   Parameters

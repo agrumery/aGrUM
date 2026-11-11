@@ -57,7 +57,7 @@ combined, and a node may carry both.
 
 KTBNInference(ktbn) -> KTBNInference
     Parameters:
-        - **ktbn** (*pyagrum.ktbn.KTBN*) -- the k-TBN to reason about
+        - **ktbn** (`pyagrum.ktbn.KTBN`) -- the k-TBN to reason about
           (referenced, not copied)
 
 Raises
@@ -394,7 +394,7 @@ from the k-slice template and re-entered at every step from slice k-1 on.
 
 Returns
 -------
-pyagrum.JunctionTree
+pyagrum.CliqueGraph
     the window's junction tree
 "
 

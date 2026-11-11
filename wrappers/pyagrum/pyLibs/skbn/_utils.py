@@ -163,7 +163,7 @@ def _ImplementPrior(prior: str, learner: pyagrum.BNLearner, priorWeight: float |
       learner:
           learner object from pyagrum to apply the score
       priorWeight: float
-          The weight used for the prior. If None, `pyagrum.config['learning', 'priorWeight']` is used.
+          The weight used for the prior. If None, ``pyagrum.config['learning', 'priorWeight']`` is used.
       DirichletSrc: str
           the file name of the csv file we want to use for the dirichlet prior.
           Will be ignored if prior is not set to Dirichlet.
