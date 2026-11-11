@@ -161,6 +161,12 @@
       nonempty slice, the empty rows, columns and slices having no degree of freedom (#210).
     - MIIC raised `DuplicateElement` when a mandatory arc had its reverse forbidden (by the user, the slice order or
       a node without parent).
+    - FCI could remove a mandatory arc during its Possible-D-Sep phase: `learnPAG`, `learnPDAG` and `learnDAG` returned
+      a graph without it, and without any error.
+    - FCI never tested the separating sets of size 1 of its Possible-D-Sep phase (only the neighbours had been tested
+      before): an edge could be kept while a single node of Possible-D-Sep separates its ends.
+    - FCI (rule R5) could orient as undirected the edges of a covered circle path (the triples at both ends of the path
+      were not checked).
     - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
       `MRFinference2FactorGraphdot`, `LIMIDinference2dot`, the inferences of CTBN and BNMixture): `nodeColor` keyed by
       the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory

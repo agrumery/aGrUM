@@ -277,11 +277,9 @@ namespace gum::learning {
                           ? static_cast< Size >(dsep.size())
                           : std::min(maxCondSetSize_, static_cast< Size >(dsep.size()));
 
-      // FIX #4: start at k=2; sizes 0 and 1 were already exhaustively tested
-      // in Phase 1 (FAS skeleton discovery).
-      for (Size k = 2; k <= maxK; ++k) {
-        if (dsep.size() < k) { break; }
-
+      // the empty set was tested in Phase 1, and so were the singletons of the current neighbours
+      // of X or of Y (the adjacencies only shrink); the other nodes of dsep were not
+      for (Size k = 1; k <= maxK; ++k) {
         std::vector< std::size_t > idx(k);
         std::iota(idx.begin(), idx.end(), std::size_t(0));
 
@@ -291,15 +289,18 @@ namespace gum::learning {
             cond[i] = dsep[idx[i]];
           }
 
-          const double pval = test_->statistics(X, Y, cond).second;
-          if (pval > alpha_) {
-            pag.eraseEdge(Edge(X, Y));
-            sepSet_.set({X, Y}, SepSetEntry_{.cond = cond, .pval = pval});
-            sepSet_.set({Y, X}, SepSetEntry_{.cond = cond, .pval = pval});
-            return true;
+          const bool alreadyTested
+              = (k == 1) && (pag.existsEdge(X, cond[0]) || pag.existsEdge(Y, cond[0]));
+          if (!alreadyTested) {
+            const double pval = test_->statistics(X, Y, cond).second;
+            if (pval > alpha_) {
+              pag.eraseEdge(Edge(X, Y));
+              sepSet_.set({X, Y}, SepSetEntry_{.cond = cond, .pval = pval});
+              sepSet_.set({Y, X}, SepSetEntry_{.cond = cond, .pval = pval});
+              return true;
+            }
           }
 
-          if (k == 0) { break; }
           int i = static_cast< int >(k) - 1;
           while (i >= 0
                  && idx[static_cast< std::size_t >(i)]
@@ -320,6 +321,8 @@ namespace gum::learning {
       if (!pag.existsEdge(edge)) { continue; }
       const NodeId X = edge.first();
       const NodeId Y = edge.second();
+      // a mandatory arc is never removed (it is not in the PAG anymore after Phase 3 otherwise)
+      if (_mandatoryGraph_.existsArc(X, Y) || _mandatoryGraph_.existsArc(Y, X)) { continue; }
 
       const auto dsepXY = computePossibleDSep_(pag, X, Y);
       if (tryRemove(X, Y, dsepXY)) { continue; }
@@ -443,17 +446,18 @@ namespace gum::learning {
             if (d == a || d == c) { continue; }
             if (pag.existsEdge(a, d)) { continue; }   // A not adj D
             if (!pag.isCircle(b, d) || !pag.isCircle(d, b)) { continue; }
-            const std::vector< NodeId >          excludes{a, b};
+            const std::vector< NodeId >          excludes{b};
             std::vector< std::vector< NodeId > > paths;
-            std::vector< NodeId >                path{c};
-            std::set< NodeId >                   visited{c};
+            std::vector< NodeId >                path{a, c};
+            std::set< NodeId >                   visited{a, c};
             findUncoveredCirclePaths_(pag, d, path, visited, excludes, paths);
             for (const auto& p: paths) {
+              // p = A, C, ..., D: the triple (A, C, p[2]) is checked by the search; the last triple
+              // (p[n-2], D, B) of the uncovered path A, C, ..., D, B is checked here
+              if (pag.existsEdge(p[p.size() - 2], b)) { continue; }
               changed = true;
               pag.setMarkAt(b, a, EdgeMark::Tail);
               pag.setMarkAt(a, b, EdgeMark::Tail);
-              pag.setMarkAt(c, a, EdgeMark::Tail);
-              pag.setMarkAt(a, c, EdgeMark::Tail);
               pag.setMarkAt(b, p.back(), EdgeMark::Tail);
               pag.setMarkAt(p.back(), b, EdgeMark::Tail);
               for (std::size_t k = 0; k + 1 < p.size(); ++k) {
@@ -557,25 +561,33 @@ namespace gum::learning {
       use_b_in_sep = ind1;
     }
 
-    if (use_b_in_sep) {
-      pag.setMarkAt(c, b, EdgeMark::Tail);   // B→C: tail at B from C
+    // sets the mark at dst (on the edge src-dst); true if the mark changed (a mark already there
+    // must not count as a change in the fixed point of the rules)
+    const auto setMark = [&](NodeId src, NodeId dst, EdgeMark mark) {
+      if (pag.markAt(src, dst) == mark) { return false; }
+      pag.setMarkAt(src, dst, mark);
       return true;
+    };
+    // an arrowhead at dst is not set if the arc src->dst is forbidden
+    const auto setArrowhead = [&](NodeId src, NodeId dst) {
+      return !isForbiddenArc_(src, dst) && setMark(src, dst, EdgeMark::Arrowhead);
+    };
+
+    // Zhang (2008), R4: B o-* C becomes B -> C if B is in the separating set of D and C, else the
+    // triple becomes A <-> B <-> C
+    if (use_b_in_sep) {
+      if (isForbiddenArc_(b, c)) { return false; }
+      const bool tail = setMark(c, b, EdgeMark::Tail);
+      return setArrowhead(b, c) || tail;
     }
-    bool any = false;
-    if (!isForbiddenArc_(a, b)) {
-      pag.setMarkAt(a, b, EdgeMark::Arrowhead);
-      any = true;
-    }
-    if (!isForbiddenArc_(c, b)) {
-      pag.setMarkAt(c, b, EdgeMark::Arrowhead);
-      any = true;
-    }
-    return any;
+    const bool ab = setArrowhead(a, b);
+    const bool cb = setArrowhead(c, b);
+    return setArrowhead(b, c) || ab || cb;
   }
 
-  // R4: Discriminating path rule.
-  // Outer: for each B, A where B*→A, C where C o-* B (circle at B from C):
-  //   if A→C and B*→C: search discriminating path D…A,B,C
+  // R4: Discriminating path rule (Zhang 2008).
+  // Outer: for each B, A where B*→A, C where B o-* C (circle at B from C, any mark at C):
+  //   if A→C: search discriminating path D…A,B,C
   bool FCI::ruleR4_(PAG& pag) const {
     bool changed = false;
 
@@ -585,10 +597,10 @@ namespace gum::learning {
       for (const NodeId a: pag.neighbours(b)) {
         if (pag.isArrowhead(b, a)) { poss_a.push_back(a); }
       }
-      // possC: nodes C where circle at B from C, AND B *→ C
+      // possC: nodes C where B o-* C (circle at B from C)
       std::vector< NodeId > poss_c;
       for (const NodeId c: pag.neighbours(b)) {
-        if (pag.isCircle(c, b) && pag.isArrowhead(b, c)) { poss_c.push_back(c); }
+        if (pag.isCircle(c, b)) { poss_c.push_back(c); }
       }
 
       for (const NodeId a: poss_a) {

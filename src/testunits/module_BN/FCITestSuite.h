@@ -41,6 +41,7 @@
 #pragma once
 
 #include <algorithm>
+#include <tuple>
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/database/databaseTable.h>
@@ -778,6 +779,125 @@ namespace gum_tests {
     const auto bk_pag = bk_fci.learnPAG(db.nodeOnlyGraph());
 
     CHECK(bk_pag.sizeEdges() == ref_pag.sizeEdges());
+  }
+
+  // Independence test given by a list of independences (any other pair is dependent)
+  struct FCIOracle: public gum::learning::IndepTestChi2 {
+    using gum::learning::IndepTestChi2::IndepTestChi2;
+    using Independence = std::tuple< gum::NodeId, gum::NodeId, std::vector< gum::NodeId > >;
+
+    std::vector< Independence > independences;   // (x, y, cond) with x < y and cond sorted
+
+    std::pair< double, double > statistics(gum::NodeId                       var1,
+                                           gum::NodeId                       var2,
+                                           const std::vector< gum::NodeId >& rhs_ids) override {
+      const auto [x, y] = std::minmax(var1, var2);
+      auto cond         = rhs_ids;
+      std::sort(cond.begin(), cond.end());
+      const bool indep
+          = std::ranges::find(independences, Independence{x, y, cond}) != independences.end();
+      return {0.0, indep ? 1.0 : 0.0};
+    }
+  };
+
+  // the graph with the nodes 0..n-1 and no edge
+  inline gum::MixedGraph fciNodes(gum::Size n) {
+    gum::MixedGraph graph;
+    for (gum::NodeId i = 0; i < n; ++i) {
+      graph.addNodeWithId(i);
+    }
+    return graph;
+  }
+
+  // X=0, B=1, C=2, Y=3: X _||_ C, Y _||_ B, Y _||_ C and X _||_ Y | xyCond. Phase 1 keeps X-Y (C is
+  // adjacent neither to X nor to Y), Phase 2 orients the collider X *-> B <-* C, so C is in
+  // Possible-D-Sep(X, Y) and Phase 3 removes X-Y.
+  inline std::vector< FCIOracle::Independence >
+      fciPossibleDSepCase(std::vector< gum::NodeId > xyCond) {
+    return {{0, 2, {}}, {1, 3, {}}, {2, 3, {}}, {0, 3, std::move(xyCond)}};
+  }
+
+  GUM_TEST(_fci_possibledsep_keeps_mandatory_arc_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = fciPossibleDSepCase({1, 2});
+    const auto graph     = fciNodes(4);
+
+    // without constraint, Phase 3 removes X-Y
+    {
+      gum::learning::FCI fci;
+      fci.setIndependenceTest(oracle);
+      CHECK_FALSE(fci.learnPAG(graph).existsEdge(0, 3));
+    }
+
+    // a mandatory arc X->Y is kept by learnPAG, learnPDAG and learnDAG
+    gum::DAG mandatory;
+    for (gum::NodeId i = 0; i < 4; ++i) {
+      mandatory.addNodeWithId(i);
+    }
+    mandatory.addArc(0, 3);
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    fci.setMandatoryGraph(mandatory);
+    CHECK(fci.learnPAG(graph).existsEdge(0, 3));
+    CHECK(fci.learnPDAG(graph).existsArc(0, 3));
+    CHECK(fci.learnDAG(graph).existsArc(0, 3));
+  }
+
+  GUM_TEST(_fci_possibledsep_tests_the_singletons_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = fciPossibleDSepCase({2});   // X _||_ Y | {C}
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    CHECK_FALSE(fci.learnPAG(fciNodes(4)).existsEdge(0, 3));
+  }
+
+  // R4 on the discriminating path <D, A, B, C> (D=0, A=1, B=2, C=3): D _||_ B and D _||_ C |
+  // dcCond, hence D *-> A <-* B (collider), A -> C (R1) and B o-* C, oriented by R4 according to
+  // whether B is in the separating set of D and C
+  GUM_TEST(_fci_r4_discriminating_path_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+
+    // B in the separating set: B -> C
+    {
+      oracle.independences = {{0, 2, {}}, {0, 3, {1, 2}}};
+      gum::learning::FCI fci;
+      fci.setIndependenceTest(oracle);
+      const auto pag = fci.learnPAG(fciNodes(4));
+      CHECK(pag.isTail(3, 2));
+      CHECK(pag.isArrowhead(2, 3));
+    }
+    // B not in the separating set: A <-> B <-> C
+    {
+      oracle.independences = {{0, 2, {}}, {0, 3, {1}}};
+      gum::learning::FCI fci;
+      fci.setIndependenceTest(oracle);
+      const auto pag = fci.learnPAG(fciNodes(4));
+      CHECK(pag.isBidirected(1, 2));
+      CHECK(pag.isBidirected(2, 3));
+    }
+  }
+
+  // R5 on the cycle of circles A-C-X-D-B-A with the chords A-X and X-B (A=0, B=1, C=2, D=3, X=4),
+  // without collider: every circle path between the ends of an edge is covered (e.g. <B, D, X, C,
+  // A> by B-X and A-X), so R5 orients nothing
+  GUM_TEST(_fci_r5_covered_circle_path_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = {{0, 3, {1, 4}}, {1, 2, {0, 4}}, {2, 3, {4}}};
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    const auto pag = fci.learnPAG(fciNodes(5));
+
+    CHECK_EQ(pag.sizeEdges(), gum::Size(7));
+    for (const auto& edge: pag.edges()) {
+      CHECK(pag.isCircle(edge.first(), edge.second()));
+      CHECK(pag.isCircle(edge.second(), edge.first()));
+    }
   }
 
 } /* namespace gum_tests */
