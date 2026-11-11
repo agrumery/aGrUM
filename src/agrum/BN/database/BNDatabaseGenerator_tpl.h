@@ -123,6 +123,7 @@ namespace gum::learning {
       }
       std::vector< Idx >& sample = _database_.at(idSample);
       bool                reject = false;
+      double              log2likelihood = 0.0;   // of this sample, counted only if it is kept
       for (Idx rank = 0; rank < _nbVars_; ++rank) {
         const NodeId node = topOrder[rank];
         const auto&  var  = _bn_.variable(node);
@@ -142,11 +143,13 @@ namespace gum::learning {
         }
 
         sample.at(node) = particule.val(var);
-        _log2likelihood_ += std::log2(_bn_.cpt(node)[particule]);
+        log2likelihood += std::log2(_bn_.cpt(node)[particule]);
+      }
+      if (!reject) {
+        _log2likelihood_ += log2likelihood;
+        idSample++;
       }
       if (timeout > 0 && timer.step() > timeout) { break; }
-      if (reject) { continue; }
-      idSample++;
     }
 
     if (idSample > 0) {

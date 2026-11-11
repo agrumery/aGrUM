@@ -262,6 +262,23 @@ namespace gum_tests {
     delete dbgen;
   }
 
+  GUM_TEST(DrawSamplesLog2likelihoodWithEvidence) {
+    // B = not A and P(A) = 0.5: each kept sample (A=1, B=0) has a log2-likelihood of exactly -1, whatever the
+    // number of rejected samples (A=0, B=1)
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B");
+    bn.cpt("A").fillWith({0.5, 0.5});
+    bn.cpt("B").fillWith({0.0, 1.0, 1.0, 0.0});
+    gum::learning::BNDatabaseGenerator< double > dbgen(bn);
+
+    gum::Instantiation evs;
+    evs.add(bn.variableFromName("B"));
+    evs.setFirst();   // B=0
+    for (int i = 0; i < 10; ++i) {
+      CHECK_EQ(dbgen.drawSamples(50, evs), doctest::Approx(-50.0));
+      CHECK_EQ(dbgen.samplesNbRows(), 50u);
+    }
+  }
+
   GUM_TEST(ToCSV_1) {
     gum::BayesNet< double > bn        = initAsia();
     gum::Size               nbSamples = 5;

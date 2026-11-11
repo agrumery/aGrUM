@@ -198,6 +198,8 @@
       Python failed with `SystemError`; it is now reported by `sys.unraisablehook`. A non-callable callback raises
       `InvalidArgument` (it was stored anyway), the former callback is released when it is replaced, the node ids
       and the steps are given as 64-bit integers on Windows too, and the results of the callbacks are released.
+    - `BNDatabaseGenerator.drawSamples` with evidence returned a wrong log2-likelihood: the rejected samples were
+      partly counted (and, at the timeout, the last kept sample was counted but dropped from the database).
 
 ## Changelog for 3.3.2
 
