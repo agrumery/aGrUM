@@ -38,10 +38,13 @@
 #                                                                          #
 ############################################################################
 
+import copy
 import pickle
 import unittest
 
 import numpy as np
+import sklearn
+import sklearn.base
 import sklearn.datasets
 
 from pyagrum import skbn
@@ -114,6 +117,22 @@ class BNClassifierPickleTestCase(pyAgrumTestCase):
     clf3 = pickle.loads(pickle.dumps(clf2))
     self.assertTrue(hasattr(clf3, "classes_"))
     self.assertTrue(np.array_equal(clf2.classes_, clf3.classes_))
+
+  def testPickleNotFitted(self):
+    clf = skbn.createBNClassifier(learningMethod="TAN", usePR=True)
+    for clf2 in (pickle.loads(pickle.dumps(clf)), copy.deepcopy(clf), sklearn.base.clone(clf)):
+      self.assertFalse(hasattr(clf2, "bn_"))
+      self.assertEqual(clf2.get_params()["learningMethod"], "TAN")
+      self.assertTrue(clf2.get_params()["usePR"])
+    X, y = _make_binary()
+    self.assertEqual(copy.deepcopy(clf).fit(X, y).predict(X).shape, (len(X),))
+
+  def testDeepcopyKeepsMetadataRequest(self):
+    clf = skbn.createBNClassifier()
+    with sklearn.config_context(enable_metadata_routing=True):
+      clf.set_score_request(sample_weight=True)
+      clf2 = copy.deepcopy(clf)
+      self.assertEqual(clf2.get_metadata_routing().score.requests, {"sample_weight": True})
 
 
 ts = unittest.TestSuite()

@@ -1023,10 +1023,14 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     This method is used for pickling and should not be called directly.
     Note that the "learning side" of the BNClassifier is not in the state which focus on the classifier itself.
 
+    An estimator that is not fitted yet is pickled as is (parameters only, as any scikit-learn estimator).
+
     Returns
     -------
     the state as a dictionary.
     """
+    if not hasattr(self, "bn_"):  # not fitted
+      return dict(self.__dict__)
     return {
       "bn": self.bn_,
       "target": self.target_,
@@ -1059,6 +1063,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     -------
       self
     """
+    if "bn" not in state:  # not fitted (see __getstate__)
+      self.__dict__.update(state)
+      return self
     self.__init__(type_processor=DiscreteTypeProcessor())
     self.fromTrainedModel(bn=state["bn"], targetAttribute=state["target"], targetModality=state["label"], copy=False)
 
