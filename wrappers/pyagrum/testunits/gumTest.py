@@ -181,8 +181,6 @@ def go():
 
     try:
       total_errs += runNotebooks(name_filter=test_suite if test_suite else None)
-    except NameError:
-      pass
     except Exception as e:
       log.warning(f"Error in NotebookTestSuite : {e}")
       total_errs += 1

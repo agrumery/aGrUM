@@ -45,7 +45,7 @@ import sys
 from importlib.util import find_spec
 from sys import platform as os_platform
 
-from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats, stdoutToFile
+from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif, notif_module_stats, stdoutToFile, warn
 
 if __name__ == "__main__":
   print(
@@ -292,6 +292,8 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
     error(f"No test matched (module='{test_module or 'all'}', suite='{test_suite or 'all'}')")
     return 1
   (error if errs > 0 else notif)(f"Failed {errs} of {result.testsRun} tests")
+  if result.skipped:
+    warn(f"Skipped {len(result.skipped)} tests or subtests (see the ⏭ lines)")
   notif(f"Success rate: {int((result.testsRun - errs) * 100 / result.testsRun)}%")
   notif()
   notif(f"pyAgrum on Python {platform.python_version()} - {os_platform}")

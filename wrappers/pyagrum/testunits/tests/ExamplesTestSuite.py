@@ -96,8 +96,8 @@ class TestExamples(pyAgrumTestCase):
   def testExamples(self):
     for stem, path in sorted(self.files.items()):
       with self.subTest(example=stem):
-        if missingRequirements(path.read_text(encoding="utf-8")):
-          continue  # optional dependency missing here
+        if missing := missingRequirements(path.read_text(encoding="utf-8")):
+          self.skipTest(f"requires {', '.join(missing)}")  # optional dependency missing here
         runExampleFile(path)
 
 

@@ -68,15 +68,16 @@ _STATUS_SUFFIXES = [
   (" ... ERROR", "🔴"),
 ]
 _SKIPPED_RE = re.compile(r" \.\.\. skipped '.*'$")
-_TEST_LINE_RE = re.compile(r"^(\S+)\s+\(([^)]+)\)$")
+# 'method (path.Suite.Class.method)', followed for a subtest by its parameters, e.g. "(example='x')"
+_TEST_LINE_RE = re.compile(r"^(\S+)\s+\(([^)]+)\)(?:\s+(\(.*\)))?$")
 
 
 def _reformat(name: str, module_map: dict[str, str]) -> str:
-  """Reformat 'method (path.Suite.Class.method)' as '[mod] Suite➜method'."""
-  m = _TEST_LINE_RE.match(name)
+  """Reformat 'method (path.Suite.Class.method)' as '[mod] Suite➜method' (followed by the parameters of a subtest)."""
+  m = _TEST_LINE_RE.match(name.strip())
   if not m:
     return name
-  method, path = m.group(1), m.group(2)
+  method, path, params = m.group(1), m.group(2), m.group(3)
   parts = path.split(".")
   suite = parts[1] if len(parts) > 1 else parts[0]
   mod_name = "main"
@@ -85,7 +86,9 @@ def _reformat(name: str, module_map: dict[str, str]) -> str:
     if mod:
       mod_name = mod
       break
-  return f"[{_C_MODULE}{mod_name}{_C_RESET}] {_C_SUITE}{suite}{_C_RESET} ➜ {_C_METHOD}{method}{_C_RESET}"
+  return f"[{_C_MODULE}{mod_name}{_C_RESET}] {_C_SUITE}{suite}{_C_RESET} ➜ {_C_METHOD}{method}{_C_RESET}" + (
+    f" {params}" if params else ""
+  )
 
 
 def _format_test_line(line: str, module_map: dict[str, str]) -> str:
