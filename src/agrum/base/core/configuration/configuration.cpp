@@ -163,6 +163,9 @@ namespace gum {
       return ec == std::errc() && ptr == s.data() + s.size();
     }
 
+    // the domain of the type uint32 (an int in the range of a 32-bit unsigned integer)
+    constexpr std::string_view uint32Domain = "[0,4294967295]";
+
     // parses the domain of an int or float (e.g. `]0,1[`, `[1,]`); on failure, gives the reason in
     // error
     bool _parseDomain_(std::string_view             text,
@@ -246,6 +249,14 @@ namespace gum {
           meta.deprecated = true;
           return true;
         }
+      } else if (type == "uint32") {
+        // an int in the range of a 32-bit unsigned integer (e.g. a seed), without its own domain
+        if (cut != std::string::npos) {
+          error = "'uint32' cannot have a domain";
+          return false;
+        }
+        meta.kind = Configuration::Kind::INT;
+        return _parseDomain_(uint32Domain, true, meta.domain, error);
       } else if (type == "int" || type == "float" || type == "bool" || type == "str") {
         meta.kind = type == "int"   ? Configuration::Kind::INT
                   : type == "float" ? Configuration::Kind::FLOAT
@@ -278,7 +289,7 @@ namespace gum {
         }
       }
       error = "'" + spec
-            + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, "
+            + "' is not a valid type (int, float, bool, str, int[min,max], float]min,max[, uint32, "
               "v1|v2|..., "
               "deprecated -> section.key, deprecated type)";
       return false;
@@ -638,9 +649,13 @@ namespace gum {
         return "deprecated -> " + m.targetSection + "." + m.targetKey + " :: " + m.doc;
       case Kind::ENUM :
         return (m.deprecated ? "deprecated " : "") + m.joinedValues() + " :: " + m.doc;
-      default :
-        return (m.deprecated ? "deprecated " : "") + kindName(m.kind) + m.domain.text
-             + " :: " + m.doc;
+      default : {
+        // an int in the range of a 32-bit unsigned integer is written uint32
+        const auto type = (m.kind == Kind::INT && m.domain.text == uint32Domain)
+                            ? std::string("uint32")
+                            : kindName(m.kind) + m.domain.text;
+        return (m.deprecated ? "deprecated " : "") + type + " :: " + m.doc;
+      }
     }
   }
 

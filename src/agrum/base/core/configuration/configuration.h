@@ -50,7 +50,8 @@
  *     ### type :: one-line documentation
  *     key = value
  *
- * where type is one of `int`, `float`, `bool`, `str`, an enumeration `v1|v2|...` or a
+ * where type is one of `int`, `float`, `bool`, `str`, `uint32` (an `int` in the range of a 32-bit
+ * unsigned integer, i.e. `int[0,4294967295]`), an enumeration `v1|v2|...` or a
  * deprecation: `deprecated -> section.key` (redirected to its replacement) or `deprecated type`
  * (without replacement: the key keeps its type and its value). Lines starting with `#` (but not
  * `###`) or `;` are free comments.

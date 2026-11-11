@@ -345,8 +345,24 @@ Color = #FF7F64
     CHECK(!m.domain.contains(std::numeric_limits< double >::quiet_NaN()));
     CHECK(c.meta("s", "free").domain.contains(1e300));
 
+    // uint32: an int in the range of a 32-bit unsigned integer
+    {
+      gum::Configuration u("[s]\n### uint32 :: a seed\nseed = 0\n");
+      CHECK_EQ(u.doc("s", "seed"), "uint32 :: a seed");
+      CHECK_EQ(u.meta("s", "seed").kind, gum::Configuration::Kind::INT);
+      CHECK_THROWS_AS(u.set("s", "seed", "-1"), const gum::InvalidArgument&);
+      CHECK_THROWS_AS(u.set("s", "seed", "4294967296"), const gum::InvalidArgument&);
+      CHECK_NOTHROW(u.set("s", "seed", "4294967295"));
+      CHECK_EQ(u.typed< std::int64_t >("s", "seed"), 4294967295);
+      // the seed of the random generator is a uint32 (it was truncated without a message)
+      CHECK(!gum::config().meta("core", "randomSeed").domain.contains(-1.));
+      CHECK(!gum::config().meta("core", "randomSeed").domain.contains(4294967296.));
+    }
+
     // the domain of a default value is checked
     const std::string h = "[s]\n";
+    CHECK_THROWS_AS(gum::Configuration(h + "### uint32 :: x\nk = -1\n"),
+                    const gum::InvalidArgument&);
     CHECK_THROWS_AS(gum::Configuration(h + "### int[1,10] :: x\nk = 11\n"),
                     const gum::InvalidArgument&);
     CHECK_THROWS_AS(gum::Configuration(h + "### float]0,1[ :: x\nk = 1\n"),
@@ -363,6 +379,7 @@ Color = #FF7F64
                                  "int[1.5,2]",
                                  "float[x,]",
                                  "bool[0,1]",
+                                 "uint32[0,1]",
                                  "str[a,b]"}) {
       CHECK_THROWS_AS(gum::Configuration(h + "### " + bad + " :: x\nk = 1\n"),
                       const gum::SyntaxError&);

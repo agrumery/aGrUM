@@ -167,6 +167,8 @@
       before): an edge could be kept while a single node of Possible-D-Sep separates its ends.
     - FCI (rule R5) could orient as undirected the edges of a covered circle path (the triples at both ends of the path
       were not checked).
+    - `core.randomSeed` is now refused outside [0,4294967295] (it was truncated without a message: 4294967296 gave 0,
+      hence a seed taken from the clock). New type `uint32` for the keys of the configuration (`int[0,4294967295]`).
     - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
       `MRFinference2FactorGraphdot`, `LIMIDinference2dot`, the inferences of CTBN and BNMixture): `nodeColor` keyed by
       the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory
