@@ -50,19 +50,6 @@ arcs gives an MPDAG (Perković, Kalisch and Maathuis 2017). An MPDAG is not alwa
 An MPDAG cannot be modified: it is built by :meth:`MPDAG.meekClosure`, :meth:`MPDAG.fromCPDAG` or
 checked by :meth:`MPDAG.fromPDAG`. The represented DAGs are Markov equivalent: :meth:`dSeparation` is
 the d-separation of any of them.
-
-References
-----------
-C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
-Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
-
-E. Perković, M. Kalisch, M. H. Maathuis. Interpreting and using CPDAGs with background knowledge.
-Proceedings of the 33rd Conference on Uncertainty in Artificial Intelligence (UAI 2017), PMLR
-R15:461-470. arXiv:1707.02171.
-
-M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
-computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
-Intelligence, PMLR 161:1248-1257, 2021.
 "
 
 %feature("docstring") gum::MPDAG::meekClosure

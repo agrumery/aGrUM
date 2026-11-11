@@ -68,8 +68,8 @@ namespace gum {
    *computations are made once. The second is for free :)
    * MCBNDistance allows as well to compute in the same time the Hellinger distance
    *(\f$
-   *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
-   * and Bhattacharya distance (Kaylath,T. 1967)
+   *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Hellinger, 1909; Kokolakis and Nanopoulos, 2001)
+   * and Bhattacharyya distance (Kailath, 1967)
    *
    * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
    *case, KL

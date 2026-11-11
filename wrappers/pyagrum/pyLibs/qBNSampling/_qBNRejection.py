@@ -57,8 +57,6 @@ class qBNRejection:
   circuit encoding of the Bayesian network (Grover-based amplitude
   amplification).
 
-  Based on: *Quantum Inference on Bayesian Networks*, Guang Hao Low.
-
   Parameters
   ----------
   qbn : qBNMC

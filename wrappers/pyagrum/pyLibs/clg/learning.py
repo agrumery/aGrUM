@@ -57,8 +57,7 @@ from .GaussianVariable import GaussianVariable
 
 class CLGLearner:
   """
-  Using Rademacher Average to guarantee FWER(Family Wise Error Rate) in independency test.
-  (see "Bounding the Family-Wise Error Rate in Local Causal Discover using Rademacher Averages", Dario Simionato, Fabio Vandin, 2022)
+  Learns a CLG from data, the independence tests bounding the FWER (Family-Wise Error Rate) with Rademacher averages.
   """
 
   _model: CLG

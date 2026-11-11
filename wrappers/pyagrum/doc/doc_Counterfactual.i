@@ -41,13 +41,12 @@
 
 %feature("docstring") gum::Counterfactual
 "
-Computes a counterfactual distribution using Pearl's twin network method.
+Computes a counterfactual distribution using Pearl's three-step algorithm.
 
 A counterfactual query asks: 'Given that we observed *profile*, what would
 *on* have been if *whatif* had been set to the values in *values*?'
 
-The computation follows the three-step algorithm from Pearl (2018),
-*The Book of Why*, chapter 8:
+The computation follows three steps:
 
   1. **Abduction** -- compute the posterior distribution of parentless
      (idiosyncratic) nodes in the original BN given the observed *profile*.

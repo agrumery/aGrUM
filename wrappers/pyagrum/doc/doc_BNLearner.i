@@ -297,8 +297,8 @@ pyagrum.OperationNotAllowed
 Choose what FCI does when the learned PAG is not valid.
 
 ``learnDAG`` and ``learnPDAG`` with FCI go through the representative MAG of the learned PAG
-(Zhang 2008). If the PAG is not valid (its representative graph has a directed cycle, which may
-happen with conflicting independence tests), either an error is raised (``True``) or the former
+:cite:`zhang2008completeness`. If the PAG is not valid (its representative graph has a directed
+cycle, which may happen with conflicting independence tests), either an error is raised (``True``) or the former
 approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
 symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
 The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).

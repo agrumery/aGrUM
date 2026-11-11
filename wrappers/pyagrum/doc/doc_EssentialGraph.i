@@ -72,12 +72,6 @@ EssentialGraph(pdag) -> EssentialGraph
 EssentialGraph(cpdag) -> EssentialGraph
     Parameters:
       - **cpdag** (*pyagrum.CPDAG*) -- the essential graph, with the names of its nodes
-
-References
-----------
-D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures. UAI 1995, pp. 87-98.
-
-S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
 "
 
 %feature("docstring") gum::EssentialGraph::cpdag

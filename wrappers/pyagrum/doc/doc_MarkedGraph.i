@@ -61,15 +61,6 @@ MarkedGraph(src) -> MarkedGraph
         - **src** (*pyagrum.MarkedGraph*) -- the marked graph to copy
 
 See also ``pyagrum.fastMarkedGraph``, ``pyagrum.PAG`` and ``pyagrum.MAG``.
-
-References
-----------
-T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
-
-J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
-
-J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
-selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
 "
 
 %feature("docstring") gum::MarkedGraph::addEdge

@@ -147,6 +147,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("PRMexplorerTestSuite", True),
         ("RandomGeneratorTestSuite", True),
         ("SamplingTestSuite", True),
+        ("ScienceTestSuite", True),
         ("StructuralMetricsTestSuite", True),
         ("TensorTestSuite", True),
         ("TypeAliasesTestSuite", True),

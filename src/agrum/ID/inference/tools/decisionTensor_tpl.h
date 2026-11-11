@@ -107,7 +107,8 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   bool DecisionTensor< GUM_SCALAR >::operator==(const DecisionTensor< GUM_SCALAR >& p) const {
-    // @see Evaluating Influence Diagrams using LIMIDS (2000) - section 3.3
+    // @see Nilsson and Lauritzen, "Evaluating Influence Diagrams using LIMIDs" (UAI 2000),
+    // section 3.3
     return ((p.probPot == this->probPot)
             && (p.probPot * p.utilPot == this->probPot * this->utilPot));
   }

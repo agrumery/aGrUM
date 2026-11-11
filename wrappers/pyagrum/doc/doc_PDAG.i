@@ -61,18 +61,6 @@ pyagrum.InvalidDirectedCycle
   If the mixed graph to copy contains a directed cycle.
 pyagrum.InvalidArc
   If the mixed graph to copy connects two nodes by both an arc and an edge.
-
-References
-----------
-C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
-Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
-
-D. M. Chickering. Optimal Structure Identification With Greedy Search. Journal of Machine Learning
-Research 3:507-554, 2002.
-
-M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
-computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
-Intelligence, PMLR 161:1248-1257, 2021.
 "
 %feature("docstring") gum::PDAG::addArc
 "

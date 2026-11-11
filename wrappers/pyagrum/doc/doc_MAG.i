@@ -47,15 +47,6 @@ variables being marginalized and the selected ones conditioned on.
 A MAG is a marked graph without circle (edges ``->``, ``<->`` and ``--``) which is ancestral and maximal; its
 separation is the m-separation. A MAG is immutable: it is built by ``MAG.fromDAG``, ``MAG.fromPAG`` or the checked
 conversion ``MAG.fromMarkedGraph``.
-
-References
-----------
-T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
-
-J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
-
-J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
-selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
 "
 
 %feature("docstring") gum::MAG::fromDAG

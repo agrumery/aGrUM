@@ -60,7 +60,9 @@ namespace gum {
    *
    * @brief Noisy OR representation
    *
-   * Noisy-OR as described by Henrion (UAI-3, 1989, pp161-173)
+   * Noisy-OR with net parameters (Diez and Druzdzel, "Canonical Probabilistic
+   * Models for Knowledge Engineering", 2006); the compound parameters of
+   * Henrion (UAI-3, 1989) are used by MultiDimNoisyORCompound
    *
    * @warning
    *   - The first variable is assumed to be the NOISY-OR. The latter are

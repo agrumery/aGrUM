@@ -72,7 +72,7 @@ namespace gum {
    * equivalent): it is computed on a consistent extension, kept from the construction (see
    * ImmutableMixedGraph). It is also the c-separation (LWF) of its chain graph: a DAG and its
    * essential graph are Markov equivalent (Andersson, Madigan and Perlman 1997, Proposition 4.3)
-   * and both separation criteria are complete (Bouckaert and Studený 1998); the LWF and AMP
+   * and both separation criteria are complete (Studený and Bouckaert 1998); the LWF and AMP
    * interpretations coincide on a chain graph without induced a->b-c (Andersson, Madigan and
    * Perlman 1996, Theorem 4.2).
    *
@@ -89,7 +89,7 @@ namespace gum {
    * - S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes
    *   for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
    *   doi:10.1214/aos/1031833662.
-   * - R. R. Bouckaert, M. Studený. On chain graph models for description of conditional
+   * - M. Studený, R. R. Bouckaert. On chain graph models for description of conditional
    *   independence structures. The Annals of Statistics 26(4):1434-1495, 1998.
    *   doi:10.1214/aos/1024691250.
    * - M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms

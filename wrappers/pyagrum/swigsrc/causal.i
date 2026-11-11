@@ -185,13 +185,12 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
 def counterfactual(cm, *, on, whatif, profile=None, values=None):
     """
-    Compute a counterfactual distribution using Pearl's twin network method.
+    Compute a counterfactual distribution using Pearl's three-step algorithm.
 
     Answers the question: 'Given that we observed *profile*, what would
     *on* have been if *whatif* had been set as specified in *values*?'
 
-    The computation follows the three-step algorithm from Pearl (2018),
-    *The Book of Why*, chapter 8: abduction (update parentless node priors
+    The computation follows three steps: abduction (update parentless node priors
     from the profile), action (apply do(whatif) on the twin model), and
     prediction (evaluate the causal effect on the twin).
 

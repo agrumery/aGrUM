@@ -55,9 +55,4 @@ PAG(src) -> PAG
         - **src** (*pyagrum.PAG*) -- the PAG to copy
 
 Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
-
-References
-----------
-J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent
-confounders and selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008. doi:10.1016/j.artint.2008.08.001.
 "

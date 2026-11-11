@@ -67,26 +67,6 @@ pyagrum.InvalidDirectedCycle
   If the mixed graph to copy contains a directed cycle.
 pyagrum.InvalidArc
   If the mixed graph to copy connects two nodes by both an arc and an edge.
-
-References
-----------
-S. L. Lauritzen, N. Wermuth. Graphical Models for Associations between Variables, some of which are
-Qualitative and some Quantitative. The Annals of Statistics 17(1):31-57, 1989.
-doi:10.1214/aos/1176347003.
-
-M. Frydenberg. The chain graph Markov property. Scandinavian Journal of Statistics 17(4):333-353, 1990.
-
-S. A. Andersson, D. Madigan, M. D. Perlman. Alternative Markov Properties for Chain Graphs.
-Scandinavian Journal of Statistics 28(1):33-85, 2001. doi:10.1111/1467-9469.00224.
-
-R. R. Bouckaert, M. Studený. Chain graphs: Semantics and expressiveness. ECSQARU 1995, LNCS 946,
-pp. 69-76, Springer. doi:10.1007/3-540-60112-0_9.
-
-R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
-structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
-
-D. Sonntag, J. M. Peña. Chain graph interpretations and their relations revisited. International
-Journal of Approximate Reasoning 58:39-56, 2015. doi:10.1016/j.ijar.2014.12.001.
 "
 
 %feature("docstring") gum::ChainGraph::addArc

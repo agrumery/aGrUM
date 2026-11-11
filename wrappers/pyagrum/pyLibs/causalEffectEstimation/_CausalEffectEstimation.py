@@ -86,7 +86,7 @@ class CausalEffectEstimation:
   Treatment Effect (LATE), among others.
 
   This module is inspired by the works of
-  :cite:t:`wager2020stats` and :cite:t:`neal2020introduction`.
+  :cite:t:`wager2022stats` and :cite:t:`neal2020introduction`.
 
   Raises
   ------
@@ -556,7 +556,7 @@ class CausalEffectEstimation:
     """
     Fit the S-Learner Estimator.
 
-    A basic implementation of the S-learner based on Kunzel et al. (2018)
+    A basic implementation of the S-learner based on
     :cite:t:`kunzel2019metalearners`.
 
     Parameters
@@ -580,7 +580,7 @@ class CausalEffectEstimation:
     """
     Fit the T-Learner Estimator.
 
-    A basic implementation of the T-learner based on Kunzel et al. (2018)
+    A basic implementation of the T-learner based on
     :cite:t:`kunzel2019metalearners`.
 
     Parameters
@@ -610,7 +610,7 @@ class CausalEffectEstimation:
     """
     Fit the X-Learner Estimator.
 
-    A basic implementation of the X-learner based on Kunzel et al. (2018)
+    A basic implementation of the X-learner based on
     :cite:t:`kunzel2019metalearners`.
 
     Parameters
@@ -650,7 +650,7 @@ class CausalEffectEstimation:
     Fit the Propensity score Stratification Estimator.
 
     A basic implementation of Propensity Stratification estimator
-    based on Lunceford et al. (2004)
+    based on
     :cite:t:`lunceford2004stratification`.
 
     Parameters
@@ -678,7 +678,7 @@ class CausalEffectEstimation:
     Fit the Inverse Propensity score Weighting Estimator.
 
     A basic implementation of the Inverse Propensity Score Weighting (IPW)
-    estimator based on Lunceford et al. (2004)
+    estimator based on
     :cite:t:`lunceford2004stratification`.
 
     Parameters

@@ -449,7 +449,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(NoForgettingAssumption) {
-    // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
+    // From "Evaluating Influence Diagrams using LIMIDs", Nilsson and Lauritzen, UAI 2000
     auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
         "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
         "R4->D4<-*D3<-D2<-D1;"
@@ -494,7 +494,9 @@ namespace gum_tests {
   }
 
   GUM_TEST(NoForgettingAssumption2) {
-    // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
+    // from "LIMIDs of decision problems", Lauritzen and Nilsson, 1999 (report published as
+    // "Representing and Solving Decision Problems with Limited Information", Management
+    // Science, 2001)
     // p33
     auto limids = gum::InfluenceDiagram< double >::fastPrototype(
         "a->c->e->g->*d4->l->$u4;c<-b->d->f->h->k<-*d3->$u2;$u1<-*d1->d->e->*d2->"
@@ -527,7 +529,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(JunctionTree) {
-    // From Evaluating IDs using LIMIDS, Nillson et Lauritzen, 2000
+    // From "Evaluating Influence Diagrams using LIMIDs", Nilsson and Lauritzen, UAI 2000
     auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
         "*D1->$U3<-R1->R2->R3<-*D4->$U4<-R4<-R1<-*D2;"
         "R4->D4<-*D3<-D2<-D1;"

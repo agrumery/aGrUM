@@ -82,7 +82,7 @@ namespace gum {
    * complexity of a single r-ary multinomial variable, i.e., the log in
    * base 2 of the C_N^r term used by NML scores in Bayesian network
    * structure learning algorithm (see, e.g., Silander, Roos,
-   * Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
+   * Kontkanen and Myllymaki (2008) "Factorized Normalized Maximum "
    * Likelihood Criterion for Learning Bayesian network Structures)"
    */
   class GUM_SHARED_PUBLIC VariableLog2ParamComplexity {
@@ -150,7 +150,7 @@ namespace gum {
     // constants used to speed-up the computation of the Szpankowski
     // approximation.
     // The formula for the approximation given in Silander, Roos,
-    // Kontkanen and Myllymaki (2007) "Factorized Normalized Maximum "
+    // Kontkanen and Myllymaki (2008) "Factorized Normalized Maximum "
     // Likelihood Criterion for Learning Bayesian network Structures" paper
     // is incorrect. However, the one in Kontkanen, Buntine, Myllymaki,
     // Rissanen and Tirri (2003) "Efficient Computation of Stochastic

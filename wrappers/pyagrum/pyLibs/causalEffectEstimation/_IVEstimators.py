@@ -551,8 +551,8 @@ class _ICSW:
   A basic implementation of the Inverse Complier Score Weighting
   (ICSW) estimator which computes the Average Causal Effect (ACE),
   under the Latent ignorability of compliance assumption.
-  Based on Aronow et al. (2013)
-  (see https://www.jstor.org/stable/24572676?seq=1).
+  Based on Aronow and Carnegie (2013), Political Analysis 21(4)
+  (see https://doi.org/10.1093/pan/mpt013).
   Only Supports binary instruments.
   """
 

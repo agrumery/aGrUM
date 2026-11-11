@@ -53,23 +53,8 @@ A CPDAG cannot be modified (its properties are global): it is built from a DAG
 :meth:`dSeparation` gives the d-separation of every DAG of the class (they are Markov equivalent);
 it is computed on a DAG of the class kept from the construction (:meth:`consistentExtension`). It is
 also the c-separation of the chain graph of the CPDAG (a DAG and its essential graph are Markov
-equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Bouckaert and
-Studený 1998).
-
-References
-----------
-T. Verma, J. Pearl. Equivalence and Synthesis of Causal Models. Proceedings of the 6th Conference on
-Uncertainty in Artificial Intelligence (UAI 1990), pp. 220-227. arXiv:1304.1108.
-
-D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures.
-Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 87-98.
-arXiv:1302.4938.
-
-S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for
-acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997. doi:10.1214/aos/1031833662.
-
-R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
-structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
+equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Studený and
+Bouckaert 1998).
 "
 
 %feature("docstring") gum::CPDAG::fromDAG

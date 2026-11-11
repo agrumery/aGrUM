@@ -49,7 +49,9 @@ class that owns it, with the list and the inheritance diagram of all the classes
 a table of the functions, each one with its own page.
 
 Each generated page shows the example of its member, if any: the file ``doc/examples/<page name>.py``. A class
-shows its own example, if any, after its docstring: the file ``doc/examples/<class name>.class.py``.
+shows its own example, if any, after its docstring: the file ``doc/examples/<class name>.class.py``, then its
+science fragment, if any: the file ``doc/science/<class name>.rst`` (rubric "Scientific notes": the references of the
+algorithms or models implemented by the class, cited by ``:cite:`` keys of ``refs.bib``).
 
 Citations (``:cite:``) of the docstrings become footnote citations in the generated pages, each page ending with its
 own ``footbibliography``; the hand-written page holding their toctree ends with the list of all these references.
@@ -66,7 +68,7 @@ from types import SimpleNamespace
 from docutils import nodes
 from docutils.parsers.rst import directives
 from docutils.statemachine import StringList
-from pyagrum_apiinventory import API_DIR, EXAMPLES_DIR, Inventory, moduleFunctions, resolve, scan
+from pyagrum_apiinventory import API_DIR, EXAMPLES_DIR, SCIENCE_DIR, Inventory, moduleFunctions, resolve, scan
 from sphinx import addnodes
 from sphinx.ext.autodoc.mock import mock
 from sphinx.ext.autosummary import extract_summary
@@ -104,6 +106,14 @@ def _example(path: Path) -> list[str]:
   while code and not code[0].strip():
     code.pop(0)
   return [".. rubric:: Example", "", ".. code-block:: python", ""] + [f"   {line}".rstrip() for line in code] + [""]
+
+
+def _science(path: Path) -> list[str]:
+  """The science fragment of a class (the file of doc/science), as rst lines, its citations as footnotes."""
+  if not path.exists():
+    return []
+  text = [_CITE.sub(":footcite:", line).rstrip() for line in path.read_text(encoding="utf-8").splitlines()]
+  return [".. rubric:: Scientific notes", ""] + text + ["", ".. footbibliography::", ""]
 
 
 def _table(rows: list[tuple[str, str]]) -> list[str]:
@@ -151,12 +161,18 @@ def pageSource(inventory: Inventory, owner: str, member: str, example: list[str]
 
 
 def classSource(
-  inventory: Inventory, name: str, options: dict[str, str], docname: str, settings, example: list[str]
+  inventory: Inventory,
+  name: str,
+  options: dict[str, str],
+  docname: str,
+  settings,
+  example: list[str],
+  science: list[str],
 ) -> list[str]:
   lines = [f".. autoclass:: {name}", "   :no-members:"]
   lines += [f"   :{key}:" for key in _PASSED_OPTIONS if key in options]
   lines.append("")
-  lines += example
+  lines += example + science
   groups: dict[str, dict[str, list[str]]] = {}  # owner -> table -> members
   for member in inventory.members.get(name, []):
     owner = inventory.owner[(name, member)]
@@ -207,8 +223,11 @@ class PyagrumClass(SphinxDirective):
       return []  # import failure already reported by the scan
     options = {key: value or "" for key, value in self.options.items()}
     container = nodes.container()
-    example = _example(Path(self.env.srcdir) / EXAMPLES_DIR / f"{Inventory.classExampleName(name)}.py")
-    lines = classSource(inventory, name, options, self.env.docname, self.state.document.settings, example)
+    srcdir = Path(self.env.srcdir)
+    example = _example(srcdir / EXAMPLES_DIR / f"{Inventory.classExampleName(name)}.py")
+    science = _science(srcdir / SCIENCE_DIR / f"{name}.rst")
+    settings = self.state.document.settings
+    lines = classSource(inventory, name, options, self.env.docname, settings, example, science)
     self.state.nested_parse(
       StringList(lines, source=self.env.doc2path(self.env.docname)), self.content_offset, container
     )
@@ -268,6 +287,9 @@ def _generate(app) -> None:
   for path in sorted(examples.glob("*.py")):
     if path.stem not in names:  # renamed or removed member or class, or typo in the file name
       logger.warning(f"pyagrum-class: example {path.name} matches no documented member, function or class")
+  for path in sorted((srcdir / SCIENCE_DIR).glob("*.rst")):
+    if path.stem not in inventory.classes:  # renamed or removed class, or typo in the file name
+      logger.warning(f"pyagrum-class: science fragment {path.name} matches no documented class")
   missing = len(pages - {path.stem for path in examples.glob("*.py")})
   logger.info(
     f"pyagrum-class: {len(inventory.classes)} classes, {len(inventory.pages)} member pages, "

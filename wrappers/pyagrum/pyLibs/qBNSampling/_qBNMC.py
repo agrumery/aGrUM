@@ -56,9 +56,6 @@ class qBNMC:
   rotations so that measuring the circuit samples from the joint distribution
   of the network.
 
-  Based on: *Quantum circuit representation of Bayesian networks*,
-  Sima E. Borujeni.
-
   Parameters
   ----------
   bn : BayesNet

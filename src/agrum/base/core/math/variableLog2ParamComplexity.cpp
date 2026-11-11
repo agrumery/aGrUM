@@ -161,7 +161,7 @@ namespace gum {
     // value of C_n^2 and write it into cn2_table
     GammaLog2 gamma_log2;
     for (double n = 2; n < VariableLog2ParamComplexityCTableNSize; ++n) {
-      // here, note that, in  Silander, Roos, Kontkanen and Myllymaki (2007)
+      // here, note that, in  Silander, Roos, Kontkanen and Myllymaki (2008)
       // "Factorized Normalized Maximum Likelihood Criterion for Learning
       // Bayesian network Structures" paper, there is an uppercase N in the
       // formula, but this should be a lowercase n. In addition, we will loop

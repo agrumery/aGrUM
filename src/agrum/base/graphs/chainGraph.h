@@ -66,8 +66,8 @@ namespace gum {
    *
    * This class is the graph only: the independence model read from a chain graph depends on its
    * interpretation (LWF, AMP or MVR; Sonntag and Peña 2015). The separation and moralization
-   * methods of this class follow the LWF interpretation (c-separation, Bouckaert and Studený 1995,
-   * 1998).
+   * methods of this class follow the LWF interpretation (c-separation, Bouckaert and Studený 1995;
+   * Studený and Bouckaert 1998).
    *
    * addArc and addEdge check the absence of partially directed cycle, in addition to the checks of
    * gum::PDAG.
@@ -86,7 +86,7 @@ namespace gum {
    *   Scandinavian Journal of Statistics 28(1):33-85, 2001. doi:10.1111/1467-9469.00224.
    * - R. R. Bouckaert, M. Studený. Chain graphs: Semantics and expressiveness. ECSQARU 1995, LNCS
    *   946, pp. 69-76, Springer. doi:10.1007/3-540-60112-0_9.
-   * - R. R. Bouckaert, M. Studený. On chain graph models for description of conditional
+   * - M. Studený, R. R. Bouckaert. On chain graph models for description of conditional
    *   independence structures. The Annals of Statistics 26(4):1434-1495, 1998.
    *   doi:10.1214/aos/1024691250.
    * - D. Sonntag, J. M. Peña. Chain graph interpretations and their relations revisited.

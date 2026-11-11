@@ -49,7 +49,7 @@ from ._learners import learnerFromString
 
 class SLearner:
   """
-  A basic implementation of the S-learner based on Kunzel et al. (2018)
+  A basic implementation of the S-learner based on Künzel et al. (2019)
   (see https://arxiv.org/abs/1706.03461).
   """
 
@@ -174,7 +174,7 @@ class SLearner:
 
 class TLearner:
   """
-  A basic implementation of the T-learner based on Kunzel et al. (2018)
+  A basic implementation of the T-learner based on Künzel et al. (2019)
   (see https://arxiv.org/abs/1706.03461).
   """
 
@@ -304,7 +304,7 @@ class TLearner:
 
 class XLearner:
   """
-  A basic implementation of the X-learner based on Kunzel et al. (2018)
+  A basic implementation of the X-learner based on Künzel et al. (2019)
   (see https://arxiv.org/abs/1706.03461).
   """
 
@@ -482,7 +482,7 @@ class XLearner:
 class PStratification:
   """
   A basic implementation of Propensity Stratification estimator
-  based on Lunceford et al. (2004)
+  based on Lunceford and Davidian (2004)
   (see https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.1903).
   """
 
@@ -632,7 +632,7 @@ class PStratification:
 class IPW:
   """
   A basic implementation of the Inverse Propensity Score Weighting (IPW)
-  estimator based on Lunceford et al. (2004)
+  estimator based on Lunceford and Davidian (2004)
   (see https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.1903).
   """
 

@@ -410,7 +410,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::createReduced_() {
-    // from LIMIDS of decision Problems, Lauritzen et Nilsson, 1999
+    // from Lauritzen and Nilsson, "Representing and Solving Decision Problems with Limited
+    // Information", Management Science 47(9), 2001 (first issued as the report "LIMIDs of decision
+    // problems", 1999)
     reduced_.clear();
     reducedJunctionTree_.clear();
     solvabilityOrder_.clear();

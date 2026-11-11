@@ -6341,18 +6341,6 @@ class PDAG(MixedGraph):
     pyagrum.InvalidArc
       If the mixed graph to copy connects two nodes by both an arc and an edge.
 
-    References
-    ----------
-    C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
-    Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
-
-    D. M. Chickering. Optimal Structure Identification With Greedy Search. Journal of Machine Learning
-    Research 3:507-554, 2002.
-
-    M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
-    computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
-    Intelligence, PMLR 161:1248-1257, 2021.
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -7044,26 +7032,6 @@ class ChainGraph(PDAG):
       If the mixed graph to copy contains a directed cycle.
     pyagrum.InvalidArc
       If the mixed graph to copy connects two nodes by both an arc and an edge.
-
-    References
-    ----------
-    S. L. Lauritzen, N. Wermuth. Graphical Models for Associations between Variables, some of which are
-    Qualitative and some Quantitative. The Annals of Statistics 17(1):31-57, 1989.
-    doi:10.1214/aos/1176347003.
-
-    M. Frydenberg. The chain graph Markov property. Scandinavian Journal of Statistics 17(4):333-353, 1990.
-
-    S. A. Andersson, D. Madigan, M. D. Perlman. Alternative Markov Properties for Chain Graphs.
-    Scandinavian Journal of Statistics 28(1):33-85, 2001. doi:10.1111/1467-9469.00224.
-
-    R. R. Bouckaert, M. Studený. Chain graphs: Semantics and expressiveness. ECSQARU 1995, LNCS 946,
-    pp. 69-76, Springer. doi:10.1007/3-540-60112-0_9.
-
-    R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
-    structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
-
-    D. Sonntag, J. M. Peña. Chain graph interpretations and their relations revisited. International
-    Journal of Approximate Reasoning 58:39-56, 2015. doi:10.1016/j.ijar.2014.12.001.
 
     """
 
@@ -7991,23 +7959,8 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
     :meth:`dSeparation` gives the d-separation of every DAG of the class (they are Markov equivalent);
     it is computed on a DAG of the class kept from the construction (:meth:`consistentExtension`). It is
     also the c-separation of the chain graph of the CPDAG (a DAG and its essential graph are Markov
-    equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Bouckaert and
-    Studený 1998).
-
-    References
-    ----------
-    T. Verma, J. Pearl. Equivalence and Synthesis of Causal Models. Proceedings of the 6th Conference on
-    Uncertainty in Artificial Intelligence (UAI 1990), pp. 220-227. arXiv:1304.1108.
-
-    D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures.
-    Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 87-98.
-    arXiv:1302.4938.
-
-    S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for
-    acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997. doi:10.1214/aos/1031833662.
-
-    R. R. Bouckaert, M. Studený. On chain graph models for description of conditional independence
-    structures. The Annals of Statistics 26(4):1434-1495, 1998. doi:10.1214/aos/1024691250.
+    equivalent, Andersson, Madigan and Perlman 1997, and the c-separation is complete, Studený and
+    Bouckaert 1998).
 
     """
 
@@ -8265,19 +8218,6 @@ class MPDAG(_ImmutableMixedGraphPDAG):
     An MPDAG cannot be modified: it is built by :meth:`MPDAG.meekClosure`, :meth:`MPDAG.fromCPDAG` or
     checked by :meth:`MPDAG.fromPDAG`. The represented DAGs are Markov equivalent: :meth:`dSeparation` is
     the d-separation of any of them.
-
-    References
-    ----------
-    C. Meek. Causal Inference and Causal Explanation with Background Knowledge. Proceedings of the 11th
-    Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410. arXiv:1302.4972.
-
-    E. Perković, M. Kalisch, M. H. Maathuis. Interpreting and using CPDAGs with background knowledge.
-    Proceedings of the 33rd Conference on Uncertainty in Artificial Intelligence (UAI 2017), PMLR
-    R15:461-470. arXiv:1707.02171.
-
-    M. Wienöbst, M. Bannach, M. Liśkiewicz. Extendability of causal graphical models: Algorithms and
-    computational complexity. Proceedings of the 37th Conference on Uncertainty in Artificial
-    Intelligence, PMLR 161:1248-1257, 2021.
 
     """
 
@@ -8596,15 +8536,6 @@ class MarkedGraph(object):
             - **src** (*pyagrum.MarkedGraph*) -- the marked graph to copy
 
     See also ``pyagrum.fastMarkedGraph``, ``pyagrum.PAG`` and ``pyagrum.MAG``.
-
-    References
-    ----------
-    T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
-
-    J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
-
-    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
-    selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
 
     """
 
@@ -9419,11 +9350,6 @@ class PAG(MarkedGraph):
 
     Typically obtained via ``BNLearner.learnPAG()`` after calling ``useFCI()``, or by ``pyagrum.fastPAG``.
 
-    References
-    ----------
-    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent
-    confounders and selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008. doi:10.1016/j.artint.2008.08.001.
-
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -9739,15 +9665,6 @@ class MAG(_ImmutableGraphMarkedGraph):
     A MAG is a marked graph without circle (edges ``->``, ``<->`` and ``--``) which is ancestral and maximal; its
     separation is the m-separation. A MAG is immutable: it is built by ``MAG.fromDAG``, ``MAG.fromPAG`` or the checked
     conversion ``MAG.fromMarkedGraph``.
-
-    References
-    ----------
-    T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics 30(4):962-1030, 2002.
-
-    J. Zhang. Causal reasoning with ancestral graphs. Journal of Machine Learning Research 9:1437-1474, 2008.
-
-    J. Zhang. On the completeness of orientation rules for causal discovery in the presence of latent confounders and
-    selection bias. Artificial Intelligence 172(16-17):1873-1896, 2008.
 
     """
 
@@ -16195,12 +16112,6 @@ class EssentialGraph(CPDAG):
     EssentialGraph(cpdag) -> EssentialGraph
         Parameters:
           - **cpdag** (*pyagrum.CPDAG*) -- the essential graph, with the names of its nodes
-
-    References
-    ----------
-    D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures. UAI 1995, pp. 87-98.
-
-    S. A. Andersson, D. Madigan, M. D. Perlman. A characterization of Markov equivalence classes for acyclic digraphs. The Annals of Statistics 25(2):505-541, 1997.
 
     """
 
@@ -31294,8 +31205,8 @@ class BNLearner(object):
         Choose what FCI does when the learned PAG is not valid.
 
         ``learnDAG`` and ``learnPDAG`` with FCI go through the representative MAG of the learned PAG
-        (Zhang 2008). If the PAG is not valid (its representative graph has a directed cycle, which may
-        happen with conflicting independence tests), either an error is raised (``True``) or the former
+        :cite:`zhang2008completeness`. If the PAG is not valid (its representative graph has a directed
+        cycle, which may happen with conflicting independence tests), either an error is raised (``True``) or the former
         approximation is used (``False``: the Meek rules on the PAG seen as a mixed graph). Only this
         symptom is detected: an invalid PAG whose representative graph has no directed cycle is used as is.
         The default value is the key ``learning.fciErrorOnInvalidPAG`` of ``pyagrum.config`` (``False``).

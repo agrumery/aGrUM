@@ -433,7 +433,7 @@ class DiscreteTypeProcessor:
 
   def _discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
     """
-    Uses the MDLP algorithm described in Fayyad, 1995 to discretize the values of x.
+    Uses the MDLP algorithm described in Fayyad and Irani, 1993 to discretize the values of x.
 
     Parameters
     ----------
@@ -718,7 +718,7 @@ class DiscreteTypeProcessor:
   @staticmethod
   def _discretizationNML(X, possibleValuesX, kMax=10, epsilon=None):
     """
-    Uses the discretization algorithm described in "MDL Histogram Density Estimator", Kontkaken and Myllymaki, 2007 to
+    Uses the discretization algorithm described in "MDL Histogram Density Estimation", Kontkanen and Myllymäki, 2007 to
     discretize.
 
     Parameters

@@ -45,7 +45,7 @@ The ``.rst`` sources declare the documented classes (``.. pyagrum-class::``) and
 several documented classes has a single page, named after the most general documented class that owns it.
 
 Used by the Sphinx extension ``pyagrum_apipages`` (page generation) and by the pyAgrum tests (one example per page in
-``doc/examples``).
+``doc/examples``, optional science fragments of the classes in ``doc/science``).
 """
 
 import importlib
@@ -56,6 +56,7 @@ from pathlib import Path
 
 API_DIR = "api"
 EXAMPLES_DIR = "../examples"  # relative to the Sphinx sources: one file <page name>.py per generated page
+SCIENCE_DIR = "../science"  # relative to the Sphinx sources: optional <class name>.rst, references of a class
 _DIRECTIVE = re.compile(r"^[ \t]*\.\. pyagrum-(?P<kind>class|functions)::[ \t]*(?P<name>\S*)[ \t]*$")
 _OPTION = re.compile(r"^[ \t]+:(?P<key>[a-z-]+):[ \t]*(?P<value>.*)$")
 _SKIPPED = {"thisown", "clone"}  # SWIG ownership flag, and members hidden by conf.skip
@@ -88,9 +89,14 @@ def _kind(cls: type, member: str) -> str:
   return "attribute"
 
 
+def citedKeysOfText(text: str) -> set[str]:
+  """Bibtex keys cited (``:cite:``, ``:footcite:``) in a text."""
+  return {key.strip() for keys in _CITED.findall(text) for key in keys.split(",") if key.strip()}
+
+
 def citedKeys(obj) -> set[str]:
   """Bibtex keys cited in the docstring of obj."""
-  return {key.strip() for keys in _CITED.findall(inspect.getdoc(obj) or "") for key in keys.split(",") if key.strip()}
+  return citedKeysOfText(inspect.getdoc(obj) or "")
 
 
 def _splitList(value: str) -> list[str]:
