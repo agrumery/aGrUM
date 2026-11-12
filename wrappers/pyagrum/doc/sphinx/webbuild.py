@@ -6,13 +6,25 @@ import shlex
 import shutil
 import subprocess
 import sys
-from datetime import datetime
+import zipfile
 from pathlib import Path
 
 
 def notif(message: str) -> None:
   """Prints a notification message to the console."""
   print(f"� {message}")  # Green text for notifications
+
+
+def run(cmd: list[str], cwd: str | None = None) -> None:
+  """Runs a command and raises if it fails."""
+  notif(f"Running {shlex.join(cmd)}")
+  subprocess.run(cmd, cwd=cwd, check=True)
+
+
+def copy_tree(src: str, dest: str) -> None:
+  """Copies the folder src into dest (merged with the existing content of dest)."""
+  notif(f"Copying {src} to {dest}")
+  shutil.copytree(src, dest, dirs_exist_ok=True)
 
 
 def parse_notebooks_rst(filepath: str) -> dict[str, list[str]]:
@@ -42,8 +54,10 @@ def parse_notebooks_rst(filepath: str) -> dict[str, list[str]]:
       match = re.match(r"^.*(notebooks.*)$", line)
       if match:
         notebook_pattern = match.group(1).strip()
+        # only the notebooks themselves (not the leftovers such as *.ipynb.orig)
         for globbed in glob.glob(notebook_pattern):
-          notebook_patterns.append(globbed.replace("ipynb", "md"))  # type: ignore
+          if globbed.endswith(".ipynb"):
+            notebook_patterns.append(globbed.removesuffix(".ipynb") + ".md")
 
   # Catch last section if file does not end with newline
   if current_section and notebook_patterns:
@@ -123,13 +137,13 @@ def retrieveCiteTitles(rst_path: str, bib_path: str, json_path: str):
   notif(f"Found {len(titles)} cited titles, saved to {json_path}")
 
 
-def retrieveThumbnails(RTD_path: str, json_path=str):
+def retrieveThumbnails(RTD_path: str, json_path: str):
   res = parse_thumbnails_html(RTD_path)
   notif(f"Found {len(res)} thumbnails.")
 
   with open(json_path, "w") as fp:
     json.dump(res, fp, indent=2)
-  notif(f"thunmbnails saved to {json_path}")
+  notif(f"Thumbnails saved to {json_path}")
 
 
 def parse_changelog() -> dict[str, str]:
@@ -150,10 +164,10 @@ def getTagVersion(datadir: str):
     "git",
     "for-each-ref",
     "--sort=-creatordate",
-    "--format=%(refname:short)|%(creatordate:iso)|%(contents:subject)",
+    "--format=%(refname:short)|%(creatordate:short)|%(contents:subject)",
     "refs/tags",
   ]
-  result = subprocess.run(cmd, cwd=".", capture_output=True, text=True)
+  result = subprocess.run(cmd, capture_output=True, text=True, check=True)
 
   tags_info = []
   for line in result.stdout.splitlines():
@@ -162,17 +176,9 @@ def getTagVersion(datadir: str):
 
     parts = line.split("|", 2)
     if len(parts) >= 3:
-      tag, date_str, _ = parts
+      tag, date_iso, _ = parts
       if tag not in descriptions:  # we just add tag if documented in CHANGELOG.md
         continue
-
-      # Convert date to ISO format if needed
-      try:
-        dt = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S %z")
-        date_iso = dt.isoformat()
-        date_iso = date_iso.split("T")[0]  # Keep only the date part
-      except ValueError:
-        date_iso = date_str  # fallback if parsing fails
 
       tags_info.append({"tag": tag, "date": date_iso, "description": descriptions[tag]})
   # Save to JSON file
@@ -199,17 +205,16 @@ def prepareSphinx(site_dir: str):
       continue
     if item.endswith(".zip"):  # do not copy zip files
       continue
-    recursive_copy(os.path.join(".", item), os.path.join(site_dir, item))
+    if os.path.isdir(item):
+      copy_tree(item, os.path.join(site_dir, item))
+    else:
+      shutil.copy2(item, os.path.join(site_dir, item))
 
 
 def prepareNotebooks(site_dir: str):
-  os.chdir("notebooks")
-  # for all ipynb files, convert them to md files
-  for notebook in glob.glob("*.ipynb"):
-    md_file = notebook.replace(".ipynb", ".md")
-    notif(f"Converting {notebook} to {md_file}...")
-    os.system(f"jupyter nbconvert --to markdown --output-dir=../{site_dir}/notebooks --output={md_file} {notebook}")
-  os.chdir("..")
+  notebooks = sorted(glob.glob("notebooks/*.ipynb"))
+  notif(f"Converting {len(notebooks)} notebooks to markdown...")
+  run(["jupyter", "nbconvert", "--to", "markdown", f"--output-dir={os.path.join(site_dir, 'notebooks')}", *notebooks])
 
 
 def chgIndexForWeb(site_dir: str):
@@ -235,87 +240,78 @@ def chgIndexForWeb(site_dir: str):
     f.write(buffer)
 
 
-def recursive_copy(src: str, dest: str):
-  """Recursively copy files from src to dest."""
-  notif(f"Recursive copy from {src} to {dest}")
-  if os.path.isdir(src):
-    os.makedirs(dest, exist_ok=True)
-    for item in os.listdir(src):
-      recursive_copy(os.path.join(src, item), os.path.join(dest, item))
-  else:
-    shutil.copy2(src, dest)
-
-
 def goRTD(site_dir: str):
   notif("Running Sphinx to build the site (RTD version)...")
-  os.chdir(site_dir)
-  # Run Sphinx to build the site
-  os.system("sphinx-build -M html .. RTD -j auto")
-  # move the folders html/_static and html/_images in the folder markdown
-  recursive_copy("RTD/html/_static", "markdown/_static")
-  recursive_copy("RTD/html/_images", "markdown/_images")
-  os.chdir("..")
+  # the sources are the documentation itself (site_dir is excluded in conf.py)
+  run(["sphinx-build", "-M", "html", "..", "RTD", "-j", "auto"], cwd=site_dir)
+  # copy the folders html/_static and html/_images in the folder markdown
+  for folder in ("_static", "_images"):
+    copy_tree(os.path.join(site_dir, "RTD", "html", folder), os.path.join(site_dir, "markdown", folder))
 
 
 # doc/, resolved before any chdir (__file__ may be relative)
 _DOC = Path(__file__).resolve().parent.parent
 
+# the only folders of site_dir read by the website (pyagrum.gitlab.io, scripts/importDocs.py)
+_WEB_FOLDERS = ("data", "markdown", "notebooks")
+
 
 def goSphinx(site_dir: str):
-  notif("Running Sphinx to build the site (html and markdown)...")
-  os.chdir(site_dir)
+  notif("Running Sphinx to build the site (markdown)...")
   # the sources are a copy in site_dir: the examples and the science fragments are given by their absolute path
-  dirs = " ".join(
-    f"-D {name}={shlex.quote(str(_DOC / folder))}"
+  dirs = [
+    arg
     for name, folder in (("pyagrum_examples_dir", "examples"), ("pyagrum_science_dir", "science"))
-  )
-  # Run Sphinx to build the site
-  os.system(f"sphinx-build -M html . . -j auto {dirs}")
-  os.system(f"sphinx-build -M markdown . . -j auto {dirs}")
-  # move the folders html/_static and html/_images in the folder markdown
-
-  recursive_copy("html/_static", "markdown/_static")
-  recursive_copy("html/_images", "markdown/_images")
-
-  os.chdir("..")
+    for arg in ("-D", f"{name}={_DOC / folder}")
+  ]
+  # no html build: its _static and _images are already given by goRTD
+  run(["sphinx-build", "-M", "markdown", ".", ".", "-j", "auto", *dirs], cwd=site_dir)
+  # written by pyagrum_apipages.py: the navigation between the member pages of a class
+  shutil.move(os.path.join(site_dir, "markdown", "api_navigation.json"), os.path.join(site_dir, "data"))
+  # written by pyagrum_markdown.py: the sub-pages of each page, grouped by section
+  shutil.move(os.path.join(site_dir, "markdown", "doc_structure.json"), os.path.join(site_dir, "data"))
 
 
 def updateMarkdownFiles(site_dir: str):
-  # pour tous les fichiers *.md du répéertoire markdown
+  # in every *.md file of the markdown folder, "```pycon" is replaced by "```python"
   markdown_dir = os.path.join(site_dir, "markdown")
   for md_file in glob.glob(os.path.join(markdown_dir, "**", "*.md"), recursive=True):
     with open(md_file) as f:
       content = f.read()
-    # remplacer "```pycon" par "```python"
-    content = content.replace("```pycon", "```python")
+    if "```pycon" not in content:
+      continue
     with open(md_file, "w") as f:
-      f.write(content)
+      f.write(content.replace("```pycon", "```python"))
 
 
 def goZipAndFinish(site_dir: str):
-  # compress the site_dir into a zip file
-  zip_file = shutil.make_archive(site_dir, "zip", root_dir=".", base_dir=site_dir)
+  # only the folders read by the website are zipped (the rest of site_dir is ~95% of its size)
+  zip_file = f"{site_dir}.zip"
+  with zipfile.ZipFile(zip_file, "w", zipfile.ZIP_DEFLATED) as zf:
+    for folder in _WEB_FOLDERS:
+      for path in sorted(Path(site_dir, folder).rglob("*")):
+        zf.write(path)
   shutil.rmtree(site_dir)  # raises if the folder cannot be removed
   notif(f"Sphinx build completed and zipped in {zip_file}, {site_dir} removed.")
 
 
 if __name__ == "__main__":
-  match len(sys.argv):
-    case 1:
-      site_dir = "site"
-    case 2:
-      site_dir = sys.argv[1]
-    case _:
-      notif("Usage: python webbuild.py <SITEDIR>")
-      sys.exit(1)
+  if len(sys.argv) != 1:
+    notif("Usage: python webbuild.py")
+    sys.exit(1)
+  # the name is fixed: conf.py excludes "site" from the sources of the documentation
+  site_dir = "site"
+
+  # every path is relative to the folder of this script
+  os.chdir(_DOC / "sphinx")
 
   notif(f"Building site in {site_dir}...")
 
-  os.makedirs(site_dir, exist_ok=True)
-  os.makedirs(os.path.join(site_dir, "data"), exist_ok=True)
-  os.makedirs(os.path.join(site_dir, "notebooks"), exist_ok=True)
-  os.makedirs(os.path.join(site_dir, "html"), exist_ok=True)
-  os.makedirs(os.path.join(site_dir, "RTD"), exist_ok=True)
+  if os.path.exists(site_dir):
+    notif(f"Removing the previous {site_dir}...")
+    shutil.rmtree(site_dir)
+  os.makedirs(os.path.join(site_dir, "data"))
+  os.makedirs(os.path.join(site_dir, "notebooks"))
 
   goRTD(site_dir)
   retrieveNotebooksSections(rst_path="notebooks.rst", json_path=f"{site_dir}/data/notebooks_sections.json")
@@ -328,8 +324,6 @@ if __name__ == "__main__":
 
   notif("Cleaning RTD directory...")
   shutil.rmtree(os.path.join(site_dir, "RTD"))
-  notif("Cleaning html directory...")
-  shutil.rmtree(os.path.join(site_dir, "html"))
 
   prepareSphinx(site_dir)
   chgIndexForWeb(site_dir)

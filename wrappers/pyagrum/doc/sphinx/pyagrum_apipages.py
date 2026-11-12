@@ -61,6 +61,7 @@ subclass (``pyagrum.BayesNet.cpt``) are resolved to its page (``pyagrum.IBayesNe
 """
 
 import inspect
+import json
 import re
 from pathlib import Path
 from types import SimpleNamespace
@@ -160,6 +161,49 @@ def pageSource(inventory: Inventory, owner: str, member: str, example: list[str]
   return "\n".join(lines)
 
 
+def memberGroups(inventory: Inventory, name: str) -> list[tuple[str, str, list[str]]]:
+  """The tables of members of a class, in the order of its page: (owner, table, members), the members of the class
+  first, then the inherited ones in the order of its MRO; in each, the methods first."""
+  groups: dict[str, dict[str, list[str]]] = {}  # owner -> table -> members
+  for member in inventory.members.get(name, []):
+    owner = inventory.owner[(name, member)]
+    table = _TABLES[inventory.pages[(owner, member)]["kind"]]
+    groups.setdefault(owner, {}).setdefault(table, []).append(member)
+  cls = inventory.classes[name]
+  order = [name] + [inventory.names[k] for k in cls.__mro__[1:] if inventory.names.get(k) in groups]
+  order += [o for o in groups if o not in order]  # owners outside the MRO: none, kept for safety
+  return [
+    (owner, table, members)
+    for owner in order
+    for table, members in sorted(groups.get(owner, {}).items(), key=lambda t: t[0] != "Methods")
+  ]
+
+
+def navigation(inventory: Inventory) -> dict:
+  """The navigation between the generated pages (for the website): "navs" gives, for each documented class and for
+  each page documenting functions, its page and its lists of members (same order as on its page); "pages" gives, for
+  each generated page, the navigation it belongs to (the class naming the page, its page for a function)."""
+  navs: dict[str, dict] = {}
+  for name in inventory.classes:
+    groups = [
+      {
+        "title": table,
+        "inheritedFrom": None if owner == name else owner,
+        "members": [{"name": m, "page": f"{owner}.{m}"} for m in members],
+      }
+      for owner, table, members in memberGroups(inventory, name)
+    ]
+    navs[name] = {"title": name.rsplit(".", 1)[-1], "page": inventory.primary[name], "anchor": name, "groups": groups}
+  pages = {f"{owner}.{member}": owner for owner, member in inventory.pages}
+  for function, docname in inventory.functions.items():  # in the order of the pyagrum-functions directives
+    nav = navs.setdefault(docname, {"title": "Functions", "page": docname, "anchor": None, "groups": []})
+    if not nav["groups"]:
+      nav["groups"].append({"title": "Functions", "inheritedFrom": None, "members": []})
+    nav["groups"][0]["members"].append({"name": function.removeprefix("pyagrum."), "page": function})
+    pages[function] = docname
+  return {"pages": pages, "navs": navs}
+
+
 def classSource(
   inventory: Inventory,
   name: str,
@@ -173,21 +217,12 @@ def classSource(
   lines += [f"   :{key}:" for key in _PASSED_OPTIONS if key in options]
   lines.append("")
   lines += example + science
-  groups: dict[str, dict[str, list[str]]] = {}  # owner -> table -> members
-  for member in inventory.members.get(name, []):
-    owner = inventory.owner[(name, member)]
-    table = _TABLES[inventory.pages[(owner, member)]["kind"]]
-    groups.setdefault(owner, {}).setdefault(table, []).append(member)
-  cls = inventory.classes[name]
-  order = [name] + [inventory.names[k] for k in cls.__mro__[1:] if inventory.names.get(k) in groups]
-  order += [o for o in groups if o not in order]  # owners outside the MRO: none, kept for safety
-  for owner in order:
-    for table, members in sorted(groups.get(owner, {}).items(), key=lambda t: t[0] != "Methods"):
-      header = table if owner == name else f"{table} inherited from :class:`~{owner}`"
-      role = "meth" if table == "Methods" else "attr"
-      ownerCls = inventory.classes[owner]
-      lines += [f".. rubric:: {header}", ""]
-      lines += _table([(f":{role}:`~{owner}.{m}`", _summary(getattr(ownerCls, m), settings)) for m in members])
+  for owner, table, members in memberGroups(inventory, name):
+    header = table if owner == name else f"{table} inherited from :class:`~{owner}`"
+    role = "meth" if table == "Methods" else "attr"
+    ownerCls = inventory.classes[owner]
+    lines += [f".. rubric:: {header}", ""]
+    lines += _table([(f":{role}:`~{owner}.{m}`", _summary(getattr(ownerCls, m), settings)) for m in members])
   owned = [m for m in inventory.members.get(name, []) if inventory.owner[(name, m)] == name]
   if owned and inventory.primary.get(name) == docname:
     lines += [".. toctree::", "   :hidden:", ""]
@@ -296,6 +331,9 @@ def _generate(app) -> None:
   for path in apidir.glob("*.rst"):
     if path.name not in sources:
       path.unlink()
+  if app.builder.name == "markdown":  # the website: navigation between the generated pages
+    navigationFile = Path(app.outdir) / "api_navigation.json"
+    navigationFile.write_text(json.dumps(navigation(inventory), indent=1), encoding="utf-8")
   pages = set(inventory.pageNames())
   names = inventory.exampleNames()
   for path in sorted(examples.glob("*.py")):

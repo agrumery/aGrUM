@@ -1,15 +1,28 @@
-Graphs manipulation
+Graphs in pyAgrum
 ===================
 
 In aGrUM, graphs are undirected (using edges), directed (using arcs) or mixed (using both arcs and edges). Some other types of graphs are described below. Edges and arcs are represented by pairs of int (nodeId), but these pairs are considered as unordered for edges whereas they are ordered for arcs.
 
 For all types of graphs, nodes are int. If a graph of objects is needed (like :py:class:`pyagrum.BayesNet`), the objects are mapped to nodeIds.
 
+Graph Manipulation
+------------------
+
+
 .. toctree::
   :maxdepth: 2
 
   graphFast
   graphArcsEdges
+  graphIO
+  graphAlgorithms
+
+Types of Graphs
+---------------
+
+.. toctree::
+  :maxdepth: 2
+
   graphDirected
   graphDAG
   graphUndirected
@@ -21,5 +34,3 @@ For all types of graphs, nodes are int. If a graph of objects is needed (like :p
   graphMarked
   graphPAG
   graphMAG
-  graphIO
-  graphAlgorithms

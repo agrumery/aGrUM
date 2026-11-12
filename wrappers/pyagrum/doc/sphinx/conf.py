@@ -91,6 +91,7 @@ extensions = [
     # 'sphinx.ext.coverage'
     "sphinxcontrib.bibtex",
     "pyagrum_apipages",  # local: one page per member of the documented classes
+    "pyagrum_markdown",  # local: markdown (website) rendering of the nodes unknown to sphinx_markdown_builder
 ]
 # autosummary_generate = True  # Turn on sphinx.ext.autosummary
 
