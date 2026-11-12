@@ -900,4 +900,107 @@ namespace gum_tests {
     }
   }
 
+  // R3 on the double triangle A *-> B <-* C, A o-o D o-o C, D o-* B (A=0, B=1, C=2, D=3): A _||_ C
+  // given {D}, hence the collider A *-> B <-* C and the non-collider A, D, C, then D *-> B. A
+  // forbidden arc D->B gives B -> D from the skeleton on (never D o-* B, so R3 does not apply)
+  GUM_TEST(_fci_r3_double_triangle_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = {{0, 2, {3}}};
+
+    {
+      gum::learning::FCI fci;
+      fci.setIndependenceTest(oracle);
+      const auto pag = fci.learnPAG(fciNodes(4));
+      CHECK(pag.isArrowhead(0, 1));
+      CHECK(pag.isArrowhead(2, 1));
+      CHECK(pag.isArrowhead(3, 1));
+    }
+    {
+      gum::DiGraph forbidden;
+      for (gum::NodeId i = 0; i < 4; ++i) {
+        forbidden.addNodeWithId(i);
+      }
+      forbidden.addArc(3, 1);
+      gum::learning::FCI fci;
+      fci.setIndependenceTest(oracle);
+      fci.setForbiddenGraph(forbidden);
+      const auto pag = fci.learnPAG(fciNodes(4));
+      CHECK(pag.isArrowhead(0, 1));
+      CHECK(pag.isArrowhead(2, 1));
+      CHECK_FALSE(pag.isArrowhead(3, 1));
+    }
+  }
+
+  // an invalid PAG (A=0, B=1, C=2, X=3): the mandatory arcs A->B->C, X _||_ B and X _||_ A | {C},
+  // hence the collider X *-> C <- B and C -> A (R1): the directed cycle A->B->C->A
+  GUM_TEST(_fci_error_on_invalid_PAG_raised_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = {{0, 3, {2}}, {1, 3, {}}};
+    gum::DAG mandatory;
+    for (gum::NodeId i = 0; i < 4; ++i) {
+      mandatory.addNodeWithId(i);
+    }
+    mandatory.addArc(0, 1);
+    mandatory.addArc(1, 2);
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    fci.setMandatoryGraph(mandatory);
+    const auto pag = fci.learnPAG(fciNodes(4));
+    CHECK(pag.isArrowhead(2, 0));
+    CHECK(pag.isTail(0, 2));
+
+    fci.setErrorOnInvalidPAG(true);
+    CHECK_THROWS_AS(fci.learnPDAG(fciNodes(4)), gum::InvalidArgument);
+  }
+
+  // the DAG with the nodes 0..n-1 and the given arcs
+  inline gum::DAG fciMandatory(gum::Size n, const std::vector< gum::Arc >& arcs) {
+    gum::DAG dag;
+    for (gum::NodeId i = 0; i < n; ++i) {
+      dag.addNodeWithId(i);
+    }
+    for (const auto& arc: arcs) {
+      dag.addArc(arc.tail(), arc.head());
+    }
+    return dag;
+  }
+
+  // R10 (A=0, B=1, C=2, D=3, X=4): the mandatory arcs B->C<-D, B _||_ D | {A}, X _||_ A, B, D,
+  // hence A o-> C (collider X *-> C <-* A), A o-o B and A o-o D. The uncovered pd-paths <A, B> and
+  // <A, D> start with the non-adjacent nodes B and D: A -> C
+  GUM_TEST(_fci_r10_orients_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = {{1, 3, {0}}, {0, 4, {}}, {1, 4, {}}, {3, 4, {}}};
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    fci.setMandatoryGraph(fciMandatory(5, {gum::Arc(1, 2), gum::Arc(3, 2)}));
+    const auto pag = fci.learnPAG(fciNodes(5));
+    CHECK(pag.isArrowhead(0, 2));
+    CHECK(pag.isTail(2, 0));
+  }
+
+  // R10 needs uncovered paths (A=0, B=1, C=2, D=3, M=4, X=5): the mandatory arcs B->C<-D, B and D
+  // adjacent, M _||_ C and M _||_ D | {A, B}, X _||_ A, B, D, M, hence A o-> C. The only candidates
+  // for the first nodes are D and M (B is adjacent to both), and every path from A through D or M
+  // to B or D, as <A, M, B> or <A, D, B>, is covered by the edge A-B: A o-> C remains
+  GUM_TEST(_fci_r10_needs_uncovered_paths_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences
+        = {{2, 4, {0, 1}}, {3, 4, {0, 1}}, {0, 5, {}}, {1, 5, {}}, {3, 5, {}}, {4, 5, {}}};
+
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    fci.setMandatoryGraph(fciMandatory(6, {gum::Arc(1, 2), gum::Arc(3, 2)}));
+    const auto pag = fci.learnPAG(fciNodes(6));
+    CHECK_EQ(pag.sizeEdges(), gum::Size(9));
+    CHECK(pag.isArrowhead(0, 2));
+    CHECK(pag.isCircle(2, 0));
+  }
+
 } /* namespace gum_tests */

@@ -187,8 +187,10 @@ namespace gum::learning {
       return false;
     }
 
-    // Exists uncovered possibly-directed path from→next→…→to.
+    // Exists uncovered possibly-directed path from→next→…→to (next == to: the edge from→to).
     bool existsUncoveredPdPath_(const PAG& pag, NodeId from, NodeId next, NodeId to) {
+      // the first edge is checked as the others: no arrowhead at from, no tail at next
+      if (pag.isArrowhead(next, from) || pag.isTail(from, next)) { return false; }
       std::set< NodeId >    visited{from, next};
       std::vector< NodeId > path{from, next};
       return uncoveredPdDFS_(pag, to, path, visited);
@@ -253,8 +255,8 @@ namespace gum::learning {
         if (pag.isDefCollider(a, b, c) || pag.existsEdge(a, c)) {
           if (visited.insert({b, c}).second) {
             bfsQueue.emplace(b, c);
-            // FIX #3: only add c to PossibleDSep if it has a semi-directed path
-            // back toward x or b (Zhang 2008 §3.2 filter).
+            // only add c to PossibleDSep if it has a semi-directed path back toward x or b
+            // (Zhang 2008 §3.2 filter).
             if (existsSemiDirectedPath_(pag, c, x) || existsSemiDirectedPath_(pag, c, b)) {
               result.insert(c);
             }
@@ -348,9 +350,7 @@ namespace gum::learning {
           if (!pag.isCircle(c, b)) { continue; }
           if (pag.existsEdge(a, c)) { continue; }
           if (isForbiddenArc_(b, c)) { continue; }
-          // FIX #1: do not overwrite an existing Tail at C (from B) with Arrowhead.
-          // marks_[Arc(B,C)] == Tail means B *— C is already established;
-          // upgrading it to B *→ C would contradict that orientation.
+          // B *— C already established: a tail at C is not overwritten with an arrowhead
           if (pag.isTail(b, c)) { continue; }
           pag.setMarkAt(c, b, EdgeMark::Tail);
           pag.setMarkAt(b, c, EdgeMark::Arrowhead);
@@ -374,10 +374,6 @@ namespace gum::learning {
           if (!pag.isArrowhead(b, c)) { continue; }   // b *→ c
           if (!pag.isTail(b, a) && !pag.isTail(c, b)) { continue; }
           if (isForbiddenArc_(a, c)) { continue; }
-          // FIX #1 (defensive): isCircle(a,c) already ensures the mark at C
-          // from A is Circle, so isTail cannot be true here. Added for symmetry
-          // with R1 and to make the guard explicit.
-          if (pag.isTail(a, c)) { continue; }
           pag.setMarkAt(a, c, EdgeMark::Arrowhead);
           changed = true;
         }
@@ -421,6 +417,7 @@ namespace gum::learning {
               }
             }
             if (!nonCollider) { continue; }
+            if (isForbiddenArc_(d, b)) { continue; }
             pag.setMarkAt(d, b, EdgeMark::Arrowhead);
             changed = true;
           }
@@ -623,7 +620,7 @@ namespace gum::learning {
           std::set< NodeId >   visited{a, b};
           q.push(a);
 
-          // FIX #2: track BFS depth to respect maxPathLength_.
+          // the BFS depth is tracked to respect maxPathLength_:
           // cur_lvl_size counts nodes remaining at the current BFS level;
           // nxt_lvl_size accumulates nodes pushed for the next level.
           // distance is incremented each time we exhaust the current level.
@@ -700,10 +697,7 @@ namespace gum::learning {
           const bool case1 = pag.isArrowhead(a, b) && pag.isTail(b, a);   // A→B
           const bool case2 = pag.isCircle(a, b) && pag.isTail(b, a);      // A-oB
           if (!case1 && !case2) { continue; }
-          // FIX #1 (defensive): isCircle(c,a) already ensures this is not Arrowhead,
-          // but guard explicitly for clarity.
-          if (pag.isArrowhead(c, a)) { continue; }
-          pag.setMarkAt(c, a, EdgeMark::Tail);   // A→C: tail at A from C
+          pag.setMarkAt(c, a, EdgeMark::Tail);                            // A→C: tail at A from C
           changed = true;
         }
       }
@@ -718,25 +712,22 @@ namespace gum::learning {
       for (const NodeId a: pag.neighbours(c)) {
         if (!pag.isArrowhead(a, c)) { continue; }   // A *→ C
         if (!pag.isCircle(c, a)) { continue; }      // circle at A from C (A o→ C)
-        bool oriented = false;
         for (const NodeId b: pag.neighbours(a)) {
           if (b == c) { continue; }
-          if (pag.existsEdge(b, c)) { continue; }    // B not adjacent C
-          if (pag.isArrowhead(b, a)) { continue; }   // B must be possible child of A
+          if (pag.existsEdge(b, c)) { continue; }   // B not adjacent C
           if (existsUncoveredPdPath_(pag, a, b, c)) {
             pag.setMarkAt(c, a, EdgeMark::Tail);
-            changed  = true;
-            oriented = true;
+            changed = true;
             break;
           }
         }
-        if (oriented) { continue; }
       }
     }
     return changed;
   }
 
-  // R10: A o→ C, B→C, D→C, two paths from A's possible children to B,D → A→C
+  // R10: A o→ C, B→C←D, uncovered pd-paths p1 from A to B and p2 from A to D, whose nodes μ, ω
+  // next to A are distinct and not adjacent (μ may be B, ω may be D) → A→C
   bool FCI::ruleR10_(PAG& pag) const {
     bool changed = false;
     for (const NodeId c: pag.nodes()) {
@@ -749,11 +740,11 @@ namespace gum::learning {
 
       for (const NodeId a: into_c) {
         if (!pag.isCircle(c, a)) { continue; }   // A o→ C
-        // possible children of A (not C)
+        // possible children of A (not C): candidates for μ and ω
         std::vector< NodeId > a_children;
         for (const NodeId x: pag.neighbours(a)) {
           if (x == c) { continue; }
-          if (!pag.isArrowhead(x, a)) { a_children.push_back(x); }
+          if (!pag.isArrowhead(x, a) && !pag.isTail(a, x)) { a_children.push_back(x); }
         }
         if (a_children.size() < 2) { continue; }
 
@@ -769,14 +760,13 @@ namespace gum::learning {
                 const NodeId ch1 = a_children[m];
                 const NodeId ch2 = a_children[n2];
                 if (pag.existsEdge(ch1, ch2)) { continue; }
-                // FIX #6: check both (ch1→bd, ch2→dd) and (ch1→dd, ch2→bd).
-                // Zhang 2008 R10 requires one path to B and one to D from two
-                // non-adjacent children; either assignment of children to targets
-                // is valid.
-                const bool direct  = existsSemiDirectedPath_(pag, ch1, bd)
-                                  && existsSemiDirectedPath_(pag, ch2, dd);
-                const bool crossed = existsSemiDirectedPath_(pag, ch1, dd)
-                                  && existsSemiDirectedPath_(pag, ch2, bd);
+                // both (ch1→bd, ch2→dd) and (ch1→dd, ch2→bd) are checked: Zhang 2008 R10
+                // requires one path to B and one to D from two non-adjacent children,
+                // either assignment of children to targets is valid
+                const bool direct  = existsUncoveredPdPath_(pag, a, ch1, bd)
+                                  && existsUncoveredPdPath_(pag, a, ch2, dd);
+                const bool crossed = existsUncoveredPdPath_(pag, a, ch1, dd)
+                                  && existsUncoveredPdPath_(pag, a, ch2, bd);
                 if (!direct && !crossed) { continue; }
                 pag.setMarkAt(c, a, EdgeMark::Tail);
                 changed  = true;
