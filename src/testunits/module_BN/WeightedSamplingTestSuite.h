@@ -458,4 +458,9 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
     GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
   }
+
+  // the inference follows the CPTs changed in place after invalidateTensors()
+  GUM_TEST(WeightedInvalidateTensors) {
+    CHECK_LE(errorAfterInvalidateTensors< gum::WeightedSampling< double > >(), 0.05);
+  }
 }   // namespace gum_tests

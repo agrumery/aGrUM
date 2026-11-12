@@ -453,4 +453,21 @@ namespace gum_tests {
     }
   }
 
+  // the inference (and its initialization by LBP) follows the CPTs changed in place after
+  // invalidateTensors()
+  GUM_TEST(LoopyInvalidateTensors) {
+    CHECK_LE((errorAfterInvalidateTensors<
+                 gum::LoopySamplingInference< double, gum::GibbsSampling > >()),
+             0.05);
+    CHECK_LE((errorAfterInvalidateTensors<
+                 gum::LoopySamplingInference< double, gum::WeightedSampling > >()),
+             0.05);
+    CHECK_LE((errorAfterInvalidateTensors<
+                 gum::LoopySamplingInference< double, gum::ImportanceSampling > >()),
+             0.05);
+    CHECK_LE((errorAfterInvalidateTensors<
+                 gum::LoopySamplingInference< double, gum::MonteCarloSampling > >()),
+             0.05);
+  }
+
 }   // namespace gum_tests

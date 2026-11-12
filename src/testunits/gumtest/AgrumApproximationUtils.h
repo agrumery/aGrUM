@@ -41,6 +41,8 @@
 
 #ifndef AGRUM_AGRUMAPPROXIMATIONUTILS_H_H
 #define AGRUM_AGRUMAPPROXIMATIONUTILS_H_H
+#include <algorithm>
+
 #include <agrum/agrum.h>
 
 template < gum::GUM_Numeric GUM_SCALAR >
@@ -93,6 +95,38 @@ bool compareInference(const std::string&                       file,
   std::cout << "![" << __LINE__ << "]" << std::flush; \
   }                                                   \
   if (!res) FAIL("even with 10 tries.");
+
+// The CPTs of a parent (A) and of a child (C) of the hard evidence (B=1) are changed in place after
+// a first inference. After invalidateTensors(), the next inference must follow them (the samplers
+// copy the CPT of C when they contextualize the BN). Returns the largest difference with
+// LazyPropagation on A and C.
+template < typename INFERENCE >
+double errorAfterInvalidateTensors() {
+  auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+  bn.cpt("A").fillWith({0.2, 0.8});
+  bn.cpt("B").fillWith({0.9, 0.1, 0.3, 0.7});
+  bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+
+  INFERENCE ie(&bn);
+  ie.setEpsilon(1e-3);
+  ie.setVerbosity(false);
+  ie.addEvidence("B", 1);
+  ie.makeInference();
+
+  const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.999, 0.001});
+  const_cast< gum::Tensor< double >& >(bn.cpt("C")).fillWith({0.6, 0.4, 0.95, 0.05});
+  ie.invalidateTensors();
+  ie.makeInference();
+
+  gum::LazyPropagation< double > lazy(&bn);
+  lazy.addEvidence("B", 1);
+  lazy.makeInference();
+  double err = 0.0;
+  for (const auto name: {"A", "C"})
+    err = std::max(err, double((ie.posterior(name) - lazy.posterior(name)).abs().max()));
+  return err;
+}
+
 // same loop, silent and without failure: the caller checks res itself
 #define GUM_APPROX_TEST_END_ITERATION_NO_FAIL(ERRMAX) \
   GUM_APPROX_TEST_TRY_(ERRMAX)                        \
