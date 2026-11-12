@@ -211,6 +211,18 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
         {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n)}
       )
 
+  def testVariableKeepsTheModelAlive(self):
+    import gc
+
+    # on a temporary model, the variable, the CPT and the utility keep the model alive
+    for obj in (
+      gum.fastID("A[3]->*D").variable("A"),
+      gum.fastID("A[3]->*D").cpt("A"),
+      gum.fastID("A[3]->$U").utility("U"),
+    ):
+      gc.collect()
+      self.assertEqual(obj.domainSize(), 3)
+
   def testGetDecisionGraph(self):
     # *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1; *D3 isolated
     id_ = gum.fastID("*D1->C1->*D2->$U;*D3->$U2")

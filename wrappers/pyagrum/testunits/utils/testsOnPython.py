@@ -126,6 +126,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("GraphTestSuite", True),
         ("GumFormatTestSuite", True),
         ("ICIModelsForBNTestSuite", True),
+        ("ImageTestSuite", True),
         ("ImportTestSuite", True),
         ("InfluenceDiagramTestSuite", True),
         ("InformationTheoryTestSuite", True),

@@ -47,21 +47,17 @@
 %define ADD_COMPUTE_TO_BNDISTANCE(classname)
 %extend classname {
 PyAgrumDict* compute(void) {
-  PyObject* q=PyDict_New();
-
-  auto setItem=[q](const char* key, PyObject* val) {
-    PyDict_SetItemString(q,key,val);
-    Py_DecRef(val);
-  };
-  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
-  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
-  setItem("klQP",PyFloat_FromDouble(self->klQP()));
-  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
-  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
-  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
-
-  return q;
+  // the values are read in this order (the first one may launch the computation)
+  const double     klPQ         = self->klPQ();
+  const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
+  const double     klQP         = self->klQP();
+  const Py_ssize_t errorQP      = static_cast< Py_ssize_t >(self->errorQP());
+  const double     hellinger    = self->hellinger();
+  const double     bhattacharya = self->bhattacharya();
+  const double     jsd          = self->jsd();
+  return Py_BuildValue("{s:d,s:n,s:d,s:n,s:d,s:d,s:d}",
+                       "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
+                       "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
 }
 }
 %enddef

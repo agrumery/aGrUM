@@ -167,7 +167,8 @@
 %extend gum::CausalModel<double> {
   CausalModel(const gum::BayesNet<double>& bn, PyObject* latents, bool assumeNonSpurious=false) {
     auto cm = std::make_unique<gum::CausalModel<double>>(bn);
-    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
+      throw PythonErrorAlreadySet();
     return cm.release();
   }
 }
@@ -179,7 +180,8 @@
 %extend gum::CausalModel<double> {
   CausalModel(const gum::DAG& dag, PyObject* latents, bool assumeNonSpurious=false) {
     auto cm = std::make_unique<gum::CausalModel<double>>(dag);
-    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
+      throw PythonErrorAlreadySet();
     return cm.release();
   }
 }

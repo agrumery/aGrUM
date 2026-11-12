@@ -85,6 +85,46 @@ class PRMexplorerTestCase(pyAgrumTestCase):
       self.assertTrue(n in wit_nom)
       self.assertEqual(t, "boolean")
 
+  def _load(self, filename):
+    prm = gum.PRMexplorer()
+    prm.load(self.agrumSrcDir(f"o3prm/{filename}"), self.agrumSrcDir("o3prm"))
+    return prm
+
+  def testO3PRMTypes(self):
+    # the file uses a deprecated syntax: warnings do not prevent the loading
+    prm = self._load("types.o3prm")
+    self.assertEqual(prm.getSuperType("t_ink"), "t_state")
+    self.assertIsNone(prm.getSuperType("boolean"))
+    self.assertEqual(set(prm.getDirectSubTypes("t_state")), {"t_ink", "t_degraded", "t_paper"})
+    self.assertEqual(prm.getLabels("t_state"), ["OK", "NOK"])
+    self.assertEqual(prm.getLabelMap("t_paper"), {"Ready": "OK", "Jammed": "NOK", "Empty": "NOK"})
+    self.assertIsNone(prm.getLabelMap("boolean"))
+
+  def testO3PRMAggregates(self):
+    prm = self._load("aggregates.o3prm")
+    aggregates = {a[1]: a for a in prm.classAggregates("HappyClass")}
+    self.assertEqual(aggregates["has_red"], ("boolean", "has_red", "exists", "red", ["A.color"]))
+    self.assertEqual(aggregates["infrared"][:4], ("t_color", "infrared", "min", None))
+    self.assertEqual(set(aggregates["infrared"][4]), {"has_red", "has_blue", "has_green", "has_yellow"})
+
+  def testO3PRMClassesAndInterfaces(self):
+    prm = self._load("complexprinters_system.o3prm")
+    self.assertEqual(set(prm.interfaces()), {"Printer", "Equipment"})
+    self.assertEqual(prm.classImplements("SafeComputer"), ["Equipment"])
+    self.assertEqual(prm.classImplements("PowerSupply"), [])
+    self.assertIn(("Printer", "printers", True), prm.classReferences("SafeComputer"))
+    self.assertEqual(set(prm.classParameters("ParamClass")), {"lambda", "t"})
+    self.assertEqual(set(prm.getImplementations("Printer")), {"ColorPrinter", "BWPrinter"})
+    self.assertEqual(prm.getDirectSubInterfaces("Equipment"), ["Printer"])
+    self.assertIn(("Room", "room", False), prm.interReferences("Equipment"))
+    self.assertEqual(prm.interAttributes("Equipment"), [("t_degraded", "equipState")])
+    nodes, dot = prm.classDag("PowerSupply")
+    self.assertEqual(set(nodes.values()), {"state"})
+    self.assertIn("digraph", dot)
+    systems = prm.getalltheSystems()
+    self.assertEqual([name for name, _, _ in systems], ["aSys"])
+    self.assertIn(("pow", "PowerSupply"), systems[0][1].values())
+
 
 ts = unittest.TestSuite()
 addTests(ts, PRMexplorerTestCase)

@@ -8297,6 +8297,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_decisionOrder(PyObject *self, PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8789,6 +8790,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_names(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8822,6 +8824,7 @@ SWIGINTERN PyObject *_wrap_InfluenceDiagram_nodes(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9822,10 +9825,10 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_reversePartialOrder(PyObje
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10278,6 +10281,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_0(PyObject *
   }
   {
     resultobj=PyAgrumHelper::PyDictFromPairMeanVar(result) ;
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10330,6 +10334,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_meanVar__SWIG_1(PyObject *
   }
   {
     resultobj=PyAgrumHelper::PyDictFromPairMeanVar(result) ;
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -10405,6 +10410,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_MEU(PyObject *self, PyObje
   }
   {
     resultobj=PyAgrumHelper::PyDictFromPairMeanVar(result) ;
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10500,6 +10506,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_hardEvidenceNodes(PyObject
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10533,6 +10540,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyLIMIDInference_softEvidenceNodes(PyObject
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:

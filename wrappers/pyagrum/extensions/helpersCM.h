@@ -65,31 +65,21 @@
 namespace PyAgrumHelper {
 
   // Convert a CausalImpact AST node to a nested Python dict.
-  // Returns a new reference. Each node dict has an "op" key identifying its
-  // type, plus type-specific keys (op1/op2 for binary ops, vars/knowing for
+  // Returns a new reference, or nullptr with the Python error set. Each node dict has an "op" key
+  // identifying its type, plus type-specific keys (op1/op2 for binary ops, vars/knowing for
   // probability nodes, var/term for sum nodes).
   PyObject* PyDictFromASTtree(const gum::ASTtree< double >& node) {
-    PyObject* d = PyDict_New();
-    if (!d) return nullptr;
+    PyOwnedRef d(PyDict_New());
+    if (d.get() == nullptr) return nullptr;
 
-    auto setStr = [&](const char* key, const std::string& val) {
-      PyObject* s = PyUnicode_FromString(val.c_str());
-      PyDict_SetItemString(d, key, s);
-      Py_DECREF(s);
-    };
+    bool ok     = true;   // false as soon as an item could not be built or set
     auto setObj = [&](const char* key, PyObject* obj) {
-      PyDict_SetItemString(d, key, obj);
-      Py_XDECREF(obj);
+      if (ok) ok = setItemStringStolen(d.get(), key, obj);
+      else Py_XDECREF(obj);
     };
-    auto makeStrList = [](const gum::Set< std::string >& names) {
-      PyObject* list = PyList_New(0);
-      for (const auto& n: names) {
-        PyObject* s = PyUnicode_FromString(n.c_str());
-        PyList_Append(list, s);
-        Py_DECREF(s);
-      }
-      return list;
-    };
+    auto setStr = [&](const char* key, const std::string& val) { setObj(key, PyStr(val)); };
+    auto makeStrList
+        = [](const gum::Set< std::string >& names) { return PyListFrom(names, PyStr); };
 
     if (auto* p = dynamic_cast< const gum::ASTplus< double >* >(&node)) {
       setStr("op", "+");
@@ -119,7 +109,7 @@ namespace PyAgrumHelper {
       setStr("var", p->var());
       setObj("term", PyDictFromASTtree(p->term()));
     }
-    return d;
+    return ok ? d.release() : nullptr;
   }
 
   // Add to cm the latent variables described by latents, a sequence of (name, children) pairs
@@ -135,15 +125,19 @@ namespace PyAgrumHelper {
       return false;
     }
     const Py_ssize_t n = PySequence_Size(latents);
+    if (n < 0) return false;
     for (Py_ssize_t i = 0; i < n; ++i) {
       PyOwnedRef item(PySequence_GetItem(latents, i));
+      if (item.get() == nullptr) return false;
       if (!PySequence_Check(item.get()) || PySequence_Size(item.get()) != 2) {
+        PyErr_Clear();   // a failing PySequence_Size is reported as the TypeError below
         PyErr_SetString(PyExc_TypeError,
                         "CausalModel: each latent descriptor must be a (name, children) pair");
         return false;
       }
       PyOwnedRef pyname(PySequence_GetItem(item.get(), 0));
       PyOwnedRef pychildren(PySequence_GetItem(item.get(), 1));
+      if (pyname.get() == nullptr || pychildren.get() == nullptr) return false;
       if (!PySequence_Check(pychildren.get())) {
         PyErr_SetString(
             PyExc_TypeError,
@@ -152,8 +146,10 @@ namespace PyAgrumHelper {
       }
       std::vector< std::string > childNames;
       const Py_ssize_t           nc = PySequence_Size(pychildren.get());
+      if (nc < 0) return false;
       for (Py_ssize_t j = 0; j < nc; ++j) {
         PyOwnedRef child(PySequence_GetItem(pychildren.get(), j));
+        if (child.get() == nullptr) return false;
         childNames.push_back(stringFromPyObject(child.get()));
       }
       cm.addLatentVariable(stringFromPyObject(pyname.get()), childNames, assumeNonSpurious);

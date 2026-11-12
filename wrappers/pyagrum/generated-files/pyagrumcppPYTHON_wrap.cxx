@@ -5794,23 +5794,21 @@ SWIGINTERN std::string gum_Tensor_Sl_double_Sg____str__(gum::Tensor< double > co
 SWIGINTERN PyAgrumFloat *gum_Tensor_Sl_double_Sg__expectedValue__SWIG_1(gum::Tensor< double > const *self,PyObject *pyfunc){
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!");return NULL; }
 
-    PyObject* args=PyTuple_New(1);
-    double res=self->expectedValue([args,pyfunc](const gum::Instantiation& i) -> double {
-      double val;
-      PyObject* arg=PyAgrumHelper::instantiationToDict(i,false);
-      PyTuple_SetItem(args,0,arg);
-      PyObject* pyres=PyObject_Call(pyfunc,args,NULL);
-      //314 Py_DecRef(arg);                                                                                                        *
-      if (pyres==NULL) {
-        val=0;
-      } else {
-        val=PyFloat_AsDouble(pyres);
-        Py_DecRef(pyres);
+    bool failed = false;   // a Python error is set: the remaining calls are skipped
+    double res=self->expectedValue([&failed,pyfunc](const gum::Instantiation& i) -> double {
+      if (failed) return 0.0;
+      PyAgrumHelper::PyOwnedRef arg(PyAgrumHelper::instantiationToDict(i,false));
+      PyAgrumHelper::PyOwnedRef pyres(arg.get() == nullptr ? nullptr
+                                      : PyObject_CallFunctionObjArgs(pyfunc, arg.get(), nullptr));
+      const double val = (pyres.get() == nullptr) ? -1.0 : PyFloat_AsDouble(pyres.get());
+      if (val == -1.0 && PyErr_Occurred()) {
+        failed = true;
+        return 0.0;
       }
       return val;
       });
 
-    Py_DecRef(args);
+    if (failed) return nullptr;
     return PyFloat_FromDouble(res);
   }
 SWIGINTERN gum::Tensor< double > gum_Tensor_Sl_double_Sg__extract__SWIG_1(gum::Tensor< double > *self,PyObject *arg){
@@ -6425,10 +6423,7 @@ namespace gum {
     std::vector< gum::Idx > permutation(n);
     std::iota(permutation.begin(), permutation.end(), gum::Idx(0));
     gum::randomShuffle(permutation.begin(), permutation.end());
-    PyObject* list = PyList_New(static_cast< Py_ssize_t >(n));
-    for (gum::Size i = 0; i < n; ++i)
-      PyList_SetItem(list, static_cast< Py_ssize_t >(i), PyLong_FromSize_t(permutation[i]));
-    return list;
+    return PyAgrumHelper::PyListFrom(permutation, [](gum::Idx i) { return PyLong_FromSize_t(i); });
   }
 
 
@@ -8941,38 +8936,30 @@ SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_1(gum::LoopyB
    }
 SWIGINTERN gum::IBayesNet< double > const &gum_LoopyBeliefPropagation_Sl_double_Sg__BN(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::MarginalTargetedInference<double>::BN(); }
 SWIGINTERN PyAgrumDict *gum_ExactBNdistance_Sl_double_Sg__compute(gum::ExactBNdistance< double > *self){
-  PyObject* q=PyDict_New();
-
-  auto setItem=[q](const char* key, PyObject* val) {
-    PyDict_SetItemString(q,key,val);
-    Py_DecRef(val);
-  };
-  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
-  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
-  setItem("klQP",PyFloat_FromDouble(self->klQP()));
-  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
-  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
-  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
-
-  return q;
+  // the values are read in this order (the first one may launch the computation)
+  const double     klPQ         = self->klPQ();
+  const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
+  const double     klQP         = self->klQP();
+  const Py_ssize_t errorQP      = static_cast< Py_ssize_t >(self->errorQP());
+  const double     hellinger    = self->hellinger();
+  const double     bhattacharya = self->bhattacharya();
+  const double     jsd          = self->jsd();
+  return Py_BuildValue("{s:d,s:n,s:d,s:n,s:d,s:d,s:d}",
+                       "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
+                       "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
 }
 SWIGINTERN PyAgrumDict *gum_GibbsBNdistance_Sl_double_Sg__compute(gum::GibbsBNdistance< double > *self){
-  PyObject* q=PyDict_New();
-
-  auto setItem=[q](const char* key, PyObject* val) {
-    PyDict_SetItemString(q,key,val);
-    Py_DecRef(val);
-  };
-  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
-  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
-  setItem("klQP",PyFloat_FromDouble(self->klQP()));
-  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
-  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
-  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
-
-  return q;
+  // the values are read in this order (the first one may launch the computation)
+  const double     klPQ         = self->klPQ();
+  const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
+  const double     klQP         = self->klQP();
+  const Py_ssize_t errorQP      = static_cast< Py_ssize_t >(self->errorQP());
+  const double     hellinger    = self->hellinger();
+  const double     bhattacharya = self->bhattacharya();
+  const double     jsd          = self->jsd();
+  return Py_BuildValue("{s:d,s:n,s:d,s:n,s:d,s:d,s:d}",
+                       "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
+                       "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
 }
 SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setVerbosity(gum::GibbsBNdistance< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
 SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setEpsilon(gum::GibbsBNdistance< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
@@ -8998,21 +8985,17 @@ SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setNbrDrawnVar(gum::GibbsBNdis
 SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isDrawnAtRandom(gum::GibbsBNdistance< double > const *self){ return self->GibbsOperator<double>::isDrawnAtRandom(); }
 SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setDrawnAtRandom(gum::GibbsBNdistance< double > *self,bool _atRandom){ self->GibbsOperator<double>::setDrawnAtRandom(_atRandom); }
 SWIGINTERN PyAgrumDict *gum_MCBNDistance_Sl_double_Sg__compute(gum::MCBNDistance< double > *self){
-  PyObject* q=PyDict_New();
-
-  auto setItem=[q](const char* key, PyObject* val) {
-    PyDict_SetItemString(q,key,val);
-    Py_DecRef(val);
-  };
-  setItem("klPQ",PyFloat_FromDouble(self->klPQ()));
-  setItem("errorPQ",PyLong_FromSize_t(self->errorPQ()));
-  setItem("klQP",PyFloat_FromDouble(self->klQP()));
-  setItem("errorQP",PyLong_FromSize_t(self->errorQP()));
-  setItem("hellinger",PyFloat_FromDouble(self->hellinger()));
-  setItem("bhattacharya",PyFloat_FromDouble(self->bhattacharya()));
-  setItem("jensen-shannon",PyFloat_FromDouble(self->jsd()));
-
-  return q;
+  // the values are read in this order (the first one may launch the computation)
+  const double     klPQ         = self->klPQ();
+  const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
+  const double     klQP         = self->klQP();
+  const Py_ssize_t errorQP      = static_cast< Py_ssize_t >(self->errorQP());
+  const double     hellinger    = self->hellinger();
+  const double     bhattacharya = self->bhattacharya();
+  const double     jsd          = self->jsd();
+  return Py_BuildValue("{s:d,s:n,s:d,s:n,s:d,s:d,s:d}",
+                       "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
+                       "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
 }
 SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__setVerbosity(gum::MCBNDistance< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
 SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__setEpsilon(gum::MCBNDistance< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
@@ -9070,18 +9053,22 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
       throw PythonErrorAlreadySet();
     }
 
-    for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
-      PyObject* rows = PyList_GetItem(l, i);
+    const Py_ssize_t nbRows = PyList_Size(l);
+    for (Py_ssize_t i = 0; i < nbRows; i++) {
+      PyObject* rows = PyList_GetItem(l, i);   // borrowed
       if (PyList_Check(rows) == 0) {
         PyErr_SetString(PyExc_TypeError,
                         "arg must be a list of lists (of int or string)");
         throw PythonErrorAlreadySet();
       }
 
-      for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
-        PyObject* row = PyList_GetItem(rows, j);
+      const Py_ssize_t nbNodes = PyList_Size(rows);
+      for (Py_ssize_t j = 0; j < nbNodes; j++) {
+        PyObject* row = PyList_GetItem(rows, j);   // borrowed
         if (PyLong_Check(row) != 0) {
-          ranks.insert(PyLong_AsLong(row), i);
+          const long id = PyLong_AsLong(row);
+          if (id == -1 && PyErr_Occurred()) throw PythonErrorAlreadySet();
+          ranks.insert(gum::NodeId(id), i);
           continue;
         }
         std::string n=PyAgrumHelper::stringFromPyObject(row);
@@ -9106,13 +9093,16 @@ SWIGINTERN gum::learning::BNLearner< double > &gum_learning_BNLearner_Sl_double_
       throw PythonErrorAlreadySet();
     }
 
-    for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
-      PyObject* row = PyList_GetItem(l, i);
+    const Py_ssize_t size = PyList_Size(l);
+    for (Py_ssize_t i = 0; i < size; i++) {
+      PyObject* row = PyList_GetItem(l, i);   // borrowed
       if (PyLong_Check(row) == 0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a list of int");
         throw PythonErrorAlreadySet();
       }
-      v.push_back((gum::NodeId)PyLong_AsLong(row));
+      const long id = PyLong_AsLong(row);
+      if (id == -1 && PyErr_Occurred()) throw PythonErrorAlreadySet();
+      v.push_back(gum::NodeId(id));
     }
 
     self->useK2(v);
@@ -9122,16 +9112,12 @@ SWIGINTERN std::vector< gum::Arc,std::allocator< gum::Arc > > gum_learning_BNLea
     return self->latentVariables();
   }
 SWIGINTERN PyAgrumDictState *gum_learning_BNLearner_Sl_double_Sg__state(gum::learning::BNLearner< double > *self){
-    PyObject* res=PyDict_New();
-
-    PyObject* pyval;
-    for(const auto& tuple: self->state()) {
-      pyval=Py_BuildValue("(ss)",std::get<1>(tuple).c_str(),std::get<2>(tuple).c_str());
-      PyDict_SetItemString(res,std::get<0>(tuple).c_str(),pyval);
-      Py_DecRef(pyval);
-    }
-
-    return res;
+    return PyAgrumHelper::PyDictFrom(
+        self->state(),
+        [](const auto& tuple) { return PyAgrumHelper::PyStr(std::get<0>(tuple)); },
+        [](const auto& tuple) {
+          return Py_BuildValue("(ss)", std::get<1>(tuple).c_str(), std::get<2>(tuple).c_str());
+        });
   }
 SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__setPossibleEdges(gum::learning::BNLearner< double > *self,PyObject *soe){
     gum::EdgeSet set;
@@ -10382,6 +10368,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_0(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10424,6 +10411,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_1(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10468,6 +10456,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_2(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10510,6 +10499,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_3(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10554,6 +10544,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_4(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10596,6 +10587,7 @@ SWIGINTERN PyObject *_wrap_JunctionTreeGenerator_eliminationOrder__SWIG_5(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -22913,14 +22905,10 @@ SWIGINTERN PyObject *_wrap_dispatchRangeToThreads(PyObject *self, PyObject *args
   }
   {
     std::vector< std::pair< std::size_t, std::size_t > > _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-      PyObject* _pair = PyTuple_New(2);
-      PyTuple_SET_ITEM(_pair, 0, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].first)));
-      PyTuple_SET_ITEM(_pair, 1, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].second)));
-      PyTuple_SET_ITEM(resultobj, _i, _pair);
-    }
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, [](const std::pair< std::size_t, std::size_t >& p) {
+      return Py_BuildValue("(NN)", PyLong_FromSize_t(p.first), PyLong_FromSize_t(p.second));
+      });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -23647,10 +23635,8 @@ SWIGINTERN PyObject *_wrap__Configuration_sections(PyObject *self, PyObject *arg
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -24474,10 +24460,8 @@ SWIGINTERN PyObject *_wrap__Configuration__schemaRows(PyObject *self, PyObject *
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -24511,10 +24495,8 @@ SWIGINTERN PyObject *_wrap__Configuration__takeNoticeRows(PyObject *self, PyObje
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -27199,10 +27181,8 @@ SWIGINTERN PyObject *_wrap_DiscreteVariable_labels(PyObject *self, PyObject *arg
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -30712,10 +30692,10 @@ SWIGINTERN PyObject *_wrap_IntegerVariable_integerDomain(PyObject *self, PyObjec
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyLong_FromLong((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, [](int x) {
+      return PyLong_FromLong(x); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -31884,10 +31864,8 @@ SWIGINTERN PyObject *_wrap_NumericalDiscreteVariable_numericalDomain(PyObject *s
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -33860,6 +33838,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_chainComponents(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -33893,6 +33872,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_connectedComponents(PyObject *self, PyObjec
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -33942,6 +33922,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_undirectedPath(PyObject *self, PyObject *ar
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -34323,6 +34304,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -34575,6 +34557,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_edges(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -34615,6 +34598,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_neighbours(PyObject *self, PyObject *args) 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -35949,15 +35933,9 @@ SWIGINTERN PyObject *_wrap_DiGraph_topologicalOrder(PyObject *self, PyObject *ar
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36053,6 +36031,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_directedPath(PyObject *self, PyObject *args) 
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -36106,6 +36085,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_directedUnorientedPath(PyObject *self, PyObje
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -36149,6 +36129,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_ancestors__SWIG_0(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36188,6 +36169,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_descendants__SWIG_0(PyObject *self, Py_ssize_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36227,6 +36209,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_family__SWIG_0(PyObject *self, Py_ssize_t nob
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36279,6 +36262,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_family__SWIG_1(PyObject *self, Py_ssize_t nob
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36362,6 +36346,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_connectedComponents(PyObject *self, PyObject 
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36457,6 +36442,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36709,6 +36695,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36749,6 +36736,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36789,6 +36777,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_children(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36828,6 +36817,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_descendants__SWIG_1(PyObject *self, Py_ssize_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -36895,6 +36885,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_ancestors__SWIG_1(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38207,6 +38198,7 @@ SWIGINTERN PyObject *_wrap_DAG_minimalCondSet__SWIG_0(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38280,6 +38272,7 @@ SWIGINTERN PyObject *_wrap_DAG_minimalCondSet__SWIG_1(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38562,6 +38555,7 @@ SWIGINTERN PyObject *_wrap_DAG_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38602,6 +38596,7 @@ SWIGINTERN PyObject *_wrap_DAG_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38642,6 +38637,7 @@ SWIGINTERN PyObject *_wrap_DAG_children(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38682,6 +38678,7 @@ SWIGINTERN PyObject *_wrap_DAG_descendants(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -38722,6 +38719,7 @@ SWIGINTERN PyObject *_wrap_DAG_ancestors(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40134,6 +40132,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_chainComponent(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40167,6 +40166,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_chainComponents(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40200,6 +40200,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_connectedComponents(PyObject *self, PyObje
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40334,6 +40335,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40374,6 +40376,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40414,6 +40417,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_children(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40454,6 +40458,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_descendants(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40494,6 +40499,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_ancestors(PyObject *self, PyObject *args) 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40527,6 +40533,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_edges(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40567,6 +40574,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_neighbours(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40607,6 +40615,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_boundary(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -40656,6 +40665,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_mixedOrientedPath(PyObject *self, PyObject
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -40709,6 +40719,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_mixedUnorientedPath(PyObject *self, PyObje
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -42635,6 +42646,7 @@ SWIGINTERN PyObject *_wrap_PDAG_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42675,6 +42687,7 @@ SWIGINTERN PyObject *_wrap_PDAG_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42715,6 +42728,7 @@ SWIGINTERN PyObject *_wrap_PDAG_children(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42755,6 +42769,7 @@ SWIGINTERN PyObject *_wrap_PDAG_descendants(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42795,6 +42810,7 @@ SWIGINTERN PyObject *_wrap_PDAG_ancestors(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42828,6 +42844,7 @@ SWIGINTERN PyObject *_wrap_PDAG_edges(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42868,6 +42885,7 @@ SWIGINTERN PyObject *_wrap_PDAG_neighbours(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42908,6 +42926,7 @@ SWIGINTERN PyObject *_wrap_PDAG_boundary(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -42957,6 +42976,7 @@ SWIGINTERN PyObject *_wrap_PDAG_mixedOrientedPath(PyObject *self, PyObject *args
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -43010,6 +43030,7 @@ SWIGINTERN PyObject *_wrap_PDAG_mixedUnorientedPath(PyObject *self, PyObject *ar
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -45416,6 +45437,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphChainGraph_nodes(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -45449,6 +45471,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphChainGraph_edges(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -45787,6 +45810,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphChainGraph_connectedComponents(PyObjec
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -45935,6 +45959,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_arcs(PyObject *self, P
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -45975,6 +46000,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_parents(PyObject *self
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -46015,6 +46041,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_children(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -46055,6 +46082,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_neighbours(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -46562,6 +46590,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphPDAG_nodes(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -46595,6 +46624,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphPDAG_edges(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -46933,6 +46963,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphPDAG_connectedComponents(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -47081,6 +47112,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_arcs(PyObject *self, PyObjec
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -47121,6 +47153,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_parents(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -47161,6 +47194,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_children(PyObject *self, PyO
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -47201,6 +47235,7 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_neighbours(PyObject *self, P
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -48078,6 +48113,7 @@ SWIGINTERN PyObject *_wrap_CPDAG_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -48845,6 +48881,7 @@ SWIGINTERN PyObject *_wrap_MPDAG_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50266,6 +50303,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50306,6 +50344,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_children(PyObject *self, PyObject *args) 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50346,6 +50385,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_spouses(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50386,6 +50426,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_undirectedNeighbours(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50450,6 +50491,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_connectedComponents(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50642,6 +50684,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50894,6 +50937,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_edges(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -50934,6 +50978,7 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_neighbours(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -52177,6 +52222,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphMarkedGraph_nodes(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -52210,6 +52256,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphMarkedGraph_edges(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -52548,6 +52595,7 @@ SWIGINTERN PyObject *_wrap__ImmutableGraphMarkedGraph_connectedComponents(PyObje
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53098,6 +53146,7 @@ SWIGINTERN PyObject *_wrap_MAG_neighbours(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53138,6 +53187,7 @@ SWIGINTERN PyObject *_wrap_MAG_adjacents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53178,6 +53228,7 @@ SWIGINTERN PyObject *_wrap_MAG_parents(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53218,6 +53269,7 @@ SWIGINTERN PyObject *_wrap_MAG_children(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53258,6 +53310,7 @@ SWIGINTERN PyObject *_wrap_MAG_spouses(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53592,6 +53645,7 @@ SWIGINTERN PyObject *_wrap_MAG_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53856,15 +53910,9 @@ SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_0(PyObject *self, Py_
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53898,15 +53946,9 @@ SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_1(PyObject *self, Py_
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -53940,15 +53982,9 @@ SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_2(PyObject *self, Py_
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54050,6 +54086,7 @@ SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_0(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54105,6 +54142,7 @@ SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_1(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54160,6 +54198,7 @@ SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_0(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54215,6 +54254,7 @@ SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_1(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54270,6 +54310,7 @@ SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_0(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -54325,6 +54366,7 @@ SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_1(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55409,15 +55451,9 @@ SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_0(PyObject *self, Py_ss
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55505,6 +55541,7 @@ SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_2(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55560,6 +55597,7 @@ SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_2(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55611,6 +55649,7 @@ SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_0(PyObject *self, Py_ssize_
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -55696,15 +55735,9 @@ SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_1(PyObject *self, Py_ss
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55792,6 +55825,7 @@ SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_3(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55847,6 +55881,7 @@ SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_3(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -55898,6 +55933,7 @@ SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_1(PyObject *self, Py_ssize_
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -55983,15 +56019,9 @@ SWIGINTERN PyObject *_wrap__graph_topologicalOrder__SWIG_2(PyObject *self, Py_ss
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -56171,6 +56201,7 @@ SWIGINTERN PyObject *_wrap__graph_ancestors__SWIG_4(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -56304,6 +56335,7 @@ SWIGINTERN PyObject *_wrap__graph_descendants__SWIG_4(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -56433,6 +56465,7 @@ SWIGINTERN PyObject *_wrap__graph_directedPath__SWIG_2(PyObject *self, Py_ssize_
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -56700,15 +56733,9 @@ SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_0(PyObject *self, Py_ssize_t nobj
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -56742,15 +56769,9 @@ SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_0(PyObject *sel
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -56858,6 +56879,7 @@ SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_0(PyObject *self, Py_ssiz
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -56977,15 +56999,9 @@ SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_1(PyObject *self, Py_ssize_t nobj
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -57019,15 +57035,9 @@ SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_1(PyObject *sel
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -57135,6 +57145,7 @@ SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_1(PyObject *self, Py_ssiz
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -57346,15 +57357,9 @@ SWIGINTERN PyObject *_wrap__graph_lexBFS__SWIG_2(PyObject *self, Py_ssize_t nobj
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -57438,15 +57443,9 @@ SWIGINTERN PyObject *_wrap__graph_maximumCardinalitySearch__SWIG_2(PyObject *sel
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -57650,6 +57649,7 @@ SWIGINTERN PyObject *_wrap__graph_undirectedPath__SWIG_2(PyObject *self, Py_ssiz
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -57787,6 +57787,7 @@ SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_0(PyObject *self, Py_s
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -57846,6 +57847,7 @@ SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_2(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -57929,6 +57931,7 @@ SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_1(PyObject *self, Py_s
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -57988,6 +57991,7 @@ SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_3(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -58117,6 +58121,7 @@ SWIGINTERN PyObject *_wrap__graph_mixedOrientedPath__SWIG_2(PyObject *self, Py_s
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PyListFromNodeVect((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -58226,6 +58231,7 @@ SWIGINTERN PyObject *_wrap__graph_anteriors__SWIG_4(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -59183,6 +59189,7 @@ SWIGINTERN PyObject *_wrap_CliqueGraph_containerPath(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -59737,6 +59744,7 @@ SWIGINTERN PyObject *_wrap_CliqueGraph_clique(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -59785,6 +59793,7 @@ SWIGINTERN PyObject *_wrap_CliqueGraph_separator(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -60192,6 +60201,7 @@ SWIGINTERN PyObject *_wrap_MeekRules_choices(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyListFromArcVect(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -63505,10 +63515,8 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_properties(PyObject *self, PyObject *a
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -63860,10 +63868,8 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_names__SWIG_0(PyObject *self, Py_ssize
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -63916,10 +63922,8 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_names__SWIG_1(PyObject *self, Py_ssize
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64011,6 +64015,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_ids(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyListFromNodeVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64068,6 +64073,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_nodeset(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64098,13 +64104,11 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_0(PyObject *self, Py_s
     }
   }
   {
-    resultobj                  = PySet_New(nullptr);
     const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
-    for (const auto var: _vs) {
-      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
-      PySet_Add(resultobj, pyvar);
-      Py_DECREF(pyvar);
-    }
+    resultobj = PyAgrumHelper::PySetFrom(_vs, [](const gum::DiscreteVariable* var) {
+      return SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64160,13 +64164,11 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_s
     }
   }
   {
-    resultobj                  = PySet_New(nullptr);
     const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
-    for (const auto var: _vs) {
-      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
-      PySet_Add(resultobj, pyvar);
-      Py_DECREF(pyvar);
-    }
+    resultobj = PyAgrumHelper::PySetFrom(_vs, [](const gum::DiscreteVariable* var) {
+      return SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64218,13 +64220,11 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_2(PyObject *self, Py_s
     }
   }
   {
-    resultobj                  = PySet_New(nullptr);
     const gum::VariableSet& _vs = result;   // result may be a SwigValueWrapper
-    for (const auto var: _vs) {
-      PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
-      PySet_Add(resultobj, pyvar);
-      Py_DECREF(pyvar);
-    }
+    resultobj = PyAgrumHelper::PySetFrom(_vs, [](const gum::DiscreteVariable* var) {
+      return SWIG_NewPointerObj(SWIG_as_voidptr(var), SWIGTYPE_p_gum__DiscreteVariable, 0);
+      });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64314,6 +64314,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_nodes(PyObject *self, PyObject *args) 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64885,6 +64886,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_family__SWIG_0(PyObject *self, Py_ssiz
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -64937,6 +64939,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_family__SWIG_1(PyObject *self, Py_ssiz
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -65534,6 +65537,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -65696,6 +65700,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -65906,6 +65911,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_0(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -65958,6 +65964,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_1(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -66016,6 +66023,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_2(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66072,6 +66080,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_3(PyObject *self, Py_ssize_t n
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66190,6 +66199,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_family__SWIG_0(PyObject *self, Py_ssize_t no
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66242,6 +66252,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_family__SWIG_1(PyObject *self, Py_ssize_t no
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -66323,6 +66334,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_0(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66375,6 +66387,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_1(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -66433,6 +66446,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_2(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66489,6 +66503,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_3(PyObject *self, Py_ssize_t 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66607,6 +66622,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_descendants__SWIG_0(PyObject *self, Py_ssize
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66659,6 +66675,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_descendants__SWIG_1(PyObject *self, Py_ssize
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -66740,6 +66757,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_ancestors__SWIG_0(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -66792,6 +66810,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_ancestors__SWIG_1(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -67580,15 +67599,9 @@ SWIGINTERN PyObject *_wrap_DAGmodel_topologicalOrder(PyObject *self, PyObject *a
     }
   }
   {
-    PyObject *q=PyList_New(0);
-    
-    PyObject *pyval;
-    for(auto i : static_cast<gum::Sequence<gum::NodeId>>(result)) {
-      pyval=PyLong_FromLong(i);
-      PyList_Append(q,pyval);
-      Py_DecRef(pyval);
-    }
-    resultobj=q;
+    const gum::Sequence<gum::NodeId>& _seq = result;   // result may be a SwigValueWrapper
+    resultobj = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -67622,6 +67635,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_connectedComponents(PyObject *self, PyObject
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -67723,6 +67737,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_0(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -67796,6 +67811,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_1(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -67873,6 +67889,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_2(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -67960,6 +67977,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_3(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -68381,6 +68399,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -68543,6 +68562,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_edges(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromEdgeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -68753,6 +68773,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_neighbours__SWIG_0(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -68805,6 +68826,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_neighbours__SWIG_1(PyObject *self, Py_ssize_t
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -69450,6 +69472,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_connectedComponents(PyObject *self, PyObject 
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -69489,6 +69512,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_family__SWIG_0(PyObject *self, Py_ssize_t nob
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -69541,6 +69565,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_family__SWIG_1(PyObject *self, Py_ssize_t nob
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -70599,10 +70624,8 @@ SWIGINTERN PyObject *_wrap_ApproximationScheme_history(PyObject *self, PyObject 
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -71475,10 +71498,8 @@ SWIGINTERN PyObject *_wrap_randomDistribution(PyObject *self, PyObject *args) {
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -72430,10 +72451,8 @@ SWIGINTERN PyObject *_wrap_DiscretizedVariable_ticks(PyObject *self, PyObject *a
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -74763,6 +74782,7 @@ SWIGINTERN PyObject *_wrap_Tensor_findAll(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySeqFromSetOfInstantiation(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -81929,6 +81949,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_children__SWIG_0(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -81968,6 +81989,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_parents__SWIG_0(PyObject *self, Py_ssi
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -82020,6 +82042,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_parents__SWIG_1(PyObject *self, Py_ssi
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -82122,6 +82145,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_children__SWIG_1(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -82212,6 +82236,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_descendants(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -82252,6 +82277,7 @@ SWIGINTERN PyObject *_wrap_EssentialGraph_ancestors(PyObject *self, PyObject *ar
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83552,6 +83578,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_descendants__SWIG_0(PyObject *self, Py_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83591,6 +83618,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_ancestors__SWIG_0(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83758,6 +83786,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83791,6 +83820,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromArcSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83831,6 +83861,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_parents(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83871,6 +83902,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_children(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83910,6 +83942,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_descendants__SWIG_1(PyObject *self, Py_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -83977,6 +84010,7 @@ SWIGINTERN PyObject *_wrap_MarkovBlanket_ancestors__SWIG_1(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -85171,10 +85205,8 @@ SWIGINTERN PyObject *_wrap_IBayesNet_check(PyObject *self, PyObject *args) {
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -85844,6 +85876,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -85879,6 +85912,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -86046,6 +86080,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_names(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -86079,6 +86114,7 @@ SWIGINTERN PyObject *_wrap_IBayesNet_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -90443,6 +90479,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_0(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -90478,6 +90515,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_minimalCondSet__SWIG_1(PyObject *self, Py_ss
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -90645,6 +90683,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_names(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -90678,6 +90717,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -94626,6 +94666,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_0(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -94661,6 +94702,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_minimalCondSet__SWIG_1(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -94828,6 +94870,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_names(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -94861,6 +94904,7 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_nodes(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -95533,6 +95577,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_hardEvidenceNodes(PyObject *self, PyO
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -95566,6 +95611,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_softEvidenceNodes(PyObject *self, PyO
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -95599,6 +95645,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_targets(PyObject *self, PyObject *arg
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -95857,6 +95904,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_jointTargets(PyObject *self, PyObject
   }
   {
     resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -99155,6 +99203,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_hardEvidenceNodes(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -99188,6 +99237,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_softEvidenceNodes(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -99221,6 +99271,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_targets(PyObject *self, PyObjec
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -99479,6 +99530,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_jointTargets(PyObject *self, Py
   }
   {
     resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -102663,6 +102715,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_hardEvidenceNodes(PyObject *self,
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -102696,6 +102749,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_softEvidenceNodes(PyObject *self,
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -102729,6 +102783,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_targets(PyObject *self, PyObject 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -102988,6 +103043,7 @@ SWIGINTERN PyObject *_wrap_VariableElimination_jointTargets(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -105690,6 +105746,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_hardEvidenceNodes(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -105723,6 +105780,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_softEvidenceNodes(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -105756,6 +105814,7 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_targets(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -106323,10 +106382,8 @@ SWIGINTERN PyObject *_wrap_GibbsSampling_history(PyObject *self, PyObject *args)
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -109109,6 +109166,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_hardEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -109142,6 +109200,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_softEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -109175,6 +109234,7 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_targets(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -109742,10 +109802,8 @@ SWIGINTERN PyObject *_wrap_ImportanceSampling_history(PyObject *self, PyObject *
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -112392,6 +112450,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_hardEvidenceNodes(PyObject *self, Py
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -112425,6 +112484,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_softEvidenceNodes(PyObject *self, Py
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -112458,6 +112518,7 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_targets(PyObject *self, PyObject *ar
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -113025,10 +113086,8 @@ SWIGINTERN PyObject *_wrap_WeightedSampling_history(PyObject *self, PyObject *ar
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -115675,6 +115734,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_hardEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -115708,6 +115768,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_softEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -115741,6 +115802,7 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_targets(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -116308,10 +116370,8 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_history(PyObject *self, PyObject *
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -119056,6 +119116,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_hardEvidenceNodes(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -119089,6 +119150,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_softEvidenceNodes(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -119122,6 +119184,7 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_targets(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -119689,10 +119752,8 @@ SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_history(PyObject *self, PyObj
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -122437,6 +122498,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_hardEvidenceNodes(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -122470,6 +122532,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_softEvidenceNodes(PyObject *sel
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -122503,6 +122566,7 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_targets(PyObject *self, PyObjec
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -123070,10 +123134,8 @@ SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_history(PyObject *self, PyObjec
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -125818,6 +125880,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_hardEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -125851,6 +125914,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_softEvidenceNodes(PyObject *self, 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -125884,6 +125948,7 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_targets(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -126451,10 +126516,8 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_history(PyObject *self, PyObject *
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -129403,6 +129466,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_hardEvidenceNodes(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -129436,6 +129500,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_softEvidenceNodes(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -129469,6 +129534,7 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_targets(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -130036,10 +130102,8 @@ SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_history(PyObject *self, PyObj
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -132686,6 +132750,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_hardEvidenceNodes(PyObject *se
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -132719,6 +132784,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_softEvidenceNodes(PyObject *se
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -132752,6 +132818,7 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_targets(PyObject *self, PyObje
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -133319,10 +133386,8 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_history(PyObject *self, PyObje
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -136607,10 +136672,8 @@ SWIGINTERN PyObject *_wrap_GibbsBNdistance_history(PyObject *self, PyObject *arg
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -137487,10 +137550,8 @@ SWIGINTERN PyObject *_wrap_MCBNDistance_history(PyObject *self, PyObject *args) 
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -138801,10 +138862,8 @@ SWIGINTERN PyObject *_wrap_BNDatabaseGenerator_varOrderNames(PyObject *self, PyO
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -145469,6 +145528,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_latentVariables(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PyListFromArcVect(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -146065,10 +146125,8 @@ SWIGINTERN PyObject *_wrap_BNLearner_history(PyObject *self, PyObject *args) {
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -146318,10 +146376,8 @@ SWIGINTERN PyObject *_wrap_BNLearner_names(PyObject *self, PyObject *args) {
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString((*result)[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -147939,10 +147995,8 @@ SWIGINTERN PyObject *_wrap_BNLearner_rawPseudoCount__SWIG_0(PyObject *self, Py_s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -147999,10 +148053,8 @@ SWIGINTERN PyObject *_wrap_BNLearner_rawPseudoCount__SWIG_1(PyObject *self, Py_s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -148601,10 +148653,8 @@ SWIGINTERN PyObject *_wrap_BNLearner_EMHistory(PyObject *self, PyObject *args) {
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:

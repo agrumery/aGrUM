@@ -94,69 +94,55 @@ typedef PyObject PyAgrumDict;
   _TupleT _tup  = std::move($1);
   auto* _ci   = new gum::CausalImpact<double>(std::move(std::get<0>(_tup)));
   auto* _tens = new gum::Tensor<double>(std::move(std::get<1>(_tup)));
-  $result = PyTuple_New(3);
-  PyTuple_SET_ITEM($result, 0,
-    SWIG_NewPointerObj(_ci,   $descriptor(gum::CausalImpact<double>*), SWIG_POINTER_OWN));
-  PyTuple_SET_ITEM($result, 1,
-    SWIG_NewPointerObj(_tens, $descriptor(gum::Tensor<double>*),       SWIG_POINTER_OWN));
-  PyTuple_SET_ITEM($result, 2, PyUnicode_FromString(std::get<2>(_tup).c_str()));
+  // "N" takes the references, and Py_BuildValue fails if one of them is nullptr
+  $result = Py_BuildValue("(NNN)",
+    SWIG_NewPointerObj(_ci,   $descriptor(gum::CausalImpact<double>*), SWIG_POINTER_OWN),
+    SWIG_NewPointerObj(_tens, $descriptor(gum::Tensor<double>*),       SWIG_POINTER_OWN),
+    PyAgrumHelper::PyStr(std::get<2>(_tup)));
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) gum::Set<gum::Instantiation> {
   $result = PyAgrumHelper::PySeqFromSetOfInstantiation($1);
+  if (!$result) SWIG_fail;
 }
 
 // (mean, variance) of the influence diagram inferences only: any other pair of doubles stays a tuple
 %typemap(out) std::pair<double,double> MEU, std::pair<double,double> meanVar {
   $result=PyAgrumHelper::PyDictFromPairMeanVar($1) ;
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) const gum::Sequence<gum::NodeId>& {
-  PyObject *q=PyList_New(0);
-
-  PyObject* pyval;
-  for(auto i : *$1) {
-    pyval=PyLong_FromLong(i);
-    PyList_Append(q,pyval);
-    Py_DecRef(pyval);
-  }
-  $result=q;
+  $result = PyAgrumHelper::PyListFrom(*$1, PyAgrumHelper::PyIntFromNodeId);
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) gum::Sequence<gum::NodeId> {
-  PyObject *q=PyList_New(0);
-
-  PyObject *pyval;
-  for(auto i : static_cast<gum::Sequence<gum::NodeId>>($1)) {
-    pyval=PyLong_FromLong(i);
-    PyList_Append(q,pyval);
-    Py_DecRef(pyval);
-  }
-  $result=q;
+  const gum::Sequence<gum::NodeId>& _seq = $1;   // $1 may be a SwigValueWrapper
+  $result = PyAgrumHelper::PyListFrom(_seq, PyAgrumHelper::PyIntFromNodeId);
+  if (!$result) SWIG_fail;
 }
 
 // for gum::IMarkovRandomField::factors
 %typemap(out) const gum::FactorTable<double> & {
-  $result = PyList_New(0);
-
-  PyObject* pyval;
-  for (auto kv : *$1) {
-    pyval=PyAgrumHelper::PySetFromNodeSet(kv.first);
-    PyList_Append($result, pyval);
-    Py_DecRef(pyval);
-  }
+  $result = PyAgrumHelper::PyListFrom(*$1, [](const auto& kv) { return PyAgrumHelper::PySetFromNodeSet(kv.first); });
+  if (!$result) SWIG_fail;
 }
 
 // gum::NodeSet -> Python set[int]
 %typemap(out) gum::NodeSet {
   $result = PyAgrumHelper::PySetFromNodeSet($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const gum::NodeSet& {
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
+  if (!$result) SWIG_fail;
 }
 // gum::NodeGraphPart -> Python set[int]
 %typemap(out) const gum::NodeGraphPart& {
   $result = PyAgrumHelper::PySetFromNodeSet(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // std::optional<gum::NodeId> -> Python int or None
@@ -172,19 +158,18 @@ typedef PyObject PyAgrumDict;
 // gum::VariableSet -> Python set[DiscreteVariable] (DiscreteVariable is hashable: see variables.i)
 // The variables belong to the model: the proxies do not own them (as for variable()).
 %typemap(out) gum::VariableSet {
-  $result                  = PySet_New(nullptr);
   const gum::VariableSet& _vs = $1;   // $1 may be a SwigValueWrapper
-  for (const auto var: _vs) {
-    PyObject* pyvar = SWIG_NewPointerObj(SWIG_as_voidptr(var), $descriptor(gum::DiscreteVariable*), 0);
-    PySet_Add($result, pyvar);
-    Py_DECREF(pyvar);
-  }
+  $result = PyAgrumHelper::PySetFrom(_vs, [](const gum::DiscreteVariable* var) {
+    return SWIG_NewPointerObj(SWIG_as_voidptr(var), $descriptor(gum::DiscreteVariable*), 0);
+  });
+  if (!$result) SWIG_fail;
 }
 
 // std::optional<gum::NodeSet> -> Python set[int] or None
 %typemap(out) std::optional< gum::NodeSet > {
   if ($1.has_value()) {
     $result = PyAgrumHelper::PySetFromNodeSet($1.value());
+    if (!$result) SWIG_fail;
   } else {
     $result = Py_None;
     Py_INCREF(Py_None);
@@ -243,6 +228,7 @@ typedef PyObject PyAgrumDict;
 // gum::Set<gum::NodeSet> (joint targets) -> Python list[set[int]]
 %typemap(out) const gum::Set< gum::NodeSet >& {
   $result = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // gum::DoorCriteria::NodeSetVec, std::vector<gum::NodeSet> -> Python list[set[int]]
@@ -251,34 +237,38 @@ typedef PyObject PyAgrumDict;
 %typemap(out) gum::DoorCriteria::NodeSetVec, std::vector< gum::NodeSet > {
   using _VecT = std::vector< gum::NodeSet >;
   _VecT _vec = std::move($1);
-  $result = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-  Py_ssize_t _i = 0;
-  for (const auto& _ns : _vec)
-    PyList_SET_ITEM($result, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+  $result = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) { return PyAgrumHelper::PySetFromNodeSet(ns); });
+  if (!$result) SWIG_fail;
 }
 
 // gum::ArcSet -> Python set[tuple[int,int]]
 %typemap(out) gum::ArcSet {
   $result = PyAgrumHelper::PySetFromArcSet($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const gum::ArcSet& {
   $result = PyAgrumHelper::PySetFromArcSet(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<gum::Arc> -> Python list[tuple[int,int]]
 %typemap(out) std::vector<gum::Arc> {
   $result = PyAgrumHelper::PyListFromArcVect($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<gum::Arc>& {
   $result = PyAgrumHelper::PyListFromArcVect(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // gum::EdgeSet -> Python set[tuple[int,int]]
 %typemap(out) gum::EdgeSet {
   $result = PyAgrumHelper::PySetFromEdgeSet($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const gum::EdgeSet& {
   $result = PyAgrumHelper::PySetFromEdgeSet(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<int> -> Python tuple[int]
@@ -287,60 +277,44 @@ typedef PyObject PyAgrumDict;
 // Return tuple to match historic swig::from behaviour.
 %typemap(out) std::vector<int> {
   std::vector<int> _v = std::move($1);
-  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyLong_FromLong(_v[_i]));
+  $result = PyAgrumHelper::PyTupleFrom(_v, [](int x) { return PyLong_FromLong(x); });
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<int>& {
-  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyLong_FromLong((*$1)[_i]));
+  $result = PyAgrumHelper::PyTupleFrom(*$1, [](int x) { return PyLong_FromLong(x); });
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<std::pair<gum::Idx,gum::Idx>> -> Python tuple[tuple[int,int]]
 // SWIG resolves gum::Idx -> std::size_t, so the typemap must use std::size_t
 %typemap(out) std::vector< std::pair< std::size_t, std::size_t > > {
   std::vector< std::pair< std::size_t, std::size_t > > _v = std::move($1);
-  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i) {
-    PyObject* _pair = PyTuple_New(2);
-    PyTuple_SET_ITEM(_pair, 0, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].first)));
-    PyTuple_SET_ITEM(_pair, 1, PyLong_FromUnsignedLong(static_cast<unsigned long>(_v[_i].second)));
-    PyTuple_SET_ITEM($result, _i, _pair);
-  }
+  $result = PyAgrumHelper::PyTupleFrom(_v, [](const std::pair< std::size_t, std::size_t >& p) {
+    return Py_BuildValue("(NN)", PyLong_FromSize_t(p.first), PyLong_FromSize_t(p.second));
+  });
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<double> -> Python tuple[float]
 %typemap(out) std::vector<double> {
   std::vector<double> _v = std::move($1);
-  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyFloat_FromDouble(_v[_i]));
+  $result = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<double>& {
-  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyFloat_FromDouble((*$1)[_i]));
+  $result = PyAgrumHelper::PyTupleFrom(*$1, PyFloat_FromDouble);
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<std::string> -> Python tuple[str]
 %typemap(out) std::vector<std::string> {
   std::vector<std::string> _v = std::move($1);
-  Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyUnicode_FromString(_v[_i].c_str()));
+  $result = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<std::string>& {
-  Py_ssize_t _n = static_cast<Py_ssize_t>($1->size());
-  $result = PyTuple_New(_n);
-  for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM($result, _i, PyUnicode_FromString((*$1)[_i].c_str()));
+  $result = PyAgrumHelper::PyTupleFrom(*$1, PyAgrumHelper::PyStr);
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<int> <- Python sequence[int]
@@ -459,32 +433,24 @@ typedef PyObject PyAgrumDict;
 
 // std::unordered_set<std::string> -> Python frozenset[str]
 %typemap(out) const std::unordered_set<std::string>& {
-  PyObject* _s = PyFrozenSet_New(NULL);
-  for (const auto& _e : *$1) {
-    PyObject* _pystr = PyUnicode_FromString(_e.c_str());
-    PySet_Add(_s, _pystr);
-    Py_DECREF(_pystr);
-  }
-  $result = _s;
+  $result = PyAgrumHelper::PyFrozenSetFrom(*$1, PyAgrumHelper::PyStr);
+  if (!$result) SWIG_fail;
 }
 
 // std::set<std::string> -> Python frozenset[str]
 %typemap(out) const std::set<std::string>& {
-  PyObject* _s = PyFrozenSet_New(NULL);
-  for (const auto& _e : *$1) {
-    PyObject* _pystr = PyUnicode_FromString(_e.c_str());
-    PySet_Add(_s, _pystr);
-    Py_DECREF(_pystr);
-  }
-  $result = _s;
+  $result = PyAgrumHelper::PyFrozenSetFrom(*$1, PyAgrumHelper::PyStr);
+  if (!$result) SWIG_fail;
 }
 
 // std::vector<gum::NodeId> -> Python list[int]
 %typemap(out) std::vector<gum::NodeId> {
   $result = PyAgrumHelper::PyListFromNodeVect($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<gum::NodeId>& {
   $result = PyAgrumHelper::PyListFromNodeVect(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // std::optional<std::vector<gum::NodeId>> -> Python list[int] | None
@@ -492,6 +458,7 @@ typedef PyObject PyAgrumDict;
 %typemap(out) std::optional< std::vector< gum::NodeId > > {
   if ($1.has_value()) {
     $result = PyAgrumHelper::PyListFromNodeVect($1.value());
+    if (!$result) SWIG_fail;
   } else {
     $result = Py_None;
     Py_INCREF(Py_None);
@@ -500,6 +467,7 @@ typedef PyObject PyAgrumDict;
 %typemap(out) std::optional< std::vector< gum::NodeId,std::allocator< gum::NodeId > > > {
   if ($1.has_value()) {
     $result = PyAgrumHelper::PyListFromNodeVect($1.value());
+    if (!$result) SWIG_fail;
   } else {
     $result = Py_None;
     Py_INCREF(Py_None);
@@ -509,10 +477,12 @@ typedef PyObject PyAgrumDict;
 // Conversion C++ gum::Set<std::string> vers Python set[str]
 %typemap(out) gum::Set<std::string> {
   $result = PyAgrumHelper::PySetFromStringSet($1);
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) const gum::Set<std::string>& {
   $result = PyAgrumHelper::PySetFromStringSet(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // Conversion Python set[str] vers C++ gum::Set<std::string>
@@ -546,10 +516,12 @@ typedef PyObject PyAgrumDict;
 
 %typemap(out) gum::HashTable<std::string, std::string> {
   $result = PyAgrumHelper::PyDictFromHashTableStrStr($1);
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) const gum::HashTable<std::string, std::string>& {
   $result = PyAgrumHelper::PyDictFromHashTableStrStr(*$1);
+  if (!$result) SWIG_fail;
 }
 
 %typemap(typecheck, precedence=SWIG_TYPECHECK_POINTER) gum::HashTable<std::string, std::string>,
@@ -566,10 +538,12 @@ typedef PyObject PyAgrumDict;
 // Used by connectedComponents() on graph classes.
 %typemap(out) gum::NodeProperty< gum::NodeId > {
   $result = PyAgrumHelper::PyDictFromNodePropertyNodeId($1);
+  if (!$result) SWIG_fail;
 }
 
 %typemap(out) const gum::NodeProperty< gum::NodeId >& {
   $result = PyAgrumHelper::PyDictFromNodePropertyNodeId(*$1);
+  if (!$result) SWIG_fail;
 }
 
 %apply gum::NodeProperty< gum::NodeId >        { NodeProperty< NodeId > };

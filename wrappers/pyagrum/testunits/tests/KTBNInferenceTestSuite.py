@@ -495,6 +495,19 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     self.assertEqual(ie.interfaceSize(), iface)
     self.assertEqual(ie.windowJunctionTree().size(), nbClq)
 
+  def testBatchKeysAndValuesAreChecked(self):
+    m = gum.KTBN(2)
+    m.addTemporal("X", 2)
+    m.addArc("X", 0, "X", 1)
+    m.generateCPTs()
+    ie = gum.KTBNInference(m)
+    for evidence in ({("X", "0"): 0}, {("X", 2**70): 0}, {"X[0]": 2**70}):
+      with self.assertRaises(gum.InvalidArgument):
+        ie.addIntervention(evidence)
+    # no Python error is left pending
+    ie.addIntervention({("X", 0): 1})
+    self.assertTrue(ie.hasIntervention("X", 0))
+
 
 ts = unittest.TestSuite()
 addTests(ts, KTBNInferenceTestCase)

@@ -137,14 +137,14 @@ def exportModel(model: Any, filename: str | None = None, **kwargs) -> Any:
     Model can also just possess a method ``toDot()`` or even be a simple string in dot syntax.
   """
   if filename is None:
-    tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    export(model, tmp.name, **kwargs)
-    img = mpimg.imread(tmp.name)
+    # only the name is needed: the file is closed at once (an open handle forbids its removal on Windows)
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+      tmpname = tmp.name
     try:
-      os.remove(tmp.name)
-    except PermissionError:  # probably windows error : file still 'used' ... grrr...
-      pass
-    return img
+      export(model, tmpname, **kwargs)
+      return mpimg.imread(tmpname)
+    finally:
+      os.remove(tmpname)
 
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ["pdf", "png", "fig", "jpg", "svg", "ps"]:
@@ -429,14 +429,14 @@ def exportInference(model: Any, filename: str | None = None, **kwargs) -> Any:
     the desired representation of the inference
   """
   if filename is None:
-    tmp = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    exportInference(model, tmp.name, **kwargs)
-    img = mpimg.imread(tmp.name)
+    # only the name is needed: the file is closed at once (an open handle forbids its removal on Windows)
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+      tmpname = tmp.name
     try:
-      os.remove(tmp.name)
-    except PermissionError:  # probably windows error : file still 'used' ... grrr...
-      pass
-    return img
+      exportInference(model, tmpname, **kwargs)
+      return mpimg.imread(tmpname)
+    finally:
+      os.remove(tmpname)
 
   fmt_image = filename.split(".")[-1]
   if fmt_image not in ["pdf", "png", "ps"]:

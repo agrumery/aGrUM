@@ -82,10 +82,10 @@ class PRMexplorer {
 
     _reader_.setClassPath(classpath);
 
-    auto nbErr = _reader_.readFile(filename);
+    _reader_.readFile(filename);   // returns the number of errors and warnings
 
     _reader_.showElegantErrorsAndWarnings(stream);
-    if (nbErr > 0) {
+    if (_reader_.errors() > 0) {   // warnings alone do not prevent the loading
       _reader_.showErrorCounts(stream);
       GUM_ERROR(gum::FatalError, stream.str())
     }
@@ -121,6 +121,8 @@ class PRMexplorer {
   }
 
   /************CLASS**************/
+  // Every method returning a Python object returns nullptr, with the Python error set, if it could
+  // not be built (see PyAgrumHelper in helpers.h).
 
   /**
    * @return a list of class names
@@ -128,52 +130,34 @@ class PRMexplorer {
   PyAgrumListOfStr* classes() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* q = PyList_New(0);
-
-    for (auto c: _prm_->classes()) {
-      appendNew_(q, PyUnicode_FromString(c->name().c_str()));
-    }
-
-    return q;
+    return namesOf_(_prm_->classes());
   }
 
   /**
    * @return a list of Tuplet(typename, attribute_name, depenson)
    * @param class_name : the name of the class
-   * @param allAttributes : even automatically generated attributes
    */
-  PyAgrumList* classAttributes(std::string class_name /*, bool allAttributes = false */) {
+  PyAgrumList* classAttributes(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
-
-    PyObject* q = PyList_New(0);
 
     auto&    c   = _prm_->getClass(class_name);
     gum::DAG gra = c.containerDag();
 
+    PyAgrumHelper::PyOwnedRef q(PyList_New(0));
+    if (q.get() == nullptr) return nullptr;
     for (auto a: c.attributes()) {
-      /*if ( allAttributes ) {
-      PyObject* uplet = PyTuple_New(2);
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString( c->type().name().c_str()) );
-      PyTuple_SetItem(uplet, 1, PyUnicode_FromString( c->name().c_str() ));
-      appendNew_( q, uplet);
-    } else*/
-      if (&(c.get(a->name())) == a) {
-        // remove automatically created attributes (cast-descendant)
-        PyObject* uplet = PyTuple_New(3);
-        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(a->name().c_str()));
-
-        PyObject* depenson = PyList_New(0);
-        for (auto parentId: gra.parents(a->id())) {
-          appendNew_(depenson, PyUnicode_FromString(c.get(parentId).name().c_str()));
-        }
-
-        PyTuple_SetItem(uplet, 2, depenson);
-
-        appendNew_(q, uplet);
-      }
+      // remove automatically created attributes (cast-descendant)
+      if (&(c.get(a->name())) != a) continue;
+      PyObject* depenson
+          = PyAgrumHelper::PyListFrom(gra.parents(a->id()), [&c](gum::NodeId parentId) {
+              return PyAgrumHelper::PyStr(c.get(parentId).name());
+            });
+      // "N" takes the reference, and Py_BuildValue fails if it is nullptr
+      PyObject* uplet
+          = Py_BuildValue("(ssN)", a->type().name().c_str(), a->name().c_str(), depenson);
+      if (!PyAgrumHelper::appendStolen(q.get(), uplet)) return nullptr;
     }
-    return q;
+    return q.release();
   }
 
   /**
@@ -195,20 +179,7 @@ class PRMexplorer {
   PyAgrumList* classReferences(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* q = PyList_New(0);
-
-    for (auto r: _prm_->getClass(class_name).referenceSlots()) {
-      PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(r->slotType().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(r->name().c_str()));
-      if (r->isArray()) {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_True));
-      } else {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_False));
-      }
-      appendNew_(q, uplet);
-    }
-    return q;
+    return referencesOf_(_prm_->getClass(class_name).referenceSlots());
   }
 
   /**
@@ -218,12 +189,9 @@ class PRMexplorer {
   PyAgrumListOfStr* classParameters(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* q = PyList_New(0);
-
-    for (auto c: _prm_->getClass(class_name).parameters()) {
-      appendNew_(q, PyUnicode_FromString(c->safeName().c_str()));
-    }
-    return q;
+    return PyAgrumHelper::PyListFrom(_prm_->getClass(class_name).parameters(), [](const auto* c) {
+      return PyAgrumHelper::PyStr(c->safeName());
+    });
   }
 
   /**
@@ -233,16 +201,11 @@ class PRMexplorer {
   PyAgrumListOfStr* classImplements(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
+    auto& c = _prm_->getClass(class_name);
     try {
       // raise NotFound if this class doesn't implement any interface
-      for (auto c: _prm_->getClass(class_name).implements()) {
-        appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-      }
-    } catch (gum::NotFound&) { /*do nothing and return empty list*/
-    }
-    return l;
+      return namesOf_(c.implements());
+    } catch (gum::NotFound&) { return PyList_New(0); }
   }
 
   /**
@@ -253,33 +216,22 @@ class PRMexplorer {
   PyAgrumList* classAggregates(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
-    auto& c = _prm_->getClass(class_name);
-
+    auto&    c   = _prm_->getClass(class_name);
     gum::DAG gra = c.containerDag();
 
-    for (auto a: c.aggregates()) {
-      PyObject* uplet = PyTuple_New(5);
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a->type().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(a->name().c_str()));
-      PyTuple_SetItem(uplet, 2, PyUnicode_FromString(_aggTypeNames_[static_cast< int >(a->agg_type())]));
-      if (a->hasLabel()) {
-        PyTuple_SetItem(uplet, 3, PyUnicode_FromString(a->labelValue().c_str()));
-      } else {
-        PyTuple_SetItem(uplet, 3, Py_NewRef(Py_None));
-      }
-      PyObject* param = PyList_New(0);
-
-      for (auto parentId: gra.parents(a->id())) {
-        appendNew_(param, PyUnicode_FromString(c.get(parentId).name().c_str()));
-      }
-
-      PyTuple_SetItem(uplet, 4, param);
-
-      appendNew_(l, uplet);
-    }
-    return l;
+    return PyAgrumHelper::PyListFrom(c.aggregates(), [&c, &gra](const auto* a) {
+      PyObject* param = PyAgrumHelper::PyListFrom(gra.parents(a->id()), [&c](gum::NodeId parentId) {
+        return PyAgrumHelper::PyStr(c.get(parentId).name());
+      });
+      const std::string label = a->hasLabel() ? a->labelValue() : "";
+      // "z" gives None for a null pointer
+      return Py_BuildValue("(ssszN)",
+                           a->type().name().c_str(),
+                           a->name().c_str(),
+                           _aggTypeNames_[static_cast< int >(a->agg_type())],
+                           a->hasLabel() ? label.c_str() : nullptr,
+                           param);
+    });
   }
 
   /**
@@ -289,31 +241,12 @@ class PRMexplorer {
   PyAgrumList* classSlotChains(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
-    for (auto c: _prm_->getClass(class_name).slotChains()) {
-      PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
-      if (c->isMultiple()) {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_True));
-      } else {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_False));
-      }
-
-
-      /*
-      auto chains = c->chain();
-      PyObject* uplets = PyTuple_New(chains.size()-1);
-      for(unsigned int i =0; i != chains.size(); i++){
-        PyTuple_SetItem(uplets, i, PyUnicode_FromString( chains[i]->name().c_str())
-      );
-      }
-      PyTuple_SetItem(uplet, 3, uplets);
-      */
-      appendNew_(l, uplet);
-    }
-    return l;
+    return PyAgrumHelper::PyListFrom(_prm_->getClass(class_name).slotChains(), [](const auto* c) {
+      return Py_BuildValue("(ssO)",
+                           c->type().name().c_str(),
+                           c->name().c_str(),
+                           c->isMultiple() ? Py_True : Py_False);
+    });
   }
 
   /**
@@ -322,18 +255,13 @@ class PRMexplorer {
   PyObject* classDag(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* uplet = PyTuple_New(2);
-    auto&     c     = _prm_->getClass(class_name);
-    PyObject* d     = PyDict_New();
-    gum::DAG  gra   = c.containerDag();
-    for (auto id: gra.nodes()) {
-      setItemNew_(d,
-                  PyLong_FromUnsignedLong((unsigned long)id),
-                  PyUnicode_FromString(c.get(id).name().c_str()));
-    }
-    PyTuple_SetItem(uplet, 0, d);
-    PyTuple_SetItem(uplet, 1, PyUnicode_FromString(gra.toDot().c_str()));
-    return uplet;
+    auto&     c   = _prm_->getClass(class_name);
+    gum::DAG  gra = c.containerDag();
+    PyObject* d   = PyAgrumHelper::PyDictFrom(
+        gra.nodes(),
+        PyAgrumHelper::PyIntFromNodeId,
+        [&c](gum::NodeId id) { return PyAgrumHelper::PyStr(c.get(id).name()); });
+    return Py_BuildValue("(Ns)", d, gra.toDot().c_str());
   }
 
   /**
@@ -343,43 +271,19 @@ class PRMexplorer {
   PyAgrumList* getalltheSystems() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
-    auto the_systems = _prm_->systems();
-
-    unsigned long var = 0;
-    for (auto a_system: the_systems) {
-      PyObject* uplet = PyTuple_New(3);
-      PyObject* a     = PyList_New(0);
-      PyObject* n     = PyDict_New();
-
-      auto graph = a_system->skeleton();
-
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(a_system->name().c_str()));
-
-      for (auto node: graph.nodes()) {
-        PyObject* tnode = PyTuple_New(2);
-        PyTuple_SetItem(tnode, 0, PyUnicode_FromString(a_system->get(node).name().c_str()));
-        PyTuple_SetItem(tnode, 1, PyUnicode_FromString(a_system->get(node).type().name().c_str()));
-        setItemNew_(n, PyLong_FromUnsignedLong((unsigned long)node), tnode);
-      }
-
-
-      for (auto arc: graph.arcs()) {
-        PyObject* tarc = PyTuple_New(2);
-        PyTuple_SetItem(tarc, 0, PyLong_FromUnsignedLong((unsigned long)arc.tail()));
-        PyTuple_SetItem(tarc, 1, PyLong_FromUnsignedLong((unsigned long)arc.head()));
-        appendNew_(a, tarc);
-      }
-
-      PyTuple_SetItem(uplet, 1, n);
-      PyTuple_SetItem(uplet, 2, a);
-      appendNew_(l, uplet);
-
-      var = var + 1;
-    }
-
-    return l;
+    return PyAgrumHelper::PyListFrom(_prm_->systems(), [](const auto* a_system) {
+      auto      graph = a_system->skeleton();
+      PyObject* n     = PyAgrumHelper::PyDictFrom(graph.nodes(),
+                                                  PyAgrumHelper::PyIntFromNodeId,
+                                                  [a_system](gum::NodeId node) {
+                                                return Py_BuildValue(
+                                                    "(ss)",
+                                                    a_system->get(node).name().c_str(),
+                                                    a_system->get(node).type().name().c_str());
+                                                  });
+      PyObject* a     = PyAgrumHelper::PyListFrom(graph.arcs(), PyAgrumHelper::PyTupleFromArc);
+      return Py_BuildValue("(sNN)", a_system->name().c_str(), n, a);
+    });
   }
 
   /**
@@ -392,7 +296,7 @@ class PRMexplorer {
     auto& c = _prm_->getClass(class_name);
     try {
       // raise NotFound if this class haven't super
-      return PyUnicode_FromString(c.super().name().c_str());
+      return PyAgrumHelper::PyStr(c.super().name());
     } catch (gum::NotFound&) { return Py_NewRef(Py_None); }
   }
 
@@ -403,12 +307,7 @@ class PRMexplorer {
   PyAgrumListOfStr* getDirectSubClass(std::string class_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l     = PyList_New(0);
-    auto&     exten = _prm_->getClass(class_name).extensions();
-    for (auto c: exten) {
-      appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-    }
-    return l;
+    return namesOf_(_prm_->getClass(class_name).extensions());
   }
 
   /**
@@ -429,11 +328,7 @@ class PRMexplorer {
   PyAgrumListOfStr* types() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
-    for (auto c: _prm_->types())
-      appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-    return l;
+    return namesOf_(_prm_->types());
   }
 
   /**
@@ -445,7 +340,7 @@ class PRMexplorer {
 
     auto& c = _prm_->type(type_name);
     if (c.isSubType()) {
-      return PyUnicode_FromString(c.superType()->name().c_str());
+      return PyAgrumHelper::PyStr(c.superType().name());
     } else {
       return Py_NewRef(Py_None);
     }
@@ -458,16 +353,15 @@ class PRMexplorer {
   PyAgrumListOfStr* getDirectSubTypes(std::string type_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l        = PyList_New(0);
-    auto&     selected = _prm_->type(type_name);
+    auto&                     selected = _prm_->type(type_name);
+    PyAgrumHelper::PyOwnedRef l(PyList_New(0));
+    if (l.get() == nullptr) return nullptr;
     for (auto c: _prm_->types()) {
-      if (c->isSubType()) {
-        if (c->superType().name() == selected.name()) {
-          appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-        }
+      if (c->isSubType() && c->superType().name() == selected.name()) {
+        if (!PyAgrumHelper::appendStolen(l.get(), PyAgrumHelper::PyStr(c->name()))) return nullptr;
       }
     }
-    return l;
+    return l.release();
   }
 
   /**
@@ -477,12 +371,7 @@ class PRMexplorer {
   PyAgrumListOfStr* getLabels(std::string type_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l        = PyList_New(0);
-    auto&     selected = _prm_->type(type_name);
-    for (auto lab: selected->labels()) {
-      appendNew_(l, PyUnicode_FromString(lab.c_str()));
-    }
-    return l;
+    return PyAgrumHelper::PyListFrom(_prm_->type(type_name)->labels(), PyAgrumHelper::PyStr);
   }
 
   /**
@@ -494,16 +383,19 @@ class PRMexplorer {
 
     auto& selected = _prm_->type(type_name);
     if (!selected.isSubType()) { return Py_NewRef(Py_None); }
-    PyObject* d                       = PyDict_New();
-    auto      typeLabelVector         = selected.variable().labels();
-    auto      superTypeLabelVector    = selected.superType().variable().labels();
-    auto&     labelMapTypeToSuperType = selected.label_map();
-    for (unsigned i = 0; i != labelMapTypeToSuperType.size(); i++) {
-      setItemNew_(d,
-                  PyUnicode_FromString(typeLabelVector[i].c_str()),
-                  PyUnicode_FromString(superTypeLabelVector[labelMapTypeToSuperType[i]].c_str()));
+    PyAgrumHelper::PyOwnedRef d(PyDict_New());
+    if (d.get() == nullptr) return nullptr;
+    auto  typeLabelVector         = selected.variable().labels();
+    auto  superTypeLabelVector    = selected.superType().variable().labels();
+    auto& labelMapTypeToSuperType = selected.label_map();
+    for (std::size_t i = 0; i != labelMapTypeToSuperType.size(); i++) {
+      if (!PyAgrumHelper::setItemStolen(
+              d.get(),
+              PyAgrumHelper::PyStr(typeLabelVector[i]),
+              PyAgrumHelper::PyStr(superTypeLabelVector[labelMapTypeToSuperType[i]])))
+        return nullptr;
     }
-    return d;
+    return d.release();
   }
 
   /************INTERFACE**************/
@@ -514,11 +406,7 @@ class PRMexplorer {
   PyAgrumListOfStr* interfaces() {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l = PyList_New(0);
-
-    for (auto c: _prm_->interfaces())
-      appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-    return l;
+    return namesOf_(_prm_->interfaces());
   }
 
   /**
@@ -529,24 +417,16 @@ class PRMexplorer {
   PyAgrumList* interAttributes(std::string interface_name, bool allAttributes = false) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* q = PyList_New(0);
-
-    for (auto c: _prm_->getInterface(interface_name).attributes())
-      if (allAttributes) {
-        PyObject* uplet = PyTuple_New(2);
-        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
-        appendNew_(q, uplet);
-      } else if (&(_prm_->getInterface(interface_name).get(c->name())) == c) {
-        // remove automatically created attributes
-        // (cast-descendant)
-        PyObject* uplet = PyTuple_New(2);
-        PyTuple_SetItem(uplet, 0, PyUnicode_FromString(c->type().name().c_str()));
-        PyTuple_SetItem(uplet, 1, PyUnicode_FromString(c->name().c_str()));
-        appendNew_(q, uplet);
-      }
-
-    return q;
+    auto&                     inter = _prm_->getInterface(interface_name);
+    PyAgrumHelper::PyOwnedRef q(PyList_New(0));
+    if (q.get() == nullptr) return nullptr;
+    for (auto c: inter.attributes()) {
+      // remove automatically created attributes (cast-descendant)
+      if (!allAttributes && &(inter.get(c->name())) != c) continue;
+      PyObject* uplet = Py_BuildValue("(ss)", c->type().name().c_str(), c->name().c_str());
+      if (!PyAgrumHelper::appendStolen(q.get(), uplet)) return nullptr;
+    }
+    return q.release();
   }
 
   /**
@@ -557,20 +437,7 @@ class PRMexplorer {
   PyAgrumList* interReferences(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* q = PyList_New(0);
-
-    for (auto r: _prm_->getInterface(interface_name).referenceSlots()) {
-      PyObject* uplet = PyTuple_New(3);
-      PyTuple_SetItem(uplet, 0, PyUnicode_FromString(r->slotType().name().c_str()));
-      PyTuple_SetItem(uplet, 1, PyUnicode_FromString(r->name().c_str()));
-      if (r->isArray()) {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_True));
-      } else {
-        PyTuple_SetItem(uplet, 2, Py_NewRef(Py_False));
-      }
-      appendNew_(q, uplet);
-    }
-    return q;
+    return referencesOf_(_prm_->getInterface(interface_name).referenceSlots());
   }
 
   /**
@@ -583,7 +450,7 @@ class PRMexplorer {
     auto& c = _prm_->getInterface(interface_name);
     try {
       // raise NotFound if this interface haven't super
-      return PyUnicode_FromString(c.super().name().c_str());
+      return PyAgrumHelper::PyStr(c.super().name());
     } catch (gum::NotFound&) { return Py_NewRef(Py_None); }
   }
 
@@ -594,18 +461,17 @@ class PRMexplorer {
   PyAgrumListOfStr* getDirectSubInterfaces(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l        = PyList_New(0);
-    auto&     selected = _prm_->getInterface(interface_name);
+    auto&                     selected = _prm_->getInterface(interface_name);
+    PyAgrumHelper::PyOwnedRef l(PyList_New(0));
+    if (l.get() == nullptr) return nullptr;
     for (auto c: _prm_->interfaces()) {
       try {
         // raise NotFound if this interface haven't super
-        if (c->super().name() == selected.name()) {
-          appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-        }
-      } catch (gum::NotFound&) { /*do nothing, skip this iteration*/
-      }
+        if (c->super().name() != selected.name()) continue;
+      } catch (gum::NotFound&) { continue; }
+      if (!PyAgrumHelper::appendStolen(l.get(), PyAgrumHelper::PyStr(c->name()))) return nullptr;
     }
-    return l;
+    return l.release();
   }
 
   /**
@@ -615,12 +481,7 @@ class PRMexplorer {
   PyAgrumListOfStr* getImplementations(std::string interface_name) {
     if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
 
-    PyObject* l        = PyList_New(0);
-    auto&     selected = _prm_->getInterface(interface_name);
-    for (auto c: selected.implementations()) {
-      appendNew_(l, PyUnicode_FromString(c->name().c_str()));
-    }
-    return l;
+    return namesOf_(_prm_->getInterface(interface_name).implementations());
   }
 
 
@@ -629,16 +490,22 @@ class PRMexplorer {
   static constexpr const char* _aggTypeNames_[]
       = {"min", "max", "count", "exists", "forall", "or", "and", "amplitude", "median", "sum"};
 
-  // PyList_Append and PyDict_SetItem do not steal: these helpers take ownership of new references
-  static void appendNew_(PyObject* list, PyObject* item) {
-    PyList_Append(list, item);
-    Py_DECREF(item);
+  // list of the names of the elements (pointers) of range
+  template < typename RANGE >
+  static PyObject* namesOf_(const RANGE& range) {
+    return PyAgrumHelper::PyListFrom(range,
+                                     [](const auto* e) { return PyAgrumHelper::PyStr(e->name()); });
   }
 
-  static void setItemNew_(PyObject* dict, PyObject* key, PyObject* value) {
-    PyDict_SetItem(dict, key, value);
-    Py_DECREF(key);
-    Py_DECREF(value);
+  // list of (typename, reference_name, isArray) of reference slots
+  template < typename RANGE >
+  static PyObject* referencesOf_(const RANGE& slots) {
+    return PyAgrumHelper::PyListFrom(slots, [](const auto* r) {
+      return Py_BuildValue("(ssO)",
+                           r->slotType().name().c_str(),
+                           r->name().c_str(),
+                           r->isArray() ? Py_True : Py_False);
+    });
   }
 
   gum::prm::PRM< double >* _prm_;   // will contain a reference to reader.prm() if reader is OK

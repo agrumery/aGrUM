@@ -7306,10 +7306,8 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_history(PyObject *self, PyObject
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -7690,10 +7688,8 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_dynamicExpMax(PyObject *self, Py
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
@@ -7740,10 +7736,8 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_dynamicExpMin(PyObject *self, Py
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
@@ -9124,10 +9118,8 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_history(PyObject *self, PyObject *
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9508,10 +9500,8 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_dynamicExpMax(PyObject *self, PyOb
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;
@@ -9558,10 +9548,8 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_dynamicExpMin(PyObject *self, PyOb
     }
   }
   {
-    Py_ssize_t _n = static_cast<Py_ssize_t>(result->size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble((*result)[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(*result, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   if (SWIG_IsNewObj(res2)) delete arg2;
   return resultobj;

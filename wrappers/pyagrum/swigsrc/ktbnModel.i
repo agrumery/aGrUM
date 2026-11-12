@@ -50,10 +50,12 @@
 // can reuse PyTupleFromBaseSlice() for each endpoint.
 %typemap(out) std::vector<std::pair<std::string,int>> {
   $result = PyAgrumHelper::PyTupleFromBaseSliceVector($1);
+  if (!$result) SWIG_fail;
 }
 
 // KTBN::arcs() returns std::vector<std::pair<std::pair<std::string,int>,
 // std::pair<std::string,int>>> by value -- likewise has no generic typemap.
 %typemap(out) std::vector<std::pair<std::pair<std::string,int>,std::pair<std::string,int>>> {
   $result = PyAgrumHelper::PyTupleFromArcVector($1);
+  if (!$result) SWIG_fail;
 }

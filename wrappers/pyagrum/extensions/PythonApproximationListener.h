@@ -49,19 +49,20 @@
 
 class PythonApproximationListener: public gum::ApproximationSchemeListener {
   private:
-  PyObject* _pyWhenProgress_;
-  PyObject* _pyWhenStop_;
+  PyObject* _pyWhenProgress_ = nullptr;
+  PyObject* _pyWhenStop_     = nullptr;
 
   public:
   PythonApproximationListener(gum::IApproximationSchemeConfiguration& algo) :
-      gum::ApproximationSchemeListener(algo) {
-    _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
-  }
+      gum::ApproximationSchemeListener(algo) {}
+
+  // the callbacks are owned references: a copy would release them twice
+  PythonApproximationListener(const PythonApproximationListener&)            = delete;
+  PythonApproximationListener& operator=(const PythonApproximationListener&) = delete;
 
   ~PythonApproximationListener() {
-    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
-
-    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
+    Py_XDECREF(_pyWhenProgress_);
+    Py_XDECREF(_pyWhenStop_);
   }
 
   void whenProgress(const void*     src,

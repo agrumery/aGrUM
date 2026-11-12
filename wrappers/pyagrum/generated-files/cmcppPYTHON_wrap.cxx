@@ -4366,12 +4366,14 @@ SWIG_From_size_t  (size_t value)
 
 SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_8(gum::BayesNet< double > const &bn,PyObject *latents,bool assumeNonSpurious=false){
     auto cm = std::make_unique<gum::CausalModel<double>>(bn);
-    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
+      throw PythonErrorAlreadySet();
     return cm.release();
   }
 SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_10(gum::DAG const &dag,PyObject *latents,bool assumeNonSpurious=false){
     auto cm = std::make_unique<gum::CausalModel<double>>(dag);
-    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious)) return nullptr;
+    if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
+      throw PythonErrorAlreadySet();
     return cm.release();
   }
 SWIGINTERN PyAgrumDict *gum_CausalImpact_Sl_double_Sg__toDict(gum::CausalImpact< double > const *self){
@@ -4548,10 +4550,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_0(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -4640,10 +4642,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_1(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -4724,10 +4726,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_2(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -4800,10 +4802,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_3(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -4855,10 +4857,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_4(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -4918,10 +4920,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateBackdoorSets__SWIG_5(PyObject 
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5084,6 +5086,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstBackdoor__SWIG_0(PyObject *self, Py
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -5168,6 +5171,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstBackdoor__SWIG_1(PyObject *self, Py
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -5244,6 +5248,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstBackdoor__SWIG_2(PyObject *self, Py
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -5299,6 +5304,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstBackdoor__SWIG_3(PyObject *self, Py
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -5509,10 +5515,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_0(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5601,10 +5607,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_1(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5685,10 +5691,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_2(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5761,10 +5767,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_3(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5816,10 +5822,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_4(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5879,10 +5885,10 @@ SWIGINTERN PyObject *_wrap_DoorCriteria__enumerateFrontdoorSets__SWIG_5(PyObject
   {
     using _VecT = std::vector< gum::NodeSet >;
     _VecT _vec = std::move(result);
-    resultobj = PyList_New(static_cast< Py_ssize_t >(_vec.size()));
-    Py_ssize_t _i = 0;
-    for (const auto& _ns : _vec)
-    PyList_SET_ITEM(resultobj, _i++, PyAgrumHelper::PySetFromNodeSet(_ns));
+    resultobj = PyAgrumHelper::PyListFrom(_vec, [](const gum::NodeSet& ns) {
+      return PyAgrumHelper::PySetFromNodeSet(ns); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6045,6 +6051,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstFrontdoor__SWIG_0(PyObject *self, P
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -6129,6 +6136,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstFrontdoor__SWIG_1(PyObject *self, P
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -6205,6 +6213,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstFrontdoor__SWIG_2(PyObject *self, P
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -6260,6 +6269,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_firstFrontdoor__SWIG_3(PyObject *self, P
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -6426,6 +6436,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_nodesOnDirectedPaths(PyObject *self, PyO
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -6473,6 +6484,7 @@ SWIGINTERN PyObject *_wrap_DoorCriteria_backdoorReach(PyObject *self, PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6668,12 +6680,12 @@ SWIGINTERN PyObject *_wrap__causalImpact__SWIG_0(PyObject *self, Py_ssize_t nobj
     _TupleT _tup  = std::move(result);
     auto* _ci   = new gum::CausalImpact<double>(std::move(std::get<0>(_tup)));
     auto* _tens = new gum::Tensor<double>(std::move(std::get<1>(_tup)));
-    resultobj = PyTuple_New(3);
-    PyTuple_SET_ITEM(resultobj, 0,
-      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 1,
-      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 2, PyUnicode_FromString(std::get<2>(_tup).c_str()));
+    // "N" takes the references, and Py_BuildValue fails if one of them is nullptr
+    resultobj = Py_BuildValue("(NNN)",
+      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN),
+      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN),
+      PyAgrumHelper::PyStr(std::get<2>(_tup)));
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6731,12 +6743,12 @@ SWIGINTERN PyObject *_wrap__causalImpact__SWIG_1(PyObject *self, Py_ssize_t nobj
     _TupleT _tup  = std::move(result);
     auto* _ci   = new gum::CausalImpact<double>(std::move(std::get<0>(_tup)));
     auto* _tens = new gum::Tensor<double>(std::move(std::get<1>(_tup)));
-    resultobj = PyTuple_New(3);
-    PyTuple_SET_ITEM(resultobj, 0,
-      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 1,
-      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 2, PyUnicode_FromString(std::get<2>(_tup).c_str()));
+    // "N" takes the references, and Py_BuildValue fails if one of them is nullptr
+    resultobj = Py_BuildValue("(NNN)",
+      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN),
+      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN),
+      PyAgrumHelper::PyStr(std::get<2>(_tup)));
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6788,12 +6800,12 @@ SWIGINTERN PyObject *_wrap__causalImpact__SWIG_2(PyObject *self, Py_ssize_t nobj
     _TupleT _tup  = std::move(result);
     auto* _ci   = new gum::CausalImpact<double>(std::move(std::get<0>(_tup)));
     auto* _tens = new gum::Tensor<double>(std::move(std::get<1>(_tup)));
-    resultobj = PyTuple_New(3);
-    PyTuple_SET_ITEM(resultobj, 0,
-      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 1,
-      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN));
-    PyTuple_SET_ITEM(resultobj, 2, PyUnicode_FromString(std::get<2>(_tup).c_str()));
+    // "N" takes the references, and Py_BuildValue fails if one of them is nullptr
+    resultobj = Py_BuildValue("(NNN)",
+      SWIG_NewPointerObj(_ci,   SWIGTYPE_p_gum__CausalImpactT_double_t, SWIG_POINTER_OWN),
+      SWIG_NewPointerObj(_tens, SWIGTYPE_p_gum__TensorT_double_t,       SWIG_POINTER_OWN),
+      PyAgrumHelper::PyStr(std::get<2>(_tup)));
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8270,6 +8282,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_backDoor__SWIG_0(PyObject *self, Py_ssize
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -8348,6 +8361,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_backDoor__SWIG_1(PyObject *self, Py_ssize
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -8455,6 +8469,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_frontDoor__SWIG_0(PyObject *self, Py_ssiz
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -8533,6 +8548,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_frontDoor__SWIG_1(PyObject *self, Py_ssiz
   {
     if ((&result)->has_value()) {
       resultobj = PyAgrumHelper::PySetFromNodeSet((&result)->value());
+      if (!resultobj) SWIG_fail;
     } else {
       resultobj = Py_None;
       Py_INCREF(Py_None);
@@ -9121,6 +9137,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_names(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9249,6 +9266,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_latentVariablesIds(PyObject *self, PyObje
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9282,6 +9300,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_latentVariablesNames(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9321,6 +9340,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_parents__SWIG_0(PyObject *self, Py_ssize_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9373,6 +9393,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_parents__SWIG_1(PyObject *self, Py_ssize_
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -9454,6 +9475,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_children__SWIG_0(PyObject *self, Py_ssize
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -9506,6 +9528,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_children__SWIG_1(PyObject *self, Py_ssize
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -9581,6 +9604,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_connectedComponents(PyObject *self, PyObj
   }
   {
     resultobj = PyAgrumHelper::PyDictFromNodePropertyNodeId(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10603,6 +10627,7 @@ SWIGINTERN PyObject *_wrap_CausalImpact_on(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10636,6 +10661,7 @@ SWIGINTERN PyObject *_wrap_CausalImpact_doing(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10669,6 +10695,7 @@ SWIGINTERN PyObject *_wrap_CausalImpact_knowing(PyObject *self, PyObject *args) 
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10733,10 +10760,8 @@ SWIGINTERN PyObject *_wrap_CausalImpact_onNames(PyObject *self, PyObject *args) 
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10770,10 +10795,8 @@ SWIGINTERN PyObject *_wrap_CausalImpact_doingNames(PyObject *self, PyObject *arg
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10807,10 +10830,8 @@ SWIGINTERN PyObject *_wrap_CausalImpact_knowingNames(PyObject *self, PyObject *a
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -12558,6 +12579,7 @@ SWIGINTERN PyObject *_wrap_Counterfactual_on(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -12591,6 +12613,7 @@ SWIGINTERN PyObject *_wrap_Counterfactual_whatif(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -12624,6 +12647,7 @@ SWIGINTERN PyObject *_wrap_Counterfactual_profile(PyObject *self, PyObject *args
   }
   {
     resultobj = PyAgrumHelper::PyDictFromHashTableStrStr(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -12657,6 +12681,7 @@ SWIGINTERN PyObject *_wrap_Counterfactual_values(PyObject *self, PyObject *args)
   }
   {
     resultobj = PyAgrumHelper::PyDictFromHashTableStrStr(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:

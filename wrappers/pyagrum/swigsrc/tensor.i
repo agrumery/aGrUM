@@ -142,23 +142,21 @@ if len(args)>1:
   PyAgrumFloat *expectedValue(PyObject* pyfunc) const {
     if (!PyCallable_Check(pyfunc)) { PyErr_SetString(PyExc_TypeError, "Need a callable object!");return NULL; }
 
-    PyObject* args=PyTuple_New(1);
-    double res=self->expectedValue([args,pyfunc](const gum::Instantiation& i) -> double {
-      double val;
-      PyObject* arg=PyAgrumHelper::instantiationToDict(i,false);
-      PyTuple_SetItem(args,0,arg);
-      PyObject* pyres=PyObject_Call(pyfunc,args,NULL);
-      //314 Py_DecRef(arg);                                                                                                        *
-      if (pyres==NULL) {
-        val=0;
-      } else {
-        val=PyFloat_AsDouble(pyres);
-        Py_DecRef(pyres);
+    bool failed = false;   // a Python error is set: the remaining calls are skipped
+    double res=self->expectedValue([&failed,pyfunc](const gum::Instantiation& i) -> double {
+      if (failed) return 0.0;
+      PyAgrumHelper::PyOwnedRef arg(PyAgrumHelper::instantiationToDict(i,false));
+      PyAgrumHelper::PyOwnedRef pyres(arg.get() == nullptr ? nullptr
+                                      : PyObject_CallFunctionObjArgs(pyfunc, arg.get(), nullptr));
+      const double val = (pyres.get() == nullptr) ? -1.0 : PyFloat_AsDouble(pyres.get());
+      if (val == -1.0 && PyErr_Occurred()) {
+        failed = true;
+        return 0.0;
       }
       return val;
       });
 
-    Py_DecRef(args);
+    if (failed) return nullptr;
     return PyFloat_FromDouble(res);
   }
 

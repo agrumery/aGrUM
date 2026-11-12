@@ -45,6 +45,15 @@
 
 
 
+%include "keepModelAlive.i"
+GUM_KEEP_MODEL_ALIVE(gum::BayesNet<double>::variable)
+GUM_KEEP_MODEL_ALIVE(gum::BayesNet<double>::variableFromName)
+GUM_KEEP_MODEL_ALIVE(gum::BayesNetFragment<double>::variable)
+GUM_KEEP_MODEL_ALIVE(gum::BayesNetFragment<double>::variableFromName)
+GUM_KEEP_MODEL_ALIVE(gum::IBayesNet<double>::cpt)
+GUM_KEEP_MODEL_ALIVE(gum::BayesNet<double>::cpt)
+GUM_KEEP_MODEL_ALIVE(gum::BayesNetFragment<double>::cpt)
+
 // macro from graphs.i
 // an %ignore with a signature matches only the parameter types as written in the header (no gum:: qualification)
 %ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*);

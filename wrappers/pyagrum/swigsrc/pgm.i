@@ -52,6 +52,12 @@
 %rename(_variableNodeMap) gum::DiscreteGraphicalModel::variableNodeMap;
 %rename(_variableNodeMap) gum::BayesNetFragment::variableNodeMap;
 
+%include "keepModelAlive.i"
+GUM_KEEP_MODEL_ALIVE(gum::GraphicalModel::variable)
+GUM_KEEP_MODEL_ALIVE(gum::GraphicalModel::variableFromName)
+GUM_KEEP_MODEL_ALIVE(gum::DiscreteGraphicalModel::variable)
+GUM_KEEP_MODEL_ALIVE(gum::DiscreteGraphicalModel::variableFromName)
+
 %pythonappend gum::DAGmodel::dag %{
   from pyagrum import DAG
   val = DAG(val) # copying the DAG

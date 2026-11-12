@@ -1266,6 +1266,19 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       for key in keys:
         self.assertIn(key, doc, f"{name} does not document {key}")
 
+  def testLabelNotInUTF8RaisesUnicodeDecodeError(self):
+    # the labels are read from the CSV file by aGrUM, as bytes: in latin-1, "café" is not valid UTF-8
+    with tempfile.TemporaryDirectory() as tmp:
+      csv_path = os.path.join(tmp, "latin1.csv")
+      with open(csv_path, "wb") as f:
+        f.write("A,B\ncafé,x\nthé,y\ncafé,y\n".encode("latin-1"))
+      bn = gum.BNLearner(csv_path).learnBN()
+    self.assertEqual(bn.names(), {"A", "B"})
+    with self.assertRaises(UnicodeDecodeError):
+      bn.variable("A").labels()
+    # no Python error is left pending
+    self.assertEqual(bn.variable("B").labels(), ("x", "y"))
+
 
 class BNLearnerDocumentationTestCase(pyAgrumTestCase):
   def testEveryPublicMethodIsDocumented(self):

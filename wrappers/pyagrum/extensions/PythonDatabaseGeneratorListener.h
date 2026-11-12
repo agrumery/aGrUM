@@ -48,19 +48,20 @@
 
 class PythonDatabaseGeneratorListener: public gum::ProgressListener {
   private:
-  PyObject* _pyWhenProgress_;
-  PyObject* _pyWhenStop_;
+  PyObject* _pyWhenProgress_ = nullptr;
+  PyObject* _pyWhenStop_     = nullptr;
 
   public:
   explicit PythonDatabaseGeneratorListener(gum::learning::BNDatabaseGenerator< double >& notif) :
-      gum::ProgressListener(notif) {
-    _pyWhenProgress_ = _pyWhenStop_ = (PyObject*)0;
-  }
+      gum::ProgressListener(notif) {}
+
+  // the callbacks are owned references: a copy would release them twice
+  PythonDatabaseGeneratorListener(const PythonDatabaseGeneratorListener&)            = delete;
+  PythonDatabaseGeneratorListener& operator=(const PythonDatabaseGeneratorListener&) = delete;
 
   ~PythonDatabaseGeneratorListener() {
-    if (_pyWhenProgress_) Py_DECREF(_pyWhenProgress_);
-
-    if (_pyWhenStop_) Py_DECREF(_pyWhenStop_);
+    Py_XDECREF(_pyWhenProgress_);
+    Py_XDECREF(_pyWhenStop_);
   }
 
   void whenProgress(const void* src, const gum::Size step, const double duration) {

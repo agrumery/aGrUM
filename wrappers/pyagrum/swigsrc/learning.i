@@ -127,18 +127,22 @@ SETPROP_THEN_RETURN_SELF(setErrorOnExceededMaxIndegree);
       throw PythonErrorAlreadySet();
     }
 
-    for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
-      PyObject* rows = PyList_GetItem(l, i);
+    const Py_ssize_t nbRows = PyList_Size(l);
+    for (Py_ssize_t i = 0; i < nbRows; i++) {
+      PyObject* rows = PyList_GetItem(l, i);   // borrowed
       if (PyList_Check(rows) == 0) {
         PyErr_SetString(PyExc_TypeError,
                         "arg must be a list of lists (of int or string)");
         throw PythonErrorAlreadySet();
       }
 
-      for (Py_ssize_t j = 0; j < PySequence_Size(rows); j++) {
-        PyObject* row = PyList_GetItem(rows, j);
+      const Py_ssize_t nbNodes = PyList_Size(rows);
+      for (Py_ssize_t j = 0; j < nbNodes; j++) {
+        PyObject* row = PyList_GetItem(rows, j);   // borrowed
         if (PyLong_Check(row) != 0) {
-          ranks.insert(PyLong_AsLong(row), i);
+          const long id = PyLong_AsLong(row);
+          if (id == -1 && PyErr_Occurred()) throw PythonErrorAlreadySet();
+          ranks.insert(gum::NodeId(id), i);
           continue;
         }
         std::string n=PyAgrumHelper::stringFromPyObject(row);
@@ -164,13 +168,16 @@ SETPROP_THEN_RETURN_SELF(setErrorOnExceededMaxIndegree);
       throw PythonErrorAlreadySet();
     }
 
-    for (Py_ssize_t i = 0; i < PySequence_Size(l); i++) {
-      PyObject* row = PyList_GetItem(l, i);
+    const Py_ssize_t size = PyList_Size(l);
+    for (Py_ssize_t i = 0; i < size; i++) {
+      PyObject* row = PyList_GetItem(l, i);   // borrowed
       if (PyLong_Check(row) == 0) {
         PyErr_SetString(PyExc_TypeError, "arg must be a list of int");
         throw PythonErrorAlreadySet();
       }
-      v.push_back((gum::NodeId)PyLong_AsLong(row));
+      const long id = PyLong_AsLong(row);
+      if (id == -1 && PyErr_Occurred()) throw PythonErrorAlreadySet();
+      v.push_back(gum::NodeId(id));
     }
 
     $self->useK2(v);
@@ -182,16 +189,12 @@ SETPROP_THEN_RETURN_SELF(setErrorOnExceededMaxIndegree);
   }
 
   PyAgrumDictState* state() {
-    PyObject* res=PyDict_New();
-
-    PyObject* pyval;
-    for(const auto& tuple: self->state()) {
-      pyval=Py_BuildValue("(ss)",std::get<1>(tuple).c_str(),std::get<2>(tuple).c_str());
-      PyDict_SetItemString(res,std::get<0>(tuple).c_str(),pyval);
-      Py_DecRef(pyval);
-    }
-
-    return res;
+    return PyAgrumHelper::PyDictFrom(
+        self->state(),
+        [](const auto& tuple) { return PyAgrumHelper::PyStr(std::get<0>(tuple)); },
+        [](const auto& tuple) {
+          return Py_BuildValue("(ss)", std::get<1>(tuple).c_str(), std::get<2>(tuple).c_str());
+        });
   }
 
   void setPossibleEdges(PyObject * soe) {

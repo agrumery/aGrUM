@@ -250,6 +250,19 @@ class TestCausalModel(pyAgrumTestCase):
     self.assertTrue(cm.existsArc("U", "X"))
     self.assertTrue(cm.existsArc("U", "Y"))
 
+  def test_unreadableLatentsAreRefused(self):
+    class BadSequence:
+      def __getitem__(self, i):
+        return ("U", ["X", "Y"])
+
+      def __len__(self):
+        raise RuntimeError("no length")
+
+    with self.assertRaisesRegex(RuntimeError, "no length"):
+      gum.CausalModel(gum.fastDAG("X->Y"), BadSequence(), False)
+    with self.assertRaises(TypeError):
+      gum.CausalModel(gum.fastDAG("X->Y"), [("U",)], False)
+
   def test_dagOnly_roundTripViaCausalDAG(self):
     dag = gum.fastDAG("A->B->C")
     cm = gum.CausalModel(dag)

@@ -79,8 +79,9 @@ class PythonLoadListener: public gum::Listener {
   ~PythonLoadListener() { Py_XDECREF(_whenLoading_); }
 };
 
-/// fills py_listener with l (a callable or a sequence of callables) and returns the number of listeners
-/// @throw gum::InvalidArgument if a listener is not callable
+/// fills py_listener with l (a callable or a sequence of callables) and returns the number of
+/// listeners
+/// @throw gum::InvalidArgument if a listener is not callable or if the sequence cannot be read
 int _fillLoadListeners_(std::vector< PythonLoadListener >& py_listener, PyObject* l) {
   if (!l || l == Py_None) return 0;
 
@@ -90,9 +91,13 @@ int _fillLoadListeners_(std::vector< PythonLoadListener >& py_listener, PyObject
     return 1;
   }
 
-  const auto l_size = static_cast< int >(PySequence_Size(l));
-  py_listener.resize(l_size);
-  for (int i = 0; i < l_size; i++) {
+  const Py_ssize_t l_size = PySequence_Size(l);
+  if (l_size < 0) {
+    PyErr_Clear();
+    GUM_ERROR(gum::InvalidArgument, "Cannot read the size of the sequence of listeners")
+  }
+  py_listener.resize(static_cast< std::size_t >(l_size));
+  for (Py_ssize_t i = 0; i < l_size; i++) {
     PyObject* item = PySequence_GetItem(l, i);   // new reference
     if (item == nullptr) {
       PyErr_Clear();
@@ -103,5 +108,5 @@ int _fillLoadListeners_(std::vector< PythonLoadListener >& py_listener, PyObject
     Py_DECREF(item);
     if (!callable) GUM_ERROR(gum::InvalidArgument, "The listener #" << i << " is not callable")
   }
-  return l_size;
+  return static_cast< int >(l_size);
 }

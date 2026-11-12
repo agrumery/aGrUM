@@ -49,24 +49,29 @@
 // reference-to-that-type declaration, or vice versa).
 %typemap(out) std::vector<std::pair<std::string,std::string>> {
   $result = PyAgrumHelper::PyTupleFromStrStrVector($1);
+  if (!$result) SWIG_fail;
 }
 %typemap(out) const std::vector<std::pair<std::string,std::string>>& {
   $result = PyAgrumHelper::PyTupleFromStrStrVector(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // KTBNAdaptiveLearner::scorePerCandidateK() returns by const reference.
 %typemap(out) const std::vector<std::pair<gum::Size,double>>& {
   $result = PyAgrumHelper::PyTupleFromSizeDoubleVector(*$1);
+  if (!$result) SWIG_fail;
 }
 
 // KTBNLearner::state()/KTBNAdaptiveLearner::state() return by value.
 %typemap(out) std::vector<std::tuple<std::string,std::string,std::string>> {
   $result = PyAgrumHelper::PyTupleFromStrStrStrVector($1);
+  if (!$result) SWIG_fail;
 }
 
 // KTBNLearner::nbRows() returns by value.
 %typemap(out) std::vector<gum::Size> {
   $result = PyAgrumHelper::PyTupleFromSizeVector($1);
+  if (!$result) SWIG_fail;
 }
 
 // Every setter below returns `*this` by reference (C++ method chaining), but

@@ -4470,12 +4470,9 @@ SWIGINTERN void gum_KTBNInference_Sl_double_Sg__addObservations__SWIG_1(gum::KTB
   }
 SWIGINTERN PyAgrumListOfTensor *gum_KTBNInference_Sl_double_Sg___posteriorsAsList(gum::KTBNInference< double > *self,std::string base){
     const std::vector<gum::Tensor<double>>& v = self->posteriors(base);
-    PyObject* list = PyList_New(v.size());
-    for (std::size_t i = 0; i < v.size(); ++i) {
-      gum::Tensor<double>* copy = new gum::Tensor<double>(v[i]);
-      PyList_SET_ITEM(list, i, SWIG_NewPointerObj(SWIG_as_voidptr(copy), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN));
-    }
-    return (PyAgrumListOfTensor*)list;
+    return PyAgrumHelper::PyListFrom(v, [](const gum::Tensor<double>& t) {
+      return SWIG_NewPointerObj(SWIG_as_voidptr(new gum::Tensor<double>(t)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN);
+    });
   }
 SWIGINTERN std::vector< double,std::allocator< double > > gum_learning_KTBNDatabaseGenerator_Sl_double_Sg__drawSamples__SWIG_8(gum::learning::KTBNDatabaseGenerator< double > *self,PyObject *nbTimeSlices,std::string_view dirPath,std::string_view csvBaseName,gum::learning::KTBNDatabaseGenerator< double >::VarOrderMode mode=gum::learning::KTBNDatabaseGenerator< double >::VarOrderMode::RANDOM,bool useLabels=true,std::string csvSeparator=","){
     std::vector<gum::Size> v;
@@ -6161,13 +6158,8 @@ SWIGINTERN PyObject *_wrap_KTBN_temporalVarNames(PyObject *self, PyObject *args)
     }
   }
   {
-    PyObject* _s = PyFrozenSet_New(NULL);
-    for (const auto& _e : *result) {
-      PyObject* _pystr = PyUnicode_FromString(_e.c_str());
-      PySet_Add(_s, _pystr);
-      Py_DECREF(_pystr);
-    }
-    resultobj = _s;
+    resultobj = PyAgrumHelper::PyFrozenSetFrom(*result, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6200,13 +6192,8 @@ SWIGINTERN PyObject *_wrap_KTBN_atemporalVarNames(PyObject *self, PyObject *args
     }
   }
   {
-    PyObject* _s = PyFrozenSet_New(NULL);
-    for (const auto& _e : *result) {
-      PyObject* _pystr = PyUnicode_FromString(_e.c_str());
-      PySet_Add(_s, _pystr);
-      Py_DECREF(_pystr);
-    }
-    resultobj = _s;
+    resultobj = PyAgrumHelper::PyFrozenSetFrom(*result, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6302,6 +6289,7 @@ SWIGINTERN PyObject *_wrap_KTBN_nodes(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromBaseSliceVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6362,6 +6350,7 @@ SWIGINTERN PyObject *_wrap_KTBN_parents__SWIG_0(PyObject *self, Py_ssize_t nobjs
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromBaseSliceVector(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -6420,6 +6409,7 @@ SWIGINTERN PyObject *_wrap_KTBN_parents__SWIG_1(PyObject *self, Py_ssize_t nobjs
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromBaseSliceVector(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -6514,6 +6504,7 @@ SWIGINTERN PyObject *_wrap_KTBN_children__SWIG_0(PyObject *self, Py_ssize_t nobj
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromBaseSliceVector(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -6572,6 +6563,7 @@ SWIGINTERN PyObject *_wrap_KTBN_children__SWIG_1(PyObject *self, Py_ssize_t nobj
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromBaseSliceVector(result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -7495,6 +7487,7 @@ SWIGINTERN PyObject *_wrap_KTBN_arcs(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromArcVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -12075,10 +12068,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_0(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes4);
@@ -12196,10 +12187,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_1(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes4);
@@ -12309,10 +12298,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_2(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes4);
@@ -12414,10 +12401,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_3(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes4);
@@ -12540,10 +12525,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_4(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -12656,10 +12639,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_5(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -12764,10 +12745,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_6(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -12864,10 +12843,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_7(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -13102,10 +13079,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_8(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -13209,10 +13184,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_9(PyObject *s
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -13308,10 +13281,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_10(PyObject *
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -13399,10 +13370,8 @@ SWIGINTERN PyObject *_wrap_KTBNDatabaseGenerator_drawSamples__SWIG_11(PyObject *
   }
   {
     std::vector<double> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyFloat_FromDouble(_v[_i]));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyFloat_FromDouble);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes3);
@@ -16330,6 +16299,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_latentVariables(PyObject *self, PyObject 
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromStrStrVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -19027,6 +18997,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_nbRows(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromSizeVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -19153,6 +19124,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_state(PyObject *self, PyObject *args) {
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromStrStrStrVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -19350,10 +19322,8 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_names(PyObject *self, PyObject *args) {
   }
   {
     std::vector<std::string> _v = std::move(result);
-    Py_ssize_t _n = static_cast<Py_ssize_t>(_v.size());
-    resultobj = PyTuple_New(_n);
-    for (Py_ssize_t _i = 0; _i < _n; ++_i)
-    PyTuple_SET_ITEM(resultobj, _i, PyUnicode_FromString(_v[_i].c_str()));
+    resultobj = PyAgrumHelper::PyTupleFrom(_v, PyAgrumHelper::PyStr);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -19387,6 +19357,7 @@ SWIGINTERN PyObject *_wrap_KTBNLearner_domainSizes(PyObject *self, PyObject *arg
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromSizeVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -20818,6 +20789,7 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_scorePerCandidateK(PyObject *self
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromSizeDoubleVector(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -20851,6 +20823,7 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_latentVariables(PyObject *self, P
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromStrStrVector(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -21195,6 +21168,7 @@ SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_state(PyObject *self, PyObject *a
   }
   {
     resultobj = PyAgrumHelper::PyTupleFromStrStrStrVector(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:

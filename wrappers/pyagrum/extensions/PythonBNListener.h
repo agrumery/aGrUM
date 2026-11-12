@@ -55,28 +55,26 @@
 
 class PythonBNListener: public gum::DiGraphListener {
   private:
-  PyObject* _pyWhenNodeAdded_;
-  PyObject* _pyWhenNodeDeleted_;
-  PyObject* _pyWhenArcAdded_;
-  PyObject* _pyWhenArcDeleted_;
+  PyObject* _pyWhenNodeAdded_   = nullptr;
+  PyObject* _pyWhenNodeDeleted_ = nullptr;
+  PyObject* _pyWhenArcAdded_    = nullptr;
+  PyObject* _pyWhenArcDeleted_  = nullptr;
 
   const gum::VariableNodeMap* _map_;
 
   public:
   PythonBNListener(const gum::DAGmodel* model, const gum::VariableNodeMap* vnm) :
-      gum::DiGraphListener(&(model->internalDag())), _map_(vnm) {
-    _pyWhenArcAdded_ = _pyWhenArcDeleted_ = (PyObject*)0;
-    _pyWhenNodeAdded_ = _pyWhenNodeDeleted_ = (PyObject*)0;
-  }
+      gum::DiGraphListener(&(model->internalDag())), _map_(vnm) {}
+
+  // the callbacks are owned references: a copy would release them twice
+  PythonBNListener(const PythonBNListener&)            = delete;
+  PythonBNListener& operator=(const PythonBNListener&) = delete;
 
   ~PythonBNListener() {
-    if (_pyWhenArcAdded_) Py_DECREF(_pyWhenArcAdded_);
-
-    if (_pyWhenArcDeleted_) Py_DECREF(_pyWhenArcDeleted_);
-
-    if (_pyWhenNodeAdded_) Py_DECREF(_pyWhenNodeAdded_);
-
-    if (_pyWhenNodeDeleted_) Py_DECREF(_pyWhenNodeDeleted_);
+    Py_XDECREF(_pyWhenArcAdded_);
+    Py_XDECREF(_pyWhenArcDeleted_);
+    Py_XDECREF(_pyWhenNodeAdded_);
+    Py_XDECREF(_pyWhenNodeDeleted_);
   }
 
   virtual void whenNodeAdded(const void* source, gum::NodeId id) {

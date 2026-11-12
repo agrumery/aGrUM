@@ -806,6 +806,19 @@ class TestSaveBN(BayesNetTestCase):
         {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n)}
       )
 
+  def testVariableKeepsTheModelAlive(self):
+    import gc
+
+    # on a temporary model, the variable and the CPT keep the model alive
+    for obj in (
+      gum.fastBN("A[3]->B").variable("A"),
+      gum.fastBN("A[3]->B").variableFromName("A"),
+      gum.fastBN("A[3]->B").variable(0),
+      gum.fastBN("A[3]->B").cpt("A"),
+    ):
+      gc.collect()
+      self.assertEqual(obj.domainSize(), 3)
+
 
 class TestScore(BayesNetTestCase):
   def testSkeletonPrecision(self):

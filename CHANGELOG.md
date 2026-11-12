@@ -245,6 +245,24 @@
     - `BNDatabaseGenerator`, `ExactBNdistance`, `GibbsBNdistance` and `MCBNDistance` did not keep their Bayesian
       networks alive in Python: built on a temporary BN (`BNDatabaseGenerator(fastBN(...))`), `drawSamples` or `compute`
       crashed. They now keep a reference to them, as the inferences do.
+    - The `listeners` argument of `loadBN` and `loadMRF`: a sequence whose length cannot be read raises
+      `InvalidArgument` (a Python error was left pending and the vector of listeners was resized to a huge size).
+    - `loadGraph` and `saveGraph` read the extension of the file name only (a dot in a directory name gave an
+      extension such as `v2/graph` in the error message).
+    - The conversions of C++ results into Python objects check every step: a string which is not valid UTF-8 (e.g. a
+      label read from a latin-1 CSV file) raises `UnicodeDecodeError` (instead of a `SystemError`, or a crash), and no
+      partially built object is returned.
+    - `Tensor.expectedValue` raises the exception of the function (the function is no longer called after it).
+    - Invalid integers given to `BNLearner.setSliceOrder`, `BNLearner.useK2`, the KTBN (base, slice) keys and modality
+      indices, and a malformed `latents` argument of `CausalModel` raise an exception instead of leaving a Python
+      error pending.
+    - `pyagrum.lib.image.export` and `pyagrum.lib.image.exportInference` without file name: the temporary file is
+      closed (`ResourceWarning`) and always removed (it was left on Windows).
+    - `PRMexplorer.load` accepts a file with warnings only (it raised `FatalError`), and `PRMexplorer.getSuperType`
+      returns the name of the super type (it returned the name of an internal variable).
+    - `variable`, `variableFromName`, `cpt` (`BayesNet`, `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`),
+      `utility` (`InfluenceDiagram`) and `factor` (`MarkovRandomField`) keep their model alive: on a temporary model
+      (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).
 
 ## Changelog for 3.3.2
 

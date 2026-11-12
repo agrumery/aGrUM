@@ -45,6 +45,12 @@
 
 
 
+%include "keepModelAlive.i"
+GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::variable)
+GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::variableFromName)
+GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::cpt)
+GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::utility)
+
 %ignore gum::InfluenceDiagram::variableNodeMap;
 %ignore gum::InfluenceDiagram::insertArc;
 %ignore gum::InfluenceDiagram::getPartialTemporalOrder;

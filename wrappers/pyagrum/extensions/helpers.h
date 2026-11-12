@@ -51,6 +51,7 @@
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <cstring>
+#include <iterator>
 
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
@@ -93,8 +94,8 @@ namespace PyAgrumHelper {
                              PyObject*                                 varnames) {
     gum::Set< std::string > names;
     if (PyList_Check(varnames)) {
-      auto siz = PyList_Size(varnames);
-      for (int i = 0; i < siz; i++) {
+      const Py_ssize_t siz = PyList_Size(varnames);
+      for (Py_ssize_t i = 0; i < siz; i++) {
         std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
 
         if (name == "") GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string")
@@ -128,9 +129,125 @@ namespace PyAgrumHelper {
 
     PyObject* get() const { return obj_; }
 
+    /// gives the reference back to the caller
+    PyObject* release() {
+      PyObject* obj = obj_;
+      obj_          = nullptr;
+      return obj;
+    }
+
     private:
     PyObject* obj_;
   };
+
+  // ---- building Python objects -------------------------------------------------
+  // Every function building a Python object returns a new reference, or nullptr with the Python
+  // error set (never a partially filled object).
+  // The *Stolen functions take the reference to the item(s) they add, which may be nullptr when
+  // their creation failed (the Python error is then set). They return false, with the Python error
+  // set, on failure; the items are released in any case.
+
+  inline bool appendStolen(PyObject* list, PyObject* item) {
+    const int err = (item == nullptr) ? -1 : PyList_Append(list, item);
+    Py_XDECREF(item);
+    return err == 0;
+  }
+
+  inline bool addStolen(PyObject* set, PyObject* item) {
+    const int err = (item == nullptr) ? -1 : PySet_Add(set, item);
+    Py_XDECREF(item);
+    return err == 0;
+  }
+
+  inline bool setItemStolen(PyObject* dict, PyObject* key, PyObject* val) {
+    const int err = (key == nullptr || val == nullptr) ? -1 : PyDict_SetItem(dict, key, val);
+    Py_XDECREF(key);
+    Py_XDECREF(val);
+    return err == 0;
+  }
+
+  inline bool setItemStringStolen(PyObject* dict, const char* key, PyObject* val) {
+    const int err = (val == nullptr) ? -1 : PyDict_SetItemString(dict, key, val);
+    Py_XDECREF(val);
+    return err == 0;
+  }
+
+  inline bool setTupleItemStolen(PyObject* tuple, Py_ssize_t i, PyObject* item) {
+    if (item == nullptr) return false;
+    return PyTuple_SetItem(tuple, i, item) == 0;   // steals item, even on failure
+  }
+
+  /// a Python str from a C++ string (nullptr with UnicodeDecodeError if it is not valid UTF-8)
+  inline PyObject* PyStr(const std::string& str) {
+    return PyUnicode_FromStringAndSize(str.data(), static_cast< Py_ssize_t >(str.size()));
+  }
+
+  namespace detail {
+    template < typename RANGE, typename CONV >
+    PyObject* fillCollection(PyObject*    q,
+                             const RANGE& range,
+                             CONV&        conv,
+                             bool (*add)(PyObject*, PyObject*)) {
+      if (q == nullptr) return nullptr;
+      for (const auto& x: range) {
+        if (!add(q, conv(x))) {
+          Py_DECREF(q);
+          return nullptr;
+        }
+      }
+      return q;
+    }
+  }   // namespace detail
+
+  /// list [conv(x) for x in range]; conv returns a new reference or nullptr (Python error set)
+  template < typename RANGE, typename CONV >
+  PyObject* PyListFrom(const RANGE& range, CONV conv) {
+    return detail::fillCollection(PyList_New(0), range, conv, &appendStolen);
+  }
+
+  /// set {conv(x) for x in range}; conv returns a new reference or nullptr (Python error set)
+  template < typename RANGE, typename CONV >
+  PyObject* PySetFrom(const RANGE& range, CONV conv) {
+    return detail::fillCollection(PySet_New(nullptr), range, conv, &addStolen);
+  }
+
+  /// frozenset {conv(x) for x in range}; conv returns a new reference or nullptr (Python error set)
+  template < typename RANGE, typename CONV >
+  PyObject* PyFrozenSetFrom(const RANGE& range, CONV conv) {
+    return detail::fillCollection(PyFrozenSet_New(nullptr), range, conv, &addStolen);
+  }
+
+  /// tuple (conv(x) for x in range); conv returns a new reference or nullptr (Python error set)
+  template < typename RANGE, typename CONV >
+  PyObject* PyTupleFrom(const RANGE& range, CONV conv) {
+    PyObject* q = PyTuple_New(static_cast< Py_ssize_t >(std::size(range)));
+    if (q == nullptr) return nullptr;
+    Py_ssize_t i = 0;
+    for (const auto& x: range) {
+      if (!setTupleItemStolen(q, i++, conv(x))) {
+        Py_DECREF(q);
+        return nullptr;
+      }
+    }
+    return q;
+  }
+
+  /// dict {convKey(x): convVal(x) for x in range}; both return a new reference or nullptr (Python
+  /// error set)
+  template < typename RANGE, typename CONVKEY, typename CONVVAL >
+  PyObject* PyDictFrom(const RANGE& range, CONVKEY convKey, CONVVAL convVal) {
+    PyObject* q = PyDict_New();
+    if (q == nullptr) return nullptr;
+    for (const auto& x: range) {
+      if (!setItemStolen(q, convKey(x), convVal(x))) {
+        Py_DECREF(q);
+        return nullptr;
+      }
+    }
+    return q;
+  }
+
+  inline PyObject* PyIntFromNodeId(gum::NodeId node) { return PyLong_FromSize_t(node); }
 
   void fillEdgeSetFromPyObject(gum::EdgeSet& s, PyObject* sofedge) {
     PyOwnedRef iter(PyObject_GetIter(sofedge));
@@ -157,18 +274,15 @@ namespace PyAgrumHelper {
   // and labels) and vice-versa
 
   PyObject* instantiationToDict(const gum::Instantiation& inst, bool withLabels = true) {
-    auto res = PyDict_New();
+    PyObject* res = PyDict_New();
+    if (res == nullptr) return nullptr;
     for (gum::Idx i = 0; i < inst.nbrDim(); i++) {
-      PyObject* key = PyUnicode_FromString(inst.variable(i).name().c_str());
-      PyObject* val;
-      if (withLabels) {
-        val = PyUnicode_FromString(inst.variable(i).label(inst.val(i)).c_str());
-      } else {
-        val = PyLong_FromSize_t(inst.val(i));
+      PyObject* val = withLabels ? PyStr(inst.variable(i).label(inst.val(i)))
+                                 : PyLong_FromSize_t(inst.val(i));
+      if (!setItemStolen(res, PyStr(inst.variable(i).name()), val)) {
+        Py_DECREF(res);
+        return nullptr;
       }
-      PyDict_SetItem(res, key, val);
-      Py_DecRef(key);
-      Py_DecRef(val);
     }
     return res;
   }
@@ -326,15 +440,10 @@ namespace PyAgrumHelper {
   }
 
   PyObject* PyDictFromHashTableStrStr(const gum::HashTable< std::string, std::string >& hash) {
-    PyObject* q = PyDict_New();
-    for (const auto& [k, v]: hash) {
-      PyObject* pykey = PyUnicode_FromString(k.c_str());
-      PyObject* pyval = PyUnicode_FromString(v.c_str());
-      PyDict_SetItem(q, pykey, pyval);
-      Py_DecRef(pykey);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyDictFrom(
+        hash,
+        [](const auto& kv) { return PyStr(kv.first); },
+        [](const auto& kv) { return PyStr(kv.second); });
   }
 
   void populateNodeSetFromIntOrPySequenceOfInt(gum::NodeSet& nodeset, PyObject* seq) {
@@ -389,117 +498,47 @@ namespace PyAgrumHelper {
   }
 
   PyObject* PyListFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
-    PyObject* q = PyList_New(0);
-
-    PyObject* pyval;
-    for (auto node: nodevect) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PyListFrom(nodevect, PyIntFromNodeId);
   }
 
   PyObject* PyTupleFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
-    PyObject* q = PyTuple_New(nodevect.size());
-
-    int       i = 0;
-    PyObject* pyval;
-    for (auto node: nodevect) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PyTuple_SET_ITEM(q, i, pyval);   // steals the reference
-      i++;
-    }
-
-    return q;
+    return PyTupleFrom(nodevect, PyIntFromNodeId);
   }
 
   PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
-    PyObject* q = PySet_New(0);
-
-    PyObject* pyval;
-    for (auto node: nodeset) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PySetFrom(nodeset, PyIntFromNodeId);
   }
 
   PyObject* PySetFromNodeVect(const std::vector< gum::NodeId >& nodevect) {
-    PyObject* q = PySet_New(0);
-
-    PyObject* pyval;
-    for (auto node: nodevect) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+    return PySetFrom(nodevect, PyIntFromNodeId);
   }
 
   PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
-    PyObject* q = PySet_New(0);
+    return PySetFrom(nodeset, PyIntFromNodeId);
+  }
 
-    PyObject* pyval;
-    for (auto node: nodeset) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)node);
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-
-    return q;
+  inline PyObject* PyTupleFromArc(const gum::Arc& arc) {
+    return Py_BuildValue("(nn)",
+                         static_cast< Py_ssize_t >(arc.tail()),
+                         static_cast< Py_ssize_t >(arc.head()));
   }
 
   PyObject* PyListFromArcVect(const std::vector< gum::Arc >& arcseq) {
-    PyObject* q = PyList_New(0);
-
-    PyObject* pyval;
-    for (const auto& arc: arcseq) {
-      pyval = Py_BuildValue("(i,i)", arc.tail(), arc.head());
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyListFrom(arcseq, PyTupleFromArc);
   }
 
-  PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
-    PyObject* q = PySet_New(0);
-
-    PyObject* pyval;
-    for (const auto& arc: arcset) {
-      pyval = Py_BuildValue("(i,i)", arc.tail(), arc.head());
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
-  }
+  PyObject* PySetFromArcSet(const gum::ArcSet& arcset) { return PySetFrom(arcset, PyTupleFromArc); }
 
   PyObject* PySetFromEdgeSet(const gum::EdgeSet& edgeset) {
-    PyObject* q = PySet_New(0);
-    PyObject* pyval;
-
-    for (const auto& edg: edgeset) {
-      pyval = Py_BuildValue("(i,i)", edg.first(), edg.second());
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PySetFrom(edgeset, [](const gum::Edge& edg) {
+      return Py_BuildValue("(nn)",
+                           static_cast< Py_ssize_t >(edg.first()),
+                           static_cast< Py_ssize_t >(edg.second()));
+    });
   }
 
   PyObject* PySetFromStringSet(const gum::Set< std::string >& strset) {
-    PyObject* q = PySet_New(0);
-    PyObject* pyval;
-
-    for (const auto& str: strset) {
-      pyval = PyUnicode_FromString(str.c_str());
-      PySet_Add(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PySetFrom(strset, PyStr);
   }
 
   void populateStringSetFromPySequence(gum::Set< std::string >& strset, PyObject* seq) {
@@ -511,73 +550,37 @@ namespace PyAgrumHelper {
     }
 
     // seq really is a sequence (set or list)
-    PyObject* iter = PyObject_GetIter(seq);
-    if (iter != NULL) {
-      PyObject* item;
-      while ((item = PyIter_Next(iter))) {
-        const std::string str = stringFromPyObject(item);
-        if (str == "") {
-          Py_DecRef(item);
-          Py_DecRef(iter);
-          GUM_ERROR(gum::InvalidArgument, "An element in the sequence is not a string")
-        }
+    PyOwnedRef iter(PyObject_GetIter(seq));
+    if (iter.get() != NULL) {
+      while (PyObject* next = PyIter_Next(iter.get())) {
+        PyOwnedRef        item(next);
+        const std::string str = stringFromPyObject(item.get());
+        if (str == "") GUM_ERROR(gum::InvalidArgument, "An element in the sequence is not a string")
         strset.insert(str);
-        Py_DecRef(item);
       }
-      Py_DecRef(iter);
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a string, a list nor a set")
     }
   }
 
   PyObject* PyDictFromInstantiation(const gum::Instantiation& inst) {
-    PyObject* q = PyDict_New();
-    PyObject* pyval;
-
-    for (const auto& k: inst.variablesSequence()) {
-      pyval = PyLong_FromUnsignedLong((unsigned long)inst.val(*k));
-      PyDict_SetItemString(q, k->name().c_str(), pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyDictFrom(
+        inst.variablesSequence(),
+        [](const gum::DiscreteVariable* k) { return PyStr(k->name()); },
+        [&inst](const gum::DiscreteVariable* k) { return PyLong_FromSize_t(inst.val(*k)); });
   }
 
   PyObject* PyDictFromPairMeanVar(std::pair< double, double > mv) {
-    PyObject* q = PyDict_New();
-    PyObject* pyval;
-
-    pyval = PyFloat_FromDouble(mv.first);
-    PyDict_SetItemString(q, "mean", pyval);
-    Py_DecRef(pyval);
-
-    pyval = PyFloat_FromDouble(mv.second);
-    PyDict_SetItemString(q, "variance", pyval);
-    Py_DecRef(pyval);
-
-    return q;
+    return Py_BuildValue("{s:d,s:d}", "mean", mv.first, "variance", mv.second);
   }
 
   PyObject* PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
-    PyObject* q = PyList_New(0);
-    PyObject* pyval;
-    for (const auto& inst: soi) {
-      pyval = PyDictFromInstantiation(inst);
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyListFrom(soi, PyDictFromInstantiation);
   }
 
   template < typename T >
   PyObject* PyListOfSetsFromSetOfNodeSets(const T& setOfNodeSets) {
-    PyObject* q = PyList_New(0);
-    PyObject* pyval;
-    for (const auto& ns: setOfNodeSets) {
-      pyval = PySetFromNodeSet(ns);
-      PyList_Append(q, pyval);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyListFrom(setOfNodeSets, [](const gum::NodeSet& ns) { return PySetFromNodeSet(ns); });
   }
 
   // ---- numpy interoperability helpers ----------------------------------------
@@ -664,15 +667,10 @@ namespace PyAgrumHelper {
   // be linkable.
 
   PyObject* PyDictFromNodePropertyNodeId(const gum::NodeProperty< gum::NodeId >& prop) {
-    PyObject* q = PyDict_New();
-    for (const auto& [k, v]: prop) {
-      PyObject* pykey = PyLong_FromSize_t(k);
-      PyObject* pyval = PyLong_FromSize_t(v);
-      PyDict_SetItem(q, pykey, pyval);
-      Py_DecRef(pykey);
-      Py_DecRef(pyval);
-    }
-    return q;
+    return PyDictFrom(
+        prop,
+        [](const auto& kv) { return PyLong_FromSize_t(kv.first); },
+        [](const auto& kv) { return PyLong_FromSize_t(kv.second); });
   }
 
   // nested std::vector< double > (any depth) -> nested Python list of floats.
@@ -681,17 +679,7 @@ namespace PyAgrumHelper {
 
   template < typename T >
   PyObject* PyListFromNestedVector(const std::vector< T >& vec) {
-    PyObject* q = PyList_New(static_cast< Py_ssize_t >(vec.size()));
-    if (q == nullptr) return nullptr;
-    Py_ssize_t i = 0;
-    for (const auto& elt: vec) {
-      PyObject* item = PyListFromNestedVector(elt);
-      if (item == nullptr || PyList_SetItem(q, i++, item) != 0) {   // PyList_SetItem steals item
-        Py_DecRef(q);
-        return nullptr;
-      }
-    }
-    return q;
+    return PyListFrom(vec, [](const T& elt) { return PyListFromNestedVector(elt); });
   }
 
   // nested Python sequences of numbers -> nested std::vector< double > (any depth).
@@ -724,20 +712,10 @@ namespace PyAgrumHelper {
   // Returns nullptr (Python error set) on failure.
   template < typename T >
   PyObject* PyDictFromNodePropertyNestedVector(const gum::NodeProperty< T >& prop) {
-    PyObject* q = PyDict_New();
-    if (q == nullptr) return nullptr;
-    for (const auto& [node, val]: prop) {
-      PyObject* key   = PyLong_FromSize_t(node);
-      PyObject* value = PyListFromNestedVector(val);
-      const int err   = (key == nullptr || value == nullptr) ? -1 : PyDict_SetItem(q, key, value);
-      Py_XDECREF(key);
-      Py_XDECREF(value);
-      if (err != 0) {
-        Py_DecRef(q);
-        return nullptr;
-      }
-    }
-    return q;
+    return PyDictFrom(
+        prop,
+        [](const auto& kv) { return PyLong_FromSize_t(kv.first); },
+        [](const auto& kv) { return PyListFromNestedVector(kv.second); });
   }
 
 }   // namespace PyAgrumHelper

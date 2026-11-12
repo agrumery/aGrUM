@@ -328,6 +328,27 @@ pyagrum.NotFound
     if no variable with this name exists in the model
 "
 
+// DiscreteGraphicalModel declares variableFromName (BayesNet uses it): SWIG looks for its documentation there
+%feature("docstring") gum::DiscreteGraphicalModel::variableFromName
+"
+Return the variable with the given name.
+
+Parameters
+----------
+name : str
+    the name of the variable
+
+Returns
+-------
+pyagrum.DiscreteVariable
+    the variable
+
+Raises
+------
+pyagrum.NotFound
+    if no variable with this name exists in the model
+"
+
 %feature("docstring") gum::GraphicalModel::spaceCplxToString
 "
 Return a human-readable string summarising the space complexity of a graphical model.

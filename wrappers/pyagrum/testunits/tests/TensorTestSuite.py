@@ -1196,6 +1196,28 @@ class TestOperators(pyAgrumTestCase):
     #  pxy=px*py
 
 
+class TestExpectedValue(pyAgrumTestCase):
+  def testExpectedValue(self):
+    p = gum.Tensor().add(gum.RangeVariable("A", "", 0, 3)).fillWith([0.1, 0.2, 0.3, 0.4])
+    self.assertAlmostEqual(p.expectedValue(lambda x: x["A"]), 2.0)
+
+  def testExceptionOfTheFunctionIsRaised(self):
+    p = gum.Tensor().add(gum.RangeVariable("A", "", 0, 3)).fillWith([0.1, 0.2, 0.3, 0.4])
+    calls = []
+
+    def f(x):
+      calls.append(x["A"])
+      raise ValueError("no value")
+
+    with self.assertRaisesRegex(ValueError, "no value"):
+      p.expectedValue(f)
+    self.assertEqual(len(calls), 1)  # the function is not called after its first exception
+    with self.assertRaises(TypeError):
+      p.expectedValue(lambda x: "not a number")
+    # no Python error is left pending
+    self.assertAlmostEqual(p.expectedValue(lambda x: 1.0), 1.0)
+
+
 class TestNumpyInterop(pyAgrumTestCase):
   def setUp(self):
     self.a = gum.LabelizedVariable("a", "", 2)
@@ -1591,6 +1613,7 @@ ts = unittest.TestSuite()
 addTests(ts, TestInsertions)
 addTests(ts, TestIndexs)
 addTests(ts, TestOperators)
+addTests(ts, TestExpectedValue)
 addTests(ts, TestNumpyInterop)
 addTests(ts, TestGetSetItemPaths)
 addTests(ts, TestDisplayConfiguration)

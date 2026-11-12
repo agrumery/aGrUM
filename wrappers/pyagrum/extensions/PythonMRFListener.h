@@ -55,28 +55,26 @@
 
 class PythonMRFListener: public gum::UndiGraphListener {
   private:
-  PyObject* _pyWhenNodeAdded_;
-  PyObject* _pyWhenNodeDeleted_;
-  PyObject* _pyWhenEdgeAdded_;
-  PyObject* _pyWhenEdgeDeleted_;
+  PyObject* _pyWhenNodeAdded_   = nullptr;
+  PyObject* _pyWhenNodeDeleted_ = nullptr;
+  PyObject* _pyWhenEdgeAdded_   = nullptr;
+  PyObject* _pyWhenEdgeDeleted_ = nullptr;
 
   const gum::VariableNodeMap* _map_;
 
   public:
   PythonMRFListener(const gum::UGmodel* model, const gum::VariableNodeMap* vnm) :
-      gum::UndiGraphListener(&(model->internalGraph())), _map_(vnm) {
-    _pyWhenEdgeAdded_ = _pyWhenEdgeDeleted_ = (PyObject*)0;
-    _pyWhenNodeAdded_ = _pyWhenNodeDeleted_ = (PyObject*)0;
-  }
+      gum::UndiGraphListener(&(model->internalGraph())), _map_(vnm) {}
+
+  // the callbacks are owned references: a copy would release them twice
+  PythonMRFListener(const PythonMRFListener&)            = delete;
+  PythonMRFListener& operator=(const PythonMRFListener&) = delete;
 
   ~PythonMRFListener() {
-    if (_pyWhenEdgeAdded_) Py_DECREF(_pyWhenEdgeAdded_);
-
-    if (_pyWhenEdgeDeleted_) Py_DECREF(_pyWhenEdgeDeleted_);
-
-    if (_pyWhenNodeAdded_) Py_DECREF(_pyWhenNodeAdded_);
-
-    if (_pyWhenNodeDeleted_) Py_DECREF(_pyWhenNodeDeleted_);
+    Py_XDECREF(_pyWhenEdgeAdded_);
+    Py_XDECREF(_pyWhenEdgeDeleted_);
+    Py_XDECREF(_pyWhenNodeAdded_);
+    Py_XDECREF(_pyWhenNodeDeleted_);
   }
 
   virtual void whenNodeAdded(const void* source, gum::NodeId id) {

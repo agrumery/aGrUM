@@ -898,6 +898,9 @@ class TestGraph(pyAgrumTestCase):
       for io in (lambda f: gum.saveGraph(cpdag, f), gum.loadGraph):
         with self.assertRaisesRegex(gum.InvalidArgument, "jgum\\|bgum\\|pkl"):
           io(os.path.join(tmp, "graph.txt"))
+        # the extension is the one of the file name, not of a directory
+        with self.assertRaisesRegex(gum.InvalidArgument, "extension '' unknown"):
+          io(os.path.join(tmp, "d.v2", "graph"))
 
   def testEdgeMarkIsTheEnumerationOfAgrum(self):
     self.assertEqual(int(gum.EdgeMark.Circle), gum.EdgeMark_Circle)

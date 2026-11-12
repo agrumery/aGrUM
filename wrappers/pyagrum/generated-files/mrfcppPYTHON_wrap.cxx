@@ -4948,6 +4948,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_smallestFactorFromNode__SWIG_0(PyO
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5000,6 +5001,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_smallestFactorFromNode__SWIG_1(PyO
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   
   SWIG_Py_XDECREF(bytes2);
@@ -5074,14 +5076,10 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_factors(PyObject *self, PyObject *
     }
   }
   {
-    resultobj = PyList_New(0);
-    
-    PyObject* pyval;
-    for (auto kv : *result) {
-      pyval=PyAgrumHelper::PySetFromNodeSet(kv.first);
-      PyList_Append(resultobj, pyval);
-      Py_DecRef(pyval);
-    }
+    resultobj = PyAgrumHelper::PyListFrom(*result, [](const auto& kv) {
+      return PyAgrumHelper::PySetFromNodeSet(kv.first); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5568,6 +5566,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_0(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5641,6 +5640,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_1(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5674,6 +5674,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_names(PyObject *self, PyObject *ar
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5707,6 +5708,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_nodes(PyObject *self, PyObject *ar
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5748,6 +5750,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_2(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -5783,6 +5786,7 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_minimalCondSet__SWIG_3(PyObject *s
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6721,6 +6725,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_smallestFactorFromNode(PyObject *se
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -6753,14 +6758,10 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_factors(PyObject *self, PyObject *a
     }
   }
   {
-    resultobj = PyList_New(0);
-    
-    PyObject* pyval;
-    for (auto kv : *result) {
-      pyval=PyAgrumHelper::PySetFromNodeSet(kv.first);
-      PyList_Append(resultobj, pyval);
-      Py_DecRef(pyval);
-    }
+    resultobj = PyAgrumHelper::PyListFrom(*result, [](const auto& kv) {
+      return PyAgrumHelper::PySetFromNodeSet(kv.first); 
+    });
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8483,6 +8484,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_names(PyObject *self, PyObject *arg
   }
   {
     resultobj = PyAgrumHelper::PySetFromStringSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8516,6 +8518,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_nodes(PyObject *self, PyObject *arg
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8557,6 +8560,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_0(PyObject *se
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -8592,6 +8596,7 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_minimalCondSet__SWIG_1(PyObject *se
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10068,6 +10073,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_hardEvidenceNodes(PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10101,6 +10107,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_softEvidenceNodes(PyObject *
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10134,6 +10141,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_targets(PyObject *self, PyOb
   }
   {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:
@@ -10392,6 +10400,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyMRFInference_jointTargets(PyObject *self,
   }
   {
     resultobj = PyAgrumHelper::PyListOfSetsFromSetOfNodeSets(*result);
+    if (!resultobj) SWIG_fail;
   }
   return resultobj;
 fail:

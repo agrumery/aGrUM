@@ -386,8 +386,6 @@ ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::UndiGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::MixedGraph);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::PDAG);
 ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::MarkedGraph); // and PAG
-// automatically done for subclass
-//ADD_METHOD_TO_GRAPH_ONLY_CLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
@@ -802,11 +800,12 @@ def loadGraph(filename: str):
     if the extension is unknown (see :func:`pyagrum.availableGraphExts`)
   """
   name = str(filename)
-  extension = name.split(".")[-1].upper()
+  suffix = ospath.splitext(name)[1][1:]
+  extension = suffix.upper()
   if extension == "PKL":
     return _gum_pickle_load(name)
   if extension not in ("JGUM", "BGUM"):
-    raise InvalidArgument(f"extension {name.split('.')[-1]} unknown. Please use among {availableGraphExts()}")
+    raise InvalidArgument(f"extension '{suffix}' unknown. Please use among {availableGraphExts()}")
   binary = extension == "BGUM"
   graphType = _graphGUMTypeOfFile(name, binary)
   reader = globals().get("_loadGraphGUM_" + graphType)
@@ -836,13 +835,14 @@ def saveGraph(graph, filename: str) -> None:
     `pyagrum.CliqueGraph` can be pickled)
   """
   name = str(filename)
-  extension = name.split(".")[-1].upper()
+  suffix = ospath.splitext(name)[1][1:]
+  extension = suffix.upper()
   if extension == "PKL":
     _gum_pickle_save(graph, name)
   elif extension in ("JGUM", "BGUM"):
     graph.saveGUM(name, binary=extension == "BGUM")
   else:
-    raise InvalidArgument(f"extension {name.split('.')[-1]} unknown. Please use among {availableGraphExts()}")
+    raise InvalidArgument(f"extension '{suffix}' unknown. Please use among {availableGraphExts()}")
 
 
 def availableGraphExts() -> str:

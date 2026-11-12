@@ -104,12 +104,9 @@
   // ambiguity to preserve on the C++ side, only the Python-visible name).
   PyAgrumListOfTensor* _posteriorsAsList(std::string base) {
     const std::vector<gum::Tensor<double>>& v = self->posteriors(base);
-    PyObject* list = PyList_New(v.size());
-    for (std::size_t i = 0; i < v.size(); ++i) {
-      gum::Tensor<double>* copy = new gum::Tensor<double>(v[i]);
-      PyList_SET_ITEM(list, i, SWIG_NewPointerObj(SWIG_as_voidptr(copy), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN));
-    }
-    return (PyAgrumListOfTensor*)list;
+    return PyAgrumHelper::PyListFrom(v, [](const gum::Tensor<double>& t) {
+      return SWIG_NewPointerObj(SWIG_as_voidptr(new gum::Tensor<double>(t)), SWIGTYPE_p_gum__TensorT_double_t, SWIG_POINTER_OWN);
+    });
   }
 
   %pythoncode {

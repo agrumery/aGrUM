@@ -66,6 +66,22 @@
 
 namespace PyAgrumHelper {
 
+  // the (base, slice) pair of a 2-tuple key (str, int); what names the key in the error messages
+  std::pair< std::string, int > baseSliceFromPyTuple(PyObject* key, const char* what) {
+    const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
+    if (base == "")
+      GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s base must be a str")
+    PyObject* pyslice = PyTuple_GetItem(key, 1);
+    if (!PyLong_Check(pyslice))
+      GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s slice must be an int")
+    const long slice = PyLong_AsLong(pyslice);
+    if (slice == -1 && PyErr_Occurred()) {
+      PyErr_Clear();
+      GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s slice is too large")
+    }
+    return {base, int(slice)};
+  }
+
   // Builds a gum::KTBNModality from a Python int (modality index) or str
   // (modality label) -- the wrapper-side counterpart of KTBNModality's
   // implicit C++ constructors, since KTBNModality itself is never exposed
@@ -73,7 +89,14 @@ namespace PyAgrumHelper {
   gum::KTBNModality ktbnModalityFromPyObject(PyObject* o) {
     const std::string s = stringFromPyObject(o);
     if (s != "") return gum::KTBNModality(s);
-    if (PyLong_Check(o)) return gum::KTBNModality(int(PyLong_AsLong(o)));
+    if (PyLong_Check(o)) {
+      const long index = PyLong_AsLong(o);
+      if (index == -1 && PyErr_Occurred()) {
+        PyErr_Clear();
+        GUM_ERROR(gum::InvalidArgument, "a KTBN modality index is too large")
+      }
+      return gum::KTBNModality(int(index));
+    }
     GUM_ERROR(gum::InvalidArgument, "a KTBN modality value must be an int or a str");
   }
 
@@ -92,11 +115,7 @@ namespace PyAgrumHelper {
     while (PyDict_Next(dict, &pos, &key, &value)) {
       const gum::KTBNModality mod = ktbnModalityFromPyObject(value);
       if (PyTuple_Check(key) && PyTuple_Size(key) == 2) {
-        const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
-        if (base == "")
-          GUM_ERROR(gum::InvalidArgument, "a (base,slice) parent key's base must be a str");
-        const long slice = PyLong_AsLong(PyTuple_GetItem(key, 1));
-        m.insert_or_assign(std::pair< std::string, int >(base, int(slice)), mod);
+        m.insert_or_assign(baseSliceFromPyTuple(key, "parent key"), mod);
       } else {
         const std::string name = stringFromPyObject(key);
         if (name == "")
@@ -123,12 +142,7 @@ namespace PyAgrumHelper {
         GUM_ERROR(gum::InvalidArgument,
                   "a parents key must be a (str,int) tuple when the target node is given as "
                   "(base,slice)");
-      const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
-      if (base == "")
-        GUM_ERROR(gum::InvalidArgument, "a (base,slice) parent key's base must be a str");
-      const long slice = PyLong_AsLong(PyTuple_GetItem(key, 1));
-      m.insert_or_assign(std::pair< std::string, int >(base, int(slice)),
-                         ktbnModalityFromPyObject(value));
+      m.insert_or_assign(baseSliceFromPyTuple(key, "parent key"), ktbnModalityFromPyObject(value));
     }
   }
 
@@ -137,11 +151,7 @@ namespace PyAgrumHelper {
   // batch addIntervention()/addObservation() dispatchers below.
   gum::KTBNInference< double >::NodeKey nodeKeyFromPyObject(PyObject* key) {
     if (PyTuple_Check(key) && PyTuple_Size(key) == 2) {
-      const std::string base = stringFromPyObject(PyTuple_GetItem(key, 0));
-      if (base == "")
-        GUM_ERROR(gum::InvalidArgument, "a (base,slice) node key's base must be a str");
-      const long slice = PyLong_AsLong(PyTuple_GetItem(key, 1));
-      return std::pair< std::string, int >(base, int(slice));
+      return baseSliceFromPyTuple(key, "node key");
     }
     const std::string name = stringFromPyObject(key);
     if (name == "")
@@ -168,93 +178,57 @@ namespace PyAgrumHelper {
   // vectors have no generic SWIG typemap (unlike vector<double>/<string>),
   // so KTBN's own %typemap(out) blocks (in swigsrc/ktbn.i and
   // swigsrc/ktbnLearner.i) delegate to these. All return a new Python tuple
-  // reference, mirroring gum_typemaps.i's vector<double>/<string> style.
+  // reference (nullptr with the Python error set on failure), as gum_typemaps.i does.
   // ---------------------------------------------------------------------
 
   // (base,slice) -> Python (str,int) tuple.
   PyObject* PyTupleFromBaseSlice(const std::pair< std::string, int >& p) {
-    PyObject* t = PyTuple_New(2);
-    PyTuple_SET_ITEM(t, 0, PyUnicode_FromString(p.first.c_str()));
-    PyTuple_SET_ITEM(t, 1, PyLong_FromLong(p.second));
-    return t;
+    return Py_BuildValue("(si)", p.first.c_str(), p.second);
   }
 
   // KTBN::nodes()/parents()/children() -> tuple[tuple[str,int], ...]
   PyObject* PyTupleFromBaseSliceVector(const std::vector< std::pair< std::string, int > >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i)
-      PyTuple_SET_ITEM(t, i, PyTupleFromBaseSlice(v[std::size_t(i)]));
-    return t;
+    return PyTupleFrom(v, PyTupleFromBaseSlice);
   }
 
   // KTBN::arcs() -> tuple[tuple[tuple[str,int], tuple[str,int]], ...]
   PyObject* PyTupleFromArcVector(
       const std::vector<
           std::pair< std::pair< std::string, int >, std::pair< std::string, int > > >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      const auto& a   = v[std::size_t(i)];
-      PyObject*   arc = PyTuple_New(2);
-      PyTuple_SET_ITEM(arc, 0, PyTupleFromBaseSlice(a.first));
-      PyTuple_SET_ITEM(arc, 1, PyTupleFromBaseSlice(a.second));
-      PyTuple_SET_ITEM(t, i, arc);
-    }
-    return t;
+    return PyTupleFrom(v, [](const auto& a) {
+      // "N" takes the references, and Py_BuildValue fails if one of them is nullptr
+      return Py_BuildValue("(NN)", PyTupleFromBaseSlice(a.first), PyTupleFromBaseSlice(a.second));
+    });
   }
 
   // KTBNLearner/KTBNAdaptiveLearner::latentVariables() -> tuple[tuple[str,str], ...]
   PyObject* PyTupleFromStrStrVector(const std::vector< std::pair< std::string, std::string > >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      const auto& p = v[std::size_t(i)];
-      PyObject*   e = PyTuple_New(2);
-      PyTuple_SET_ITEM(e, 0, PyUnicode_FromString(p.first.c_str()));
-      PyTuple_SET_ITEM(e, 1, PyUnicode_FromString(p.second.c_str()));
-      PyTuple_SET_ITEM(t, i, e);
-    }
-    return t;
+    return PyTupleFrom(v, [](const auto& p) {
+      return Py_BuildValue("(ss)", p.first.c_str(), p.second.c_str());
+    });
   }
 
   // KTBNAdaptiveLearner::scorePerCandidateK() -> tuple[tuple[int,float], ...]
   PyObject* PyTupleFromSizeDoubleVector(const std::vector< std::pair< gum::Size, double > >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      const auto& p = v[std::size_t(i)];
-      PyObject*   e = PyTuple_New(2);
-      PyTuple_SET_ITEM(e, 0, PyLong_FromUnsignedLong((unsigned long)p.first));
-      PyTuple_SET_ITEM(e, 1, PyFloat_FromDouble(p.second));
-      PyTuple_SET_ITEM(t, i, e);
-    }
-    return t;
+    return PyTupleFrom(v, [](const auto& p) {
+      return Py_BuildValue("(nd)", static_cast< Py_ssize_t >(p.first), p.second);
+    });
   }
 
   // KTBNLearner/KTBNAdaptiveLearner::state() -> tuple[tuple[str,str,str], ...]
   PyObject* PyTupleFromStrStrStrVector(
       const std::vector< std::tuple< std::string, std::string, std::string > >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i) {
-      const auto& e3 = v[std::size_t(i)];
-      PyObject*   e  = PyTuple_New(3);
-      PyTuple_SET_ITEM(e, 0, PyUnicode_FromString(std::get< 0 >(e3).c_str()));
-      PyTuple_SET_ITEM(e, 1, PyUnicode_FromString(std::get< 1 >(e3).c_str()));
-      PyTuple_SET_ITEM(e, 2, PyUnicode_FromString(std::get< 2 >(e3).c_str()));
-      PyTuple_SET_ITEM(t, i, e);
-    }
-    return t;
+    return PyTupleFrom(v, [](const auto& e3) {
+      return Py_BuildValue("(sss)",
+                           std::get< 0 >(e3).c_str(),
+                           std::get< 1 >(e3).c_str(),
+                           std::get< 2 >(e3).c_str());
+    });
   }
 
   // KTBNLearner::nbRows() -> tuple[int, ...]
   PyObject* PyTupleFromSizeVector(const std::vector< gum::Size >& v) {
-    const Py_ssize_t n = static_cast< Py_ssize_t >(v.size());
-    PyObject*        t = PyTuple_New(n);
-    for (Py_ssize_t i = 0; i < n; ++i)
-      PyTuple_SET_ITEM(t, i, PyLong_FromUnsignedLong((unsigned long)v[std::size_t(i)]));
-    return t;
+    return PyTupleFrom(v, [](gum::Size n) { return PyLong_FromSize_t(n); });
   }
 
 }   // namespace PyAgrumHelper

@@ -253,6 +253,19 @@ class TestListenerCallbacks(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=42)
 
+  def testUnreadableSequenceOfLoadListenersIsRefused(self):
+    class BadSequence:
+      def __getitem__(self, i):
+        return print
+
+      def __len__(self):
+        raise RuntimeError("no length")
+
+    with self.assertRaises(gum.InvalidArgument):
+      gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=BadSequence())
+    # no Python error is left pending
+    gum.loadBN(self.agrumSrcDir("alarm.bif"), listeners=[])
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestMessagesSetting)

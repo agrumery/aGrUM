@@ -51,10 +51,7 @@
     std::vector< gum::Idx > permutation(n);
     std::iota(permutation.begin(), permutation.end(), gum::Idx(0));
     gum::randomShuffle(permutation.begin(), permutation.end());
-    PyObject* list = PyList_New(static_cast< Py_ssize_t >(n));
-    for (gum::Size i = 0; i < n; ++i)
-      PyList_SetItem(list, static_cast< Py_ssize_t >(i), PyLong_FromSize_t(permutation[i]));
-    return list;
+    return PyAgrumHelper::PyListFrom(permutation, [](gum::Idx i) { return PyLong_FromSize_t(i); });
   }
 %}
 

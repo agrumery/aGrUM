@@ -45,6 +45,12 @@
 
 
 
+%include "keepModelAlive.i"
+GUM_KEEP_MODEL_ALIVE(gum::IMarkovRandomField<double>::factor)
+GUM_KEEP_MODEL_ALIVE(gum::MarkovRandomField<double>::factor)
+GUM_KEEP_MODEL_ALIVE(gum::MarkovRandomField<double>::variable)
+GUM_KEEP_MODEL_ALIVE(gum::MarkovRandomField<double>::variableFromName)
+
 %define IMPROVE_MARKOVNET_API(classname)
 IMPROVE_UNDIRECTED_GRAPHICAL_MODEL_API(classname)
 
