@@ -42,8 +42,8 @@
 #pragma once
 
 #include <fstream>
+#include <iterator>
 #include <optional>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -224,27 +224,43 @@ namespace gum_tests {
       CHECK_THROWS_AS(gum::graphFromGUMString< gum::DiGraph >(content), gum::IOError&);
   }
 
-  GUM_TEST(BinaryVectorIsLittleEndianWhateverTheHost) {
-    std::ostringstream os;
-    gum::_writeVector_(os, std::vector< uint8_t >{7, 8, 9});
-    CHECK_EQ(os.str(), std::string("\x03\0\0\0\0\0\0\0\x07\x08\x09", 11));
-
-    std::istringstream is(os.str());
-    CHECK_EQ(gum::_readVector_(is), std::vector< uint8_t >{7, 8, 9});
+  GUM_TEST(BinaryLengthIsLittleEndianWhateverTheHost) {
+    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    gum::saveGraphGUM(gum::fastGraph< gum::DAG >("A->B->C"), path);
+    std::ifstream     input(path, std::ios::binary);
+    const std::string bytes{std::istreambuf_iterator< char >(input),
+                            std::istreambuf_iterator< char >()};
+    REQUIRE_GT(bytes.size(), std::size_t(8));
+    uint64_t length = 0;
+    for (std::size_t i = 0; i < 8; ++i)
+      length |= static_cast< uint64_t >(static_cast< unsigned char >(bytes[i])) << (8 * i);
+    CHECK_EQ(length, bytes.size() - 8);
   }
 
-  GUM_TEST(BinaryVectorRefusesDataAfterThePayload) {
-    std::ostringstream os;
-    gum::_writeVector_(os, std::vector< uint8_t >{7, 8, 9});
-    std::istringstream is(os.str() + "x");
-    CHECK_THROWS_AS(gum::_readVector_(is), std::runtime_error&);
+  GUM_TEST(BinaryFileRefusesDataAfterThePayload) {
+    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    gum::saveGraphGUM(gum::fastGraph< gum::DAG >("A->B->C"), path);
+    {
+      std::ofstream output(path, std::ios::binary | std::ios::app);
+      output << 'x';
+    }
+    CHECK_THROWS_AS(gum::loadGraphGUM< gum::DAG >(path), gum::IOError&);
   }
 
-  GUM_TEST(BinaryVectorEmptyPayload) {
-    std::ostringstream os;
-    gum::_writeVector_(os, std::vector< uint8_t >{});
-    std::istringstream is(os.str());
-    CHECK(gum::_readVector_(is).empty());
+  GUM_TEST(BinaryFileRefusesAWrongLength) {
+    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    // a truncated length field (4 bytes instead of 8), a length far above the size of the file,
+    // a length above the size of the payload (truncated data)
+    const std::string contents[] = {std::string(4, '\0'),
+                                    std::string(8, '\xFF'),
+                                    std::string("\x64\0\0\0\0\0\0\0", 8) + std::string(10, 'x')};
+    for (const auto& content: contents) {
+      {
+        std::ofstream output(path, std::ios::binary);
+        output << content;
+      }
+      CHECK_THROWS_AS(gum::loadGraphGUM< gum::DAG >(path), gum::IOError&);
+    }
   }
 
   GUM_TEST(FormatOfTheFile) {

@@ -235,6 +235,22 @@ namespace gum_tests {
     CHECK(gum::graph::hasDirectedCycle(d));
   }
 
+  GUM_TEST(cSeparationOfObservedNodes) {
+    // 0-1->2<-3: an observed node is separated from any node, in X as in Y
+    gum::ChainGraph p;
+    p.addNodes(4);
+    p.addEdge(0, 1);
+    p.addArc(1, 2);
+    p.addArc(3, 2);
+    CHECK(p.cSeparation(0, 1, gum::NodeSet{0}));
+    CHECK(p.cSeparation(0, 1, gum::NodeSet{1}));
+    CHECK(p.cSeparation(2, 3, gum::NodeSet{2}));
+    // X and Y must be different, as the sets X and Y must be disjoint
+    CHECK_THROWS_AS(p.cSeparation(0, 0, gum::NodeSet()), gum::InvalidArgument&);
+    CHECK_THROWS_AS(p.cSeparation(gum::NodeSet{0}, gum::NodeSet{0}, gum::NodeSet()),
+                    gum::InvalidArgument&);
+  }
+
   GUM_TEST(cSeparationFromKennethLee) {
     {
       gum::ChainGraph p;

@@ -42,6 +42,8 @@
 
 
 #include <fstream>
+#include <limits>
+#include <memory>
 
 #include <agrum/PRM/generator/clusteredLayerGenerator.h>
 #include <agrum/PRM/generator/layerGenerator.h>
@@ -150,6 +152,38 @@ namespace gum_tests {
     if (prm) delete prm;
 
     if (gen) { GUM_CHECK_ASSERT_THROWS_NOTHING(delete gen); }
+  }
+
+  GUM_TEST(ClusterRatio) {
+    gum::prm::ClusteredLayerGenerator< double > gen;
+    CHECK_EQ(gen.getClusterRatio(), 1.0);
+    CHECK_THROWS_AS(gen.setClusterRatio(-0.1), gum::OutOfBounds&);
+    CHECK_THROWS_AS(gen.setClusterRatio(1.1), gum::OutOfBounds&);
+    CHECK_THROWS_AS(gen.setClusterRatio(std::numeric_limits< double >::quiet_NaN()),
+                    gum::OutOfBounds&);
+    gen.setClusterRatio(0.5);
+    const gum::prm::ClusteredLayerGenerator< double > copy(gen);
+    CHECK_EQ(copy.getClusterRatio(), 0.5);
+    gum::prm::ClusteredLayerGenerator< double > assigned;
+    assigned = gen;
+    CHECK_EQ(assigned.getClusterRatio(), 0.5);
+
+    gen.setDomainSize(2);
+    gen.setMaxParents(3);
+    std::vector< gum::prm::LayerGenerator< double >::LayerData > v;
+    generateLayerLayer(v, 10);   // one class by layer
+    gen.setLayers(v);
+
+    // no cluster: one class by layer
+    gen.setClusterRatio(0.0);
+    auto prm = std::unique_ptr< gum::prm::PRM< double > >(gen.generate());
+    CHECK_EQ(prm->classes().size(), gum::Size(10));
+
+    // only clusters: each class comes with one or two classes referencing it
+    gen.setClusterRatio(1.0);
+    prm.reset(gen.generate());
+    CHECK_GE(prm->classes().size(), gum::Size(20));
+    CHECK_LE(prm->classes().size(), gum::Size(30));
   }
 
   GUM_TEST(ClusterGenerator) {

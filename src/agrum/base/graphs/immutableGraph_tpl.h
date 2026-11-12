@@ -159,17 +159,20 @@ namespace gum {
 
   template < typename GRAPH >
   UndiGraph ImmutableGraph< GRAPH >::skeleton() const {
-    UndiGraph skeleton;
-    for (const auto node: graph_.nodes()) {
-      skeleton.addNodeWithId(node);
-      if (graph_.hasName(node)) skeleton.setName(node, graph_.nameFromId(node));
-    }
-    for (const auto& edge: graph_.edges())
-      skeleton.addEdge(edge.first(), edge.second());
-    if constexpr (requires { graph_.arcs(); })
+    if constexpr (requires { graph_.skeleton(); }) {   // MarkedGraph
+      return graph_.skeleton();
+    } else {   // the mixed graphs: their edges and their arcs
+      UndiGraph skeleton;
+      for (const auto node: graph_.nodes()) {
+        skeleton.addNodeWithId(node);
+        if (graph_.hasName(node)) skeleton.setName(node, graph_.nameFromId(node));
+      }
+      for (const auto& edge: graph_.edges())
+        skeleton.addEdge(edge.first(), edge.second());
       for (const auto& arc: graph_.arcs())
         skeleton.addEdge(arc.tail(), arc.head());
-    return skeleton;
+      return skeleton;
+    }
   }
 
   template < typename GRAPH >

@@ -45,6 +45,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <utility>
+
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/graphs/mixedGraph.h>
 #include <agrum/BN/learning/ConstraintBasedLearning.h>
@@ -153,16 +155,17 @@ namespace gum {
     // ##########################################################################
 
     PDAG ConstraintBasedLearning::learnPDAG(MixedGraph graph) {
-      return meekRules_.propagateToCPDAG(learnMixedStructure(graph));
+      return meekRules_.propagateToCPDAG(learnMixedStructure(std::move(graph)));
     }
 
     DAG ConstraintBasedLearning::learnDAG(MixedGraph graph) {
-      return checkMaxIndegree_(meekRules_.propagateToDAG(learnMixedStructure(graph)));
+      return checkMaxIndegree_(meekRules_.propagateToDAG(learnMixedStructure(std::move(graph))));
     }
 
     DAG ConstraintBasedLearning::learnDAG(MixedGraph                  graph,
                                           const NodeProperty< Size >& domainSizes) {
-      return checkMaxIndegree_(meekRules_.propagateToDAG(learnMixedStructure(graph), domainSizes));
+      return checkMaxIndegree_(
+          meekRules_.propagateToDAG(learnMixedStructure(std::move(graph)), domainSizes));
     }
 
     // ##########################################################################

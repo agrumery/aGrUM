@@ -88,7 +88,8 @@ namespace gum::graph {
    * @param g the graph.
    * @param first a clique of @p g, whose nodes are visited first and in this order (always a valid
    * LexBFS: the label of the next node of a clique is the largest possible one).
-   * @throw InvalidArgument if @p first is not a clique of @p g.
+   * @throw InvalidArgument if @p first is not a clique of @p g (in particular if it has a node
+   * twice).
    */
   template < GUM_UndiGraphable G >
   Sequence< NodeId > lexBFS(const G& g, const std::vector< NodeId >& first = {});

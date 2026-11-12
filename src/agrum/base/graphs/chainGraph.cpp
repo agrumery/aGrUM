@@ -57,6 +57,16 @@
 
 namespace gum {
 
+  namespace {
+    /// the check of the constructors from a PDAG or a mixed graph (whose constructor PDAG(g)
+    /// already checks the directed cycles and the double connections)
+    void checkNoPartiallyDirectedCycle(const MixedGraph& g) {
+      if (graph::hasPartiallyDirectedCycle(g))
+        GUM_ERROR(InvalidPartiallyDirectedCycle,
+                  "A chain graph can not contain a partially directed cycle")
+    }
+  }   // namespace
+
   // diamond structure require to explicitly initialize NodeGraphPart
   ChainGraph::ChainGraph(Size nodes_size,
                          bool nodes_resize_policy,
@@ -80,18 +90,13 @@ namespace gum {
   ChainGraph::ChainGraph(const DAG& g) : NodeGraphPart(g), PDAG(g) { GUM_CONSTRUCTOR(ChainGraph); }
 
   ChainGraph::ChainGraph(const PDAG& g) : NodeGraphPart(g), PDAG(g) {
-    if (graph::hasPartiallyDirectedCycle(g))
-      GUM_ERROR(InvalidPartiallyDirectedCycle,
-                "A chain graph can not contain a partially directed cycle")
-    GUM_CONS_CPY(ChainGraph);
+    checkNoPartiallyDirectedCycle(g);
+    GUM_CONSTRUCTOR(ChainGraph);
   }
 
-  // PDAG(g) checks the directed cycles and the double connections
   ChainGraph::ChainGraph(const MixedGraph& g) : NodeGraphPart(g), PDAG(g) {
-    if (graph::hasPartiallyDirectedCycle(g))
-      GUM_ERROR(InvalidPartiallyDirectedCycle,
-                "A chain graph can not contain a partially directed cycle")
-    GUM_CONS_CPY(ChainGraph);
+    checkNoPartiallyDirectedCycle(g);
+    GUM_CONSTRUCTOR(ChainGraph);
   }
 
   ChainGraph::ChainGraph(const ChainGraph& g) : NodeGraphPart(g), PDAG(g) {

@@ -44,6 +44,8 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
+#include <utility>
+
 #include <agrum/base/graphs/PAG.h>
 
 namespace gum {
@@ -59,12 +61,18 @@ namespace gum {
   PAG::~PAG() { GUM_DESTRUCTOR(PAG); }
 
   PAG& PAG::operator=(const PAG& other) {
-    MarkedGraph::operator=(other);
+    if (this != &other) {
+      MarkedGraph::operator=(other);
+      GUM_OP_CPY(PAG);
+    }
     return *this;
   }
 
   PAG& PAG::operator=(PAG&& other) {
-    MarkedGraph::operator=(std::move(other));
+    if (this != &other) {
+      MarkedGraph::operator=(std::move(other));
+      GUM_OP_MOV(PAG);
+    }
     return *this;
   }
 

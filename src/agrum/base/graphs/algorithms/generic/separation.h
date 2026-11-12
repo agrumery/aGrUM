@@ -84,6 +84,7 @@ namespace gum::graph {
    * @param Z Conditioning set (hard evidence).
    * @return true if X ⊥ Y | Z in the d-separation sense (always true if X or Y belongs to Z: an
    * observed node is separated from any node).
+   * @throw InvalidArgument if X and Y are the same node.
    */
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);
@@ -124,7 +125,9 @@ namespace gum::graph {
    * @param X Source node.
    * @param Y Target node.
    * @param Z Conditioning set.
-   * @return true if X ⊥ Y | Z in the c-separation sense.
+   * @return true if X ⊥ Y | Z in the c-separation sense (always true if X or Y belongs to Z: an
+   * observed node is separated from any node).
+   * @throw InvalidArgument if X and Y are the same node.
    */
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);

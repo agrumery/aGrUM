@@ -156,7 +156,7 @@ namespace gum {
     // write the content in the output stream
     if (_binary_) {
       // binary mode
-      _writeVector_(output, json::to_msgpack(content));
+      detail::writeVector(output, json::to_msgpack(content));
     } else {
       // text mode
       output << content.dump(_indent_);   // pretty print with 2 spaces indentation

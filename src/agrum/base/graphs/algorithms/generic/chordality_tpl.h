@@ -53,9 +53,12 @@ namespace gum::graph {
     for (Idx i = 0; i < first.size(); ++i) {
       if (!g.existsNode(first[i]))
         GUM_ERROR(InvalidArgument, "The node " << first[i] << " is not a node of the graph")
-      for (Idx j = i + 1; j < first.size(); ++j)
+      for (Idx j = i + 1; j < first.size(); ++j) {
+        if (first[i] == first[j])
+          GUM_ERROR(InvalidArgument, "The node " << first[i] << " is given twice to visit first")
         if (!g.existsEdge(first[i], first[j]))
           GUM_ERROR(InvalidArgument, "The nodes to visit first are not a clique of the graph")
+      }
     }
 
     // the unvisited nodes are partitioned into ordered classes (nodes with the same label); the

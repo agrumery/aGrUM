@@ -48,21 +48,18 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN(_at_LIP6) and Christophe GONZALES(_at_AMU)
  */
 
-#include <iostream>
-#include <vector>
-
-#include <agrum/agrum.h>
-
-// #include <sys/wait.h>
 #include <algorithm>
 #include <cstdlib>
-#include <fcntl.h>
 #include <fstream>
+#include <iostream>
 #include <set>
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <utility>   /// c++11 stuff, like declval ( decltype from prototype without a default constructor )
+#include <vector>
+
+#include <agrum/agrum.h>
 
 #include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/math/pow.h>   // custom pow functions with integers, faster implementation
@@ -71,16 +68,6 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/CN/polytope/LrsWrapper.h>
-
-#include <sys/stat.h>
-
-// 64 bits for windows (long is 32 bits)
-#ifdef _MSC_VER
-typedef __int64          int64_t;
-typedef unsigned __int64 uint64_t;
-#else
-#  include <stdint.h>
-#endif
 
 namespace gum {
   namespace dot {
@@ -555,11 +542,6 @@ namespace gum {
       protected:
 
       private:
-      /** @brief 1e6 by default, used by  _fracC_ as precision. */
-      GUM_SCALAR _precisionC_;   // = 1e6;
-      /** @brief 5 by default, used by  _fracC_ as number of decimals. */
-      GUM_SCALAR _deltaC_;   // = 5;
-
       /** @brief The lowest perturbation of the BayesNet provided as input for
        * this
        * CredalNet. */
@@ -577,9 +559,6 @@ namespace gum {
        * when
        * computing redundant vertices. */
       GUM_SCALAR _epsRedund_;   // core.epsilonStandard (1e-6 by default), read at construction
-
-      /** @brief Precision used by  _frac_. */
-      GUM_SCALAR _precision_;   // = 1e6; // beware LRS
 
       /** @brief \c TRUE if this CredalNet is separately and interval specified,
        * \c

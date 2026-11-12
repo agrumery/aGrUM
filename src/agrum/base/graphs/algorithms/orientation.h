@@ -195,7 +195,9 @@ namespace gum::graph {
      * @brief graph::orientAsDAG for a PDAG which already is the Meek closure of an extendable PDAG
      * (as computed by MeekRules::propagateToDAG): the closure is not computed again.
      *
-     * @throw InvalidArgument if a node of @p closure has no domain size, or a domain size 0
+     * @throw InvalidArgument if a node of @p closure has no domain size, or a domain size 0, or if
+     * an undirected component of @p closure has no consistent extension (@p closure is then not
+     * the Meek closure of an extendable PDAG)
      */
     GUM_SHARED_PUBLIC DAG orientClosureAsDAG(const PDAG&                 closure,
                                              const NodeProperty< Size >& domainSizes);

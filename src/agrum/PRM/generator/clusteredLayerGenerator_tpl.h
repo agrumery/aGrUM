@@ -115,17 +115,14 @@ namespace gum {
         PRMFactory< GUM_SCALAR >&                                              f,
         std::string_view                                                       type,
         std::vector< typename ClusteredLayerGenerator< GUM_SCALAR >::MyData >& l) {
-      // double ratio = getClusterRatio() + RAND_MAX;
       Set< std::string > i;
 
       for (Size lvl = 0; lvl < _layers_.size(); ++lvl) {
         i.insert(l[lvl].i);
 
         for (Size c = 0; c < _layers_[lvl].c; ++c) {
-          // if (std::rand() < ratio)
-          _generateCluster_(f, type, l, lvl, i);
-          // else
-          //   _generateClass_(f, type, l, lvl, i);
+          if (randomProba() < _cluster_ratio_) _generateCluster_(f, type, l, lvl, i);
+          else _generateClass_(f, type, l, lvl, i);
         }
 
         i.erase(l[lvl].i);
@@ -519,7 +516,7 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator() :
-        _layers_(), _domain_size_(2), _max_parents_(INT_MAX), _cluster_ratio_(0.0) {
+        _layers_(), _domain_size_(2), _max_parents_(INT_MAX), _cluster_ratio_(1.0) {
       GUM_CONSTRUCTOR(ClusteredLayerGenerator);
     }
 
@@ -527,21 +524,24 @@ namespace gum {
     ClusteredLayerGenerator< GUM_SCALAR >::ClusteredLayerGenerator(
         const ClusteredLayerGenerator< GUM_SCALAR >& source) :
         _layers_(source._layers_), _domain_size_(source._domain_size_),
-        _max_parents_(source._max_parents_) {
+        _max_parents_(source._max_parents_), _cluster_ratio_(source._cluster_ratio_) {
       GUM_CONS_CPY(ClusteredLayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     ClusteredLayerGenerator< GUM_SCALAR >::~ClusteredLayerGenerator() {
+      for (const auto& [name, cluster]: _cluster_map_)
+        delete cluster;
       GUM_DESTRUCTOR(ClusteredLayerGenerator);
     }
 
     template < GUM_Numeric GUM_SCALAR >
     ClusteredLayerGenerator< GUM_SCALAR >& ClusteredLayerGenerator< GUM_SCALAR >::operator=(
         const ClusteredLayerGenerator< GUM_SCALAR >& source) {
-      _layers_      = source._layers_;
-      _domain_size_ = source._domain_size_;
-      _max_parents_ = source._max_parents_;
+      _layers_        = source._layers_;
+      _domain_size_   = source._domain_size_;
+      _max_parents_   = source._max_parents_;
+      _cluster_ratio_ = source._cluster_ratio_;
       return *this;
     }
 
@@ -590,6 +590,9 @@ namespace gum {
 
     template < GUM_Numeric GUM_SCALAR >
     void ClusteredLayerGenerator< GUM_SCALAR >::setClusterRatio(double ratio) {
+      // written as a negation so that NaN is refused too
+      if (!(ratio >= 0.0 && ratio <= 1.0))
+        GUM_ERROR(OutOfBounds, "The cluster ratio " << ratio << " is not in [0, 1]")
       _cluster_ratio_ = ratio;
     }
 

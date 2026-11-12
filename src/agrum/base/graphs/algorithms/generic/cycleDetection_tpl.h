@@ -41,7 +41,10 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include <agrum/base/graphs/algorithms/generic/cycleDetection.h>
+#include <agrum/base/graphs/algorithms/generic/reachability.h>
 
 namespace gum::graph {
 
@@ -90,24 +93,12 @@ namespace gum::graph {
 
   template < GUM_MixedGraphable G >
   bool hasPartiallyDirectedCycle(const G& g) {
-    // label each node by its chain component (connected component of the undirected part)
-    NodeProperty< Size > component;
-    Size                 nbComponents = 0;
-    for (const auto node: g.nodes()) {
-      if (component.exists(node)) continue;
-      component.insert(node, nbComponents);
-      std::vector< NodeId > toVisit{node};
-      while (!toVisit.empty()) {
-        const NodeId current = toVisit.back();
-        toVisit.pop_back();
-        for (const auto neighbour: g.neighbours(current))
-          if (!component.exists(neighbour)) {
-            component.insert(neighbour, nbComponents);
-            toVisit.push_back(neighbour);
-          }
-      }
-      ++nbComponents;
-    }
+    // label each node by its chain component (connected component of the undirected part), the
+    // labels being 0, 1, ..., nbComponents - 1
+    const auto component    = chainComponents(g);
+    Size       nbComponents = 0;
+    for (const auto node: g.nodes())
+      nbComponents = std::max(nbComponents, Size(component[node]) + 1);
 
     // Kahn's algorithm on the graph of the components (an arc inside a component is a cycle)
     std::vector< Size >                indegree(nbComponents, 0);

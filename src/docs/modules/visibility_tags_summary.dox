@@ -213,7 +213,7 @@
  * | std::string trim_copy(std::string_view s); | `src/agrum/base/core/utils_string.h:163` |
  * | std::vector< std::pair< Idx, Idx > > | `src/agrum/base/core/threads/threads.h:129` |
  * | std::vector< std::string > split(std::string_view orig, | `src/agrum/base/core/utils_string.h:98` |
- * | std::vector< uint8_t > _readVector_(std::istream& is); | `src/agrum/base/io/GumBinaryIO.h:74` |
+ * | std::vector< uint8_t > readVector(std::istream& is); | `src/agrum/base/io/GumBinaryIO.h:83` |
  * | TYPE | `src/agrum/base/core/exceptions.h:96` |
  * | TYPE | `src/agrum/base/core/exceptions.h:105` |
  * | uint64_t int2Pow(uint64_t exponent); | `src/agrum/base/core/math/pow.h:79` |
@@ -228,12 +228,12 @@
  * | unsigned int randomGeneratorSeed(); | `src/agrum/base/core/utils_random.h:100` |
  * | unsigned long intPow(unsigned long base, unsigned long exponent); | `src/agrum/base/core/math/pow.h:70` |
  * | void | `src/agrum/base/core/math/pow.h:96` |
- * | void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec); | `src/agrum/base/io/GumBinaryIO.h:82` |
  * | void initRandom(unsigned int seed = 0); | `src/agrum/base/core/utils_random.h:113` |
  * | void ltrim(std::string& s); | `src/agrum/base/core/utils_string.h:144` |
  * | void rtrim(std::string& s); | `src/agrum/base/core/utils_string.h:150` |
  * | void setNumberOfThreads(unsigned int number); | `src/agrum/base/core/threads/threads.h:115` |
  * | void trim(std::string& s); | `src/agrum/base/core/utils_string.h:156` |
+ * | void writeVector(std::ostream& os, const std::vector< uint8_t >& vec); | `src/agrum/base/io/GumBinaryIO.h:95` |
  *
  * \section tagsum_gum_public_bn `GUM_PUBLIC_BN` (69)
  *

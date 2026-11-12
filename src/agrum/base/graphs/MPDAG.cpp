@@ -90,11 +90,18 @@ namespace gum {
   MPDAG MPDAG::fromCPDAG(const CPDAG& cpdag, const ArcSet& arcs) {
     // built as a mixed graph then checked once by the PDAG constructor (PDAG::addArc would look for
     // a directed path at each arc)
-    MixedGraph oriented(cpdag.graph());
+    // the arcs are checked against the CPDAG, not against the graph being oriented: an edge
+    // oriented both ways is a contradiction of the knowledge, not an arc foreign to the CPDAG
+    const auto& graph = cpdag.graph();
+    MixedGraph  oriented(graph);
     for (const auto& arc: arcs) {
-      if (oriented.existsArc(arc.tail(), arc.head())) continue;
-      if (!oriented.existsEdge(arc.tail(), arc.head()))
+      if (graph.existsArc(arc.tail(), arc.head())) continue;
+      if (!graph.existsEdge(arc.tail(), arc.head()))
         GUM_ERROR(InvalidArc, "The arc " << arc << " is not an orientation of an edge of the CPDAG")
+      if (!oriented.existsEdge(arc.tail(), arc.head()))
+        GUM_ERROR(InvalidArgument,
+                  "The background knowledge orients the edge " << arc.tail() << "-" << arc.head()
+                                                               << " both ways")
       oriented.eraseEdge(Edge(arc.tail(), arc.head()));
       oriented.addArc(arc.tail(), arc.head());
     }

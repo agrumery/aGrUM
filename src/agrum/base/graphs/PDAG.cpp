@@ -101,7 +101,7 @@ namespace gum {
                                             << " by both an arc and an edge")
     if (graph::hasDirectedCycle(g))
       GUM_ERROR(InvalidDirectedCycle, "A PDAG can not contain a directed cycle")
-    GUM_CONS_CPY(PDAG);
+    GUM_CONSTRUCTOR(PDAG);
   }
 
   PDAG::PDAG(const PDAG& g) : NodeGraphPart(g), MixedGraph(g) { GUM_CONS_CPY(PDAG); }

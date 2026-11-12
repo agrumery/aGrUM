@@ -660,9 +660,13 @@ namespace gum::graph {
         for (const auto node: component)
           for (const auto x: closure.neighbours(node))
             if (node < x) undirected.addEdge(node, x);
-        // a component of a Meek closure is chordal: it always has a consistent extension
+        // a component of a Meek closure is chordal: it always has a consistent extension (but
+        // graph::detail::orientClosureAsDAG trusts its caller to give a closure)
         const auto greedy = extensionBySinkRemoval(undirected, &domainSizes, false);
-        GUM_ASSERT(greedy.has_value());
+        if (!greedy.has_value())
+          GUM_ERROR(InvalidArgument,
+                    "The PDAG is not the Meek closure of an extendable PDAG: an undirected "
+                    "component has no consistent extension")
         arcs.insert(arcs.end(), greedy->arcs().begin(), greedy->arcs().end());
       }
 

@@ -161,8 +161,8 @@ namespace gum {
       return ++nberrors;
     }
     try {
-      const auto content
-          = _binary_ ? json::from_msgpack(_readVector_(file)) : json::parse(file, nullptr, false);
+      const auto content = _binary_ ? json::from_msgpack(detail::readVector(file))
+                                    : json::parse(file, nullptr, false);
       file.close();
       if (content.is_discarded()) {
         addException("Error parsing file", _streamName_);

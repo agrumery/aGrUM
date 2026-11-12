@@ -43,7 +43,6 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/base/io/GumBinaryIO.h>
 #include <agrum/base/multidim/aggregators/or.h>
 #include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
 #include <agrum/BN/BayesNet.h>
@@ -152,9 +151,6 @@ namespace gum_tests {
 })"};
       return s;
     }
-
-    public:
-    // regression tests for CRIT-16: _readVector_ size validation
   };
 
   GUM_TEST(FirstTest) {
@@ -393,28 +389,25 @@ namespace gum_tests {
     CHECK(bn.exists("existing"));
   }
 
-  GUM_TEST(ReadVectorTruncatedSizeField) {
-    // Only 4 bytes instead of 8 for the size field
-    std::istringstream iss(std::string(4, '\0'));
-    CHECK_THROWS(gum::_readVector_(iss));
-  }
-
-  GUM_TEST(ReadVectorOversizedField) {
-    // Size = UINT64_MAX: far above the size of the stream
-    std::ostringstream oss;
-    uint64_t           huge = 0xFFFFFFFFFFFFFFFFULL;
-    oss.write(reinterpret_cast< const char* >(&huge), sizeof(huge));
-    std::istringstream iss(oss.str());
-    CHECK_THROWS(gum::_readVector_(iss));
-  }
-
-  GUM_TEST(ReadVectorTruncatedData) {
-    // Announce 100 bytes but only write 10
-    std::ostringstream oss;
-    uint64_t           size = 100;
-    oss.write(reinterpret_cast< const char* >(&size), sizeof(size));
-    oss.write(std::string(10, 'x').c_str(), 10);
-    std::istringstream iss(oss.str());
-    CHECK_THROWS(gum::_readVector_(iss));
+  GUM_TEST(BgumRefusesAWrongLength) {
+    const auto path = GET_RESSOURCES_PATH("outputs/corrupt_bn.bgum");
+    // a truncated length field (4 bytes instead of 8), a length far above the size of the file,
+    // a length above the size of the payload (truncated data)
+    const std::string contents[] = {std::string(4, '\0'),
+                                    std::string(8, '\xFF'),
+                                    std::string("\x64\0\0\0\0\0\0\0", 8) + std::string(10, 'x')};
+    for (const auto& content: contents) {
+      {
+        std::ofstream out(path, std::ios::binary);
+        out << content;
+      }
+      gum::BayesNet< double > bn;
+      bn.add("existing[2]");
+      auto reader = gum::GumBNReader< double >(&bn, path, true);
+      CHECK_NE(reader.proceed(), 0u);
+      CHECK_EQ(reader.count(), 1u);
+      CHECK_EQ(bn.size(), 1u);
+      CHECK(bn.exists("existing"));
+    }
   }
 }   // namespace gum_tests

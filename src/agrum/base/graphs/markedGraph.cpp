@@ -45,6 +45,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #include <sstream>
+#include <utility>
 
 #include <agrum/base/core/dot/dotElements.h>
 #include <agrum/base/graphs/algorithms/generic/reachability.h>

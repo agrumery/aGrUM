@@ -149,6 +149,9 @@ namespace gum_tests {
                     const gum::InvalidArgument&);
     // a->c does not orient an edge of the CPDAG
     CHECK_THROWS_AS(gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 2)}), const gum::InvalidArc&);
+    // a->b and b->a orient the same edge both ways: no DAG of the class contains them
+    CHECK_THROWS_AS(gum::MPDAG::fromCPDAG(cp, gum::ArcSet{gum::Arc(0, 1), gum::Arc(1, 0)}),
+                    const gum::InvalidArgument&);
 
     // a directed cycle in the knowledge: not in the class either
     gum::DAG triangle;

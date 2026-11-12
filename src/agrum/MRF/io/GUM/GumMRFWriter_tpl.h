@@ -109,7 +109,7 @@ namespace gum {
     }
 
     if (_binary_) {
-      _writeVector_(output, json::to_msgpack(content));
+      detail::writeVector(output, json::to_msgpack(content));
     } else {
       output << content.dump(_indent_);
     }

@@ -42,15 +42,16 @@
 
 #include <agrum/config.h>
 
+#include <agrum/base/core/exceptions.h>
 #include <agrum/base/core/inline.h>
 #include <agrum/base/io/GumBinaryIO.h>
 
-namespace gum {
+namespace gum::detail {
 
-  INLINE std::vector< uint8_t > _readVector_(std::istream& is) {
+  INLINE std::vector< uint8_t > readVector(std::istream& is) {
     uint8_t bytes[8];
     is.read(reinterpret_cast< char* >(bytes), sizeof(bytes));
-    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector size");
+    if (!is) GUM_ERROR(IOError, "GumBinaryIO: failed to read vector size")
     uint64_t size = 0;
     for (std::size_t i = 0; i < sizeof(bytes); ++i)
       size |= static_cast< uint64_t >(bytes[i]) << (8 * i);
@@ -60,18 +61,17 @@ namespace gum {
     is.seekg(0, std::ios::end);
     const auto end = is.tellg();
     is.seekg(start);
-    if (!is) throw std::runtime_error("GumBinaryIO: failed to find the size of the stream");
+    if (!is) GUM_ERROR(IOError, "GumBinaryIO: failed to find the size of the stream")
     if (size != static_cast< uint64_t >(end - start))
-      throw std::runtime_error(
-          "GumBinaryIO: the vector size does not match the size of the stream");
+      GUM_ERROR(IOError, "GumBinaryIO: the vector size does not match the size of the stream")
 
     std::vector< uint8_t > vec(size);
     is.read(reinterpret_cast< char* >(vec.data()), static_cast< std::streamsize >(size));
-    if (!is) throw std::runtime_error("GumBinaryIO: failed to read vector data");
+    if (!is) GUM_ERROR(IOError, "GumBinaryIO: failed to read vector data")
     return vec;
   }
 
-  INLINE void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec) {
+  INLINE void writeVector(std::ostream& os, const std::vector< uint8_t >& vec) {
     const uint64_t size = vec.size();
     char           bytes[8];
     for (std::size_t i = 0; i < sizeof(bytes); ++i)
@@ -80,4 +80,4 @@ namespace gum {
     os.write(reinterpret_cast< const char* >(vec.data()), static_cast< std::streamsize >(size));
   }
 
-}   // namespace gum
+}   // namespace gum::detail

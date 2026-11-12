@@ -58,7 +58,6 @@
 #include <istream>
 #include <optional>
 #include <ostream>
-#include <stdexcept>
 #include <string_view>
 #include <vector>
 
@@ -66,27 +65,35 @@
 
 namespace gum {
 
-  /**
-   * Reads a length-prefixed byte vector from a binary stream (bgum format).
-   *
-   * The first 8 bytes encode the payload length as a little-endian uint64_t,
-   * followed by that many payload bytes, up to the end of the stream.
-   *
-   * @param is The input binary stream, which must be seekable.
-   * @return   The payload bytes.
-   * @throw std::runtime_error if the stream can not be read or if the length is not the one of the
-   * rest of the stream (truncated stream, corrupted length, data after the payload).
-   */
-  GUM_SHARED_PUBLIC std::vector< uint8_t > _readVector_(std::istream& is);
+  namespace detail {
+    /**
+     * Reads a length-prefixed byte vector from a binary stream (bgum format).
+     *
+     * The first 8 bytes encode the payload length as a little-endian uint64_t,
+     * followed by that many payload bytes, up to the end of the stream.
+     *
+     * Implementation detail of the GUM readers: declared here because the readers of the
+     * graphical models are templates.
+     *
+     * @param is The input binary stream, which must be seekable.
+     * @return   The payload bytes.
+     * @throw IOError if the stream can not be read or if the length is not the one of the rest of
+     * the stream (truncated stream, corrupted length, data after the payload).
+     */
+    GUM_SHARED_PUBLIC std::vector< uint8_t > readVector(std::istream& is);
 
-  /**
-   * Writes a length-prefixed byte vector to a binary stream (bgum format): the length as a
-   * little-endian uint64_t, whatever the host, then the payload.
-   *
-   * @param os  The output binary stream.
-   * @param vec The payload bytes to write.
-   */
-  GUM_SHARED_PUBLIC void _writeVector_(std::ostream& os, const std::vector< uint8_t >& vec);
+    /**
+     * Writes a length-prefixed byte vector to a binary stream (bgum format): the length as a
+     * little-endian uint64_t, whatever the host, then the payload.
+     *
+     * Implementation detail of the GUM writers: declared here because the writers of the
+     * graphical models are templates.
+     *
+     * @param os  The output binary stream.
+     * @param vec The payload bytes to write.
+     */
+    GUM_SHARED_PUBLIC void writeVector(std::ostream& os, const std::vector< uint8_t >& vec);
+  }   // namespace detail
 
   /**
    * The indentation used by the GUM writers (jgum text format) when none is given:

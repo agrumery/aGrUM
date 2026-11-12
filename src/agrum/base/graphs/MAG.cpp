@@ -45,6 +45,7 @@
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
+#include <utility>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/ancestral.h>

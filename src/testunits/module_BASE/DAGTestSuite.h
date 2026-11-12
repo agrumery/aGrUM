@@ -713,6 +713,9 @@ namespace gum_tests {
     // it remains a node of Z for the other nodes: here, it activates the collider
     CHECK_FALSE(dag.dSeparation(gum::NodeSet{0, 1}, gum::NodeSet{2}, gum::NodeSet{1}));
     CHECK_FALSE(dag.dSeparation(gum::NodeSet{2}, gum::NodeSet{0, 1}, gum::NodeSet{1}));
+    // X and Y must be different, as the sets X and Y must be disjoint
+    CHECK_THROWS_AS(dag.dSeparation(0, 0, gum::NodeSet()), gum::InvalidArgument&);
+    CHECK_THROWS_AS(dag.dSeparation(1, 1, gum::NodeSet{1}), gum::InvalidArgument&);
   }
 
 }   // namespace gum_tests

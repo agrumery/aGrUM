@@ -46,7 +46,6 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 #include <algorithm>
-#include <cctype>
 #include <charconv>
 #include <concepts>
 #include <cstdint>
@@ -105,8 +104,8 @@ namespace gum {
       NodeId     node      = 0;
       const auto end       = key.data() + key.size();
       const auto [ptr, ec] = std::from_chars(key.data(), end, node);
-      if (key.empty() || !std::isdigit(static_cast< unsigned char >(key.front()))
-          || ec != std::errc() || ptr != end)
+      // from_chars refuses an empty key, a space and a sign (NodeId is unsigned)
+      if (ec != std::errc() || ptr != end)
         GUM_ERROR(IOError, "GUM graph: '" << key << "' is not a node id")
       return node;
     }
@@ -226,9 +225,6 @@ namespace gum {
       return content;
     }
 
-    template < typename G >
-    G graphOf(const graph::detail::GumGraphContent& content, const std::string& type);
-
     /// the DAG of a digraph: checked once by a topological order, its arcs being added into a node
     /// before any arc out of it (the acyclicity checks of DAG::addArc then remain trivial)
     DAG dagOf(const DiGraph& digraph) {
@@ -331,8 +327,9 @@ namespace gum {
       const bool    isBinary = isBinaryGUMFile(path, binary);
       std::ofstream output(std::string(path), isBinary ? std::ios::binary : std::ios::out);
       if (!output.good()) GUM_ERROR(IOError, "GUM graph: can not write the file '" << path << "'")
-      if (isBinary) _writeVector_(output, json::to_msgpack(toJson(content)));
+      if (isBinary) gum::detail::writeVector(output, json::to_msgpack(toJson(content)));
       else output << gumGraphToString(content, indent);
+      output.close();   // the final flush may fail too (disk full)
       if (!output.good()) GUM_ERROR(IOError, "GUM graph: can not write the file '" << path << "'")
     }
 
@@ -342,12 +339,13 @@ namespace gum {
       if (!input.good()) GUM_ERROR(IOError, "GUM graph: can not read the file '" << path << "'")
       json j;
       try {
-        if (isBinary) j = json::from_msgpack(_readVector_(input));
+        if (isBinary) j = json::from_msgpack(gum::detail::readVector(input));
         else j = json::parse(input);
       } catch (const json::exception& e) {
         GUM_ERROR(IOError, "GUM graph: malformed file '" << path << "' (" << e.what() << ")")
-      } catch (const std::runtime_error& e) {   // _readVector_
-        GUM_ERROR(IOError, "GUM graph: malformed file '" << path << "' (" << e.what() << ")")
+      } catch (const IOError& e) {   // gum::detail::readVector
+        GUM_ERROR(IOError,
+                  "GUM graph: malformed file '" << path << "' (" << e.errorContent() << ")")
       }
       return fromJson(j);
     }

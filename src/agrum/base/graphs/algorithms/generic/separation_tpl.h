@@ -47,7 +47,8 @@ namespace gum::graph {
 
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
-    if (Z.contains(Y)) return true;   // an observed node is separated (as an observed X)
+    if (X == Y) GUM_ERROR(InvalidArgument, "Nodes X and Y must be different.")
+    if (Z.contains(X) || Z.contains(Y)) return true;   // an observed node is separated
     NodeSet qX;
     qX.insert(X);
     return !graph::dConnected(g, qX, Z).exists(Y);
@@ -62,6 +63,8 @@ namespace gum::graph {
 
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
+    if (X == Y) GUM_ERROR(InvalidArgument, "Nodes X and Y must be different.")
+    if (Z.contains(X) || Z.contains(Y)) return true;   // an observed node is separated
     NodeSet query{Z};
     query.insert(X);
     query.insert(Y);

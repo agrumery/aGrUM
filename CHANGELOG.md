@@ -140,6 +140,12 @@
       1e-10, never reached: the computations always ran up to `maxIter`, 10^7 draws, about 20 s even for 3 nodes). The
       stop now comes after about 2.5e5 draws (relative error about 0.2% for Monte Carlo, 0.6% for Gibbs, measured on a
       small network).
+    - `dSeparation`/`cSeparation` of two nodes (`DAG`, `PDAG`, `ChainGraph`, `graph::dSeparated`,
+      `graph::cSeparated`) raise `InvalidArgument` when X and Y are the same node, as the versions with sets of
+      nodes do for sets which are not disjoint (pyAgrum already went through the sets).
+    - `prm::ClusteredLayerGenerator::setClusterRatio` is effective (it was ignored: a cluster was always generated):
+      the probability for a generated class to be replaced by a cluster, 1 by default (the former behaviour); a ratio
+      outside [0, 1] raises `OutOfBounds`. The PRMs generated for a given seed change (one more draw by class).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 

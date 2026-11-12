@@ -1311,14 +1311,6 @@ namespace gum {
 
       _epsRedund_ = GUM_SCALAR(config().epsilonStandard());
 
-      // continued fractions, beware LRSWrapper
-      // decimal paces ( _epsC_ *  _precisionC_ == 1)
-      _precisionC_ = GUM_SCALAR(1e6);
-      _deltaC_     = 5;
-
-      // old custom algorithm
-      _precision_ = GUM_SCALAR(1e6);   // beware LRSWrapper
-
       _current_bn_            = nullptr;
       _credalNet_current_cpt_ = nullptr;
       _current_nodeType_      = nullptr;

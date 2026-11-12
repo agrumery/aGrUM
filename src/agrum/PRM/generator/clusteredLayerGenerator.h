@@ -106,10 +106,12 @@ namespace gum {
       /// aggregator
       void setMaxParents(Size s);
 
-      /// Returns the odds of a given class to be replaced by a cluster.
+      /// Returns the probability for a generated class to be replaced by a cluster (1 by default).
       double getClusterRatio() const;
 
-      /// Define the odds of a given class to be replaced by a cluster.
+      /// Defines the probability for a generated class to be replaced by a cluster (a class and
+      /// one or two classes referencing it).
+      /** @throw OutOfBounds if ratio is not in [0, 1] */
       void setClusterRatio(double ratio);
 
       /**
