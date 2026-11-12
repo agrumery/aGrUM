@@ -682,10 +682,11 @@ namespace gum_tests {
     filter.add(bn.variable("C"));
     filter.setFirst();   // evs={A:0,B=0,C:0} imposible
 
+    // the incompatibility is proved before any draw (it used to wait for the timeout and to return
+    // an empty database)
     const auto nbLines = 10;
     timer.reset();
-    dbgen.drawSamples(nbLines, filter, 5);
-    CHECK_LT(timer.step(), 5.5);
-    CHECK_EQ(dbgen.samplesNbRows(), 0u);
+    CHECK_THROWS_AS(dbgen.drawSamples(nbLines, filter, 5), const gum::IncompatibleEvidence&);
+    CHECK_LT(timer.step(), 1.0);
   }
 }   // namespace gum_tests

@@ -168,10 +168,6 @@ namespace gum {
     /// the smallest positive probability of the CPT of each node (for the smoothed Gibbs moves)
     NodeProperty< GUM_SCALAR > _minNonZero_;
 
-    // computes _allowed_ by generalized arc consistency on the null probabilities of the CPTs,
-    // starting from the hard evidence. Returns false if a domain becomes empty.
-    bool _pruneDomains_();
-
     // sets to 0 the probabilities of the values of node that are not allowed
     void _mask_(NodeId node, Tensor< GUM_SCALAR >& p) const;
 

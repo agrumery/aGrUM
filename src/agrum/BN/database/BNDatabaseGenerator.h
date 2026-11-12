@@ -133,14 +133,20 @@ namespace gum {
 
       @warning nbSamples is not the number of generated samples but the size of the filtered
       database. It may happen that the evidence is very rare (or even impossible). In that case, the
-      rejection sampling process may be very slow (or even infinite). In that case, the timeout is
-      mandatory.
+      rejection sampling process may be very slow. It stops when the timeout is reached or when
+      the number of consecutive rejected draws reaches the key sampling.maxConsecutiveRejections
+      of gum::Configuration (read at the construction of the generator).
 
       @param nbSamples the size of the filtered database.
       @param evs the evidence.
       @param timeout the maximum time in seconds to wait for the generation of the samples. If
-      the timeout is reached, the function returns the log2likelihood of the generated samples. if
-      timeout=0, no timeout are watched and the function may run indefinitely.
+      the timeout is reached, the function returns the log2likelihood of the generated samples. If
+      timeout=0, no timeout is watched.
+
+      @throw IncompatibleEvidence if the evidence is proved incompatible with the model (before any
+      draw), if the number of consecutive rejected draws reaches its maximum, or if the timeout is
+      reached before any draw compatible with a non-empty evidence. The database is then not
+      available.
       */
       double drawSamples(Size nbSamples, const gum::Instantiation& evs, int timeout = 300);
 
@@ -222,6 +228,9 @@ namespace gum {
 
       /// number of variables
       Size _nbVars_;
+
+      /// maximum number of consecutive draws rejected by the evidence (read from the configuration)
+      Size _maxConsecutiveRejections_;
 
       /// generated database
       std::vector< std::vector< Idx > > _database_;

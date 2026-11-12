@@ -69,11 +69,18 @@ nbSamples : int
 evs : pyagrum.Instantiation or dict
   (optional) The evidence that will be observed by the resulting samples.
 timeout : int
-  (optional) The maximum time in seconds to generate the samples (default 600)
+  (optional) The maximum time in seconds to generate the samples (default 300, 0 for no timeout)
+
+Raises
+------
+pyagrum.IncompatibleEvidence
+  If the evidence is proved incompatible with the model (before any draw), if the number of consecutive draws
+  rejected by the evidence reaches the configuration key ``sampling.maxConsecutiveRejections`` (read when the
+  generator is created), or if the timeout is reached before any draw compatible with the evidence.
 
 Warnings
 --------
-``nbSamples`` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than ``nbSamples`` (even equal to 0).
+``nbSamples`` is not the number of generated samples but the size of the database. It may happen that the evidence is very rare. In this case, the generation process may be *very* slow: when the timeout is reached, the size of the database can be smaller than ``nbSamples``.
 
 Warnings
 --------

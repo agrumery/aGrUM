@@ -49,14 +49,21 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <cstdint>
+
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/BayesNetFragment.h>
+#include <agrum/BN/inference/tools/evidencePruning.h>
 #include <agrum/BN/inference/tools/samplingInference.h>
 
 namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   SamplingInference< GUM_SCALAR >::SamplingInference(const IBayesNet< GUM_SCALAR >* bn) :
-      ApproximateInference< GUM_SCALAR >(bn), _estimator_(), _samplingBN_(nullptr) {
+      ApproximateInference< GUM_SCALAR >(bn), _estimator_(), _samplingBN_(nullptr),
+      _maxConsecutiveRejections_(static_cast< Size >(
+          Configuration::instance().typed< std::int64_t >("sampling",
+                                                          "maxConsecutiveRejections"))) {
     // epsilon, minimal epsilon rate, maximum number of iterations, period size, verbosity and
     // timeout
     this->setFromConfiguration_("sampling", true);
@@ -149,6 +156,14 @@ namespace gum {
     //@todo This should be in  _prepareInference_
     if (!isContextualized) { this->contextualize(); }
 
+    // the estimator is used by this inference only: the next one initializes it again (even if
+    // this one throws)
+    this->isSetEstimator = false;
+
+    // an evidence proved incompatible is refused before any draw (the pruning is done on the
+    // original BN: the sampling BN may have no null probability, e.g. for importance sampling)
+    checkEvidenceByPruning(this->BN(), this->hardEvidence());
+
     this->initApproximationScheme();
     gum::Instantiation Ip;
     GUM_SCALAR         w = .0;   //
@@ -182,15 +197,42 @@ namespace gum {
     if (!_estimator_.isPriorOutweighed()) criteria.suspend();
 
     // Burn in
-    Ip = this->burnIn_();
+    Ip                = this->burnIn_();
+    _drawInterrupted_ = false;
+    Size nbrSamples   = 0;
     do {
       Ip = this->draw_(&w, Ip);
+      if (_drawInterrupted_) {
+        // the time limit was reached while rejecting draws: the scheme records it (TimeLimit)
+        this->continueApproximationScheme(_estimator_.confidence());
+        break;
+      }
       _estimator_.update(Ip, w);
+      ++nbrSamples;
       this->updateApproximationScheme();
       if (criteria.suspended && _estimator_.isPriorOutweighed()) criteria.restore();
     } while (this->continueApproximationScheme(_estimator_.confidence()));
 
-    this->isSetEstimator = false;
+    if (nbrSamples == 0) {
+      GUM_ERROR(IncompatibleEvidence,
+                "The hard evidence has a null or too small probability: no compatible draw "
+                "within the time limit")
+    }
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  bool SamplingInference< GUM_SCALAR >::continueAfterRejection_(Size& nbrRejections) {
+    if (++nbrRejections >= _maxConsecutiveRejections_) {
+      GUM_ERROR(IncompatibleEvidence,
+                "The hard evidence has a null or too small probability: "
+                    << nbrRejections
+                    << " consecutive draws rejected (key sampling.maxConsecutiveRejections)")
+    }
+    if (this->isEnabledMaxTime() && this->currentTime() > this->maxTime()) {
+      _drawInterrupted_ = true;
+      return false;
+    }
+    return true;
   }
 
   template < GUM_Numeric GUM_SCALAR >

@@ -234,6 +234,99 @@ class TestInferenceResults(SamplingTestCase):
       self.fail(msg)
 
 
+class TestIncompatibleEvidence(pyAgrumTestCase):
+  """Evidence with a null probability: the samplers and the database generator raise instead of looping forever."""
+
+  engines = ("MonteCarloSampling", "WeightedSampling", "ImportanceSampling")
+
+  @staticmethod
+  def deterministic(bn, node, f):
+    for a in range(2):
+      for b in range(2):
+        cpt = [0.0, 0.0]
+        cpt[f(a, b)] = 1.0
+        bn.cpt(node)[{"A": a, "B": b}] = cpt
+
+  def andBN(self):
+    # C = A and B: the evidence {C:1, A:0} is detected by the removal of impossible values
+    bn = gum.fastBN("A->C<-B")
+    self.deterministic(bn, "C", lambda a, b: a & b)
+    return bn
+
+  def xorBN(self):
+    # Y = A xor B and Z = not(A xor B): {Y:1, Z:1} is impossible, but each CPT alone allows every value
+    bn = gum.fastBN("A->Y<-B;A->Z<-B")
+    self.deterministic(bn, "Y", lambda a, b: a ^ b)
+    self.deterministic(bn, "Z", lambda a, b: 1 - (a ^ b))
+    return bn
+
+  def testProvedIncompatibility(self):
+    bn = self.andBN()
+    for name in self.engines:
+      with self.subTest(engine=name):
+        ie = getattr(gum, name)(bn)
+        ie.setEvidence({"C": 1, "A": 0})
+        with self.assertRaisesRegex(gum.IncompatibleEvidence, "has a null probability"):
+          ie.makeInference()
+
+  def testRejectionBound(self):
+    bn = self.xorBN()
+    gum.config.push()
+    try:
+      gum.config["sampling", "maxConsecutiveRejections"] = 1000
+      for name in self.engines:
+        with self.subTest(engine=name):
+          ie = getattr(gum, name)(bn)
+          ie.setEvidence({"Y": 1, "Z": 1})
+          with self.assertRaisesRegex(gum.IncompatibleEvidence, "consecutive draws rejected"):
+            ie.makeInference()
+    finally:
+      gum.config.pop()
+
+  def testTimeLimit(self):
+    bn = self.xorBN()
+    gum.config.push()
+    try:
+      gum.config["sampling", "maxConsecutiveRejections"] = 10**12
+      for name in self.engines:
+        with self.subTest(engine=name):
+          ie = getattr(gum, name)(bn)
+          ie.setEvidence({"Y": 1, "Z": 1})
+          ie.setMaxTime(0.2)
+          with self.assertRaisesRegex(gum.IncompatibleEvidence, "within the time limit"):
+            ie.makeInference()
+    finally:
+      gum.config.pop()
+
+  def testCompatibleEvidence(self):
+    bn = self.xorBN()
+    exact = gum.LazyPropagation(bn)
+    exact.setEvidence({"Y": 1, "Z": 0})
+    exact.makeInference()
+    for name in self.engines:
+      with self.subTest(engine=name):
+        ie = getattr(gum, name)(bn)
+        ie.setEvidence({"Y": 1, "Z": 0})
+        ie.setEpsilon(1e-2)
+        ie.makeInference()
+        self.assertAlmostEqual(ie.posterior("A")[1], exact.posterior("A")[1], delta=0.1)
+
+  def testDatabaseGenerator(self):
+    generator = gum.BNDatabaseGenerator(self.andBN())
+    with self.assertRaisesRegex(gum.IncompatibleEvidence, "has a null probability"):
+      generator.drawSamples(10, {"C": 1, "A": 0})
+
+    gum.config.push()
+    try:
+      gum.config["sampling", "maxConsecutiveRejections"] = 1000
+      generator = gum.BNDatabaseGenerator(self.xorBN())
+      with self.assertRaisesRegex(gum.IncompatibleEvidence, "consecutive draws rejected"):
+        generator.drawSamples(10, {"Y": 1, "Z": 1})
+    finally:
+      gum.config.pop()
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestDictFeature)
 addTests(ts, TestInferenceResults)
+addTests(ts, TestIncompatibleEvidence)

@@ -51,4 +51,17 @@ Class used for inferences using the Importance Sampling algorithm.
 ImportanceSampling(bn) -> ImportanceSampling
     Parameters:
         - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
+
+Notes
+-----
+The draws incompatible with the hard evidence are rejected. ``makeInference()`` raises
+`pyagrum.IncompatibleEvidence`:
+
+- before any draw, if the removal of impossible values proves that the evidence is incompatible
+  with the model;
+- if the number of consecutive rejected draws reaches the configuration key
+  ``sampling.maxConsecutiveRejections`` (read when the inference is created), or if the time limit
+  (`pyagrum.ImportanceSampling.setMaxTime`) is reached before any compatible draw. The evidence then has a
+  null or very small probability: an exact inference such as `pyagrum.LazyPropagation` can tell
+  (``evidenceProbability()`` is positive or not).
 "

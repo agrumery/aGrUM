@@ -22992,6 +22992,19 @@ class ImportanceSampling(object):
         Parameters:
             - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
+    Notes
+    -----
+    The draws incompatible with the hard evidence are rejected. ``makeInference()`` raises
+    `pyagrum.IncompatibleEvidence`:
+
+    - before any draw, if the removal of impossible values proves that the evidence is incompatible
+      with the model;
+    - if the number of consecutive rejected draws reaches the configuration key
+      ``sampling.maxConsecutiveRejections`` (read when the inference is created), or if the time limit
+      (`pyagrum.ImportanceSampling.setMaxTime`) is reached before any compatible draw. The evidence then has a
+      null or very small probability: an exact inference such as `pyagrum.LazyPropagation` can tell
+      (``evidenceProbability()`` is positive or not).
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -23779,6 +23792,19 @@ class WeightedSampling(object):
         Parameters:
             - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
 
+    Notes
+    -----
+    The draws incompatible with the hard evidence are rejected. ``makeInference()`` raises
+    `pyagrum.IncompatibleEvidence`:
+
+    - before any draw, if the removal of impossible values proves that the evidence is incompatible
+      with the model;
+    - if the number of consecutive rejected draws reaches the configuration key
+      ``sampling.maxConsecutiveRejections`` (read when the inference is created), or if the time limit
+      (`pyagrum.WeightedSampling.setMaxTime`) is reached before any compatible draw. The evidence then has a
+      null or very small probability: an exact inference such as `pyagrum.LazyPropagation` can tell
+      (``evidenceProbability()`` is positive or not).
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -24565,6 +24591,19 @@ class MonteCarloSampling(object):
     MonteCarloSampling(bn) -> MonteCarloSampling
         Parameters:
             - **bn** (`pyagrum.BayesNet`) -- a Bayesian network
+
+    Notes
+    -----
+    The draws incompatible with the hard evidence are rejected. ``makeInference()`` raises
+    `pyagrum.IncompatibleEvidence`:
+
+    - before any draw, if the removal of impossible values proves that the evidence is incompatible
+      with the model;
+    - if the number of consecutive rejected draws reaches the configuration key
+      ``sampling.maxConsecutiveRejections`` (read when the inference is created), or if the time limit
+      (`pyagrum.MonteCarloSampling.setMaxTime`) is reached before any compatible draw. The evidence then has a
+      null or very small probability: an exact inference such as `pyagrum.LazyPropagation` can tell
+      (``evidenceProbability()`` is positive or not).
 
     """
 
@@ -29477,6 +29516,11 @@ class ExactBNdistance(object):
 
     def __init__(self, *args):
         _pyagrumcpp.ExactBNdistance_swiginit(self, _pyagrumcpp.new_ExactBNdistance(*args))
+
+        self._models = getattr(args[0], "_models", None) if len(args) == 1 else (args[0], args[1])
+
+
+
     __swig_destroy__ = _pyagrumcpp.delete_ExactBNdistance
 
     def compute(self) -> dict[str, object]:
@@ -29519,6 +29563,11 @@ class GibbsBNdistance(ApproximationScheme):
 
     def __init__(self, *args):
         _pyagrumcpp.GibbsBNdistance_swiginit(self, _pyagrumcpp.new_GibbsBNdistance(*args))
+
+        self._models = getattr(args[0], "_models", None) if len(args) == 1 else (args[0], args[1])
+
+
+
     __swig_destroy__ = _pyagrumcpp.delete_GibbsBNdistance
 
     def setBurnIn(self, b: int) -> None:
@@ -29837,6 +29886,11 @@ class MCBNDistance(ApproximationScheme):
 
     def __init__(self, *args):
         _pyagrumcpp.MCBNDistance_swiginit(self, _pyagrumcpp.new_MCBNDistance(*args))
+
+        self._models = getattr(args[0], "_models", None) if len(args) == 1 else (args[0], args[1])
+
+
+
     __swig_destroy__ = _pyagrumcpp.delete_MCBNDistance
 
     def compute(self) -> dict[str, object]:
@@ -30078,6 +30132,11 @@ class BNDatabaseGenerator(object):
 
     def __init__(self, bn: "pyagrum.BayesNet"):
         _pyagrumcpp.BNDatabaseGenerator_swiginit(self, _pyagrumcpp.new_BNDatabaseGenerator(bn))
+
+        self._model=bn
+
+
+
     __swig_destroy__ = _pyagrumcpp.delete_BNDatabaseGenerator
 
     def setDiscretizedLabelModeRandom(self) -> None:
@@ -30303,11 +30362,18 @@ class BNDatabaseGenerator(object):
         evs : pyagrum.Instantiation or dict
           (optional) The evidence that will be observed by the resulting samples.
         timeout : int
-          (optional) The maximum time in seconds to generate the samples (default 600)
+          (optional) The maximum time in seconds to generate the samples (default 300, 0 for no timeout)
+
+        Raises
+        ------
+        pyagrum.IncompatibleEvidence
+          If the evidence is proved incompatible with the model (before any draw), if the number of consecutive draws
+          rejected by the evidence reaches the configuration key ``sampling.maxConsecutiveRejections`` (read when the
+          generator is created), or if the timeout is reached before any draw compatible with the evidence.
 
         Warnings
         --------
-        ``nbSamples`` is not the number of generated samples but the size of the database.It may happen that the evidence is very rare (or even impossible). In this case, the generation process may be *very* slow (it may even not stop). For this case a timeout is provided (default 600 seconds) and then the size of the database can be smaller than ``nbSamples`` (even equal to 0).
+        ``nbSamples`` is not the number of generated samples but the size of the database. It may happen that the evidence is very rare. In this case, the generation process may be *very* slow: when the timeout is reached, the size of the database can be smaller than ``nbSamples``.
 
         Warnings
         --------

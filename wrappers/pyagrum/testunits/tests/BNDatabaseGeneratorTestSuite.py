@@ -56,6 +56,13 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     bn = gum.fastBN("A->B->C;A->D->C;D->E;")
     _ = gum.BNDatabaseGenerator(bn)
 
+  def testKeepsTheBNAlive(self):
+    # the generator only references its BN: without a reference kept by the Python generator, the
+    # temporary BN was freed and drawSamples crashed
+    generator = gum.BNDatabaseGenerator(gum.fastBN("A->B->C;A->D->C;D->E;"))
+    generator.drawSamples(100)
+    self.assertEqual(generator.samplesNbRows(), 100)
+
   def testSetVarOrder(self):
     bn = gum.loadBN(self.agrumSrcDir("survey.bgum"))
     dbgen = gum.BNDatabaseGenerator(bn)

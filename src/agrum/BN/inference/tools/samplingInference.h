@@ -222,6 +222,17 @@ namespace gum {
      */
     virtual void addVarSample_(NodeId nod, Instantiation* I);
 
+    /// counts a draw rejected by the hard evidence (rejection loops of the samplers)
+    /**
+     * @param nbrRejections the number of consecutive rejected draws (incremented)
+     * @return false if the time limit is reached: the draw is then abandoned and the inference
+     * stops (TimeLimit)
+     * @throw IncompatibleEvidence if nbrRejections reaches the maximum number of consecutive
+     * rejections (key sampling.maxConsecutiveRejections): the evidence has a null or too small
+     * probability
+     */
+    bool continueAfterRejection_(Size& nbrRejections);
+
 
     /// fired when Bayesian network is contextualized
     /**
@@ -262,6 +273,12 @@ namespace gum {
 
     private:
     BayesNetFragment< GUM_SCALAR >* _samplingBN_;
+
+    /// maximum number of consecutive draws rejected by the evidence (read from the configuration)
+    Size _maxConsecutiveRejections_;
+
+    /// whether the current draw was abandoned because the time limit was reached
+    bool _drawInterrupted_ = false;
 
     /// forgets the contextualized Bayesian network (built for the evidence at the time of the
     /// contextualization): the next inference contextualizes it again

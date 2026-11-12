@@ -47,8 +47,12 @@
  * @author Santiago Cortijo and Pierre-Henri Wuillemin
  */
 
+#include <cstdint>
+
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/timer.h>
 #include <agrum/BN/database/BNDatabaseGenerator.h>
+#include <agrum/BN/inference/tools/evidencePruning.h>
 
 namespace gum::learning {
 
@@ -56,7 +60,9 @@ namespace gum::learning {
   /// default constructor
   template < GUM_Numeric GUM_SCALAR >
   BNDatabaseGenerator< GUM_SCALAR >::BNDatabaseGenerator(const BayesNet< GUM_SCALAR >& bn) :
-      _bn_(bn) {
+      _bn_(bn), _maxConsecutiveRejections_(static_cast< Size >(
+                    Configuration::instance().typed< std::int64_t >("sampling",
+                                                                    "maxConsecutiveRejections"))) {
     GUM_CONSTRUCTOR(BNDatabaseGenerator)
 
     // get the node names => they will serve as ids
@@ -92,6 +98,15 @@ namespace gum::learning {
                                                         int                  timeout) {
     int progress = 0;
 
+    // the database is drawn again: it is not available until the end of the drawing
+    _drawnSamples_ = false;
+
+    // an evidence proved incompatible is refused before any draw
+    NodeProperty< Idx > hardEv;
+    for (const auto node: _bn_.nodes())
+      if (evs.contains(_bn_.variable(node))) hardEv.insert(node, evs.val(_bn_.variable(node)));
+    checkEvidenceByPruning(_bn_, hardEv);
+
     if (onProgress.hasListener()) { GUM_EMIT2(onProgress, progress, 0.0); }
 
     _database_.clear();
@@ -111,8 +126,9 @@ namespace gum::learning {
     timer.reset();
 
     // perform the sampling
-    _log2likelihood_ = 0;
-    Idx idSample     = 0;
+    _log2likelihood_   = 0;
+    Idx  idSample      = 0;
+    Size nbrRejections = 0;   // consecutive draws rejected by the evidence
     while (idSample < nbSamples) {
       if (onProgress.hasListener()) {
         auto p = int((idSample * 100) / nbSamples);
@@ -121,8 +137,8 @@ namespace gum::learning {
           GUM_EMIT2(onProgress, progress, timer.step());
         }
       }
-      std::vector< Idx >& sample = _database_.at(idSample);
-      bool                reject = false;
+      std::vector< Idx >& sample         = _database_.at(idSample);
+      bool                reject         = false;
       double              log2likelihood = 0.0;   // of this sample, counted only if it is kept
       for (Idx rank = 0; rank < _nbVars_; ++rank) {
         const NodeId node = topOrder[rank];
@@ -148,8 +164,20 @@ namespace gum::learning {
       if (!reject) {
         _log2likelihood_ += log2likelihood;
         idSample++;
+        nbrRejections = 0;
+      } else if (++nbrRejections >= _maxConsecutiveRejections_) {
+        GUM_ERROR(IncompatibleEvidence,
+                  "The hard evidence has a null or too small probability: "
+                      << nbrRejections
+                      << " consecutive draws rejected (key sampling.maxConsecutiveRejections)")
       }
       if (timeout > 0 && timer.step() > timeout) { break; }
+    }
+
+    if (idSample == 0 && nbSamples > 0 && !hardEv.empty()) {
+      GUM_ERROR(IncompatibleEvidence,
+                "The hard evidence has a null or too small probability: no compatible draw "
+                "within the time limit")
     }
 
     if (idSample > 0) {

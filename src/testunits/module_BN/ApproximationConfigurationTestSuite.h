@@ -95,7 +95,7 @@ namespace gum_tests {
     }
 
     static void checkKL(const gum::IApproximationSchemeConfiguration& scheme) {
-      checkScheme(scheme, 1e-10, 1e-10, 10000000, 200, false);
+      checkScheme(scheme, 1e-5, 1e-10, 10000000, 200, false);
       CHECK_EQ(scheme.maxTime(), 6000.);
       CHECK(scheme.isEnabledMaxTime());
     }

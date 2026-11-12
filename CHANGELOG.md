@@ -136,6 +136,10 @@
       could crash) is removed: use `intervalToCredal`, which gives the same credal sets.
     - `BayesNet::changeTensor` is removed (it deleted the CPT, leaving dangling the references to it): use
       `cpt(node).fillWith(tensor)`, which changes the parameters and keeps the CPT.
+    - The default threshold `epsilon` of `gibbsKL` and `mcKL` (`GibbsBNdistance`, `MCBNDistance`) is now 1e-5 (it was
+      1e-10, never reached: the computations always ran up to `maxIter`, 10^7 draws, about 20 s even for 3 nodes). The
+      stop now comes after about 2.5e5 draws (relative error about 0.2% for Monte Carlo, 0.6% for Gibbs, measured on a
+      small network).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
@@ -225,6 +229,16 @@
     - `ctbn.CTBN.equals` no longer prints why the two CTBNs differ.
     - `BNDatabaseGenerator.drawSamples` with evidence returned a wrong log2-likelihood: the rejected samples were
       partly counted (and, at the timeout, the last kept sample was counted but dropped from the database).
+    - Evidence with a null probability given to `MonteCarloSampling`, `WeightedSampling`, `ImportanceSampling` (and
+      their loopy versions) or to `BNDatabaseGenerator.drawSamples`: the rejection of the draws looped forever (with
+      `timeout=0` for the generator; `setMaxTime` was not applied during the rejections). They now raise
+      `IncompatibleEvidence`, before any draw when the removal of impossible values (as for `GibbsSampling`) proves the
+      incompatibility, else when the number of consecutive rejected draws reaches the new key
+      `sampling.maxConsecutiveRejections` (1000000) or when the time limit is reached before any compatible draw (the
+      generator returned an empty database and a log2-likelihood of 0).
+    - `BNDatabaseGenerator`, `ExactBNdistance`, `GibbsBNdistance` and `MCBNDistance` did not keep their Bayesian
+      networks alive in Python: built on a temporary BN (`BNDatabaseGenerator(fastBN(...))`), `drawSamples` or `compute`
+      crashed. They now keep a reference to them, as the inferences do.
 
 ## Changelog for 3.3.2
 

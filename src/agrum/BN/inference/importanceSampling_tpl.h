@@ -76,6 +76,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   Instantiation ImportanceSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
     GUM_SCALAR pSurQ;
+    Size       nbrRejections = 0;
 
     do {
       prev.clear();
@@ -100,7 +101,7 @@ namespace gum {
           pSurQ *= this->samplingBN().cpt(ev).get(prev);
         }
       }
-    } while (pSurQ == 0);
+    } while (pSurQ == 0 && this->continueAfterRejection_(nbrRejections));
 
     *w = pSurQ;
     return prev;

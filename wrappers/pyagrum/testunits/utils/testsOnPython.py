@@ -109,6 +109,7 @@ def runTests(local: bool, test_module: str, test_suite: str, log) -> int:
         ("BayesNetTestSuite", True),
         ("BayesNetFragmentTestSuite", True),
         ("BNDatabaseGeneratorTestSuite", True),
+        ("BNDistanceTestSuite", True),
         ("BNLearnerTestSuite", True),
         ("BNListenerTestSuite", True),
         ("ConfigTestSuite", True),

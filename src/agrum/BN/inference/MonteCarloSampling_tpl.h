@@ -76,8 +76,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Instantiation MonteCarloSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
-    *w               = 1.0f;
-    bool wrong_value = false;
+    *w                 = 1.0f;
+    Size nbrRejections = 0;
+    bool wrong_value   = false;
     do {
       wrong_value = false;
       prev.clear();
@@ -89,7 +90,7 @@ namespace gum {
           break;
         }
       }
-    } while (wrong_value);
+    } while (wrong_value && this->continueAfterRejection_(nbrRejections));
     return prev;
   }
 }   // namespace gum

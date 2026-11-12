@@ -76,8 +76,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Instantiation WeightedSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
-    *w              = 1.0f;
-    bool wrongValue = false;
+    *w                 = 1.0f;
+    Size nbrRejections = 0;
+    bool wrongValue    = false;
     do {
       prev.clear();
       wrongValue = false;
@@ -99,7 +100,7 @@ namespace gum {
           this->addVarSample_(nod, &prev);
         }
       }
-    } while (wrongValue);
+    } while (wrongValue && this->continueAfterRejection_(nbrRejections));
     return prev;
   }
 }   // namespace gum

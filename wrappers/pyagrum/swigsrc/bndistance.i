@@ -69,3 +69,15 @@ PyAgrumDict* compute(void) {
 ADD_COMPUTE_TO_BNDISTANCE(gum::ExactBNdistance)
 ADD_COMPUTE_TO_BNDISTANCE(gum::GibbsBNdistance)
 ADD_COMPUTE_TO_BNDISTANCE(gum::MCBNDistance)
+
+// a distance only references its two Bayesian networks: the Python distance keeps them alive (when built from
+// another distance, it keeps the Bayesian networks of this one)
+%define KEEP_BNS_OF_BNDISTANCE(classname)
+%pythonappend gum::classname<double>::classname %{
+  self._models = getattr(args[0], "_models", None) if len(args) == 1 else (args[0], args[1])
+%}
+%enddef
+
+KEEP_BNS_OF_BNDISTANCE(ExactBNdistance)
+KEEP_BNS_OF_BNDISTANCE(GibbsBNdistance)
+KEEP_BNS_OF_BNDISTANCE(MCBNDistance)

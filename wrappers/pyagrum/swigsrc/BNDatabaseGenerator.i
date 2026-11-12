@@ -44,6 +44,11 @@
 
 
 
+// the generator only references its Bayesian network: the Python generator keeps it alive
+%pythonappend gum::learning::BNDatabaseGenerator<double>::BNDatabaseGenerator %{
+  self._model=bn
+%}
+
 %ignore gum::learning::BNDatabaseGenerator< double>::toDatabaseTable const;
 %ignore gum::learning::BNDatabaseGenerator< double>::database const;
 %ignore gum::learning::BNDatabaseGenerator< double>::DiscretizedLabelMode;
