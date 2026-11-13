@@ -114,7 +114,8 @@ namespace gum::dot {
   /**
    * @brief The options with the color of the compelled arcs : each arc of `compelled` without a
    * color in `options` gets the color of the configuration key `dot.compelledArcColor` (the color
-   * given by the caller of the `toDot()` wins).
+   * given by the caller of the `toDot()` wins). An empty `dot.compelledArcColor` returns `options`
+   * unchanged: the compelled arcs have the color of the other arcs.
    */
   GUM_SHARED_PUBLIC DotOptions withCompelledArcColor(const DotOptions& options,
                                                      const ArcSet&     compelled);

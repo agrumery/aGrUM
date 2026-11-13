@@ -132,6 +132,7 @@ namespace gum::dot {
 
   DotOptions withCompelledArcColor(const DotOptions& options, const ArcSet& compelled) {
     const auto color = DotStyle::read().compelledArcColor;
+    if (color.empty()) return options;   // the compelled arcs have the color of the other arcs
     DotOptions result(options);
     for (const auto& arc: compelled) {
       const auto* given = options.arc(arc.tail(), arc.head());

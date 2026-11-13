@@ -253,6 +253,13 @@ namespace gum_tests {
     CHECK_EQ(result.arc(1, 2)->color, "blue");
     CHECK(result.arc(2, 3) == nullptr);
     CHECK(options.arc(1, 2) == nullptr);          // options is not modified
+
+    // no color: the options are returned unchanged (no empty option for each compelled arc)
+    gum::config().set("dot", "compelledArcColor", "");
+    const auto uncolored
+        = gum::dot::withCompelledArcColor(options, gum::ArcSet{gum::Arc(0, 1), gum::Arc(1, 2)});
+    CHECK_EQ(uncolored.arc(0, 1)->color, "green");
+    CHECK(uncolored.arc(1, 2) == nullptr);
   }
 
 }   // namespace gum_tests
