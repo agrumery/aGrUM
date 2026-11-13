@@ -63,14 +63,12 @@ _INPLACE = "inplace"
 # Which lines a rule applies to:
 ANY_LINE = "AnyLine"  # (default) every line, docstrings included
 TYPE_ONLY = "TypeOnly"  # only lines with type annotation markers (-> or def): avoids replacing English words
-# every line except the Examples section of a docstring, whose code reads "import pyagrum as gum"
-NOT_IN_EXAMPLES = "NotInExamples"
 # Which use of the type a rule applies to:
 ANY_USE = "AnyUse"  # (default) parameters and return types
 # only the annotation of a parameter ("name: ..."), not a return type ("-> ..."); implies TYPE_ONLY
 ARG_ONLY = "ArgOnly"
 
-_LINE_OPTIONS = {ANY_LINE, TYPE_ONLY, NOT_IN_EXAMPLES}
+_LINE_OPTIONS = {ANY_LINE, TYPE_ONLY}
 _USE_OPTIONS = {ANY_USE, ARG_ONLY}
 
 
@@ -78,7 +76,7 @@ _USE_OPTIONS = {ANY_USE, ARG_ONLY}
 class _Rule:
   pattern_str: str  # original pattern string, used for reporting
   replacement: str
-  lines: str  # ANY_LINE, TYPE_ONLY or NOT_IN_EXAMPLES
+  lines: str  # ANY_LINE or TYPE_ONLY
   regex: re.Pattern = field(repr=False)
   triggered: int = field(default=0, repr=False)
 
@@ -87,12 +85,7 @@ def _make_rule(pattern: str, replacement: str, *options: str) -> _Rule:
   unknown = set(options) - _LINE_OPTIONS - _USE_OPTIONS
   if unknown:
     raise ValueError(f"passForPyType: unknown option(s) {unknown} for rule {pattern!r}")
-  if TYPE_ONLY in options or ARG_ONLY in options:
-    lines = TYPE_ONLY
-  elif NOT_IN_EXAMPLES in options:
-    lines = NOT_IN_EXAMPLES
-  else:
-    lines = ANY_LINE
+  lines = TYPE_ONLY if TYPE_ONLY in options or ARG_ONLY in options else ANY_LINE
   prefix = r"(?<=: )" if ARG_ONLY in options else ""
   regex = re.compile(rf'{prefix}("?)(?:const\s*)?{pattern}(?:\s*const)?(?:\s*[*&])?(?:\s*const)?\1')
   return _Rule(pattern_str=pattern, replacement=replacement, lines=lines, regex=regex)
@@ -353,7 +346,7 @@ _RULES_PYTHON_RAW: list[tuple] = [
   # ("gum::MarkovNet", 'pyagrum.MarkovRandomField'),
   ("gum::DiGraph", "pyagrum.DiGraph"),
   ("gum::", "pyagrum."),
-  ("gum\\.", "pyagrum.", NOT_IN_EXAMPLES),
+  ("gum\\.", "pyagrum."),
 ]
 
 # --- C++ rules: fix up the raw SWIG C++ wrapper file ---
@@ -394,20 +387,13 @@ def process_filters(src_filename: str, is_python: bool, debug_mode: bool) -> tup
   _type_annotation_line = re.compile(r"(?:->|\bdef\s+\w)")
 
   typing_added = False
-  in_examples = False  # inside the Examples section of a docstring (until its closing quotes)
   output_lines = []
   with open(src_filename) as src:
     for line in src.read().splitlines():
       originalline = line
       has_annotation = bool(_type_annotation_line.search(line))
-      if line.strip() == "Examples":
-        in_examples = True
-      elif '"""' in line:
-        in_examples = False
       for rule in rules:
         if rule.lines == TYPE_ONLY and not has_annotation:
-          continue
-        if rule.lines == NOT_IN_EXAMPLES and in_examples:
           continue
         if rule.regex.search(line):
           line = rule.regex.sub(rule.replacement, line)
