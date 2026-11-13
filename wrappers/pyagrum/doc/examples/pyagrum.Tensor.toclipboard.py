@@ -8,5 +8,6 @@ p = gum.Tensor().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6])
 # the table can then be pasted in a spreadsheet
 try:
   p.toclipboard()
-except pd.errors.PyperclipException:  # no system clipboard (e.g. on a server without display)
+# no system clipboard: PyperclipException on a server without display, AttributeError on macOS without session
+except (pd.errors.PyperclipException, AttributeError):
   pass

@@ -48,16 +48,30 @@ import pyagrum.lib.image as gimg
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
+def _cairosvgAvailable() -> bool:
+  try:
+    import cairosvg  # noqa: F401
+  except (ImportError, OSError):  # OSError: cairosvg without the cairo library
+    return False
+  return True
+
+
 class TestExportAsArray(pyAgrumTestCase):
-  def testNoTemporaryFileIsLeftOpen(self):
+  def _assertNoTemporaryFileIsLeftOpen(self, export):
     bn = gum.fastBN("A->B->C")
-    for export in (gimg.export, gimg.exportInference):
-      with warnings.catch_warnings(record=True) as w:
-        warnings.simplefilter("always", ResourceWarning)
-        img = export(bn)  # without file name: an image as a numpy array
-        gc.collect()
-      self.assertEqual(img.ndim, 3)
-      self.assertEqual([str(x.message) for x in w if issubclass(x.category, ResourceWarning)], [])
+    with warnings.catch_warnings(record=True) as w:
+      warnings.simplefilter("always", ResourceWarning)
+      img = export(bn)  # without file name: an image as a numpy array
+      gc.collect()
+    self.assertEqual(img.ndim, 3)
+    self.assertEqual([str(x.message) for x in w if issubclass(x.category, ResourceWarning)], [])
+
+  def testExportLeavesNoTemporaryFileOpen(self):
+    self._assertNoTemporaryFileIsLeftOpen(gimg.export)
+
+  @unittest.skipUnless(_cairosvgAvailable(), "exportInference needs cairosvg")
+  def testExportInferenceLeavesNoTemporaryFileOpen(self):
+    self._assertNoTemporaryFileIsLeftOpen(gimg.exportInference)
 
 
 ts = unittest.TestSuite()
