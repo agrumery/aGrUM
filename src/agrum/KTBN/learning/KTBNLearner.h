@@ -69,7 +69,7 @@
  *  gum::KTBN< double >                  kdbn = learner.learnKTBN();
  *
  *  // or state the classification explicitly
- *  const std::unordered_set< std::string > atemporal{"C", "D"};
+ *  const std::set< std::string > atemporal{"C", "D"};
  *  gum::learning::KTBNLearner< double > learner2("trajs/", "traj", 500, 2, atemporal);
  * @endcode
  *
@@ -80,6 +80,7 @@
 #define GUM_LEARNING_KTBN_LEARNER_H
 
 #include <memory>
+#include <set>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -149,17 +150,21 @@ namespace gum {
        *
        * @warning A @b braced literal is ambiguous between this overload and the
        * inferring one, since it could equally initialize either's fifth
-       * parameter. Name the type — @c std::unordered_set<std::string>{"C","D"}
+       * parameter. Name the type — @c std::set<std::string>{"C","D"}
        * — or pass a named variable.
+       *
+       * @note Changed after 3.3.2: @p atemporalVars is a @c std::set<std::string> (it was a
+       * @c std::unordered_set<std::string>), so that the names are checked and reported in the
+       * same order on every platform.
        */
-      KTBNLearner(std::string_view                         dirPath,
-                  std::string_view                         csvBaseName,
-                  Size                                     nbSamples,
-                  Size                                     k,
-                  const std::unordered_set< std::string >& atemporalVars,
-                  const std::vector< std::string >&        missingSymbols       = {"?"},
-                  bool                                     induceTypes          = true,
-                  bool                                     ignoreMissingSymbols = false);
+      KTBNLearner(std::string_view                  dirPath,
+                  std::string_view                  csvBaseName,
+                  Size                              nbSamples,
+                  Size                              k,
+                  const std::set< std::string >&    atemporalVars,
+                  const std::vector< std::string >& missingSymbols       = {"?"},
+                  bool                              induceTypes          = true,
+                  bool                              ignoreMissingSymbols = false);
 
       /**
        * @brief Structure-learning constructor — atemporal variables inferred from the CSVs.
@@ -236,15 +241,19 @@ namespace gum {
        *        cope with one (see nbDroppedRows() and its @b warning on the
        *        distortion this introduces). When false (the default), such data
        *        is refused outright.
+       *
+       * @note Changed after 3.3.2: @p atemporalVars is a @c std::set<std::string> (it was a
+       * @c std::unordered_set<std::string>), so that the names are checked and reported in the
+       * same order on every platform.
        */
-      KTBNLearner(std::string_view                         dirPath,
-                  std::string_view                         csvBaseName,
-                  Size                                     nbSamples,
-                  Size                                     k,
-                  const BayesNet< GUM_SCALAR >&            bn,
-                  const std::unordered_set< std::string >& atemporalVars        = {},
-                  const std::vector< std::string >&        missingSymbols       = {"?"},
-                  bool                                     ignoreMissingSymbols = false);
+      KTBNLearner(std::string_view                  dirPath,
+                  std::string_view                  csvBaseName,
+                  Size                              nbSamples,
+                  Size                              k,
+                  const BayesNet< GUM_SCALAR >&     bn,
+                  const std::set< std::string >&    atemporalVars        = {},
+                  const std::vector< std::string >& missingSymbols       = {"?"},
+                  bool                              ignoreMissingSymbols = false);
 
       /// destructor
       ~KTBNLearner();
@@ -678,7 +687,7 @@ namespace gum {
       /// before _prior_ktbn_ exists — before that constructor's body runs the
       /// equivalent check in _buildPriorFromCSV_ — so without it here too, a
       /// bad @p k would only be caught after a wasted scan of every trajectory.
-      static std::unordered_set< std::string >
+      static std::set< std::string >
           _inferAtemporalVars_(std::string_view                  dirPath,
                                std::string_view                  csvBaseName,
                                Size                              nbSamples,
@@ -691,22 +700,21 @@ namespace gum {
       /// and returns a KTBN with the right temporal/atemporal classification.
       /// Must be static because it is called before the object exists.
       static KTBN< GUM_SCALAR >
-          _buildPriorFromCSV_(std::string_view                         dirPath,
-                              std::string_view                         csvBaseName,
-                              Size                                     k,
-                              const std::unordered_set< std::string >& atemporalVars,
-                              const std::vector< std::string >&        missingSymbols,
-                              bool                                     induceTypes);
+          _buildPriorFromCSV_(std::string_view                  dirPath,
+                              std::string_view                  csvBaseName,
+                              Size                              k,
+                              const std::set< std::string >&    atemporalVars,
+                              const std::vector< std::string >& missingSymbols,
+                              bool                              induceTypes);
 
       /// called in the member-initialiser list of the BN constructor: builds
       /// and returns a KTBN whose variables are copied from @p bn (one node per
       /// base variable, right types/domains) and classified as temporal/atemporal
       /// according to @p atemporalVars.
       /// Must be static because it is called before the object exists.
-      static KTBN< GUM_SCALAR >
-          _buildPriorFromBN_(Size                                     k,
-                             const BayesNet< GUM_SCALAR >&            bn,
-                             const std::unordered_set< std::string >& atemporalVars);
+      static KTBN< GUM_SCALAR > _buildPriorFromBN_(Size                           k,
+                                                   const BayesNet< GUM_SCALAR >&  bn,
+                                                   const std::set< std::string >& atemporalVars);
 
       // ----- name encoding -----
 

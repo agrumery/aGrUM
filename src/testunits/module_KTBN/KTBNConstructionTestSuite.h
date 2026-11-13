@@ -174,6 +174,14 @@ namespace gum_tests {
 
       // a declared name that is not a node of the BN is rejected
       CHECK_THROWS_AS(gum::KTBN< double >::fromBN(bn, {"Z"}), const gum::NotFound&);
+
+      // several unknown names: the first one in alphabetical order is reported, on every platform
+      try {
+        gum::KTBN< double >::fromBN(bn, {"Z_GHOST", "M_GHOST", "A_GHOST"});
+        FAIL("unknown atemporal names must be refused");
+      } catch (const gum::NotFound& e) {
+        CHECK_NE(e.errorContent().find("'A_GHOST'"), std::string::npos);
+      }
     }
 
     // missing middle slice: X[0] and X[2] present (so k=3) but X[1] absent, so

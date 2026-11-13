@@ -403,15 +403,15 @@ typedef PyObject PyAgrumDict;
   }
 }
 
-// std::unordered_set<std::string> <- Python set[str]. Restricted to an
-// actual `set`/`frozenset` (not any sequence): several call sites overload
-// on this type vs. a sibling std::vector<std::string> at the same argument
-// position (e.g. gum::learning::KTBNLearner's atemporalVars vs.
-// missingSymbols constructors), and a Python `set` is never a
-// PySequence_Check() sequence, so restricting the typecheck this way keeps
-// the two overloads unambiguous -- callers select one or the other purely
-// by passing a set literal vs. a list/tuple literal.
-%typemap(in) const std::unordered_set<std::string>& (std::unordered_set<std::string> _tmp_uss) {
+// std::set<std::string> <- Python set[str]. Restricted to an actual
+// `set`/`frozenset` (not any sequence): several call sites overload on this
+// type vs. a sibling std::vector<std::string> at the same argument position
+// (e.g. gum::learning::KTBNLearner's atemporalVars vs. missingSymbols
+// constructors), and a Python `set` is never a PySequence_Check() sequence,
+// so restricting the typecheck this way keeps the two overloads unambiguous --
+// callers select one or the other purely by passing a set literal vs. a
+// list/tuple literal.
+%typemap(in) const std::set<std::string>& (std::set<std::string> _tmp_ss) {
   if (!PyAnySet_Check($input)) {
     PyErr_SetString(PyExc_TypeError, "expected a set of strings");
     SWIG_fail;
@@ -420,21 +420,15 @@ typedef PyObject PyAgrumDict;
   if (!_iter) SWIG_fail;
   PyObject* _item;
   while ((_item = PyIter_Next(_iter)) != NULL) {
-    _tmp_uss.insert(PyAgrumHelper::stringFromPyObject(_item));
+    _tmp_ss.insert(PyAgrumHelper::stringFromPyObject(_item));
     Py_DECREF(_item);
   }
   Py_DECREF(_iter);
   if (PyErr_Occurred()) SWIG_fail;
-  $1 = &_tmp_uss;
+  $1 = &_tmp_ss;
 }
-%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) const std::unordered_set<std::string>& {
+%typemap(typecheck, precedence=SWIG_TYPECHECK_STRING_ARRAY) const std::set<std::string>& {
   $1 = PyAnySet_Check($input) ? 1 : 0;
-}
-
-// std::unordered_set<std::string> -> Python frozenset[str]
-%typemap(out) const std::unordered_set<std::string>& {
-  $result = PyAgrumHelper::PyFrozenSetFrom(*$1, PyAgrumHelper::PyStr);
-  if (!$result) SWIG_fail;
 }
 
 // std::set<std::string> -> Python frozenset[str]

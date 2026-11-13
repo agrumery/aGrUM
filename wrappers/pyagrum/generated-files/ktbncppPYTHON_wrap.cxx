@@ -8175,11 +8175,11 @@ fail:
 SWIGINTERN PyObject *_wrap_KTBN_fromBN__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
-  std::unordered_set< std::string > *arg2 = 0 ;
+  std::set< std::string > *arg2 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::unordered_set< std::string > _tmp_uss2 ;
+  std::set< std::string > _tmp_ss2 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   gum::KTBN< double > result;
@@ -8203,12 +8203,12 @@ SWIGINTERN PyObject *_wrap_KTBN_fromBN__SWIG_0(PyObject *self, Py_ssize_t nobjs,
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss2.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss2.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg2 = &_tmp_uss2;
+    arg2 = &_tmp_ss2;
   }
   res3 = SWIG_ConvertPtr(swig_obj[2], &argp3,SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t, 0 |  0 );
   if (!SWIG_IsOK(res3)) {
@@ -8217,7 +8217,7 @@ SWIGINTERN PyObject *_wrap_KTBN_fromBN__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   arg3 = reinterpret_cast< std::vector< std::string,std::allocator< std::string > > * >(argp3);
   {
     try {
-      result = gum::KTBN< double >::SWIGTEMPLATEDISAMBIGUATOR fromBN((gum::BayesNet< double > const &)*arg1,(std::unordered_set< std::string > const &)*arg2,arg3);
+      result = gum::KTBN< double >::SWIGTEMPLATEDISAMBIGUATOR fromBN((gum::BayesNet< double > const &)*arg1,(std::set< std::string > const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -8233,10 +8233,10 @@ fail:
 SWIGINTERN PyObject *_wrap_KTBN_fromBN__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
-  std::unordered_set< std::string > *arg2 = 0 ;
+  std::set< std::string > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  std::unordered_set< std::string > _tmp_uss2 ;
+  std::set< std::string > _tmp_ss2 ;
   gum::KTBN< double > result;
   
   (void)self;
@@ -8258,16 +8258,16 @@ SWIGINTERN PyObject *_wrap_KTBN_fromBN__SWIG_1(PyObject *self, Py_ssize_t nobjs,
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss2.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss2.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg2 = &_tmp_uss2;
+    arg2 = &_tmp_ss2;
   }
   {
     try {
-      result = gum::KTBN< double >::SWIGTEMPLATEDISAMBIGUATOR fromBN((gum::BayesNet< double > const &)*arg1,(std::unordered_set< std::string > const &)*arg2);
+      result = gum::KTBN< double >::SWIGTEMPLATEDISAMBIGUATOR fromBN((gum::BayesNet< double > const &)*arg1,(std::set< std::string > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -8339,8 +8339,8 @@ SWIGINTERN PyObject *_wrap_KTBN_fromBN(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'KTBN_fromBN'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::KTBN< double >::fromBN(gum::BayesNet< double > const &,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > *)\n"
-    "    gum::KTBN< double >::fromBN(gum::BayesNet< double > const &,std::unordered_set< std::string > const &)\n"
+    "    gum::KTBN< double >::fromBN(gum::BayesNet< double > const &,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > *)\n"
+    "    gum::KTBN< double >::fromBN(gum::BayesNet< double > const &,std::set< std::string > const &)\n"
     "    gum::KTBN< double >::fromBN(gum::BayesNet< double > const &)\n");
   return 0;
 }
@@ -13676,7 +13676,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_0(PyObject *self, Py_ssize_t no
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg6 = 0 ;
   bool arg7 ;
   bool arg8 ;
@@ -13686,7 +13686,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_0(PyObject *self, Py_ssize_t no
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   std::vector< std::string > _tmp_vs6 ;
   bool val7 ;
   int ecode7 = 0 ;
@@ -13753,12 +13753,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_0(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     if (!PySequence_Check(swig_obj[5]) || PyUnicode_Check(swig_obj[5])) {
@@ -13795,7 +13795,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_0(PyObject *self, Py_ssize_t no
   arg8 = static_cast< bool >(val8);
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7,arg8);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7,arg8);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -13826,7 +13826,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_1(PyObject *self, Py_ssize_t no
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg6 = 0 ;
   bool arg7 ;
   PyObject *bytes1 = NULL ;
@@ -13835,7 +13835,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_1(PyObject *self, Py_ssize_t no
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   std::vector< std::string > _tmp_vs6 ;
   bool val7 ;
   int ecode7 = 0 ;
@@ -13900,12 +13900,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_1(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     if (!PySequence_Check(swig_obj[5]) || PyUnicode_Check(swig_obj[5])) {
@@ -13937,7 +13937,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_1(PyObject *self, Py_ssize_t no
   arg7 = static_cast< bool >(val7);
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -13968,7 +13968,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_2(PyObject *self, Py_ssize_t no
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg6 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
@@ -13976,7 +13976,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_2(PyObject *self, Py_ssize_t no
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   std::vector< std::string > _tmp_vs6 ;
   gum::learning::KTBNLearner< double > *result = 0 ;
   
@@ -14039,12 +14039,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_2(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     if (!PySequence_Check(swig_obj[5]) || PyUnicode_Check(swig_obj[5])) {
@@ -14071,7 +14071,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_2(PyObject *self, Py_ssize_t no
   }
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -14102,14 +14102,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_3(PyObject *self, Py_ssize_t no
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
   size_t val3 ;
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   gum::learning::KTBNLearner< double > *result = 0 ;
   
   (void)self;
@@ -14171,16 +14171,16 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_3(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -14675,7 +14675,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_8(PyObject *self, Py_ssize_t no
   gum::Size arg3 ;
   gum::Size arg4 ;
   gum::BayesNet< double > *arg5 = 0 ;
-  std::unordered_set< std::string > *arg6 = 0 ;
+  std::set< std::string > *arg6 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg7 = 0 ;
   bool arg8 ;
   PyObject *bytes1 = NULL ;
@@ -14686,7 +14686,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_8(PyObject *self, Py_ssize_t no
   int ecode4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  std::unordered_set< std::string > _tmp_uss6 ;
+  std::set< std::string > _tmp_ss6 ;
   std::vector< std::string > _tmp_vs7 ;
   bool val8 ;
   int ecode8 = 0 ;
@@ -14759,12 +14759,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_8(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss6.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss6.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg6 = &_tmp_uss6;
+    arg6 = &_tmp_ss6;
   }
   {
     if (!PySequence_Check(swig_obj[6]) || PyUnicode_Check(swig_obj[6])) {
@@ -14796,7 +14796,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_8(PyObject *self, Py_ssize_t no
   arg8 = static_cast< bool >(val8);
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::unordered_set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7,arg8);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7,arg8);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -14828,7 +14828,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_9(PyObject *self, Py_ssize_t no
   gum::Size arg3 ;
   gum::Size arg4 ;
   gum::BayesNet< double > *arg5 = 0 ;
-  std::unordered_set< std::string > *arg6 = 0 ;
+  std::set< std::string > *arg6 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg7 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
@@ -14838,7 +14838,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_9(PyObject *self, Py_ssize_t no
   int ecode4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  std::unordered_set< std::string > _tmp_uss6 ;
+  std::set< std::string > _tmp_ss6 ;
   std::vector< std::string > _tmp_vs7 ;
   gum::learning::KTBNLearner< double > *result = 0 ;
   
@@ -14909,12 +14909,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_9(PyObject *self, Py_ssize_t no
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss6.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss6.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg6 = &_tmp_uss6;
+    arg6 = &_tmp_ss6;
   }
   {
     if (!PySequence_Check(swig_obj[6]) || PyUnicode_Check(swig_obj[6])) {
@@ -14941,7 +14941,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_9(PyObject *self, Py_ssize_t no
   }
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::unordered_set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -14973,7 +14973,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_10(PyObject *self, Py_ssize_t n
   gum::Size arg3 ;
   gum::Size arg4 ;
   gum::BayesNet< double > *arg5 = 0 ;
-  std::unordered_set< std::string > *arg6 = 0 ;
+  std::set< std::string > *arg6 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
   size_t val3 ;
@@ -14982,7 +14982,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_10(PyObject *self, Py_ssize_t n
   int ecode4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  std::unordered_set< std::string > _tmp_uss6 ;
+  std::set< std::string > _tmp_ss6 ;
   gum::learning::KTBNLearner< double > *result = 0 ;
   
   (void)self;
@@ -15052,16 +15052,16 @@ SWIGINTERN PyObject *_wrap_new_KTBNLearner__SWIG_10(PyObject *self, Py_ssize_t n
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss6.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss6.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg6 = &_tmp_uss6;
+    arg6 = &_tmp_ss6;
   }
   {
     try {
-      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::unordered_set< std::string > const &)*arg6);
+      result = (gum::learning::KTBNLearner< double > *)new gum::learning::KTBNLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::set< std::string > const &)*arg6);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -15409,17 +15409,17 @@ check_11:
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_KTBNLearner'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool,bool)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool,bool)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &)\n"
     "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::vector< std::string,std::allocator< std::string > > const &,bool,bool)\n"
     "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
     "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::vector< std::string,std::allocator< std::string > > const &)\n"
     "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
-    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::unordered_set< std::string > const &)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
+    "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::set< std::string > const &)\n"
     "    gum::learning::KTBNLearner< double >::KTBNLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &)\n");
   return 0;
 }
@@ -19439,7 +19439,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_0(PyObject *self, Py_ss
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg6 = 0 ;
   bool arg7 ;
   PyObject *bytes1 = NULL ;
@@ -19448,7 +19448,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_0(PyObject *self, Py_ss
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   std::vector< std::string > _tmp_vs6 ;
   bool val7 ;
   int ecode7 = 0 ;
@@ -19513,12 +19513,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_0(PyObject *self, Py_ss
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     if (!PySequence_Check(swig_obj[5]) || PyUnicode_Check(swig_obj[5])) {
@@ -19550,7 +19550,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_0(PyObject *self, Py_ss
   arg7 = static_cast< bool >(val7);
   {
     try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7);
+      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6,arg7);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -19581,7 +19581,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_1(PyObject *self, Py_ss
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg6 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
@@ -19589,7 +19589,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_1(PyObject *self, Py_ss
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   std::vector< std::string > _tmp_vs6 ;
   gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
   
@@ -19652,12 +19652,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_1(PyObject *self, Py_ss
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     if (!PySequence_Check(swig_obj[5]) || PyUnicode_Check(swig_obj[5])) {
@@ -19684,7 +19684,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_1(PyObject *self, Py_ss
   }
   {
     try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6);
+      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5,(std::vector< std::string,std::allocator< std::string > > const &)*arg6);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -19715,14 +19715,14 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_2(PyObject *self, Py_ss
   std::string_view arg2 ;
   gum::Size arg3 ;
   gum::Size arg4 ;
-  std::unordered_set< std::string > *arg5 = 0 ;
+  std::set< std::string > *arg5 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
   size_t val3 ;
   int ecode3 = 0 ;
   size_t val4 ;
   int ecode4 = 0 ;
-  std::unordered_set< std::string > _tmp_uss5 ;
+  std::set< std::string > _tmp_ss5 ;
   gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
   
   (void)self;
@@ -19784,16 +19784,16 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_2(PyObject *self, Py_ss
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss5.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss5.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg5 = &_tmp_uss5;
+    arg5 = &_tmp_ss5;
   }
   {
     try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::unordered_set< std::string > const &)*arg5);
+      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(std::set< std::string > const &)*arg5);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -20156,7 +20156,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_6(PyObject *self, Py_ss
   gum::Size arg3 ;
   gum::Size arg4 ;
   gum::BayesNet< double > *arg5 = 0 ;
-  std::unordered_set< std::string > *arg6 = 0 ;
+  std::set< std::string > *arg6 = 0 ;
   std::vector< std::string,std::allocator< std::string > > *arg7 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
@@ -20166,7 +20166,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_6(PyObject *self, Py_ss
   int ecode4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  std::unordered_set< std::string > _tmp_uss6 ;
+  std::set< std::string > _tmp_ss6 ;
   std::vector< std::string > _tmp_vs7 ;
   gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
   
@@ -20237,12 +20237,12 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_6(PyObject *self, Py_ss
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss6.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss6.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg6 = &_tmp_uss6;
+    arg6 = &_tmp_ss6;
   }
   {
     if (!PySequence_Check(swig_obj[6]) || PyUnicode_Check(swig_obj[6])) {
@@ -20269,7 +20269,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_6(PyObject *self, Py_ss
   }
   {
     try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::unordered_set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7);
+      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::set< std::string > const &)*arg6,(std::vector< std::string,std::allocator< std::string > > const &)*arg7);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -20301,7 +20301,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_7(PyObject *self, Py_ss
   gum::Size arg3 ;
   gum::Size arg4 ;
   gum::BayesNet< double > *arg5 = 0 ;
-  std::unordered_set< std::string > *arg6 = 0 ;
+  std::set< std::string > *arg6 = 0 ;
   PyObject *bytes1 = NULL ;
   PyObject *bytes2 = NULL ;
   size_t val3 ;
@@ -20310,7 +20310,7 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_7(PyObject *self, Py_ss
   int ecode4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  std::unordered_set< std::string > _tmp_uss6 ;
+  std::set< std::string > _tmp_ss6 ;
   gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
   
   (void)self;
@@ -20380,16 +20380,16 @@ SWIGINTERN PyObject *_wrap_new_KTBNAdaptiveLearner__SWIG_7(PyObject *self, Py_ss
     if (!_iter) SWIG_fail;
     PyObject* _item;
     while ((_item = PyIter_Next(_iter)) != NULL) {
-      _tmp_uss6.insert(PyAgrumHelper::stringFromPyObject(_item));
+      _tmp_ss6.insert(PyAgrumHelper::stringFromPyObject(_item));
       Py_DECREF(_item);
     }
     Py_DECREF(_iter);
     if (PyErr_Occurred()) SWIG_fail;
-    arg6 = &_tmp_uss6;
+    arg6 = &_tmp_ss6;
   }
   {
     try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::unordered_set< std::string > const &)*arg6);
+      result = (gum::learning::KTBNAdaptiveLearner< double > *)new gum::learning::KTBNAdaptiveLearner< double >(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)),(gum::BayesNet< double > const &)*arg5,(std::set< std::string > const &)*arg6);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -20658,14 +20658,14 @@ check_8:
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_KTBNAdaptiveLearner'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::unordered_set< std::string > const &)\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::set< std::string > const &)\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::vector< std::string,std::allocator< std::string > > const &,bool)\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,std::vector< std::string,std::allocator< std::string > > const &)\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::unordered_set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
-    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::unordered_set< std::string > const &)\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::set< std::string > const &,std::vector< std::string,std::allocator< std::string > > const &)\n"
+    "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &,std::set< std::string > const &)\n"
     "    gum::learning::KTBNAdaptiveLearner< double >::KTBNAdaptiveLearner(std::string_view,std::string_view,gum::Size,gum::Size,gum::BayesNet< double > const &)\n");
   return 0;
 }

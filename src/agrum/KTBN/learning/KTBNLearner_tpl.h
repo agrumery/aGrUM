@@ -129,14 +129,14 @@ namespace gum::learning {
   // =========================================================================
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                         dirPath,
-                                         std::string_view                         csvBaseName,
-                                         Size                                     nbSamples,
-                                         Size                                     k,
-                                         const std::unordered_set< std::string >& atemporalVars,
-                                         const std::vector< std::string >&        missingSymbols,
-                                         bool                                     induceTypes,
-                                         bool ignoreMissingSymbols) :
+  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                  dirPath,
+                                         std::string_view                  csvBaseName,
+                                         Size                              nbSamples,
+                                         Size                              k,
+                                         const std::set< std::string >&    atemporalVars,
+                                         const std::vector< std::string >& missingSymbols,
+                                         bool                              induceTypes,
+                                         bool                              ignoreMissingSymbols) :
       _ignoreMissingSymbols_(ignoreMissingSymbols), _prior_ktbn_(_buildPriorFromCSV_(dirPath,
                                                                                      csvBaseName,
                                                                                      k,
@@ -196,14 +196,14 @@ namespace gum::learning {
                   ignoreMissingSymbols) {}
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                         dirPath,
-                                         std::string_view                         csvBaseName,
-                                         Size                                     nbSamples,
-                                         Size                                     k,
-                                         const BayesNet< GUM_SCALAR >&            bn,
-                                         const std::unordered_set< std::string >& atemporalVars,
-                                         const std::vector< std::string >&        missingSymbols,
-                                         bool ignoreMissingSymbols) :
+  KTBNLearner< GUM_SCALAR >::KTBNLearner(std::string_view                  dirPath,
+                                         std::string_view                  csvBaseName,
+                                         Size                              nbSamples,
+                                         Size                              k,
+                                         const BayesNet< GUM_SCALAR >&     bn,
+                                         const std::set< std::string >&    atemporalVars,
+                                         const std::vector< std::string >& missingSymbols,
+                                         bool                              ignoreMissingSymbols) :
       _ignoreMissingSymbols_(ignoreMissingSymbols),
       _prior_ktbn_(_buildPriorFromBN_(k, bn, atemporalVars)) {
     // k >= 2 is already enforced by _buildPriorFromBN_ during member initialisation
@@ -952,7 +952,7 @@ namespace gum::learning {
 
 
   template < GUM_Numeric GUM_SCALAR >
-  std::unordered_set< std::string > KTBNLearner< GUM_SCALAR >::_inferAtemporalVars_(
+  std::set< std::string > KTBNLearner< GUM_SCALAR >::_inferAtemporalVars_(
       std::string_view                  dirPath,
       std::string_view                  csvBaseName,
       Size                              nbSamples,
@@ -967,12 +967,12 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBN< GUM_SCALAR > KTBNLearner< GUM_SCALAR >::_buildPriorFromCSV_(
-      std::string_view                         dirPath,
-      std::string_view                         csvBaseName,
-      Size                                     k,
-      const std::unordered_set< std::string >& atemporalVars,
-      const std::vector< std::string >&        missingSymbols,
-      bool                                     induceTypes) {
+      std::string_view                  dirPath,
+      std::string_view                  csvBaseName,
+      Size                              k,
+      const std::set< std::string >&    atemporalVars,
+      const std::vector< std::string >& missingSymbols,
+      bool                              induceTypes) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(k, "k");
 
     namespace fs = std::filesystem;
@@ -1007,10 +1007,10 @@ namespace gum::learning {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBN< GUM_SCALAR > KTBNLearner< GUM_SCALAR >::_buildPriorFromBN_(
-      Size                                     k,
-      const BayesNet< GUM_SCALAR >&            bn,
-      const std::unordered_set< std::string >& atemporalVars) {
+  KTBN< GUM_SCALAR >
+      KTBNLearner< GUM_SCALAR >::_buildPriorFromBN_(Size                           k,
+                                                    const BayesNet< GUM_SCALAR >&  bn,
+                                                    const std::set< std::string >& atemporalVars) {
     IKTBNLearner< GUM_SCALAR >::_checkMinimalOrder_(k, "k");
 
     KTBN< GUM_SCALAR > prior(k);

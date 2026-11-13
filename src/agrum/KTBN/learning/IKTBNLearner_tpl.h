@@ -142,7 +142,7 @@ namespace gum {
     }
 
     template < GUM_Numeric GUM_SCALAR >
-    std::unordered_set< std::string > IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(
+    std::set< std::string > IKTBNLearner< GUM_SCALAR >::_scanConstantColumns_(
         std::string_view                  dirPath,
         std::string_view                  csvBaseName,
         Size                              nbSamples,
@@ -218,7 +218,7 @@ namespace gum {
         }
       }
 
-      std::unordered_set< std::string > atemporalVars;
+      std::set< std::string > atemporalVars;
       for (const std::size_t c: candidates)
         atemporalVars.insert(header[c]);
       return atemporalVars;

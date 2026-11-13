@@ -47,7 +47,6 @@
 #include <set>
 #include <string>
 #include <type_traits>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -73,7 +72,7 @@ namespace gum_tests {
     /// "every variable is temporal", spelled explicitly. Needed wherever a test
     /// must select the explicit-atemporalVars overload rather than the
     /// inferring one, which is what omitting this argument now selects.
-    static inline const std::unordered_set< std::string > NO_ATEMPORAL{};
+    static inline const std::set< std::string > NO_ATEMPORAL{};
 
     // ----- deterministic trajectory fixtures -----
     // Hand-computable by construction: X alternates (X[t+1] = 1 - X[t]) from a
@@ -181,8 +180,7 @@ namespace gum_tests {
     // BN schema supplies the {0,1} domains: the CSV constructor types each
     // variable from trajectory 1 alone, which can't see atemporal domains
     // that are constant within a trajectory - see testCSVConstructor.
-    static Learner _std_(gum::Size                                k         = 2,
-                         const std::unordered_set< std::string >& atemporal = {"C", "D"}) {
+    static Learner _std_(gum::Size k = 2, const std::set< std::string >& atemporal = {"C", "D"}) {
       return Learner(_writeStd_(), "ktbnl_std", 4, k, _schema_({"X", "Y", "C", "D"}), atemporal);
     }
 
@@ -192,8 +190,7 @@ namespace gum_tests {
 
     // k=2 structure over the std schema holding exactly the given arcs
     static gum::KTBN< double > _structure_(const std::vector< std::pair< Node, Node > >& arcs,
-                                           const std::unordered_set< std::string >&      atemporal
-                                           = {"C", "D"}) {
+                                           const std::set< std::string >& atemporal = {"C", "D"}) {
       gum::KTBN< double > s(2);
       for (const std::string name: {"X", "Y", "C", "D"})
         s.add(gum::LabelizedVariable(name, "", {"0", "1"}), !atemporal.contains(name));
@@ -397,9 +394,21 @@ namespace gum_tests {
     CHECK_THROWS_AS(Learner(dir, "ktbnl_std", 5, 2, bn), const gum::IOError&);
 
     // an atemporal name absent from the CSV header / from the schema BN
-    const std::unordered_set< std::string > ghostSet{"GHOST"};
+    const std::set< std::string > ghostSet{"GHOST"};
     CHECK_THROWS_AS(Learner(dir, "ktbnl_std", 4, 2, ghostSet), const gum::InvalidArgument&);
     CHECK_THROWS_AS(Learner(dir, "ktbnl_std", 4, 2, bn, ghostSet), const gum::InvalidArgument&);
+
+    // several absent names: the first one in alphabetical order is reported, on every platform
+    const std::set< std::string > ghosts{"Z_GHOST", "M_GHOST", "A_GHOST"};
+    for (const bool withBN: {false, true}) {
+      try {
+        if (withBN) Learner(dir, "ktbnl_std", 4, 2, bn, ghosts);
+        else Learner(dir, "ktbnl_std", 4, 2, ghosts);
+        FAIL("absent atemporal names must be refused");
+      } catch (const gum::InvalidArgument& e) {
+        CHECK_NE(e.errorContent().find("'A_GHOST'"), std::string::npos);
+      }
+    }
 
     // a schema variable absent from the data
     auto ghost = _schema_({"X", "Y", "C", "D", "GHOST"});
@@ -469,12 +478,7 @@ namespace gum_tests {
     // a custom missing symbol is honoured
     _writeCSV_(dir + "/ktbnl_na1.csv", "X,Y", {"0,1", "1,0", "0,1"});
     _writeCSV_(dir + "/ktbnl_na2.csv", "X,Y", {"0,1", "NA,0", "1,1"});
-    Learner lna(dir,
-                "ktbnl_na",
-                2,
-                2,
-                std::unordered_set< std::string >{},
-                std::vector< std::string >{"NA"});
+    Learner lna(dir, "ktbnl_na", 2, 2, std::set< std::string >{}, std::vector< std::string >{"NA"});
     CHECK(lna.hasMissingValues());
 
     // with the flag, the incomplete rows are dropped instead and the internal
@@ -483,7 +487,7 @@ namespace gum_tests {
                   "ktbnl_miss",
                   2,
                   2,
-                  std::unordered_set< std::string >{},
+                  std::set< std::string >{},
                   std::vector< std::string >{"?"},
                   true,
                   /*ignoreMissingSymbols*/ true);
@@ -515,7 +519,7 @@ namespace gum_tests {
               "ktbnl_gap",
               4,
               2,
-              std::unordered_set< std::string >{},
+              std::set< std::string >{},
               std::vector< std::string >{"?"},
               true,
               /*ignoreMissingSymbols*/ true);
@@ -543,7 +547,7 @@ namespace gum_tests {
               "ktbnl_c0_",
               4,
               2,
-              std::unordered_set< std::string >{"C"},
+              std::set< std::string >{"C"},
               std::vector< std::string >{"?"},
               true,
               /*ignoreMissingSymbols*/ true);

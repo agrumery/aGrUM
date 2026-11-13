@@ -81,6 +81,7 @@
 #include <filesystem>
 #include <fstream>
 #include <numeric>
+#include <set>
 #include <string>
 #include <string_view>
 #include <unordered_set>
@@ -387,7 +388,7 @@ namespace gum {
       /// scanning stops opening further trajectories once that list is empty
       /// — falsification is one-way, so nothing left to test can ever become
       /// atemporal again.
-      static std::unordered_set< std::string >
+      static std::set< std::string >
           _scanConstantColumns_(std::string_view                  dirPath,
                                 std::string_view                  csvBaseName,
                                 Size                              nbSamples,

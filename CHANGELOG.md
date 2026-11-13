@@ -210,6 +210,10 @@
       computation is always done.
     - `act guideline`: new check `examples` (in the default checks), an example for every documented member and
       function of pyAgrum (it was a test of pyAgrum).
+    - **The atemporal names of `KTBN::fromBN`, `KTBNLearner` and `KTBNAdaptiveLearner` are a
+      `std::set<std::string>` (they were a `std::unordered_set<std::string>`)**: the names are checked and reported in
+      the same order on every platform. C++ code naming `std::unordered_set` must name `std::set` (no change in
+      pyAgrum, which still takes a Python `set`).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 

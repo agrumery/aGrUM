@@ -76,13 +76,13 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >::KTBNAdaptiveLearner(
-      std::string_view                         dirPath,
-      std::string_view                         csvBaseName,
-      Size                                     nbSamples,
-      Size                                     kMax,
-      const std::unordered_set< std::string >& atemporalVars,
-      const std::vector< std::string >&        missingSymbols,
-      bool                                     induceTypes) :
+      std::string_view                  dirPath,
+      std::string_view                  csvBaseName,
+      Size                              nbSamples,
+      Size                              kMax,
+      const std::set< std::string >&    atemporalVars,
+      const std::vector< std::string >& missingSymbols,
+      bool                              induceTypes) :
       _dirPath_(dirPath), _csvBaseName_(csvBaseName), _nbSamples_(nbSamples), _kMax_(kMax),
       _atemporalVars_(atemporalVars), _missingSymbols_(missingSymbols), _induceTypes_(induceTypes) {
     // cheap argument checks first, so bad calls fail before touching the disk
@@ -140,7 +140,7 @@ namespace gum::learning {
           induceTypes) {}
 
   template < GUM_Numeric GUM_SCALAR >
-  std::unordered_set< std::string > KTBNAdaptiveLearner< GUM_SCALAR >::_inferAtemporalVars_(
+  std::set< std::string > KTBNAdaptiveLearner< GUM_SCALAR >::_inferAtemporalVars_(
       std::string_view                  dirPath,
       std::string_view                  csvBaseName,
       Size                              nbSamples,
@@ -156,13 +156,13 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >::KTBNAdaptiveLearner(
-      std::string_view                         dirPath,
-      std::string_view                         csvBaseName,
-      Size                                     nbSamples,
-      Size                                     kMax,
-      const BayesNet< GUM_SCALAR >&            bn,
-      const std::unordered_set< std::string >& atemporalVars,
-      const std::vector< std::string >&        missingSymbols) :
+      std::string_view                  dirPath,
+      std::string_view                  csvBaseName,
+      Size                              nbSamples,
+      Size                              kMax,
+      const BayesNet< GUM_SCALAR >&     bn,
+      const std::set< std::string >&    atemporalVars,
+      const std::vector< std::string >& missingSymbols) :
       _dirPath_(dirPath), _csvBaseName_(csvBaseName), _nbSamples_(nbSamples), _kMax_(kMax),
       _atemporalVars_(atemporalVars), _missingSymbols_(missingSymbols), _induceTypes_(false),
       _prior_bn_(std::make_unique< BayesNet< GUM_SCALAR > >(bn)) {

@@ -880,10 +880,9 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  KTBN< GUM_SCALAR >
-      KTBN< GUM_SCALAR >::fromBN(const BayesNet< GUM_SCALAR >&            bn,
-                                 const std::unordered_set< std::string >& atemporalNodes,
-                                 std::vector< std::string >*              warnings) {
+  KTBN< GUM_SCALAR > KTBN< GUM_SCALAR >::fromBN(const BayesNet< GUM_SCALAR >&  bn,
+                                                const std::set< std::string >& atemporalNodes,
+                                                std::vector< std::string >*    warnings) {
     KTBN< GUM_SCALAR > res(1);   // _determineNodesFromBN_ below will modify this k=1
     res._bn_ = bn;
     res._determineNodesFromBN_(atemporalNodes, warnings);
@@ -891,9 +890,8 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void KTBN< GUM_SCALAR >::_determineNodesFromBN_(
-      const std::unordered_set< std::string >& atemporalNodes,
-      std::vector< std::string >*              warnings) {
+  void KTBN< GUM_SCALAR >::_determineNodesFromBN_(const std::set< std::string >& atemporalNodes,
+                                                  std::vector< std::string >*    warnings) {
     _temporal_.clear();
     _atemporal_.clear();
 

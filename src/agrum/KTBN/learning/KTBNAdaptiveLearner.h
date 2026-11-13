@@ -130,16 +130,20 @@ namespace gum {
        *
        * @warning A @b braced literal is ambiguous between this overload and the
        * inferring one, since it could equally initialize either's fifth
-       * parameter. Name the type — @c std::unordered_set<std::string>{"C","D"}
+       * parameter. Name the type — @c std::set<std::string>{"C","D"}
        * — or pass a named variable.
+       *
+       * @note Changed after 3.3.2: @p atemporalVars is a @c std::set<std::string> (it was a
+       * @c std::unordered_set<std::string>), so that the names are checked and reported in the
+       * same order on every platform.
        */
-      KTBNAdaptiveLearner(std::string_view                         dirPath,
-                          std::string_view                         csvBaseName,
-                          Size                                     nbSamples,
-                          Size                                     kMax,
-                          const std::unordered_set< std::string >& atemporalVars,
-                          const std::vector< std::string >&        missingSymbols = {"?"},
-                          bool                                     induceTypes    = true);
+      KTBNAdaptiveLearner(std::string_view                  dirPath,
+                          std::string_view                  csvBaseName,
+                          Size                              nbSamples,
+                          Size                              kMax,
+                          const std::set< std::string >&    atemporalVars,
+                          const std::vector< std::string >& missingSymbols = {"?"},
+                          bool                              induceTypes    = true);
 
       /**
        * @brief Structure-learning constructor — atemporal variables inferred from the CSVs.
@@ -208,14 +212,18 @@ namespace gum {
        * @param atemporalVars  Base names of the atemporal (static) variables
        *        present in @p bn.
        * @param missingSymbols Symbols in the CSVs to interpret as missing values.
+       *
+       * @note Changed after 3.3.2: @p atemporalVars is a @c std::set<std::string> (it was a
+       * @c std::unordered_set<std::string>), so that the names are checked and reported in the
+       * same order on every platform.
        */
-      KTBNAdaptiveLearner(std::string_view                         dirPath,
-                          std::string_view                         csvBaseName,
-                          Size                                     nbSamples,
-                          Size                                     kMax,
-                          const BayesNet< GUM_SCALAR >&            bn,
-                          const std::unordered_set< std::string >& atemporalVars  = {},
-                          const std::vector< std::string >&        missingSymbols = {"?"});
+      KTBNAdaptiveLearner(std::string_view                  dirPath,
+                          std::string_view                  csvBaseName,
+                          Size                              nbSamples,
+                          Size                              kMax,
+                          const BayesNet< GUM_SCALAR >&     bn,
+                          const std::set< std::string >&    atemporalVars  = {},
+                          const std::vector< std::string >& missingSymbols = {"?"});
 
       ~KTBNAdaptiveLearner();
 
@@ -535,12 +543,12 @@ namespace gum {
       Size _kMin_{2};
 
       /// base names of the atemporal (static) variables
-      std::unordered_set< std::string > _atemporalVars_;
+      std::set< std::string > _atemporalVars_;
 
       /// all base variable names (temporal + atemporal), read from the first
       /// trajectory CSV header at construction. Authoritative universe used by
       /// the constraint setters to reject names that do not exist.
-      std::unordered_set< std::string > _baseNames_;
+      std::set< std::string > _baseNames_;
 
       /// symbols in the CSVs to interpret as missing values
       std::vector< std::string > _missingSymbols_;
@@ -652,7 +660,7 @@ namespace gum {
       /// atemporal-inferring constructor's member-initialiser list, before
       /// this object exists, so the checks live here rather than in the body
       /// — otherwise a bad argument would only surface after a wasted scan.
-      static std::unordered_set< std::string >
+      static std::set< std::string >
           _inferAtemporalVars_(std::string_view                  dirPath,
                                std::string_view                  csvBaseName,
                                Size                              nbSamples,

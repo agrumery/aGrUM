@@ -58,7 +58,6 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
@@ -649,10 +648,14 @@ namespace gum {
      * alone under the bracket one) yields @f$k=1@f$, where a single slice is
      * a @e complete process: it is kept temporal, silently. List it in
      * @p atemporalNodes to say otherwise.
+     *
+     * @note Changed after 3.3.2: @p atemporalNodes is a @c std::set<std::string> (it was a
+     * @c std::unordered_set<std::string>), so that the names are checked and reported in the
+     * same order on every platform.
      */
-    static KTBN< GUM_SCALAR > fromBN(const BayesNet< GUM_SCALAR >&            bn,
-                                     const std::unordered_set< std::string >& atemporalNodes = {},
-                                     std::vector< std::string >*              warnings = nullptr);
+    static KTBN< GUM_SCALAR > fromBN(const BayesNet< GUM_SCALAR >&  bn,
+                                     const std::set< std::string >& atemporalNodes = {},
+                                     std::vector< std::string >*    warnings       = nullptr);
 
     /// @}
     // ===========================================================================
@@ -753,8 +756,8 @@ namespace gum {
 
     /// @brief Rebuilds the cached name sets from the storage engine content
     /// (used by fromBN()/load(); decodes names once).
-    void _determineNodesFromBN_(const std::unordered_set< std::string >& atemporalNodes,
-                                std::vector< std::string >*              warnings);
+    void _determineNodesFromBN_(const std::set< std::string >& atemporalNodes,
+                                std::vector< std::string >*    warnings);
 
     /// @brief Resolves a user filename to <tt>(filepath, binary)</tt>: ensures a
     /// <tt>.jgum</tt>/<tt>.bgum</tt> extension (<tt>.bgum</tt> appended by default)

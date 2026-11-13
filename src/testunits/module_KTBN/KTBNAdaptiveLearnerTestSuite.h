@@ -48,7 +48,6 @@
 #include <string>
 #include <type_traits>
 #include <unordered_map>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -72,7 +71,7 @@ namespace gum_tests {
     /// "every variable is temporal", spelled explicitly. Needed wherever a test
     /// must select the explicit-atemporalVars overload rather than the
     /// inferring one, which is what omitting this argument now selects.
-    static inline const std::unordered_set< std::string > NO_ATEMPORAL{};
+    static inline const std::set< std::string > NO_ATEMPORAL{};
 
     // ----- deterministic fixtures ------------------------------------------
     //
@@ -384,9 +383,21 @@ namespace gum_tests {
     CHECK_THROWS_AS(Learner(dir, "kad_alt", 0, 3, bn), const gum::InvalidArgument&);
 
     // a declared atemporal name absent from the header / from the schema BN
-    const std::unordered_set< std::string > ghost{"GHOST"};
+    const std::set< std::string > ghost{"GHOST"};
     CHECK_THROWS_AS(Learner(dir, "kad_alt", 4, 3, ghost), const gum::InvalidArgument&);
     CHECK_THROWS_AS(Learner(dir, "kad_alt", 4, 3, bn, ghost), const gum::InvalidArgument&);
+
+    // several absent names: the first one in alphabetical order is reported, on every platform
+    const std::set< std::string > ghosts{"Z_GHOST", "M_GHOST", "A_GHOST"};
+    for (const bool withBN: {false, true}) {
+      try {
+        if (withBN) Learner(dir, "kad_alt", 4, 3, bn, ghosts);
+        else Learner(dir, "kad_alt", 4, 3, ghosts);
+        FAIL("absent atemporal names must be refused");
+      } catch (const gum::InvalidArgument& e) {
+        CHECK_NE(e.errorContent().find("'A_GHOST'"), std::string::npos);
+      }
+    }
 
     // explicit constructor: a missing trajectory file is NOT seen at
     // construction (only trajectory 1's header is read); it surfaces at
