@@ -280,9 +280,9 @@ Remove an arc from the graph.
 
 Parameters
 ----------
-tail : int
+n1 : int
     the id of the tail node
-head : int
+n2 : int
     the id of the head node
 
 Raises
@@ -344,15 +344,15 @@ Check whether an arc exists between two nodes.
 
 Parameters
 ----------
-tail : int
+n1 : int
     the id of the tail node
-head : int
+n2 : int
     the id of the head node
 
 Returns
 -------
 bool
-    True if the arc (tail, head) exists
+    True if the arc (n1, n2) exists
 "
 
 %feature("docstring") gum::PDAG::existsEdge

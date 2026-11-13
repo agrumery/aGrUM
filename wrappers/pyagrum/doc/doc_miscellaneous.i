@@ -159,10 +159,14 @@ Only active in debug build mode (GUM_DEBUG_MODE). No output in release mode.
 
 %feature("docstring") gum::randomGeneratorSeed
 "
+Give the seed of the pseudo-random generator, to replay a sequence of draws.
+
 Returns
 -------
 int
-  the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.
+  the seed of the generator: the value given to the last call to `pyagrum.initRandom` or, if it was 0, the value
+  taken from the current time. Given to `pyagrum.initRandom`, or used as ``core.randomSeed`` in a file
+  ``pyagrum.ini``, it repeats the same sequence of pseudo-random numbers.
 "
 
 %feature("docstring") gum::randomValue

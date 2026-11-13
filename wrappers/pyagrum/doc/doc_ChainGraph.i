@@ -99,17 +99,17 @@ Insert a new edge into the graph.
 
 Parameters
 ----------
-n1 : int
+first : int
   the id of one node of the new inserted edge
-n2 : int
+second : int
   the id of the other node of the new inserted edge
 
 Raises
 ------
 pyagrum.InvalidNode
-  If n1 or n2 does not belong to the graph nodes.
+  If first or second does not belong to the graph nodes.
 pyagrum.InvalidEdge
-  If an arc already connects n1 and n2.
+  If an arc already connects first and second.
 pyagrum.InvalidPartiallyDirectedCycle
   If the edge would create a partially directed cycle.
 "

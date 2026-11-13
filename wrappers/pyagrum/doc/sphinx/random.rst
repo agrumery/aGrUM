@@ -1,7 +1,7 @@
 Random numbers from aGrUM
 =========================
 
-These functions use the aGrUM's peuso-random number generator (``mt19937``)from pyagrum. It produces 32-bit pseudo-random numbers using the well-known and popular algorithm named Mersenne twister algorithm. ``mt19937`` stands for ``m``ersenne ``t``wister with a long period of 2``19937`` – 1 which means mt19937 produces a sequence of 32-bit integers that only repeats itself after 219937 – 1 number have been generated.
+These functions use the pseudo-random number generator of aGrUM (``mt19937``). It produces 32-bit pseudo-random numbers with the Mersenne twister algorithm: ``mt19937`` stands for Mersenne twister with a period of 2\ :sup:`19937` − 1, which means that the sequence of 32-bit integers only repeats itself after 2\ :sup:`19937` − 1 numbers have been generated.
 
 Random functions
 ----------------
@@ -9,6 +9,7 @@ Random functions
 .. pyagrum-functions::
 
    pyagrum.initRandom
+   pyagrum.randomGeneratorSeed
    pyagrum.randomProba
    pyagrum.randomGamma
    pyagrum.randomShuffle

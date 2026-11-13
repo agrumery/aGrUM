@@ -49,8 +49,7 @@
 Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
 is notified when the structure of the model is changed.
 
-PythonBNListener(model:gum.DAGmodel,vnm:gum.VariableNodeMap) -> PythonBNListener
-    default constructor
+PythonBNListener(model, vnm) -> PythonBNListener
 
 Notes
 -----
@@ -62,7 +61,8 @@ Parameters
 model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
     The model to listen to
 vnm : VariableNodeMap
-    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+    the correspondence between the ids of the nodes and the names of the variables (usually
+    ``model._variableNodeMap()``)
 "
 
 
@@ -108,46 +108,53 @@ pyfunc : lambda expression
 
 %feature("docstring") PythonBNListener::whenArcAdded
 "
-Callback called when an arc is added to the Bayesian network.
+Called by aGrUM when an arc is added to the model: calls the function given to ``setWhenArcAdded``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 src : int
-    the tail node id
+    the id of the tail of the arc
 dst : int
-    the head node id
+    the id of the head of the arc
 "
 
 %feature("docstring") PythonBNListener::whenArcDeleted
 "
-Callback called when an arc is removed from the Bayesian network.
+Called by aGrUM when an arc is removed from the model: calls the function given to ``setWhenArcDeleted``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 src : int
-    the tail node id
+    the id of the tail of the arc
 dst : int
-    the head node id
+    the id of the head of the arc
 "
 
 %feature("docstring") PythonBNListener::whenNodeAdded
 "
-Callback called when a node is added to the Bayesian network.
+Called by aGrUM when a node is added to the model: calls the function given to ``setWhenNodeAdded``
+with the id and the name of the node.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 id : int
     the id of the new node
-name : str
-    the name of the new node
 "
 
 %feature("docstring") PythonBNListener::whenNodeDeleted
 "
-Callback called when a node is removed from the Bayesian network.
+Called by aGrUM when a node is removed from the model: calls the function given to ``setWhenNodeDeleted``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 id : int
-    the id of the deleted node
+    the id of the removed node
 "

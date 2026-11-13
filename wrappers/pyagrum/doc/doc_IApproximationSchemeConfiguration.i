@@ -173,7 +173,7 @@ pyagrum.OutOfBounds
 "
 Parameters
 ----------
-tiemout : float
+timeout : float
     stopping criterion on timeout (in seconds)
 
 Raises

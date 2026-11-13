@@ -215,22 +215,22 @@ filename:str
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::varOrder
 "
-The actual order for the variable (as a tuple of NodeId)
+The current order of the variables (as a tuple of node ids).
 
 Returns
 -------
-tuple
-  the tuple of NodeId
+tuple[int, ...]
+  the ids of the variables, in their order in the database
 "
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::varOrderNames
 "
-The actual order for the variable (as a tuple of NodeId)
+The current order of the variables (as a tuple of names).
 
 Returns
 -------
-tuple
-  the tuple of names
+tuple[str, ...]
+  the names of the variables, in their order in the database
 "
 
 %feature("docstring") gum::learning::BNDatabaseGenerator::setDiscretizedLabelModeInterval

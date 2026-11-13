@@ -7,3 +7,4 @@ classifier built on top of a :class:`pyagrum.BayesNet`. It implements the standa
 classifiers into existing scikit-learn pipelines.
 
 .. pyagrum-class:: pyagrum.skbn.BNClassifier
+   :exclude-members: set_score_request

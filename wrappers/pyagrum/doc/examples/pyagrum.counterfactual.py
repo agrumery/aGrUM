@@ -1,14 +1,17 @@
 import pyagrum as gum
 
-bn = gum.fastBN("X->Y->Z")
-bn.cpt("X").fillWith([0.4, 0.6])
-bn.cpt("Y").fillWith([0.9, 0.1, 0.2, 0.8])
-bn.cpt("Z").fillWith([0.7, 0.3, 0.1, 0.9])
+# U is the exogenous cause of Y (its noise), Y = X xor U
+bn = gum.fastBN("X->Y<-U")
+bn.cpt("X").fillWith([0.5, 0.5])
+bn.cpt("U").fillWith([0.3, 0.7])
+for x in (0, 1):
+  for u in (0, 1):
+    bn.cpt("Y")[{"X": x, "U": u}] = [1, 0] if x == u else [0, 1]
 cm = gum.CausalModel(bn)
-# Y=1 was observed: what would Z have been if X had been 0 ?
-print(gum.counterfactual(cm, on="Z", whatif="X", profile={"Y": "1"}, values={"X": "0"}))
-#
-#   Z                │
-# 0        │1        │
-# ─────────│─────────│
-#  0.6400  │ 0.3600  │
+# X=1 and Y=1 were observed (hence U=0): what would Y have been if X had been 0 ?
+gum.counterfactual(cm, on="Y", whatif="X", profile={"X": "1", "Y": "1"}, values={"X": "0"}).tolist()
+# [1.0, 0.0]
+
+# without the profile, the effect of the intervention only: P(Y | do(X=0))
+gum.counterfactual(cm, on="Y", whatif="X", profile={}, values={"X": "0"}).tolist()
+# [0.3, 0.7]

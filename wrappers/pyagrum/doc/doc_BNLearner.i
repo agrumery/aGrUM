@@ -1530,7 +1530,7 @@ mode. See method ``EMsetVerbosity()``.
 "
 Parameters
 ----------
-var_names : str
+var_name : str
     a variable's name
 
 Returns

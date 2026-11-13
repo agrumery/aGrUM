@@ -97,7 +97,7 @@ card : int
 Returns
 -------
 int
-    The NodeId of the variable in the network
+    the id of the variable in the network
 
 Raises
 ------
@@ -139,26 +139,24 @@ Store the lower and upper probabilities of each node X over the 'True' modality.
 
 %feature("docstring") gum::credal::CredalNet::credalNet_currentCpt
 "
-Warnings
---------
-Experimental function - Return type to be wrapped
+The credal sets of the nodes, up to date (after ``bnToCredal`` or ``intervalToCredal``...).
 
 Returns
 -------
-tbw
-    a constant reference to the (up-to-date) CredalNet CPTs.
+dict[int, list[list[list[float]]]]
+    for each node id, for each instantiation of its parents (by index), the vertices of its credal set (one list of
+    probabilities per vertex)
 "
 
 %feature("docstring") gum::credal::CredalNet::credalNet_srcCpt
 "
-Warnings
---------
-Experimental function - Return type to be wrapped
+The credal sets of the nodes, as given when the credal net was built or set.
 
 Returns
 -------
-tbw
-    a constant reference to the (up-to-date) CredalNet CPTs.
+dict[int, list[list[list[float]]]]
+    for each node id, for each instantiation of its parents (by index), the vertices of its credal set (one list of
+    probabilities per vertex)
 "
 
 %feature("docstring") gum::credal::CredalNet::currentNodeType
@@ -166,7 +164,7 @@ tbw
 Parameters
 ----------
 id : int
-    The constant reference to the choosen NodeId
+    the id of the node
 
 Returns
 -------
@@ -283,26 +281,24 @@ DOES change the BayesNet (s) associated to this credal net !
 
 %feature("docstring") gum::credal::CredalNet::get_binaryCPT_max
 "
-Warnings
---------
-Experimental function - Return type to be wrapped
+The upper probabilities of the value 1 of each binary node.
 
 Returns
 -------
-tbw
-    a constant reference to the upper probabilities of each node X over the 'True' modality
+list[list[float]]
+    for each node, the upper probabilities P(X=1 | pa(X)=j), one per instantiation j of its parents (empty before the
+    computation of the binary credal net)
 "
 
 %feature("docstring") gum::credal::CredalNet::get_binaryCPT_min
 "
-Warnings
---------
-Experimental function - Return type to be wrapped
+The lower probabilities of the value 1 of each binary node.
 
 Returns
 -------
-tbw
-    a constant reference to the lower probabilities of each node X over the 'True' modality
+list[list[float]]
+    for each node, the lower probabilities P(X=1 | pa(X)=j), one per instantiation j of its parents (empty before the
+    computation of the binary credal net)
 "
 
 %feature("docstring") gum::credal::CredalNet::hasComputedCPTMinMax
@@ -388,7 +384,7 @@ int
 Parameters
 ----------
 id : int
-    the constant reference to the choosen NodeId
+    the id of the node
 
 Returns
 -------

@@ -49,8 +49,7 @@
 Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
 when the structure of the model is changed.
 
-PythonMRFListener(model:gum.UGmodel,vnm:gum.VariableNodeMap) -> PythonMRFListener
-    default constructor
+PythonMRFListener(model, vnm) -> PythonMRFListener
 
 Notes
 -----
@@ -61,7 +60,8 @@ Parameters
 model : pyagrum.MarkovRandomField
     The model to listen to
 vnm : VariableNodeMap
-    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+    the correspondence between the ids of the nodes and the names of the variables (usually
+    ``model._variableNodeMap()``)
 "
 
 
@@ -107,10 +107,12 @@ pyfunc : lambda expression
 
 %feature("docstring") PythonMRFListener::whenEdgeAdded
 "
-Callback called when an edge is added to the Markov random field.
+Called by aGrUM when an edge is added to the Markov random field: calls the function given to ``setWhenEdgeAdded``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 n1 : int
     the id of one node of the edge
 n2 : int
@@ -119,10 +121,13 @@ n2 : int
 
 %feature("docstring") PythonMRFListener::whenEdgeDeleted
 "
-Callback called when an edge is removed from the Markov random field.
+Called by aGrUM when an edge is removed from the Markov random field: calls the function given to
+``setWhenEdgeDeleted``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 n1 : int
     the id of one node of the edge
 n2 : int
@@ -131,22 +136,26 @@ n2 : int
 
 %feature("docstring") PythonMRFListener::whenNodeAdded
 "
-Callback called when a node is added to the Markov random field.
+Called by aGrUM when a node is added to the Markov random field: calls the function given to
+``setWhenNodeAdded`` with the id and the name of the node.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 id : int
     the id of the new node
-name : str
-    the name of the new node
 "
 
 %feature("docstring") PythonMRFListener::whenNodeDeleted
 "
-Callback called when a node is removed from the Markov random field.
+Called by aGrUM when a node is removed from the Markov random field: calls the function given to
+``setWhenNodeDeleted``.
 
 Parameters
 ----------
+source : object
+    the object which sends the notification (not used)
 id : int
-    the id of the deleted node
+    the id of the removed node
 "

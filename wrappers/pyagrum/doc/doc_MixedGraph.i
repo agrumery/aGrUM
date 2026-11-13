@@ -420,19 +420,19 @@ set
 
 %feature("docstring") gum::MixedGraph::addArc
 "
-Add an arc from tail to head.
+Add an arc from n1 to n2.
 
 Parameters
 ----------
-tail : int
+n1 : int
     the id of the tail node
-head : int
+n2 : int
     the id of the head node
 
 Raises
 ------
 pyagrum.InvalidNode
-    If head or tail does not belong to the graph nodes.
+    If n1 or n2 does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::MixedGraph::arcs

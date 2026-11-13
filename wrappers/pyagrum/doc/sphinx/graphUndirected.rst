@@ -8,3 +8,4 @@ Undirected Graphs
 .. pyagrum-class:: pyagrum.UndiGraph
 
 .. pyagrum-class:: pyagrum.CliqueGraph
+   :exclude-members: saveGUM, saveGUMstring
