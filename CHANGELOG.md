@@ -349,6 +349,9 @@
       `InvalidNode`, as for the other graphs (it raised `InvalidDirectedCycle`).
     - The binary GUM format of the graphs (`.bgum`) accepts a node id stored as a signed integer (msgpack `int8` to
       `int64`, written by other encoders than aGrUM's): a non-negative id was refused.
+    - The GUM readers (`.jgum`, `.bgum` and the GUM strings, of the graphs, `BayesNet`, `InfluenceDiagram` and
+      `MarkovRandomField`) refuse an object with the same key twice: the last value was kept silently. The node ids of
+      `"names"` in a GUM graph have no leading zero (`"0"` and `"00"` named the same node).
 
 - Optimizations (aGrUM and pyAgrum)
 

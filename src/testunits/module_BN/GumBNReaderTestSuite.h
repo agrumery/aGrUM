@@ -284,6 +284,27 @@ namespace gum_tests {
     CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
   }
 
+  GUM_TEST(KeyWrittenTwiceIsRefused) {
+    // the JSON library keeps the last value of a key written twice: the reader refuses it
+    auto                       bn = gum::BayesNet< double >::fastPrototype("A->B");
+    gum::GumBNWriter< double > writer(false, 2);
+    const std::string          str = writer.toString(bn);
+    REQUIRE_EQ(str[0], '{');
+    const auto cpt = str.find("\"cpt\": {");
+    REQUIRE_NE(cpt, std::string::npos);
+    const auto sizeOfCpt = std::string("\"cpt\": {").size();
+    // a key written twice at the top level, then in an inner object (the CPT of A)
+    for (const auto& twice:
+         {"{\"type\": \"BN\", " + str.substr(1),
+          str.substr(0, cpt + sizeOfCpt) + "\"A\": [0.5, 0.5], " + str.substr(cpt + sizeOfCpt)}) {
+      gum::BayesNet< double > bn2;
+      auto                    reader = gum::GumBNReader< double >(&bn2);
+      CHECK_NE(reader.proceedFromString(twice), 0u);
+      REQUIRE_EQ(reader.count(), 1u);
+      CHECK_NE(reader.error(0).msg.find("written twice"), std::string::npos);
+    }
+  }
+
   GUM_TEST(ProceedWithoutFilename) {
     gum::BayesNet< double > bn;
     auto                    reader = gum::GumBNReader< double >(&bn);

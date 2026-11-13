@@ -46,6 +46,7 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/io/GumJson.h>
 #  include <agrum/MRF/io/GUM/GumMRFReader.h>
 
 #  include <agrum/base/external/json/json.hpp>
@@ -161,16 +162,15 @@ namespace gum {
       return ++nberrors;
     }
     try {
-      const auto content = _binary_ ? json::from_msgpack(detail::readVector(file))
-                                    : json::parse(file, nullptr, false);
+      const auto content = _binary_ ? detail::parseGumBinary(detail::readVector(file))
+                                    : detail::parseGumText(file);
       file.close();
-      if (content.is_discarded()) {
-        addException("Error parsing file", _streamName_);
-        return ++nberrors;
-      }
       return _proceedFromJson_(content);
+    } catch (const IOError& e) {   // not a JSON text or a msgpack content, a key written twice
+      addException("Error parsing file: " + e.errorContent(), _streamName_);
+      return ++nberrors;
     } catch (const std::exception& e) {
-      addException(std::string("Error reading binary file: ") + e.what(), _streamName_);
+      addException(std::string("Error reading file: ") + e.what(), _streamName_);
       return ++nberrors;
     }
   }
@@ -178,9 +178,11 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   Size GumMRFReader< GUM_SCALAR >::proceedFromString(std::string_view content) {
     if (_parseDone_) { return 0; }
-    const auto j = json::parse(content, nullptr, false);
-    if (j.is_discarded()) {
-      addException("Invalid JSON string", _streamName_);
+    json j;
+    try {
+      j = detail::parseGumText(content);
+    } catch (const IOError& e) {   // not a JSON text, a key written twice
+      addException("Invalid JSON string: " + e.errorContent(), _streamName_);
       return 1;
     }
     return _proceedFromJson_(j);

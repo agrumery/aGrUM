@@ -145,6 +145,19 @@ namespace gum_tests {
     CHECK_NE(reader.error(0).msg.find("got 'MRF'"), std::string::npos);
   }
 
+  GUM_TEST(KeyWrittenTwiceIsRefused) {
+    // the JSON library keeps the last value of a key written twice: the reader refuses it
+    auto id = gum::InfluenceDiagram< double >::fastPrototype("A->*D->$U;A->$U");
+    gum::GumIDWriter< double > writer(false, 2);
+    const std::string          str = writer.toString(id);
+    REQUIRE_EQ(str[0], '{');
+    gum::InfluenceDiagram< double > id2;
+    gum::GumIDReader< double >      reader(&id2);
+    CHECK_NE(reader.proceedFromString("{\"type\": \"ID\", " + str.substr(1)), 0u);
+    REQUIRE_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("written twice"), std::string::npos);
+  }
+
   GUM_TEST(ProceedWithoutFilename) {
     gum::InfluenceDiagram< double > id;
     auto                            reader = gum::GumIDReader< double >(&id);

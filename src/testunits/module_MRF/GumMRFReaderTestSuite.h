@@ -128,6 +128,19 @@ namespace gum_tests {
     CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
   }
 
+  GUM_TEST(KeyWrittenTwiceIsRefused) {
+    // the JSON library keeps the last value of a key written twice: the reader refuses it
+    auto                        mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+    gum::GumMRFWriter< double > writer(false, 2);
+    const std::string           str = writer.toString(mrf);
+    REQUIRE_EQ(str[0], '{');
+    gum::MarkovRandomField< double > mrf2;
+    auto                             reader = gum::GumMRFReader< double >(&mrf2);
+    CHECK_NE(reader.proceedFromString("{\"type\": \"MRF\", " + str.substr(1)), 0u);
+    REQUIRE_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("written twice"), std::string::npos);
+  }
+
   GUM_TEST(ProceedWithoutFilename) {
     gum::MarkovRandomField< double > mrf;
     auto                             reader = gum::GumMRFReader< double >(&mrf);

@@ -58,6 +58,14 @@
 namespace gum_tests {
 
   struct GraphGumIOTestSuite {
+    /// writes a binary GUM file: the little-endian length of the msgpack payload, then the payload
+    static void writeBinaryGUM(const std::string& path, const std::string& payload) {
+      std::ofstream output(path, std::ios::binary);
+      for (std::size_t i = 0; i < 8; ++i)
+        output.put(static_cast< char >((payload.size() >> (8 * i)) & 0xFF));
+      output << payload;
+    }
+
     /// writes g as a string, as a jgum file and as a bgum file, and reads it back in the 3 ways
     template < typename G >
     static void checkRoundTrip(const G& g, const std::string& type) {
@@ -271,13 +279,7 @@ namespace gum_tests {
   GUM_TEST(BinaryFileAcceptsNodeIdsStoredAsSignedIntegers) {
     // msgpack encoders other than aGrUM's may store a non-negative integer as int8...int64
     const TemporaryFile file(".bgum");
-    const auto&         path  = file.path;
-    const auto          write = [&path](const std::string& payload) {
-      std::ofstream output(path, std::ios::binary);
-      for (std::size_t i = 0; i < 8; ++i)   // little-endian length of the payload
-        output.put(static_cast< char >((payload.size() >> (8 * i)) & 0xFF));
-      output << payload;
-    };
+    const auto&         path = file.path;
     // {"type": "DiGraph", "nodes": [int8 0, int16 1], "arcs": [[int32 0, int64 1]]}
     const std::string head = std::string("\x83\xA4type\xA7"
                                          "DiGraph\xA5nodes\x92\xD0\x00",
@@ -286,13 +288,42 @@ namespace gum_tests {
                                          "arcs\x91\x92\xD2\x00\x00\x00\x00"
                                          "\xD3\x00\x00\x00\x00\x00\x00\x00\x01",
                                          21);
-    write(head + std::string("\xD1\x00\x01", 3) + tail);
+    writeBinaryGUM(path, head + std::string("\xD1\x00\x01", 3) + tail);
     const auto g = gum::loadGraphGUM< gum::DiGraph >(path);
     CHECK_EQ(g.size(), gum::Size(2));
     CHECK(g.existsArc(0, 1));
     // a negative value stays refused: int16 -1 as the second node
-    write(head + std::string("\xD1\xFF\xFF", 3) + tail);
+    writeBinaryGUM(path, head + std::string("\xD1\xFF\xFF", 3) + tail);
     CHECK_THROWS_AS(gum::loadGraphGUM< gum::DiGraph >(path), gum::IOError&);
+  }
+
+  GUM_TEST(KeyWrittenTwiceIsRefused) {
+    // the JSON library keeps the last value of a key written twice: the reader refuses it, and two
+    // keys of "names" can not name the same node (no leading zero)
+    for (const char* content:
+         {R"({"type": "DiGraph", "nodes": [0], "nodes": [0, 1]})",
+          R"({"type": "DiGraph", "nodes": [0, 1], "names": {"0": "A", "0": "B"}})",
+          R"({"type": "DiGraph", "nodes": [0, 1], "names": {"0": "A", "00": "B"}})",
+          R"({"type": "DiGraph", "nodes": [0, 1], "names": {"01": "A"}})"})
+      CHECK_THROWS_AS(gum::graphFromGUMString< gum::DiGraph >(content), gum::IOError&);
+    try {
+      gum::graphFromGUMString< gum::DiGraph >(R"({"type": "DiGraph", "nodes": [0], "nodes": [1]})");
+      FAIL("a key written twice must be refused");
+    } catch (const gum::IOError& e) {
+      CHECK_NE(e.errorContent().find("'nodes' is written twice"), std::string::npos);
+    }
+    // the same in the binary format: {"type": "DiGraph", "nodes": [0], "nodes": [0]}
+    const TemporaryFile file(".bgum");
+    writeBinaryGUM(file.path,
+                   std::string("\x83\xA4type\xA7"
+                               "DiGraph\xA5nodes\x91\x00\xA5nodes\x91\x00",
+                               30));
+    CHECK_THROWS_AS(gum::loadGraphGUM< gum::DiGraph >(file.path), gum::IOError&);
+    writeBinaryGUM(file.path,   // control: the same content without the second key
+                   std::string("\x82\xA4type\xA7"
+                               "DiGraph\xA5nodes\x91\x00",
+                               22));
+    CHECK_EQ(gum::loadGraphGUM< gum::DiGraph >(file.path).size(), gum::Size(1));
   }
 
   GUM_TEST(FormatOfTheFile) {

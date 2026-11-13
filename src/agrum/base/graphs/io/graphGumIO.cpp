@@ -54,6 +54,7 @@
 #include <type_traits>
 
 #include <agrum/base/graphs/io/graphGumIO.h>
+#include <agrum/base/io/GumJson.h>
 
 #include <agrum/base/external/json/json.hpp>
 
@@ -99,13 +100,14 @@ namespace gum {
       return j;
     }
 
-    /// the node of a key of "names" (digits only: no sign, no space, no trailing text)
+    /// the node of a key of "names" (digits only: no sign, no space, no trailing text, no leading
+    /// zero, so that two keys can not name the same node)
     NodeId nodeOfKey(const std::string& key) {
       NodeId     node      = 0;
       const auto end       = key.data() + key.size();
       const auto [ptr, ec] = std::from_chars(key.data(), end, node);
       // from_chars refuses an empty key, a space and a sign (NodeId is unsigned)
-      if (ec != std::errc() || ptr != end)
+      if (ec != std::errc() || ptr != end || (key.size() > 1 && key[0] == '0'))
         GUM_ERROR(IOError, "GUM graph: '" << key << "' is not a node id")
       return node;
     }
@@ -315,10 +317,8 @@ namespace gum {
     GumGraphContent gumGraphFromString(std::string_view text) {
       json j;
       try {
-        j = json::parse(text);
-      } catch (const json::exception& e) {
-        GUM_ERROR(IOError, "GUM graph: not a JSON text (" << e.what() << ")")
-      }
+        j = gum::detail::parseGumText(text);
+      } catch (const IOError& e) { GUM_ERROR(IOError, "GUM graph: " << e.errorContent()) }
       return fromJson(j);
     }
 
@@ -341,11 +341,9 @@ namespace gum {
       if (!input.good()) GUM_ERROR(IOError, "GUM graph: can not read the file '" << path << "'")
       json j;
       try {
-        if (isBinary) j = json::from_msgpack(gum::detail::readVector(input));
-        else j = json::parse(input);
-      } catch (const json::exception& e) {
-        GUM_ERROR(IOError, "GUM graph: malformed file '" << path << "' (" << e.what() << ")")
-      } catch (const IOError& e) {   // gum::detail::readVector
+        j = isBinary ? gum::detail::parseGumBinary(gum::detail::readVector(input))
+                     : gum::detail::parseGumText(input);
+      } catch (const IOError& e) {
         GUM_ERROR(IOError,
                   "GUM graph: malformed file '" << path << "' (" << e.errorContent() << ")")
       }

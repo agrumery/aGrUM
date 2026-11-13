@@ -65,6 +65,10 @@ def _header_filter(split_filename: Sequence[str]) -> bool:
   if filename == "config.h":
     return False
 
+  # only the headers *.h are scanned (not the external *.hpp, such as json.hpp)
+  if not filename.endswith(".h"):
+    return False
+
   if len(filename) > 5:
     if filename.endswith("_tpl.h"):
       return False
