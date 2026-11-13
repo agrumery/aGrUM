@@ -578,7 +578,11 @@ namespace gum::credal {
   template < GUM_Numeric GUM_SCALAR >
   void CNLoopyPropagation< GUM_SCALAR >::eraseAllEvidence() {
     _infE_::eraseAllEvidence();
+    _clearMessages_();
+  }
 
+  template < GUM_Numeric GUM_SCALAR >
+  void CNLoopyPropagation< GUM_SCALAR >::_clearMessages_() {
     ArcsL_min_.clear();
     ArcsL_max_.clear();
     ArcsP_min_.clear();
@@ -1511,6 +1515,11 @@ namespace gum::credal {
     inference_up_to_date_ = false;
 
     GUM_CONSTRUCTOR(CNLoopyPropagation)
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void CNLoopyPropagation< GUM_SCALAR >::onApproximationSchemeChanged_() {
+    _clearMessages_();   // the next inference starts again from the initial messages
   }
 
   template < GUM_Numeric GUM_SCALAR >

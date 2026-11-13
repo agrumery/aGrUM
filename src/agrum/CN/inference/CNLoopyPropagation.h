@@ -167,6 +167,9 @@ namespace gum {
 
       /// @}
 
+      /// a parameter of the scheme changed: the next inference is a new computation
+      void onApproximationSchemeChanged_() override;
+
       /// @name Protected algorithm methods
       /// @{
       /** Starts the inference with this inference type. */
@@ -379,6 +382,10 @@ namespace gum {
       bool inference_up_to_date_;
 
       private:
+      /** Forgets the messages and the marginals of the last inference (not the evidence): the
+       * next inference is a new computation. */
+      void _clearMessages_();
+
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       using _infE_ = InferenceEngine< GUM_SCALAR >;
 

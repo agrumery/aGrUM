@@ -66,16 +66,23 @@ namespace gum {
 
     eps_         = eps;
     enabled_eps_ = true;
+    onApproximationSchemeChanged_();
   }
 
   // Get the value of epsilon
   INLINE double ApproximationScheme::epsilon() const { return eps_; }
 
   // Disable stopping criterion on epsilon
-  INLINE void ApproximationScheme::disableEpsilon() { enabled_eps_ = false; }
+  INLINE void ApproximationScheme::disableEpsilon() {
+    enabled_eps_ = false;
+    onApproximationSchemeChanged_();
+  }
 
   // Enable stopping criterion on epsilon
-  INLINE void ApproximationScheme::enableEpsilon() { enabled_eps_ = true; }
+  INLINE void ApproximationScheme::enableEpsilon() {
+    enabled_eps_ = true;
+    onApproximationSchemeChanged_();
+  }
 
   // @return true if stopping criterion on epsilon is enabled, false
   // otherwise
@@ -87,16 +94,23 @@ namespace gum {
 
     min_rate_eps_         = rate;
     enabled_min_rate_eps_ = true;
+    onApproximationSchemeChanged_();
   }
 
   // Get the value of the minimal epsilon rate
   INLINE double ApproximationScheme::minEpsilonRate() const { return min_rate_eps_; }
 
   // Disable stopping criterion on epsilon rate
-  INLINE void ApproximationScheme::disableMinEpsilonRate() { enabled_min_rate_eps_ = false; }
+  INLINE void ApproximationScheme::disableMinEpsilonRate() {
+    enabled_min_rate_eps_ = false;
+    onApproximationSchemeChanged_();
+  }
 
   // Enable stopping criterion on epsilon rate
-  INLINE void ApproximationScheme::enableMinEpsilonRate() { enabled_min_rate_eps_ = true; }
+  INLINE void ApproximationScheme::enableMinEpsilonRate() {
+    enabled_min_rate_eps_ = true;
+    onApproximationSchemeChanged_();
+  }
 
   // @return true if stopping criterion on epsilon rate is enabled, false
   // otherwise
@@ -107,16 +121,23 @@ namespace gum {
     if (max < 1) { GUM_ERROR(OutOfBounds, "max should be >=1") }
     max_iter_         = max;
     enabled_max_iter_ = true;
+    onApproximationSchemeChanged_();
   }
 
   // @return the criterion on number of iterations
   INLINE Size ApproximationScheme::maxIter() const { return max_iter_; }
 
   // Disable stopping criterion on max iterations
-  INLINE void ApproximationScheme::disableMaxIter() { enabled_max_iter_ = false; }
+  INLINE void ApproximationScheme::disableMaxIter() {
+    enabled_max_iter_ = false;
+    onApproximationSchemeChanged_();
+  }
 
   // Enable stopping criterion on max iterations
-  INLINE void ApproximationScheme::enableMaxIter() { enabled_max_iter_ = true; }
+  INLINE void ApproximationScheme::enableMaxIter() {
+    enabled_max_iter_ = true;
+    onApproximationSchemeChanged_();
+  }
 
   // @return true if stopping criterion on max iterations is enabled, false
   // otherwise
@@ -128,6 +149,7 @@ namespace gum {
     if (timeout <= 0.) { GUM_ERROR(OutOfBounds, "timeout should be >0.") }
     max_time_         = timeout;
     enabled_max_time_ = true;
+    onApproximationSchemeChanged_();
   }
 
   // returns the timeout (in seconds)
@@ -137,10 +159,16 @@ namespace gum {
   INLINE double ApproximationScheme::currentTime() const { return timer_.step(); }
 
   // Disable stopping criterion on timeout
-  INLINE void ApproximationScheme::disableMaxTime() { enabled_max_time_ = false; }
+  INLINE void ApproximationScheme::disableMaxTime() {
+    enabled_max_time_ = false;
+    onApproximationSchemeChanged_();
+  }
 
   // Enable stopping criterion on timeout
-  INLINE void ApproximationScheme::enableMaxTime() { enabled_max_time_ = true; }
+  INLINE void ApproximationScheme::enableMaxTime() {
+    enabled_max_time_ = true;
+    onApproximationSchemeChanged_();
+  }
 
   // @return true if stopping criterion on timeout is enabled, false
   // otherwise
@@ -151,12 +179,16 @@ namespace gum {
     if (p < 1) { GUM_ERROR(OutOfBounds, "p should be >=1") }
 
     period_size_ = p;
+    onApproximationSchemeChanged_();
   }
 
   INLINE Size ApproximationScheme::periodSize() const { return period_size_; }
 
   // verbosity
-  INLINE void ApproximationScheme::setVerbosity(bool v) { verbosity_ = v; }
+  INLINE void ApproximationScheme::setVerbosity(bool v) {
+    verbosity_ = v;
+    onApproximationSchemeChanged_();
+  }
 
   INLINE bool ApproximationScheme::verbosity() const { return verbosity_; }
 

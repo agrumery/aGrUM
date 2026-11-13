@@ -219,3 +219,75 @@ Returns
 bool
     True if the verbosity is enabled
 "
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::disableEpsilon
+"
+Disable epsilon as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::enableEpsilon
+"
+Enable epsilon as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::isEnabledEpsilon
+"
+Returns
+-------
+bool
+  True if epsilon is used as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::disableMinEpsilonRate
+"
+Disable a min epsilon rate as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::enableMinEpsilonRate
+"
+Enable a min epsilon rate as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::isEnabledMinEpsilonRate
+"
+Returns
+-------
+bool
+  True if epsilon rate is used as a stopping criterion
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::disableMaxIter
+"
+Disable max iterations as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::enableMaxIter
+"
+Enable max iterations as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::isEnabledMaxIter
+"
+Returns
+-------
+bool
+  True if max iterations is used as a stopping criterion
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::disableMaxTime
+"
+Disable max time as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::enableMaxTime
+"
+Enable max time as a stopping criterion.
+"
+
+%feature("docstring") gum::IApproximationSchemeConfiguration::isEnabledMaxTime
+"
+Returns
+-------
+bool
+  True if max time is used as a stopping criterion
+"

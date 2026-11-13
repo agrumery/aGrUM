@@ -178,16 +178,18 @@ namespace gum {
       const bool                       rate;
       bool                             suspended = false;
 
+      // a suspension is not a change of the parameters: the setters would outdate the inference
+      // being computed
       void suspend() {
-        inference->disableEpsilon();
-        inference->disableMinEpsilonRate();
-        suspended = true;
+        inference->enabled_eps_          = false;
+        inference->enabled_min_rate_eps_ = false;
+        suspended                        = true;
       }
 
       void restore() {
         if (!suspended) return;
-        if (epsilon) inference->enableEpsilon();
-        if (rate) inference->enableMinEpsilonRate();
+        if (epsilon) inference->enabled_eps_ = true;
+        if (rate) inference->enabled_min_rate_eps_ = true;
         suspended = false;
       }
 

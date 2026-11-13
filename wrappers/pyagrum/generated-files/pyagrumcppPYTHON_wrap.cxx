@@ -7504,6 +7504,18 @@ SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__minEpsilonRate(gum::GibbsSampl
 SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__maxIter(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__maxTime(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__periodSize(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__enableEpsilon(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__disableEpsilon(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isEnabledEpsilon(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__enableMinEpsilonRate(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__disableMinEpsilonRate(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isEnabledMinEpsilonRate(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__enableMaxIter(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__disableMaxIter(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isEnabledMaxIter(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__enableMaxTime(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__disableMaxTime(gum::GibbsSampling< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isEnabledMaxTime(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrIterations(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__currentTime(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_GibbsSampling_Sl_double_Sg__messageApproximationScheme(gum::GibbsSampling< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -7671,6 +7683,18 @@ SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__minEpsilonRate(gum::Impor
 SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__maxIter(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__maxTime(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__periodSize(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__enableEpsilon(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__disableEpsilon(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isEnabledEpsilon(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__enableMinEpsilonRate(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__disableMinEpsilonRate(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isEnabledMinEpsilonRate(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__enableMaxIter(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__disableMaxIter(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isEnabledMaxIter(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__enableMaxTime(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__disableMaxTime(gum::ImportanceSampling< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isEnabledMaxTime(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrIterations(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__currentTime(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_ImportanceSampling_Sl_double_Sg__messageApproximationScheme(gum::ImportanceSampling< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -7834,6 +7858,18 @@ SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__minEpsilonRate(gum::Weighte
 SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__maxIter(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__maxTime(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__periodSize(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__enableEpsilon(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__disableEpsilon(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isEnabledEpsilon(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__enableMinEpsilonRate(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__disableMinEpsilonRate(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isEnabledMinEpsilonRate(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__enableMaxIter(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__disableMaxIter(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isEnabledMaxIter(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__enableMaxTime(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__disableMaxTime(gum::WeightedSampling< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isEnabledMaxTime(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrIterations(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__currentTime(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_WeightedSampling_Sl_double_Sg__messageApproximationScheme(gum::WeightedSampling< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -7997,6 +8033,18 @@ SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__minEpsilonRate(gum::Monte
 SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__maxIter(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__maxTime(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__periodSize(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__enableEpsilon(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__disableEpsilon(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isEnabledEpsilon(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__enableMinEpsilonRate(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__disableMinEpsilonRate(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isEnabledMinEpsilonRate(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__enableMaxIter(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__disableMaxIter(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isEnabledMaxIter(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__enableMaxTime(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__disableMaxTime(gum::MonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isEnabledMaxTime(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrIterations(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__currentTime(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_MonteCarloSampling_Sl_double_Sg__messageApproximationScheme(gum::MonteCarloSampling< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8160,6 +8208,18 @@ SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__maxIter(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__maxTime(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__periodSize(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableEpsilon(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableEpsilon(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledEpsilon(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMinEpsilonRate(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMinEpsilonRate(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMinEpsilonRate(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMaxIter(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMaxIter(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMaxIter(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMaxTime(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMaxTime(gum::LoopySamplingInference< double,gum::ImportanceSampling > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMaxTime(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__nbrIterations(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__currentTime(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__messageApproximationScheme(gum::LoopySamplingInference< double,gum::ImportanceSampling > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8323,6 +8383,18 @@ SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_S
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__maxIter(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__maxTime(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__periodSize(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableEpsilon(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableEpsilon(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledEpsilon(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMinEpsilonRate(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMinEpsilonRate(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMinEpsilonRate(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMaxIter(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMaxIter(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMaxIter(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMaxTime(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMaxTime(gum::LoopySamplingInference< double,gum::WeightedSampling > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMaxTime(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__nbrIterations(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__currentTime(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__messageApproximationScheme(gum::LoopySamplingInference< double,gum::WeightedSampling > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8486,6 +8558,18 @@ SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__maxIter(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__maxTime(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__periodSize(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableEpsilon(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableEpsilon(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledEpsilon(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMinEpsilonRate(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMinEpsilonRate(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMinEpsilonRate(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMaxIter(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMaxIter(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMaxIter(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMaxTime(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMaxTime(gum::LoopySamplingInference< double,gum::GibbsSampling > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMaxTime(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__nbrIterations(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__currentTime(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__messageApproximationScheme(gum::LoopySamplingInference< double,gum::GibbsSampling > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8655,6 +8739,18 @@ SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__maxIter(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__maxTime(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__periodSize(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableEpsilon(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableEpsilon(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledEpsilon(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMinEpsilonRate(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMinEpsilonRate(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMinEpsilonRate(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMaxIter(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMaxIter(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMaxIter(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMaxTime(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMaxTime(gum::LoopySamplingInference< double,gum::MonteCarloSampling > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMaxTime(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__nbrIterations(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__currentTime(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__messageApproximationScheme(gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8818,6 +8914,18 @@ SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__minEpsilonRate(gum::L
 SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__maxIter(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__maxTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__periodSize(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__enableEpsilon(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__disableEpsilon(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledEpsilon(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__enableMinEpsilonRate(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__disableMinEpsilonRate(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMinEpsilonRate(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__enableMaxIter(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__disableMaxIter(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMaxIter(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__enableMaxTime(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__disableMaxTime(gum::LoopyBeliefPropagation< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMaxTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrIterations(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__currentTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopyBeliefPropagation_Sl_double_Sg__messageApproximationScheme(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8949,8 +9057,8 @@ SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_1(gum::LoopyB
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
 SWIGINTERN gum::IBayesNet< double > const &gum_LoopyBeliefPropagation_Sl_double_Sg__BN(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::MarginalTargetedInference<double>::BN(); }
-SWIGINTERN PyAgrumDict *gum_ExactBNdistance_Sl_double_Sg__compute(gum::ExactBNdistance< double > *self){
-  // the values are read in this order (the first one may launch the computation)
+SWIGINTERN PyAgrumDict *gum_ExactBNdistance_Sl_double_Sg___compute(gum::ExactBNdistance< double > *self,bool lazy){
+  self->compute(lazy);   // the accessors below only read the results
   const double     klPQ         = self->klPQ();
   const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
   const double     klQP         = self->klQP();
@@ -8962,8 +9070,8 @@ SWIGINTERN PyAgrumDict *gum_ExactBNdistance_Sl_double_Sg__compute(gum::ExactBNdi
                        "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
                        "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
 }
-SWIGINTERN PyAgrumDict *gum_GibbsBNdistance_Sl_double_Sg__compute(gum::GibbsBNdistance< double > *self){
-  // the values are read in this order (the first one may launch the computation)
+SWIGINTERN PyAgrumDict *gum_GibbsBNdistance_Sl_double_Sg___compute(gum::GibbsBNdistance< double > *self,bool lazy){
+  self->compute(lazy);   // the accessors below only read the results
   const double     klPQ         = self->klPQ();
   const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
   const double     klQP         = self->klQP();
@@ -8987,6 +9095,18 @@ SWIGINTERN double gum_GibbsBNdistance_Sl_double_Sg__minEpsilonRate(gum::GibbsBNd
 SWIGINTERN gum::Size gum_GibbsBNdistance_Sl_double_Sg__maxIter(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_GibbsBNdistance_Sl_double_Sg__maxTime(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_GibbsBNdistance_Sl_double_Sg__periodSize(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__enableEpsilon(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__disableEpsilon(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isEnabledEpsilon(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__enableMinEpsilonRate(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__disableMinEpsilonRate(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isEnabledMinEpsilonRate(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__enableMaxIter(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__disableMaxIter(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isEnabledMaxIter(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__enableMaxTime(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__disableMaxTime(gum::GibbsBNdistance< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isEnabledMaxTime(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_GibbsBNdistance_Sl_double_Sg__nbrIterations(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_GibbsBNdistance_Sl_double_Sg__currentTime(gum::GibbsBNdistance< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_GibbsBNdistance_Sl_double_Sg__messageApproximationScheme(gum::GibbsBNdistance< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -8998,8 +9118,8 @@ SWIGINTERN gum::Size gum_GibbsBNdistance_Sl_double_Sg__nbrDrawnVar(gum::GibbsBNd
 SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setNbrDrawnVar(gum::GibbsBNdistance< double > *self,gum::Size _nbr){ self->GibbsOperator<double>::setNbrDrawnVar(_nbr); }
 SWIGINTERN bool gum_GibbsBNdistance_Sl_double_Sg__isDrawnAtRandom(gum::GibbsBNdistance< double > const *self){ return self->GibbsOperator<double>::isDrawnAtRandom(); }
 SWIGINTERN void gum_GibbsBNdistance_Sl_double_Sg__setDrawnAtRandom(gum::GibbsBNdistance< double > *self,bool _atRandom){ self->GibbsOperator<double>::setDrawnAtRandom(_atRandom); }
-SWIGINTERN PyAgrumDict *gum_MCBNDistance_Sl_double_Sg__compute(gum::MCBNDistance< double > *self){
-  // the values are read in this order (the first one may launch the computation)
+SWIGINTERN PyAgrumDict *gum_MCBNDistance_Sl_double_Sg___compute(gum::MCBNDistance< double > *self,bool lazy){
+  self->compute(lazy);   // the accessors below only read the results
   const double     klPQ         = self->klPQ();
   const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
   const double     klQP         = self->klQP();
@@ -9023,6 +9143,18 @@ SWIGINTERN double gum_MCBNDistance_Sl_double_Sg__minEpsilonRate(gum::MCBNDistanc
 SWIGINTERN gum::Size gum_MCBNDistance_Sl_double_Sg__maxIter(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_MCBNDistance_Sl_double_Sg__maxTime(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_MCBNDistance_Sl_double_Sg__periodSize(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__enableEpsilon(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__disableEpsilon(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_MCBNDistance_Sl_double_Sg__isEnabledEpsilon(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__enableMinEpsilonRate(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__disableMinEpsilonRate(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_MCBNDistance_Sl_double_Sg__isEnabledMinEpsilonRate(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__enableMaxIter(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__disableMaxIter(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_MCBNDistance_Sl_double_Sg__isEnabledMaxIter(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__enableMaxTime(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_MCBNDistance_Sl_double_Sg__disableMaxTime(gum::MCBNDistance< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_MCBNDistance_Sl_double_Sg__isEnabledMaxTime(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_MCBNDistance_Sl_double_Sg__nbrIterations(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_MCBNDistance_Sl_double_Sg__currentTime(gum::MCBNDistance< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_MCBNDistance_Sl_double_Sg__messageApproximationScheme(gum::MCBNDistance< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -9150,6 +9282,18 @@ SWIGINTERN double gum_learning_BNLearner_Sl_double_Sg__minEpsilonRate(gum::learn
 SWIGINTERN gum::Size gum_learning_BNLearner_Sl_double_Sg__maxIter(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::maxIter(); }
 SWIGINTERN double gum_learning_BNLearner_Sl_double_Sg__maxTime(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::maxTime(); }
 SWIGINTERN gum::Size gum_learning_BNLearner_Sl_double_Sg__periodSize(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::periodSize(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__enableEpsilon(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::enableEpsilon(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__disableEpsilon(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::disableEpsilon(); }
+SWIGINTERN bool gum_learning_BNLearner_Sl_double_Sg__isEnabledEpsilon(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::isEnabledEpsilon(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__enableMinEpsilonRate(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::enableMinEpsilonRate(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__disableMinEpsilonRate(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_learning_BNLearner_Sl_double_Sg__isEnabledMinEpsilonRate(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__enableMaxIter(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::enableMaxIter(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__disableMaxIter(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::disableMaxIter(); }
+SWIGINTERN bool gum_learning_BNLearner_Sl_double_Sg__isEnabledMaxIter(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::isEnabledMaxIter(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__enableMaxTime(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::enableMaxTime(); }
+SWIGINTERN void gum_learning_BNLearner_Sl_double_Sg__disableMaxTime(gum::learning::BNLearner< double > *self){ self->gum::learning::IBNLearner::disableMaxTime(); }
+SWIGINTERN bool gum_learning_BNLearner_Sl_double_Sg__isEnabledMaxTime(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_learning_BNLearner_Sl_double_Sg__nbrIterations(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::nbrIterations(); }
 SWIGINTERN double gum_learning_BNLearner_Sl_double_Sg__currentTime(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::currentTime(); }
 SWIGINTERN std::string gum_learning_BNLearner_Sl_double_Sg__messageApproximationScheme(gum::learning::BNLearner< double > const *self){ return self->gum::learning::IBNLearner::messageApproximationScheme(); }
@@ -106921,6 +107065,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_GibbsSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_enableEpsilon" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_disableEpsilon" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isEnabledEpsilon((gum::GibbsSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isEnabledMinEpsilonRate((gum::GibbsSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_enableMaxIter" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_disableMaxIter" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isEnabledMaxIter((gum::GibbsSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_enableMaxTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_disableMaxTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      gum_GibbsSampling_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isEnabledMaxTime((gum::GibbsSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_GibbsSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsSampling< double > *arg1 = 0 ;
@@ -110341,6 +110849,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ImportanceSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_enableEpsilon" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_disableEpsilon" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isEnabledEpsilon((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isEnabledMinEpsilonRate((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_enableMaxIter" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_disableMaxIter" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isEnabledMaxIter((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_enableMaxTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_disableMaxTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isEnabledMaxTime((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_ImportanceSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::ImportanceSampling< double > *arg1 = 0 ;
@@ -113625,6 +114497,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_WeightedSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_enableEpsilon" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_disableEpsilon" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isEnabledEpsilon((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isEnabledMinEpsilonRate((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_enableMaxIter" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_disableMaxIter" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isEnabledMaxIter((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_enableMaxTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_disableMaxTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isEnabledMaxTime((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_WeightedSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::WeightedSampling< double > *arg1 = 0 ;
@@ -116903,6 +118139,370 @@ SWIGINTERN PyObject *_wrap_MonteCarloSampling_periodSize(PyObject *self, PyObjec
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_enableEpsilon" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_disableEpsilon" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isEnabledEpsilon((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isEnabledMinEpsilonRate((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_enableMaxIter" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_disableMaxIter" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isEnabledMaxIter((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_enableMaxTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_disableMaxTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isEnabledMaxTime((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -120291,6 +121891,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_enableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_disableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledEpsilon((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMinEpsilonRate((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_enableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_disableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMaxIter((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_enableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_disableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyImportanceSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::ImportanceSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::ImportanceSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_ImportanceSampling_Sg__isEnabledMaxTime((gum::LoopySamplingInference< double,gum::ImportanceSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyImportanceSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::ImportanceSampling > *arg1 = 0 ;
@@ -123673,6 +125637,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_enableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_disableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledEpsilon((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMinEpsilonRate((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_enableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_disableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMaxIter((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_enableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_disableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyWeightedSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::WeightedSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::WeightedSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_WeightedSampling_Sg__isEnabledMaxTime((gum::LoopySamplingInference< double,gum::WeightedSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyWeightedSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::WeightedSampling > *arg1 = 0 ;
@@ -127049,6 +129377,370 @@ SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_periodSize(PyObject *self, PyObjec
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_enableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_disableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledEpsilon((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMinEpsilonRate((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_enableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_disableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMaxIter((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_enableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_disableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyGibbsSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::GibbsSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyGibbsSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::GibbsSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::GibbsSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_GibbsSampling_Sg__isEnabledMaxTime((gum::LoopySamplingInference< double,gum::GibbsSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -130641,6 +133333,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_enableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_disableEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledEpsilon((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMinEpsilonRate((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_enableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_disableMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMaxIter((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_enableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_disableMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyMonteCarloSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopySamplingInference< double,gum::MonteCarloSampling > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopySamplingInference_Sl_double_Sc_gum_MonteCarloSampling_Sg__isEnabledMaxTime((gum::LoopySamplingInference< double,gum::MonteCarloSampling > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyMonteCarloSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopySamplingInference< double,gum::MonteCarloSampling > *arg1 = 0 ;
@@ -133925,6 +136981,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_enableEpsilon" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_disableEpsilon" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_isEnabledEpsilon" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledEpsilon((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMinEpsilonRate((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_enableMaxIter" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_disableMaxIter" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_isEnabledMaxIter" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMaxIter((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_enableMaxTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_disableMaxTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_isEnabledMaxTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isEnabledMaxTime((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::LoopyBeliefPropagation< double > *arg1 = 0 ;
@@ -136527,25 +139947,32 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ExactBNdistance_compute(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_ExactBNdistance__compute(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::ExactBNdistance< double > *arg1 = 0 ;
+  bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
   PyAgrumDict *result = 0 ;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if (!SWIG_Python_UnpackTuple(args, "ExactBNdistance__compute", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ExactBNdistanceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExactBNdistance_compute" "', argument " "1"" of type '" "gum::ExactBNdistance< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ExactBNdistance__compute" "', argument " "1"" of type '" "gum::ExactBNdistance< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::ExactBNdistance< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ExactBNdistance__compute" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
   {
     try {
-      result = (PyAgrumDict *)gum_ExactBNdistance_Sl_double_Sg__compute(arg1);
+      result = (PyAgrumDict *)gum_ExactBNdistance_Sl_double_Sg___compute(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -136771,25 +140198,32 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsBNdistance_compute(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsBNdistance__compute(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsBNdistance< double > *arg1 = 0 ;
+  bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
   PyAgrumDict *result = 0 ;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if (!SWIG_Python_UnpackTuple(args, "GibbsBNdistance__compute", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_compute" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance__compute" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsBNdistance__compute" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
   {
     try {
-      result = (PyAgrumDict *)gum_GibbsBNdistance_Sl_double_Sg__compute(arg1);
+      result = (PyAgrumDict *)gum_GibbsBNdistance_Sl_double_Sg___compute(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -137205,6 +140639,370 @@ SWIGINTERN PyObject *_wrap_GibbsBNdistance_periodSize(PyObject *self, PyObject *
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_enableEpsilon" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_disableEpsilon" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_isEnabledEpsilon" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsBNdistance_Sl_double_Sg__isEnabledEpsilon((gum::GibbsBNdistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsBNdistance_Sl_double_Sg__isEnabledMinEpsilonRate((gum::GibbsBNdistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_enableMaxIter" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_disableMaxIter" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_isEnabledMaxIter" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsBNdistance_Sl_double_Sg__isEnabledMaxIter((gum::GibbsBNdistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_enableMaxTime" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_disableMaxTime" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      gum_GibbsBNdistance_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_GibbsBNdistance_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsBNdistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__GibbsBNdistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsBNdistance_isEnabledMaxTime" "', argument " "1"" of type '" "gum::GibbsBNdistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsBNdistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_GibbsBNdistance_Sl_double_Sg__isEnabledMaxTime((gum::GibbsBNdistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -137649,25 +141447,32 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MCBNDistance_compute(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_MCBNDistance__compute(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::MCBNDistance< double > *arg1 = 0 ;
+  bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
   PyAgrumDict *result = 0 ;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if (!SWIG_Python_UnpackTuple(args, "MCBNDistance__compute", 2, 2, swig_obj)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_compute" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance__compute" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MCBNDistance__compute" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
   {
     try {
-      result = (PyAgrumDict *)gum_MCBNDistance_Sl_double_Sg__compute(arg1);
+      result = (PyAgrumDict *)gum_MCBNDistance_Sl_double_Sg___compute(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -138083,6 +141888,370 @@ SWIGINTERN PyObject *_wrap_MCBNDistance_periodSize(PyObject *self, PyObject *arg
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_enableEpsilon" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_disableEpsilon" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_isEnabledEpsilon" "', argument " "1"" of type '" "gum::MCBNDistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MCBNDistance_Sl_double_Sg__isEnabledEpsilon((gum::MCBNDistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::MCBNDistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MCBNDistance_Sl_double_Sg__isEnabledMinEpsilonRate((gum::MCBNDistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_enableMaxIter" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_disableMaxIter" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_isEnabledMaxIter" "', argument " "1"" of type '" "gum::MCBNDistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MCBNDistance_Sl_double_Sg__isEnabledMaxIter((gum::MCBNDistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_enableMaxTime" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_disableMaxTime" "', argument " "1"" of type '" "gum::MCBNDistance< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      gum_MCBNDistance_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MCBNDistance_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MCBNDistance< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MCBNDistanceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MCBNDistance_isEnabledMaxTime" "', argument " "1"" of type '" "gum::MCBNDistance< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MCBNDistance< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MCBNDistance_Sl_double_Sg__isEnabledMaxTime((gum::MCBNDistance< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -146658,6 +150827,370 @@ SWIGINTERN PyObject *_wrap_BNLearner_periodSize(PyObject *self, PyObject *args) 
     }
   }
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_enableEpsilon" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_disableEpsilon" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_isEnabledEpsilon" "', argument " "1"" of type '" "gum::learning::BNLearner< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_learning_BNLearner_Sl_double_Sg__isEnabledEpsilon((gum::learning::BNLearner< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::learning::BNLearner< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_learning_BNLearner_Sl_double_Sg__isEnabledMinEpsilonRate((gum::learning::BNLearner< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_enableMaxIter" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_disableMaxIter" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_isEnabledMaxIter" "', argument " "1"" of type '" "gum::learning::BNLearner< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_learning_BNLearner_Sl_double_Sg__isEnabledMaxIter((gum::learning::BNLearner< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_enableMaxTime" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_disableMaxTime" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      gum_learning_BNLearner_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_isEnabledMaxTime" "', argument " "1"" of type '" "gum::learning::BNLearner< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_learning_BNLearner_Sl_double_Sg__isEnabledMaxTime((gum::learning::BNLearner< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -163473,6 +168006,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "GibbsSampling_enableEpsilon", _wrap_GibbsSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_disableEpsilon", _wrap_GibbsSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_isEnabledEpsilon", _wrap_GibbsSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_enableMinEpsilonRate", _wrap_GibbsSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_disableMinEpsilonRate", _wrap_GibbsSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_isEnabledMinEpsilonRate", _wrap_GibbsSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "GibbsSampling_enableMaxIter", _wrap_GibbsSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_disableMaxIter", _wrap_GibbsSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_isEnabledMaxIter", _wrap_GibbsSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "GibbsSampling_enableMaxTime", _wrap_GibbsSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_disableMaxTime", _wrap_GibbsSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsSampling_isEnabledMaxTime", _wrap_GibbsSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "GibbsSampling_nbrIterations", _wrap_GibbsSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -164049,6 +168654,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "ImportanceSampling_enableEpsilon", _wrap_ImportanceSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_disableEpsilon", _wrap_ImportanceSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_isEnabledEpsilon", _wrap_ImportanceSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_enableMinEpsilonRate", _wrap_ImportanceSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_disableMinEpsilonRate", _wrap_ImportanceSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_isEnabledMinEpsilonRate", _wrap_ImportanceSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_enableMaxIter", _wrap_ImportanceSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_disableMaxIter", _wrap_ImportanceSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_isEnabledMaxIter", _wrap_ImportanceSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_enableMaxTime", _wrap_ImportanceSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_disableMaxTime", _wrap_ImportanceSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "ImportanceSampling_isEnabledMaxTime", _wrap_ImportanceSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "ImportanceSampling_nbrIterations", _wrap_ImportanceSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -164593,6 +169270,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "WeightedSampling_enableEpsilon", _wrap_WeightedSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_disableEpsilon", _wrap_WeightedSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_isEnabledEpsilon", _wrap_WeightedSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_enableMinEpsilonRate", _wrap_WeightedSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_disableMinEpsilonRate", _wrap_WeightedSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_isEnabledMinEpsilonRate", _wrap_WeightedSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "WeightedSampling_enableMaxIter", _wrap_WeightedSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_disableMaxIter", _wrap_WeightedSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_isEnabledMaxIter", _wrap_WeightedSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "WeightedSampling_enableMaxTime", _wrap_WeightedSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_disableMaxTime", _wrap_WeightedSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "WeightedSampling_isEnabledMaxTime", _wrap_WeightedSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "WeightedSampling_nbrIterations", _wrap_WeightedSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -165135,6 +169884,78 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.OutOfBounds\n"
 		"    If p<1\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_enableEpsilon", _wrap_MonteCarloSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_disableEpsilon", _wrap_MonteCarloSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_isEnabledEpsilon", _wrap_MonteCarloSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_enableMinEpsilonRate", _wrap_MonteCarloSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_disableMinEpsilonRate", _wrap_MonteCarloSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_isEnabledMinEpsilonRate", _wrap_MonteCarloSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_enableMaxIter", _wrap_MonteCarloSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_disableMaxIter", _wrap_MonteCarloSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_isEnabledMaxIter", _wrap_MonteCarloSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_enableMaxTime", _wrap_MonteCarloSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_disableMaxTime", _wrap_MonteCarloSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MonteCarloSampling_isEnabledMaxTime", _wrap_MonteCarloSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
 		"\n"
 		""},
 	 { "MonteCarloSampling_nbrIterations", _wrap_MonteCarloSampling_nbrIterations, METH_O, "\n"
@@ -165704,6 +170525,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "LoopyImportanceSampling_enableEpsilon", _wrap_LoopyImportanceSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_disableEpsilon", _wrap_LoopyImportanceSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_isEnabledEpsilon", _wrap_LoopyImportanceSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_enableMinEpsilonRate", _wrap_LoopyImportanceSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_disableMinEpsilonRate", _wrap_LoopyImportanceSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_isEnabledMinEpsilonRate", _wrap_LoopyImportanceSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_enableMaxIter", _wrap_LoopyImportanceSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_disableMaxIter", _wrap_LoopyImportanceSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_isEnabledMaxIter", _wrap_LoopyImportanceSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_enableMaxTime", _wrap_LoopyImportanceSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_disableMaxTime", _wrap_LoopyImportanceSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyImportanceSampling_isEnabledMaxTime", _wrap_LoopyImportanceSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "LoopyImportanceSampling_nbrIterations", _wrap_LoopyImportanceSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -166271,6 +171164,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "LoopyWeightedSampling_enableEpsilon", _wrap_LoopyWeightedSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_disableEpsilon", _wrap_LoopyWeightedSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_isEnabledEpsilon", _wrap_LoopyWeightedSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_enableMinEpsilonRate", _wrap_LoopyWeightedSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_disableMinEpsilonRate", _wrap_LoopyWeightedSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_isEnabledMinEpsilonRate", _wrap_LoopyWeightedSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_enableMaxIter", _wrap_LoopyWeightedSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_disableMaxIter", _wrap_LoopyWeightedSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_isEnabledMaxIter", _wrap_LoopyWeightedSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_enableMaxTime", _wrap_LoopyWeightedSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_disableMaxTime", _wrap_LoopyWeightedSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyWeightedSampling_isEnabledMaxTime", _wrap_LoopyWeightedSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "LoopyWeightedSampling_nbrIterations", _wrap_LoopyWeightedSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -166836,6 +171801,78 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.OutOfBounds\n"
 		"    If p<1\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_enableEpsilon", _wrap_LoopyGibbsSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_disableEpsilon", _wrap_LoopyGibbsSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_isEnabledEpsilon", _wrap_LoopyGibbsSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_enableMinEpsilonRate", _wrap_LoopyGibbsSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_disableMinEpsilonRate", _wrap_LoopyGibbsSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_isEnabledMinEpsilonRate", _wrap_LoopyGibbsSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_enableMaxIter", _wrap_LoopyGibbsSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_disableMaxIter", _wrap_LoopyGibbsSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_isEnabledMaxIter", _wrap_LoopyGibbsSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_enableMaxTime", _wrap_LoopyGibbsSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_disableMaxTime", _wrap_LoopyGibbsSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyGibbsSampling_isEnabledMaxTime", _wrap_LoopyGibbsSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
 		"\n"
 		""},
 	 { "LoopyGibbsSampling_nbrIterations", _wrap_LoopyGibbsSampling_nbrIterations, METH_O, "\n"
@@ -167453,6 +172490,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "LoopyMonteCarloSampling_enableEpsilon", _wrap_LoopyMonteCarloSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_disableEpsilon", _wrap_LoopyMonteCarloSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_isEnabledEpsilon", _wrap_LoopyMonteCarloSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_enableMinEpsilonRate", _wrap_LoopyMonteCarloSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_disableMinEpsilonRate", _wrap_LoopyMonteCarloSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_isEnabledMinEpsilonRate", _wrap_LoopyMonteCarloSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_enableMaxIter", _wrap_LoopyMonteCarloSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_disableMaxIter", _wrap_LoopyMonteCarloSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_isEnabledMaxIter", _wrap_LoopyMonteCarloSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_enableMaxTime", _wrap_LoopyMonteCarloSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_disableMaxTime", _wrap_LoopyMonteCarloSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyMonteCarloSampling_isEnabledMaxTime", _wrap_LoopyMonteCarloSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "LoopyMonteCarloSampling_nbrIterations", _wrap_LoopyMonteCarloSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -167997,6 +173106,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "LoopyBeliefPropagation_enableEpsilon", _wrap_LoopyBeliefPropagation_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_disableEpsilon", _wrap_LoopyBeliefPropagation_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_isEnabledEpsilon", _wrap_LoopyBeliefPropagation_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_enableMinEpsilonRate", _wrap_LoopyBeliefPropagation_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_disableMinEpsilonRate", _wrap_LoopyBeliefPropagation_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_isEnabledMinEpsilonRate", _wrap_LoopyBeliefPropagation_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_enableMaxIter", _wrap_LoopyBeliefPropagation_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_disableMaxIter", _wrap_LoopyBeliefPropagation_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_isEnabledMaxIter", _wrap_LoopyBeliefPropagation_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_enableMaxTime", _wrap_LoopyBeliefPropagation_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_disableMaxTime", _wrap_LoopyBeliefPropagation_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "LoopyBeliefPropagation_isEnabledMaxTime", _wrap_LoopyBeliefPropagation_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "LoopyBeliefPropagation_nbrIterations", _wrap_LoopyBeliefPropagation_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -168350,14 +173531,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "LoopyBeliefPropagation_swiginit", LoopyBeliefPropagation_swiginit, METH_VARARGS, NULL},
 	 { "new_ExactBNdistance", _wrap_new_ExactBNdistance, METH_VARARGS, NULL},
 	 { "delete_ExactBNdistance", _wrap_delete_ExactBNdistance, METH_O, NULL},
-	 { "ExactBNdistance_compute", _wrap_ExactBNdistance_compute, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"dict\n"
-		"    a dictionnary containing the different values after the computation.\n"
-		"\n"
-		""},
+	 { "ExactBNdistance__compute", _wrap_ExactBNdistance__compute, METH_VARARGS, NULL},
 	 { "ExactBNdistance_swigregister", ExactBNdistance_swigregister, METH_O, NULL},
 	 { "ExactBNdistance_swiginit", ExactBNdistance_swiginit, METH_VARARGS, NULL},
 	 { "new_GibbsBNdistance", _wrap_new_GibbsBNdistance, METH_VARARGS, NULL},
@@ -168378,14 +173552,7 @@ static PyMethodDef SwigMethods[] = {
 		"    size of burn in on number of iteration\n"
 		"\n"
 		""},
-	 { "GibbsBNdistance_compute", _wrap_GibbsBNdistance_compute, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"dict\n"
-		"    a dictionnary containing the different values after the computation.\n"
-		"\n"
-		""},
+	 { "GibbsBNdistance__compute", _wrap_GibbsBNdistance__compute, METH_VARARGS, NULL},
 	 { "GibbsBNdistance_setVerbosity", _wrap_GibbsBNdistance_setVerbosity, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
@@ -168507,6 +173674,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "GibbsBNdistance_enableEpsilon", _wrap_GibbsBNdistance_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_disableEpsilon", _wrap_GibbsBNdistance_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_isEnabledEpsilon", _wrap_GibbsBNdistance_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_enableMinEpsilonRate", _wrap_GibbsBNdistance_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_disableMinEpsilonRate", _wrap_GibbsBNdistance_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_isEnabledMinEpsilonRate", _wrap_GibbsBNdistance_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_enableMaxIter", _wrap_GibbsBNdistance_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_disableMaxIter", _wrap_GibbsBNdistance_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_isEnabledMaxIter", _wrap_GibbsBNdistance_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_enableMaxTime", _wrap_GibbsBNdistance_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_disableMaxTime", _wrap_GibbsBNdistance_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "GibbsBNdistance_isEnabledMaxTime", _wrap_GibbsBNdistance_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "GibbsBNdistance_nbrIterations", _wrap_GibbsBNdistance_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -168581,14 +173820,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "GibbsBNdistance_swiginit", GibbsBNdistance_swiginit, METH_VARARGS, NULL},
 	 { "new_MCBNDistance", _wrap_new_MCBNDistance, METH_VARARGS, NULL},
 	 { "delete_MCBNDistance", _wrap_delete_MCBNDistance, METH_O, NULL},
-	 { "MCBNDistance_compute", _wrap_MCBNDistance_compute, METH_O, "\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"dict\n"
-		"    a dictionnary containing the different values after the computation.\n"
-		"\n"
-		""},
+	 { "MCBNDistance__compute", _wrap_MCBNDistance__compute, METH_VARARGS, NULL},
 	 { "MCBNDistance_setVerbosity", _wrap_MCBNDistance_setVerbosity, METH_VARARGS, "\n"
 		"\n"
 		"Parameters\n"
@@ -168708,6 +173940,78 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.OutOfBounds\n"
 		"    If p<1\n"
+		"\n"
+		""},
+	 { "MCBNDistance_enableEpsilon", _wrap_MCBNDistance_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_disableEpsilon", _wrap_MCBNDistance_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_isEnabledEpsilon", _wrap_MCBNDistance_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_enableMinEpsilonRate", _wrap_MCBNDistance_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_disableMinEpsilonRate", _wrap_MCBNDistance_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_isEnabledMinEpsilonRate", _wrap_MCBNDistance_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "MCBNDistance_enableMaxIter", _wrap_MCBNDistance_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_disableMaxIter", _wrap_MCBNDistance_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_isEnabledMaxIter", _wrap_MCBNDistance_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "MCBNDistance_enableMaxTime", _wrap_MCBNDistance_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_disableMaxTime", _wrap_MCBNDistance_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "MCBNDistance_isEnabledMaxTime", _wrap_MCBNDistance_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
 		"\n"
 		""},
 	 { "MCBNDistance_nbrIterations", _wrap_MCBNDistance_nbrIterations, METH_O, "\n"
@@ -170262,6 +175566,78 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.OutOfBounds\n"
 		"    If p<1\n"
+		"\n"
+		""},
+	 { "BNLearner_enableEpsilon", _wrap_BNLearner_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_disableEpsilon", _wrap_BNLearner_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_isEnabledEpsilon", _wrap_BNLearner_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_enableMinEpsilonRate", _wrap_BNLearner_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_disableMinEpsilonRate", _wrap_BNLearner_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_isEnabledMinEpsilonRate", _wrap_BNLearner_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "BNLearner_enableMaxIter", _wrap_BNLearner_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_disableMaxIter", _wrap_BNLearner_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_isEnabledMaxIter", _wrap_BNLearner_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "BNLearner_enableMaxTime", _wrap_BNLearner_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_disableMaxTime", _wrap_BNLearner_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "BNLearner_isEnabledMaxTime", _wrap_BNLearner_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
 		"\n"
 		""},
 	 { "BNLearner_nbrIterations", _wrap_BNLearner_nbrIterations, METH_O, "\n"

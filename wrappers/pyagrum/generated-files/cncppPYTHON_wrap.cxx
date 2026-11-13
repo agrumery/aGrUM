@@ -4316,6 +4316,18 @@ SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__minEpsilonRate(g
 SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxIter(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxTime(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__periodSize(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableEpsilon(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableEpsilon(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledEpsilon(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMinEpsilonRate(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMinEpsilonRate(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMinEpsilonRate(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMaxIter(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMaxIter(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMaxIter(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMaxTime(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMaxTime(gum::credal::CNMonteCarloSampling< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMaxTime(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__nbrIterations(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__currentTime(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_credal_CNMonteCarloSampling_Sl_double_Sg__messageApproximationScheme(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -4497,6 +4509,18 @@ SWIGINTERN double gum_credal_CNLoopyPropagation_Sl_double_Sg__minEpsilonRate(gum
 SWIGINTERN gum::Size gum_credal_CNLoopyPropagation_Sl_double_Sg__maxIter(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
 SWIGINTERN double gum_credal_CNLoopyPropagation_Sl_double_Sg__maxTime(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
 SWIGINTERN gum::Size gum_credal_CNLoopyPropagation_Sl_double_Sg__periodSize(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__enableEpsilon(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::enableEpsilon(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__disableEpsilon(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::disableEpsilon(); }
+SWIGINTERN bool gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledEpsilon(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledEpsilon(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMinEpsilonRate(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::enableMinEpsilonRate(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMinEpsilonRate(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::disableMinEpsilonRate(); }
+SWIGINTERN bool gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMinEpsilonRate(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMinEpsilonRate(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMaxIter(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::enableMaxIter(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMaxIter(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::disableMaxIter(); }
+SWIGINTERN bool gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMaxIter(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxIter(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMaxTime(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::enableMaxTime(); }
+SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMaxTime(gum::credal::CNLoopyPropagation< double > *self){ self->gum::ApproximationScheme::disableMaxTime(); }
+SWIGINTERN bool gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMaxTime(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::isEnabledMaxTime(); }
 SWIGINTERN gum::Size gum_credal_CNLoopyPropagation_Sl_double_Sg__nbrIterations(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
 SWIGINTERN double gum_credal_CNLoopyPropagation_Sl_double_Sg__currentTime(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_credal_CNLoopyPropagation_Sl_double_Sg__messageApproximationScheme(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::IApproximationSchemeConfiguration::messageApproximationScheme(); }
@@ -7188,6 +7212,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_enableEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_disableEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_isEnabledEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledEpsilon((gum::credal::CNMonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMinEpsilonRate((gum::credal::CNMonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_enableMaxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_disableMaxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_isEnabledMaxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMaxIter((gum::credal::CNMonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_enableMaxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_disableMaxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_isEnabledMaxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sg__isEnabledMaxTime((gum::credal::CNMonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
@@ -9000,6 +9388,370 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_enableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_enableEpsilon" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__enableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_disableEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_disableEpsilon" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__disableEpsilon(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_isEnabledEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_isEnabledEpsilon" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledEpsilon((gum::credal::CNLoopyPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_enableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_disableMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMinEpsilonRate(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_isEnabledMinEpsilonRate(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMinEpsilonRate((gum::credal::CNLoopyPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_enableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_enableMaxIter" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_disableMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_disableMaxIter" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMaxIter(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_isEnabledMaxIter(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_isEnabledMaxIter" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMaxIter((gum::credal::CNLoopyPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_enableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_enableMaxTime" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__enableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_disableMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_disableMaxTime" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      gum_credal_CNLoopyPropagation_Sl_double_Sg__disableMaxTime(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_isEnabledMaxTime(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_isEnabledMaxTime" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_credal_CNLoopyPropagation_Sl_double_Sg__isEnabledMaxTime((gum::credal::CNLoopyPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CNLoopyPropagation_nbrIterations(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::credal::CNLoopyPropagation< double > *arg1 = 0 ;
@@ -10621,6 +11373,78 @@ static PyMethodDef SwigMethods[] = {
 		"    If p<1\n"
 		"\n"
 		""},
+	 { "CNMonteCarloSampling_enableEpsilon", _wrap_CNMonteCarloSampling_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_disableEpsilon", _wrap_CNMonteCarloSampling_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_isEnabledEpsilon", _wrap_CNMonteCarloSampling_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_enableMinEpsilonRate", _wrap_CNMonteCarloSampling_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_disableMinEpsilonRate", _wrap_CNMonteCarloSampling_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_isEnabledMinEpsilonRate", _wrap_CNMonteCarloSampling_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_enableMaxIter", _wrap_CNMonteCarloSampling_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_disableMaxIter", _wrap_CNMonteCarloSampling_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_isEnabledMaxIter", _wrap_CNMonteCarloSampling_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_enableMaxTime", _wrap_CNMonteCarloSampling_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_disableMaxTime", _wrap_CNMonteCarloSampling_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNMonteCarloSampling_isEnabledMaxTime", _wrap_CNMonteCarloSampling_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
+		"\n"
+		""},
 	 { "CNMonteCarloSampling_nbrIterations", _wrap_CNMonteCarloSampling_nbrIterations, METH_O, "\n"
 		"\n"
 		"Returns\n"
@@ -10936,6 +11760,78 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.OutOfBounds\n"
 		"    If p<1\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_enableEpsilon", _wrap_CNLoopyPropagation_enableEpsilon, METH_O, "\n"
+		"\n"
+		"Enable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_disableEpsilon", _wrap_CNLoopyPropagation_disableEpsilon, METH_O, "\n"
+		"\n"
+		"Disable epsilon as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_isEnabledEpsilon", _wrap_CNLoopyPropagation_isEnabledEpsilon, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon is used as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_enableMinEpsilonRate", _wrap_CNLoopyPropagation_enableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Enable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_disableMinEpsilonRate", _wrap_CNLoopyPropagation_disableMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Disable a min epsilon rate as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_isEnabledMinEpsilonRate", _wrap_CNLoopyPropagation_isEnabledMinEpsilonRate, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if epsilon rate is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_enableMaxIter", _wrap_CNLoopyPropagation_enableMaxIter, METH_O, "\n"
+		"\n"
+		"Enable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_disableMaxIter", _wrap_CNLoopyPropagation_disableMaxIter, METH_O, "\n"
+		"\n"
+		"Disable max iterations as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_isEnabledMaxIter", _wrap_CNLoopyPropagation_isEnabledMaxIter, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max iterations is used as a stopping criterion\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_enableMaxTime", _wrap_CNLoopyPropagation_enableMaxTime, METH_O, "\n"
+		"\n"
+		"Enable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_disableMaxTime", _wrap_CNLoopyPropagation_disableMaxTime, METH_O, "\n"
+		"\n"
+		"Disable max time as a stopping criterion.\n"
+		"\n"
+		""},
+	 { "CNLoopyPropagation_isEnabledMaxTime", _wrap_CNLoopyPropagation_isEnabledMaxTime, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if max time is used as a stopping criterion\n"
 		"\n"
 		""},
 	 { "CNLoopyPropagation_nbrIterations", _wrap_CNLoopyPropagation_nbrIterations, METH_O, "\n"

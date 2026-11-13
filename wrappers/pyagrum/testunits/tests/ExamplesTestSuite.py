@@ -38,8 +38,9 @@
 #                                                                          #
 ############################################################################
 
-"""Every documented member and function has an example (doc/examples/<page name>.py), a documented class may have
-one (doc/examples/<class name>.class.py), and every example is right."""
+"""Every example (doc/examples/<page name>.py, or doc/examples/<class name>.class.py for a documented class) is right
+and belongs to a documented member, function or class. That every documented member and function has an example is
+checked by `act guideline` (check examples)."""
 
 import sys
 import tempfile
@@ -69,16 +70,8 @@ class TestExamples(pyAgrumTestCase):
   @classmethod
   def setUpClass(cls):
     cls.inventory = _inventory()
-    cls.pages = set(cls.inventory.pageNames())
     cls.names = cls.inventory.exampleNames()
     cls.files = {path.stem: path for path in (_DOC / "examples").glob("*.py")}
-
-  def testEveryPageHasAnExample(self):
-    missing = sorted(self.pages - set(self.files))
-    self.assertFalse(
-      missing,
-      f"{len(missing)} documented members or functions without example in doc/examples:\n  " + "\n  ".join(missing),
-    )
 
   def testNoOrphanExample(self):
     unavailable = self.inventory.unavailable  # optional dependency missing here

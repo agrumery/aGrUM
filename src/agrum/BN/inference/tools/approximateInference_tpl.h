@@ -49,4 +49,9 @@ namespace gum {
   ApproximateInference< GUM_SCALAR >::ApproximateInference(const IBayesNet< GUM_SCALAR >* bn) :
       MarginalTargetedInference< GUM_SCALAR >(bn) {}
 
+  template < GUM_Numeric GUM_SCALAR >
+  void ApproximateInference< GUM_SCALAR >::onApproximationSchemeChanged_() {
+    this->invalidateTensors();
+  }
+
 }   // namespace gum

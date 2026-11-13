@@ -406,6 +406,7 @@ _GUIDELINE_ALL_CHECKS: frozenset[str] = frozenset(
     "pygum",
     "pyannot",
     "pytyping",
+    "examples",
   }
 )
 # tidy/inline need build/aGrUM/<mode>/compile_commands.json (act lib release aGrUM first);
@@ -516,6 +517,11 @@ def guideline(
       "pytyping",
       "static typing of the user API of the installed pyagrum (mypy)",
       lambda: [(_check_py_typing(details, dry_run), "typing error")],
+    ),
+    (
+      "examples",
+      "an example for every documented member and function of pyAgrum",
+      lambda: [(_check_examples(), "missing example")],
     ),
   ]
   dim = "\033[2m" if cfg.C_END else ""
@@ -1574,6 +1580,29 @@ def _check_pygum_export(details: bool, correction: bool) -> int:
 
 def _check_missing_docs(details: bool) -> int:
   return missing_docs(details)
+
+
+def _check_examples() -> int:
+  """Check that every documented member and function of pyAgrum has an example (doc/examples/<page name>.py).
+
+  The pages are found as the documentation build finds them (pyagrum_apiinventory in the Sphinx sources). There is no
+  correction: an example is written by hand. The examples themselves are run by ExamplesTestSuite. Returns the number
+  of pages without example.
+  """
+  doc = Path("wrappers", "pyagrum", "doc")
+  sphinx = str(doc / "sphinx")
+  if sphinx not in sys.path:
+    sys.path.append(sphinx)  # appended: no shadowing of an installed module
+  import pyagrum_apiinventory as api  # noqa: PLC0415 (module of the Sphinx sources)
+
+  excluded = {"_build", "site", "Web"}  # outputs of the documentation builds, inside the Sphinx sources
+  inventory = api.Inventory(api.scan(doc / "sphinx", lambda rel: rel.split("/")[0] in excluded))
+  examples = {path.stem for path in (doc / "examples").glob("*.py")}
+  missing = sorted(set(inventory.pageNames()) - examples)
+  # always listed (details or not): each example is written by hand
+  for name in missing:
+    notif(f"  err [[{doc / 'examples' / name}.py]] missing")
+  return len(missing)
 
 
 def get_template_license() -> tuple[str, str]:

@@ -334,4 +334,93 @@ namespace gum_tests {
       break;   // everything is ok : can stop the loop
     }
   }
+
+  GUM_TEST(CopyKeepsAllTheResults) {
+    gum::BayesNet< double > netP;
+    {
+      gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::BayesNet< double > netQ;
+    {
+      gum::BIFReader< double > reader(&netQ, GET_RESSOURCES_PATH("bif/bnQ.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::ExactBNdistance< double > kl(netP, netQ);
+    kl.compute();
+    gum::ExactBNdistance< double > copy(kl);
+    CHECK((copy.hellinger()) == doctest::Approx(0.321089688).epsilon(1e-7));
+    CHECK((copy.jsd()) == doctest::Approx(0.0696153).epsilon(1e-7));
+    CHECK((copy.bhattacharya()) == doctest::Approx(0.0529255).epsilon(1e-7));
+  }
+
+  GUM_TEST(ChangedParameterInvalidatesTheResults) {
+    gum::BayesNet< double > netP;
+    {
+      gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::BayesNet< double > netQ;
+    {
+      gum::BIFReader< double > reader(&netQ, GET_RESSOURCES_PATH("bif/bnQ.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    // only maxIter stops the schemes
+    gum::MCBNDistance< double > mc(netP, netQ);
+    mc.disableEpsilon();
+    mc.disableMinEpsilonRate();
+    mc.setMaxIter(400);
+    const double klPQ = mc.klPQ();
+    CHECK_EQ(mc.nbrIterations(), static_cast< gum::Size >(400));
+    mc.compute();
+    CHECK_EQ(mc.klPQ(), klPQ);   // nothing changed: not computed again
+    mc.setMaxIter(1000);
+    mc.klPQ();                   // the accessors compute again outdated results
+    CHECK_EQ(mc.nbrIterations(), static_cast< gum::Size >(1000));
+    CHECK((mc.bhattacharya()) == doctest::Approx(0.0529255).epsilon(1e-1));
+
+    gum::GibbsBNdistance< double > gibbs(netP, netQ);
+    gibbs.setBurnIn(0);
+    gibbs.disableEpsilon();
+    gibbs.disableMinEpsilonRate();
+    gibbs.setMaxIter(400);
+    gibbs.compute();
+    CHECK_EQ(gibbs.nbrIterations(), static_cast< gum::Size >(400));
+    gibbs.setMaxIter(1000);
+    gibbs.compute();
+    CHECK_EQ(gibbs.nbrIterations(), static_cast< gum::Size >(1000));
+    // the burn-in is counted in the iterations, and maxIter is checked at the end of the periods
+    gibbs.setBurnIn(100);
+    gibbs.compute();
+    CHECK_EQ(gibbs.nbrIterations(), static_cast< gum::Size >(1100));
+  }
+
+  GUM_TEST(NotLazyComputeTakesChangedBNsIntoAccount) {
+    gum::BayesNet< double > netP;
+    {
+      gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::BayesNet< double >        copy(netP);
+    gum::ExactBNdistance< double > kl(netP, copy);
+    CHECK_EQ(kl.hellinger(), doctest::Approx(0.0));
+
+    // the BNs are only referenced: a change in place is not detected...
+    copy.generateCPT("X");
+    kl.compute();
+    CHECK_EQ(kl.hellinger(), doctest::Approx(0.0));
+    // ... unless the computation is forced
+    kl.compute(false);
+    CHECK_GT(kl.hellinger(), 0.0);
+  }
 }   // namespace gum_tests

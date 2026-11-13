@@ -84,6 +84,11 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  void GibbsBNdistance< GUM_SCALAR >::onApproximationSchemeChanged_() {
+    this->setOutdated_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::computeKL_() {
     auto               Iq = q_.completeInstantiation();
     gum::Instantiation I  = this->monteCarloSample();
@@ -102,7 +107,7 @@ namespace gum {
       I = this->nextSample(I);
 
     // SAMPLING
-    klPQ_ = klQP_ = hellinger_ = jsd_ = (GUM_SCALAR)0.0;
+    klPQ_ = klQP_ = hellinger_ = bhattacharya_ = jsd_ = (GUM_SCALAR)0.0;
     errorPQ_ = errorQP_ = 0;
     /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
@@ -111,8 +116,9 @@ namespace gum {
     GUM_SCALAR pp, pq, pmid;
 
     do {
-      this->disableMinEpsilonRate();
-      I = this->nextSample(I);
+      // not through the setter: it would outdate the results being computed
+      this->enabled_min_rate_eps_ = false;
+      I                           = this->nextSample(I);
       updateApproximationScheme();
 
       //_p.synchroInstantiations( Ip,I);
@@ -169,6 +175,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void GibbsBNdistance< GUM_SCALAR >::setBurnIn(Size b) {
     this->burn_in_ = b;
+    this->onApproximationSchemeChanged_();
   }
 
   template < GUM_Numeric GUM_SCALAR >

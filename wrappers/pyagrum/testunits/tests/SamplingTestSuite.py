@@ -326,7 +326,35 @@ class TestIncompatibleEvidence(pyAgrumTestCase):
       gum.config.pop()
 
 
+class TestChangedParameters(pyAgrumTestCase):
+  def testChangedParameterInvalidatesTheInference(self):
+    # setMaxIter after an inference used to be ignored by the next makeInference
+    bn = gum.fastBN("a->b->c->d")
+    engines = {
+      "MonteCarloSampling": (gum.MonteCarloSampling(bn), 100),
+      "WeightedSampling": (gum.WeightedSampling(bn), 100),
+      "ImportanceSampling": (gum.ImportanceSampling(bn), 100),
+      "GibbsSampling": (gum.GibbsSampling(bn), 100),
+      "LoopyImportanceSampling": (gum.LoopyImportanceSampling(bn), 100),
+    }
+    for name, (ie, period) in engines.items():
+      with self.subTest(engine=name):
+        if hasattr(ie, "setBurnIn"):
+          ie.setBurnIn(0)
+        # (almost) only maxIter stops the scheme: the number of iterations shows which parameters were used
+        ie.setEpsilon(1e-300)
+        ie.setMinEpsilonRate(1e-300)
+        ie.setPeriodSize(period)
+        ie.setMaxIter(4 * period)
+        ie.makeInference()
+        self.assertEqual(ie.nbrIterations(), 4 * period)
+        ie.setMaxIter(10 * period)
+        ie.makeInference()
+        self.assertEqual(ie.nbrIterations(), 10 * period)
+
+
 ts = unittest.TestSuite()
 addTests(ts, TestDictFeature)
 addTests(ts, TestInferenceResults)
 addTests(ts, TestIncompatibleEvidence)
+addTests(ts, TestChangedParameters)

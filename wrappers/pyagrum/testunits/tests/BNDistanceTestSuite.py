@@ -77,6 +77,40 @@ class BNDistanceTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(result["klPQ"], 0.0)
     self.assertAlmostEqual(result["hellinger"], 0.0)
 
+  def testEachComputeIsANewComputation(self):
+    # compute() used to return the results of its first call, whatever the changes made since
+    for name in ("GibbsBNdistance", "MCBNDistance"):
+      with self.subTest(distance=name):
+        distance = getattr(gum, name)(gum.fastBN("A->B->C"), gum.fastBN("A->B<-C"))
+        if hasattr(distance, "setBurnIn"):
+          distance.setBurnIn(200)  # a multiple of periodSize: maxIter is checked at the end of the periods
+        distance.disableEpsilon()  # only maxIter stops the scheme
+        distance.disableMinEpsilonRate()
+        distance.setMaxIter(400)
+        distance.compute()
+        self.assertEqual(distance.nbrIterations(), 400)
+        distance.setMaxIter(1000)
+        distance.compute()
+        self.assertEqual(distance.nbrIterations(), 1000)
+        self.assertEqual(distance.messageApproximationScheme(), "stopped with max iteration=1000")
+
+  def testNotLazyComputeTakesChangedBNsIntoAccount(self):
+    p = gum.fastBN("A->B")
+    q = gum.BayesNet(p)
+    distance = gum.ExactBNdistance(p, q)
+    self.assertAlmostEqual(distance.compute()["hellinger"], 0.0)
+    q.cpt("A").fillWith([0.5, 0.5])
+    p.cpt("A").fillWith([0.9, 0.1])
+    # the Bayesian networks are only referenced: a change in place is not detected...
+    self.assertAlmostEqual(distance.compute()["hellinger"], 0.0)
+    # ... unless the computation is forced
+    self.assertGreater(distance.compute(lazy=False)["hellinger"], 0.1)
+
+  def testLazyComputeDoesNotComputeAgain(self):
+    distance = gum.MCBNDistance(gum.fastBN("A->B->C"), gum.fastBN("A->B<-C"))
+    distance.setMaxIter(1000)
+    self.assertEqual(distance.compute(), distance.compute())  # a new sampling would give other values
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNDistanceTestCase)

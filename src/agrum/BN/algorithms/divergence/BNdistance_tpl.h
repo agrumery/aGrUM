@@ -59,8 +59,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const IBayesNet< GUM_SCALAR >& P,
                                        const IBayesNet< GUM_SCALAR >& Q) :
-      p_(P), q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0),
-      _difficulty_(Complexity::Heavy), _done_(false) {
+      p_(P), q_(Q), klPQ_(0.0), klQP_(0.0), errorPQ_(0), errorQP_(0), hellinger_(0.0),
+      bhattacharya_(0.0), jsd_(0.0), _difficulty_(Complexity::Heavy), _done_(false) {
     _checkCompatibility_();   // may throw OperationNotAllowed
     GUM_CONSTRUCTOR(BNdistance);
 
@@ -74,7 +74,8 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   BNdistance< GUM_SCALAR >::BNdistance(const BNdistance< GUM_SCALAR >& kl) :
       p_(kl.p_), q_(kl.q_), klPQ_(kl.klPQ_), klQP_(kl.klQP_), errorPQ_(kl.errorPQ_),
-      errorQP_(kl.errorQP_), _difficulty_(kl._difficulty_), _done_(kl._done_) {
+      errorQP_(kl.errorQP_), hellinger_(kl.hellinger_), bhattacharya_(kl.bhattacharya_),
+      jsd_(kl.jsd_), _difficulty_(kl._difficulty_), _done_(kl._done_) {
     GUM_CONSTRUCTOR(BNdistance);
   }
 
@@ -90,43 +91,43 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   double BNdistance< GUM_SCALAR >::klPQ() {
-    process_();
+    compute();
     return klPQ_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   double BNdistance< GUM_SCALAR >::klQP() {
-    process_();
+    compute();
     return klQP_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   double BNdistance< GUM_SCALAR >::hellinger() {
-    process_();
+    compute();
     return hellinger_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   double BNdistance< GUM_SCALAR >::bhattacharya() {
-    process_();
+    compute();
     return bhattacharya_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   double BNdistance< GUM_SCALAR >::jsd() {
-    process_();
+    compute();
     return jsd_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   Size BNdistance< GUM_SCALAR >::errorPQ() {
-    process_();
+    compute();
     return errorPQ_;
   }
 
   template < GUM_Numeric GUM_SCALAR >
   Size BNdistance< GUM_SCALAR >::errorQP() {
-    process_();
+    compute();
     return errorQP_;
   }
 
@@ -172,13 +173,16 @@ namespace gum {
     return true;
   }
 
-  // do the job if not already  _done_
   template < GUM_Numeric GUM_SCALAR >
-  void BNdistance< GUM_SCALAR >::process_() {
-    if (!_done_) {
-      computeKL_();
-      _done_ = true;
-    }
+  void BNdistance< GUM_SCALAR >::compute(bool lazy) {
+    if (lazy && _done_) return;
+    computeKL_();
+    _done_ = true;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void BNdistance< GUM_SCALAR >::setOutdated_() {
+    _done_ = false;
   }
 
   // in order to keep BNdistance instantiable

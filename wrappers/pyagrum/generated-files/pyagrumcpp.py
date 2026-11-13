@@ -22927,6 +22927,114 @@ class GibbsSampling(object):
         """
         return _pyagrumcpp.GibbsSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -23771,6 +23879,114 @@ class ImportanceSampling(object):
         """
         return _pyagrumcpp.ImportanceSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.ImportanceSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.ImportanceSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.ImportanceSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.ImportanceSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -24571,6 +24787,114 @@ class WeightedSampling(object):
         """
         return _pyagrumcpp.WeightedSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.WeightedSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.WeightedSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.WeightedSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.WeightedSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -25370,6 +25694,114 @@ class MonteCarloSampling(object):
 
         """
         return _pyagrumcpp.MonteCarloSampling_periodSize(self)
+
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MonteCarloSampling_isEnabledMaxTime(self)
 
     def nbrIterations(self) -> int:
         r"""
@@ -26190,6 +26622,114 @@ class LoopyImportanceSampling(ImportanceSampling):
         """
         return _pyagrumcpp.LoopyImportanceSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyImportanceSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -27009,6 +27549,114 @@ class LoopyWeightedSampling(WeightedSampling):
         """
         return _pyagrumcpp.LoopyWeightedSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyWeightedSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -27827,6 +28475,114 @@ class LoopyGibbsSampling(GibbsSampling):
 
         """
         return _pyagrumcpp.LoopyGibbsSampling_periodSize(self)
+
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyGibbsSampling_isEnabledMaxTime(self)
 
     def nbrIterations(self) -> int:
         r"""
@@ -28713,6 +29469,114 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
         """
         return _pyagrumcpp.LoopyMonteCarloSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyMonteCarloSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -29500,6 +30364,114 @@ class LoopyBeliefPropagation(object):
         """
         return _pyagrumcpp.LoopyBeliefPropagation_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.LoopyBeliefPropagation_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -29964,16 +30936,29 @@ class ExactBNdistance(object):
 
     __swig_destroy__ = _pyagrumcpp.delete_ExactBNdistance
 
-    def compute(self) -> dict[str, object]:
-        r"""
+    def _compute(self, lazy: bool) -> dict[str, object]:
+        return _pyagrumcpp.ExactBNdistance__compute(self, lazy)
 
-        Returns
-        -------
-        dict
-            a dictionnary containing the different values after the computation.
+    def compute(self, lazy: bool = True) -> dict:
+      """
+      Computes the divergences and distances between the two Bayesian networks.
 
-        """
-        return _pyagrumcpp.ExactBNdistance_compute(self)
+      Parameters
+      ----------
+      lazy : bool
+        if True (default), the computation is done only if the results are outdated: nothing has been computed yet, or a
+        parameter of the approximation (stopping criteria, burn-in...) changed since the last computation. If False, the
+        computation is always done: the Bayesian networks are only referenced, so that a change made in place in one of
+        them (for instance with ``bn.cpt(node).fillWith(...)``) is not detected.
+
+      Returns
+      -------
+      dict
+        the values of the last computation: ``klPQ``, ``errorPQ``, ``klQP``, ``errorQP``, ``hellinger``,
+        ``bhattacharya`` and ``jensen-shannon``.
+      """
+      return self._compute(lazy)
+
 
 # Register ExactBNdistance in _pyagrumcpp:
 _pyagrumcpp.ExactBNdistance_swigregister(ExactBNdistance)
@@ -30033,16 +31018,29 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrumcpp.GibbsBNdistance_burnIn(self)
 
-    def compute(self) -> dict[str, object]:
-        r"""
+    def _compute(self, lazy: bool) -> dict[str, object]:
+        return _pyagrumcpp.GibbsBNdistance__compute(self, lazy)
 
-        Returns
-        -------
-        dict
-            a dictionnary containing the different values after the computation.
+    def compute(self, lazy: bool = True) -> dict:
+      """
+      Computes the divergences and distances between the two Bayesian networks.
 
-        """
-        return _pyagrumcpp.GibbsBNdistance_compute(self)
+      Parameters
+      ----------
+      lazy : bool
+        if True (default), the computation is done only if the results are outdated: nothing has been computed yet, or a
+        parameter of the approximation (stopping criteria, burn-in...) changed since the last computation. If False, the
+        computation is always done: the Bayesian networks are only referenced, so that a change made in place in one of
+        them (for instance with ``bn.cpt(node).fillWith(...)``) is not detected.
+
+      Returns
+      -------
+      dict
+        the values of the last computation: ``klPQ``, ``errorPQ``, ``klQP``, ``errorQP``, ``hellinger``,
+        ``bhattacharya`` and ``jensen-shannon``.
+      """
+      return self._compute(lazy)
+
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -30201,6 +31199,114 @@ class GibbsBNdistance(ApproximationScheme):
         """
         return _pyagrumcpp.GibbsBNdistance_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.GibbsBNdistance_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -30334,16 +31440,29 @@ class MCBNDistance(ApproximationScheme):
 
     __swig_destroy__ = _pyagrumcpp.delete_MCBNDistance
 
-    def compute(self) -> dict[str, object]:
-        r"""
+    def _compute(self, lazy: bool) -> dict[str, object]:
+        return _pyagrumcpp.MCBNDistance__compute(self, lazy)
 
-        Returns
-        -------
-        dict
-            a dictionnary containing the different values after the computation.
+    def compute(self, lazy: bool = True) -> dict:
+      """
+      Computes the divergences and distances between the two Bayesian networks.
 
-        """
-        return _pyagrumcpp.MCBNDistance_compute(self)
+      Parameters
+      ----------
+      lazy : bool
+        if True (default), the computation is done only if the results are outdated: nothing has been computed yet, or a
+        parameter of the approximation (stopping criteria, burn-in...) changed since the last computation. If False, the
+        computation is always done: the Bayesian networks are only referenced, so that a change made in place in one of
+        them (for instance with ``bn.cpt(node).fillWith(...)``) is not detected.
+
+      Returns
+      -------
+      dict
+        the values of the last computation: ``klPQ``, ``errorPQ``, ``klQP``, ``errorQP``, ``hellinger``,
+        ``bhattacharya`` and ``jensen-shannon``.
+      """
+      return self._compute(lazy)
+
 
     def setVerbosity(self, v: bool) -> None:
         r"""
@@ -30501,6 +31620,114 @@ class MCBNDistance(ApproximationScheme):
 
         """
         return _pyagrumcpp.MCBNDistance_periodSize(self)
+
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MCBNDistance_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MCBNDistance_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.MCBNDistance_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.MCBNDistance_isEnabledMaxTime(self)
 
     def nbrIterations(self) -> int:
         r"""
@@ -32841,6 +34068,114 @@ class BNLearner(object):
 
         """
         return _pyagrumcpp.BNLearner_periodSize(self)
+
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.BNLearner_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.BNLearner_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _pyagrumcpp.BNLearner_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _pyagrumcpp.BNLearner_isEnabledMaxTime(self)
 
     def nbrIterations(self) -> int:
         r"""

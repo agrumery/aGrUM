@@ -792,6 +792,114 @@ class CNMonteCarloSampling(object):
         """
         return _cncpp.CNMonteCarloSampling_periodSize(self)
 
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _cncpp.CNMonteCarloSampling_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _cncpp.CNMonteCarloSampling_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _cncpp.CNMonteCarloSampling_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _cncpp.CNMonteCarloSampling_isEnabledMaxTime(self)
+
     def nbrIterations(self) -> int:
         r"""
 
@@ -1254,6 +1362,114 @@ class CNLoopyPropagation(object):
 
         """
         return _cncpp.CNLoopyPropagation_periodSize(self)
+
+    def enableEpsilon(self) -> None:
+        r"""
+
+        Enable epsilon as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_enableEpsilon(self)
+
+    def disableEpsilon(self) -> None:
+        r"""
+
+        Disable epsilon as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_disableEpsilon(self)
+
+    def isEnabledEpsilon(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_isEnabledEpsilon(self)
+
+    def enableMinEpsilonRate(self) -> None:
+        r"""
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_enableMinEpsilonRate(self)
+
+    def disableMinEpsilonRate(self) -> None:
+        r"""
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_disableMinEpsilonRate(self)
+
+    def isEnabledMinEpsilonRate(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
+        return _cncpp.CNLoopyPropagation_isEnabledMinEpsilonRate(self)
+
+    def enableMaxIter(self) -> None:
+        r"""
+
+        Enable max iterations as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_enableMaxIter(self)
+
+    def disableMaxIter(self) -> None:
+        r"""
+
+        Disable max iterations as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_disableMaxIter(self)
+
+    def isEnabledMaxIter(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
+        return _cncpp.CNLoopyPropagation_isEnabledMaxIter(self)
+
+    def enableMaxTime(self) -> None:
+        r"""
+
+        Enable max time as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_enableMaxTime(self)
+
+    def disableMaxTime(self) -> None:
+        r"""
+
+        Disable max time as a stopping criterion.
+
+        """
+        return _cncpp.CNLoopyPropagation_disableMaxTime(self)
+
+    def isEnabledMaxTime(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
+        return _cncpp.CNLoopyPropagation_isEnabledMaxTime(self)
 
     def nbrIterations(self) -> int:
         r"""

@@ -415,6 +415,16 @@ namespace gum {
                                bool               withVerbosity = true);
 
     /**
+     * @brief Called after each change of a parameter of the scheme (a stopping criterion, the
+     * period size, the verbosity or the burn-in).
+     *
+     * Does nothing by default. A class which keeps the result of its last computation overrides it
+     * to mark this result as outdated, so that the next computation takes the new parameters into
+     * account.
+     */
+    virtual void onApproximationSchemeChanged_();
+
+    /**
      * @brief Read a non negative integer key of gum::Configuration.
      * @param section The name of the section of the configuration.
      * @param key The name of the key of the section.

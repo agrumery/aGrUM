@@ -44,10 +44,11 @@
 
 
 
+// the public compute (with the named argument lazy) is defined in %pythoncode
 %define ADD_COMPUTE_TO_BNDISTANCE(classname)
 %extend classname {
-PyAgrumDict* compute(void) {
-  // the values are read in this order (the first one may launch the computation)
+PyAgrumDict* _compute(bool lazy) {
+  self->compute(lazy);   // the accessors below only read the results
   const double     klPQ         = self->klPQ();
   const Py_ssize_t errorPQ      = static_cast< Py_ssize_t >(self->errorPQ());
   const double     klQP         = self->klQP();
@@ -58,6 +59,28 @@ PyAgrumDict* compute(void) {
   return Py_BuildValue("{s:d,s:n,s:d,s:n,s:d,s:d,s:d}",
                        "klPQ", klPQ, "errorPQ", errorPQ, "klQP", klQP, "errorQP", errorQP,
                        "hellinger", hellinger, "bhattacharya", bhattacharya, "jensen-shannon", jsd);
+}
+
+%pythoncode {
+def compute(self, lazy: bool = True) -> dict:
+  """
+  Computes the divergences and distances between the two Bayesian networks.
+
+  Parameters
+  ----------
+  lazy : bool
+    if True (default), the computation is done only if the results are outdated: nothing has been computed yet, or a
+    parameter of the approximation (stopping criteria, burn-in...) changed since the last computation. If False, the
+    computation is always done: the Bayesian networks are only referenced, so that a change made in place in one of
+    them (for instance with ``bn.cpt(node).fillWith(...)``) is not detected.
+
+  Returns
+  -------
+  dict
+    the values of the last computation: ``klPQ``, ``errorPQ``, ``klQP``, ``errorQP``, ``hellinger``,
+    ``bhattacharya`` and ``jensen-shannon``.
+  """
+  return self._compute(lazy)
 }
 }
 %enddef

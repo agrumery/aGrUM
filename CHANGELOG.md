@@ -60,6 +60,14 @@
       names. **The files saved by pyAgrum (`.jgum`, `.bgum`, `.bifxml`, pickle...) write such names quoted, and
       pyAgrum 3.3.2 or older reads them with the quotes in the name** (this includes the variables `X[0]` of a KTBN).
       The simple names are written as before.
+    - A parameter of an approximation changed after a computation (`setMaxIter`, `setEpsilon`, `setBurnIn`...) is taken
+      into account by the next one: approximate inferences (`GibbsSampling`, `MonteCarloSampling`, `ImportanceSampling`,
+      `WeightedSampling`, `LoopyBeliefPropagation`, `Loopy*Sampling`), `CNLoopyPropagation`, `GibbsBNdistance` and
+      `MCBNDistance` returned the results computed with the former parameters.
+    - `compute(lazy=False)` of `ExactBNdistance`, `GibbsBNdistance` and `MCBNDistance` forces a new computation (the
+      Bayesian networks are only referenced: a change made in place is not detected).
+    - `enableEpsilon`/`disableEpsilon`/`isEnabledEpsilon` (and the same for `MinEpsilonRate`, `MaxIter` and
+      `MaxTime`) for the approximate inferences, the credal inferences and `BNLearner`, as for the distances.
 
 - aGrUM
 
@@ -175,6 +183,13 @@
     - `prm::ClusteredLayerGenerator::setClusterRatio` is effective (it was ignored: a cluster was always generated):
       the probability for a generated class to be replaced by a cluster, 1 by default (the former behaviour); a ratio
       outside [0, 1] raises `OutOfBounds`. The PRMs generated for a given seed change (one more draw by class).
+    - The setters of `ApproximationScheme` call the new protected hook `onApproximationSchemeChanged_()`: the
+      approximate inferences (through `invalidateTensors()`), `CNLoopyPropagation` and the approximate distances
+      outdate their results, so that the next computation takes the new parameters into account.
+    - `BNdistance::compute(bool lazy = true)` (it replaces the protected `process_()`): with `lazy == false`, the
+      computation is always done.
+    - `act guideline`: new check `examples` (in the default checks), an example for every documented member and
+      function of pyAgrum (it was a test of pyAgrum).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
@@ -302,6 +317,8 @@
     - `variable`, `variableFromName`, `cpt` (`BayesNet`, `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`),
       `utility` (`InfluenceDiagram`) and `factor` (`MarkovRandomField`) keep their model alive: on a temporary model
       (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).
+    - `GibbsBNdistance` and `MCBNDistance`: the Bhattacharya distance started from an uninitialized value, and the copy
+      of a distance lost its Hellinger, Bhattacharya and Jensen-Shannon values.
 
 ## Changelog for 3.3.2
 

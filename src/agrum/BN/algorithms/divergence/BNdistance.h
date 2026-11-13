@@ -75,8 +75,9 @@ namespace gum {
    *( KL_Complexity::Heavy,KL_Complexity::Difficult,KL_Complexity::Correct ) of
    *the
    *needed time.
-   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
-   *computations are made once. The second is for free :)
+   * KL.compute() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+   *computations are made once for all the distances, and again only when they are outdated
+   *(@see compute()).
    *
    * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
    *case, KL
@@ -110,9 +111,18 @@ namespace gum {
      */
     Complexity difficulty() const;
 
-    /// @name Accessors to results. The first call do the computations. The
-    /// others do
-    /// not.
+    /**
+     * @brief Computes all the divergences and distances.
+     *
+     * @param lazy if true, the computation is done only if the results are outdated: nothing has
+     * been computed yet, or a parameter of the approximation scheme changed since the last
+     * computation. If false, the computation is always done: the Bayesian networks are only
+     * referenced, so that a change made in place in p or q is not detected.
+     */
+    void compute(bool lazy = true);
+
+    /// @name Accessors to results. They call compute() (lazy): the results are computed only if
+    /// they are outdated.
     /// @{
 
     /// @return divergence KL(P||Q)
@@ -151,7 +161,8 @@ namespace gum {
     // choice between different computation scheme (@see ExactBNdistance)
     virtual void computeKL_();
 
-    void process_();
+    /// the results are outdated: the next access computes them again
+    void setOutdated_();
 
     const IBayesNet< GUM_SCALAR >& p_;
     const IBayesNet< GUM_SCALAR >& q_;

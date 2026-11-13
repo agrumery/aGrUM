@@ -99,6 +99,32 @@ namespace gum_tests {
       CHECK_EQ(scheme.maxTime(), 6000.);
       CHECK(scheme.isEnabledMaxTime());
     }
+
+    // only maxIter stops the scheme: the number of iterations shows which parameters were used
+    static void onlyMaxIterStops(gum::IApproximationSchemeConfiguration& scheme, gum::Size period) {
+      scheme.disableEpsilon();
+      scheme.disableMinEpsilonRate();
+      scheme.disableMaxTime();
+      scheme.setPeriodSize(period);
+    }
+
+    // a parameter changed after an inference: the next inference is a new computation; nothing
+    // changed: the next inference does nothing
+    template < typename ENGINE >
+    static void checkChangedParameterInvalidatesTheInference(ENGINE& engine, gum::Size period) {
+      onlyMaxIterStops(engine, period);
+      engine.setMaxIter(4 * period);
+      engine.makeInference();
+      CHECK_EQ(engine.nbrIterations(), 4 * period);
+      const gum::Tensor< double > posterior = engine.posterior(0);
+
+      engine.makeInference();
+      CHECK_EQ((engine.posterior(0) - posterior).abs().max(), 0.0);   // not computed again
+
+      engine.setMaxIter(10 * period);
+      engine.makeInference();
+      CHECK_EQ(engine.nbrIterations(), 10 * period);
+    }
   };
 
   GUM_TEST(SamplingDefaults) {
@@ -286,5 +312,52 @@ namespace gum_tests {
     conf.reset();   // the defaults again
 
     checkSampling(gum::MonteCarloSampling< double >(&bn));
+  }
+
+  GUM_TEST(ChangedParameterInvalidatesTheInference) {
+    ConfigurationGuard guard;
+    auto               bn = buildBN();
+
+    {
+      gum::MonteCarloSampling< double > engine(&bn);
+      checkChangedParameterInvalidatesTheInference(engine, 100);
+    }
+    {
+      gum::WeightedSampling< double > engine(&bn);
+      checkChangedParameterInvalidatesTheInference(engine, 100);
+    }
+    {
+      gum::ImportanceSampling< double > engine(&bn);
+      checkChangedParameterInvalidatesTheInference(engine, 100);
+    }
+    {
+      gum::GibbsSampling< double > engine(&bn);
+      engine.setBurnIn(0);
+      checkChangedParameterInvalidatesTheInference(engine, 100);
+    }
+    {
+      gum::LoopyBeliefPropagation< double > engine(&bn);
+      checkChangedParameterInvalidatesTheInference(engine, 1);
+    }
+    {
+      gum::LoopySamplingInference< double, gum::ImportanceSampling > engine(&bn);
+      checkChangedParameterInvalidatesTheInference(engine, 100);
+    }
+  }
+
+  GUM_TEST(ChangedBurnInInvalidatesTheGibbsInference) {
+    ConfigurationGuard guard;
+    auto               bn = buildBN();
+
+    gum::GibbsSampling< double > engine(&bn);
+    onlyMaxIterStops(engine, 200);
+    engine.setBurnIn(0);
+    engine.setMaxIter(400);
+    engine.makeInference();
+    CHECK_EQ(engine.nbrIterations(), gum::Size(400));
+    // the burn-in is counted in the iterations, and maxIter is checked at the end of the periods
+    engine.setBurnIn(100);
+    engine.makeInference();
+    CHECK_EQ(engine.nbrIterations(), gum::Size(500));
   }
 }   // namespace gum_tests

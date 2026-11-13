@@ -94,6 +94,11 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  void MCBNDistance< GUM_SCALAR >::onApproximationSchemeChanged_() {
+    this->setOutdated_();
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   void MCBNDistance< GUM_SCALAR >::computeKL_() {
     auto       Iq        = q_.completeInstantiation();
     const auto topoOrder = p_.topologicalOrder();
@@ -108,7 +113,7 @@ namespace gum {
       }
     }
 
-    klPQ_ = klQP_ = hellinger_ = jsd_ = (GUM_SCALAR)0.0;
+    klPQ_ = klQP_ = hellinger_ = bhattacharya_ = jsd_ = (GUM_SCALAR)0.0;
     errorPQ_ = errorQP_ = 0;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
@@ -116,8 +121,9 @@ namespace gum {
     GUM_SCALAR pp, pq, pmid;
 
     do {
-      this->disableMinEpsilonRate();
-      gum::Instantiation I = drawSample_(topoOrder);
+      // not through the setter: it would outdate the results being computed
+      this->enabled_min_rate_eps_ = false;
+      gum::Instantiation I        = drawSample_(topoOrder);
       updateApproximationScheme();
 
       Iq.setValsFrom(map, I);

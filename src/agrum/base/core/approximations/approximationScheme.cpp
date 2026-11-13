@@ -99,10 +99,15 @@ namespace gum {
     if (withVerbosity) setVerbosity(conf.typed< bool >(section, "verbosity"));
     if (withMaxTime) setMaxTime(conf.typed< double >(section, "maxTime"));
     // only some sections have a burn-in (approximation, gibbs, gibbsKL)
-    if (conf.has(section, "burnIn")) burn_in_ = sizeFromConfiguration_(section, "burnIn");
+    if (conf.has(section, "burnIn")) {
+      burn_in_ = sizeFromConfiguration_(section, "burnIn");
+      onApproximationSchemeChanged_();
+    }
   }
 
   ApproximationScheme::~ApproximationScheme() { GUM_DESTRUCTOR(ApproximationScheme); }
+
+  void ApproximationScheme::onApproximationSchemeChanged_() {}
 
   bool ApproximationScheme::continueApproximationScheme(double error) {
     // For coherence, we fix the time used in the method

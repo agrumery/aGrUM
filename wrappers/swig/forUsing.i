@@ -63,6 +63,19 @@
   using parent::maxTime;
   using parent::periodSize;
 
+  using parent::enableEpsilon;
+  using parent::disableEpsilon;
+  using parent::isEnabledEpsilon;
+  using parent::enableMinEpsilonRate;
+  using parent::disableMinEpsilonRate;
+  using parent::isEnabledMinEpsilonRate;
+  using parent::enableMaxIter;
+  using parent::disableMaxIter;
+  using parent::isEnabledMaxIter;
+  using parent::enableMaxTime;
+  using parent::disableMaxTime;
+  using parent::isEnabledMaxTime;
+
   using parent::nbrIterations;
   using parent::currentTime;
 

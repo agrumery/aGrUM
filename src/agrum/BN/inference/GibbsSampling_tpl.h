@@ -105,6 +105,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void GibbsSampling< GUM_SCALAR >::setBurnIn(Size b) {
     this->burn_in_ = b;
+    this->onApproximationSchemeChanged_();
   }
 
   template < GUM_Numeric GUM_SCALAR >

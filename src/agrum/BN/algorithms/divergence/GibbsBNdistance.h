@@ -63,8 +63,9 @@ namespace gum {
    * GibbsKL computes the KL divergence betweens 2 BNs using an approximation
    *pattern:  GIBBS sampling.
    *
-   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
-   *computations are made once. The second is for free :)
+   * KL.compute() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+   *computations are made once for all the distances, and again only when they are outdated
+   *(@see compute()).
    * GibbsKL allows as well to compute in the same time the Hellinger distance
    *(\f$
    *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Hellinger, 1909; Kokolakis and Nanopoulos, 2001)
@@ -131,6 +132,9 @@ namespace gum {
 
     protected:
     void computeKL_() final;
+
+    /// a parameter of the scheme changed: the results are outdated
+    void onApproximationSchemeChanged_() final;
 
     using BNdistance< GUM_SCALAR >::p_;
     using BNdistance< GUM_SCALAR >::q_;

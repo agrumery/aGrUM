@@ -530,7 +530,8 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
     "--check",
     help=(
       "act guideline: select checks using +/- syntax "
-      "(checks: cpp,python,lint,header,coverage,deps,tidy,pyrefly,pureheader,inline,pygum,pyannot,pytyping,all). "
+      "(checks: cpp,python,lint,header,coverage,deps,tidy,pyrefly,pureheader,inline,pygum,pyannot,pytyping,examples,"
+      "all). "
       "Default: all checks except tidy, inline, pygum and pytyping (slow, or require a prior build: "
       "compile_commands.json for tidy/inline, generated SWIG wrap files for pygum, installed pyagrum and mypy "
       "for pytyping). "

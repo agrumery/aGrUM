@@ -59,8 +59,9 @@ namespace gum {
    * ExactBNdistance should be used only if difficulty() gives an estimation (
    *KL_CORRECT
    *) of the needed time.
-   * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
-   *computations are made once. The second is for free :)
+   * KL.compute() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+   *computations are made once for all the distances, and again only when they are outdated
+   *(@see compute()).
    * ExactBNdistance allows as well to compute in the same time the Hellinger
    *distance
    *(\f$

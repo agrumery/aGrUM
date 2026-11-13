@@ -418,4 +418,24 @@ namespace gum_tests {
     clearCNet();
   }
 
+  GUM_TEST(ChangedParameterInvalidatesTheInference) {
+    initCNet();
+    gum::credal::CNLoopyPropagation< double > lp(*cn);
+    // only maxIter stops the scheme (the default inference type also stops when no message
+    // changes): the number of iterations shows which parameters were used
+    lp.inferenceType(gum::credal::CNLoopyPropagation< double >::InferenceType::ordered);
+    lp.disableEpsilon();
+    lp.disableMinEpsilonRate();
+    lp.disableMaxTime();
+    lp.setPeriodSize(1);
+    lp.setMaxIter(3);
+    lp.makeInference();
+    CHECK_EQ(lp.nbrIterations(), static_cast< gum::Size >(3));
+
+    lp.setMaxIter(5);
+    lp.makeInference();   // a new computation
+    CHECK_EQ(lp.nbrIterations(), static_cast< gum::Size >(5));
+
+    clearCNet();
+  }
 }   // namespace gum_tests

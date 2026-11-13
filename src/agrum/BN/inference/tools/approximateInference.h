@@ -60,6 +60,11 @@ namespace gum {
       public ApproximationScheme {
     public:
     explicit ApproximateInference(const IBayesNet< GUM_SCALAR >* bn);
+
+    protected:
+    /// a parameter of the scheme changed: the next inference is a new computation
+    /// (as for tensors changed in place, @see invalidateTensors())
+    void onApproximationSchemeChanged_() override;
   };
 }   // namespace gum
 
