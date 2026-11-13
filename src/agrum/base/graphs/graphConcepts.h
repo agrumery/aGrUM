@@ -102,7 +102,7 @@ namespace gum {
   /**
    * @brief Concept for undirected graphs (edges with neighbours).
    *
-   * Satisfied by UndiGraph, CliqeGraph, and the undirected component of
+   * Satisfied by UndiGraph, CliqueGraph, and the undirected component of
    * MixedGraph / PDAG.  Refines GUM_NodeGraphable.
    *
    * A marked graph is not an undirected graph, although it has edges and
@@ -119,7 +119,7 @@ namespace gum {
   /**
    * @brief Concept for mixed graphs (both arcs and edges).
    *
-   * Satisfied by MixedGraph and PDAG.  Refines both GUM_DiGraphable and
+   * Satisfied by MixedGraph, PDAG and ChainGraph.  Refines both GUM_DiGraphable and
    * GUM_UndiGraphable.
    */
   template < typename T >

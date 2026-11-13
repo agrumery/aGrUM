@@ -713,8 +713,8 @@ namespace gum::learning {
 
   // prepares the initial graph for constraintMiic
   MixedGraph IBNLearner::prepareMiic_() {
-    // MIIC's marks mechanism (orientationMiic_) handles the reverse direction of the mandatory
-    // arcs: adding it to the forbidden graph would cause DuplicateElement (unlike PC and FCI)
+    // the structural constraints (with the reverse of the mandatory arcs as forbidden arcs) are
+    // set as for PC and FCI; MIIC starts without any initial mark
     MixedGraph mgraph = prepareConstraintBased_(algoMiic_);
     algoMiic_.addConstraints(HashTable< std::pair< NodeId, NodeId >, char >());
 

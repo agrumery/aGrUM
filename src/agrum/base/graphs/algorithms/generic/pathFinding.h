@@ -162,6 +162,8 @@ namespace gum::graph {
    * the search is linear in the size of the graph. In a graph without partially directed cycle
    * (a chain graph), such a walk exists iff such a simple path exists; otherwise, it may exist
    * without any simple path having an arc (e.g. a-b, b-c, c->d, d-b, b-e from a to e).
+   * @p n2 is only the end of the walk, which never goes through @p n2 before (with a-b, b->c and
+   * c-a, there is no such walk from a to b: a-b, b->c, c-a, a-b would go through b first).
    * Returns false if @p n1 == @p n2.
    */
   template < GUM_MixedGraphable G >

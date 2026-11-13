@@ -42,7 +42,7 @@
 
 
 /** @file
- * @brief Inline implementation of Base classes for directed acylic graphs
+ * @brief Inline implementation of the base classes for partially directed acyclic graphs
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  *

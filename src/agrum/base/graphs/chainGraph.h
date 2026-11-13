@@ -120,6 +120,7 @@ namespace gum {
                bool edges_resize_policy = true);
 
     /// an undirected graph is a chain graph
+    /** @throw InvalidDirectedCycle if g contains an edge from a node to itself */
     explicit ChainGraph(const UndiGraph& g);
 
     /// a DAG is a chain graph
@@ -130,7 +131,7 @@ namespace gum {
     explicit ChainGraph(const PDAG& g);
 
     /// copy of a mixed graph
-    /** @throw InvalidDirectedCycle if g contains a directed cycle
+    /** @throw InvalidDirectedCycle if g contains a directed cycle or an edge from a node to itself
      * @throw InvalidPartiallyDirectedCycle if g contains a partially directed cycle
      * @throw InvalidArc if a pair of nodes of g is connected by an arc and an edge */
     explicit ChainGraph(const MixedGraph& g);
@@ -171,7 +172,7 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes
      * @throw InvalidArc if an edge already connects tail and head
-     * @throw InvalidDirectedCycle if the arc creates a directed cycle
+     * @throw InvalidDirectedCycle if the arc creates a directed cycle (head == tail included)
      * @throw InvalidPartiallyDirectedCycle if the arc creates a partially directed cycle, i.e. if
      * there is a path from head to tail following the arcs in their direction and the edges in
      * either direction
@@ -185,6 +186,7 @@ namespace gum {
      * @warning if the edge already exists, nothing is done. In particular, no exception is raised.
      * @throw InvalidNode if first or second does not belong to the graph nodes
      * @throw InvalidEdge if an arc already connects first and second
+     * @throw InvalidDirectedCycle if first == second
      * @throw InvalidPartiallyDirectedCycle if the edge creates a partially directed cycle, i.e. if
      * there is a path between first and second, in one direction or the other, following the arcs
      * in their direction and the edges in either direction, with at least one arc

@@ -63,11 +63,13 @@ namespace gum {
 namespace gum::graph {
 
   /**
-   * @brief Degeneracy (smallest-last) ordering of the skeleton of @p g.
+   * @brief Degeneracy (smallest-last) ordering of @p g, seen as an undirected multigraph.
    *
-   * Every node has at most d neighbours (arcs and edges, whatever their orientation) before it in
-   * the returned sequence, where d is the degeneracy of the skeleton, the smallest such bound
-   * (Matula and Beck 1983). O(n + m).
+   * Every node has at most d connections (arcs and edges, whatever their orientation) with the
+   * nodes before it in the returned sequence, where d is the degeneracy of the multigraph whose
+   * edges are the arcs and the edges of @p g, the smallest such bound (Matula and Beck 1983). A
+   * pair connected twice (x->y and y->x, or x->y and x-y) counts twice: d may exceed the degeneracy
+   * of the skeleton. O(n + m).
    *
    * @par References
    * - D. W. Matula, L. L. Beck. Smallest-last ordering and clustering and graph coloring
