@@ -136,7 +136,9 @@ namespace gum {
       /// whether the last DAG learned by learnDAG() or learnBN() exceeds the maximum indegree
       bool maxIndegreeExceeded() const;
       void addConstraints(const HashTable< std::pair< NodeId, NodeId >, char >& constraints);
-      const std::vector< Arc > latentVariables() const;
+      /// the latent couples (edges <->) found by the last learning: the reference is valid until
+      /// the next learning or the destruction of the learner
+      const std::vector< Arc >& latentVariables() const;
 
       /// @}
 

@@ -146,7 +146,7 @@ namespace gum {
       _initialMarks_ = constraints;
     }
 
-    const std::vector< Arc > ConstraintBasedLearning::latentVariables() const {
+    const std::vector< Arc >& ConstraintBasedLearning::latentVariables() const {
       return _latentCouples_;
     }
 
