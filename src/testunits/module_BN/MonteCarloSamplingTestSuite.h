@@ -49,6 +49,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/tools/estimator.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <gumtest/AgrumApproximationUtils.h>
@@ -536,5 +537,26 @@ namespace gum_tests {
     gum::Instantiation i(post);
     i.chgVal(0, 1);
     CHECK_GT(post[i], 0.99);
+  }
+
+  // the Wilson width counts the effective size (Kish) of a weighted sample, (sum w)^2 / sum w^2
+  GUM_TEST(EstimatorCountsTheEffectiveSampleSize) {
+    auto               bn = gum::BayesNet< double >::fastPrototype("A->B");
+    gum::Instantiation I;
+    I << bn.variable(bn.idFromName("A")) << bn.variable(bn.idFromName("B"));
+
+    gum::Estimator< double > unit(&bn), equal(&bn), unequal(&bn);
+    for (int k = 0; k < 100; ++k) {
+      unit.update(I, 1.0);
+      equal.update(I, 0.5);                         // equal weights: 100 samples
+      unequal.update(I, (k == 0) ? 100.0 : 0.01);   // one weight dominates: about 1 sample
+    }
+    constexpr double z2 = 1.96 * 1.96;
+    // all the samples agree: the width is z^2 / (n + z^2)
+    CHECK_EQ(unit.confidence(), doctest::Approx(z2 / (100 + z2)));
+    CHECK_EQ(equal.confidence(), doctest::Approx(unit.confidence()));
+    const double effective = (100 + 99 * 0.01) * (100 + 99 * 0.01) / (100 * 100 + 99 * 0.0001);
+    CHECK_EQ(unequal.confidence(), doctest::Approx(z2 / (effective + z2)));
+    CHECK_GT(unequal.confidence(), 10 * unit.confidence());
   }
 }   // namespace gum_tests

@@ -103,6 +103,9 @@ namespace gum {
     /**
      * The intervals are the 95% Wilson score intervals of the Bernoulli variables (one per value
      * of each variable), the virtual samples of the prior counting in the size n of the sample.
+     * The generated samples count for their effective size (Kish) (sum w)^2 / sum w^2: as many as
+     * the samples when their weights are equal, fewer when a few large weights dominate (weighted
+     * and importance sampling).
      * Their length never vanishes (about 3.84/n when all the samples agree), so that a few
      * identical samples cannot be taken for a convergence.
      * @returns maximum length of confidence interval (the max of GUM_SCALAR if there is no sample)
@@ -155,6 +158,9 @@ namespace gum {
 
     /// cumulated weights of the generated samples
     GUM_SCALAR wtotal_;
+
+    /// cumulated squared weights of the generated samples (effective sample size)
+    GUM_SCALAR w2total_;
 
     /// number of generated samples
     Size ntotal_;

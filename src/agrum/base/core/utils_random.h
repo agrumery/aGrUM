@@ -78,6 +78,11 @@ namespace gum {
    * sequence is fixed by the standard), never through the distributions of <random> (whose
    * algorithms depend on the standard library): a given seed gives the same draws on every
    * platform.
+   *
+   * The generator is shared by the whole library and is not thread safe: the functions which do not
+   * take a generator must not be called from several threads at the same time. A multithreaded
+   * algorithm gives each thread its own std::mt19937, seeded from this generator before the threads
+   * start, and draws with the overloads which take a generator.
    */
 
   /**
@@ -172,7 +177,12 @@ namespace gum {
   GUM_SHARED_PUBLIC void initRandom(unsigned int seed = 0);
 
   /**
-   * define a random_engine with correct seed
+   * @brief The generator of aGrUM, shared by the whole library (not thread safe).
+   *
+   * To be used with the overloads of gum:: which take a generator (randomValue(), randomProba(),
+   * randomShuffle(), randomGamma()...), not with the distributions of <random>, whose results
+   * depend on the standard library: a given seed would no longer give the same draws on every
+   * platform.
    */
   GUM_SHARED_PUBLIC std::mt19937& randomGenerator();
 

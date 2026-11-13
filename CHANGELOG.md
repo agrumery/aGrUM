@@ -360,6 +360,10 @@
       lowercased, so that a message could show two spellings of the same key); the notice "`core.randomSeed` ... has no
       effect" is no longer given when the seed comes back to the one in use (`reset()`, `pop()`, the end of a
       `ConfigurationGuard` or of a `with pyagrum.config:` block).
+    - `WeightedSampling` and `ImportanceSampling` (and the loopy versions): the width of the Wilson intervals of the
+      stopping criterion counts the effective size (Kish) of the weighted sample, (sum w)^2 / sum w^2, instead of the
+      number of samples: a sample dominated by a few large weights no longer looks converged too early (the
+      unweighted samplers are unchanged).
 
 - Optimizations (aGrUM and pyAgrum)
 

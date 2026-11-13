@@ -59,6 +59,7 @@ namespace gum {
   Estimator< GUM_SCALAR >::Estimator() {
     GUM_CONSTRUCTOR(Estimator);
     wtotal_   = (GUM_SCALAR)0.;
+    w2total_  = (GUM_SCALAR)0.;
     ntotal_   = (Size)0;
     nvirtual_ = (GUM_SCALAR)0.;
     bn_       = nullptr;
@@ -128,6 +129,7 @@ namespace gum {
     ntotal_   = (Size)0;
     nvirtual_ = virtualLBPSize;
     wtotal_   = (GUM_SCALAR)0.;
+    w2total_  = (GUM_SCALAR)0.;
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -140,6 +142,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void Estimator< GUM_SCALAR >::update(Instantiation I, GUM_SCALAR w) {
     wtotal_ += w;
+    w2total_ += w * w;
     ntotal_ += (Size)1;
 
     for (Idx i = 0; i < I.nbrDim(); i++) {
@@ -207,8 +210,12 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR Estimator< GUM_SCALAR >::confidence() {
-    // the virtual samples of the prior (if any) count in the size of the sample
-    const double n = double(nvirtual_) + double(ntotal_);
+    // the virtual samples of the prior (if any) count in the size of the sample, the generated ones
+    // for their effective size (Kish) (sum w)^2 / sum w^2: n with equal weights, less with a few
+    // large weights (with n, a weighted sample looked converged long before it was)
+    const double effective
+        = (w2total_ > (GUM_SCALAR)0) ? double(wtotal_) * double(wtotal_) / double(w2total_) : 0.;
+    const double n = double(nvirtual_) + effective;
     if (n <= 0) return std::numeric_limits< GUM_SCALAR >::max();
 
     // Wilson score interval at 95%: unlike the Wald interval (z.sqrt(p(1-p)/n)), its length
@@ -234,6 +241,7 @@ namespace gum {
     estimator_.clear();
     prior_.clear();
     wtotal_   = (GUM_SCALAR)0;
+    w2total_  = (GUM_SCALAR)0;
     ntotal_   = Size(0);
     nvirtual_ = (GUM_SCALAR)0;
     for (const auto& pot: _target_posteriors_)
