@@ -75,8 +75,9 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Instantiation ImportanceSampling< GUM_SCALAR >::draw_(GUM_SCALAR* w, Instantiation prev) {
-    GUM_SCALAR pSurQ;
-    Size       nbrRejections = 0;
+    GUM_SCALAR  pSurQ;
+    Size        nbrRejections = 0;
+    const auto& samplingBN    = this->samplingBN();
 
     do {
       prev.clear();
@@ -89,7 +90,7 @@ namespace gum {
       for (const auto nod: this->BN().topologicalOrder()) {
         if (!this->hasHardEvidence(nod)) { this->addVarSample_(nod, &prev); }
         auto probaP = this->BN().cpt(nod).get(prev);
-        auto probaQ = this->samplingBN().cpt(nod).get(prev);
+        auto probaQ = samplingBN.cpt(nod).get(prev);
         if ((probaP == 0) || (probaQ == 0)) {
           pSurQ = 0;
         } else {
@@ -98,7 +99,7 @@ namespace gum {
       }
       if (pSurQ > 0.0) {
         for (const auto ev: this->hardEvidenceNodes()) {
-          pSurQ *= this->samplingBN().cpt(ev).get(prev);
+          pSurQ *= samplingBN.cpt(ev).get(prev);
         }
       }
     } while (pSurQ == 0 && this->continueAfterRejection_(nbrRejections));

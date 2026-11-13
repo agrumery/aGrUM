@@ -482,11 +482,18 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void MarkovRandomField< GUM_SCALAR >::_copyFactors_(
       const MarkovRandomField< GUM_SCALAR >& source) {
-    _clearFactors_();
-    for (const auto& pf: source.factors()) {
-      addFactor(*pf.second);
+    // the graph is updated once, at the end, and not once per factor
+    beginTopologyTransformation();
+    try {
+      _clearFactors_();
+      for (const auto& pf: source.factors()) {
+        addFactor(*pf.second);
+      }
+    } catch (...) {
+      endTopologyTransformation();
+      throw;
     }
-    _rebuildGraph_();
+    endTopologyTransformation();
   }
 
   template < GUM_Numeric GUM_SCALAR >

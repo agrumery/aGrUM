@@ -515,6 +515,19 @@ namespace gum_tests {
     CHECK(mn.existsEdge("41", "51"));
   }
 
+  GUM_TEST(CopyOperatorKeepsTheEdges) {
+    gum::MarkovRandomField< double > source;
+    _fill(source);
+    gum::MarkovRandomField< double > copy;
+    StructureCounter                 counter(&copy.internalGraph());
+
+    // the factors are copied without erasing then adding again the edges of the copied graph
+    copy = source;
+    CHECK_EQ(counter.edgesDeleted, 0);
+    CHECK(copy.internalGraph() == source.internalGraph());
+    CHECK_EQ(copy.factors().size(), source.factors().size());
+  }
+
   GUM_TEST(ChangeVariableLabel) {
     auto mn = gum::MarkovRandomField< double >::fastPrototype("a{yes|no}--b{1|2|3}");
 

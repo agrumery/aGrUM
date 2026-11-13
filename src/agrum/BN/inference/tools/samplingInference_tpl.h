@@ -240,9 +240,10 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::addVarSample_(NodeId nod, Instantiation* I) {
     gum::Instantiation Itop = gum::Instantiation(*I);
+    const auto&        bn   = samplingBN();
 
-    I->add(samplingBN().variable(nod));
-    I->chgVal(samplingBN().variable(nod), samplingBN().cpt(nod).extract(Itop).draw());
+    I->add(bn.variable(nod));
+    I->chgVal(bn.variable(nod), bn.cpt(nod).extract(Itop).draw());
   }
 
   template < GUM_Numeric GUM_SCALAR >

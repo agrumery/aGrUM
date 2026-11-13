@@ -51,6 +51,30 @@
 
 namespace gum {
 
+  namespace {
+    // true if a parent x of node in a, but not in b, forms a v-structure with another parent of
+    // node in a (such a v-structure of a is not one of b)
+    bool hasVStructureLostIn(const DAG& a, const DAG& b, NodeId node) {
+      const auto& parents = a.parents(node);
+      for (const auto x: parents) {
+        if (b.existsArc(x, node)) continue;
+        for (const auto y: parents)
+          if (y != x && !a.existsArc(x, y) && !a.existsArc(y, x)) return true;
+      }
+      return false;
+    }
+
+    // true if a and b, two DAGs with the same skeleton, have the same v-structures: a v-structure
+    // x->node<-y present in only one of them has a parent which is not common to both DAGs
+    bool sameVStructures(const DAG& a, const DAG& b) {
+      for (const auto node: a) {
+        if (a.parents(node) == b.parents(node)) continue;
+        if (hasVStructureLostIn(a, b, node) || hasVStructureLostIn(b, a, node)) return false;
+      }
+      return true;
+    }
+  }   // namespace
+
   MPDAG::MPDAG(PDAG&& g, DAG&& extension) :
       ImmutableMixedGraph< PDAG >(std::move(g), std::move(extension)) {
     GUM_CONSTRUCTOR(MPDAG);
@@ -136,8 +160,11 @@ namespace gum {
       if (!dag.existsArc(edge.first(), edge.second())
           && !dag.existsArc(edge.second(), edge.first()))
         return false;
-    // the same v-structures as the class
-    return graph::detail::cpdagGraph(dag) == graph::detail::cpdagGraph(extension_);
+    for (const auto node: nodes())   // isolated nodes
+      if (!dag.existsNode(node)) return false;
+    // same skeleton: dag is Markov equivalent to the extension iff they have the same v-structures
+    // (Verma & Pearl 1990), checked without building their CPDAGs
+    return sameVStructures(dag, extension_);
   }
 
   CPDAG MPDAG::cpdag() const { return CPDAG::fromDAG(extension_); }

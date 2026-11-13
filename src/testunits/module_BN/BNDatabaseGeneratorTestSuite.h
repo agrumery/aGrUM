@@ -263,8 +263,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesLog2likelihoodWithEvidence) {
-    // B = not A and P(A) = 0.5: each kept sample (A=1, B=0) has a log2-likelihood of exactly -1, whatever the
-    // number of rejected samples (A=0, B=1)
+    // B = not A and P(A) = 0.5: each kept sample (A=1, B=0) has a log2-likelihood of exactly -1,
+    // whatever the number of rejected samples (A=0, B=1)
     auto bn = gum::BayesNet< double >::fastPrototype("A->B");
     bn.cpt("A").fillWith({0.5, 0.5});
     bn.cpt("B").fillWith({0.0, 1.0, 1.0, 0.0});

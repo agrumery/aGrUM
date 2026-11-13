@@ -169,10 +169,9 @@ namespace gum::credal {
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_threadInference_(Size tId) {
     _verticesSampling_(tId);
 
-    // the CPTs of the working BN were changed in place
+    // the CPTs of the working BN were changed in place (the evidence, inserted once per thread, is
+    // kept)
     this->l_inferenceEngine_[tId]->invalidateTensors();
-    this->l_inferenceEngine_[tId]->eraseAllEvidence();
-    _insertEvidence_(tId);
     this->l_inferenceEngine_[tId]->makeInference();
   }
 
@@ -221,6 +220,7 @@ namespace gum::credal {
       inference_engine->setNumberOfThreads(1);
 
       this->l_inferenceEngine_[this_thread] = inference_engine;
+      _insertEvidence_(this_thread);
 
       if (_infEs_::storeBNOpt_) {
         this->l_optimalNet_[this_thread] = new VarMod2BNsMap< GUM_SCALAR >(*this->credalNet_);

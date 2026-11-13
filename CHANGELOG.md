@@ -84,6 +84,8 @@
     - New `RandomGeneratorGuard`: saves the state of the pseudo-random generator and restores it (`restore()` or at the
       end of a `with` block, even on an exception), so that a block can call `initRandom` and draw without changing
       the draws of the rest of the program.
+    - `pyagrum.qBNSampling` no longer depends on `qiskit-ibm-runtime`: `qBNMC.aerSimulation` uses the sampler of
+      `qiskit-aer`.
 
 - aGrUM
 
@@ -339,6 +341,14 @@
       of a distance lost its Hellinger, Bhattacharya and Jensen-Shannon values.
     - `CNMonteCarloSampling` created while aGrUM used 1 or 2 threads kept most of its marginals at their initial bounds
       (min 1, max 0): the merge of the samples stopped after the first nodes.
+
+- Optimizations (aGrUM and pyAgrum)
+
+    - `MPDAG.contains` compares the v-structures instead of building two CPDAGs: 50 to 75 times faster.
+    - The copy of a `MarkovRandomField` updates its graph once instead of once per factor (quadratic time, 27 times
+      faster for 1000 factors); its listeners no longer see the edges erased then added again.
+    - `CNMonteCarloSampling` inserts the evidence once per thread instead of once per sample: 20 to 30 % more samples
+      per second with evidence, same results.
 
 ## Changelog for 3.3.2
 

@@ -213,4 +213,61 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(ContainsIsTheMembershipOfTheClass) {
+    for (int i = 0; i < 100; ++i) {
+      const auto  dag = randomDAG(3 + gum::randomValue(7), 0.4);
+      const auto  cp  = gum::CPDAG::fromDAG(dag);
+      gum::ArcSet knowledge;
+      for (const auto& edge: cp.edges())
+        if (gum::randomProba() < 0.3)
+          knowledge.insert(dag.existsArc(edge.first(), edge.second())
+                               ? gum::Arc(edge.first(), edge.second())
+                               : gum::Arc(edge.second(), edge.first()));
+      const auto m = gum::MPDAG::fromCPDAG(cp, knowledge);
+
+      // orientations of the skeleton along random orders: DAGs inside or outside the class
+      for (int k = 0; k < 10; ++k) {
+        std::vector< gum::NodeId > order(dag.nodes().begin(), dag.nodes().end());
+        for (std::size_t j = order.size() - 1; j > 0; --j)
+          std::swap(order[j], order[gum::randomValue(j + 1)]);
+        std::vector< std::size_t > rank(order.size());
+        for (std::size_t j = 0; j < order.size(); ++j)
+          rank[order[j]] = j;
+        gum::DAG candidate;
+        candidate.addNodes(dag.size());
+        for (const auto& arc: dag.arcs())
+          if (rank[arc.tail()] < rank[arc.head()]) candidate.addArc(arc.tail(), arc.head());
+          else candidate.addArc(arc.head(), arc.tail());
+
+        bool expected = gum::CPDAG::fromDAG(candidate) == cp;
+        for (const auto& arc: m.arcs())
+          expected = expected && candidate.existsArc(arc.tail(), arc.head());
+        CHECK_EQ(m.contains(candidate), expected);
+      }
+    }
+
+    // same skeleton, different v-structures: a->b<-c is not in the class a-b-c
+    gum::DAG chain;
+    chain.addNodes(3);
+    chain.addArc(0, 1);
+    chain.addArc(1, 2);
+    const auto m = gum::MPDAG::fromCPDAG(gum::CPDAG::fromDAG(chain), gum::ArcSet{});
+    CHECK_EQ(m.sizeEdges(), gum::Size(2));
+    gum::DAG collider;
+    collider.addNodes(3);
+    collider.addArc(0, 1);
+    collider.addArc(2, 1);
+    CHECK(!m.contains(collider));
+
+    // same number of nodes, but another id for the isolated node
+    gum::DAG isolated;
+    isolated.addNodes(2);
+    isolated.addNodeWithId(5);
+    isolated.addArc(0, 1);
+    gum::DAG other;
+    other.addNodes(3);
+    other.addArc(0, 1);
+    CHECK(!gum::MPDAG::meekClosure(gum::PDAG(isolated)).contains(other));
+  }
+
 }   // namespace gum_tests

@@ -1475,8 +1475,9 @@ namespace gum::credal {
         // remove with L2U since variables are binary
         // but does the user know that ?
         if (_infE_::storeVertices_)
-          _infE_::updateCredalSets_(node,
-                                    vertices[vertex]);   // no redundancy elimination with 2 vertices
+          _infE_::updateCredalSets_(
+              node,
+              vertices[vertex]);   // no redundancy elimination with 2 vertices
       }
     }
 

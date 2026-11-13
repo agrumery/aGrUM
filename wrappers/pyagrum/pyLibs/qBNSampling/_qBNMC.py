@@ -43,7 +43,7 @@ import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister, transpile
 from qiskit.circuit.library import RYGate, XGate
 from qiskit_aer import AerSimulator
-from qiskit_ibm_runtime import SamplerV2
+from qiskit_aer.primitives import SamplerV2
 
 from pyagrum import BayesNet, Instantiation, OperationNotAllowed
 from pyagrum import Tensor as Tensor
@@ -435,7 +435,7 @@ class qBNMC:
         Variable name → probability vector over its domain.
     """
     backend_aer = AerSimulator()
-    sampler_aer = SamplerV2(mode=backend_aer)
+    sampler_aer = SamplerV2()
     circuit_aer = transpile(circuit, backend=backend_aer)
     job_aer = sampler_aer.run([circuit_aer], shots=shots)
     counts_aer = job_aer.result()[0].data.meas.get_counts()

@@ -1,4 +1,4 @@
-# requires: qiskit, qiskit_aer, qiskit_ibm_runtime
+# requires: qiskit, qiskit_aer
 import pyagrum as gum
 from pyagrum.qBNSampling import qBNMC, qBNRejection
 

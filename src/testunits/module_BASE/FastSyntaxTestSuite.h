@@ -59,7 +59,9 @@ namespace gum_tests {
   struct FastSyntaxTestSuite {};
 
   namespace {
-    std::string nameOf(std::string_view desc) { return gum::fastVariable< double >(std::string(desc))->name(); }
+    std::string nameOf(std::string_view desc) {
+      return gum::fastVariable< double >(std::string(desc))->name();
+    }
   }   // namespace
 
   GUM_TEST(QuoteOpensAtTheBeginningOfAName) {
@@ -101,9 +103,20 @@ namespace gum_tests {
       CHECK_MESSAGE(!gum::fastNameNeedsQuotes(name), name);
       CHECK_EQ(gum::quoteFastName(name), std::string(name));
     }
-    for (const std::string_view name:
-         {" a", "a ", "'a", "*a", "$a", "X-ray", "X[0]", "a{b", "a;b", "a<b", "a>b", "X+",
-          "rock 'n roll", "a\nb"}) {
+    for (const std::string_view name: {" a",
+                                       "a ",
+                                       "'a",
+                                       "*a",
+                                       "$a",
+                                       "X-ray",
+                                       "X[0]",
+                                       "a{b",
+                                       "a;b",
+                                       "a<b",
+                                       "a>b",
+                                       "X+",
+                                       "rock 'n roll",
+                                       "a\nb"}) {
       CHECK_MESSAGE(gum::fastNameNeedsQuotes(name), name);
       // a quoted name is read back as is
       CHECK_EQ(nameOf(gum::quoteFastName(name) + "[2]"), std::string(name));

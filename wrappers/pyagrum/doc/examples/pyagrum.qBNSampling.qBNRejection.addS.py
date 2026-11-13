@@ -1,4 +1,4 @@
-# requires: qiskit, qiskit_aer, qiskit_ibm_runtime
+# requires: qiskit, qiskit_aer
 from qiskit import QuantumCircuit
 
 import pyagrum as gum

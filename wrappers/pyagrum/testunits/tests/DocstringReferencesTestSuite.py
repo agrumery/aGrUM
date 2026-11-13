@@ -37,6 +37,7 @@
 #   gitlab   : https://gitlab.com/agrumery/agrum                           #
 #                                                                          #
 ############################################################################
+
 """The references to pyagrum objects in the documented docstrings follow the numpydoc convention.
 
 In the prose of a docstring, a pyagrum object is written `pyagrum.X` (single backticks: Sphinx links it); double

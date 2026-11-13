@@ -125,7 +125,8 @@ namespace gum_tests {
     CHECK_THROWS_AS(number.isValid(static_cast< FastSyntax >(42)), const gum::OutOfBounds&);
     CHECK_THROWS_AS(number.error(static_cast< FastSyntax >(42)), const gum::OutOfBounds&);
     // a misplaced operator is refused in a model too
-    CHECK(gum::checkFastSyntax("A<->B").validSyntaxes() == std::vector< FastSyntax >{FastSyntax::MarkedGraph});
+    CHECK(gum::checkFastSyntax("A<->B").validSyntaxes()
+          == std::vector< FastSyntax >{FastSyntax::MarkedGraph});
   }
 
 }   // namespace gum_tests

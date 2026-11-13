@@ -567,7 +567,7 @@ warnings.filterwarnings("ignore", message="This module is deprecated since pyAgr
 warnings.filterwarnings("ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning)
 
 # qiskit is an optional dependency of pyagrum.qBNSampling, absent from the documentation environment
-autodoc_mock_imports = ["qiskit", "qiskit_aer", "qiskit_ibm_runtime"]
+autodoc_mock_imports = ["qiskit", "qiskit_aer"]
 
 suppress_warnings = [
     "ref.ref",
