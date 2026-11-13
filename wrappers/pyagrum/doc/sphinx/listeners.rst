@@ -72,6 +72,15 @@ Listeners could also be added when structural modification are made in a `pyagru
    # deleting 2
    # yes, really deleting 2
 
+The listeners created by ``addStructureListener`` (of `pyagrum.BayesNet`, `pyagrum.InfluenceDiagram` and
+`pyagrum.MarkovRandomField`) are instances of the following classes.
+
+.. pyagrum-class:: pyagrum.PythonBNListener
+   :exclude-members: whenArcAdded, whenArcDeleted, whenNodeAdded, whenNodeDeleted
+
+.. pyagrum-class:: pyagrum.PythonMRFListener
+   :exclude-members: whenEdgeAdded, whenEdgeDeleted, whenNodeAdded, whenNodeDeleted
+
 ApproximationSchemeListener
 ---------------------------
 
@@ -82,8 +91,9 @@ to monitor its progress step by step.
 
    import pyagrum as gum
 
-   bn = gum.fastBN("A->B->C;A->C")
-   ie = gum.LoopyBeliefPropagation(bn)
+   ie = gum.GibbsSampling(gum.fastBN("A->B->C;A->C"))
+   ie.setMaxIter(2000)
+   ie.setPeriodSize(500)
 
    listen = gum.PythonApproximationListener(ie)
 
@@ -97,10 +107,13 @@ to monitor its progress step by step.
    listen.setWhenStop(on_stop)
 
    ie.makeInference()
-   # step    1 | error=3.14e-01 | 0.001s
-   # step    2 | error=1.02e-02 | 0.002s
+   # step  300 | error=... | 0.001s
+   # step  800 | error=... | 0.002s
    # ...
-   # Stopped: stopped with epsilon=1e-06
+   # Stopped: stopped with ...
+
+.. pyagrum-class:: pyagrum.PythonApproximationListener
+   :exclude-members: whenProgress, whenStop
 
 DatabaseGenerationListener
 --------------------------
@@ -117,9 +130,9 @@ database generation.
 
    listen = gum.PythonDatabaseGeneratorListener(gen)
 
-   def on_progress(step, duration):
-       if step % 100 == 0:
-           print(f"Generated {step} samples in {duration:.3f}s")
+   def on_progress(step, duration):  # step: the percentage of the database already generated
+       if step % 25 == 0:
+           print(f"{step}% generated in {duration:.3f}s")
 
    def on_stop(message):
        print(f"Done: {message}")
@@ -128,7 +141,11 @@ database generation.
    listen.setWhenStop(on_stop)
 
    gen.drawSamples(500)
-   # Generated 100 samples in 0.012s
-   # Generated 200 samples in 0.023s
-   # ...
-   # Done: generation completed
+   # 0% generated in 0.000s
+   # 25% generated in 0.000s
+   # 50% generated in 0.000s
+   # 75% generated in 0.000s
+   # Done: Database of size 500(500) generated in ... seconds. Log2likelihood : ...
+
+.. pyagrum-class:: pyagrum.PythonDatabaseGeneratorListener
+   :exclude-members: whenProgress, whenStop

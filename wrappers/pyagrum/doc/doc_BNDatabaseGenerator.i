@@ -248,24 +248,46 @@ Set the discretized label mode to MEDIAN : sampling a `pyagrum.DiscretizedVariab
 Set the discretized label mode to RANDOM (default mode) : sampling a `pyagrum.DiscretizedVariable` will give a random value from the uniform distribution on that interval.
 "
 
+%feature("docstring") PythonDatabaseGeneratorListener
+"
+Listener of the progress of the generation of a database by a `pyagrum.BNDatabaseGenerator`.
+
+PythonDatabaseGeneratorListener(generator) -> PythonDatabaseGeneratorListener
+
+Parameters
+----------
+generator : pyagrum.BNDatabaseGenerator
+    the generator to listen to (it must stay alive as long as the listener)
+"
+
 %feature("docstring") PythonDatabaseGeneratorListener::setWhenProgress
 "
-Register a callback called at each progress step.
+Set the function called when the generator notifies its progress (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
 pyfunc : callable
-    a function called with (step: int, duration: float) at each progress notification
+    a function (step: int, duration: float) called when ``step`` percent of the database is generated (from 0 to 99), with the elapsed time in seconds
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonDatabaseGeneratorListener::setWhenStop
 "
-Register a callback called when the generation stops.
+Set the function called when the generation stops (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
 pyfunc : callable
-    a function called with (message: str) when the generation is done
+    a function (message: str) called when the database is generated, with a summary of the generation
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonDatabaseGeneratorListener::whenProgress

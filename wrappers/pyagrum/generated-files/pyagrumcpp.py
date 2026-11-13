@@ -15759,23 +15759,21 @@ def Potential(*args, **kwargs):
 class PythonBNListener(object):
     r"""
 
-    Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
-    is notified when the structure of the model is changed.
-
-    PythonBNListener(model, vnm) -> PythonBNListener
+    Listener for the modifications of the structure of a directed graphical model (Bayesian network, influence
+    diagram): the functions set on the listener are called when a node or an arc is added or removed.
 
     Notes
     -----
-        This class is mainly instantiated automatically by the methods ``addStructureListener`` of
-        `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
+        A listener is usually created and returned by `pyagrum.BayesNet.addStructureListener` or
+        `pyagrum.InfluenceDiagram.addStructureListener`; the model keeps it alive. Several listeners can be added to the
+        same model.
 
     Parameters
     ----------
     model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
-        The model to listen to
-    vnm : VariableNodeMap
-        the correspondence between the ids of the nodes and the names of the variables (usually
-        ``model._variableNodeMap()``)
+        the model to listen to
+    vnm : object
+        the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 
     """
 
@@ -15785,23 +15783,21 @@ class PythonBNListener(object):
     def __init__(self, model: "pyagrum.DAGmodel", vnm: "pyagrum.VariableNodeMap"):
         r"""
 
-        Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
-        is notified when the structure of the model is changed.
-
-        PythonBNListener(model, vnm) -> PythonBNListener
+        Listener for the modifications of the structure of a directed graphical model (Bayesian network, influence
+        diagram): the functions set on the listener are called when a node or an arc is added or removed.
 
         Notes
         -----
-            This class is mainly instantiated automatically by the methods ``addStructureListener`` of
-            `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
+            A listener is usually created and returned by `pyagrum.BayesNet.addStructureListener` or
+            `pyagrum.InfluenceDiagram.addStructureListener`; the model keeps it alive. Several listeners can be added to the
+            same model.
 
         Parameters
         ----------
         model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
-            The model to listen to
-        vnm : VariableNodeMap
-            the correspondence between the ids of the nodes and the names of the variables (usually
-            ``model._variableNodeMap()``)
+            the model to listen to
+        vnm : object
+            the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 
         """
         _pyagrumcpp.PythonBNListener_swiginit(self, _pyagrumcpp.new_PythonBNListener(model, vnm))
@@ -15875,12 +15871,17 @@ class PythonBNListener(object):
     def setWhenArcAdded(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for adding an arc.
+        Set the function called when an arc is added (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,j:int) called when an arc (i,j) is added
+        pyfunc : callable
+            a function (tail: int, head: int) called when the arc (tail, head) is added
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenArcAdded(self, pyfunc)
@@ -15888,12 +15889,17 @@ class PythonBNListener(object):
     def setWhenArcDeleted(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for deleting an arc.
+        Set the function called when an arc is removed (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,j:int) called when an arc (i,j) is removed
+        pyfunc : callable
+            a function (tail: int, head: int) called when the arc (tail, head) is removed
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenArcDeleted(self, pyfunc)
@@ -15901,12 +15907,17 @@ class PythonBNListener(object):
     def setWhenNodeAdded(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for adding a node.
+        Set the function called when a node is added (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,s:str) called when a node of id i and name s is added.
+        pyfunc : callable
+            a function (id: int, name: str) called when the node is added
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenNodeAdded(self, pyfunc)
@@ -15914,12 +15925,17 @@ class PythonBNListener(object):
     def setWhenNodeDeleted(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for deleting a node.
+        Set the function called when a node is removed (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int) called when a node of id i is removed.
+        pyfunc : callable
+            a function (id: int) called when the node is removed
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
@@ -15929,22 +15945,20 @@ _pyagrumcpp.PythonBNListener_swigregister(PythonBNListener)
 class PythonMRFListener(object):
     r"""
 
-    Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
-    when the structure of the model is changed.
-
-    PythonMRFListener(model, vnm) -> PythonMRFListener
+    Listener for the modifications of the structure of an undirected graphical model (Markov random field): the
+    functions set on the listener are called when a node or an edge is added or removed.
 
     Notes
     -----
-        This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
+        A listener is usually created and returned by `pyagrum.MarkovRandomField.addStructureListener`; the model keeps
+        it alive. Several listeners can be added to the same model.
 
     Parameters
     ----------
     model : pyagrum.MarkovRandomField
-        The model to listen to
-    vnm : VariableNodeMap
-        the correspondence between the ids of the nodes and the names of the variables (usually
-        ``model._variableNodeMap()``)
+        the model to listen to
+    vnm : object
+        the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 
     """
 
@@ -15954,22 +15968,20 @@ class PythonMRFListener(object):
     def __init__(self, model: "pyagrum.UGmodel", vnm: "pyagrum.VariableNodeMap"):
         r"""
 
-        Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
-        when the structure of the model is changed.
-
-        PythonMRFListener(model, vnm) -> PythonMRFListener
+        Listener for the modifications of the structure of an undirected graphical model (Markov random field): the
+        functions set on the listener are called when a node or an edge is added or removed.
 
         Notes
         -----
-            This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
+            A listener is usually created and returned by `pyagrum.MarkovRandomField.addStructureListener`; the model keeps
+            it alive. Several listeners can be added to the same model.
 
         Parameters
         ----------
         model : pyagrum.MarkovRandomField
-            The model to listen to
-        vnm : VariableNodeMap
-            the correspondence between the ids of the nodes and the names of the variables (usually
-            ``model._variableNodeMap()``)
+            the model to listen to
+        vnm : object
+            the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 
         """
         _pyagrumcpp.PythonMRFListener_swiginit(self, _pyagrumcpp.new_PythonMRFListener(model, vnm))
@@ -16045,12 +16057,17 @@ class PythonMRFListener(object):
     def setWhenEdgeAdded(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for adding an edge.
+        Set the function called when an edge is added (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,j:int) called when an edge (i,j) is added
+        pyfunc : callable
+            a function (i: int, j: int) called when the edge between i and j is added (the order of i and j is not specified)
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonMRFListener_setWhenEdgeAdded(self, pyfunc)
@@ -16058,12 +16075,17 @@ class PythonMRFListener(object):
     def setWhenEdgeDeleted(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for deleting an edge.
+        Set the function called when an edge is removed (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,j:int) called when an edge (i,j) is removed
+        pyfunc : callable
+            a function (i: int, j: int) called when the edge between i and j is removed (the order of i and j is not specified)
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonMRFListener_setWhenEdgeDeleted(self, pyfunc)
@@ -16071,12 +16093,17 @@ class PythonMRFListener(object):
     def setWhenNodeAdded(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for adding a node.
+        Set the function called when a node is added (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int,s:str) called when a node of id i and name s is added.
+        pyfunc : callable
+            a function (id: int, name: str) called when the node is added
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonMRFListener_setWhenNodeAdded(self, pyfunc)
@@ -16084,12 +16111,17 @@ class PythonMRFListener(object):
     def setWhenNodeDeleted(self, pyfunc: object) -> None:
         r"""
 
-        Add the listener in parameter to the list of existing ones for deleting a node.
+        Set the function called when a node is removed (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
-        pyfunc : lambda expression
-            a function (i:int) called when a node of id i is removed.
+        pyfunc : callable
+            a function (id: int) called when the node is removed
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonMRFListener_setWhenNodeDeleted(self, pyfunc)
@@ -16145,10 +16177,21 @@ def _fillLoadListeners_(py_listener: list[object], l: object) -> int:
 class PythonApproximationListener(object):
     r"""
 
+    Listener of the progress of an approximation algorithm (approximate inference, credal inference, EM in
+    `pyagrum.BNLearner`, sampled distance between Bayesian networks...).
+
+    PythonApproximationListener(algo) -> PythonApproximationListener
+
     Parameters
     ----------
-    algo : IApproximationSchemeConfiguration
-        an approxmation scheme
+    algo : object
+        the approximation algorithm to listen to, for instance a `pyagrum.GibbsSampling` (it must stay alive as long as
+        the listener)
+
+    Notes
+    -----
+        The progress is notified every ``periodSize()`` iterations, and only while the algorithm runs:
+        an algorithm which stops before the end of its first period notifies only its stop.
 
     """
 
@@ -16158,10 +16201,21 @@ class PythonApproximationListener(object):
     def __init__(self, algo: "IApproximationSchemeConfiguration"):
         r"""
 
+        Listener of the progress of an approximation algorithm (approximate inference, credal inference, EM in
+        `pyagrum.BNLearner`, sampled distance between Bayesian networks...).
+
+        PythonApproximationListener(algo) -> PythonApproximationListener
+
         Parameters
         ----------
-        algo : IApproximationSchemeConfiguration
-            an approxmation scheme
+        algo : object
+            the approximation algorithm to listen to, for instance a `pyagrum.GibbsSampling` (it must stay alive as long as
+            the listener)
+
+        Notes
+        -----
+            The progress is notified every ``periodSize()`` iterations, and only while the algorithm runs:
+            an algorithm which stops before the end of its first period notifies only its stop.
 
         """
         _pyagrumcpp.PythonApproximationListener_swiginit(self, _pyagrumcpp.new_PythonApproximationListener(algo))
@@ -16170,16 +16224,18 @@ class PythonApproximationListener(object):
     def whenProgress(self, src: object, step: int, error: float, duration: float) -> None:
         r"""
 
-        Callback invoked at each iteration step of the approximation algorithm.
+        Called by aGrUM at each progress notification of the algorithm: calls the function given to ``setWhenProgress``.
 
         Parameters
         ----------
-        pct : float
-            the current progress percentage
+        src : object
+            the object which sends the notification (not used)
+        step : int
+            the number of iterations done
         error : float
-            the current error estimate
-        time : float
-            the elapsed time
+            the current error
+        duration : float
+            the elapsed time in seconds
 
         """
         return _pyagrumcpp.PythonApproximationListener_whenProgress(self, src, step, error, duration)
@@ -16187,12 +16243,14 @@ class PythonApproximationListener(object):
     def whenStop(self, src: object, message: str) -> None:
         r"""
 
-        Callback invoked when the approximation algorithm stops.
+        Called by aGrUM when the algorithm stops: calls the function given to ``setWhenStop``.
 
         Parameters
         ----------
+        src : object
+            the object which sends the notification (not used)
         message : str
-            a message describing the stopping reason
+            the reason of the stop
 
         """
         return _pyagrumcpp.PythonApproximationListener_whenStop(self, src, message)
@@ -16200,10 +16258,17 @@ class PythonApproximationListener(object):
     def setWhenProgress(self, pyfunc: object) -> None:
         r"""
 
+        Set the function called when the algorithm notifies its progress (it replaces the function previously set for this event on this listener).
+
         Parameters
         ----------
-        pyfunc
-            the function to execute
+        pyfunc : callable
+            a function (step: int, error: float, duration: float) called when the algorithm has done ``step`` iterations, with the current error and the elapsed time in seconds
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonApproximationListener_setWhenProgress(self, pyfunc)
@@ -16211,21 +16276,67 @@ class PythonApproximationListener(object):
     def setWhenStop(self, pyfunc: object) -> None:
         r"""
 
+        Set the function called when the algorithm stops (it replaces the function previously set for this event on this listener).
+
         Parameters
         ----------
-        pyfunc
-            the function to execute
+        pyfunc : callable
+            a function (message: str) called when the algorithm stops, with the reason of the stop
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonApproximationListener_setWhenStop(self, pyfunc)
 
 # Register PythonApproximationListener in _pyagrumcpp:
 _pyagrumcpp.PythonApproximationListener_swigregister(PythonApproximationListener)
+
+_PythonApproximationListener_swiginit = PythonApproximationListener.__init__
+
+
+def _PythonApproximationListener_init(self, algo):
+# an approximation algorithm (inference, learner, distance...) is given as it is
+  if hasattr(algo, "_asIApproximationSchemeConfiguration"):
+    algo = algo._asIApproximationSchemeConfiguration()
+  _PythonApproximationListener_swiginit(self, algo)
+
+
+_PythonApproximationListener_init.__doc__ = _PythonApproximationListener_swiginit.__doc__
+PythonApproximationListener.__init__ = _PythonApproximationListener_init
+
 class PythonDatabaseGeneratorListener(object):
+    r"""
+
+    Listener of the progress of the generation of a database by a `pyagrum.BNDatabaseGenerator`.
+
+    PythonDatabaseGeneratorListener(generator) -> PythonDatabaseGeneratorListener
+
+    Parameters
+    ----------
+    generator : pyagrum.BNDatabaseGenerator
+        the generator to listen to (it must stay alive as long as the listener)
+
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def __init__(self, notif: "BNDatabaseGenerator"):
+        r"""
+
+        Listener of the progress of the generation of a database by a `pyagrum.BNDatabaseGenerator`.
+
+        PythonDatabaseGeneratorListener(generator) -> PythonDatabaseGeneratorListener
+
+        Parameters
+        ----------
+        generator : pyagrum.BNDatabaseGenerator
+            the generator to listen to (it must stay alive as long as the listener)
+
+        """
         _pyagrumcpp.PythonDatabaseGeneratorListener_swiginit(self, _pyagrumcpp.new_PythonDatabaseGeneratorListener(notif))
     __swig_destroy__ = _pyagrumcpp.delete_PythonDatabaseGeneratorListener
 
@@ -16264,12 +16375,17 @@ class PythonDatabaseGeneratorListener(object):
     def setWhenProgress(self, pyfunc: object) -> None:
         r"""
 
-        Register a callback called at each progress step.
+        Set the function called when the generator notifies its progress (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
         pyfunc : callable
-            a function called with (step: int, duration: float) at each progress notification
+            a function (step: int, duration: float) called when ``step`` percent of the database is generated (from 0 to 99), with the elapsed time in seconds
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonDatabaseGeneratorListener_setWhenProgress(self, pyfunc)
@@ -16277,12 +16393,17 @@ class PythonDatabaseGeneratorListener(object):
     def setWhenStop(self, pyfunc: object) -> None:
         r"""
 
-        Register a callback called when the generation stops.
+        Set the function called when the generation stops (it replaces the function previously set for this event on this listener).
 
         Parameters
         ----------
         pyfunc : callable
-            a function called with (message: str) when the generation is done
+            a function (message: str) called when the database is generated, with a summary of the generation
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            if ``pyfunc`` is not callable
 
         """
         return _pyagrumcpp.PythonDatabaseGeneratorListener_setWhenStop(self, pyfunc)
@@ -18890,9 +19011,14 @@ class BayesNet(IBayesNet):
           a function for when an arc is added
         whenArcDeleted : lambda expression
           a function for when an arc is removed
+
+        Returns
+        -------
+        pyagrum.PythonBNListener | None
+          the new listener (kept alive by the model), on which other functions can be set; None if no function is given
         """
         if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-          return
+          return None
 
         if not hasattr(self,"_listeners"):
           self._listeners=[]
@@ -18908,6 +19034,7 @@ class BayesNet(IBayesNet):
           nl.setWhenArcDeleted(whenArcDeleted)
 
         self._listeners.append(nl)
+        return nl
 
 
     def loadGUM(self, name: str, l: object=None, binary: object=None) -> None:

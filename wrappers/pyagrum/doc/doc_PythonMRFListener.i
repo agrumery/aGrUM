@@ -46,63 +46,81 @@
 
 %feature("docstring") PythonMRFListener
 "
-Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
-when the structure of the model is changed.
-
-PythonMRFListener(model, vnm) -> PythonMRFListener
+Listener for the modifications of the structure of an undirected graphical model (Markov random field): the
+functions set on the listener are called when a node or an edge is added or removed.
 
 Notes
 -----
-    This class is mainly instantiated automatically by the method `pyagrum.MarkovRandomField.addStructureListener`.
+    A listener is usually created and returned by `pyagrum.MarkovRandomField.addStructureListener`; the model keeps
+    it alive. Several listeners can be added to the same model.
 
 Parameters
 ----------
 model : pyagrum.MarkovRandomField
-    The model to listen to
-vnm : VariableNodeMap
-    the correspondence between the ids of the nodes and the names of the variables (usually
-    ``model._variableNodeMap()``)
+    the model to listen to
+vnm : object
+    the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 "
 
 
 %feature("docstring") PythonMRFListener::setWhenEdgeAdded
 "
-Add the listener in parameter to the list of existing ones for adding an edge.
+Set the function called when an edge is added (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,j:int) called when an edge (i,j) is added
+pyfunc : callable
+    a function (i: int, j: int) called when the edge between i and j is added (the order of i and j is not specified)
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonMRFListener::setWhenEdgeDeleted
 "
-Add the listener in parameter to the list of existing ones for deleting an edge.
+Set the function called when an edge is removed (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,j:int) called when an edge (i,j) is removed
+pyfunc : callable
+    a function (i: int, j: int) called when the edge between i and j is removed (the order of i and j is not specified)
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonMRFListener::setWhenNodeAdded
 "
-Add the listener in parameter to the list of existing ones for adding a node.
+Set the function called when a node is added (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,s:str) called when a node of id i and name s is added.
+pyfunc : callable
+    a function (id: int, name: str) called when the node is added
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonMRFListener::setWhenNodeDeleted
 "
-Add the listener in parameter to the list of existing ones for deleting a node.
+Set the function called when a node is removed (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int) called when a node of id i is removed.
+pyfunc : callable
+    a function (id: int) called when the node is removed
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonMRFListener::whenEdgeAdded

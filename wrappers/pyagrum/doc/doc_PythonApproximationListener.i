@@ -46,47 +46,76 @@
 
 %feature("docstring") PythonApproximationListener
 "
+Listener of the progress of an approximation algorithm (approximate inference, credal inference, EM in
+`pyagrum.BNLearner`, sampled distance between Bayesian networks...).
+
+PythonApproximationListener(algo) -> PythonApproximationListener
+
 Parameters
 ----------
-algo : IApproximationSchemeConfiguration
-    an approxmation scheme
+algo : object
+    the approximation algorithm to listen to, for instance a `pyagrum.GibbsSampling` (it must stay alive as long as
+    the listener)
+
+Notes
+-----
+    The progress is notified every ``periodSize()`` iterations, and only while the algorithm runs:
+    an algorithm which stops before the end of its first period notifies only its stop.
 "
 
 %feature("docstring") PythonApproximationListener::setWhenProgress
 "
+Set the function called when the algorithm notifies its progress (it replaces the function previously set for this event on this listener).
+
 Parameters
 ----------
-pyfunc
-    the function to execute
+pyfunc : callable
+    a function (step: int, error: float, duration: float) called when the algorithm has done ``step`` iterations, with the current error and the elapsed time in seconds
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonApproximationListener::setWhenStop
 "
-Parameters
-----------
-pyfunc
-    the function to execute
-"
-%feature("docstring") PythonApproximationListener::whenProgress
-"
-Callback invoked at each iteration step of the approximation algorithm.
+Set the function called when the algorithm stops (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pct : float
-    the current progress percentage
+pyfunc : callable
+    a function (message: str) called when the algorithm stops, with the reason of the stop
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
+"
+%feature("docstring") PythonApproximationListener::whenProgress
+"
+Called by aGrUM at each progress notification of the algorithm: calls the function given to ``setWhenProgress``.
+
+Parameters
+----------
+src : object
+    the object which sends the notification (not used)
+step : int
+    the number of iterations done
 error : float
-    the current error estimate
-time : float
-    the elapsed time
+    the current error
+duration : float
+    the elapsed time in seconds
 "
 
 %feature("docstring") PythonApproximationListener::whenStop
 "
-Callback invoked when the approximation algorithm stops.
+Called by aGrUM when the algorithm stops: calls the function given to ``setWhenStop``.
 
 Parameters
 ----------
+src : object
+    the object which sends the notification (not used)
 message : str
-    a message describing the stopping reason
+    the reason of the stop
 "

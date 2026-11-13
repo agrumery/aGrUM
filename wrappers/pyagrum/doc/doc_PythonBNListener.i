@@ -46,64 +46,82 @@
 
 %feature("docstring") PythonBNListener
 "
-Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
-is notified when the structure of the model is changed.
-
-PythonBNListener(model, vnm) -> PythonBNListener
+Listener for the modifications of the structure of a directed graphical model (Bayesian network, influence
+diagram): the functions set on the listener are called when a node or an arc is added or removed.
 
 Notes
 -----
-    This class is mainly instantiated automatically by the methods ``addStructureListener`` of
-    `pyagrum.BayesNet` and `pyagrum.InfluenceDiagram`.
+    A listener is usually created and returned by `pyagrum.BayesNet.addStructureListener` or
+    `pyagrum.InfluenceDiagram.addStructureListener`; the model keeps it alive. Several listeners can be added to the
+    same model.
 
 Parameters
 ----------
 model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
-    The model to listen to
-vnm : VariableNodeMap
-    the correspondence between the ids of the nodes and the names of the variables (usually
-    ``model._variableNodeMap()``)
+    the model to listen to
+vnm : object
+    the correspondence between the ids and the names of the nodes of ``model`` (given by ``addStructureListener``)
 "
 
 
 %feature("docstring") PythonBNListener::setWhenArcAdded
 "
-Add the listener in parameter to the list of existing ones for adding an arc.
+Set the function called when an arc is added (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,j:int) called when an arc (i,j) is added
+pyfunc : callable
+    a function (tail: int, head: int) called when the arc (tail, head) is added
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonBNListener::setWhenArcDeleted
 "
-Add the listener in parameter to the list of existing ones for deleting an arc.
+Set the function called when an arc is removed (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,j:int) called when an arc (i,j) is removed
+pyfunc : callable
+    a function (tail: int, head: int) called when the arc (tail, head) is removed
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonBNListener::setWhenNodeAdded
 "
-Add the listener in parameter to the list of existing ones for adding a node.
+Set the function called when a node is added (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int,s:str) called when a node of id i and name s is added.
+pyfunc : callable
+    a function (id: int, name: str) called when the node is added
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonBNListener::setWhenNodeDeleted
 "
-Add the listener in parameter to the list of existing ones for deleting a node.
+Set the function called when a node is removed (it replaces the function previously set for this event on this listener).
 
 Parameters
 ----------
-pyfunc : lambda expression
-    a function (i:int) called when a node of id i is removed.
+pyfunc : callable
+    a function (id: int) called when the node is removed
+
+Raises
+------
+pyagrum.InvalidArgument
+    if ``pyfunc`` is not callable
 "
 
 %feature("docstring") PythonBNListener::whenArcAdded

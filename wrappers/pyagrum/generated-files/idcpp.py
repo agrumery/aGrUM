@@ -1026,9 +1026,14 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         a function for when an arc is added
       whenArcDeleted : lambda expression
         a function for when an arc is removed
+
+      Returns
+      -------
+      pyagrum.PythonBNListener | None
+        the new listener (kept alive by the model), on which other functions can be set; None if no function is given
       """
       if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-        return
+        return None
 
       if not hasattr(self,"_listeners"):
         self._listeners=[]
@@ -1044,6 +1049,7 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
         nl.setWhenArcDeleted(whenArcDeleted)
 
       self._listeners.append(nl)
+      return nl
 
 
     def __getstate__(self):

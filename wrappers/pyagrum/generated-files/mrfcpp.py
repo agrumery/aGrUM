@@ -1196,9 +1196,14 @@ class MarkovRandomField(IMarkovRandomField):
           a function for when an edge is added
         whenEdgeDeleted : lambda expression
           a function for when an edge is removed
+
+        Returns
+        -------
+        pyagrum.PythonMRFListener | None
+          the new listener (kept alive by the model), on which other functions can be set; None if no function is given
         """
         if [whenNodeAdded,whenNodeDeleted,whenEdgeAdded,whenEdgeDeleted]==[None,None,None,None]:
-          return
+          return None
 
         if not hasattr(self,"_listeners"):
           self._listeners=[]
@@ -1214,6 +1219,7 @@ class MarkovRandomField(IMarkovRandomField):
           nl.setWhenEdgeDeleted(whenEdgeDeleted)
 
         self._listeners.append(nl)
+        return nl
 
 
 # Register MarkovRandomField in _mrfcpp:

@@ -175,9 +175,25 @@ class TestOtherModelsListeners(pyAgrumTestCase):
     )
 
   def testNoListenerIsANoOp(self):
-    for model in (gum.InfluenceDiagram(), gum.MarkovRandomField()):
-      model.addStructureListener()
+    for model in (gum.BayesNet(), gum.InfluenceDiagram(), gum.MarkovRandomField()):
+      self.assertIsNone(model.addStructureListener())
       self.assertFalse(hasattr(model, "_listeners"))
+
+  def testAddStructureListenerReturnsTheListener(self):
+    for model, cls in (
+      (gum.BayesNet(), gum.PythonBNListener),
+      (gum.InfluenceDiagram(), gum.PythonBNListener),
+      (gum.MarkovRandomField(), gum.PythonMRFListener),
+    ):
+      with self.subTest(model=type(model).__name__):
+        events = []
+        listener = model.addStructureListener(whenNodeAdded=lambda i, name: events.append(("added", name)))
+        self.assertIsInstance(listener, cls)
+        # the returned listener is the one kept by the model: a function set on it is called
+        listener.setWhenNodeDeleted(lambda i: events.append(("deleted", i)))
+        model.add(gum.LabelizedVariable("a", "a", 2))
+        model.erase("a")
+        self.assertEqual(events, [("added", "a"), ("deleted", 0)])
 
 
 class TestListenerCallbacks(pyAgrumTestCase):
@@ -220,6 +236,15 @@ class TestListenerCallbacks(pyAgrumTestCase):
     self.assertEqual(messages, [ie.messageApproximationScheme()])
     self.assertGreater(len(self.reported), 0)
     self.assertTrue(all(exc is ValueError for exc in self.reported))
+
+  def testApproximationListenerTakesTheAlgorithm(self):
+    for ie in (gum.GibbsSampling(gum.fastBN("A->B")), gum.LoopyBeliefPropagation(gum.fastBN("A->B"))):
+      with self.subTest(algorithm=type(ie).__name__):
+        messages = []
+        listener = gum.PythonApproximationListener(ie)
+        listener.setWhenStop(messages.append)
+        ie.makeInference()
+        self.assertEqual(messages, [ie.messageApproximationScheme()])
 
   def testNonCallableIsRefused(self):
     ie = gum.GibbsSampling(gum.fastBN("A->B"))

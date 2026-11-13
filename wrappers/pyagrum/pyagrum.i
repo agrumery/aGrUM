@@ -149,6 +149,20 @@ static int _pyagrum_import_numpy(void) {
 %ignore PythonLoadListener::PythonLoadListener(const PythonLoadListener&);
 %include "extensions/PythonLoadListener.h"
 %include "extensions/PythonApproximationListener.h"
+%pythoncode %{
+_PythonApproximationListener_swiginit = PythonApproximationListener.__init__
+
+
+def _PythonApproximationListener_init(self, algo):
+  # an approximation algorithm (inference, learner, distance...) is given as it is
+  if hasattr(algo, "_asIApproximationSchemeConfiguration"):
+    algo = algo._asIApproximationSchemeConfiguration()
+  _PythonApproximationListener_swiginit(self, algo)
+
+
+_PythonApproximationListener_init.__doc__ = _PythonApproximationListener_swiginit.__doc__
+PythonApproximationListener.__init__ = _PythonApproximationListener_init
+%}
 %include "extensions/PythonDatabaseGeneratorListener.h"
 
 // before bayesnet.i: its %ignore of MarkovBlanket::nodes would also remove this %extend

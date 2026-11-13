@@ -72,6 +72,10 @@
       sizes of `orientAsDAG` may be given by name, and every function names the accepted classes in its `TypeError`.
     - `pyagrum.lib.notebook` warns (`warnings.warn`) instead of printing when Graphviz is missing or when the obsolete
       `title` of `FlowLayout` is used; an invalid dot string raises `ValueError` in `pyagrum.lib.dotstyle`.
+    - `addStructureListener` (`BayesNet`, `InfluenceDiagram`, `MarkovRandomField`) returns the new listener
+      (`PythonBNListener` or `PythonMRFListener`, None without function), on which other functions can be set.
+      `PythonApproximationListener` takes the approximation algorithm itself (an inference, ...). The four listener
+      classes are documented in the reference, with an example for each of their setters.
 
 - aGrUM
 
