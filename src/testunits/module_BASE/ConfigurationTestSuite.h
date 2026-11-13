@@ -526,6 +526,18 @@ Color = #FF7F64
     CHECK_EQ(ConfigurationTestSuite::readFile(filename),
              "[nosection]\nk = 1\n[main]\nNUMBER = 12\nnokey = 1\nreal = abc\nflag = on\n");
 
+    // the messages give the key as written in the file (the error gives it as declared)
+    {
+      std::ofstream f(filename);
+      f << "[main]\nNoKey = 1\nREAL = abc\n";
+    }
+    CHECK_NOTHROW(c.load(filename));
+    const auto written = c.takeNotices();
+    REQUIRE_EQ(written.size(), std::size_t(2));
+    CHECK_NE(written[0].message.find("Option 'main.NoKey' does not exist"), std::string::npos);
+    CHECK_NE(written[1].message.find("Invalid value for 'main.REAL'"), std::string::npos);
+    CHECK_NE(written[1].message.find("for 'main.real'"), std::string::npos);
+
     {
       std::ofstream f(filename);
       f << "k = 1\n";

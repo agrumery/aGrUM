@@ -806,7 +806,7 @@ namespace gum {
 
         const auto pos = _tryFind_(section, key);
         if (pos == _npos_) {
-          note("Option '" + section + "." + toLower(key) + "' does not exist.");
+          note("Option '" + section + "." + key + "' does not exist.");   // as written
           continue;
         }
         const auto target = _resolve_(pos, &notices);
@@ -815,7 +815,7 @@ namespace gum {
         if (_validate_(_items_[target], value, canonical, error)) {
           changes.emplace_back(target, std::move(canonical));
         } else {
-          note("Invalid value for '" + section + "." + toLower(key) + "': " + error);
+          note("Invalid value for '" + section + "." + key + "': " + error);   // as written
         }
       }
     }
@@ -935,11 +935,12 @@ namespace gum {
       // configuration, which would reset the generator
       const auto seed = global.typed< std::int64_t >("core", "randomSeed");
       gum::initRandom(static_cast< unsigned int >(seed));
-      // static: runHooks() runs copies of the hooks, which could not keep the last value
+      // static: runHooks() runs copies of the hooks, which could not keep the last value. A change
+      // back to the seed in use (reset(), pop() of a ConfigurationGuard...) has nothing to report
       static std::atomic< std::int64_t > lastSeed{seed};
-      global.addHook([](const Configuration& c) {
+      global.addHook([seed](const Configuration& c) {
         const auto current = c.typed< std::int64_t >("core", "randomSeed");
-        if (lastSeed.exchange(current) != current)
+        if (lastSeed.exchange(current) != current && current != seed)
           c._queue_(Notice::Kind::NO_EFFECT,
                     "'core.randomSeed' is read once at start, this change has no effect on the "
                     "random generator: use initRandom() to act directly on it.");

@@ -356,6 +356,10 @@
       difference of one ulp between the inference engines of the threads gave other periods, hence other bounds
       (up to 0.014), with 1 or 4 threads for the same seed. A variation below `1000 * epsilon` of the scalar type is
       now taken as no change: the result no longer depends on the number of threads.
+    - The messages of `Configuration::load` (`pyagrum.config.load`) give the key as written in the file (it was
+      lowercased, so that a message could show two spellings of the same key); the notice "`core.randomSeed` ... has no
+      effect" is no longer given when the seed comes back to the one in use (`reset()`, `pop()`, the end of a
+      `ConfigurationGuard` or of a `with pyagrum.config:` block).
 
 - Optimizations (aGrUM and pyAgrum)
 

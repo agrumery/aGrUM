@@ -130,7 +130,8 @@ namespace gum_tests {
       gum::config().set("core", "jgumIndent", "2");
       CHECK(gum::config().takeNotices().empty());
     }
-    gum::config().takeNotices();   // the guard gave the former value back
+    // the guard gave the seed read at start back: nothing to say
+    CHECK(gum::config().takeNotices().empty());
     gum::initRandom(seed);
   }
 
