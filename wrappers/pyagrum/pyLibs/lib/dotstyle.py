@@ -289,6 +289,14 @@ def fontFromMatplotlib() -> tuple[str, float]:
   return family, mpl.rcParams["font.size"]
 
 
+def _parseDot(dotstring: str) -> dot.Dot:
+  """The first pydot graph of a dot string, or a ValueError if the string is not valid dot."""
+  graphs = dot.graph_from_dot_data(dotstring)
+  if not graphs:
+    raise ValueError("the string is not a valid dot graph")
+  return graphs[0]
+
+
 def dotFromAgrum(dotstring: str) -> dot.Dot:
   """
   The pydot graph of a dot string written by a ``toDot()`` of aGrUM. Such a graph is already complete (see prepareDot).
@@ -303,9 +311,7 @@ def dotFromAgrum(dotstring: str) -> dot.Dot:
   pydot.Dot
     the graph
   """
-  graphs = dot.graph_from_dot_data(dotstring)
-  assert graphs is not None
-  return graphs[0]
+  return _parseDot(dotstring)
 
 
 def setNodesOptions(
@@ -464,7 +470,8 @@ def inferenceImageFilename(temp_dir: TemporaryDirectory, name: str) -> str:
     the name of the file, in the format of the key ``notebook.graphFormat`` of `pyagrum.config`
   """
   return os.path.join(
-    temp_dir.name, hashlib.md5(name.encode()).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"]
+    temp_dir.name,
+    hashlib.md5(name.encode(), usedforsecurity=False).hexdigest() + "." + pyagrum.config["notebook", "graphFormat"],
   )
 
 
@@ -625,11 +632,14 @@ def inferenceDotGraph(
   Returns
   -------
   pydot.Dot
-    the graph
+    the graph; the images of its nodes live as long as this graph object, so it must be kept while it is rendered
+
+  Raises
+  ------
+  ValueError
+    if ``dotstr`` is not a valid dot graph
   """
-  graphs = dot.graph_from_dot_data(dotstr)
-  assert graphs is not None
-  g = graphs[0]
+  g = _parseDot(dotstr)
   g.set_size(str(pyagrum.config[sizeKey] if size is None else size))
   g.temp_dir = temp_dir
   weakref.finalize(g, temp_dir.cleanup)  # an explicit cleanup: its implicit one emits a ResourceWarning

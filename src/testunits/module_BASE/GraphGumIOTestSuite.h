@@ -65,8 +65,10 @@ namespace gum_tests {
       CHECK_EQ(gum::graphGUMType(text), type);
       CHECK(gum::graphFromGUMString< G >(text) == g);
 
-      const auto jgum = GET_RESSOURCES_PATH("outputs/graphGumIO.jgum");
-      const auto bgum = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+      const TemporaryFile jgumFile(".jgum");
+      const TemporaryFile bgumFile(".bgum");
+      const auto&         jgum = jgumFile.path;
+      const auto&         bgum = bgumFile.path;
       gum::saveGraphGUM(g, jgum);
       gum::saveGraphGUM(g, bgum, true);
       CHECK_EQ(gum::graphGUMTypeOfFile(bgum, true), type);
@@ -225,7 +227,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(BinaryLengthIsLittleEndianWhateverTheHost) {
-    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    const TemporaryFile file(".bgum");
+    const auto&         path = file.path;
     gum::saveGraphGUM(gum::fastGraph< gum::DAG >("A->B->C"), path);
     std::ifstream     input(path, std::ios::binary);
     const std::string bytes{std::istreambuf_iterator< char >(input),
@@ -238,7 +241,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(BinaryFileRefusesDataAfterThePayload) {
-    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    const TemporaryFile file(".bgum");
+    const auto&         path = file.path;
     gum::saveGraphGUM(gum::fastGraph< gum::DAG >("A->B->C"), path);
     {
       std::ofstream output(path, std::ios::binary | std::ios::app);
@@ -248,7 +252,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(BinaryFileRefusesAWrongLength) {
-    const auto path = GET_RESSOURCES_PATH("outputs/graphGumIO.bgum");
+    const TemporaryFile file(".bgum");
+    const auto&         path = file.path;
     // a truncated length field (4 bytes instead of 8), a length far above the size of the file,
     // a length above the size of the payload (truncated data)
     const std::string contents[] = {std::string(4, '\0'),
@@ -274,15 +279,16 @@ namespace gum_tests {
     CHECK_THROWS_AS(gum::isBinaryGUMFile("g.jgum", true), gum::InvalidArgument&);
     CHECK_THROWS_AS(gum::isBinaryGUMFile("g.bgum", false), gum::InvalidArgument&);
 
-    const auto g     = gum::fastGraph< gum::DAG >("A->B->C");
-    const auto other = GET_RESSOURCES_PATH("outputs/graphGumIO.graph");
+    const auto          g = gum::fastGraph< gum::DAG >("A->B->C");
+    const TemporaryFile otherFile(".graph");
+    const auto&         other = otherFile.path;
     gum::saveGraphGUM(g, other);   // binary
     std::ifstream input(other, std::ios::binary);
     CHECK_NE(input.get(), int('{'));
     CHECK(gum::loadGraphGUM< gum::DAG >(other) == g);
     CHECK(gum::loadGraphGUM< gum::DAG >(other, true) == g);
-    CHECK_THROWS_AS(gum::saveGraphGUM(g, GET_RESSOURCES_PATH("outputs/graphGumIO.jgum"), true),
-                    gum::InvalidArgument&);
+    const TemporaryFile jgum(".jgum");
+    CHECK_THROWS_AS(gum::saveGraphGUM(g, jgum.path, true), gum::InvalidArgument&);
   }
 
 }   // namespace gum_tests

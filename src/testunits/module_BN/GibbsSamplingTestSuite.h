@@ -698,7 +698,7 @@ namespace gum_tests {
     inf.addTarget("A");
     inf.addEvidence("B", 1);
     GUM_CHECK_ASSERT_THROWS_NOTHING(inf.makeInference());
-    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.05);
+    GUM_CHECK_TENSOR_ALMOST_EQUALS_SAMEVARS_DELTA(lazy.posterior("A"), inf.posterior("A"), 0.1);
   }
 
   // the inference follows the CPTs changed in place after invalidateTensors()

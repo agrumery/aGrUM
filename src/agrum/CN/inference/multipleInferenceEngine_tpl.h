@@ -303,11 +303,11 @@ namespace gum {
       auto threadedExec = [this](const std::size_t                           this_thread,
                                  const std::size_t                           nb_threads,
                                  const std::vector< std::pair< Idx, Idx > >& ranges) {
-        auto       i                = this->threadRanges_[this_thread].first;
-        auto       j                = this->threadRanges_[this_thread].second;
+        auto       i                = ranges[this_thread].first;
+        auto       j                = ranges[this_thread].second;
         auto       domain_size      = this->marginalMax_[i].size();
-        const auto end_i            = this->threadRanges_[this_thread + 1].first;
-        auto       end_j            = this->threadRanges_[this_thread + 1].second;
+        const auto end_i            = ranges[this_thread + 1].first;
+        auto       end_j            = ranges[this_thread + 1].second;
         const auto marginalMax_size = this->marginalMax_.size();
         const auto tsize            = Size(l_marginalMin_.size());
 
@@ -383,11 +383,11 @@ namespace gum {
         auto&      this_tEps = tEps[this_thread];
         GUM_SCALAR delta     = 0;
 
-        auto       i                = this->threadRanges_[this_thread].first;
-        auto       j                = this->threadRanges_[this_thread].second;
+        auto       i                = ranges[this_thread].first;
+        auto       j                = ranges[this_thread].second;
         auto       domain_size      = this->marginalMax_[i].size();
-        const auto end_i            = this->threadRanges_[this_thread + 1].first;
-        auto       end_j            = this->threadRanges_[this_thread + 1].second;
+        const auto end_i            = ranges[this_thread + 1].first;
+        auto       end_j            = ranges[this_thread + 1].second;
         const auto marginalMax_size = this->marginalMax_.size();
 
         while ((i < end_i) || (j < end_j)) {

@@ -374,13 +374,13 @@ namespace gum_tests {
     gum::BIFReader< double > readera(
         &monBNa,
         GET_RESSOURCES_PATH("cn/errorBN_min.bif"));   // not well defined
-    readera.proceed();
+    REQUIRE_EQ(readera.proceed(), gum::Size(0));
 
     gum::BayesNet< double >  monBNb;
     gum::BIFReader< double > readerb(
         &monBNb,
         GET_RESSOURCES_PATH("cn/errorBN_max.bif"));   // not well defined
-    readerb.proceed();
+    REQUIRE_EQ(readerb.proceed(), gum::Size(0));
 
     gum::credal::CredalNet< double > cn(monBNa, monBNb);
     CHECK_THROWS_AS(cn.intervalToCredal(), const gum::CPTError&);

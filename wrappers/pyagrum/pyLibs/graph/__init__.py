@@ -83,32 +83,52 @@ Examples
 __author__ = "Pierre-Henri Wuillemin"
 __copyright__ = "(c) 2026 PARIS"
 
-from collections.abc import Iterable
+import operator
+from collections.abc import Iterable, Mapping
 
 import pyagrum
 import pyagrum.pyagrumcpp as _cpp  # the private _graph_* functions are not exported by pyagrum
 
+# the public graph classes, in the order of the error messages
+_GRAPHS = (
+  pyagrum.DiGraph,
+  pyagrum.DAG,
+  pyagrum.UndiGraph,
+  pyagrum.MixedGraph,
+  pyagrum.PDAG,
+  pyagrum.ChainGraph,
+  pyagrum.CPDAG,
+  pyagrum.MPDAG,
+  pyagrum.EssentialGraph,
+  pyagrum.MarkedGraph,
+  pyagrum.PAG,
+  pyagrum.MAG,
+)
+
+# family: (description, classes); a graph belongs to the family if it is an instance of one of the classes
 _FAMILIES = {
   "A": ("a graph with arcs", (pyagrum.DiGraph, pyagrum.CPDAG, pyagrum.MPDAG)),
   "E": ("a graph with edges", (pyagrum.UndiGraph, pyagrum.CPDAG, pyagrum.MPDAG)),
   "AE": ("a graph with arcs and edges", (pyagrum.MixedGraph, pyagrum.CPDAG, pyagrum.MPDAG)),
   "K": ("a marked graph", (pyagrum.MarkedGraph, pyagrum.MAG)),
-}
-_FAMILY_NAMES = {
-  "A": "DiGraph, DAG, MixedGraph, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph",
-  "E": "UndiGraph, MixedGraph, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph",
-  "AE": "MixedGraph, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph",
-  "K": "MarkedGraph, PAG, MAG",
+  # the families of a single algorithm
+  "DAG": ("a DAG", (pyagrum.DAG,)),
+  "PDAG": ("a PDAG", (pyagrum.PDAG,)),
+  "extendable": ("a partially directed acyclic graph", (pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG)),
+  "separation": (
+    "a graph with a separation criterion",
+    (pyagrum.DAG, pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG, pyagrum.MAG),
+  ),
 }
 
 
 def _check(name: str, g, *families: str) -> None:
   """Raise a TypeError if ``g`` belongs to none of ``families``."""
-  for family in families:
-    if isinstance(g, _FAMILIES[family][1]):
-      return
+  classes = tuple(cls for family in families for cls in _FAMILIES[family][1])
+  if isinstance(g, classes):
+    return
   what = " or ".join(_FAMILIES[family][0] for family in families)
-  accepted = ", ".join(_FAMILY_NAMES[family] for family in families)
+  accepted = ", ".join(cls.__name__ for cls in _GRAPHS if issubclass(cls, classes))
   raise TypeError(f"{name} needs {what} ({accepted}), got {type(g).__name__}")
 
 
@@ -119,7 +139,12 @@ def _node(g, node) -> int:
     if nid is None:
       raise pyagrum.NotFound(f"no node named '{node}' in the graph")
     return nid
-  return int(node)
+  if isinstance(node, bool):
+    raise TypeError(f"a node is given by its id (int) or its name (str), got {type(node).__name__}")
+  try:
+    return operator.index(node)
+  except TypeError:
+    raise TypeError(f"a node is given by its id (int) or its name (str), got {type(node).__name__}") from None
 
 
 def _nodes(g, nodes) -> set[int]:
@@ -608,8 +633,7 @@ def cpdag(dag) -> "pyagrum.CPDAG":
   D. M. Chickering. A Transformational Characterization of Equivalent Bayesian Network Structures.
   Proceedings of the 11th Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 87-98.
   """
-  if not isinstance(dag, pyagrum.DAG):
-    raise TypeError(f"cpdag needs a DAG, got {type(dag).__name__}")
+  _check("cpdag", dag, "DAG")
   return _cpp._graph_cpdag(dag)
 
 
@@ -633,10 +657,7 @@ def consistentExtension(g) -> "pyagrum.DAG | None":
   D. Dor, M. Tarsi. A simple algorithm to construct a consistent extension of a partially oriented
   graph. UCLA Cognitive Systems Laboratory, Technical Report R-185, 1992.
   """
-  if not isinstance(g, (pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG)):
-    raise TypeError(
-      f"consistentExtension needs a PDAG (PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph), got {type(g).__name__}"
-    )
+  _check("consistentExtension", g, "extendable")
   return _cpp._graph_consistentExtension(g)
 
 
@@ -662,12 +683,11 @@ def meekClosure(pdag) -> "pyagrum.PDAG | None":
   C. Meek. Causal inference and causal explanation with background knowledge. Proceedings of the 11th
   Conference on Uncertainty in Artificial Intelligence (UAI 1995), pp. 403-410.
   """
-  if not isinstance(pdag, pyagrum.PDAG):
-    raise TypeError(f"meekClosure needs a PDAG (PDAG, ChainGraph), got {type(pdag).__name__}")
+  _check("meekClosure", pdag, "PDAG")
   return _cpp._graph_meekClosure(pdag)
 
 
-def orientAsDAG(pdag, domainSizes: dict[int, int]) -> "pyagrum.DAG":
+def orientAsDAG(pdag, domainSizes: Mapping[int | str, int]) -> "pyagrum.DAG":
   """
   A DAG orienting all the edges of a PDAG, preferring the extensions with the smallest parameter count.
 
@@ -675,8 +695,8 @@ def orientAsDAG(pdag, domainSizes: dict[int, int]) -> "pyagrum.DAG":
   ----------
   pdag : PDAG | ChainGraph
     the PDAG
-  domainSizes : dict[int, int]
-    the domain size of each node, by id
+  domainSizes : Mapping[int | str, int]
+    the domain size of each node, given by its id or its name
 
   Returns
   -------
@@ -685,11 +705,14 @@ def orientAsDAG(pdag, domainSizes: dict[int, int]) -> "pyagrum.DAG":
 
   Raises
   ------
+  TypeError
+    if ``domainSizes`` is not a mapping
   pyagrum.InvalidArgument
     if a node has no domain size, or a domain size 0
   """
-  if not isinstance(pdag, pyagrum.PDAG):
-    raise TypeError(f"orientAsDAG needs a PDAG (PDAG, ChainGraph), got {type(pdag).__name__}")
+  _check("orientAsDAG", pdag, "PDAG")
+  if not isinstance(domainSizes, Mapping):
+    raise TypeError(f"orientAsDAG needs a mapping of the domain sizes, got {type(domainSizes).__name__}")
   return _cpp._graph_orientAsDAG(pdag, {_node(pdag, n): int(s) for n, s in domainSizes.items()})
 
 
@@ -740,10 +763,7 @@ def separation(g, X, Y, Z=None) -> bool:
   - T. Richardson, P. Spirtes. Ancestral graph Markov models. The Annals of Statistics
     30(4):962-1030, 2002 (m-separation).
   """
-  if not isinstance(g, (pyagrum.DAG, pyagrum.PDAG, pyagrum.CPDAG, pyagrum.MPDAG, pyagrum.MAG)):
-    raise TypeError(
-      f"separation needs a DAG, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph or MAG, got {type(g).__name__}"
-    )
+  _check("separation", g, "separation")
   return _cpp._graph_separation(g, _nodes(g, X), _nodes(g, Y), _nodes(g, Z))
 
 

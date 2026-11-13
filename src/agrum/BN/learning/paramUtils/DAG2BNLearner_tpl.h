@@ -254,12 +254,13 @@ namespace gum {
       }
       double current_log_likelihood = log_likelihood_EM_;
 
-      // it may happen (luckily very seldom) that EM will decrease the
-      // log-likelihood instead of increasing it (see Table 5 on p28 of
+      // the value tracked by the iterations may decrease (see Table 5 on p28 of
       // https://faculty.washington.edu/fxia/courses/LING572/EM_collins97.pdf
-      // for an example of such a behavior). In this case, instead of iterating
-      // EM and producing worst and worst Bayes nets, we stop the iterations
-      // early and we return the best Bayes net found so far.
+      // for an example of such a behavior). This is not rare: with few records and
+      // many missing values, it stops a large part of the runs after a few
+      // iterations. In this case, instead of iterating EM and producing worse and
+      // worse Bayes nets, we stop the iterations early and we return the best Bayes
+      // net found so far.
       BayesNet< GUM_SCALAR > best_bn;
       bool                   must_return_best_bn    = false;
       unsigned int           nb_dec_likelihood_iter = 0;

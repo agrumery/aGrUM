@@ -68,6 +68,10 @@
       Bayesian networks are only referenced: a change made in place is not detected).
     - `enableEpsilon`/`disableEpsilon`/`isEnabledEpsilon` (and the same for `MinEpsilonRate`, `MaxIter` and
       `MaxTime`) for the approximate inferences, the credal inferences and `BNLearner`, as for the distances.
+    - `pyagrum.graph`: a node given by a `bool` or a `float` raises `TypeError` (it was silently converted), the domain
+      sizes of `orientAsDAG` may be given by name, and every function names the accepted classes in its `TypeError`.
+    - `pyagrum.lib.notebook` warns (`warnings.warn`) instead of printing when Graphviz is missing or when the obsolete
+      `title` of `FlowLayout` is used; an invalid dot string raises `ValueError` in `pyagrum.lib.dotstyle`.
 
 - aGrUM
 
@@ -319,6 +323,8 @@
       (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).
     - `GibbsBNdistance` and `MCBNDistance`: the Bhattacharya distance started from an uninitialized value, and the copy
       of a distance lost its Hellinger, Bhattacharya and Jensen-Shannon values.
+    - `CNMonteCarloSampling` created while aGrUM used 1 or 2 threads kept most of its marginals at their initial bounds
+      (min 1, max 0): the merge of the samples stopped after the first nodes.
 
 ## Changelog for 3.3.2
 

@@ -1135,7 +1135,6 @@ namespace gum {
         while (current_domain_index >= current_domain_size) {
           current_domain_index -= current_domain_size;
           ++current_node;
-          current_domain_index = 0;
           if (current_node != marginalMin_size) {
             current_domain_size = this->marginalMin_[current_node].size();
           }
@@ -1143,12 +1142,6 @@ namespace gum {
 
         // now we can store the range if elements
         threadRanges_.emplace_back(current_node, current_domain_index);
-
-        // compute the next begin_node
-        if (current_domain_index == current_domain_size) {
-          ++current_node;
-          current_domain_index = 0;
-        }
       }
     }
 

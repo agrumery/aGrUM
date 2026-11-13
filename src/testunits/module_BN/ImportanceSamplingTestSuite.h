@@ -592,7 +592,6 @@ namespace gum_tests {
   // the inference follows the CPTs changed in place after invalidateTensors() (the weights use the
   // current CPTs: a stale proposal would only slow the convergence down)
   GUM_TEST(ImportanceInvalidateTensors) {
-    CHECK_LE(errorAfterInvalidateTensors< gum::ImportanceSampling< double > >(),
-             gum::config().epsilonCoarse() * 5);
+    CHECK_LE(errorAfterInvalidateTensors< gum::ImportanceSampling< double > >(), 0.05);
   }
 }   // namespace gum_tests

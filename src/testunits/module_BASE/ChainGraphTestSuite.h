@@ -108,9 +108,13 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4));
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7));
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id6));
+    CHECK(graph.existsEdge(id8, id4));
+    CHECK(graph.existsEdge(id0, id7));
+    CHECK(graph.existsEdge(id3, id6));
 
     auto id9 = graph.addNode();
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9));
+    CHECK(graph.existsEdge(id8, id9));
     CHECK_THROWS_AS(graph.addArc(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
     CHECK_THROWS_AS(graph.addEdge(id8, id1), const gum::InvalidPartiallyDirectedCycle&);
 

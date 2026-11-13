@@ -101,6 +101,22 @@ namespace gum_tests {
     return path.string();
   }
 
+  // A file of the temporary directory (see getTempFilePath), removed at the end of the scope.
+  // Declare it before the streams that open it: they must be closed before the removal (Windows).
+  struct TemporaryFile {
+    explicit TemporaryFile(const std::string& suffix = "") : path(getTempFilePath(suffix)) {}
+
+    ~TemporaryFile() {
+      std::error_code ec;   // the file may not have been created
+      std::filesystem::remove(path, ec);
+    }
+
+    TemporaryFile(const TemporaryFile&)            = delete;
+    TemporaryFile& operator=(const TemporaryFile&) = delete;
+
+    const std::string path;
+  };
+
   inline void str2file(const std::string& filename, const std::string& message) {
     std::ofstream outFile;
     outFile.open(filename);

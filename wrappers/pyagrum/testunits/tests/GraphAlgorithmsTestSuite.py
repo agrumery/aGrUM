@@ -144,6 +144,21 @@ class TestGraphAlgorithms(pyAgrumTestCase):
       str(context.exception),
       "isChordal needs a graph with edges (UndiGraph, MixedGraph, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph), got MAG",
     )
+    # several families: the accepted classes are listed once, in the same order
+    with self.assertRaises(TypeError) as context:
+      gg.anteriors(gum.fastDiGraph("A->B"), "A")
+    self.assertEqual(
+      str(context.exception),
+      "anteriors needs a graph with arcs and edges or a marked graph "
+      "(MixedGraph, PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph, MarkedGraph, PAG, MAG), got DiGraph",
+    )
+    with self.assertRaises(TypeError) as context:
+      gg.consistentExtension(gum.fastDAG("A->B"))
+    self.assertEqual(
+      str(context.exception),
+      "consistentExtension needs a partially directed acyclic graph "
+      "(PDAG, ChainGraph, CPDAG, MPDAG, EssentialGraph), got DAG",
+    )
 
   def testEachAlgorithmReadsItsFamily(self):
     pdag = gum.fastPDAG("A->B-C-D-A")
@@ -213,6 +228,12 @@ class TestGraphAlgorithms(pyAgrumTestCase):
     self.assertEqual(gg.ancestors(g, ("B", 2)), {0, 1})
     with self.assertRaises(gum.NotFound):
       gg.ancestors(g, "Z")
+    # a node is an id or a name: no silent conversion of a bool or a float
+    for node in (True, 1.0, 1.5):
+      with self.subTest(node=node), self.assertRaises(TypeError):
+        gg.ancestors(g, node)
+    with self.assertRaises(TypeError):
+      gg.ancestors(g, ["B", 2.0])
 
   def testOrientation(self):
     dag = gum.fastDAG("A->B->C;D->C")
@@ -227,6 +248,11 @@ class TestGraphAlgorithms(pyAgrumTestCase):
     self.assertEqual(closure.arcs(), {(0, 1), (1, 2)})
     with self.assertRaises(gum.InvalidArgument):
       gg.orientAsDAG(gum.fastPDAG("A->B-C"), {0: 2, 1: 2})
+    # the domain sizes are given by id or by name
+    pdag = gum.fastPDAG("A->B-C")
+    self.assertEqual(gg.orientAsDAG(pdag, {"A": 2, 1: 2, "C": 2}), gg.orientAsDAG(pdag, {0: 2, 1: 2, 2: 2}))
+    with self.assertRaises(TypeError):
+      gg.orientAsDAG(pdag, [2, 2, 2])
 
   def testOrderings(self):
     g = gum.fastUndiGraph("A-B-C;B-D")

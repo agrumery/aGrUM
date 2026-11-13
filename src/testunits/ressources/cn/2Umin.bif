@@ -27,7 +27,7 @@ variable E {
 variable F {
    type discrete[2] {0, 1};
 }
-variable G
+variable G {
    type discrete[2] {0, 1};
 }
 variable H {

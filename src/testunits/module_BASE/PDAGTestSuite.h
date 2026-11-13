@@ -154,22 +154,29 @@ namespace gum_tests {
     {
       gum::PDAG g(graph);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g.addArc(id8, id1));
+      CHECK(g.existsArc(id8, id1));
     }
     {
       gum::PDAG g(graph);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g.addEdge(id0, id4));
+      CHECK(g.existsEdge(id0, id4));
     }
     {
       gum::PDAG g(graph);
       GUM_CHECK_ASSERT_THROWS_NOTHING(g.addEdge(id8, id1));
+      CHECK(g.existsEdge(id8, id1));
     }
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id4));
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id0, id7));
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id3, id6));
+    CHECK(graph.existsEdge(id8, id4));
+    CHECK(graph.existsEdge(id0, id7));
+    CHECK(graph.existsEdge(id3, id6));
 
     auto id9 = graph.addNode();
     GUM_CHECK_ASSERT_THROWS_NOTHING(graph.addEdge(id8, id9));
+    CHECK(graph.existsEdge(id8, id9));
 
     CHECK_THROWS_AS(graph.addArc(1000, id1), const gum::InvalidNode&);
     CHECK_THROWS_AS(graph.addArc(id1, 1000), const gum::InvalidNode&);

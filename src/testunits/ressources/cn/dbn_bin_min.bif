@@ -24,11 +24,9 @@ probability (temp_0) {
 probability (temp_1 | temp_0) {
    (0) 0.4 0.2;
    (1) 0.4 0.2;
-   (2) 0.4 0.2;
 }
 probability (temp_2 | temp_1) {
    (0) 0.4 0.2;
    (1) 0.4 0.2;
-   (2) 0.4 0.2;
 }
 

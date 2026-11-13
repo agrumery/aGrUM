@@ -57,9 +57,11 @@ from matplotlib_inline.backend_inline import set_matplotlib_formats
 try:
   dot.call_graphviz("dot", ["--help"], ".")
 except FileNotFoundError:
-  print("""Graphviz is not installed. 
-  Please install this program in order to visualize graphical models in pyagrum. 
-  See https://graphviz.org/download/""")
+  warnings.warn(
+    "Graphviz is not installed. Please install this program in order to visualize graphical models in pyagrum. "
+    "See https://graphviz.org/download/",
+    stacklevel=2,
+  )
 
 import IPython.core.display
 import IPython.core.pylabtools
@@ -123,7 +125,7 @@ class FlowLayout:
       if title is None:
         cap = ""
       else:
-        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
+        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption
@@ -147,7 +149,7 @@ class FlowLayout:
       if title is None:
         cap = ""
       else:
-        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
+        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption
@@ -194,7 +196,7 @@ class FlowLayout:
       if title is None:
         cap = ""
       else:
-        print("`title` is obsolete since `0.22.8`. Please use `caption`.")
+        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption

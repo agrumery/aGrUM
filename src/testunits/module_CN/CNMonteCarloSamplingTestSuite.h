@@ -105,11 +105,11 @@ namespace gum_tests {
 
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(&monBNa, GET_CN_PATH_STR(2Umin.bif));
-      readera.proceed();
+      REQUIRE_EQ(readera.proceed(), gum::Size(0));
 
       gum::BayesNet< double >  monBNb;
       gum::BIFReader< double > readerb(&monBNb, GET_CN_PATH_STR(2Umax.bif));
-      readerb.proceed();
+      REQUIRE_EQ(readerb.proceed(), gum::Size(0));
 
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
 
@@ -124,11 +124,11 @@ namespace gum_tests {
 
       gum::BayesNet< double >  monBNa;
       gum::BIFReader< double > readera(&monBNa, GET_CN_PATH_STR(bn_c_3.bif));
-      readera.proceed();
+      REQUIRE_EQ(readera.proceed(), gum::Size(0));
 
       gum::BayesNet< double >  monBNb;
       gum::BIFReader< double > readerb(&monBNb, GET_CN_PATH_STR(den_c_3.bif));
-      readerb.proceed();
+      REQUIRE_EQ(readerb.proceed(), gum::Size(0));
 
       cn = new gum::credal::CredalNet< double >(monBNa, monBNb);
 
@@ -137,6 +137,21 @@ namespace gum_tests {
     }
 
     void clearCNet() { delete cn; }
+
+    // the lower and upper marginals are probabilities with min <= max, and so are the expectations
+    void checkTheBounds(const gum::credal::CNMonteCarloSampling< double >& mcs) const {
+      const double eps = gum::config().epsilonStandard();
+      for (const auto node: cn->current_bn().nodes()) {
+        const auto pmin = mcs.marginalMin(node);
+        const auto pmax = mcs.marginalMax(node);
+        for (gum::Instantiation inst(pmin); !inst.end(); inst.inc()) {
+          CHECK(pmin.get(inst) >= -eps);
+          CHECK(pmin.get(inst) <= pmax.get(inst) + eps);
+          CHECK(pmax.get(inst) <= 1.0 + eps);
+        }
+        CHECK(mcs.expectationMin(node) <= mcs.expectationMax(node) + eps);
+      }
+    }
 
     // not dynamic (2U network) - with evidence
     // end of : testCNMonteCarloSamplingInference (2U network)
@@ -210,12 +225,7 @@ namespace gum_tests {
 
 
     try {
-      for (const auto node: cn->current_bn().nodes()) {
-        auto pmin = mcs.marginalMin(node);
-        auto pmax = mcs.marginalMax(node);
-        mcs.expectationMin(node);
-        mcs.expectationMax(node);
-      }
+      checkTheBounds(mcs);
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);
       CHECK(false);
@@ -251,12 +261,7 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
     try {
-      for (const auto node: cn->current_bn().nodes()) {
-        auto inf(mcs.marginalMin(node));
-        auto sup(mcs.marginalMax(node));
-        mcs.expectationMin(node);
-        mcs.expectationMax(node);
-      }
+      checkTheBounds(mcs);
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);
       CHECK(false);
@@ -303,12 +308,7 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference(););
 
     try {
-      for (const auto node: cn->current_bn().nodes()) {
-        auto inf(mcs.marginalMin(node));
-        auto sup(mcs.marginalMax(node));
-        mcs.expectationMin(node);
-        mcs.expectationMax(node);
-      }
+      checkTheBounds(mcs);
     } catch (gum::Exception& e) {
       GUM_SHOWERROR(e);
       CHECK(false);
@@ -361,6 +361,24 @@ namespace gum_tests {
                                                     gum::config().epsilonStandard());
 
     gum::initRandom(runSeed);
+    clearCNet();
+  }
+
+  // the marginals of all the nodes are merged whatever the number of threads at construction (with
+  // 1 or 2 threads, the ranges of the threads used to stop after the first nodes, which kept their
+  // initial bounds min=1, max=0)
+  GUM_TEST(CNMonteCarloSamplingWithFewThreads) {
+    initDCNet();
+    const auto nbThreads = gum::getNumberOfThreads();
+    for (const unsigned int nt: {1u, 2u, 4u}) {
+      gum::setNumberOfThreads(nt);
+      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+      mcs.setMaxTime(60);   // stop on epsilon, never on the time
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.insertModalsFile(GET_CN_PATH_STR(modalities.modal)));
+      GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
+      checkTheBounds(mcs);
+    }
+    gum::setNumberOfThreads(nbThreads);
     clearCNet();
   }
 
