@@ -38,14 +38,13 @@
 #                                                                          #
 ############################################################################
 
-import contextlib
-import io
 import textwrap
 import unittest
 
 import pyagrum as gum
 import pyagrum.graph as gg
 
+from .examplesRunner import runExample
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
@@ -269,32 +268,14 @@ class TestGraphAlgorithms(pyAgrumTestCase):
     blocks = _codeBlocks(gg.__doc__)
     self.assertTrue(blocks)
     for block in blocks:
-      self._checkExample(block)
+      runExample(block, "pyagrum.graph")
 
   def testExampleOfTheSphinxPage(self):
     with open("../doc/sphinx/graphAlgorithms.rst", encoding="utf-8") as f:
       blocks = _codeBlocks(f.read())
     self.assertTrue(blocks)
     for block in blocks:
-      self._checkExample(block)
-
-  def _checkExample(self, block: str):
-    env = {}
-    lines = block.strip().splitlines()
-    for i, line in enumerate(lines):
-      if not line.strip() or line.startswith("#"):
-        continue
-      code = line.split("  # ")[0]
-      expected = lines[i + 1][2:] if i + 1 < len(lines) and lines[i + 1].startswith("# ") else None
-      if expected is None:
-        exec(code, env)
-      elif code.startswith("print("):
-        out = io.StringIO()
-        with contextlib.redirect_stdout(out):
-          exec(code, env)
-        self.assertEqual(out.getvalue().strip(), expected, code)
-      else:
-        self.assertEqual(repr(eval(code, env)), expected, code)
+      runExample(block, "graphAlgorithms.rst")
 
 
 ts = unittest.TestSuite()

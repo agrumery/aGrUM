@@ -99,10 +99,7 @@ def go():
     )
     sys.exit(1)
 
-  logfilename = "/pyAgrumTests.log"
-  if mod != "standAlone":
-    logfilename = "/../../.." + logfilename
-  logfilename = cwd + logfilename
+  logfilename = cwd + "/../../../pyAgrumTests.log"
   notif(f"log : {logfilename}")
 
   log = logging.getLogger("pyAgrum")
@@ -132,7 +129,7 @@ def go():
   sys.path.insert(0, os.path.join(os.getcwd(), "tests"))
   sys.path.insert(0, os.getcwd())
 
-  if mod != "standAlone" and islocal:
+  if islocal:
     if mod == "debug":
       build_dir = os.path.abspath("../../../build/pyAgrum/debug")
     else:
@@ -169,7 +166,7 @@ def go():
   from utils import testsOnPython
 
   if not notebooksOnly:
-    total_errs += testsOnPython.runTests(local=islocal, test_module=test_module, test_suite=test_suite, log=log)
+    total_errs += testsOnPython.runTests(test_module=test_module, test_suite=test_suite, log=log)
 
   if testNotebooks:
     log.info("Tests on notebooks")

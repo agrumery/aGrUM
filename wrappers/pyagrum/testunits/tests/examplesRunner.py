@@ -41,9 +41,9 @@
 """Run an example of the documentation (doc/examples/<page name>.py) and check the results it shows.
 
 An example is a Python script. A comment block right after an expression shows its result: ``# <repr of the value>``
-(``#`` alone for an empty line), or the printed text for a ``print(...)`` call. Other comments must not directly
-follow an expression. A first line ``# requires: module1, module2`` names optional modules needed by the example
-(``graphviz`` for the ``dot`` program).
+(``#`` alone for an empty line), or the printed text for a call which prints and returns None (``print(...)``, a
+display method). Other comments must not directly follow an expression. A first line ``# requires: module1, module2``
+names optional modules needed by the example (``graphviz`` for the ``dot`` program).
 
 Usable as a script to check examples while writing them: ``python examplesRunner.py file1.py file2.py ...``.
 """
@@ -130,14 +130,11 @@ def runExample(source: str, name: str = "<example>") -> None:
           with contextlib.redirect_stdout(io.StringIO()):  # unchecked output (displays...): not in the test log
             exec(compile(ast.Module([stmt], []), name, "exec"), env)
           continue
-        call = stmt.value
-        if isinstance(call, ast.Call) and isinstance(call.func, ast.Name) and call.func.id == "print":
-          out = io.StringIO()
-          with contextlib.redirect_stdout(out):
-            exec(compile(ast.Module([stmt], []), name, "exec"), env)
-          result = out.getvalue().rstrip("\n")
-        else:
-          result = repr(eval(compile(ast.Expression(call), name, "eval"), env))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+          value = eval(compile(ast.Expression(stmt.value), name, "eval"), env)
+        # a call which prints and returns None (print, a display method...) shows what it prints
+        result = out.getvalue().rstrip("\n") if value is None and out.getvalue() else repr(value)
         expected = "\n".join(shown)
         if _trimmed(result) != _trimmed(expected):
           raise AssertionError(f"{name}:{stmt.lineno}: {code}\n  shown : {expected!r}\n  actual: {result!r}")
