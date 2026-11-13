@@ -206,6 +206,8 @@ namespace gum_tests {
     // on: BIC + greedy hill climbing, fixed seed
     static gum::KTBN< double > _learn_(Learner& l) {
       l.useScoreBIC().useGreedyHillClimbing();
+      gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
       gum::initRandom(42);
       return l.learnKTBN();
     }
@@ -494,6 +496,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(MissingValuesDoNotBlockLearning) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // The point of the complete-case selection: aGrUM's structure learning
     // refuses a database holding any missing value (IBNLearner::learnDag_), so
     // before it, learnKTBN() threw on ANY trajectory with a gap.
@@ -528,6 +532,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(MissingAtemporalOnRowZero) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // An atemporal value is constant down the trajectory, so any row carries it.
     // Reading row 0 blindly would drop every row of a trajectory whose atemporal
     // cell happens to be missing exactly there; the first NON-missing occurrence
@@ -578,6 +584,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(LearnAllAlgorithms) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     const std::string dir = GET_RESSOURCES_PATH("outputs");
     const auto        net = _demoKTBN_();
 
@@ -741,6 +749,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(MIICCorrectionsAndLatentVariables) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     auto l = _solo_();
 
     // latent variables are a MIIC-only notion: while MIIC has not run, the
@@ -978,6 +988,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(SearchSpaceControls) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     auto l = _solo_();
 
     CHECK_EQ(&l.setMaxIndegree(0), &l);

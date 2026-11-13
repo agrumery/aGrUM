@@ -3860,77 +3860,78 @@ namespace Swig {
 #define SWIGTYPE_p_gum__PDAG swig_types[126]
 #define SWIGTYPE_p_gum__PRMTypeError swig_types[127]
 #define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[128]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[129]
-#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[130]
-#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[131]
-#define SWIGTYPE_p_gum__ScheduledInference swig_types[132]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[133]
-#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[134]
-#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[135]
-#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[136]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[137]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[138]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[139]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[140]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[141]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[142]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[143]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[144]
-#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[145]
-#define SWIGTYPE_p_gum__SizeError swig_types[146]
-#define SWIGTYPE_p_gum__StructuralMetrics swig_types[147]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[148]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[149]
-#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[150]
-#define SWIGTYPE_p_gum__Triangulation swig_types[151]
-#define SWIGTYPE_p_gum__TypeError swig_types[152]
-#define SWIGTYPE_p_gum__UGmodel swig_types[153]
-#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[154]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[155]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[156]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[157]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[158]
-#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[159]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[160]
-#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[161]
-#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[162]
-#define SWIGTYPE_p_gum__Variable swig_types[163]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[164]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[165]
-#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[166]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[167]
-#define SWIGTYPE_p_gum__dot__DotOptions swig_types[168]
-#define SWIGTYPE_p_gum__dot__Rgb swig_types[169]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[170]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[171]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[172]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[173]
-#define SWIGTYPE_p_iterator swig_types[174]
-#define SWIGTYPE_p_iterator_category swig_types[175]
-#define SWIGTYPE_p_iterator_safe swig_types[176]
-#define SWIGTYPE_p_node_const_iterator swig_types[177]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[178]
-#define SWIGTYPE_p_node_iterator swig_types[179]
-#define SWIGTYPE_p_node_iterator_safe swig_types[180]
-#define SWIGTYPE_p_second_type swig_types[181]
-#define SWIGTYPE_p_size_type swig_types[182]
-#define SWIGTYPE_p_std__exception swig_types[183]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[184]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[185]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[186]
-#define SWIGTYPE_p_std__invalid_argument swig_types[187]
-#define SWIGTYPE_p_std__optionalT_bool_t swig_types[188]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[189]
-#define SWIGTYPE_p_std__size_t swig_types[190]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[191]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[192]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[193]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[194]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[195]
-#define SWIGTYPE_p_value_type swig_types[196]
-#define SWIGTYPE_p_void swig_types[197]
-static swig_type_info *swig_types[199];
-static swig_module_info swig_module = {swig_types, 198, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__RandomGeneratorGuard swig_types[129]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[130]
+#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[131]
+#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[132]
+#define SWIGTYPE_p_gum__ScheduledInference swig_types[133]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[134]
+#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[135]
+#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[136]
+#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[137]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[138]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[139]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[140]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[141]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[142]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[143]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[144]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[145]
+#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[146]
+#define SWIGTYPE_p_gum__SizeError swig_types[147]
+#define SWIGTYPE_p_gum__StructuralMetrics swig_types[148]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[149]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[150]
+#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[151]
+#define SWIGTYPE_p_gum__Triangulation swig_types[152]
+#define SWIGTYPE_p_gum__TypeError swig_types[153]
+#define SWIGTYPE_p_gum__UGmodel swig_types[154]
+#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[155]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[156]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[157]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[158]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[159]
+#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[160]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[161]
+#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[162]
+#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[163]
+#define SWIGTYPE_p_gum__Variable swig_types[164]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[165]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[166]
+#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[167]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[168]
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[169]
+#define SWIGTYPE_p_gum__dot__Rgb swig_types[170]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[171]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[172]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[173]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[174]
+#define SWIGTYPE_p_iterator swig_types[175]
+#define SWIGTYPE_p_iterator_category swig_types[176]
+#define SWIGTYPE_p_iterator_safe swig_types[177]
+#define SWIGTYPE_p_node_const_iterator swig_types[178]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[179]
+#define SWIGTYPE_p_node_iterator swig_types[180]
+#define SWIGTYPE_p_node_iterator_safe swig_types[181]
+#define SWIGTYPE_p_second_type swig_types[182]
+#define SWIGTYPE_p_size_type swig_types[183]
+#define SWIGTYPE_p_std__exception swig_types[184]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[185]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[186]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[187]
+#define SWIGTYPE_p_std__invalid_argument swig_types[188]
+#define SWIGTYPE_p_std__optionalT_bool_t swig_types[189]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[190]
+#define SWIGTYPE_p_std__size_t swig_types[191]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[192]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[193]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[194]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[195]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[196]
+#define SWIGTYPE_p_value_type swig_types[197]
+#define SWIGTYPE_p_void swig_types[198]
+static swig_type_info *swig_types[200];
+static swig_module_info swig_module = {swig_types, 199, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -23321,6 +23322,129 @@ fail:
   return 0;
 }
 
+
+SWIGINTERN PyObject *_wrap_new_RandomGeneratorGuard(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::RandomGeneratorGuard *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_RandomGeneratorGuard", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (gum::RandomGeneratorGuard *)new gum::RandomGeneratorGuard();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__RandomGeneratorGuard, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_RandomGeneratorGuard(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::RandomGeneratorGuard *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__RandomGeneratorGuard, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_RandomGeneratorGuard" "', argument " "1"" of type '" "gum::RandomGeneratorGuard *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::RandomGeneratorGuard * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RandomGeneratorGuard_restore(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::RandomGeneratorGuard *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__RandomGeneratorGuard, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomGeneratorGuard_restore" "', argument " "1"" of type '" "gum::RandomGeneratorGuard *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::RandomGeneratorGuard * >(argp1);
+  {
+    try {
+      (arg1)->restore();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RandomGeneratorGuard_isRestored(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::RandomGeneratorGuard *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__RandomGeneratorGuard, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RandomGeneratorGuard_isRestored" "', argument " "1"" of type '" "gum::RandomGeneratorGuard const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::RandomGeneratorGuard * >(argp1);
+  {
+    try {
+      result = (bool)((gum::RandomGeneratorGuard const *)arg1)->isRestored();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *RandomGeneratorGuard_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__RandomGeneratorGuard, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *RandomGeneratorGuard_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
 
 SWIGINTERN PyObject *_wrap_new__Configuration__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
@@ -154474,6 +154598,25 @@ static PyMethodDef SwigMethods[] = {
 		"  the seed used to initialize the random generator (0 if using time)\n"
 		"\n"
 		""},
+	 { "new_RandomGeneratorGuard", _wrap_new_RandomGeneratorGuard, METH_NOARGS, NULL},
+	 { "delete_RandomGeneratorGuard", _wrap_delete_RandomGeneratorGuard, METH_O, NULL},
+	 { "RandomGeneratorGuard_restore", _wrap_RandomGeneratorGuard_restore, METH_O, "\n"
+		"\n"
+		"Restore the seed and the state of the generator saved when the guard was created.\n"
+		"\n"
+		"Only the first call restores: the next calls (and the end of a ``with`` block) do nothing.\n"
+		"\n"
+		""},
+	 { "RandomGeneratorGuard_isRestored", _wrap_RandomGeneratorGuard_isRestored, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if the state of the generator was already restored by this guard\n"
+		"\n"
+		""},
+	 { "RandomGeneratorGuard_swigregister", RandomGeneratorGuard_swigregister, METH_O, NULL},
+	 { "RandomGeneratorGuard_swiginit", RandomGeneratorGuard_swiginit, METH_VARARGS, NULL},
 	 { "new__Configuration", _wrap_new__Configuration, METH_VARARGS, NULL},
 	 { "_Configuration__instance", _wrap__Configuration__instance, METH_NOARGS, NULL},
 	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, "\n"
@@ -177208,6 +177351,7 @@ static swig_type_info _swigt__p_gum__PAG = {"_p_gum__PAG", "gum::PAG *", 0, 0, (
 static swig_type_info _swigt__p_gum__PDAG = {"_p_gum__PDAG", "gum::PDAG *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__PRMTypeError = {"_p_gum__PRMTypeError", "gum::PRMTypeError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__PossiblyIncompatibleScorePrior = {"_p_gum__PossiblyIncompatibleScorePrior", "gum::PossiblyIncompatibleScorePrior *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__RandomGeneratorGuard = {"_p_gum__RandomGeneratorGuard", "gum::RandomGeneratorGuard *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__RangeVariable = {"_p_gum__RangeVariable", "gum::RangeVariable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ScheduleMultiDimError = {"_p_gum__ScheduleMultiDimError", "gum::ScheduleMultiDimError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ScheduleOperationError = {"_p_gum__ScheduleOperationError", "gum::ScheduleOperationError *", 0, 0, (void*)0, 0};
@@ -177407,6 +177551,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__PDAG,
   &_swigt__p_gum__PRMTypeError,
   &_swigt__p_gum__PossiblyIncompatibleScorePrior,
+  &_swigt__p_gum__RandomGeneratorGuard,
   &_swigt__p_gum__RangeVariable,
   &_swigt__p_gum__ScheduleMultiDimError,
   &_swigt__p_gum__ScheduleOperationError,
@@ -177608,6 +177753,7 @@ static swig_cast_info _swigc__p_gum__PAG[] = {  {&_swigt__p_gum__PAG, 0, 0, 0},{
 static swig_cast_info _swigc__p_gum__PDAG[] = {  {&_swigt__p_gum__PDAG, 0, 0, 0},  {&_swigt__p_gum__ChainGraph, _p_gum__ChainGraphTo_p_gum__PDAG, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__PRMTypeError[] = {  {&_swigt__p_gum__PRMTypeError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__PossiblyIncompatibleScorePrior[] = {  {&_swigt__p_gum__PossiblyIncompatibleScorePrior, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__RandomGeneratorGuard[] = {  {&_swigt__p_gum__RandomGeneratorGuard, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__RangeVariable[] = {  {&_swigt__p_gum__RangeVariable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ScheduleMultiDimError[] = {  {&_swigt__p_gum__ScheduleMultiDimError, 0, 0, 0},  {&_swigt__p_gum__AbstractScheduleMultiDim, _p_gum__AbstractScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},  {&_swigt__p_gum__DuplicateScheduleMultiDim, _p_gum__DuplicateScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},  {&_swigt__p_gum__UnknownScheduleMultiDim, _p_gum__UnknownScheduleMultiDimTo_p_gum__ScheduleMultiDimError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ScheduleOperationError[] = {  {&_swigt__p_gum__ScheduleOperationError, 0, 0, 0},  {&_swigt__p_gum__UnavailableScheduleOperation, _p_gum__UnavailableScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},  {&_swigt__p_gum__UnexecutedScheduleOperation, _p_gum__UnexecutedScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},  {&_swigt__p_gum__UnknownScheduleOperation, _p_gum__UnknownScheduleOperationTo_p_gum__ScheduleOperationError, 0, 0},{0, 0, 0, 0}};
@@ -177807,6 +177953,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__PDAG,
   _swigc__p_gum__PRMTypeError,
   _swigc__p_gum__PossiblyIncompatibleScorePrior,
+  _swigc__p_gum__RandomGeneratorGuard,
   _swigc__p_gum__RangeVariable,
   _swigc__p_gum__ScheduleMultiDimError,
   _swigc__p_gum__ScheduleOperationError,

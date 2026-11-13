@@ -46,34 +46,59 @@ from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
 
 class RandomGeneratorTestCase(pyAgrumTestCase):
-  @classmethod
-  def setUpClass(cls):
-    cls._seed = gum.randomGeneratorSeed()
-
-  @classmethod
-  def tearDownClass(cls):
-    gum.initRandom(cls._seed)  # the next suites are driven by the displayed seed again
+  # each test changing the seed is run in a RandomGeneratorGuard: the next tests are driven by the displayed seed
 
   def testInitSeed0(self):
-    gum.initRandom(0)
-    bn1 = gum.fastBN("A->B->C")
-    gum.initRandom(0)
-    bn2 = gum.fastBN("A->B->C")
+    with gum.RandomGeneratorGuard():
+      gum.initRandom(0)
+      bn1 = gum.fastBN("A->B->C")
+      gum.initRandom(0)
+      bn2 = gum.fastBN("A->B->C")
     self.assertNotEqual(bn1.cpt("B").min(), bn2.cpt("B").min())  # may fail but highly unlikely
 
   def testInitSeed1(self):
-    gum.initRandom(1)
-    bn1 = gum.fastBN("A->B->C")
-    gum.initRandom(1)
-    bn2 = gum.fastBN("A->B->C")
+    with gum.RandomGeneratorGuard():
+      gum.initRandom(1)
+      bn1 = gum.fastBN("A->B->C")
+      gum.initRandom(1)
+      bn2 = gum.fastBN("A->B->C")
     self.assertEqual(bn1.cpt("B").min(), bn2.cpt("B").min())
 
   def testInitSeed42(self):
-    gum.initRandom(42)
-    bn1 = gum.fastBN("A->B->C")
-    gum.initRandom(42)
-    bn2 = gum.fastBN("A->B->C")
+    with gum.RandomGeneratorGuard():
+      gum.initRandom(42)
+      bn1 = gum.fastBN("A->B->C")
+      gum.initRandom(42)
+      bn2 = gum.fastBN("A->B->C")
     self.assertEqual(bn1.cpt("B").min(), bn2.cpt("B").min())
+
+  def testGuardRestoresTheStream(self):
+    seed = gum.randomGeneratorSeed()
+    with gum.RandomGeneratorGuard():
+      expected = [gum.randomProba() for _ in range(5)]
+    guard = gum.RandomGeneratorGuard()
+    gum.initRandom(42)
+    _ = [gum.randomProba() for _ in range(10)]
+    self.assertEqual(gum.randomGeneratorSeed(), 42)
+    self.assertFalse(guard.isRestored())
+    guard.restore()
+    self.assertTrue(guard.isRestored())
+    self.assertEqual(gum.randomGeneratorSeed(), seed)
+    self.assertEqual([gum.randomProba() for _ in range(5)], expected)
+    # only the first call restores: a second call does not go back before the 5 draws
+    guard.restore()
+    self.assertNotEqual(gum.randomProba(), expected[0])
+
+  def testGuardRestoresOnException(self):
+    seed = gum.randomGeneratorSeed()
+    with gum.RandomGeneratorGuard():
+      expected = gum.randomProba()
+    with self.assertRaises(ValueError), gum.RandomGeneratorGuard() as guard:
+      gum.initRandom(7)
+      raise ValueError("leaving the block")  # not swallowed by the guard
+    self.assertTrue(guard.isRestored())
+    self.assertEqual(gum.randomGeneratorSeed(), seed)
+    self.assertEqual(gum.randomProba(), expected)
 
 
 ts = unittest.TestSuite()

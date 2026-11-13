@@ -76,9 +76,14 @@
       (`PythonBNListener` or `PythonMRFListener`, None without function), on which other functions can be set.
       `PythonApproximationListener` takes the approximation algorithm itself (an inference, ...). The four listener
       classes are documented in the reference, with an example for each of their setters.
+    - New `RandomGeneratorGuard`: saves the state of the pseudo-random generator and restores it (`restore()` or at the
+      end of a `with` block, even on an exception), so that a block can call `initRandom` and draw without changing
+      the draws of the rest of the program.
 
 - aGrUM
 
+    - New `gum::RandomGeneratorGuard`: saves the seed and the state of the generator of aGrUM, restored by `restore()`
+      or by its destructor.
     - Behaviour change: the random generator is now initialized at start from the new key `core.randomSeed` (default
       0, the clock): the draws of a program change at each run, unless it calls `initRandom` or sets this key in
       `agrum.ini`. The key is read once; changing it later only queues a notice saying to use `initRandom()`. There

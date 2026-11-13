@@ -176,6 +176,48 @@ namespace gum {
    */
   GUM_SHARED_PUBLIC std::mt19937& randomGenerator();
 
+  /**
+   * @class RandomGeneratorGuard
+   * @brief Saves the state of the generator of aGrUM and restores it later.
+   *
+   * At construction, the guard saves the seed (randomGeneratorSeed()) and the state of the
+   * generator. restore() (called by the destructor if it was not called before) gives them back:
+   * the draws after restore() are the ones that would have followed the construction without the
+   * draws made in between, and randomGeneratorSeed() returns the saved seed. A block of code can
+   * thus call initRandom() and draw without changing the stream of the rest of the program.
+   *
+   * The generator is shared by the whole library and is not thread safe: the guard is meant for a
+   * sequential block of code.
+   */
+  class GUM_SHARED_PUBLIC RandomGeneratorGuard {
+    public:
+    /// saves the seed and the state of the generator
+    RandomGeneratorGuard();
+
+    /// restores the seed and the state of the generator, if restore() was not called before
+    ~RandomGeneratorGuard();
+
+    RandomGeneratorGuard(const RandomGeneratorGuard&)            = delete;
+    RandomGeneratorGuard(RandomGeneratorGuard&&)                 = delete;
+    RandomGeneratorGuard& operator=(const RandomGeneratorGuard&) = delete;
+    RandomGeneratorGuard& operator=(RandomGeneratorGuard&&)      = delete;
+
+    /**
+     * @brief restores the seed and the state saved at construction.
+     *
+     * Only the first call restores: the next calls (and the destructor) do nothing.
+     */
+    void restore();
+
+    /// whether restore() was already called
+    bool isRestored() const noexcept;
+
+    private:
+    unsigned int _seed_;
+    std::mt19937 _state_;
+    bool         _restored_;
+  };
+
   /// @}
 } /* namespace gum */
 

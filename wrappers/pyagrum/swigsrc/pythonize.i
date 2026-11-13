@@ -110,3 +110,15 @@ ADD_REPR_STR_API(gum::learning,BNLearner<double>);
 %ignore gum::randomGenerator;
 %ignore gum::_rand_namespace_::generator;
 
+// RandomGeneratorGuard as a context manager: restored when the block is left, even by an exception
+%extend gum::RandomGeneratorGuard {
+%pythoncode %{
+def __enter__(self):
+  return self
+
+def __exit__(self, exc_type, exc_value, traceback):
+  self.restore()
+  return False
+%}
+}
+

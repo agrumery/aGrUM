@@ -164,6 +164,8 @@ namespace gum_tests {
   };
 
   GUM_TEST(DrawSingleTrajectory) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(42);
     const auto        m   = _model_();
     const gum::Size   T   = 5;
@@ -216,6 +218,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesPerLength) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(7);
     const auto m = _model_();
 
@@ -228,6 +232,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesFixedLength) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(11);
     const auto m = _model_();
 
@@ -310,6 +316,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(DiscretizedLabelRendering) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(123);
     gum::KTBN< double > m(2);
     m.add(gum::DiscretizedVariable< double >("D", "", {0., 1., 2., 3.}), true);   // 3 intervals
@@ -349,6 +357,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(SampledFrequenciesMatchCPT) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(42);
     gum::KTBN< double > m(2);
     m.add(gum::LabelizedVariable("X", "", 2), true);
@@ -377,6 +387,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(HigherOrderLag) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(1);
     gum::KTBN< double > m(3);
     m.add(gum::LabelizedVariable("X", "", 2), true);
@@ -421,6 +433,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(ProgressNotifier) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(42);
     const auto                                     m = _model_();
     gum::learning::KTBNDatabaseGenerator< double > gen(m);

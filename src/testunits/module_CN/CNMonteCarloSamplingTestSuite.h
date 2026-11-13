@@ -337,8 +337,9 @@ namespace gum_tests {
   // threads (a seed gives the same result on every machine; the inference engine of each thread may
   // round the posteriors differently)
   GUM_TEST(CNMonteCarloSamplingDoesNotDependOnTheNumberOfThreads) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     initCNet();
-    const auto runSeed = gum::randomGeneratorSeed();
     const auto seed
         = static_cast< unsigned int >(gum::randomValue(1u << 30)) + 1;   // not 0 (clock)
 
@@ -360,7 +361,6 @@ namespace gum_tests {
                                                     results[1][k],
                                                     gum::config().epsilonStandard());
 
-    gum::initRandom(runSeed);
     clearCNet();
   }
 

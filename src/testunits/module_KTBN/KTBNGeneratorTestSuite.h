@@ -87,6 +87,8 @@ namespace gum_tests {
   };
 
   GUM_TEST(GeneratorShapeAndLegality) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(42);
     gum::KTBNGenerator< double > gen(3, 4, 2);
     const auto                   m = gen.generate();
@@ -99,6 +101,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorGuaranteesEffectiveOrder) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // the point of guaranteeOrder: without it a "k-TBN" can silently have an
     // effective order below k, which makes order recovery ill-posed.
     gum::initRandom(7);
@@ -114,6 +118,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorGuaranteeOrderIsANoOpForK1) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // k=1 has no lag at all, so the guarantee cannot apply and must not throw
     gum::initRandom(3);
     gum::KTBNGenerator< double > gen(1, 3, 1);
@@ -124,6 +130,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorWithoutGuaranteeCanFallShort) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // the phenomenon guaranteeOrder exists to remove: at a low density and a
     // large k, some draws never reach lag k-1.
     gum::initRandom(11);
@@ -136,6 +144,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorReproducibleFromSeed) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(2024);
     gum::KTBNGenerator< double > g1(4, 3, 1);
     const auto                   a = g1.generate();
@@ -149,6 +159,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorDensityAndMaxArcs) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(5);
     gum::KTBNGenerator< double > gen(3, 4, 1);
 
@@ -168,6 +180,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorMaxParentsIsRespected) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(17);
     gum::KTBNGenerator< double > gen(3, 4, 1);
     gen.setDensity(1.0).setMaxParents(2).setGuaranteeOrder(false);
@@ -177,6 +191,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorDomainRangeAndNoAtemporal) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     gum::initRandom(23);
     gum::KTBNGenerator< double > gen(2, 5, 0);
     gen.setDomainRange(3, 5);
@@ -191,6 +207,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorSingleAtemporalHasNoAtemporalArc) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // one atemporal variable admits no atemporal -> atemporal arc
     gum::initRandom(31);
     gum::KTBNGenerator< double > gen(2, 2, 1);
@@ -203,6 +221,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorOutputSurvivesUnrollAndRoundTrip) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // a generated model must be a first-class KTBN: unrollable and serialisable
     gum::initRandom(99);
     gum::KTBNGenerator< double > gen(3, 3, 1);
@@ -232,6 +252,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(GeneratorNbLegalArcsMatchesSaturation) {
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
     // the closed-form count must agree with what a saturating draw produces
     for (gum::Size k: {1, 2, 3}) {
       for (gum::Size n: {0, 1, 3}) {

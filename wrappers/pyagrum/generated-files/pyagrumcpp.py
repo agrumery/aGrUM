@@ -1214,6 +1214,63 @@ def initRandom(seed: int=0) -> None:
 
     """
     return _pyagrumcpp.initRandom(seed)
+class RandomGeneratorGuard(object):
+    r"""
+
+    Saves the state of the pseudo-random generator of pyAgrum and restores it later: a block of code can call
+    `pyagrum.initRandom` and draw without changing the sequence of draws of the rest of the program.
+
+    The state (and the seed given by `pyagrum.randomGeneratorSeed`) is saved when the guard is created, and restored by
+    `pyagrum.RandomGeneratorGuard.restore`, or at the end of a ``with`` block, even if it is left by an exception. After
+    the restoration, the draws are the ones that would have followed the creation of the guard.
+
+    RandomGeneratorGuard() -> RandomGeneratorGuard
+
+    Notes
+    -----
+        The generator is shared by the whole library and is not thread safe: the guard is meant for a sequential block
+        of code.
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        _pyagrumcpp.RandomGeneratorGuard_swiginit(self, _pyagrumcpp.new_RandomGeneratorGuard())
+    __swig_destroy__ = _pyagrumcpp.delete_RandomGeneratorGuard
+
+    def restore(self) -> None:
+        r"""
+
+        Restore the seed and the state of the generator saved when the guard was created.
+
+        Only the first call restores: the next calls (and the end of a ``with`` block) do nothing.
+
+        """
+        return _pyagrumcpp.RandomGeneratorGuard_restore(self)
+
+    def isRestored(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if the state of the generator was already restored by this guard
+
+        """
+        return _pyagrumcpp.RandomGeneratorGuard_isRestored(self)
+
+    def __enter__(self):
+      return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+      self.restore()
+      return False
+
+
+# Register RandomGeneratorGuard in _pyagrumcpp:
+_pyagrumcpp.RandomGeneratorGuard_swigregister(RandomGeneratorGuard)
 class _Configuration(object):
     r"""
 

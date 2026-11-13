@@ -311,4 +311,57 @@ namespace gum_tests {
     CHECK_THROWS_AS(gum::int2Pow(64), const gum::OutOfBounds&);
     CHECK_THROWS_AS(gum::int2Pow(100), const gum::OutOfBounds&);
   }
+
+  // the draws after restore() continue the stream saved at construction, whatever happened in
+  // between
+  GUM_TEST(GuardRestoresTheStream) {
+    const auto                  seed = gum::randomGeneratorSeed();
+    std::vector< unsigned int > expected, actual;
+    {
+      gum::RandomGeneratorGuard reference;
+      for (int i = 0; i < 5; ++i)
+        expected.push_back(gum::currentRandomGeneratorValue());
+    }   // the destructor restores
+    CHECK_EQ(gum::randomGeneratorSeed(), seed);
+    {
+      gum::RandomGeneratorGuard guard;
+      gum::initRandom(42);
+      for (int i = 0; i < 10; ++i)
+        gum::randomProba();
+      CHECK_EQ(gum::randomGeneratorSeed(), 42u);
+      CHECK(!guard.isRestored());
+      guard.restore();
+      CHECK(guard.isRestored());
+      CHECK_EQ(gum::randomGeneratorSeed(), seed);
+      for (int i = 0; i < 5; ++i)
+        actual.push_back(gum::currentRandomGeneratorValue());
+      // only the first call restores: neither a second call nor the destructor go back again
+      guard.restore();
+      actual.push_back(gum::currentRandomGeneratorValue());
+    }
+    CHECK_EQ(std::vector< unsigned int >(actual.begin(), actual.begin() + 5), expected);
+    // the destructor did not restore again: the stream goes on after the 6 draws
+    gum::RandomGeneratorGuard after;
+    const auto                next = gum::currentRandomGeneratorValue();
+    after.restore();
+    CHECK_NE(next, expected[0]);
+  }
+
+  // the guard restores when the block is left by an exception
+  GUM_TEST(GuardRestoresOnException) {
+    const auto   seed = gum::randomGeneratorSeed();
+    unsigned int expected;
+    {
+      gum::RandomGeneratorGuard reference;
+      expected = gum::currentRandomGeneratorValue();
+    }
+    try {
+      gum::RandomGeneratorGuard guard;
+      gum::initRandom(7);
+      GUM_ERROR(gum::OperationNotAllowed, "leaving the block")
+    } catch (const gum::OperationNotAllowed&) {}
+    CHECK_EQ(gum::randomGeneratorSeed(), seed);
+    gum::RandomGeneratorGuard guard;
+    CHECK_EQ(gum::currentRandomGeneratorValue(), expected);
+  }
 }   // namespace gum_tests

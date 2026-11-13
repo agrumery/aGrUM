@@ -16,3 +16,8 @@ Random functions
    pyagrum.randomDistribution
    pyagrum.generateSample
    pyagrum.randomBN
+
+Reproducible block of code
+--------------------------
+
+.. pyagrum-class:: pyagrum.RandomGeneratorGuard

@@ -1329,7 +1329,9 @@ namespace gum_tests {
   }
 
   GUM_TEST(_EM) {
-    gum::initRandom(42);   // fix seed for deterministic EM initialisation
+    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
+    gum::initRandom(42);                     // fix seed for deterministic EM initialisation
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
                                                std::vector< std::string >{"?"});
 

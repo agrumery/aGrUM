@@ -169,6 +169,38 @@ int
   ``pyagrum.ini``, it repeats the same sequence of pseudo-random numbers.
 "
 
+%feature("docstring") gum::RandomGeneratorGuard
+"
+Saves the state of the pseudo-random generator of pyAgrum and restores it later: a block of code can call
+`pyagrum.initRandom` and draw without changing the sequence of draws of the rest of the program.
+
+The state (and the seed given by `pyagrum.randomGeneratorSeed`) is saved when the guard is created, and restored by
+`pyagrum.RandomGeneratorGuard.restore`, or at the end of a ``with`` block, even if it is left by an exception. After
+the restoration, the draws are the ones that would have followed the creation of the guard.
+
+RandomGeneratorGuard() -> RandomGeneratorGuard
+
+Notes
+-----
+    The generator is shared by the whole library and is not thread safe: the guard is meant for a sequential block
+    of code.
+"
+
+%feature("docstring") gum::RandomGeneratorGuard::restore
+"
+Restore the seed and the state of the generator saved when the guard was created.
+
+Only the first call restores: the next calls (and the end of a ``with`` block) do nothing.
+"
+
+%feature("docstring") gum::RandomGeneratorGuard::isRestored
+"
+Returns
+-------
+bool
+  True if the state of the generator was already restored by this guard
+"
+
 %feature("docstring") gum::randomValue
 "
 Returns

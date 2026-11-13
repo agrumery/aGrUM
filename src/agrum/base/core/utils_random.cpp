@@ -79,4 +79,18 @@ namespace gum {
 
   unsigned int randomGeneratorSeed() { return _currentSeed_; }
 
+  RandomGeneratorGuard::RandomGeneratorGuard() :
+      _seed_(_currentSeed_), _state_(_rand_namespace_::generator()), _restored_(false) {}
+
+  RandomGeneratorGuard::~RandomGeneratorGuard() { restore(); }
+
+  void RandomGeneratorGuard::restore() {
+    if (_restored_) return;
+    _restored_                    = true;
+    _currentSeed_                 = _seed_;
+    _rand_namespace_::generator() = _state_;
+  }
+
+  bool RandomGeneratorGuard::isRestored() const noexcept { return _restored_; }
+
 } /* namespace gum */

@@ -81,7 +81,7 @@ __all__ = [
   "NotImplementedYet", "NullElement", "NumericalDiscreteVariable", "OperationNotAllowed",
   "OutOfBounds", "PAG", "PDAG", "PRMTypeError", "PossiblyIncompatibleScorePrior",
   "PythonApproximationListener", "PythonBNListener", "PythonDatabaseGeneratorListener",
-  "PythonLoadListener", "PythonMRFListener", "RangeVariable", "ScheduleMultiDimError", "ScheduleOperationError",
+  "PythonLoadListener", "PythonMRFListener", "RandomGeneratorGuard", "RangeVariable", "ScheduleMultiDimError", "ScheduleOperationError",
   "ShaferShenoyInference", "SizeError", "StructuralMetrics", "Tensor",
   "UnavailableScheduleOperation", "UndefinedElement", "UndefinedIteratorKey",
   "UndefinedIteratorValue", "UndiGraph", "UnexecutedScheduleOperation", "UnknownLabelInDatabase",
@@ -228,6 +228,7 @@ from .pyagrumcpp import MeekRules
 from .pyagrumcpp import ApproximationScheme
 from .pyagrumcpp import fastVariable
 from .pyagrumcpp import (
+  RandomGeneratorGuard,
   initRandom,
   randomProba,
   randomDistribution,

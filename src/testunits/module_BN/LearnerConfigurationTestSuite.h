@@ -82,6 +82,8 @@ namespace gum_tests {
     // fixed seed, they only depend on the noise added to the initial CPTs
     template < typename NOISE >
     static gum::BayesNet< double > oneEMStep(NOISE useEM) {
+      gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
+
       gum::initRandom(42);
       gum::learning::BNLearner< double > l(GET_RESSOURCES_PATH("csv/EM.csv"),
                                            std::vector< std::string >{"?"});
