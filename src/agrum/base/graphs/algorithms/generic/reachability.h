@@ -65,18 +65,24 @@ namespace gum::graph {
   namespace detail {
     /**
      * @brief The nodes reached from the nodes of @p ids through at least one step of
-     *        @p next (a function NodeId -> NodeSet: the parents, the children...).
+     *        @p forEachNext.
+     *
+     * forEachNext(n, visit) calls visit(w) for each successor w of n (its parents, its
+     * children...): the successors are visited in place, without building a set for each node.
      *
      * A node of @p ids belongs to the result only if it is reached from a node of
      * @p ids. With directed steps only (arcs), such a walk always contains a path
      * or a directed cycle. O(n + m).
      */
-    template < typename NEXT >
-    NodeSet directedClosure(const NodeSet& ids, NEXT next);
+    template < typename FOR_EACH_NEXT >
+    NodeSet directedClosure(const NodeSet& ids, FOR_EACH_NEXT forEachNext);
 
     /**
      * @brief The nodes with a path (no repeated node, at least one step of
-     *        @p predecessors) to a node of @p ids.
+     *        @p forEachPredecessor) to a node of @p ids.
+     *
+     * forEachPredecessor(n, visit) calls visit(w) for each predecessor w of n (as forEachNext of
+     * directedClosure).
      *
      * Same as directedClosure, but for steps which may be undirected edges: a node
      * of @p ids belongs to the result only if it has a path to another node of
@@ -84,8 +90,8 @@ namespace gum::graph {
      * edge is not a cycle. O((n + m) (1 + sum over the nodes v of ids of the
      * number of predecessors of v)).
      */
-    template < typename PREDECESSORS >
-    NodeSet pathClosure(const NodeSet& ids, PREDECESSORS predecessors);
+    template < typename FOR_EACH_PREDECESSOR >
+    NodeSet pathClosure(const NodeSet& ids, FOR_EACH_PREDECESSOR forEachPredecessor);
   }   // namespace detail
 
   // =========================================================================

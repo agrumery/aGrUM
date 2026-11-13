@@ -349,6 +349,9 @@
       faster for 1000 factors); its listeners no longer see the edges erased then added again.
     - `CNMonteCarloSampling` inserts the evidence once per thread instead of once per sample: 20 to 30 % more samples
       per second with evidence, same results.
+    - The closures of the graph algorithms (`ancestors`, `descendants`, `anteriors`, hence `isAncestral` and `isMaximal`
+      of the marked graphs) visit the neighbours in place instead of building a set for each node, with a stack as
+      frontier: 1.1 to 1.8 times faster, same results.
 
 ## Changelog for 3.3.2
 

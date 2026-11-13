@@ -55,47 +55,47 @@
 namespace gum::graph {
 
   namespace {
-    /// the nodes w with an edge w->v (parents of v)
-    NodeSet parentsOf(const MarkedGraph& g, NodeId v) {
-      NodeSet res;
-      for (const auto w: g.neighbours(v))
-        if (g.isDefinitelyDirected(w, v)) res.insert(w);
-      return res;
+    /// visits the nodes w with an edge w->v (parents of v)
+    auto forEachParent(const MarkedGraph& g) {
+      return [&g](NodeId v, const auto& visit) {
+        for (const auto w: g.neighbours(v))
+          if (g.isDefinitelyDirected(w, v)) visit(w);
+      };
     }
 
-    /// the nodes w with an edge v->w (children of v)
-    NodeSet childrenOf(const MarkedGraph& g, NodeId v) {
-      NodeSet res;
-      for (const auto w: g.neighbours(v))
-        if (g.isDefinitelyDirected(v, w)) res.insert(w);
-      return res;
+    /// visits the nodes w with an edge v->w (children of v)
+    auto forEachChild(const MarkedGraph& g) {
+      return [&g](NodeId v, const auto& visit) {
+        for (const auto w: g.neighbours(v))
+          if (g.isDefinitelyDirected(v, w)) visit(w);
+      };
     }
 
-    /// the nodes w with an edge w->v or w-v (a step of an anterior path towards v)
-    NodeSet anteriorStepsTo(const MarkedGraph& g, NodeId v) {
-      NodeSet res;
-      for (const auto w: g.neighbours(v))
-        if (g.isDefinitelyDirected(w, v) || g.isUndirected(w, v)) res.insert(w);
-      return res;
+    /// visits the nodes w with an edge w->v or w-v (a step of an anterior path towards v)
+    auto forEachAnteriorStepTo(const MarkedGraph& g) {
+      return [&g](NodeId v, const auto& visit) {
+        for (const auto w: g.neighbours(v))
+          if (g.isDefinitelyDirected(w, v) || g.isUndirected(w, v)) visit(w);
+      };
     }
 
     /// the nodes with a walk of anterior steps to a node of x: ant(x) \ x, but the nodes of x
     /// reached by a walk (enough for the internal uses, cheaper than anteriors)
     NodeSet anteriorWalks(const MarkedGraph& g, const NodeSet& x) {
-      return detail::directedClosure(x, [&g](NodeId v) { return anteriorStepsTo(g, v); });
+      return detail::directedClosure(x, forEachAnteriorStepTo(g));
     }
   }   // namespace
 
   NodeSet ancestors(const MarkedGraph& g, const NodeSet& x) {
-    return detail::directedClosure(x, [&g](NodeId v) { return parentsOf(g, v); });
+    return detail::directedClosure(x, forEachParent(g));
   }
 
   NodeSet descendants(const MarkedGraph& g, const NodeSet& x) {
-    return detail::directedClosure(x, [&g](NodeId v) { return childrenOf(g, v); });
+    return detail::directedClosure(x, forEachChild(g));
   }
 
   NodeSet anteriors(const MarkedGraph& g, const NodeSet& x) {
-    return detail::pathClosure(x, [&g](NodeId v) { return anteriorStepsTo(g, v); });
+    return detail::pathClosure(x, forEachAnteriorStepTo(g));
   }
 
   bool isAncestral(const MarkedGraph& g) {

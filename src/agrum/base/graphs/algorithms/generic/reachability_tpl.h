@@ -56,49 +56,57 @@
 namespace gum::graph {
 
   namespace detail {
-    /// the nodes reachable from the nodes of ids through at least one step of next (parents or
-    /// children): a node of ids belongs to the result only if it is reachable from a node of ids
-    template < typename NEXT >
-    NodeSet directedClosure(const NodeSet& ids, NEXT next) {
-      NodeSet res;
-      NodeSet frontier;
+    /// the nodes reachable from the nodes of ids through at least one step of forEachNext
+    /// (parents or children): a node of ids belongs to the result only if it is reachable from a
+    /// node of ids
+    template < typename FOR_EACH_NEXT >
+    NodeSet directedClosure(const NodeSet& ids, FOR_EACH_NEXT forEachNext) {
+      // a node enters res when it is reached, and the stack once
+      NodeSet               res;
+      std::vector< NodeId > stack;
+      const auto            reach = [&res, &stack](NodeId n) {
+        if (!res.contains(n)) {
+          res.insert(n);
+          stack.push_back(n);
+        }
+      };
       for (const auto id: ids)
-        frontier += next(id);
+        forEachNext(id, reach);
 
-      while (!frontier.empty()) {
-        const NodeId current = *frontier.begin();
-        frontier.erase(current);
-        res.insert(current);
-        for (const auto n: next(current))
-          if (!res.contains(n)) frontier.insert(n);
+      while (!stack.empty()) {
+        const NodeId current = stack.back();
+        stack.pop_back();
+        forEachNext(current, reach);
       }
 
       return res;
     }
 
-    template < typename PREDECESSORS >
-    NodeSet pathClosure(const NodeSet& ids, PREDECESSORS predecessors) {
-      NodeSet res = directedClosure(ids, predecessors);
+    template < typename FOR_EACH_PREDECESSOR >
+    NodeSet pathClosure(const NodeSet& ids, FOR_EACH_PREDECESSOR forEachPredecessor) {
+      NodeSet res = directedClosure(ids, forEachPredecessor);
 
       // true if a backward search from sources reaches target (which is not expanded); the
       // direct step from forbiddenFrom to target is not followed
       const auto reaches
-          = [&predecessors](const NodeSet& sources, NodeId target, NodeId forbiddenFrom) {
+          = [&forEachPredecessor](const NodeSet& sources, NodeId target, NodeId forbiddenFrom) {
               NodeSet               visited(sources);
               std::vector< NodeId > stack(sources.begin(), sources.end());
-              while (!stack.empty()) {
+              bool                  found = false;
+              while (!found && !stack.empty()) {
                 const NodeId current = stack.back();
                 stack.pop_back();
-                for (const auto w: predecessors(current)) {
+                forEachPredecessor(current, [&](NodeId w) {
+                  if (found) return;
                   if (w == target) {
-                    if (current != forbiddenFrom) return true;
+                    if (current != forbiddenFrom) found = true;
                   } else if (!visited.contains(w)) {
                     visited.insert(w);
                     stack.push_back(w);
                   }
-                }
+                });
               }
-              return false;
+              return found;
             };
 
       // a node of ids reached by a walk only: it must have a path to another node of ids, or lie
@@ -107,11 +115,9 @@ namespace gum::graph {
         if (!res.contains(v)) continue;
         if (reaches(ids - NodeSet{v}, v, v)) continue;   // no forbidden step (v is not a source)
         bool onCycle = false;
-        for (const auto u: predecessors(v))
-          if (reaches(NodeSet{u}, v, u)) {
-            onCycle = true;
-            break;
-          }
+        forEachPredecessor(v, [&](NodeId u) {
+          if (!onCycle && reaches(NodeSet{u}, v, u)) onCycle = true;
+        });
         if (!onCycle) res.erase(v);
       }
 
@@ -126,7 +132,10 @@ namespace gum::graph {
 
   template < GUM_DiGraphable G >
   NodeSet ancestors(const G& g, const NodeSet& ids) {
-    return detail::directedClosure(ids, [&g](NodeId n) -> const NodeSet& { return g.parents(n); });
+    return detail::directedClosure(ids, [&g](NodeId n, const auto& visit) {
+      for (const auto p: g.parents(n))
+        visit(p);
+    });
   }
 
   template < GUM_DiGraphable G >
@@ -136,7 +145,10 @@ namespace gum::graph {
 
   template < GUM_DiGraphable G >
   NodeSet descendants(const G& g, const NodeSet& ids) {
-    return detail::directedClosure(ids, [&g](NodeId n) -> const NodeSet& { return g.children(n); });
+    return detail::directedClosure(ids, [&g](NodeId n, const auto& visit) {
+      for (const auto c: g.children(n))
+        visit(c);
+    });
   }
 
   template < GUM_DiGraphable G >
@@ -256,7 +268,12 @@ namespace gum::graph {
 
   template < GUM_MixedGraphable G >
   NodeSet anteriors(const G& g, const NodeSet& ids) {
-    return detail::pathClosure(ids, [&g](NodeId n) { return g.parents(n) + g.neighbours(n); });
+    return detail::pathClosure(ids, [&g](NodeId n, const auto& visit) {
+      for (const auto p: g.parents(n))
+        visit(p);
+      for (const auto w: g.neighbours(n))
+        visit(w);
+    });
   }
 
   template < GUM_MixedGraphable G >
