@@ -525,16 +525,6 @@ namespace gum_tests {
     CHECK(lv.size() == 0);
   }
 
-  // non-regression
-  GUM_TEST(_fci_alpha_bounds_refused_) {
-    // alpha must belong to ]0,1[: the degenerate thresholds 0 and 1 are refused
-    gum::learning::FCI fci;
-    const double       before = fci.alpha();
-    CHECK_THROWS_AS(fci.setAlpha(1.0), gum::OutOfBounds);
-    CHECK_THROWS_AS(fci.setAlpha(0.0), gum::OutOfBounds);
-    CHECK_EQ(fci.alpha(), before);
-  }
-
   GUM_TEST(_fci_unstable_mode_valid_) {
     FCIAsiaDB                    db;
     gum::learning::IndepTestChi2 chi2(db.parser, db.prior);

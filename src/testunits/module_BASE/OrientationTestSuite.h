@@ -199,20 +199,6 @@ namespace gum_tests {
       } while (std::next_permutation(order.begin(), order.end()));
       return best;
     }
-
-    /// random PDAG (maybe not extendable): random skeleton, edges or arcs following an order
-    static gum::PDAG randomPDAG(gum::Size n, double density, double arcProba) {
-      const auto order = randomOrder(n);
-      gum::PDAG  g;
-      g.addNodes(n);
-      for (gum::Size i = 0; i < n; ++i)
-        for (gum::Size j = i + 1; j < n; ++j)
-          if (gum::randomProba() < density) {
-            if (gum::randomProba() < arcProba) g.addArc(order[i], order[j]);
-            else g.addEdge(order[i], order[j]);
-          }
-      return g;
-    }
   };
 
   GUM_TEST(DegeneracyOrdering) {
@@ -558,15 +544,8 @@ namespace gum_tests {
 
     // the CPDAGs of random DAGs: the minimum over all the consistent extensions
     for (int i = 0; i < 200; ++i) {
-      const auto dag   = randomDAG(3 + gum::randomValue(5), 0.5);
-      const auto graph = gum::graph::cpdag(dag).graph();
-      gum::PDAG  pdag;
-      for (const auto node: graph.nodes())
-        pdag.addNodeWithId(node);
-      for (const auto& arc: graph.arcs())
-        pdag.addArc(arc.tail(), arc.head());
-      for (const auto& edge: graph.edges())
-        pdag.addEdge(edge.first(), edge.second());
+      const auto                     dag  = randomDAG(3 + gum::randomValue(5), 0.5);
+      const gum::PDAG                pdag = gum::graph::cpdag(dag).graph();
       gum::NodeProperty< gum::Size > domains;
       for (const auto node: pdag.nodes())
         domains.insert(node, 1 + gum::randomValue(10));

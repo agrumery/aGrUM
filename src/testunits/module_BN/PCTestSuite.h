@@ -383,15 +383,6 @@ namespace gum_tests {
     CHECK(skel.size() == db.nb_vars);
   }
 
-  GUM_TEST(_alpha_bounds_refused_) {
-    // alpha must belong to ]0,1[: the degenerate thresholds 0 and 1 are refused
-    gum::learning::PC search;
-    const double      before = search.alpha();
-    CHECK_THROWS_AS(search.setAlpha(1.0), gum::OutOfBounds);
-    CHECK_THROWS_AS(search.setAlpha(0.0), gum::OutOfBounds);
-    CHECK_EQ(search.alpha(), before);
-  }
-
   GUM_TEST(_skeleton_depth0_monotone_in_alpha_) {
     // at depth 0 (maxCondSetSize=0), only marginal tests: edge removed iff pval > alpha
     // lower alpha (0.001) → edge removed if pval > 0.001 → more edges removed → sparser

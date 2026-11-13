@@ -42,6 +42,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <agrum/base/graphs/algorithms/ancestral.h>
 #include <agrum/base/graphs/algorithms/generic/chordality.h>
@@ -243,6 +244,74 @@ namespace gum_tests {
     CHECK_EQ(gum::graph::separation(chain, cA, cD, cB), gum::graph::cSeparated(chain, cA, cD, cB));
 
     CHECK_THROWS_AS(gum::graph::separation(dag, A, A, none), gum::InvalidArgument);
+  }
+
+  GUM_TEST(SeparationInAClassWithReversibleEdges) {
+    // A-B and A-C are reversible in the class of the DAG: its three members (B<-A->C, B->A->C,
+    // B<-A<-C) have the same d-separations, those of the CPDAG; the MPDAG which imposes B->A only
+    // keeps B->A->C (Meek R1)
+    const auto dag   = gum::fastGraph< gum::DAG >("B<-A->C;B->D<-C;D->E");
+    const auto id    = [&dag](const std::string& name) { return dag.idFromName(name).value(); };
+    const auto cpdag = gum::CPDAG::fromDAG(dag);
+    REQUIRE(cpdag.existsEdge(id("A"), id("B")));
+    REQUIRE(cpdag.existsEdge(id("A"), id("C")));
+    const auto mpdag = gum::MPDAG::fromCPDAG(cpdag, gum::ArcSet{gum::Arc(id("B"), id("A"))});
+    REQUIRE(mpdag.existsArc(id("A"), id("C")));
+
+    std::vector< gum::DAG > members{dag, dag, dag};
+    members[1].eraseArc(gum::Arc(id("A"), id("B")));
+    members[1].addArc(id("B"), id("A"));
+    members[2].eraseArc(gum::Arc(id("A"), id("C")));
+    members[2].addArc(id("C"), id("A"));
+    for (const auto& member: members)
+      REQUIRE(gum::CPDAG::fromDAG(member) == cpdag);
+
+    // every pair of nodes, every conditioning set of the other nodes
+    const std::vector< gum::NodeId > nodes(dag.nodes().begin(), dag.nodes().end());
+    int                              nbSeparated = 0;
+    for (std::size_t x = 0; x < nodes.size(); ++x)
+      for (std::size_t y = x + 1; y < nodes.size(); ++y) {
+        std::vector< gum::NodeId > others;
+        for (const auto n: nodes)
+          if (n != nodes[x] && n != nodes[y]) others.push_back(n);
+        for (unsigned int mask = 0; mask < (1u << others.size()); ++mask) {
+          gum::NodeSet Z;
+          for (std::size_t i = 0; i < others.size(); ++i)
+            if (mask & (1u << i)) Z.insert(others[i]);
+          const gum::NodeSet X{nodes[x]}, Y{nodes[y]};
+          const bool         expected = gum::graph::dSeparated(dag, X, Y, Z);
+          if (expected) ++nbSeparated;
+          for (const auto& member: members)
+            CHECK_EQ(gum::graph::dSeparated(member, X, Y, Z), expected);
+          CHECK_EQ(gum::graph::separation(cpdag, X, Y, Z), expected);
+          CHECK_EQ(gum::graph::separation(mpdag, X, Y, Z), expected);
+        }
+      }
+    CHECK_GT(nbSeparated, 0);   // the comparisons are not all about connected pairs
+
+    // a separation which differs from the one of the skeleton: B and C are separated by A only
+    CHECK(gum::graph::separation(cpdag,
+                                 gum::NodeSet{id("B")},
+                                 gum::NodeSet{id("C")},
+                                 gum::NodeSet{id("A")}));
+    CHECK(!gum::graph::separation(cpdag,
+                                  gum::NodeSet{id("B")},
+                                  gum::NodeSet{id("C")},
+                                  gum::NodeSet{id("A"), id("D")}));
+  }
+
+  GUM_TEST(SeparationOfAPDAGIsTheCSeparation) {
+    // separation(const PDAG&) on a PDAG which is not a chain graph object: the parents A and D of
+    // the chain component {B, C} are married
+    const auto pdag = gum::fastGraph< gum::PDAG >("A->B-C<-D;C->E");
+    const auto id   = [&pdag](const std::string& name) { return pdag.idFromName(name).value(); };
+    const gum::NodeSet A{id("A")}, B{id("B")}, C{id("C")}, D{id("D")}, E{id("E")}, none;
+    CHECK(gum::graph::separation(pdag, A, D, none));
+    CHECK(!gum::graph::separation(pdag, A, D, B));
+    CHECK(!gum::graph::separation(pdag, A, E, none));
+    CHECK(gum::graph::separation(pdag, A, E, C));
+    for (const auto& Z: {none, B, C, E})
+      CHECK_EQ(gum::graph::separation(pdag, A, D, Z), gum::graph::cSeparated(pdag, A, D, Z));
   }
 
 }   // namespace gum_tests

@@ -447,12 +447,17 @@ namespace gum_tests {
     fci.useFCI();
     gum::learning::PC  algoPC;
     gum::learning::FCI algoFCI;
+    const double       alphaPC  = algoPC.alpha();
+    const double       alphaFCI = algoFCI.alpha();
     for (const auto alpha: invalid) {
       CHECK_THROWS_AS(pc.setPCAlpha(alpha), gum::OutOfBounds);
       CHECK_THROWS_AS(fci.setFCIAlpha(alpha), gum::OutOfBounds);
       CHECK_THROWS_AS(algoPC.setAlpha(alpha), gum::OutOfBounds);
       CHECK_THROWS_AS(algoFCI.setAlpha(alpha), gum::OutOfBounds);
     }
+    // a refused alpha does not change the alpha of the algorithm
+    CHECK_EQ(algoPC.alpha(), alphaPC);
+    CHECK_EQ(algoFCI.alpha(), alphaFCI);
 
     // a refused alpha does not change the learned graph
     const auto expected = pc.learnPDAG().toString();

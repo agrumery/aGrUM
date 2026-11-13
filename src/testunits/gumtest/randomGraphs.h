@@ -46,6 +46,7 @@
 #include <vector>
 
 #include <agrum/base/graphs/DAG.h>
+#include <agrum/base/graphs/PDAG.h>
 
 #include <agrum/base/core/utils_random.h>
 
@@ -70,6 +71,21 @@ namespace gum_tests {
       for (gum::Size j = i + 1; j < n; ++j)
         if (gum::randomProba() < density) dag.addArc(order[i], order[j]);
     return dag;
+  }
+
+  /// random PDAG (maybe not extendable): random skeleton, edges or arcs following a random order
+  /// of the nodes
+  inline gum::PDAG randomPDAG(gum::Size n, double density, double arcProba) {
+    const auto order = randomOrder(n);
+    gum::PDAG  g;
+    g.addNodes(n);
+    for (gum::Size i = 0; i < n; ++i)
+      for (gum::Size j = i + 1; j < n; ++j)
+        if (gum::randomProba() < density) {
+          if (gum::randomProba() < arcProba) g.addArc(order[i], order[j]);
+          else g.addEdge(order[i], order[j]);
+        }
+    return g;
   }
 
   /// random subset of the nodes of dag, without x and y

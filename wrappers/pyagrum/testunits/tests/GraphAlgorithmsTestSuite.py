@@ -264,6 +264,62 @@ class TestGraphAlgorithms(pyAgrumTestCase):
       gg.isPerfectEliminationOrdering(g, ["A", "B", "C", "C"])
     self.assertTrue(gg.isPerfectEliminationOrdering(g, list(reversed(gg.lexBFS(g)))))
 
+  def testTopologicalOrderAndDirectedPaths(self):
+    g = gum.fastDAG("A->B->C;A->D->C;E")
+    order = gg.topologicalOrder(g)
+    self.assertEqual(sorted(order), sorted(g.nodes()))
+    for tail, head in g.arcs():
+      self.assertLess(order.index(tail), order.index(head))
+
+    path = gg.directedPath(g, "A", "C")
+    self.assertEqual((path[0], path[-1]), (0, 2))
+    for tail, head in zip(path, path[1:]):
+      self.assertTrue(g.existsArc(tail, head))
+    self.assertIsNone(gg.directedPath(g, "C", "A"))
+    self.assertIsNone(gg.directedPath(g, "A", "E"))
+    self.assertTrue(gg.hasDirectedPath(g, "A", "C"))
+    self.assertFalse(gg.hasDirectedPath(g, "C", "A"))
+    self.assertFalse(gg.hasDirectedPath(g, "B", "D"))
+
+  def testMaximumCardinalitySearch(self):
+    # chordal: the reverse of the ordering is a perfect elimination ordering
+    chordal = gum.fastUndiGraph("A-B-C;B-D;C-D;D-E")
+    order = gg.maximumCardinalitySearch(chordal)
+    self.assertEqual(sorted(order), sorted(chordal.nodes()))
+    self.assertTrue(gg.isPerfectEliminationOrdering(chordal, list(reversed(order))))
+    # each node has the largest number of already visited neighbours
+    for k in range(1, len(order)):
+      visited = set(order[:k])
+      chosen = len(chordal.neighbours(order[k]) & visited)
+      for other in order[k:]:
+        self.assertLessEqual(len(chordal.neighbours(other) & visited), chosen)
+    # a 4-cycle is not chordal: no ordering is a perfect elimination ordering
+    cycle = gum.fastUndiGraph("A-B-C-D-A")
+    self.assertFalse(gg.isPerfectEliminationOrdering(cycle, list(reversed(gg.maximumCardinalitySearch(cycle)))))
+
+  def testMixedOrientedPath(self):
+    # the arcs are followed in their direction, the edges in both
+    pdag = gum.fastPDAG("A->B-C;D->C")
+    path = gg.mixedOrientedPath(pdag, "A", "C")
+    self.assertEqual(path, [0, 1, 2])
+    self.assertEqual(gg.mixedOrientedPath(pdag, "C", "B"), [2, 1])
+    self.assertIsNone(gg.mixedOrientedPath(pdag, "C", "A"))
+    self.assertIsNone(gg.mixedOrientedPath(pdag, "C", "D"))
+
+  def testAncestralAndMaximal(self):
+    # A->B->C<->A: C is a descendant of A and C<->A, not ancestral
+    self.assertFalse(gg.isAncestral(gum.fastMarkedGraph("A->B->C<->A")))
+    # A-B<-C: B has an undirected edge and an arrowhead (C->B), not ancestral
+    self.assertFalse(gg.isAncestral(gum.fastMarkedGraph("A-B<-C")))
+    self.assertTrue(gg.isAncestral(gum.fastMarkedGraph("A->B<->C")))
+    self.assertTrue(gg.isMaximal(gum.fastMarkedGraph("A->B<->C")))
+    # A<->B<->C<->D with B->D and C->A: an inducing path between the non adjacent A and D
+    inducing = gum.fastMarkedGraph("A<->B<->C<->D;B->D;C->A")
+    self.assertTrue(gg.isAncestral(inducing))
+    self.assertFalse(gg.isMaximal(inducing))
+    # A<->D added: maximal
+    self.assertTrue(gg.isMaximal(gum.fastMarkedGraph("A<->B<->C<->D;B->D;C->A;A<->D")))
+
   def testSeparation(self):
     dag = gum.fastDAG("A->C<-B;C->D")
     representations = [

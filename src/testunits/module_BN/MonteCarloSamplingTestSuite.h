@@ -507,4 +507,34 @@ namespace gum_tests {
   GUM_TEST(MonteCarloInvalidateTensors) {
     CHECK_LE(errorAfterInvalidateTensors< gum::MonteCarloSampling< double > >(), 0.05);
   }
+
+  // non-regression: on a deterministic BN, all the samples agree; the error (length of a Wald
+  // interval) was 0 and the inference stopped on epsilon at the first check. The length of the
+  // Wilson score interval, z²/(n+z²) when all the samples agree, reaches epsilon=0.01 only after
+  // n >= z²/0.01 - z² (about 380) samples
+  GUM_TEST(DeterministicBNDoesNotStopAfterAFewSamples) {
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    bn.cpt("A").fillWith({1.0, 0.0});
+    bn.cpt("B").fillWith({0.0, 1.0, 1.0, 0.0});
+    bn.cpt("C").fillWith({1.0, 0.0, 0.0, 1.0});
+
+    gum::MonteCarloSampling< double > inf(&bn);
+    inf.setEpsilon(0.01);
+    inf.disableMinEpsilonRate();
+    inf.disableMaxTime();
+    inf.setMaxIter(100000);
+    inf.setPeriodSize(10);
+    inf.makeInference();
+
+    CHECK_EQ(inf.stateApproximationScheme(),
+             gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Epsilon);
+    constexpr double z2 = 1.96 * 1.96;
+    CHECK_GE(double(inf.nbrIterations()), z2 / 0.01 - z2);
+    CHECK_LT(inf.nbrIterations(), gum::Size(400));
+    // A=0, B=1, C=1 in every sample
+    const auto&        post = inf.posterior("C");
+    gum::Instantiation i(post);
+    i.chgVal(0, 1);
+    CHECK_GT(post[i], 0.99);
+  }
 }   // namespace gum_tests

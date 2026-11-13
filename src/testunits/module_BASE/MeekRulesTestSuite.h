@@ -51,6 +51,7 @@
 
 #include <agrum/base/core/utils_random.h>
 #include <testunits/gumtest/AgrumTestSuite.h>
+#include <testunits/gumtest/randomGraphs.h>
 #include <testunits/gumtest/utils.h>
 
 namespace gum_tests {
@@ -555,14 +556,7 @@ namespace gum_tests {
     // random non extendable PDAGs: the DAG contains the arcs of the propagated graph
     int nonExtendable = 0;
     for (int i = 0; i < 500; ++i) {
-      gum::PDAG pdag;
-      pdag.addNodes(4 + gum::randomValue(8));
-      for (gum::NodeId x = 0; x < pdag.size(); ++x)
-        for (gum::NodeId y = x + 1; y < pdag.size(); ++y)
-          if (gum::randomProba() < 0.35) {
-            if (gum::randomProba() < 0.3) pdag.addArc(x, y);
-            else pdag.addEdge(x, y);
-          }
+      const auto pdag = randomPDAG(4 + gum::randomValue(8), 0.35, 0.3);
       if (gum::graph::consistentExtension(pdag).has_value()) continue;
       ++nonExtendable;
       const auto propagated = mr.propagateToCPDAG(pdag);
@@ -599,11 +593,7 @@ namespace gum_tests {
 
     // random DAGs: the DAG of their CPDAG has the same CPDAG
     for (int i = 0; i < 500; ++i) {
-      gum::DAG original;
-      original.addNodes(4 + gum::randomValue(8));
-      for (gum::NodeId x = 0; x < original.size(); ++x)
-        for (gum::NodeId y = x + 1; y < original.size(); ++y)
-          if (gum::randomProba() < 0.4) original.addArc(x, y);
+      const auto original = randomDAG(4 + gum::randomValue(8), 0.4);
       const auto expected = gum::graph::cpdag(original).graph();
       const auto oriented = mr.propagateToDAG(expected);
       CHECK(static_cast< const gum::MixedGraph& >(gum::graph::cpdag(oriented).graph())
