@@ -263,6 +263,7 @@
     - `CredalNet.setCPT` can be called from Python (its vertices, a list of lists of probabilities, could not be
       converted).
     - `skbn.BNClassifier`: an unfitted classifier can be pickled, copied and cloned (it failed with scikit-learn 1.8).
+    - `help(pyagrum.config.typed)` (and `asInt`, `asFloat`, `asBool`) shows the documentation of the accessor.
     - `variable`, `variableFromName`, `cpt` (`BayesNet`, `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`),
       `utility` (`InfluenceDiagram`) and `factor` (`MarkovRandomField`) keep their model alive: on a temporary model
       (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).

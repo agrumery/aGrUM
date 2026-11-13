@@ -93,6 +93,60 @@ enumerated value is stored with the casing declared in ``defaults.ini``.
 See `this notebook <https://lip6.fr/Pierre-Henri.Wuillemin/aGrUM/docs/last/notebooks/configForPyAgrum.ipynb.html>`_.
 "
 
+%feature("docstring") gum::Configuration::describe
+"
+Describe the configuration: the properties which differ from the defaults if any, otherwise all the properties
+(with a comment saying that they are the defaults). This is what ``repr(pyagrum.config)`` shows.
+
+Returns
+-------
+str
+  the description, in the format of ``pyagrum.ini``
+"
+
+%feature("docstring") gum::Configuration::toString
+"
+All the properties (except the deprecated ones). This is what ``print(pyagrum.config)`` shows.
+
+Returns
+-------
+str
+  the properties, in the format of ``pyagrum.ini``
+"
+
+%feature("docstring") gum::Configuration::has
+"
+Tell whether a property exists.
+
+Parameters
+----------
+section : str
+  the section (case-sensitive)
+key : str
+  the key (case-insensitive)
+
+Returns
+-------
+bool
+  True if section.key exists
+"
+
+%feature("docstring") gum::Configuration::sections
+"
+Returns
+-------
+tuple[str, ...]
+  the names of the sections, in the order of the defaults
+"
+
+%feature("docstring") gum::Configuration::userFileName
+"
+Returns
+-------
+str
+  the name of the user file, read by ``load()`` and written by ``save()``
+"
+
 %extend gum::Configuration {
   // the value of section.key converted by the C++ configuration according to the declared type of
   // the key: a bool, an int, a float or a str
@@ -168,30 +222,29 @@ class ConfigMetadata(NamedTuple):
   doc: str  # one-line documentation
   target: tuple[str, str] | None  # replacement (section, option) when kind == "deprecated"
   deprecated: bool = False  # deprecated without replacement: the key keeps its kind and its value
-%}
 
-%extend gum::Configuration {
-%pythoncode %{
-class _CastAsTyped:
+
+class _ConfigAccessor:
+  # an accessor of pyagrum.config (typed, asInt, asFloat, asBool): its class is named after it and its instances
+  # carry the documentation of its property, so that help(pyagrum.config.typed) shows this documentation only
   def __init__(self, container):
-    self.container = container
+    self._container = container
+    self.__doc__ = getattr(type(container), type(self).__name__).__doc__
+
+  def __repr__(self):
+    return f"pyagrum.config.{type(self).__name__}"
 
   def __getitem__(self, x):
-    return self.container.getTyped(x[0], x[1])
+    return self._container.getTyped(x[0], x[1])
 
   def __setitem__(self, x, v):
-    self.container[x] = v
+    self._container[x] = v
 
-class _DeprecatedCast(_CastAsTyped):
-  """Historical accessors ``asInt``, ``asFloat``, ``asBool``: deprecated since 3.1.0, they delegate to ``typed``."""
 
-  def __init__(self, container, name):
-    super().__init__(container)
-    self.name = name
-
+class _DeprecatedConfigAccessor(_ConfigAccessor):
   def _warn(self):
     warnings.warn(
-      f"[pyAgrum] pyagrum.config.{self.name} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
+      f"[pyAgrum] {self!r} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
       DeprecationWarning,
       stacklevel=3,
     )
@@ -204,22 +257,64 @@ class _DeprecatedCast(_CastAsTyped):
     self._warn()
     super().__setitem__(x, v)
 
+
+# the classes of the accessors, named after them (help() titles the documentation with the name of the class)
+_CONFIG_ACCESSORS = {
+  name: type(name, (_ConfigAccessor if name == "typed" else _DeprecatedConfigAccessor,), {"__module__": "pyagrum"})
+  for name in ("typed", "asInt", "asFloat", "asBool")
+}
+%}
+
+%extend gum::Configuration {
+%pythoncode %{
 @property
 def typed(self):
-  """Accessor giving the values converted according to their declared type: ``config.typed[section, option]``."""
-  return self._CastAsTyped(self)
+  """
+  The values of the configuration converted according to their declared type.
+
+  ``pyagrum.config.typed[section, key]`` gives a ``bool``, an ``int``, a ``float`` or a ``str`` (for the ``str`` and
+  enumerated keys), where ``pyagrum.config[section, key]`` always gives a ``str``. The declared type of a key is given
+  by ``pyagrum.config.doc(section, key)``.
+
+  ``pyagrum.config.typed[section, key] = value`` is the same as ``pyagrum.config[section, key] = value``.
+  """
+  return _CONFIG_ACCESSORS["typed"](self)
 
 @property
 def asInt(self):
-  return self._DeprecatedCast(self, "asInt")
+  """
+  Historical accessor ``pyagrum.config.asInt[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+  (converted according to the declared type of the key, whatever the accessor).
+
+  Warnings
+  --------
+  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  """
+  return _CONFIG_ACCESSORS["asInt"](self)
 
 @property
 def asFloat(self):
-  return self._DeprecatedCast(self, "asFloat")
+  """
+  Historical accessor ``pyagrum.config.asFloat[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+  (converted according to the declared type of the key, whatever the accessor).
+
+  Warnings
+  --------
+  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  """
+  return _CONFIG_ACCESSORS["asFloat"](self)
 
 @property
 def asBool(self):
-  return self._DeprecatedCast(self, "asBool")
+  """
+  Historical accessor ``pyagrum.config.asBool[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+  (converted according to the declared type of the key, whatever the accessor).
+
+  Warnings
+  --------
+  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  """
+  return _CONFIG_ACCESSORS["asBool"](self)
 
 def _emitNotices(self):
   """Turn the notices queued by the C++ configuration (deprecations, problems found in a user file) into warnings."""
