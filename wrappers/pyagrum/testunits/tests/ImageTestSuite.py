@@ -39,6 +39,7 @@
 ############################################################################
 
 import gc
+import shutil
 import unittest
 import warnings
 
@@ -66,9 +67,11 @@ class TestExportAsArray(pyAgrumTestCase):
     self.assertEqual(img.ndim, 3)
     self.assertEqual([str(x.message) for x in w if issubclass(x.category, ResourceWarning)], [])
 
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   def testExportLeavesNoTemporaryFileOpen(self):
     self._assertNoTemporaryFileIsLeftOpen(gimg.export)
 
+  @unittest.skipUnless(shutil.which("dot"), "graphviz is not installed")
   @unittest.skipUnless(_cairosvgAvailable(), "exportInference needs cairosvg")
   def testExportInferenceLeavesNoTemporaryFileOpen(self):
     self._assertNoTemporaryFileIsLeftOpen(gimg.exportInference)
