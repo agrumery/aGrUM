@@ -1,4 +1,4 @@
-# requires: pandas, sklearn
+# requires: pandas
 import pyagrum as gum
 import pyagrum.skbn as skbn
 from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor

@@ -1,4 +1,4 @@
-# requires: matplotlib, pydot, graphviz
+# requires: IPython, graphviz
 import os
 
 import pyagrum as gum

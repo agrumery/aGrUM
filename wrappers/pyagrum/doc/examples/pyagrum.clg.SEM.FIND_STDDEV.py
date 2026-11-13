@@ -1,4 +1,4 @@
-# requires: pandas, scipy, sklearn
+# requires: pandas
 import re
 
 import pyagrum.clg as gclg

@@ -1,4 +1,4 @@
-# requires: pandas, sklearn
+# requires: pandas
 import pyagrum as gum
 import pyagrum.causalEffectEstimation as pycee
 

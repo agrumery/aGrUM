@@ -1,4 +1,4 @@
-# requires: pandas, scipy, sklearn, matplotlib, IPython, graphviz
+# requires: pandas, IPython, graphviz
 import pyagrum.clg as gclg
 import pyagrum.clg.notebook as gclgnb
 

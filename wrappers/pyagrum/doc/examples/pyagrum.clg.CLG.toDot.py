@@ -1,4 +1,4 @@
-# requires: pandas, scipy, sklearn, matplotlib, IPython
+# requires: pandas, IPython
 import pyagrum.clg as gclg
 import pyagrum.clg.notebook  # adds toDot to CLG
 

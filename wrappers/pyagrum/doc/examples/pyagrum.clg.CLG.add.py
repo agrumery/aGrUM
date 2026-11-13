@@ -1,4 +1,4 @@
-# requires: pandas, scipy, sklearn
+# requires: pandas
 import pyagrum.clg as gclg
 
 clg = gclg.CLG()

@@ -1,4 +1,4 @@
-# requires: pandas, scipy, sklearn
+# requires: pandas
 import pyagrum.clg as gclg
 
 list(gclg.CLGLearner.generate_subsets({0, 1, 2}))

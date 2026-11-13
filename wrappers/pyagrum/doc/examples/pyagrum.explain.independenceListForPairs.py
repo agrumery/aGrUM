@@ -1,4 +1,4 @@
-# requires: matplotlib, scipy
+# requires: pandas
 import pyagrum as gum
 import pyagrum.explain as expl
 

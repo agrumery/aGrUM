@@ -1,3 +1,4 @@
+# requires: IPython
 import pyagrum as gum
 import pyagrum.ctbn as ct
 

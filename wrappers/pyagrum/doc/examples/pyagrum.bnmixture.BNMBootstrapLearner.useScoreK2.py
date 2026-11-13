@@ -1,3 +1,4 @@
+# requires: pandas
 import pyagrum as gum
 import pyagrum.bnmixture as bnm
 

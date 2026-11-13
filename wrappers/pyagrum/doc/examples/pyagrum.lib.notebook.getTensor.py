@@ -1,4 +1,4 @@
-# requires: IPython, matplotlib, pydot
+# requires: IPython
 import pyagrum as gum
 import pyagrum.lib.notebook as gnb
 

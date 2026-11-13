@@ -1,4 +1,4 @@
-# requires: matplotlib, graphviz
+# requires: pandas, graphviz
 import pyagrum as gum
 import pyagrum.explain as expl
 

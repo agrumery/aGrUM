@@ -1,4 +1,3 @@
-# requires: scipy
 import scipy.stats as stats
 
 import pyagrum as gum

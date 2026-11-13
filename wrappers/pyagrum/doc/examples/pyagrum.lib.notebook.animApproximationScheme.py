@@ -1,3 +1,4 @@
+# requires: IPython
 import matplotlib.pyplot as plt
 
 import pyagrum as gum
