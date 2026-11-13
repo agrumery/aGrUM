@@ -268,6 +268,33 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(BinaryFileAcceptsNodeIdsStoredAsSignedIntegers) {
+    // msgpack encoders other than aGrUM's may store a non-negative integer as int8...int64
+    const TemporaryFile file(".bgum");
+    const auto&         path  = file.path;
+    const auto          write = [&path](const std::string& payload) {
+      std::ofstream output(path, std::ios::binary);
+      for (std::size_t i = 0; i < 8; ++i)   // little-endian length of the payload
+        output.put(static_cast< char >((payload.size() >> (8 * i)) & 0xFF));
+      output << payload;
+    };
+    // {"type": "DiGraph", "nodes": [int8 0, int16 1], "arcs": [[int32 0, int64 1]]}
+    const std::string head = std::string("\x83\xA4type\xA7"
+                                         "DiGraph\xA5nodes\x92\xD0\x00",
+                                         23);
+    const std::string tail = std::string("\xA4"
+                                         "arcs\x91\x92\xD2\x00\x00\x00\x00"
+                                         "\xD3\x00\x00\x00\x00\x00\x00\x00\x01",
+                                         21);
+    write(head + std::string("\xD1\x00\x01", 3) + tail);
+    const auto g = gum::loadGraphGUM< gum::DiGraph >(path);
+    CHECK_EQ(g.size(), gum::Size(2));
+    CHECK(g.existsArc(0, 1));
+    // a negative value stays refused: int16 -1 as the second node
+    write(head + std::string("\xD1\xFF\xFF", 3) + tail);
+    CHECK_THROWS_AS(gum::loadGraphGUM< gum::DiGraph >(path), gum::IOError&);
+  }
+
   GUM_TEST(FormatOfTheFile) {
     CHECK_EQ(gum::binaryOfGUMExtension("g.bgum"), std::optional< bool >(true));
     CHECK_EQ(gum::binaryOfGUMExtension("g.JGUM"), std::optional< bool >(false));

@@ -110,10 +110,12 @@ namespace gum {
       return node;
     }
 
-    /// a node id: an unsigned integer which fits in a NodeId (not a negative, real or boolean
-    /// value)
+    /// a node id: a non-negative integer which fits in a NodeId (not a negative, real or boolean
+    /// value). A non-negative integer may be stored as signed: msgpack encoders other than
+    /// nlohmann may write it as int8...int64, read as a signed integer
     NodeId nodeOf(const json& value) {
-      if (!value.is_number_unsigned()
+      if (!value.is_number_integer()
+          || (!value.is_number_unsigned() && value.get< std::int64_t >() < 0)
           || value.get< std::uint64_t >() > std::numeric_limits< NodeId >::max())
         GUM_ERROR(IOError, "GUM graph: " << value.dump() << " is not a node id")
       return static_cast< NodeId >(value.get< std::uint64_t >());

@@ -347,6 +347,8 @@
       (min 1, max 0): the merge of the samples stopped after the first nodes.
     - `addArc` of `DAG`, `PDAG`, `ChainGraph` and `addEdge` of `PDAG`, `ChainGraph`: a mono-cycle on a missing node raises
       `InvalidNode`, as for the other graphs (it raised `InvalidDirectedCycle`).
+    - The binary GUM format of the graphs (`.bgum`) accepts a node id stored as a signed integer (msgpack `int8` to
+      `int64`, written by other encoders than aGrUM's): a non-negative id was refused.
 
 - Optimizations (aGrUM and pyAgrum)
 
