@@ -73,13 +73,14 @@ namespace gum {
   }
 
   INLINE void DAG::addArc(const NodeId tail, const NodeId head) {
+    // the nodes are checked first: a mono-cycle on a missing node raises InvalidNode
+    if (!exists(head)) { GUM_ERROR(InvalidNode, "no head node : " << head) }
+    if (!exists(tail)) { GUM_ERROR(InvalidNode, "no tail node : " << tail) }
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a dag !") }
     if (hasDirectedPath(head, tail)) {
       GUM_ERROR(InvalidDirectedCycle, "Add a directed cycle in a dag !")
     }
 
-    // checking whether tail and head do belong to the graph is performed
-    // within class DiGraph
     DiGraph::addArc(tail, head);
   }
 } /* namespace gum */

@@ -180,6 +180,12 @@ namespace gum_tests {
 
     CHECK_THROWS_AS(graph.addArc(1000, id1), const gum::InvalidNode&);
     CHECK_THROWS_AS(graph.addArc(id1, 1000), const gum::InvalidNode&);
+
+    // a mono-cycle on a missing node: the missing node is reported first
+    CHECK_THROWS_AS(graph.addArc(1000, 1000), const gum::InvalidNode&);
+    CHECK_THROWS_AS(graph.addEdge(1000, 1000), const gum::InvalidNode&);
+    CHECK_THROWS_AS(graph.addArc(id1, id1), const gum::InvalidDirectedCycle&);
+    CHECK_THROWS_AS(graph.addEdge(id1, id1), const gum::InvalidDirectedCycle&);
   }
 
   GUM_TEST(PartiallyDirectedCyclesAreAllowed) {

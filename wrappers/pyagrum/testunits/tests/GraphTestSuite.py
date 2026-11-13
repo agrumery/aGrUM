@@ -150,6 +150,24 @@ class TestGraph(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidNode):
       ug.addEdge(6, 7)
 
+  def testMissingNodeBeforeMonoCycle(self):
+    # every graph class reports a missing node before a mono-cycle
+    for cls in [gum.DiGraph, gum.DAG, gum.MixedGraph, gum.PDAG, gum.ChainGraph]:
+      g = cls()
+      g.addNodes(2)
+      with self.assertRaises(gum.InvalidNode):
+        g.addArc(7, 7)
+    for cls in [gum.UndiGraph, gum.MixedGraph, gum.PDAG, gum.ChainGraph]:
+      g = cls()
+      g.addNodes(2)
+      with self.assertRaises(gum.InvalidNode):
+        g.addEdge(7, 7)
+    for cls in [gum.DAG, gum.PDAG, gum.ChainGraph]:
+      g = cls()
+      g.addNodes(2)
+      with self.assertRaises(gum.InvalidDirectedCycle):
+        g.addArc(1, 1)
+
   def _testConnectedComponents(
     self,
     g: gum.Graph,

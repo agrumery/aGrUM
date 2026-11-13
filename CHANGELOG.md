@@ -341,6 +341,8 @@
       of a distance lost its Hellinger, Bhattacharya and Jensen-Shannon values.
     - `CNMonteCarloSampling` created while aGrUM used 1 or 2 threads kept most of its marginals at their initial bounds
       (min 1, max 0): the merge of the samples stopped after the first nodes.
+    - `addArc` of `DAG`, `PDAG`, `ChainGraph` and `addEdge` of `PDAG`, `ChainGraph`: a mono-cycle on a missing node raises
+      `InvalidNode`, as for the other graphs (it raised `InvalidDirectedCycle`).
 
 - Optimizations (aGrUM and pyAgrum)
 

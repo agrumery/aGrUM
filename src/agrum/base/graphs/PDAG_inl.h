@@ -73,6 +73,9 @@ namespace gum {
   }
 
   INLINE void PDAG::addArc(const NodeId tail, const NodeId head) {
+    // the nodes are checked first: a mono-cycle on a missing node raises InvalidNode
+    if (!exists(head)) { GUM_ERROR(InvalidNode, "no head node : " << head) }
+    if (!exists(tail)) { GUM_ERROR(InvalidNode, "no tail node : " << tail) }
     if (head == tail) {
       GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG for node " << head)
     }
@@ -86,12 +89,13 @@ namespace gum {
                 "Add a directed cycle in a PDAG : between " << head << " and " << tail)
     }
 
-    // checking whether tail and head do belong to the graph is performed
-    // within class DiGraph
     MixedGraph::addArc(tail, head);
   }
 
   INLINE void PDAG::addEdge(const NodeId tail, const NodeId head) {
+    // the nodes are checked first: a mono-cycle on a missing node raises InvalidNode
+    if (!exists(tail)) { GUM_ERROR(InvalidNode, "Node (" << tail << ") does not exist.") }
+    if (!exists(head)) { GUM_ERROR(InvalidNode, "Node (" << head << ") does not exist.") }
     if (head == tail) { GUM_ERROR(InvalidDirectedCycle, "Add a mono-cycle in a PDAG !") }
     if (this->existsArc(tail, head) || this->existsArc(head, tail)) {
       GUM_ERROR(InvalidEdge,
@@ -99,8 +103,6 @@ namespace gum {
                                                                                << head)
     }
 
-    // checking whether tail and head do belong to the graph is performed
-    // within class DiGraph
     MixedGraph::addEdge(tail, head);
   }
 } /* namespace gum */

@@ -432,7 +432,9 @@ namespace gum_tests {
   GUM_TEST(MonoCycle) {
     gum::DAG graph;
     auto     x = graph.addNode();
-    CHECK_THROWS_AS(graph.addArc(x, x), const gum::Exception&);
+    CHECK_THROWS_AS(graph.addArc(x, x), const gum::InvalidDirectedCycle&);
+    // a mono-cycle on a missing node: the missing node is reported first
+    CHECK_THROWS_AS(graph.addArc(1000, 1000), const gum::InvalidNode&);
   }
 
   GUM_TEST(MoralGraph) {
