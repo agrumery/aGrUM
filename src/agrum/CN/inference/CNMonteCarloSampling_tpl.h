@@ -177,7 +177,10 @@ namespace gum::credal {
 
   template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcInitApproximationScheme_() {
-    this->setEpsilon(0.);
+    // the posteriors of a sample may differ by a few ulps from one thread (inference engine) to
+    // another: a variation of the bounds below this tolerance is rounding, not a new vertex (with a
+    // threshold of 0, the number of samples, hence the result, depended on the number of threads)
+    this->setEpsilon(1000 * std::numeric_limits< GUM_SCALAR >::epsilon());
     this->enableEpsilon();   // to be sure
 
     this->disableMinEpsilonRate();

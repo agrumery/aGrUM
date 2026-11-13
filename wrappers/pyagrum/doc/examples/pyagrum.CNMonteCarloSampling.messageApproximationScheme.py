@@ -12,4 +12,4 @@ cn.intervalToCredal()
 ie = gum.CNMonteCarloSampling(cn)
 ie.makeInference()
 ie.messageApproximationScheme()
-# 'stopped with epsilon=0'
+# 'stopped with epsilon=2.220446049250313e-13'

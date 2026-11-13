@@ -352,6 +352,10 @@
     - The GUM readers (`.jgum`, `.bgum` and the GUM strings, of the graphs, `BayesNet`, `InfluenceDiagram` and
       `MarkovRandomField`) refuse an object with the same key twice: the last value was kept silently. The node ids of
       `"names"` in a GUM graph have no leading zero (`"0"` and `"00"` named the same node).
+    - `CNMonteCarloSampling` stopped when a period of samples changed nothing at all in the bounds: a rounding
+      difference of one ulp between the inference engines of the threads gave other periods, hence other bounds
+      (up to 0.014), with 1 or 4 threads for the same seed. A variation below `1000 * epsilon` of the scalar type is
+      now taken as no change: the result no longer depends on the number of threads.
 
 - Optimizations (aGrUM and pyAgrum)
 
