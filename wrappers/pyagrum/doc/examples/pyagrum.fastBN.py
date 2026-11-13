@@ -16,3 +16,8 @@ print(bn.variable("A"))
 # A:Range([0,5])
 print(bn.variable("E"))
 # E:Discretized(<[1;2.5[,[2.5;3.9]>)
+
+# a name between single quotes may contain any character ('' for a quote)
+bn = gum.fastBN("'Visit Asia'{yes|no}->'X-ray'[3]<-'l''eau'")
+sorted(bn.names())
+# ['Visit Asia', 'X-ray', "l'eau"]

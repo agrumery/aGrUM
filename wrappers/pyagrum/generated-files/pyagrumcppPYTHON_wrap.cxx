@@ -3786,150 +3786,151 @@ namespace Swig {
 #define SWIGTYPE_p_gum__Exception swig_types[52]
 #define SWIGTYPE_p_gum__FactoryError swig_types[53]
 #define SWIGTYPE_p_gum__FactoryInvalidState swig_types[54]
-#define SWIGTYPE_p_gum__FatalError swig_types[55]
-#define SWIGTYPE_p_gum__FormatNotFound swig_types[56]
-#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[57]
-#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[58]
-#define SWIGTYPE_p_gum__GraphError swig_types[59]
-#define SWIGTYPE_p_gum__GraphicalModel swig_types[60]
-#define SWIGTYPE_p_gum__HedgeException swig_types[61]
-#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[62]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[63]
-#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[64]
-#define SWIGTYPE_p_gum__IOError swig_types[65]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__ChainGraph_t swig_types[66]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__MarkedGraph_t swig_types[67]
-#define SWIGTYPE_p_gum__ImmutableGraphT_gum__PDAG_t swig_types[68]
-#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t swig_types[69]
-#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t swig_types[70]
-#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[71]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[72]
-#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[73]
-#define SWIGTYPE_p_gum__Instantiation swig_types[74]
-#define SWIGTYPE_p_gum__IntegerVariable swig_types[75]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[76]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[77]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[78]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[79]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[80]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[81]
-#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[82]
-#define SWIGTYPE_p_gum__IteratorError swig_types[83]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[84]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[85]
-#define SWIGTYPE_p_gum__LearningError swig_types[86]
-#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[87]
-#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[88]
-#define SWIGTYPE_p_gum__Listener swig_types[89]
-#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[90]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[91]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[92]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[93]
-#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[94]
-#define SWIGTYPE_p_gum__MAG swig_types[95]
-#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[96]
-#define SWIGTYPE_p_gum__MPDAG swig_types[97]
-#define SWIGTYPE_p_gum__MarkedGraph swig_types[98]
-#define SWIGTYPE_p_gum__MarkovBlanket swig_types[99]
-#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[100]
-#define SWIGTYPE_p_gum__MeekRules swig_types[101]
-#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[102]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[103]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[104]
-#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[105]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[106]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[107]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[108]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[109]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[110]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[111]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[112]
-#define SWIGTYPE_p_gum__NoChild swig_types[113]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[114]
-#define SWIGTYPE_p_gum__NoParent swig_types[115]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[116]
-#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[117]
-#define SWIGTYPE_p_gum__NotFound swig_types[118]
-#define SWIGTYPE_p_gum__NotImplementedYet swig_types[119]
-#define SWIGTYPE_p_gum__NullElement swig_types[120]
-#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[121]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[122]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[123]
-#define SWIGTYPE_p_gum__PAG swig_types[124]
-#define SWIGTYPE_p_gum__PDAG swig_types[125]
-#define SWIGTYPE_p_gum__PRMTypeError swig_types[126]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[127]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[128]
-#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[129]
-#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[130]
-#define SWIGTYPE_p_gum__ScheduledInference swig_types[131]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[132]
-#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[133]
-#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[134]
-#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[135]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[136]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[137]
-#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[138]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[139]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[140]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[141]
-#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[142]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[143]
-#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[144]
-#define SWIGTYPE_p_gum__SizeError swig_types[145]
-#define SWIGTYPE_p_gum__StructuralMetrics swig_types[146]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[147]
-#define SWIGTYPE_p_gum__TensorT_double_t swig_types[148]
-#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[149]
-#define SWIGTYPE_p_gum__Triangulation swig_types[150]
-#define SWIGTYPE_p_gum__TypeError swig_types[151]
-#define SWIGTYPE_p_gum__UGmodel swig_types[152]
-#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[153]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[154]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[155]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[156]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[157]
-#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[158]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[159]
-#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[160]
-#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[161]
-#define SWIGTYPE_p_gum__Variable swig_types[162]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[163]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[164]
-#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[165]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[166]
-#define SWIGTYPE_p_gum__dot__DotOptions swig_types[167]
-#define SWIGTYPE_p_gum__dot__Rgb swig_types[168]
-#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[169]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[170]
-#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[171]
-#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[172]
-#define SWIGTYPE_p_iterator swig_types[173]
-#define SWIGTYPE_p_iterator_category swig_types[174]
-#define SWIGTYPE_p_iterator_safe swig_types[175]
-#define SWIGTYPE_p_node_const_iterator swig_types[176]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[177]
-#define SWIGTYPE_p_node_iterator swig_types[178]
-#define SWIGTYPE_p_node_iterator_safe swig_types[179]
-#define SWIGTYPE_p_second_type swig_types[180]
-#define SWIGTYPE_p_size_type swig_types[181]
-#define SWIGTYPE_p_std__exception swig_types[182]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[183]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[184]
-#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[185]
-#define SWIGTYPE_p_std__invalid_argument swig_types[186]
-#define SWIGTYPE_p_std__optionalT_bool_t swig_types[187]
-#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[188]
-#define SWIGTYPE_p_std__size_t swig_types[189]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[190]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[191]
-#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[192]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[193]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[194]
-#define SWIGTYPE_p_value_type swig_types[195]
-#define SWIGTYPE_p_void swig_types[196]
-static swig_type_info *swig_types[198];
-static swig_module_info swig_module = {swig_types, 197, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__FastSyntaxCheck swig_types[55]
+#define SWIGTYPE_p_gum__FatalError swig_types[56]
+#define SWIGTYPE_p_gum__FormatNotFound swig_types[57]
+#define SWIGTYPE_p_gum__GibbsBNdistanceT_double_t swig_types[58]
+#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[59]
+#define SWIGTYPE_p_gum__GraphError swig_types[60]
+#define SWIGTYPE_p_gum__GraphicalModel swig_types[61]
+#define SWIGTYPE_p_gum__HedgeException swig_types[62]
+#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[63]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[64]
+#define SWIGTYPE_p_gum__IDiscretizedVariable swig_types[65]
+#define SWIGTYPE_p_gum__IOError swig_types[66]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__ChainGraph_t swig_types[67]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__MarkedGraph_t swig_types[68]
+#define SWIGTYPE_p_gum__ImmutableGraphT_gum__PDAG_t swig_types[69]
+#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t swig_types[70]
+#define SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t swig_types[71]
+#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[72]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[73]
+#define SWIGTYPE_p_gum__IncompatibleScorePrior swig_types[74]
+#define SWIGTYPE_p_gum__Instantiation swig_types[75]
+#define SWIGTYPE_p_gum__IntegerVariable swig_types[76]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[77]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[78]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[79]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[80]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[81]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[82]
+#define SWIGTYPE_p_gum__InvalidPartiallyDirectedCycle swig_types[83]
+#define SWIGTYPE_p_gum__IteratorError swig_types[84]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[85]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[86]
+#define SWIGTYPE_p_gum__LearningError swig_types[87]
+#define SWIGTYPE_p_gum__ListConstIteratorSafeT_Debug_t swig_types[88]
+#define SWIGTYPE_p_gum__ListConstIteratorT_Debug_t swig_types[89]
+#define SWIGTYPE_p_gum__Listener swig_types[90]
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[91]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__GibbsSampling_t swig_types[92]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__ImportanceSampling_t swig_types[93]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__MonteCarloSampling_t swig_types[94]
+#define SWIGTYPE_p_gum__LoopySamplingInferenceT_double_gum__WeightedSampling_t swig_types[95]
+#define SWIGTYPE_p_gum__MAG swig_types[96]
+#define SWIGTYPE_p_gum__MCBNDistanceT_double_t swig_types[97]
+#define SWIGTYPE_p_gum__MPDAG swig_types[98]
+#define SWIGTYPE_p_gum__MarkedGraph swig_types[99]
+#define SWIGTYPE_p_gum__MarkovBlanket swig_types[100]
+#define SWIGTYPE_p_gum__MarkovRandomFieldT_double_t swig_types[101]
+#define SWIGTYPE_p_gum__MeekRules swig_types[102]
+#define SWIGTYPE_p_gum__MissingValueInDatabase swig_types[103]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[104]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[105]
+#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[106]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[107]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[108]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[109]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[110]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[111]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[112]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[113]
+#define SWIGTYPE_p_gum__NoChild swig_types[114]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[115]
+#define SWIGTYPE_p_gum__NoParent swig_types[116]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[117]
+#define SWIGTYPE_p_gum__NodePropertyT_std__size_t_t swig_types[118]
+#define SWIGTYPE_p_gum__NotFound swig_types[119]
+#define SWIGTYPE_p_gum__NotImplementedYet swig_types[120]
+#define SWIGTYPE_p_gum__NullElement swig_types[121]
+#define SWIGTYPE_p_gum__NumericalDiscreteVariable swig_types[122]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[123]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[124]
+#define SWIGTYPE_p_gum__PAG swig_types[125]
+#define SWIGTYPE_p_gum__PDAG swig_types[126]
+#define SWIGTYPE_p_gum__PRMTypeError swig_types[127]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScorePrior swig_types[128]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[129]
+#define SWIGTYPE_p_gum__ScheduleMultiDimError swig_types[130]
+#define SWIGTYPE_p_gum__ScheduleOperationError swig_types[131]
+#define SWIGTYPE_p_gum__ScheduledInference swig_types[132]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[133]
+#define SWIGTYPE_p_gum__SequenceT_std__size_t_t swig_types[134]
+#define SWIGTYPE_p_gum__SetIteratorSafeT_int_t swig_types[135]
+#define SWIGTYPE_p_gum__SetIteratorT_int_t swig_types[136]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[137]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[138]
+#define SWIGTYPE_p_gum__SetT_gum__DiscreteVariable_const_p_t swig_types[139]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[140]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[141]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t swig_types[142]
+#define SWIGTYPE_p_gum__SetT_std__size_t_t__const_iterator swig_types[143]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[144]
+#define SWIGTYPE_p_gum__ShaferShenoyMRFInferenceT_double_t swig_types[145]
+#define SWIGTYPE_p_gum__SizeError swig_types[146]
+#define SWIGTYPE_p_gum__StructuralMetrics swig_types[147]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[148]
+#define SWIGTYPE_p_gum__TensorT_double_t swig_types[149]
+#define SWIGTYPE_p_gum__ThreadNumberManager swig_types[150]
+#define SWIGTYPE_p_gum__Triangulation swig_types[151]
+#define SWIGTYPE_p_gum__TypeError swig_types[152]
+#define SWIGTYPE_p_gum__UGmodel swig_types[153]
+#define SWIGTYPE_p_gum__UnavailableScheduleOperation swig_types[154]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[155]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[156]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[157]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[158]
+#define SWIGTYPE_p_gum__UnexecutedScheduleOperation swig_types[159]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[160]
+#define SWIGTYPE_p_gum__UnknownScheduleMultiDim swig_types[161]
+#define SWIGTYPE_p_gum__UnknownScheduleOperation swig_types[162]
+#define SWIGTYPE_p_gum__Variable swig_types[163]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[164]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[165]
+#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[166]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[167]
+#define SWIGTYPE_p_gum__dot__DotOptions swig_types[168]
+#define SWIGTYPE_p_gum__dot__Rgb swig_types[169]
+#define SWIGTYPE_p_gum__learning__BNDatabaseGeneratorT_double_t swig_types[170]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[171]
+#define SWIGTYPE_p_gum__learning__DatabaseTable swig_types[172]
+#define SWIGTYPE_p_gum__learning__IBNLearner swig_types[173]
+#define SWIGTYPE_p_iterator swig_types[174]
+#define SWIGTYPE_p_iterator_category swig_types[175]
+#define SWIGTYPE_p_iterator_safe swig_types[176]
+#define SWIGTYPE_p_node_const_iterator swig_types[177]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[178]
+#define SWIGTYPE_p_node_iterator swig_types[179]
+#define SWIGTYPE_p_node_iterator_safe swig_types[180]
+#define SWIGTYPE_p_second_type swig_types[181]
+#define SWIGTYPE_p_size_type swig_types[182]
+#define SWIGTYPE_p_std__exception swig_types[183]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[184]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[185]
+#define SWIGTYPE_p_std__functionT_double_fgum__Instantiation_const_RF_t swig_types[186]
+#define SWIGTYPE_p_std__invalid_argument swig_types[187]
+#define SWIGTYPE_p_std__optionalT_bool_t swig_types[188]
+#define SWIGTYPE_p_std__pairT_gum__Instantiation_double_t swig_types[189]
+#define SWIGTYPE_p_std__size_t swig_types[190]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[191]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[192]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[193]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_std__allocatorT_std__vectorT_std__string_std__allocatorT_std__string_t_t_t_t swig_types[194]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[195]
+#define SWIGTYPE_p_value_type swig_types[196]
+#define SWIGTYPE_p_void swig_types[197]
+static swig_type_info *swig_types[199];
+static swig_module_info swig_module = {swig_types, 198, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4871,6 +4872,8 @@ SWIG_From_std_string  (const std::string& s)
 
 
 #include <agrum/base.h>
+#include <agrum/base/core/fastSyntax.h>
+#include <agrum/base/graphicalModels/fastSyntaxCheck.h>
 #include <agrum/base/graphs/PAG.h>
 
 
@@ -5706,6 +5709,17 @@ SWIGINTERN std::string gum_MAG__saveGUMstring__SWIG_0(gum::MAG const *self,int i
   }
 SWIGINTERN void gum_MAG__saveGUM__SWIG_0(gum::MAG const *self,std::string const &name,PyObject *binary,int indent=gum::defaultJgumIndent()){
     gum::saveGraphGUM(*self, name, PyAgrumHelper::isBinaryGUMFile(name, binary), indent);
+  }
+SWIGINTERN bool gum_FastSyntaxCheck___bool__(gum::FastSyntaxCheck const *self){
+    for (std::size_t i = 0; i <= static_cast< std::size_t >(gum::FastSyntax::MarkovRandomField); ++i)
+      if (self->isValid(static_cast< gum::FastSyntax >(i))) return true;
+    return false;
+  }
+SWIGINTERN std::string gum_FastSyntaxCheck___repr__(gum::FastSyntaxCheck const *self){
+    std::string valid;
+    for (const auto syntax: self->validSyntaxes())
+      valid += (valid.empty() ? "" : ", ") + gum::toString(syntax);
+    return "(pyagrum.FastSyntaxCheck) '" + self->description() + "': " + (valid.empty() ? "invalid" : valid);
   }
 
 #include <agrum/base/graphs/algorithms/ancestral.h>
@@ -53884,6 +53898,618 @@ SWIGINTERN PyObject *MAG_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args
   return SWIG_Python_InitShadowInstance(args);
 }
 
+SWIGINTERN PyObject *_wrap_fastNameNeedsQuotes(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (bool)gum::fastNameNeedsQuotes(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_quoteFastName(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum::quoteFastName(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FastSyntaxCheck__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  std::string_view arg2 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *bytes2 = NULL ;
+  gum::FastSyntaxCheck *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (gum::FastSyntaxCheck *)new gum::FastSyntaxCheck(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_POINTER_NEW |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FastSyntaxCheck__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  PyObject *bytes1 = NULL ;
+  gum::FastSyntaxCheck *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = (gum::FastSyntaxCheck *)new gum::FastSyntaxCheck(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_POINTER_NEW |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_FastSyntaxCheck(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_FastSyntaxCheck", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_new_FastSyntaxCheck__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_new_FastSyntaxCheck__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_FastSyntaxCheck'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::FastSyntaxCheck::FastSyntaxCheck(std::string_view,std::string_view)\n"
+    "    gum::FastSyntaxCheck::FastSyntaxCheck(std::string_view)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_FastSyntaxCheck_description(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FastSyntaxCheck_description" "', argument " "1"" of type '" "gum::FastSyntaxCheck const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  {
+    try {
+      result = (std::string *) &((gum::FastSyntaxCheck const *)arg1)->description();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FastSyntaxCheck_isValid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  gum::FastSyntax arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FastSyntaxCheck_isValid", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FastSyntaxCheck_isValid" "', argument " "1"" of type '" "gum::FastSyntaxCheck const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FastSyntaxCheck_isValid" "', argument " "2"" of type '" "gum::FastSyntax""'");
+  } 
+  arg2 = static_cast< gum::FastSyntax >(val2);
+  {
+    try {
+      result = (bool)((gum::FastSyntaxCheck const *)arg1)->isValid(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FastSyntaxCheck_error(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  gum::FastSyntax arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::string *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FastSyntaxCheck_error", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FastSyntaxCheck_error" "', argument " "1"" of type '" "gum::FastSyntaxCheck const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "FastSyntaxCheck_error" "', argument " "2"" of type '" "gum::FastSyntax""'");
+  } 
+  arg2 = static_cast< gum::FastSyntax >(val2);
+  {
+    try {
+      result = (std::string *) &((gum::FastSyntaxCheck const *)arg1)->error(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FastSyntaxCheck___bool__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FastSyntaxCheck___bool__" "', argument " "1"" of type '" "gum::FastSyntaxCheck const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  {
+    try {
+      result = (bool)gum_FastSyntaxCheck___bool__((gum::FastSyntaxCheck const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FastSyntaxCheck___repr__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FastSyntaxCheck___repr__" "', argument " "1"" of type '" "gum::FastSyntaxCheck const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  {
+    try {
+      result = gum_FastSyntaxCheck___repr__((gum::FastSyntaxCheck const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_FastSyntaxCheck(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::FastSyntaxCheck *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_FastSyntaxCheck" "', argument " "1"" of type '" "gum::FastSyntaxCheck *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::FastSyntaxCheck * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *FastSyntaxCheck_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *FastSyntaxCheck_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_checkFastSyntax__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  std::string_view arg2 ;
+  PyObject *bytes1 = NULL ;
+  PyObject *bytes2 = NULL ;
+  SwigValueWrapper< gum::FastSyntaxCheck > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[1]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[1]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[1])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[1], &len, &bytes2);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[1]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[1]);
+    }
+#endif
+    arg2 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum::checkFastSyntax(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::FastSyntaxCheck(result)), SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_POINTER_OWN |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  
+  SWIG_Py_XDECREF(bytes2);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_checkFastSyntax__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string_view arg1 ;
+  PyObject *bytes1 = NULL ;
+  SwigValueWrapper< gum::FastSyntaxCheck > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    Py_ssize_t len;
+#ifdef SWIG_PYTHON_STRICT_BYTE_CHAR
+    const char *p = PyBytes_AsString(swig_obj[0]);
+    if (!p) SWIG_fail;
+    len = PyBytes_Size(swig_obj[0]);
+#else
+    const char *p;
+    if (PyUnicode_Check(swig_obj[0])) {
+      p = SWIG_PyUnicode_AsUTF8AndSize(swig_obj[0], &len, &bytes1);
+      if (!p) SWIG_fail;
+    } else {
+      p = PyBytes_AsString(swig_obj[0]);
+      if (!p) SWIG_fail;
+      len = PyBytes_Size(swig_obj[0]);
+    }
+#endif
+    arg1 = std::string_view(p, len);
+  }
+  {
+    try {
+      result = gum::checkFastSyntax(SWIG_STD_MOVE(*(&arg1)));
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::FastSyntaxCheck(result)), SWIGTYPE_p_gum__FastSyntaxCheck, SWIG_POINTER_OWN |  0 );
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return resultobj;
+fail:
+  
+  SWIG_Py_XDECREF(bytes1);
+  
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_checkFastSyntax(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "checkFastSyntax", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_checkFastSyntax__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_checkFastSyntax__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'checkFastSyntax'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::checkFastSyntax(std::string_view,std::string_view)\n"
+    "    gum::checkFastSyntax(std::string_view)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap__graph_degeneracyOrdering__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = 0 ;
@@ -86441,6 +87067,37 @@ fail:
     "    gum::BayesNet< double >::fastPrototype(std::string_view,std::string_view)\n"
     "    gum::BayesNet< double >::fastPrototype(std::string_view)\n");
   return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet__toFast(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet__toFast" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  {
+    try {
+      result = ((gum::BayesNet< double > const *)arg1)->toFast();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
 }
 
 
@@ -149259,10 +149916,14 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "randomGeneratorSeed", _wrap_randomGeneratorSeed, METH_NOARGS, "\n"
 		"\n"
+		"Give the seed of the pseudo-random generator, to replay a sequence of draws.\n"
+		"\n"
 		"Returns\n"
 		"-------\n"
 		"int\n"
-		"  the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.\n"
+		"  the seed of the generator: the value given to the last call to `pyagrum.initRandom` or, if it was 0, the value\n"
+		"  taken from the current time. Given to `pyagrum.initRandom`, or used as ``core.randomSeed`` in a file\n"
+		"  ``pyagrum.ini``, it repeats the same sequence of pseudo-random numbers.\n"
 		"\n"
 		""},
 	 { "currentRandomGeneratorValue", _wrap_currentRandomGeneratorValue, METH_NOARGS, NULL},
@@ -149282,11 +149943,41 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "new__Configuration", _wrap_new__Configuration, METH_VARARGS, NULL},
 	 { "_Configuration__instance", _wrap__Configuration__instance, METH_NOARGS, NULL},
-	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, NULL},
+	 { "_Configuration_userFileName", _wrap__Configuration_userFileName, METH_NOARGS, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the name of the user file, read by ``load()`` and written by ``save()``\n"
+		"\n"
+		""},
 	 { "_Configuration__get", _wrap__Configuration__get, METH_VARARGS, NULL},
-	 { "_Configuration_has", _wrap__Configuration_has, METH_VARARGS, NULL},
+	 { "_Configuration_has", _wrap__Configuration_has, METH_VARARGS, "\n"
+		"\n"
+		"Tell whether a property exists.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"section : str\n"
+		"  the section (case-sensitive)\n"
+		"key : str\n"
+		"  the key (case-insensitive)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if section.key exists\n"
+		"\n"
+		""},
 	 { "_Configuration__doc", _wrap__Configuration__doc, METH_VARARGS, NULL},
-	 { "_Configuration_sections", _wrap__Configuration_sections, METH_O, NULL},
+	 { "_Configuration_sections", _wrap__Configuration_sections, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"tuple[str, ...]\n"
+		"  the names of the sections, in the order of the defaults\n"
+		"\n"
+		""},
 	 { "_Configuration__set", _wrap__Configuration__set, METH_VARARGS, NULL},
 	 { "_Configuration__reset", _wrap__Configuration__reset, METH_O, NULL},
 	 { "_Configuration__push", _wrap__Configuration__push, METH_O, NULL},
@@ -149295,8 +149986,27 @@ static PyMethodDef SwigMethods[] = {
 	 { "_Configuration__save", _wrap__Configuration__save, METH_VARARGS, NULL},
 	 { "_Configuration__grep", _wrap__Configuration__grep, METH_VARARGS, NULL},
 	 { "_Configuration__diff", _wrap__Configuration__diff, METH_O, NULL},
-	 { "_Configuration_toString", _wrap__Configuration_toString, METH_O, NULL},
-	 { "_Configuration_describe", _wrap__Configuration_describe, METH_O, NULL},
+	 { "_Configuration_toString", _wrap__Configuration_toString, METH_O, "\n"
+		"\n"
+		"All the properties (except the deprecated ones). This is what ``print(pyagrum.config)`` shows.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the properties, in the format of ``pyagrum.ini``\n"
+		"\n"
+		""},
+	 { "_Configuration_describe", _wrap__Configuration_describe, METH_O, "\n"
+		"\n"
+		"Describe the configuration: the properties which differ from the defaults if any, otherwise all the properties\n"
+		"(with a comment saying that they are the defaults). This is what ``repr(pyagrum.config)`` shows.\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the description, in the format of ``pyagrum.ini``\n"
+		"\n"
+		""},
 	 { "_Configuration__runHooks", _wrap__Configuration__runHooks, METH_O, NULL},
 	 { "_Configuration__getValue", _wrap__Configuration__getValue, METH_VARARGS, NULL},
 	 { "_Configuration__addPythonHook", _wrap__Configuration__addPythonHook, METH_VARARGS, NULL},
@@ -149735,7 +150445,10 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "DiscreteVariable_toFast", _wrap_DiscreteVariable_toFast, METH_O, "\n"
 		"\n"
-		"Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).\n"
+		"Return the variable description in fast syntax (e.g. ``name{val1|val2|...}``, ``name[min,max]``...).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{yes|no}``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150042,7 +150755,10 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "LabelizedVariable_toFast", _wrap_LabelizedVariable_toFast, METH_O, "\n"
 		"\n"
-		"Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).\n"
+		"Return the variable description in fast syntax (e.g. ``name{val1|val2|...}``).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{yes|no}``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150086,7 +150802,10 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "RangeVariable_toFast", _wrap_RangeVariable_toFast, METH_O, "\n"
 		"\n"
-		"Return the variable description in fast syntax (e.g. ``name[min,max]``).\n"
+		"Return the variable description in fast syntax (e.g. ``name[n]`` or ``name[min,max]``).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[3]``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150267,6 +150986,9 @@ static PyMethodDef SwigMethods[] = {
 	 { "IntegerVariable_toFast", _wrap_IntegerVariable_toFast, METH_O, "\n"
 		"\n"
 		"Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{1|3|5}``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -150455,6 +151177,9 @@ static PyMethodDef SwigMethods[] = {
 	 { "NumericalDiscreteVariable_toFast", _wrap_NumericalDiscreteVariable_toFast, METH_O, "\n"
 		"\n"
 		"Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{0.5|1.5}``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -152196,19 +152921,19 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "MixedGraph_addArc", _wrap_MixedGraph_addArc, METH_VARARGS, "\n"
 		"\n"
-		"Add an arc from tail to head.\n"
+		"Add an arc from n1 to n2.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tail : int\n"
+		"n1 : int\n"
 		"    the id of the tail node\n"
-		"head : int\n"
+		"n2 : int\n"
 		"    the id of the head node\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.InvalidNode\n"
-		"    If head or tail does not belong to the graph nodes.\n"
+		"    If n1 or n2 does not belong to the graph nodes.\n"
 		"\n"
 		""},
 	 { "MixedGraph_eraseArc", _wrap_MixedGraph_eraseArc, METH_VARARGS, "\n"
@@ -152599,9 +153324,9 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tail : int\n"
+		"n1 : int\n"
 		"    the id of the tail node\n"
-		"head : int\n"
+		"n2 : int\n"
 		"    the id of the head node\n"
 		"\n"
 		"Raises\n"
@@ -152616,15 +153341,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tail : int\n"
+		"n1 : int\n"
 		"    the id of the tail node\n"
-		"head : int\n"
+		"n2 : int\n"
 		"    the id of the head node\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"bool\n"
-		"    True if the arc (tail, head) exists\n"
+		"    True if the arc (n1, n2) exists\n"
 		"\n"
 		""},
 	 { "PDAG_eraseParents", _wrap_PDAG_eraseParents, METH_VARARGS, "\n"
@@ -152699,17 +153424,17 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"n1 : int\n"
+		"first : int\n"
 		"  the id of one node of the new inserted edge\n"
-		"n2 : int\n"
+		"second : int\n"
 		"  the id of the other node of the new inserted edge\n"
 		"\n"
 		"Raises\n"
 		"------\n"
 		"pyagrum.InvalidNode\n"
-		"  If n1 or n2 does not belong to the graph nodes.\n"
+		"  If first or second does not belong to the graph nodes.\n"
 		"pyagrum.InvalidEdge\n"
-		"  If an arc already connects n1 and n2.\n"
+		"  If an arc already connects first and second.\n"
 		"pyagrum.InvalidPartiallyDirectedCycle\n"
 		"  If the edge would create a partially directed cycle.\n"
 		"\n"
@@ -154369,6 +155094,136 @@ static PyMethodDef SwigMethods[] = {
 	 { "MAG__saveGUM", _wrap_MAG__saveGUM, METH_VARARGS, NULL},
 	 { "MAG_swigregister", MAG_swigregister, METH_O, NULL},
 	 { "MAG_swiginit", MAG_swiginit, METH_VARARGS, NULL},
+	 { "fastNameNeedsQuotes", _wrap_fastNameNeedsQuotes, METH_O, "\n"
+		"\n"
+		"Tell whether the name of a variable must be quoted to be read back as is by `pyagrum.fastVariable` and by the\n"
+		"fast syntax of the graphical models (`pyagrum.fastBN`, `pyagrum.fastID`, `pyagrum.fastMRF`).\n"
+		"\n"
+		"A name is written between single quotes (``'Visit Asia'->X``) when it begins or ends with a space, begins with a\n"
+		"quote, ``'*'`` or ``'$'``, contains one of ``[]{};-<>`` or a line break, ends with ``'+'``, or contains a quote at\n"
+		"the beginning of a word. Spaces inside a name do not need quotes there. The node names of `pyagrum.fastGraph` are\n"
+		"stricter: an unquoted one contains no space, and is a node id if it is made of digits.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"name : str\n"
+		"  the name\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if the name must be quoted\n"
+		"\n"
+		""},
+	 { "quoteFastName", _wrap_quoteFastName, METH_O, "\n"
+		"\n"
+		"Write a name as in a fast description: between single quotes (with its quotes doubled) if\n"
+		"`pyagrum.fastNameNeedsQuotes`, as is otherwise.\n"
+		"\n"
+		"This is what ``toFast()`` does for the name of a variable.\n"
+		"\n"
+		"Warnings\n"
+		"--------\n"
+		"The files saved by pyAgrum (``.jgum``, ``.bgum``, ``.bifxml``, ``.pkl``) write the variables in fast syntax: a\n"
+		"quoted name such as ``'X-ray'[3]`` (or the name ``X[0]`` of a variable of a `pyagrum.ktbn.KTBN`) is read by\n"
+		"pyAgrum 3.3.2 or older with the quotes in the name.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"name : str\n"
+		"  the name\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the name, quoted if needed\n"
+		"\n"
+		""},
+	 { "new_FastSyntaxCheck", _wrap_new_FastSyntaxCheck, METH_VARARGS, NULL},
+	 { "FastSyntaxCheck_description", _wrap_FastSyntaxCheck_description, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the checked description\n"
+		"\n"
+		""},
+	 { "FastSyntaxCheck_isValid", _wrap_FastSyntaxCheck_isValid, METH_VARARGS, "\n"
+		"\n"
+		"Tell whether the description is valid for a syntax.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"syntax : pyagrum.FastSyntax\n"
+		"  the syntax\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if the description is valid for this syntax\n"
+		"\n"
+		""},
+	 { "FastSyntaxCheck_error", _wrap_FastSyntaxCheck_error, METH_VARARGS, "\n"
+		"\n"
+		"Tell why the description is not valid for a syntax.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"syntax : pyagrum.FastSyntax\n"
+		"  the syntax\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the error (empty if the description is valid for this syntax)\n"
+		"\n"
+		""},
+	 { "FastSyntaxCheck___bool__", _wrap_FastSyntaxCheck___bool__, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"  True if the description is valid for at least one syntax\n"
+		"\n"
+		""},
+	 { "FastSyntaxCheck___repr__", _wrap_FastSyntaxCheck___repr__, METH_O, "\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"  the description and the syntaxes for which it is valid\n"
+		"\n"
+		""},
+	 { "delete_FastSyntaxCheck", _wrap_delete_FastSyntaxCheck, METH_O, NULL},
+	 { "FastSyntaxCheck_swigregister", FastSyntaxCheck_swigregister, METH_O, NULL},
+	 { "FastSyntaxCheck_swiginit", FastSyntaxCheck_swiginit, METH_VARARGS, NULL},
+	 { "checkFastSyntax", _wrap_checkFastSyntax, METH_VARARGS, "\n"
+		"\n"
+		"Check a fast description for every fast syntax.\n"
+		"\n"
+		"A description may be valid for several syntaxes: ``'A->B'`` is a directed graph, a mixed graph, a marked\n"
+		"graph, a Bayesian network and an influence diagram. It is valid for a syntax if the corresponding fast\n"
+		"function accepts it, apart from the constraints checked when the object is built (acyclicity, children of a\n"
+		"utility node...).\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"description : str\n"
+		"  the fast description\n"
+		"defaultDomain : str\n"
+		"  the domain of the variables without one, for the graphical models (``'[2]'`` by default)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"pyagrum.FastSyntaxCheck\n"
+		"  the verdict for every syntax\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If defaultDomain does not begin with ``'['`` or ``'{'``.\n"
+		"\n"
+		""},
 	 { "_graph_degeneracyOrdering", _wrap__graph_degeneracyOrdering, METH_VARARGS, NULL},
 	 { "_graph_isAncestral", _wrap__graph_isAncestral, METH_VARARGS, NULL},
 	 { "_graph_isMaximal", _wrap__graph_isMaximal, METH_VARARGS, NULL},
@@ -156066,7 +156921,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -156224,7 +157079,10 @@ static PyMethodDef SwigMethods[] = {
 	 { "ApproximationScheme_swiginit", ApproximationScheme_swiginit, METH_VARARGS, NULL},
 	 { "fastVariable", _wrap_fastVariable, METH_VARARGS, "\n"
 		"\n"
-		"Use *fast* syntax to add a variable in the BayesNet.\n"
+		"Create a variable from its *fast* syntax description (e.g. ``a{yes|no}``, ``a[3,7]``).\n"
+		"\n"
+		"The name may be written between single quotes (``'Visit Asia'{yes|no}``): it is then taken as is (a doubled quote\n"
+		"standing for a quote), and only an optional ``+`` (empirical ticks) and an optional domain may follow it.\n"
 		"\n"
 		"Raises\n"
 		"------\n"
@@ -156248,7 +157106,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156259,9 +157118,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156285,7 +157148,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156296,9 +157160,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156322,7 +157190,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156333,9 +157202,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156359,7 +157232,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156370,9 +157244,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156396,7 +157274,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156407,9 +157286,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156433,7 +157316,8 @@ static PyMethodDef SwigMethods[] = {
 		"``';'`` separates independent chains. If every node token in the description is\n"
 		"a non-negative integer, those integers are used directly as node ids ;\n"
 		"otherwise every token -- including numeric-looking ones -- is used as a node\n"
-		"name.\n"
+		"name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes\n"
+		"(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.\n"
 		"\n"
 		"Note\n"
 		"----\n"
@@ -156444,9 +157328,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes\n"
+		"  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it\n"
+		"  (e.g. ``'0->2000000000'``).\n"
 		"pyagrum.InvalidArc\n"
 		"  If the description requires a directed arc but the target graph type does\n"
-		"  not support arcs, or if the description is malformed.\n"
+		"  not support arcs.\n"
 		"pyagrum.InvalidEdge\n"
 		"  If the description requires an undirected edge but the target graph type\n"
 		"  does not support edges.\n"
@@ -156469,13 +157357,17 @@ static PyMethodDef SwigMethods[] = {
 		"An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a\n"
 		"circle, nothing for a tail. A circle must be separated from the name of its node by a space\n"
 		"(``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,\n"
-		"``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks\n"
+		"``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. A name may be quoted\n"
+		"(``\"'Visit Asia' o-> X\"``), and a circle may touch a quoted name (``\"'A'o->'B'\"``). An edge may be repeated with the same marks\n"
 		"(``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).\n"
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A>-B'`` or ``'A o -B'``), or if the nodes are ids and the\n"
+		"  largest one leaves more than max(number of nodes, 65536) absent ids below it (``'0->2000000000'``).\n"
 		"pyagrum.InvalidEdge\n"
-		"  If the description is malformed or describes an edge with different marks.\n"
+		"  If the description describes an edge with different marks.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156495,13 +157387,17 @@ static PyMethodDef SwigMethods[] = {
 		"An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a\n"
 		"circle, nothing for a tail. A circle must be separated from the name of its node by a space\n"
 		"(``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,\n"
-		"``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks\n"
+		"``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. A name may be quoted\n"
+		"(``\"'Visit Asia' o-> X\"``), and a circle may touch a quoted name (``\"'A'o->'B'\"``). An edge may be repeated with the same marks\n"
 		"(``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).\n"
 		"\n"
 		"Raises\n"
 		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  If the description is malformed (e.g. ``'A>-B'`` or ``'A o -B'``), or if the nodes are ids and the\n"
+		"  largest one leaves more than max(number of nodes, 65536) absent ids below it (``'0->2000000000'``).\n"
 		"pyagrum.InvalidEdge\n"
-		"  If the description is malformed or describes an edge with different marks.\n"
+		"  If the description describes an edge with different marks.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -156715,7 +157611,10 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "DiscretizedVariable_toFast", _wrap_DiscretizedVariable_toFast, METH_O, "\n"
 		"\n"
-		"Return the variable description in fast syntax (e.g. ``name[v1:v2:v3]``).\n"
+		"Return the variable description in fast syntax (e.g. ``name[t1,t2,t3]``, ``name+[t1,t2,t3]`` if empirical).\n"
+		"\n"
+		"The name is written between single quotes if it would not be read back as is otherwise (see\n"
+		"`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[0,1.5,3]``.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
@@ -157718,8 +158617,7 @@ static PyMethodDef SwigMethods[] = {
 		"Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener\n"
 		"is notified when the structure of the model is changed.\n"
 		"\n"
-		"PythonBNListener(model:gum.DAGmodel,vnm:gum.VariableNodeMap) -> PythonBNListener\n"
-		"    default constructor\n"
+		"PythonBNListener(model, vnm) -> PythonBNListener\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -157731,54 +158629,62 @@ static PyMethodDef SwigMethods[] = {
 		"model : pyagrum.BayesNet | pyagrum.InfluenceDiagram\n"
 		"    The model to listen to\n"
 		"vnm : VariableNodeMap\n"
-		"    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).\n"
+		"    the correspondence between the ids of the nodes and the names of the variables (usually\n"
+		"    ``model._variableNodeMap()``)\n"
 		"\n"
 		""},
 	 { "delete_PythonBNListener", _wrap_delete_PythonBNListener, METH_O, NULL},
 	 { "PythonBNListener_whenNodeAdded", _wrap_PythonBNListener_whenNodeAdded, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when a node is added to the Bayesian network.\n"
+		"Called by aGrUM when a node is added to the model: calls the function given to ``setWhenNodeAdded``\n"
+		"with the id and the name of the node.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"id : int\n"
 		"    the id of the new node\n"
-		"name : str\n"
-		"    the name of the new node\n"
 		"\n"
 		""},
 	 { "PythonBNListener_whenNodeDeleted", _wrap_PythonBNListener_whenNodeDeleted, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when a node is removed from the Bayesian network.\n"
+		"Called by aGrUM when a node is removed from the model: calls the function given to ``setWhenNodeDeleted``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"id : int\n"
-		"    the id of the deleted node\n"
+		"    the id of the removed node\n"
 		"\n"
 		""},
 	 { "PythonBNListener_whenArcAdded", _wrap_PythonBNListener_whenArcAdded, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when an arc is added to the Bayesian network.\n"
+		"Called by aGrUM when an arc is added to the model: calls the function given to ``setWhenArcAdded``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"src : int\n"
-		"    the tail node id\n"
+		"    the id of the tail of the arc\n"
 		"dst : int\n"
-		"    the head node id\n"
+		"    the id of the head of the arc\n"
 		"\n"
 		""},
 	 { "PythonBNListener_whenArcDeleted", _wrap_PythonBNListener_whenArcDeleted, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when an arc is removed from the Bayesian network.\n"
+		"Called by aGrUM when an arc is removed from the model: calls the function given to ``setWhenArcDeleted``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"src : int\n"
-		"    the tail node id\n"
+		"    the id of the tail of the arc\n"
 		"dst : int\n"
-		"    the head node id\n"
+		"    the id of the head of the arc\n"
 		"\n"
 		""},
 	 { "PythonBNListener_setWhenArcAdded", _wrap_PythonBNListener_setWhenArcAdded, METH_VARARGS, "\n"
@@ -157828,8 +158734,7 @@ static PyMethodDef SwigMethods[] = {
 		"Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified\n"
 		"when the structure of the model is changed.\n"
 		"\n"
-		"PythonMRFListener(model:gum.UGmodel,vnm:gum.VariableNodeMap) -> PythonMRFListener\n"
-		"    default constructor\n"
+		"PythonMRFListener(model, vnm) -> PythonMRFListener\n"
 		"\n"
 		"Notes\n"
 		"-----\n"
@@ -157840,38 +158745,45 @@ static PyMethodDef SwigMethods[] = {
 		"model : pyagrum.MarkovRandomField\n"
 		"    The model to listen to\n"
 		"vnm : VariableNodeMap\n"
-		"    A translation unit between id of node and name of variable (usually : model._variableNodeMap()).\n"
+		"    the correspondence between the ids of the nodes and the names of the variables (usually\n"
+		"    ``model._variableNodeMap()``)\n"
 		"\n"
 		""},
 	 { "delete_PythonMRFListener", _wrap_delete_PythonMRFListener, METH_O, NULL},
 	 { "PythonMRFListener_whenNodeAdded", _wrap_PythonMRFListener_whenNodeAdded, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when a node is added to the Markov random field.\n"
+		"Called by aGrUM when a node is added to the Markov random field: calls the function given to\n"
+		"``setWhenNodeAdded`` with the id and the name of the node.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"id : int\n"
 		"    the id of the new node\n"
-		"name : str\n"
-		"    the name of the new node\n"
 		"\n"
 		""},
 	 { "PythonMRFListener_whenNodeDeleted", _wrap_PythonMRFListener_whenNodeDeleted, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when a node is removed from the Markov random field.\n"
+		"Called by aGrUM when a node is removed from the Markov random field: calls the function given to\n"
+		"``setWhenNodeDeleted``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"id : int\n"
-		"    the id of the deleted node\n"
+		"    the id of the removed node\n"
 		"\n"
 		""},
 	 { "PythonMRFListener_whenEdgeAdded", _wrap_PythonMRFListener_whenEdgeAdded, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when an edge is added to the Markov random field.\n"
+		"Called by aGrUM when an edge is added to the Markov random field: calls the function given to ``setWhenEdgeAdded``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"n1 : int\n"
 		"    the id of one node of the edge\n"
 		"n2 : int\n"
@@ -157880,10 +158792,13 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "PythonMRFListener_whenEdgeDeleted", _wrap_PythonMRFListener_whenEdgeDeleted, METH_VARARGS, "\n"
 		"\n"
-		"Callback called when an edge is removed from the Markov random field.\n"
+		"Called by aGrUM when an edge is removed from the Markov random field: calls the function given to\n"
+		"``setWhenEdgeDeleted``.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
+		"source : object\n"
+		"    the object which sends the notification (not used)\n"
 		"n1 : int\n"
 		"    the id of one node of the edge\n"
 		"n2 : int\n"
@@ -159024,6 +159939,7 @@ static PyMethodDef SwigMethods[] = {
 		"Notes\n"
 		"-----\n"
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
+		"  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).\n"
 		"  - the CPTs are randomly generated.\n"
 		"  - see also the function `pyagrum.fastBN`.\n"
 		"\n"
@@ -159040,6 +159956,7 @@ static PyMethodDef SwigMethods[] = {
 		"        the resulting Bayesian network\n"
 		"\n"
 		""},
+	 { "BayesNet__toFast", _wrap_BayesNet__toFast, METH_O, NULL},
 	 { "delete_BayesNet", _wrap_delete_BayesNet, METH_O, NULL},
 	 { "new_BayesNet", _wrap_new_BayesNet, METH_VARARGS, NULL},
 	 { "BayesNet_cpt", _wrap_BayesNet_cpt, METH_VARARGS, "\n"
@@ -162481,7 +163398,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -163057,7 +163974,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -163601,7 +164518,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -164145,7 +165062,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -164712,7 +165629,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -165279,7 +166196,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -165846,7 +166763,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -166461,7 +167378,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -167005,7 +167922,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -167515,7 +168432,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -167718,7 +168635,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -167947,12 +168864,12 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNDatabaseGenerator_varOrderNames", _wrap_BNDatabaseGenerator_varOrderNames, METH_O, "\n"
 		"\n"
-		"The actual order for the variable (as a tuple of NodeId)\n"
+		"The current order of the variables (as a tuple of names).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"tuple\n"
-		"  the tuple of names\n"
+		"tuple[str, ...]\n"
+		"  the names of the variables, in their order in the database\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_log2likelihood", _wrap_BNDatabaseGenerator_log2likelihood, METH_O, "\n"
@@ -167983,12 +168900,12 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNDatabaseGenerator_varOrder", _wrap_BNDatabaseGenerator_varOrder, METH_O, "\n"
 		"\n"
-		"The actual order for the variable (as a tuple of NodeId)\n"
+		"The current order of the variables (as a tuple of node ids).\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"tuple\n"
-		"  the tuple of NodeId\n"
+		"tuple[int, ...]\n"
+		"  the ids of the variables, in their order in the database\n"
 		"\n"
 		""},
 	 { "BNDatabaseGenerator_drawSamples", _wrap_BNDatabaseGenerator_drawSamples, METH_VARARGS, "\n"
@@ -169272,7 +170189,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"tiemout : float\n"
+		"timeout : float\n"
 		"    stopping criterion on timeout (in seconds)\n"
 		"\n"
 		"Raises\n"
@@ -169490,7 +170407,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"var_names : str\n"
+		"var_name : str\n"
 		"    a variable's name\n"
 		"\n"
 		"Returns\n"
@@ -170755,6 +171672,7 @@ static swig_type_info _swigt__p_gum__Exception = {"_p_gum__Exception", "gum::Exc
 static swig_type_info _swigt__p_gum__SyntaxError = {"_p_gum__SyntaxError", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__FactoryError = {"_p_gum__FactoryError", "gum::FactoryError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FactoryInvalidState = {"_p_gum__FactoryInvalidState", "gum::FactoryInvalidState *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__FastSyntaxCheck = {"_p_gum__FastSyntaxCheck", "gum::FastSyntaxCheck *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FatalError = {"_p_gum__FatalError", "gum::FatalError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FormatNotFound = {"_p_gum__FormatNotFound", "gum::FormatNotFound *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__GibbsBNdistanceT_double_t = {"_p_gum__GibbsBNdistanceT_double_t", "gum::GibbsBNdistance< double > *", 0, 0, (void*)0, 0};
@@ -170953,6 +171871,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__Exception,
   &_swigt__p_gum__FactoryError,
   &_swigt__p_gum__FactoryInvalidState,
+  &_swigt__p_gum__FastSyntaxCheck,
   &_swigt__p_gum__FatalError,
   &_swigt__p_gum__FormatNotFound,
   &_swigt__p_gum__GibbsBNdistanceT_double_t,
@@ -171153,6 +172072,7 @@ static swig_cast_info _swigc__p_gum__SyntaxError[] = {{&_swigt__p_gum__SyntaxErr
 static swig_cast_info _swigc__p_gum__Exception[] = {  {&_swigt__p_gum__Exception, 0, 0, 0},  {&_swigt__p_gum__AbstractScheduleMultiDim, _p_gum__AbstractScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ArgumentError, _p_gum__ArgumentErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__CPTError, _p_gum__CPTErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DatabaseError, _p_gum__DatabaseErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DefaultInLabel, _p_gum__DefaultInLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateElement, _p_gum__DuplicateElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateLabel, _p_gum__DuplicateLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateScheduleMultiDim, _p_gum__DuplicateScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryError, _p_gum__FactoryErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FatalError, _p_gum__FatalErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__GraphError, _p_gum__GraphErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__HedgeException, _p_gum__HedgeExceptionTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IOError, _p_gum__IOErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleEvidence, _p_gum__IncompatibleEvidenceTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleScorePrior, _p_gum__IncompatibleScorePriorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArc, _p_gum__InvalidArcTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArgument, _p_gum__InvalidArgumentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArgumentsNumber, _p_gum__InvalidArgumentsNumberTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidDirectedCycle, _p_gum__InvalidDirectedCycleTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidEdge, _p_gum__InvalidEdgeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidNode, _p_gum__InvalidNodeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidPartiallyDirectedCycle, _p_gum__InvalidPartiallyDirectedCycleTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IteratorError, _p_gum__IteratorErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__LearningError, _p_gum__LearningErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__MissingValueInDatabase, _p_gum__MissingValueInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__MissingVariableInDatabase, _p_gum__MissingVariableInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoChild, _p_gum__NoChildTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoNeighbour, _p_gum__NoNeighbourTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoParent, _p_gum__NoParentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NotFound, _p_gum__NotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NotImplementedYet, _p_gum__NotImplementedYetTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NullElement, _p_gum__NullElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OperationNotAllowed, _p_gum__OperationNotAllowedTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OutOfBounds, _p_gum__OutOfBoundsTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__PRMTypeError, _p_gum__PRMTypeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__PossiblyIncompatibleScorePrior, _p_gum__PossiblyIncompatibleScorePriorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ScheduleMultiDimError, _p_gum__ScheduleMultiDimErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ScheduleOperationError, _p_gum__ScheduleOperationErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SizeError, _p_gum__SizeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnavailableScheduleOperation, _p_gum__UnavailableScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedElement, _p_gum__UndefinedElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorKey, _p_gum__UndefinedIteratorKeyTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorValue, _p_gum__UndefinedIteratorValueTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnexecutedScheduleOperation, _p_gum__UnexecutedScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownLabelInDatabase, _p_gum__UnknownLabelInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownScheduleMultiDim, _p_gum__UnknownScheduleMultiDimTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownScheduleOperation, _p_gum__UnknownScheduleOperationTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__Exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryError[] = {  {&_swigt__p_gum__FactoryError, 0, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__PRMTypeError, _p_gum__PRMTypeErrorTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__FactoryError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryInvalidState[] = {  {&_swigt__p_gum__FactoryInvalidState, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__FastSyntaxCheck[] = {  {&_swigt__p_gum__FastSyntaxCheck, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FatalError[] = {  {&_swigt__p_gum__FatalError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FormatNotFound[] = {  {&_swigt__p_gum__FormatNotFound, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__GibbsBNdistanceT_double_t[] = {  {&_swigt__p_gum__GibbsBNdistanceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -171351,6 +172271,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__Exception,
   _swigc__p_gum__FactoryError,
   _swigc__p_gum__FactoryInvalidState,
+  _swigc__p_gum__FastSyntaxCheck,
   _swigc__p_gum__FatalError,
   _swigc__p_gum__FormatNotFound,
   _swigc__p_gum__GibbsBNdistanceT_double_t,
@@ -172162,6 +173083,13 @@ SWIGINTERN int SWIG_mod_exec(PyObject *m) {
   SWIG_Python_SetConstant(d, "EdgeMark_Circle",SWIG_From_int(static_cast< int >(gum::EdgeMark::Circle)));
   SWIG_Python_SetConstant(d, "EdgeMark_Tail",SWIG_From_int(static_cast< int >(gum::EdgeMark::Tail)));
   SWIG_Python_SetConstant(d, "EdgeMark_Arrowhead",SWIG_From_int(static_cast< int >(gum::EdgeMark::Arrowhead)));
+  SWIG_Python_SetConstant(d, "FastSyntax_UndiGraph",SWIG_From_int(static_cast< int >(gum::FastSyntax::UndiGraph)));
+  SWIG_Python_SetConstant(d, "FastSyntax_DiGraph",SWIG_From_int(static_cast< int >(gum::FastSyntax::DiGraph)));
+  SWIG_Python_SetConstant(d, "FastSyntax_MixedGraph",SWIG_From_int(static_cast< int >(gum::FastSyntax::MixedGraph)));
+  SWIG_Python_SetConstant(d, "FastSyntax_MarkedGraph",SWIG_From_int(static_cast< int >(gum::FastSyntax::MarkedGraph)));
+  SWIG_Python_SetConstant(d, "FastSyntax_BayesNet",SWIG_From_int(static_cast< int >(gum::FastSyntax::BayesNet)));
+  SWIG_Python_SetConstant(d, "FastSyntax_InfluenceDiagram",SWIG_From_int(static_cast< int >(gum::FastSyntax::InfluenceDiagram)));
+  SWIG_Python_SetConstant(d, "FastSyntax_MarkovRandomField",SWIG_From_int(static_cast< int >(gum::FastSyntax::MarkovRandomField)));
   SWIG_Python_SetConstant(d, "GUM_DEFAULT_ITERATOR_NUMBER",SWIG_From_int(static_cast< int >(4)));
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_NO_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_NO_BARREN_NODES)));
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_BARREN_NODES)));

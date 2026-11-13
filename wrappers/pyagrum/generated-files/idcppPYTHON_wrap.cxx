@@ -4217,16 +4217,6 @@ SWIG_AsVal_int (PyObject * obj, int *val)
 #include <agrum/id.h>
 
 
-#include <memory>
-
-
-SWIGINTERNINLINE PyObject*
-  SWIG_From_bool  (bool value)
-{
-  return PyBool_FromLong(value ? 1 : 0);
-}
-
-
 SWIGINTERN swig_type_info*
 SWIG_pchar_descriptor(void)
 {
@@ -4266,6 +4256,16 @@ SWIGINTERNINLINE PyObject *
 SWIG_From_std_string  (const std::string& s)
 {
   return SWIG_FromCharPtrAndSize(s.data(), s.size());
+}
+
+
+#include <memory>
+
+
+SWIGINTERNINLINE PyObject*
+  SWIG_From_bool  (bool value)
+{
+  return PyBool_FromLong(value ? 1 : 0);
 }
 
 
@@ -5221,6 +5221,37 @@ fail:
     "    gum::InfluenceDiagram< double >::fastPrototype(std::string_view,std::string_view)\n"
     "    gum::InfluenceDiagram< double >::fastPrototype(std::string_view)\n");
   return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_InfluenceDiagram__toFast(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::InfluenceDiagram< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram__toFast" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
+  {
+    try {
+      result = ((gum::InfluenceDiagram< double > const *)arg1)->toFast();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
 }
 
 
@@ -12391,6 +12422,7 @@ static PyMethodDef SwigMethods[] = {
 		"Notes\n"
 		"-----\n"
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
+		"  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote), after the prefix (``*'my decision'``); a quoted name beginning with ``*`` or ``$`` is a chance node.\n"
 		"  - the tensors (probabilities, utilities) are randomly generated.\n"
 		"  - see also `pyagrum.fastID`.\n"
 		"\n"
@@ -12407,6 +12439,7 @@ static PyMethodDef SwigMethods[] = {
 		"        the resulting Influence Diagram\n"
 		"\n"
 		""},
+	 { "InfluenceDiagram__toFast", _wrap_InfluenceDiagram__toFast, METH_O, NULL},
 	 { "delete_InfluenceDiagram", _wrap_delete_InfluenceDiagram, METH_O, NULL},
 	 { "new_InfluenceDiagram", _wrap_new_InfluenceDiagram, METH_VARARGS, NULL},
 	 { "InfluenceDiagram___eq__", _wrap_InfluenceDiagram___eq__, METH_VARARGS, NULL},

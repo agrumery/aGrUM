@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import os
+import tempfile
 import unittest
 
 import pyagrum.markov_random_field as gum
@@ -340,6 +342,30 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     for obj in (gum.fastMRF("A[3]--B").variableFromName("A"), gum.fastMRF("A[3]--B[2]").factor({0, 1})):
       gc.collect()
       self.assertGreaterEqual(obj.domainSize(), 3)
+
+  def testQuotedNamesRoundTrip(self):
+    model = gum.fastMRF("'a--b'--'X-ray'--C;'A->B'--C;'l''eau'")
+    model2 = gum.fastMRF(model.toFast())
+    self.assertEqual(set(model.names()), set(model2.names()))
+    for name in model.names():
+      self.assertEqual(
+        {model.variable(i).name() for i in model.neighbours(model.idFromName(name))},
+        {model2.variable(i).name() for i in model2.neighbours(model2.idFromName(name))},
+      )
+    # an unquoted arc is refused in a Markov random field
+    with self.assertRaises(gum.InvalidArgument):
+      gum.fastMRF("A->B--C")
+
+  def testToFastInAFile(self):
+    import runpy
+
+    model = gum.fastMRF("'a--b'--B;C")
+    with tempfile.TemporaryDirectory() as tmp:
+      filename = os.path.join(tmp, "model.py")
+      model.toFast(filename)
+      copy = runpy.run_path(filename)["model"]  # the file builds the model
+    self.assertEqual(set(copy.names()), set(model.names()))
+    self.assertEqual(copy.toFast(), model.toFast())
 
   def testConnectedComponents(self):
     # A--B connected, C--D connected, E isolated: 3 components

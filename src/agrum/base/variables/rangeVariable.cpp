@@ -46,6 +46,7 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/variables/rangeVariable.h>
 
 #ifdef GUM_NO_INLINE
@@ -92,9 +93,9 @@ namespace gum {
 
   std::string RangeVariable::toFast() const {
     if (const auto m = minVal(); m != 0) {
-      return std::format("{}[{},{}]", name(), m, maxVal());
+      return std::format("{}[{},{}]", quoteFastName(name()), m, maxVal());
     } else {
-      return std::format("{}[{}]", name(), maxVal() + 1);
+      return std::format("{}[{}]", quoteFastName(name()), maxVal() + 1);
     }
   }
 } /* namespace gum */

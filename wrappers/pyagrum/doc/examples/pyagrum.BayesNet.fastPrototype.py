@@ -14,3 +14,8 @@ print(bn.variable("B"))
 # B:Range([1,3])
 print(bn.variable("E"))
 # E:Discretized(<[1;2.5[,[2.5;3.9]>)
+
+# a name between single quotes may contain any character
+bn = gum.BayesNet.fastPrototype("'X-ray'[3]->'Visit Asia'")
+sorted(bn.names())
+# ['Visit Asia', 'X-ray']

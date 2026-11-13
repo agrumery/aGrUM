@@ -12,3 +12,8 @@ print(diag.variable("A"))
 # A:Range([0,5])
 print(diag.variable("E"))
 # E:Discretized(<[1;2.5[,[2.5;3.9]>)
+
+# a name between single quotes, after the prefix of its type
+infdiag = gum.InfluenceDiagram.fastPrototype("'my state'->*'my decision'->$'my utility'")
+infdiag.isUtilityNode("my utility")
+# True

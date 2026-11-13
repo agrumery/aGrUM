@@ -605,6 +605,7 @@ Create a Bayesian network with a dot-like syntax which specifies:
 Notes
 -----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).
   - the CPTs are randomly generated.
   - see also the function `pyagrum.fastBN`.
 

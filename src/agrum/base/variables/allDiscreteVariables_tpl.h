@@ -44,7 +44,10 @@
 #include <algorithm>
 #include <cstdio>
 #include <iostream>
+#include <optional>
+#include <stdexcept>
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 
 namespace gum {
@@ -60,7 +63,7 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string      var_description,
-                                                   std::string_view default_domain) {
+                                                   std::string_view default_domain) try {
     Size                       ds        = 0;
     long                       range_min = 0;
     long                       range_max = 1;
@@ -79,6 +82,23 @@ namespace gum {
     if (auto t = *default_domain.begin(); t != '[' && t != '{')
       GUM_ERROR(InvalidArgument,
                 "default_domain (" << default_domain << ") must start with '[' or '{'")
+
+    // a quoted name ('Visit Asia'{yes|no}): the name is taken as is, then only an optional '+'
+    // (empirical ticks) and an optional domain may follow
+    std::optional< std::string > quotedName;
+    bool                         empiricalMark = false;
+    if (!var_description.empty() && var_description.front() == '\'') {
+      auto [qname, end] = fast::detail::readQuotedName(var_description, 0);
+      std::string rest  = trim_copy(std::string_view(var_description).substr(end));
+      if (!rest.empty() && rest.front() == '+') {
+        empiricalMark = true;
+        rest          = trim_copy(std::string_view(rest).substr(1));
+      }
+      if (!rest.empty() && rest.front() != '[' && rest.front() != '{')
+        GUM_ERROR(InvalidArgument, "Unexpected text after the quoted name in " << var_description)
+      quotedName      = std::move(qname);
+      var_description = std::move(rest);   // the domain only
+    }
 
     if (var_description.find('[') == std::string::npos
         && var_description.find('{') == std::string::npos) {
@@ -240,7 +260,19 @@ namespace gum {
           numerical_values.push_back(std::stod(label));
     }
 
-    trim(name);
+    if (quotedName) {
+      // nothing but the domain may follow the quoted name
+      if (!trim_copy(name).empty())
+        GUM_ERROR(InvalidArgument, "Invalid domain for variable '" << *quotedName << "'")
+      if (empiricalMark && ticks.empty())
+        GUM_ERROR(InvalidArgument,
+                  "'+' (empirical) is only allowed with ticks, for variable '" << *quotedName
+                                                                               << "'")
+      name = std::move(*quotedName);
+    } else {
+      trim(name);
+      if (name.empty()) GUM_ERROR(InvalidArgument, "A variable has no name in the description")
+    }
 
     if (!values.empty()) {
       return std::make_unique< IntegerVariable >(name, name, values);
@@ -259,7 +291,9 @@ namespace gum {
       }
       // if last character of name is a +, we remove the character from the name and set empirical
       // to True
-      if (name.back() == '+') {
+      if (empiricalMark) {
+        return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks, true);
+      } else if (!quotedName && name.back() == '+') {   // name is not empty
         name.pop_back();
         trim(name);
         return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks, true);
@@ -269,5 +303,9 @@ namespace gum {
     } else {
       return std::make_unique< RangeVariable >(name, name, range_min, range_max);
     }
+  } catch (const std::logic_error& e) {
+    // a number which cannot be read (std::stoi, std::stod...): the description is malformed
+    GUM_ERROR(InvalidArgument,
+              "Invalid number in the description of a variable (" << e.what() << ")")
   }
 }   // namespace gum

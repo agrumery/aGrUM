@@ -46,7 +46,10 @@
 
 %feature("docstring") gum::fastVariable
 "
-Use *fast* syntax to add a variable in the BayesNet.
+Create a variable from its *fast* syntax description (e.g. ``a{yes|no}``, ``a[3,7]``).
+
+The name may be written between single quotes (``'Visit Asia'{yes|no}``): it is then taken as is (a doubled quote
+standing for a quote), and only an optional ``+`` (empirical ticks) and an optional domain may follow it.
 
 Raises
 ------

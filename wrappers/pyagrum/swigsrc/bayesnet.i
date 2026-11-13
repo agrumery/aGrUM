@@ -45,6 +45,8 @@
 
 
 
+// the public toFast (with a filename) is defined below in %pythoncode
+%rename(_toFast) gum::BayesNet::toFast;
 %include "keepModelAlive.i"
 GUM_KEEP_MODEL_ALIVE(gum::BayesNet<double>::variable)
 GUM_KEEP_MODEL_ALIVE(gum::BayesNet<double>::variableFromName)
@@ -56,6 +58,7 @@ GUM_KEEP_MODEL_ALIVE(gum::BayesNetFragment<double>::cpt)
 
 // macro from graphs.i
 // an %ignore with a signature matches only the parameter types as written in the header (no gum:: qualification)
+
 %ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*);
 %ignore gum::BayesNet<double>::add(const DiscreteVariable&, MultiDimImplementation<double>*, NodeId);
 
@@ -488,43 +491,22 @@ def saveGUMstring(self, indent: int = None) -> str:
 
 def toFast(self, filename: str = None) -> str:
   """
-  Export the Bayesian network as *fast* syntax (in a string or in a python file)
+  Export the Bayesian network in *fast* syntax (the structure and the variables, not the parameters), read back by
+  `pyagrum.fastBN`. A name is quoted if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
 
   Parameters
   ----------
-  filename : Optional[str]
-    the name of the file (including the prefix), if None , use sys.stdout
+  filename : str, optional
+    if given, a Python file which builds the model with `pyagrum.fastBN` is written
+
+  Returns
+  -------
+  str
+    the fast description of the model (if filename is None)
   """
-
-  def _toFastBN(bn,pythoncode=False):
-    res = []
-    sovars = set()
-    for x, y in bn.arcs():
-      if x in sovars:
-        src = bn.variable(x).name()
-      else:
-        src = bn.variable(x).toFast()
-        sovars.add(x)
-      if y in sovars:
-        dst = bn.variable(y).name()
-      else:
-        dst = bn.variable(y).toFast()
-        sovars.add(y)
-      res.append(f"{src}->{dst}")
-
-    for x in bn.nodes():
-      if x not in sovars:
-        res .append(bn.variable(x).toFast())
-
-    if pythoncode:
-      return 'model=gum.fastBN("""'+';\n     '.join(res)+'""")'
-    else:
-      return ';'.join(res)
-
   if filename is None:
-    return _toFastBN(self)
-  else:
-    with open(filename, "w") as pyfile:
-      print(_toFastBN(self,pythoncode=True), file=pyfile)
+    return self._toFast()
+  with open(filename, "w") as pyfile:
+    print(f"import pyagrum\n\nmodel = pyagrum.fastBN({self._toFast()!r})", file=pyfile)
   }
 }

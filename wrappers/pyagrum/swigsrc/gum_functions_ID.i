@@ -123,6 +123,12 @@ def saveID(infdiag: InfluenceDiagram, filename: str) -> None:
   pkl suffix is used to save an InfluenceDiagram using pickle.
 
   jgum/bgum suffixes use the native aGrUM JSON/binary format.
+
+  Warnings
+  --------
+  In the ``.jgum``, ``.bgum``, ``.bifxml`` and ``.pkl`` files, a variable whose name needs quotes (see
+  `pyagrum.quoteFastName`) is written with a quoted name (``'X-ray'[3]``): pyAgrum 3.3.2 or older reads it with the
+  quotes in the name.
   """
   extension = filename.split('.')[-1].upper()
 
@@ -147,6 +153,8 @@ def fastID(structure: str, domain: int | str = "[2]") -> InfluenceDiagram:
         - ``a`` : a chance node named 'a' (by default)
         - ``$a`` : a utility node named 'a'
         - ``*a`` : a decision node named 'a'
+
+      - names possibly between single quotes, after the prefix (``"'my state'->*'my decision'->$'my utility'"``).
 
   Parameters
   ----------

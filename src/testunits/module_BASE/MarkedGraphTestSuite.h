@@ -185,7 +185,7 @@ namespace gum_tests {
     CHECK(p.isCircle(1, 0));
     CHECK(p.isBidirected(1, 2));
 
-    CHECK_THROWS_AS(gum::fastMarkedGraph("A->"), gum::InvalidEdge&);
+    CHECK_THROWS_AS(gum::fastMarkedGraph("A->"), gum::InvalidArgument&);
     CHECK_THROWS_AS(gum::fastMarkedGraph("A->A"), gum::InvalidEdge&);
   }
 
@@ -201,6 +201,35 @@ namespace gum_tests {
     CHECK_THROWS_AS(gum::fastMarkedGraph("A o-o B;A->B"), gum::InvalidEdge&);
     CHECK_THROWS_AS(gum::fastMarkedGraph("A->B->C-B"), gum::InvalidEdge&);
     CHECK_THROWS_AS(gum::fastMarkedGraph< gum::PAG >("0 o-> 1;0<->1"), gum::InvalidEdge&);
+  }
+
+  GUM_TEST(FastMarkedGraphMalformedNames) {
+    // '<', '>' and the inner blanks are not part of a name: "A o -B" was the edge "A o"-B
+    for (const std::string_view desc: {"A>-B", "A-<B", "A o -B", "A B->C"}) {
+      CHECK_THROWS_AS(gum::fastMarkedGraph(desc), gum::InvalidArgument&);
+    }
+    CHECK_EQ(gum::fastMarkedGraph("A<->B").sizeEdges(), gum::Size(1));
+    CHECK_THROWS_AS(gum::fastMarkedGraph("0->2000000000"), gum::InvalidArgument&);
+  }
+
+  GUM_TEST(FastMarkedGraphQuotedNames) {
+    // a circle may touch a quoted name
+    for (const std::string_view desc: {"'A'o->'B'", "'A' o-> 'B'", "'A'o->B", "B <-o'A'"}) {
+      const auto g = gum::fastMarkedGraph(desc);
+      const auto a = g.idFromName("A").value();
+      const auto b = g.idFromName("B").value();
+      CHECK_MESSAGE(g.isCircle(b, a), desc);
+      CHECK_MESSAGE(g.isArrowhead(a, b), desc);
+    }
+    const auto g = gum::fastMarkedGraph("'Visit Asia' o-o 'l''eau'");
+    CHECK(g.isCircle(g.idFromName("Visit Asia").value(), g.idFromName("l'eau").value()));
+    // a node named o, and a node named Ao
+    CHECK(gum::fastMarkedGraph("o->B").idFromName("o").has_value());
+    CHECK(gum::fastMarkedGraph("A->o->B").idFromName("o").has_value());
+    CHECK(gum::fastMarkedGraph("Ao->B").idFromName("Ao").has_value());
+    // text after a quoted name
+    CHECK_THROWS_AS(gum::fastMarkedGraph("'A'o"), gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::fastMarkedGraph("'A->B"), gum::InvalidArgument&);
   }
 
   GUM_TEST(ToStringAndToDot) {

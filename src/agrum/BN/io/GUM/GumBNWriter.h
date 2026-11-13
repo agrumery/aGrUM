@@ -75,6 +75,10 @@ namespace gum {
    * This class to write the content of a Bayesian network in
    * the GUM json format.
    *
+   *
+   * @warning The variables are written in fast syntax (DiscreteVariable::toFast()): a name which
+   * needs quotes (see quoteFastName()) is written quoted ('X-ray'[3]), and aGrUM/pyAgrum 3.3.2 or
+   * older read it with the quotes in the name.
    */
   template < GUM_Numeric GUM_SCALAR >
   class GumBNWriter: public BNWriter< GUM_SCALAR > {

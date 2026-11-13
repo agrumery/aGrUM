@@ -186,7 +186,8 @@ Build a graph from a dot-like syntax : ``'A->B->C;B->E'``.
 ``';'`` separates independent chains. If every node token in the description is
 a non-negative integer, those integers are used directly as node ids ;
 otherwise every token -- including numeric-looking ones -- is used as a node
-name.
+name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+(``\"'Visit Asia'->X\"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
 Note
 ----
@@ -197,9 +198,13 @@ rejected here rather than silently misread.
 
 Raises
 ------
+pyagrum.InvalidArgument
+  If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+  are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+  (e.g. ``'0->2000000000'``).
 pyagrum.InvalidArc
   If the description requires a directed arc but the target graph type does
-  not support arcs, or if the description is malformed.
+  not support arcs.
 pyagrum.InvalidEdge
   If the description requires an undirected edge but the target graph type
   does not support edges.
@@ -219,13 +224,17 @@ description.
 An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
 circle, nothing for a tail. A circle must be separated from the name of its node by a space
 (``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
-``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
+``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. A name may be quoted
+(``\"'Visit Asia' o-> X\"``), and a circle may touch a quoted name (``\"'A'o->'B'\"``). An edge may be repeated with the same marks
 (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
 
 Raises
 ------
+pyagrum.InvalidArgument
+  If the description is malformed (e.g. ``'A>-B'`` or ``'A o -B'``), or if the nodes are ids and the
+  largest one leaves more than max(number of nodes, 65536) absent ids below it (``'0->2000000000'``).
 pyagrum.InvalidEdge
-  If the description is malformed or describes an edge with different marks.
+  If the description describes an edge with different marks.
 
 Parameters
 ----------

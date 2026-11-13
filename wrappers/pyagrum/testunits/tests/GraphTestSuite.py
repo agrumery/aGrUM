@@ -697,6 +697,77 @@ class TestGraph(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidEdge):
       gum.fastPAG("0 o-> 1;0<->1")
 
+  def testFastGraphsRefuseMalformedNamesAndLargeIds(self):
+    for desc in ("A>-B", "A B->C", "A--B", "A->"):
+      with self.assertRaises(gum.InvalidArgument):
+        gum.fastMixedGraph(desc)
+    with self.assertRaises(gum.InvalidArgument):
+      gum.fastMarkedGraph("A o -B")
+    # an arc in an undirected graph is not a syntax error
+    with self.assertRaises(gum.InvalidArc):
+      gum.fastUndiGraph("A->B")
+    with self.assertRaises(gum.InvalidArgument):
+      gum.fastDiGraph("0->2000000000")
+    with self.assertRaises(gum.InvalidArgument):
+      gum.fastPAG("0->2000000000")
+
+  def testQuotedNames(self):
+    g = gum.fastGraph("'Visit Asia'->X;'l''eau'->X")
+    self.assertIsInstance(g, gum.DAG)
+    self.assertEqual({g.nameFromId(n) for n in g.nodes()}, {"Visit Asia", "X", "l'eau"})
+    # a '-' inside a quoted name is not an edge
+    self.assertIsInstance(gum.fastGraph("'a-b'->'c-d'"), gum.DAG)
+    self.assertIsInstance(gum.fastGraph("'a-b'-'c-d'"), gum.UndiGraph)
+    p = gum.fastPAG("'A'o->'B'")
+    self.assertEqual(p.markAt(p.idFromName("A"), p.idFromName("B")), gum.EdgeMark.Arrowhead)
+    self.assertEqual(p.markAt(p.idFromName("B"), p.idFromName("A")), gum.EdgeMark.Circle)
+
+  def testFastGraphDispatcher(self):
+    self.assertIsInstance(gum.fastGraph(""), gum.UndiGraph)
+    self.assertIsInstance(gum.fastGraph("A-B"), gum.UndiGraph)
+    self.assertIsInstance(gum.fastGraph("A->B"), gum.DAG)
+    self.assertIsInstance(gum.fastGraph("A->B->A"), gum.DiGraph)
+    self.assertIsInstance(gum.fastGraph("A->B;B-C"), gum.PDAG)
+    self.assertIsInstance(gum.fastGraph("A->B->C->A;C-D"), gum.MixedGraph)
+    self.assertIsInstance(gum.fastGraph("A o-> B"), gum.MarkedGraph)
+    self.assertIsInstance(gum.fastGraph("A<->B"), gum.MarkedGraph)
+    for desc in ("A--B", "A->", "A B->C"):
+      with self.assertRaises(gum.InvalidArgument):
+        gum.fastGraph(desc)
+
+  def testCheckFastSyntax(self):
+    check = gum.checkFastSyntax("A->B->C")
+    self.assertTrue(check)
+    self.assertEqual(
+      check.validSyntaxes(),
+      [
+        gum.FastSyntax.DiGraph,
+        gum.FastSyntax.MixedGraph,
+        gum.FastSyntax.MarkedGraph,
+        gum.FastSyntax.BayesNet,
+        gum.FastSyntax.InfluenceDiagram,
+      ],
+    )
+    self.assertIsInstance(check.validSyntaxes()[0], gum.FastSyntax)
+    self.assertTrue(check.isValid(gum.FastSyntax.BayesNet))
+    self.assertFalse(check.isValid(gum.FastSyntax.UndiGraph))
+    self.assertEqual(check.error(gum.FastSyntax.DiGraph), "")
+    self.assertNotEqual(check.error(gum.FastSyntax.UndiGraph), "")
+    self.assertEqual(check.description(), "A->B->C")
+    self.assertIn("BayesNet", repr(check))
+    self.assertEqual(gum.checkFastSyntax("A--B--C").validSyntaxes(), [gum.FastSyntax.MarkovRandomField])
+    self.assertFalse(gum.checkFastSyntax("'A->B"))
+    with self.assertRaises(gum.InvalidArgument):
+      gum.checkFastSyntax("A->B", "2")
+    self.assertEqual(gum.quoteFastName("X-ray"), "'X-ray'")
+    self.assertTrue(gum.fastNameNeedsQuotes("X-ray"))
+    self.assertFalse(gum.fastNameNeedsQuotes("Visit Asia"))
+    with self.assertRaises(gum.OutOfBounds):
+      check.isValid(42)
+    # pyagrum.FastSyntax follows the C++ enumeration
+    cpp = {name.removeprefix("FastSyntax_") for name in dir(gum.pyagrumcpp) if name.startswith("FastSyntax_")}
+    self.assertEqual(cpp, {syntax.name for syntax in gum.FastSyntax})
+
   def testMAG(self):
     dag = gum.fastDAG("A->X<-T->Y<-B")
     t = dag.idFromName("T")

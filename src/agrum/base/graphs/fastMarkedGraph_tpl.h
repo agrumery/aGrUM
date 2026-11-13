@@ -55,12 +55,9 @@ namespace gum {
     const auto parsed = fastGraphParseChains(
         desc,
         fastMarkedGraphTokenize,
-        [](const FastMarkedToken& token) -> const std::string& { return token.token; },
-        [&] {
-          GUM_ERROR(InvalidEdge,
-                    "fastMarkedGraph: malformed description '"
-                        << desc << "' (operator without a node token)")
-        });
+        [](FastMarkedToken& token) -> std::string& { return token.token; },
+        "fastMarkedGraph",
+        true);
 
     GRAPH_TYPE g;
     for (const auto& tokens: parsed.chains) {

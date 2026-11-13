@@ -173,7 +173,10 @@ state : bool
 
 %feature("docstring") gum::DiscretizedVariable::toFast
 "
-Return the variable description in fast syntax (e.g. ``name[v1:v2:v3]``).
+Return the variable description in fast syntax (e.g. ``name[t1,t2,t3]``, ``name+[t1,t2,t3]`` if empirical).
+
+The name is written between single quotes if it would not be read back as is otherwise (see
+`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[0,1.5,3]``.
 
 Returns
 -------

@@ -98,21 +98,21 @@ def log2(p):
 
 def fastGraph(
   desc: str,
-) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
+) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph | MarkedGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
-  graph type from a quick read of ``desc``.
+  graph type from the syntaxes for which ``desc`` is valid (see `pyagrum.checkFastSyntax`).
 
-  If ``desc`` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
-  attempted first, falling back to a :class:`pyagrum.DiGraph` if that would create a
-  directed cycle. If ``desc`` mixes arcs and undirected edges (``'-'``), a
-  :class:`pyagrum.PDAG` is attempted first, falling back to a :class:`pyagrum.MixedGraph`
-  on the same condition. If ``desc`` only contains undirected edges, a
-  :class:`pyagrum.UndiGraph` is returned.
+  If ``desc`` only contains undirected edges (``'-'``), a `pyagrum.UndiGraph` is returned. If it
+  only contains directed arcs (``'->'``/``'<-'``), a `pyagrum.DAG` is attempted first, falling back
+  to a `pyagrum.DiGraph` if that would create a directed cycle. If it mixes arcs and edges, a
+  `pyagrum.PDAG` is attempted first, falling back to a `pyagrum.MixedGraph`. If it needs marks
+  (``'o'`` circles, ``'<->'``), a `pyagrum.MarkedGraph` is returned. A name may be written between
+  single quotes (``'Visit Asia'->X``).
 
-  For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
-  :func:`pyagrum.fastUndiGraph`, :func:`pyagrum.fastMixedGraph`, :func:`pyagrum.fastDAG`,
-  :func:`pyagrum.fastPDAG` or :func:`pyagrum.fastChainGraph` directly.
+  For explicit control over the returned type, use `pyagrum.fastDiGraph`,
+  `pyagrum.fastUndiGraph`, `pyagrum.fastMixedGraph`, `pyagrum.fastDAG`,
+  `pyagrum.fastPDAG`, `pyagrum.fastChainGraph`, `pyagrum.fastMarkedGraph` or `pyagrum.fastPAG` directly.
 
   Parameters
   ----------
@@ -121,26 +121,29 @@ def fastGraph(
 
   Returns
   -------
-  pyagrum.DAG or pyagrum.DiGraph or pyagrum.PDAG or pyagrum.MixedGraph or pyagrum.UndiGraph
+  pyagrum.DAG or pyagrum.DiGraph or pyagrum.PDAG or pyagrum.MixedGraph or pyagrum.UndiGraph or pyagrum.MarkedGraph
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    If the description is malformed, or if the nodes are ids and the largest one is too large.
   """
-  import re
-
-  is_arc = ("->" in desc) or ("<-" in desc)
-  is_edge = re.search(r"(?<!<)-(?!>)", desc) is not None
-
-  if not is_arc:
+  check = checkFastSyntax(desc)
+  if check.isValid(FastSyntax.UndiGraph):
     return fastUndiGraph(desc)
-
-  if is_edge:
+  if check.isValid(FastSyntax.DiGraph):
+    try:
+      return fastDAG(desc)
+    except InvalidDirectedCycle:
+      return fastDiGraph(desc)
+  if check.isValid(FastSyntax.MixedGraph):
     try:
       return fastPDAG(desc)
     except (InvalidDirectedCycle, InvalidArc):
       return fastMixedGraph(desc)
-
-  try:
-    return fastDAG(desc)
-  except InvalidDirectedCycle:
-    return fastDiGraph(desc)
+  if check.isValid(FastSyntax.MarkedGraph):
+    return fastMarkedGraph(desc)
+  return fastMixedGraph(desc)  # raises the error of the description
 %}
 
 %pythoncode %{

@@ -39,6 +39,27 @@
       graphs (`CPDAG`, `MPDAG`, `EssentialGraph`, `MAG`) are accepted as the other graphs. Nodes by id or by name. New
       notebook `03-Tutorial_graphs`.
     - `BayesNet.changeTensor` is removed: use `bn.cpt(node).fillWith(tensor)`.
+    - Names between single quotes in every *fast* syntax (`fastBN`, `fastID`, `fastMRF`, `fastVariable`, `fastGraph`
+      and the typed `fast*Graph`, `fastMarkedGraph`, `fastPAG`, `add`): `fastBN("'Visit Asia'{yes|no}->'X-ray'")`; a
+      doubled quote stands for a quote (`'l''eau'`). A quote opens a quoted name only at the beginning of a name
+      (`O'Brien` and the labels `{l'eau|x}` are unchanged). A circle may touch a quoted name (`fastPAG("'A'o->'B'")`).
+      New `quoteFastName` and `fastNameNeedsQuotes`.
+    - New `checkFastSyntax` (and `FastSyntaxCheck`, `FastSyntax`): the syntaxes for which a fast description is valid
+      (`"A->B"` is a directed graph, a Bayesian network and an influence diagram), with the error for the others; a
+      syntax is checked only when it is asked for. `fastGraph` no longer parses the description in Python: it uses
+      `checkFastSyntax`, and returns a `MarkedGraph` for a description with marks (`"A o-> B"`, it raised an error).
+    - Behaviour change: a malformed fast description (an operator without a node, an unclosed quote, a misplaced `<` or
+      `>`, a number which cannot be read, a variable without a name) raises `InvalidArgument` in every fast syntax
+      (`fastBN("A->")` raised `InvalidArc`, `fastVariable("A[x]")` a Python `ValueError`, `fastBN("A<->B")` created a
+      variable `A<`, `fastBN("A->[3]")` a variable without a name). `InvalidArc` and `InvalidEdge` are kept for an arc
+      or an edge that the target does not support.
+    - `toFast()` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField` is computed in C++, in the order of the node
+      ids; `toFast(filename)` writes a Python file which can be run (it lacked `import pyagrum`).
+    - Behaviour change: `toFast()` (of the variables, `BayesNet`, `InfluenceDiagram`, `MarkovRandomField`) quotes a
+      name which would not be read back as is otherwise (`'X-ray'[3]`), so that `fastBN(bn.toFast())` gives back the
+      names. **The files saved by pyAgrum (`.jgum`, `.bgum`, `.bifxml`, pickle...) write such names quoted, and
+      pyAgrum 3.3.2 or older reads them with the quotes in the name** (this includes the variables `X[0]` of a KTBN).
+      The simple names are written as before.
 
 - aGrUM
 
@@ -48,6 +69,14 @@
       is now one generator for all the shared modules, and `randomGeneratorSeed()` returns the seed in use. The CMake
       variable `GUM_RANDOMSEED` and the option `act --fixed_seed`, which had no effect on the draws, are removed. The
       test runs display their seed.
+    - Names between single quotes in every fast syntax (`fastGraph`, `fastMarkedGraph`, `fastVariable`,
+      `fastPrototype` of `BayesNet`, `InfluenceDiagram`, `MarkovRandomField`), shared lexical tools in
+      `base/core/fastSyntax.h` (`quoteFastName`, `fastNameNeedsQuotes`). The three `fastPrototype` share one analysis
+      of the description (`base/graphicalModels/fastModel.h`), used by the new `checkFastSyntax`/`FastSyntaxCheck`
+      (`base/graphicalModels/fastSyntaxCheck.h`). `DiscreteVariable::toFast()` quotes the names which need it (see
+      the warning in the pyAgrum section). New `toFast()` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField`.
+      Behaviour change: a malformed description raises `InvalidArgument` in every fast syntax (see pyAgrum), and a
+      `;` inside `[...]` or `{...}` no longer separates two chains.
     - Behaviour change: a seed gives the same draws on every platform. `randomValue`, `randomProba` and the shuffles
       of the database generators used the distributions of `<random>`, whose algorithms depend on the standard
       library (the same seed gave other values with libc++, libstdc++ or MSVC); the draws are now computed from the
@@ -185,7 +214,10 @@
       `fastMRF` created a variable with an empty name).
     - `fastGraph`, `fastMarkedGraph`: a node is given by its id only if its token is written with digits only and fits in
       an `int`, else all the tokens are names (`"99999999999->1"` created the arc 0->1; `"+5"` and `"5"` were the same
-      node).
+      node). An unquoted node name contains no blank, `<` nor `>` outside its brackets (`"A<->B"` created a node `A<`,
+      `"A o -B"` a node `A o`): such a token raises `InvalidArgument`. In id mode, an id leaving more
+      than max(number of nodes, 65536) absent ids below it raises `InvalidArgument` (`"0->2000000000"` reserved two
+      billion ids).
       `isInteger`/`isIntegerWithResult` refuse a sign alone and a value out of the range of an `int` (which was
       truncated).
     - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
@@ -263,7 +295,10 @@
     - `CredalNet.setCPT` can be called from Python (its vertices, a list of lists of probabilities, could not be
       converted).
     - `skbn.BNClassifier`: an unfitted classifier can be pickled, copied and cloned (it failed with scikit-learn 1.8).
+    - `clg.CLG.asDiscreteBN` and the `NoDiscretization` parameters of `DiscreteTypeProcessor` quote the names of the
+      variables (a name such as `X-ray` was misread).
     - `help(pyagrum.config.typed)` (and `asInt`, `asFloat`, `asBool`) shows the documentation of the accessor.
+    - `MarkovRandomField.toFast(filename)` raised `NameError`.
     - `variable`, `variableFromName`, `cpt` (`BayesNet`, `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`),
       `utility` (`InfluenceDiagram`) and `factor` (`MarkovRandomField`) keep their model alive: on a temporary model
       (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).

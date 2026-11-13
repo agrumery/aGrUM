@@ -52,7 +52,7 @@
 #include <limits>
 #include <set>
 
-#include <agrum/base/graphs/fastGraph.h>
+#include <agrum/base/graphicalModels/fastModel.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/count.h>
@@ -74,18 +74,6 @@
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  NodeId build_node_for_MN(MarkovRandomField< GUM_SCALAR >& mn,
-                           std::string_view                 node,
-                           std::string_view                 default_domain) {
-    auto v = fastVariable< GUM_SCALAR >(std::string{node}, default_domain);
-
-    NodeId res;
-    if (mn.exists(v->name())) res = mn.idFromName(v->name());
-    else res = mn.add(*v);
-    return res;
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   MarkovRandomField< GUM_SCALAR >
       MarkovRandomField< GUM_SCALAR >::fastPrototype(std::string_view dotlike, Size domainSize) {
     return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
@@ -95,15 +83,18 @@ namespace gum {
   MarkovRandomField< GUM_SCALAR >
       MarkovRandomField< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
                                                      std::string_view domain) {
+    const auto model = fast::detail::parseFastModel(dotlike,
+                                                    fast::detail::FastModelType::MarkovRandomField,
+                                                    domain);
     MarkovRandomField< GUM_SCALAR > mn;
-
-
-    for (const auto& clikchain: graph::detail::fastGraphChains(dotlike)) {
+    std::vector< NodeId >           ids;
+    ids.reserve(model.nodes.size());
+    for (const auto& node: model.nodes)
+      ids.push_back(mn.add(*fastVariable< GUM_SCALAR >(node.description, node.defaultDomain)));
+    for (const auto& factor: model.factors) {
       NodeSet cliq;
-      for (auto& node: split(clikchain, "--")) {
-        auto idVar = build_node_for_MN(mn, node, domain);
-        cliq.insert(idVar);
-      }
+      for (const auto i: factor)
+        cliq.insert(ids[i]);
       mn.addFactor(cliq);
     }
     mn.generateFactors();
@@ -125,6 +116,41 @@ namespace gum {
     mn.endTopologyTransformation();
     mn.setProperty("name", bn.propertyWithDefault("name", "noname"));
     return mn;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string MarkovRandomField< GUM_SCALAR >::toFast() const {
+    NodeSet     written;
+    std::string fast;
+    // a node is written in full at its first occurrence, by its name afterwards
+    auto write = [&](NodeId node) {
+      const auto& var = this->variable(node);
+      if (written.exists(node)) return quoteFastName(var.name());
+      written.insert(node);
+      return var.toFast();
+    };
+    auto append = [&](const std::string& chain) {
+      if (!fast.empty()) fast += ';';
+      fast += chain;
+    };
+    // in the order of the NodeIds: the description does not depend on the hash tables
+    std::vector< std::vector< NodeId > > scopes;
+    for (const auto& [scope, factor]: factors()) {
+      scopes.emplace_back(scope.begin(), scope.end());
+      std::sort(scopes.back().begin(), scopes.back().end());
+    }
+    std::sort(scopes.begin(), scopes.end());
+    for (const auto& scope: scopes) {
+      std::string chain;
+      for (const auto node: scope) {
+        if (!chain.empty()) chain += "--";
+        chain += write(node);
+      }
+      append(chain);
+    }
+    for (const auto node: this->nodes())
+      if (!written.exists(node)) append(write(node));
+    return fast;
   }
 
   template < GUM_Numeric GUM_SCALAR >

@@ -54,7 +54,7 @@
 #include <set>
 
 #include <agrum/base/core/debug.h>
-#include <agrum/base/graphs/fastGraph.h>
+#include <agrum/base/graphicalModels/fastModel.h>
 #include <agrum/base/multidim/aggregators/amplitude.h>
 #include <agrum/base/multidim/aggregators/and.h>
 #include <agrum/base/multidim/aggregators/count.h>
@@ -77,18 +77,6 @@
 
 namespace gum {
   template < GUM_Numeric GUM_SCALAR >
-  NodeId build_node(gum::BayesNet< GUM_SCALAR >& bn,
-                    std::string_view             node,
-                    std::string_view             default_domain) {
-    auto v = fastVariable< GUM_SCALAR >(std::string{node}, std::string(default_domain));
-
-    NodeId res;
-    if (bn.exists(v->name())) res = bn.idFromName(v->name());
-    else res = bn.add(*v);
-    return res;
-  }
-
-  template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
                                                                Size             domainSize) {
     return fastPrototype(dotlike, "[" + std::to_string(domainSize) + "]");
@@ -97,23 +85,23 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   BayesNet< GUM_SCALAR > BayesNet< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
                                                                std::string_view domain) {
+    const auto model
+        = fast::detail::parseFastModel(dotlike, fast::detail::FastModelType::BayesNet, domain);
     gum::BayesNet< GUM_SCALAR > bn;
-
-    auto resolve = [&](const std::string& node) { return build_node(bn, node, domain); };
-    auto addArc  = [&](NodeId tail, NodeId head, const std::string&) { bn.addArc(tail, head); };
-    auto addEdge = [&](NodeId, NodeId, const std::string& token) {
-      GUM_ERROR(InvalidEdge,
-                "fastPrototype: '" << token << "' is preceded by '-' but a BayesNet "
-                                   << "does not support edges")
-    };
-
-    for (const auto& chaine: graph::detail::fastGraphChains(dotlike)) {
-      using namespace graph::detail;
-      fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
-    }
+    std::vector< NodeId >       ids;
+    ids.reserve(model.nodes.size());
+    for (const auto& node: model.nodes)
+      ids.push_back(bn.add(*fastVariable< GUM_SCALAR >(node.description, node.defaultDomain)));
+    for (const auto& [tail, head]: model.arcs)
+      bn.addArc(ids[tail], ids[head]);
     bn.generateCPTs();
     bn.setProperty("name", "anonymousBN");
     return bn;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  std::string BayesNet< GUM_SCALAR >::toFast() const {
+    return fast::detail::directedModelToFast(*this, [](NodeId) { return std::string(); });
   }
 
   template < GUM_Numeric GUM_SCALAR >

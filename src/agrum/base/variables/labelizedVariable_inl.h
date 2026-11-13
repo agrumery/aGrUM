@@ -51,6 +51,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/variables/discreteVariable.h>
 
@@ -171,7 +172,7 @@ namespace gum {
 
   INLINE VarType LabelizedVariable::varType() const { return VarType::LABELIZED; }
 
-  INLINE std::string LabelizedVariable::toFast() const { return name() + domain(); }
+  INLINE std::string LabelizedVariable::toFast() const { return quoteFastName(name()) + domain(); }
 
   INLINE bool LabelizedVariable::_checkSameDomain_(const gum::Variable& aRV) const {
     // we can assume that aRV is a LabelizedVariable

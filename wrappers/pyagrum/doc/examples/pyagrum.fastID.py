@@ -16,3 +16,8 @@ print(infdiag.variable("C"))
 # C:Labelized({yes|No})
 print(infdiag.variable("D"))  # a utility node has a single value
 # D:Range([0,0])
+
+# a name between single quotes, after the prefix of its type
+infdiag = gum.fastID("'my state'->*'my decision'->$'my utility'")
+infdiag.isDecisionNode("my decision")
+# True

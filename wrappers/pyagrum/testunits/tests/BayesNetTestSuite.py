@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import os
+import tempfile
 import unittest
 
 import numpy
@@ -797,7 +799,7 @@ class TestSaveBN(BayesNetTestCase):
       self.assertEqual(bn.variable(n).domainSize(), bn2.variable(n).domainSize())
 
   def testToFast(self):
-    model = gum.fastBN("A->B->C<-D->E;F->G[3];H->I{a|b|c};X")
+    model = gum.fastBN("A->B->C<-D->E;F->G[3];H->I{a|b|c};X;' a'->'X-ray'")
     model2 = gum.fastBN(model.toFast())
     self.assertEqual(model.names(), model2.names())
     for _, n in model:
@@ -818,6 +820,30 @@ class TestSaveBN(BayesNetTestCase):
     ):
       gc.collect()
       self.assertEqual(obj.domainSize(), 3)
+
+  def testQuotedNamesRoundTrip(self):
+    # (a name beginning with a blank is not kept by the BIFXML format: see testToFast for the fast syntax)
+    model = gum.fastBN("'X-ray'->'l''eau'->'a b';'X+'[0,1,2]->'*x';'a;b'{u|v}->'X-ray';O'Brien->'X-ray'")
+    self.assertEqual(set(model.names()), {"X-ray", "l'eau", "a b", "X+", "*x", "a;b", "O'Brien"})
+    self.assertEqual(model.variable("X-ray").toFast(), "'X-ray'[2]")
+    self.assertEqual(model.variable("O'Brien").toFast(), "O'Brien[2]")
+
+    def check(other):
+      self.assertEqual(set(model.names()), set(other.names()))
+      for _, n in model:
+        self.assertEqual(model.variable(n).toFast(), other.variable(model.variable(n).name()).toFast())
+      self.assertEqual(
+        {(model.variable(x).name(), model.variable(y).name()) for x, y in model.arcs()},
+        {(other.variable(x).name(), other.variable(y).name()) for x, y in other.arcs()},
+      )
+
+    check(gum.fastBN(model.toFast()))
+    with tempfile.TemporaryDirectory() as tmp:
+      for ext in ("jgum", "bgum", "bifxml", "pkl"):
+        with self.subTest(ext=ext):
+          filename = os.path.join(tmp, f"quoted.{ext}")
+          gum.saveBN(model, filename)
+          check(gum.loadBN(filename))
 
 
 class TestScore(BayesNetTestCase):

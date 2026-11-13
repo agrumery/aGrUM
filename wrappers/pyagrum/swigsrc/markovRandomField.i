@@ -45,6 +45,8 @@
 
 
 
+// the public toFast (with a filename) is defined below in %pythoncode
+%rename(_toFast) gum::MarkovRandomField::toFast;
 %include "keepModelAlive.i"
 GUM_KEEP_MODEL_ALIVE(gum::IMarkovRandomField<double>::factor)
 GUM_KEEP_MODEL_ALIVE(gum::MarkovRandomField<double>::factor)
@@ -228,43 +230,23 @@ def saveGUMstring(self, indent: int = None) -> str:
 
 def toFast(self, filename: str = None) -> str:
   """
-  Export the MRF as *fast* syntax (in a string or in a python file)
+  Export the Markov random field in *fast* syntax (the structure and the variables, not the parameters), read back by
+  `pyagrum.fastMRF`. A name is quoted if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
 
   Parameters
   ----------
-  filename : Optional[str]
-    the name of the file (including the prefix), if None , use sys.stdout
+  filename : str, optional
+    if given, a Python file which builds the model with `pyagrum.fastMRF` is written
+
+  Returns
+  -------
+  str
+    the fast description of the model (if filename is None)
   """
-
-  def _toFastMRF(model,pythoncode=False):
-    res = []
-    sovars = set()
-    first = True
-    for f in model.factors():
-      l = []
-      for x in f:
-          if x in sovars:
-            src = model.variable(x).name()
-          else:
-            src = model.variable(x).toFast()
-            sovars.add(x)
-          l.append(src)
-      res.append("--".join(l))
-
-    for x in model.nodes():
-      if x not in sovars:
-        res.append(model.variable(x).toFast())
-
-    if pythoncode:
-      return 'model=gum.fastMRF("""'+';\n     '.join(res)+'""")'
-    else:
-      return ';'.join(res)
-
   if filename is None:
-    return _toFastMRF(self)
-  else:
-    with open(filename, "w") as pyfile:
-      print(_toFastBN(self,pythoncode=True), file=pyfile)
+    return self._toFast()
+  with open(filename, "w") as pyfile:
+    print(f"import pyagrum\n\nmodel = pyagrum.fastMRF({self._toFast()!r})", file=pyfile)
   }
 
 %pythonappend gum::UGmodel::graph %{

@@ -1010,6 +1010,49 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(FastPrototypeQuotedNames) {
+    // the fast description of a BN is read back by fastPrototype
+    {
+      const auto bn   = gum::BayesNet< double >::fastPrototype("'X-ray'{a|b}->C[3]<-'l''eau';D");
+      const auto copy = gum::BayesNet< double >::fastPrototype(bn.toFast());
+      CHECK_EQ(copy.toFast(), bn.toFast());
+      CHECK_EQ(copy.size(), bn.size());
+      CHECK(copy.existsArc("X-ray", "C"));
+      CHECK(copy.existsArc("l'eau", "C"));
+      CHECK_EQ(copy.variableFromName("C").domainSize(), static_cast< gum::Size >(3));
+    }
+    // a malformed description (no name, misplaced operator, operator without node) is refused
+    for (const std::string_view desc: {"A->[3]", "A<->B", "A->", "A->B>"}) {
+      CHECK_THROWS_AS(gum::BayesNet< double >::fastPrototype(desc), const gum::InvalidArgument&);
+    }
+
+    const auto bn
+        = gum::BayesNet< double >::fastPrototype("'Visit Asia'{yes|no}->Dysp<-'X-ray'[3];'l''eau'");
+    CHECK_EQ(bn.size(), static_cast< gum::Size >(4));
+    CHECK_EQ(bn.variableFromName("Visit Asia").domainSize(), static_cast< gum::Size >(2));
+    CHECK_EQ(bn.variableFromName("X-ray").domainSize(), static_cast< gum::Size >(3));
+    CHECK(bn.existsArc("Visit Asia", "Dysp"));
+    CHECK(bn.existsArc("X-ray", "Dysp"));
+    CHECK(bn.exists("l'eau"));
+    // legacy names with blanks, negative ranges
+    const auto legacy
+        = gum::BayesNet< double >::fastPrototype("A->Hello World !->c;B[-3,3]->'B-C'");
+    CHECK(legacy.existsArc("Hello World !", "c"));
+    CHECK(legacy.existsArc("B", "B-C"));
+    // the fast description of a BN with awkward names is read back
+    gum::BayesNet< double > awkward;
+    for (const auto& name: {"X-ray", "l'eau", " a", "X+", "*x", "a;b"})
+      awkward.add(gum::LabelizedVariable(name, name, 2));
+    std::string desc;
+    for (const auto node: awkward.nodes()) {
+      if (!desc.empty()) desc += ";";
+      desc += awkward.variable(node).toFast();
+    }
+    const auto copy = gum::BayesNet< double >::fastPrototype(desc);
+    for (const auto node: awkward.nodes())
+      CHECK(copy.exists(awkward.variable(node).name()));
+  }
+
   GUM_TEST(FastPrototypeVarType) {
     auto bn = gum::BayesNet< float >::fastPrototype("a");
     CHECK_EQ(bn.variable("a").toString(), "a:Range([0,1])");

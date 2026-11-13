@@ -90,6 +90,7 @@
 %include "doc_Counterfactual.i"
 
 %include "doc_miscellaneous.i"
+%include "doc_fastSyntax.i"
 %include "doc_JunctionTreeGenerator.i"
 %include "doc_IDGenerator.i"
 %include "doc_BNGenerator.i"

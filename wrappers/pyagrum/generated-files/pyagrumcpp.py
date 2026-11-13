@@ -445,6 +445,24 @@ def availableGraphExts() -> str:
 
 
 
+import enum as _enum
+
+
+class FastSyntax(_enum.IntEnum):
+  """
+  The fast syntaxes: the kinds of objects that a fast description can build (see `pyagrum.checkFastSyntax`).
+  """
+
+# the values of the C++ enumeration pyagrum.FastSyntax
+  UndiGraph = _pyagrumcpp.FastSyntax_UndiGraph
+  DiGraph = _pyagrumcpp.FastSyntax_DiGraph
+  MixedGraph = _pyagrumcpp.FastSyntax_MixedGraph
+  MarkedGraph = _pyagrumcpp.FastSyntax_MarkedGraph
+  BayesNet = _pyagrumcpp.FastSyntax_BayesNet
+  InfluenceDiagram = _pyagrumcpp.FastSyntax_InfluenceDiagram
+  MarkovRandomField = _pyagrumcpp.FastSyntax_MarkovRandomField
+
+
 import warnings
 from typing import NamedTuple
 
@@ -472,6 +490,47 @@ class ConfigMetadata(NamedTuple):
   doc: str  # one-line documentation
   target: tuple[str, str] | None  # replacement (section, option) when kind == "deprecated"
   deprecated: bool = False  # deprecated without replacement: the key keeps its kind and its value
+
+
+class _ConfigAccessor:
+# an accessor of pyagrum.config (typed, asInt, asFloat, asBool): its class is named after it and its instances
+# carry the documentation of its property, so that help(pyagrum.config.typed) shows this documentation only
+  def __init__(self, container):
+    self._container = container
+    self.__doc__ = getattr(type(container), type(self).__name__).__doc__
+
+  def __repr__(self):
+    return f"pyagrum.config.{type(self).__name__}"
+
+  def __getitem__(self, x):
+    return self._container.getTyped(x[0], x[1])
+
+  def __setitem__(self, x, v):
+    self._container[x] = v
+
+
+class _DeprecatedConfigAccessor(_ConfigAccessor):
+  def _warn(self):
+    warnings.warn(
+      f"[pyAgrum] {self!r} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
+      DeprecationWarning,
+      stacklevel=3,
+    )
+
+  def __getitem__(self, x):
+    self._warn()
+    return super().__getitem__(x)
+
+  def __setitem__(self, x, v):
+    self._warn()
+    super().__setitem__(x, v)
+
+
+# the classes of the accessors, named after them (help() titles the documentation with the name of the class)
+_CONFIG_ACCESSORS = {
+  name: type(name, (_ConfigAccessor if name == "typed" else _DeprecatedConfigAccessor,), {"__module__": "pyagrum"})
+  for name in ("typed", "asInt", "asFloat", "asBool")
+}
 
 class GumException(Exception):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -1124,10 +1183,14 @@ def randomGamma(shape: float) -> float:
 def randomGeneratorSeed() -> int:
     r"""
 
+    Give the seed of the pseudo-random generator, to replay a sequence of draws.
+
     Returns
     -------
     int
-      the seed of the generator: the value given to the last call to ``initRandom`` or, if it was 0, the value taken from the current time. Used as ``core.randomSeed`` in a file ``pyagrum.ini``, it repeats the same pseudo-random numbers sequence.
+      the seed of the generator: the value given to the last call to `pyagrum.initRandom` or, if it was 0, the value
+      taken from the current time. Given to `pyagrum.initRandom`, or used as ``core.randomSeed`` in a file
+      ``pyagrum.ini``, it repeats the same sequence of pseudo-random numbers.
 
     """
     return _pyagrumcpp.randomGeneratorSeed()
@@ -1187,18 +1250,51 @@ class _Configuration(object):
 
     @staticmethod
     def userFileName() -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the name of the user file, read by ``load()`` and written by ``save()``
+
+        """
         return _pyagrumcpp._Configuration_userFileName()
 
     def _get(self, section: str, key: str) -> str:
         return _pyagrumcpp._Configuration__get(self, section, key)
 
     def has(self, section: str, key: str) -> bool:
+        r"""
+
+        Tell whether a property exists.
+
+        Parameters
+        ----------
+        section : str
+          the section (case-sensitive)
+        key : str
+          the key (case-insensitive)
+
+        Returns
+        -------
+        bool
+          True if section.key exists
+
+        """
         return _pyagrumcpp._Configuration_has(self, section, key)
 
     def _doc(self, section: str, key: str) -> str:
         return _pyagrumcpp._Configuration__doc(self, section, key)
 
     def sections(self) -> tuple[str, ...]:
+        r"""
+
+        Returns
+        -------
+        tuple[str, ...]
+          the names of the sections, in the order of the defaults
+
+        """
         return _pyagrumcpp._Configuration_sections(self)
 
     def _set(self, section: str, key: str, value: str, noHook: bool=False) -> None:
@@ -1226,9 +1322,30 @@ class _Configuration(object):
         return _pyagrumcpp._Configuration__diff(self)
 
     def toString(self) -> str:
+        r"""
+
+        All the properties (except the deprecated ones). This is what ``print(pyagrum.config)`` shows.
+
+        Returns
+        -------
+        str
+          the properties, in the format of ``pyagrum.ini``
+
+        """
         return _pyagrumcpp._Configuration_toString(self)
 
     def describe(self) -> str:
+        r"""
+
+        Describe the configuration: the properties which differ from the defaults if any, otherwise all the properties
+        (with a comment saying that they are the defaults). This is what ``repr(pyagrum.config)`` shows.
+
+        Returns
+        -------
+        str
+          the description, in the format of ``pyagrum.ini``
+
+        """
         return _pyagrumcpp._Configuration_describe(self)
 
     def _runHooks(self) -> None:
@@ -1246,54 +1363,54 @@ class _Configuration(object):
     def __str__(self) -> str:
         return _pyagrumcpp._Configuration___str__(self)
 
-    class _CastAsTyped:
-      def __init__(self, container):
-        self.container = container
-
-      def __getitem__(self, x):
-        return self.container.getTyped(x[0], x[1])
-
-      def __setitem__(self, x, v):
-        self.container[x] = v
-
-    class _DeprecatedCast(_CastAsTyped):
-      """Historical accessors ``asInt``, ``asFloat``, ``asBool``: deprecated since 3.1.0, they delegate to ``typed``."""
-
-      def __init__(self, container, name):
-        super().__init__(container)
-        self.name = name
-
-      def _warn(self):
-        warnings.warn(
-          f"[pyAgrum] pyagrum.config.{self.name} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
-          DeprecationWarning,
-          stacklevel=3,
-        )
-
-      def __getitem__(self, x):
-        self._warn()
-        return super().__getitem__(x)
-
-      def __setitem__(self, x, v):
-        self._warn()
-        super().__setitem__(x, v)
-
     @property
     def typed(self):
-      """Accessor giving the values converted according to their declared type: ``config.typed[section, option]``."""
-      return self._CastAsTyped(self)
+      """
+      The values of the configuration converted according to their declared type.
+
+      ``pyagrum.config.typed[section, key]`` gives a ``bool``, an ``int``, a ``float`` or a ``str`` (for the ``str`` and
+      enumerated keys), where ``pyagrum.config[section, key]`` always gives a ``str``. The declared type of a key is given
+      by ``pyagrum.config.doc(section, key)``.
+
+      ``pyagrum.config.typed[section, key] = value`` is the same as ``pyagrum.config[section, key] = value``.
+      """
+      return _CONFIG_ACCESSORS["typed"](self)
 
     @property
     def asInt(self):
-      return self._DeprecatedCast(self, "asInt")
+      """
+      Historical accessor ``pyagrum.config.asInt[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+      (converted according to the declared type of the key, whatever the accessor).
+
+      Warnings
+      --------
+      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      """
+      return _CONFIG_ACCESSORS["asInt"](self)
 
     @property
     def asFloat(self):
-      return self._DeprecatedCast(self, "asFloat")
+      """
+      Historical accessor ``pyagrum.config.asFloat[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+      (converted according to the declared type of the key, whatever the accessor).
+
+      Warnings
+      --------
+      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      """
+      return _CONFIG_ACCESSORS["asFloat"](self)
 
     @property
     def asBool(self):
-      return self._DeprecatedCast(self, "asBool")
+      """
+      Historical accessor ``pyagrum.config.asBool[section, key]``: the same values as ``pyagrum.config.typed[section, key]``
+      (converted according to the declared type of the key, whatever the accessor).
+
+      Warnings
+      --------
+      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      """
+      return _CONFIG_ACCESSORS["asBool"](self)
 
     def _emitNotices(self):
       """Turn the notices queued by the C++ configuration (deprecations, problems found in a user file) into warnings."""
@@ -2112,7 +2229,10 @@ class DiscreteVariable(Variable):
     def toFast(self) -> str:
         r"""
 
-        Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+        Return the variable description in fast syntax (e.g. ``name{val1|val2|...}``, ``name[min,max]``...).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{yes|no}``.
 
         Returns
         -------
@@ -2847,7 +2967,10 @@ class LabelizedVariable(DiscreteVariable):
     def toFast(self) -> str:
         r"""
 
-        Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+        Return the variable description in fast syntax (e.g. ``name{val1|val2|...}``).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{yes|no}``.
 
         Returns
         -------
@@ -2936,7 +3059,10 @@ class RangeVariable(DiscreteVariable):
     def toFast(self) -> str:
         r"""
 
-        Return the variable description in fast syntax (e.g. ``name[min,max]``).
+        Return the variable description in fast syntax (e.g. ``name[n]`` or ``name[min,max]``).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[3]``.
 
         Returns
         -------
@@ -3187,6 +3313,9 @@ class IntegerVariable(DiscreteVariable):
         r"""
 
         Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{1|3|5}``.
 
         Returns
         -------
@@ -3479,6 +3608,9 @@ class NumericalDiscreteVariable(DiscreteVariable):
         r"""
 
         Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{0.5|1.5}``.
 
         Returns
         -------
@@ -6214,19 +6346,19 @@ class MixedGraph(UndiGraph, DiGraph):
     def addArc(self, n1: int, n2: int) -> None:
         r"""
 
-        Add an arc from tail to head.
+        Add an arc from n1 to n2.
 
         Parameters
         ----------
-        tail : int
+        n1 : int
             the id of the tail node
-        head : int
+        n2 : int
             the id of the head node
 
         Raises
         ------
         pyagrum.InvalidNode
-            If head or tail does not belong to the graph nodes.
+            If n1 or n2 does not belong to the graph nodes.
 
         """
         return _pyagrumcpp.MixedGraph_addArc(self, n1, n2)
@@ -6919,9 +7051,9 @@ class PDAG(MixedGraph):
 
         Parameters
         ----------
-        tail : int
+        n1 : int
             the id of the tail node
-        head : int
+        n2 : int
             the id of the head node
 
         Raises
@@ -6939,15 +7071,15 @@ class PDAG(MixedGraph):
 
         Parameters
         ----------
-        tail : int
+        n1 : int
             the id of the tail node
-        head : int
+        n2 : int
             the id of the head node
 
         Returns
         -------
         bool
-            True if the arc (tail, head) exists
+            True if the arc (n1, n2) exists
 
         """
         return _pyagrumcpp.PDAG_existsArc(self, n1, n2)
@@ -7077,17 +7209,17 @@ class ChainGraph(PDAG):
 
         Parameters
         ----------
-        n1 : int
+        first : int
           the id of one node of the new inserted edge
-        n2 : int
+        second : int
           the id of the other node of the new inserted edge
 
         Raises
         ------
         pyagrum.InvalidNode
-          If n1 or n2 does not belong to the graph nodes.
+          If first or second does not belong to the graph nodes.
         pyagrum.InvalidEdge
-          If an arc already connects n1 and n2.
+          If an arc already connects first and second.
         pyagrum.InvalidPartiallyDirectedCycle
           If the edge would create a partially directed cycle.
 
@@ -10059,6 +10191,201 @@ class MAG(_ImmutableGraphMarkedGraph):
 # Register MAG in _pyagrumcpp:
 _pyagrumcpp.MAG_swigregister(MAG)
 
+def fastNameNeedsQuotes(name: str) -> bool:
+    r"""
+
+    Tell whether the name of a variable must be quoted to be read back as is by `pyagrum.fastVariable` and by the
+    fast syntax of the graphical models (`pyagrum.fastBN`, `pyagrum.fastID`, `pyagrum.fastMRF`).
+
+    A name is written between single quotes (``'Visit Asia'->X``) when it begins or ends with a space, begins with a
+    quote, ``'*'`` or ``'$'``, contains one of ``[]{};-<>`` or a line break, ends with ``'+'``, or contains a quote at
+    the beginning of a word. Spaces inside a name do not need quotes there. The node names of `pyagrum.fastGraph` are
+    stricter: an unquoted one contains no space, and is a node id if it is made of digits.
+
+    Parameters
+    ----------
+    name : str
+      the name
+
+    Returns
+    -------
+    bool
+      True if the name must be quoted
+
+    """
+    return _pyagrumcpp.fastNameNeedsQuotes(name)
+
+def quoteFastName(name: str) -> str:
+    r"""
+
+    Write a name as in a fast description: between single quotes (with its quotes doubled) if
+    `pyagrum.fastNameNeedsQuotes`, as is otherwise.
+
+    This is what ``toFast()`` does for the name of a variable.
+
+    Warnings
+    --------
+    The files saved by pyAgrum (``.jgum``, ``.bgum``, ``.bifxml``, ``.pkl``) write the variables in fast syntax: a
+    quoted name such as ``'X-ray'[3]`` (or the name ``X[0]`` of a variable of a `pyagrum.ktbn.KTBN`) is read by
+    pyAgrum 3.3.2 or older with the quotes in the name.
+
+    Parameters
+    ----------
+    name : str
+      the name
+
+    Returns
+    -------
+    str
+      the name, quoted if needed
+
+    """
+    return _pyagrumcpp.quoteFastName(name)
+FastSyntax_UndiGraph = _pyagrumcpp.FastSyntax_UndiGraph
+FastSyntax_DiGraph = _pyagrumcpp.FastSyntax_DiGraph
+FastSyntax_MixedGraph = _pyagrumcpp.FastSyntax_MixedGraph
+FastSyntax_MarkedGraph = _pyagrumcpp.FastSyntax_MarkedGraph
+FastSyntax_BayesNet = _pyagrumcpp.FastSyntax_BayesNet
+FastSyntax_InfluenceDiagram = _pyagrumcpp.FastSyntax_InfluenceDiagram
+FastSyntax_MarkovRandomField = _pyagrumcpp.FastSyntax_MarkovRandomField
+class FastSyntaxCheck(object):
+    r"""
+
+    The verdict on a fast description for every fast syntax (see `pyagrum.checkFastSyntax`).
+
+    A FastSyntaxCheck is true if the description is valid for at least one syntax.
+
+    FastSyntaxCheck(description, defaultDomain='[2]') -> FastSyntaxCheck
+
+    Parameters
+    ----------
+    description : str
+      the fast description
+    defaultDomain : str
+      the domain of the variables without one, for the graphical models
+
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args):
+        _pyagrumcpp.FastSyntaxCheck_swiginit(self, _pyagrumcpp.new_FastSyntaxCheck(*args))
+
+    def description(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the checked description
+
+        """
+        return _pyagrumcpp.FastSyntaxCheck_description(self)
+
+    def isValid(self, syntax: "pyagrum.FastSyntax") -> bool:
+        r"""
+
+        Tell whether the description is valid for a syntax.
+
+        Parameters
+        ----------
+        syntax : pyagrum.FastSyntax
+          the syntax
+
+        Returns
+        -------
+        bool
+          True if the description is valid for this syntax
+
+        """
+        return _pyagrumcpp.FastSyntaxCheck_isValid(self, syntax)
+
+    def error(self, syntax: "pyagrum.FastSyntax") -> str:
+        r"""
+
+        Tell why the description is not valid for a syntax.
+
+        Parameters
+        ----------
+        syntax : pyagrum.FastSyntax
+          the syntax
+
+        Returns
+        -------
+        str
+          the error (empty if the description is valid for this syntax)
+
+        """
+        return _pyagrumcpp.FastSyntaxCheck_error(self, syntax)
+
+    def validSyntaxes(self) -> list["FastSyntax"]:
+      """
+      The syntaxes for which the description is valid.
+
+      Returns
+      -------
+      list[pyagrum.FastSyntax]
+        the syntaxes, in the order of `pyagrum.FastSyntax`
+      """
+      return [syntax for syntax in FastSyntax if self.isValid(syntax)]
+
+
+    def __bool__(self) -> bool:
+        r"""
+
+        Returns
+        -------
+        bool
+          True if the description is valid for at least one syntax
+
+        """
+        return _pyagrumcpp.FastSyntaxCheck___bool__(self)
+
+    def __repr__(self) -> str:
+        r"""
+
+        Returns
+        -------
+        str
+          the description and the syntaxes for which it is valid
+
+        """
+        return _pyagrumcpp.FastSyntaxCheck___repr__(self)
+    __swig_destroy__ = _pyagrumcpp.delete_FastSyntaxCheck
+
+# Register FastSyntaxCheck in _pyagrumcpp:
+_pyagrumcpp.FastSyntaxCheck_swigregister(FastSyntaxCheck)
+
+def checkFastSyntax(*args) -> "pyagrum.FastSyntaxCheck":
+    r"""
+
+    Check a fast description for every fast syntax.
+
+    A description may be valid for several syntaxes: ``'A->B'`` is a directed graph, a mixed graph, a marked
+    graph, a Bayesian network and an influence diagram. It is valid for a syntax if the corresponding fast
+    function accepts it, apart from the constraints checked when the object is built (acyclicity, children of a
+    utility node...).
+
+    Parameters
+    ----------
+    description : str
+      the fast description
+    defaultDomain : str
+      the domain of the variables without one, for the graphical models (``'[2]'`` by default)
+
+    Returns
+    -------
+    pyagrum.FastSyntaxCheck
+      the verdict for every syntax
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+      If defaultDomain does not begin with ``'['`` or ``'{'``.
+
+    """
+    return _pyagrumcpp.checkFastSyntax(*args)
+
 def _graph_degeneracyOrdering(*args) -> list[int]:
     return _pyagrumcpp._graph_degeneracyOrdering(*args)
 
@@ -11537,7 +11864,13 @@ class GraphicalModel(object):
         return _pyagrumcpp.GraphicalModel_completeInstantiation(self)
 
     def variable(self, id: int) -> "pyagrum.DiscreteVariable":
-        return _pyagrumcpp.GraphicalModel_variable(self, id)
+        val = _pyagrumcpp.GraphicalModel_variable(self, id)
+
+        val._model = self
+
+
+        return val
+
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -11606,7 +11939,13 @@ class GraphicalModel(object):
             if no variable with this name exists in the model
 
         """
-        return _pyagrumcpp.GraphicalModel_variableFromName(self, name)
+        val = _pyagrumcpp.GraphicalModel_variableFromName(self, name)
+
+        val._model = self
+
+
+        return val
+
 
     def log10DomainSize(self) -> float:
         r"""
@@ -11693,7 +12032,13 @@ class DiscreteGraphicalModel(GraphicalModel):
         return _pyagrumcpp.DiscreteGraphicalModel__variableNodeMap(self)
 
     def variable(self, id: int) -> "pyagrum.DiscreteVariable":
-        return _pyagrumcpp.DiscreteGraphicalModel_variable(self, id)
+        val = _pyagrumcpp.DiscreteGraphicalModel_variable(self, id)
+
+        val._model = self
+
+
+        return val
+
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -11762,7 +12107,13 @@ class DiscreteGraphicalModel(GraphicalModel):
             if no variable with this name exists in the model
 
         """
-        return _pyagrumcpp.DiscreteGraphicalModel_variableFromName(self, name)
+        val = _pyagrumcpp.DiscreteGraphicalModel_variableFromName(self, name)
+
+        val._model = self
+
+
+        return val
+
 
 # Register DiscreteGraphicalModel in _pyagrumcpp:
 _pyagrumcpp.DiscreteGraphicalModel_swigregister(DiscreteGraphicalModel)
@@ -12491,7 +12842,7 @@ class ApproximationScheme(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -12707,7 +13058,10 @@ _pyagrumcpp.ApproximationScheme_swigregister(ApproximationScheme)
 def fastVariable(*args) -> "pyagrum.DiscreteVariable":
     r"""
 
-    Use *fast* syntax to add a variable in the BayesNet.
+    Create a variable from its *fast* syntax description (e.g. ``a{yes|no}``, ``a[3,7]``).
+
+    The name may be written between single quotes (``'Visit Asia'{yes|no}``): it is then taken as is (a doubled quote
+    standing for a quote), and only an optional ``+`` (empirical ticks) and an optional domain may follow it.
 
     Raises
     ------
@@ -12734,7 +13088,8 @@ def fastDiGraph(desc: str) -> "pyagrum.DiGraph":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12745,9 +13100,13 @@ def fastDiGraph(desc: str) -> "pyagrum.DiGraph":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12774,7 +13133,8 @@ def fastUndiGraph(desc: str) -> "pyagrum.UndiGraph":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12785,9 +13145,13 @@ def fastUndiGraph(desc: str) -> "pyagrum.UndiGraph":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12814,7 +13178,8 @@ def fastMixedGraph(desc: str) -> "pyagrum.MixedGraph":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12825,9 +13190,13 @@ def fastMixedGraph(desc: str) -> "pyagrum.MixedGraph":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12854,7 +13223,8 @@ def fastDAG(desc: str) -> "pyagrum.DAG":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12865,9 +13235,13 @@ def fastDAG(desc: str) -> "pyagrum.DAG":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12894,7 +13268,8 @@ def fastPDAG(desc: str) -> "pyagrum.PDAG":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12905,9 +13280,13 @@ def fastPDAG(desc: str) -> "pyagrum.PDAG":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12934,7 +13313,8 @@ def fastChainGraph(desc: str) -> "pyagrum.ChainGraph":
     ``';'`` separates independent chains. If every node token in the description is
     a non-negative integer, those integers are used directly as node ids ;
     otherwise every token -- including numeric-looking ones -- is used as a node
-    name.
+    name. A node name contains no space, ``'<'`` nor ``'>'``, unless it is written between single quotes
+    (``"'Visit Asia'->X"``, a doubled quote standing for a quote); a quoted name is never a node id.
 
     Note
     ----
@@ -12945,9 +13325,13 @@ def fastChainGraph(desc: str) -> "pyagrum.ChainGraph":
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A<->B'``, ``'A B->C'`` or ``'A->'``), or if the nodes
+      are ids and the largest one leaves more than max(number of nodes, 65536) absent ids below it
+      (e.g. ``'0->2000000000'``).
     pyagrum.InvalidArc
       If the description requires a directed arc but the target graph type does
-      not support arcs, or if the description is malformed.
+      not support arcs.
     pyagrum.InvalidEdge
       If the description requires an undirected edge but the target graph type
       does not support edges.
@@ -12973,13 +13357,17 @@ def fastMarkedGraph(desc: str) -> "pyagrum.MarkedGraph":
     An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
     circle, nothing for a tail. A circle must be separated from the name of its node by a space
     (``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
-    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
+    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. A name may be quoted
+    (``"'Visit Asia' o-> X"``), and a circle may touch a quoted name (``"'A'o->'B'"``). An edge may be repeated with the same marks
     (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A>-B'`` or ``'A o -B'``), or if the nodes are ids and the
+      largest one leaves more than max(number of nodes, 65536) absent ids below it (``'0->2000000000'``).
     pyagrum.InvalidEdge
-      If the description is malformed or describes an edge with different marks.
+      If the description describes an edge with different marks.
 
     Parameters
     ----------
@@ -13002,13 +13390,17 @@ def fastPAG(desc: str) -> "pyagrum.PAG":
     An edge is given by its two marks around a ``'-'``: ``'<'`` or ``'>'`` for an arrowhead, ``'o'`` for a
     circle, nothing for a tail. A circle must be separated from the name of its node by a space
     (``'C o-> D'``; in ``'Co->D'``, ``'Co'`` is a node). Without a node name on its side of the edge,
-    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. An edge may be repeated with the same marks
+    ``'o'`` is a node: ``'o->B'``, ``'A->o->B'`` and ``'A-o'`` use a node named ``'o'``. A name may be quoted
+    (``"'Visit Asia' o-> X"``), and a circle may touch a quoted name (``"'A'o->'B'"``). An edge may be repeated with the same marks
     (``'A->B;A->B'``) but not with different ones (``'A->B;B->A'``).
 
     Raises
     ------
+    pyagrum.InvalidArgument
+      If the description is malformed (e.g. ``'A>-B'`` or ``'A o -B'``), or if the nodes are ids and the
+      largest one leaves more than max(number of nodes, 65536) absent ids below it (``'0->2000000000'``).
     pyagrum.InvalidEdge
-      If the description is malformed or describes an edge with different marks.
+      If the description describes an edge with different marks.
 
     Parameters
     ----------
@@ -13305,7 +13697,10 @@ class DiscretizedVariable(IDiscretizedVariable):
     def toFast(self) -> str:
         r"""
 
-        Return the variable description in fast syntax (e.g. ``name[v1:v2:v3]``).
+        Return the variable description in fast syntax (e.g. ``name[t1,t2,t3]``, ``name+[t1,t2,t3]`` if empirical).
+
+        The name is written between single quotes if it would not be read back as is otherwise (see
+        `pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[0,1.5,3]``.
 
         Returns
         -------
@@ -15286,21 +15681,21 @@ def log2(p):
 
 def fastGraph(
   desc: str,
-) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph:
+) -> DAG | DiGraph | PDAG | MixedGraph | UndiGraph | MarkedGraph:
   """
   Build a graph from a dot-like syntax such as ``'A->B->C;B-D<-E;'``, picking a concrete
-  graph type from a quick read of ``desc``.
+  graph type from the syntaxes for which ``desc`` is valid (see `pyagrum.checkFastSyntax`).
 
-  If ``desc`` only contains directed arcs (``'->'``/``'<-'``), a :class:`pyagrum.DAG` is
-  attempted first, falling back to a :class:`pyagrum.DiGraph` if that would create a
-  directed cycle. If ``desc`` mixes arcs and undirected edges (``'-'``), a
-  :class:`pyagrum.PDAG` is attempted first, falling back to a :class:`pyagrum.MixedGraph`
-  on the same condition. If ``desc`` only contains undirected edges, a
-  :class:`pyagrum.UndiGraph` is returned.
+  If ``desc`` only contains undirected edges (``'-'``), a `pyagrum.UndiGraph` is returned. If it
+  only contains directed arcs (``'->'``/``'<-'``), a `pyagrum.DAG` is attempted first, falling back
+  to a `pyagrum.DiGraph` if that would create a directed cycle. If it mixes arcs and edges, a
+  `pyagrum.PDAG` is attempted first, falling back to a `pyagrum.MixedGraph`. If it needs marks
+  (``'o'`` circles, ``'<->'``), a `pyagrum.MarkedGraph` is returned. A name may be written between
+  single quotes (``'Visit Asia'->X``).
 
-  For explicit control over the returned type, use :func:`pyagrum.fastDiGraph`,
-  :func:`pyagrum.fastUndiGraph`, :func:`pyagrum.fastMixedGraph`, :func:`pyagrum.fastDAG`,
-  :func:`pyagrum.fastPDAG` or :func:`pyagrum.fastChainGraph` directly.
+  For explicit control over the returned type, use `pyagrum.fastDiGraph`,
+  `pyagrum.fastUndiGraph`, `pyagrum.fastMixedGraph`, `pyagrum.fastDAG`,
+  `pyagrum.fastPDAG`, `pyagrum.fastChainGraph`, `pyagrum.fastMarkedGraph` or `pyagrum.fastPAG` directly.
 
   Parameters
   ----------
@@ -15309,26 +15704,29 @@ def fastGraph(
 
   Returns
   -------
-  pyagrum.DAG or pyagrum.DiGraph or pyagrum.PDAG or pyagrum.MixedGraph or pyagrum.UndiGraph
+  pyagrum.DAG or pyagrum.DiGraph or pyagrum.PDAG or pyagrum.MixedGraph or pyagrum.UndiGraph or pyagrum.MarkedGraph
+
+  Raises
+  ------
+  pyagrum.InvalidArgument
+    If the description is malformed, or if the nodes are ids and the largest one is too large.
   """
-  import re
-
-  is_arc = ("->" in desc) or ("<-" in desc)
-  is_edge = re.search(r"(?<!<)-(?!>)", desc) is not None
-
-  if not is_arc:
+  check = checkFastSyntax(desc)
+  if check.isValid(FastSyntax.UndiGraph):
     return fastUndiGraph(desc)
-
-  if is_edge:
+  if check.isValid(FastSyntax.DiGraph):
+    try:
+      return fastDAG(desc)
+    except InvalidDirectedCycle:
+      return fastDiGraph(desc)
+  if check.isValid(FastSyntax.MixedGraph):
     try:
       return fastPDAG(desc)
     except (InvalidDirectedCycle, InvalidArc):
       return fastMixedGraph(desc)
-
-  try:
-    return fastDAG(desc)
-  except InvalidDirectedCycle:
-    return fastDiGraph(desc)
+  if check.isValid(FastSyntax.MarkedGraph):
+    return fastMarkedGraph(desc)
+  return fastMixedGraph(desc)  # raises the error of the description
 
 
 import os.path as ospath
@@ -15364,8 +15762,7 @@ class PythonBNListener(object):
     Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
     is notified when the structure of the model is changed.
 
-    PythonBNListener(model:pyagrum.DAGmodel,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
-        default constructor
+    PythonBNListener(model, vnm) -> PythonBNListener
 
     Notes
     -----
@@ -15377,7 +15774,8 @@ class PythonBNListener(object):
     model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
         The model to listen to
     vnm : VariableNodeMap
-        A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+        the correspondence between the ids of the nodes and the names of the variables (usually
+        ``model._variableNodeMap()``)
 
     """
 
@@ -15390,8 +15788,7 @@ class PythonBNListener(object):
         Listener for the modifications of a directed graphical model (Bayesian network, influence diagram). This listener
         is notified when the structure of the model is changed.
 
-        PythonBNListener(model:pyagrum.DAGmodel,vnm:pyagrum.VariableNodeMap) -> PythonBNListener
-            default constructor
+        PythonBNListener(model, vnm) -> PythonBNListener
 
         Notes
         -----
@@ -15403,7 +15800,8 @@ class PythonBNListener(object):
         model : pyagrum.BayesNet | pyagrum.InfluenceDiagram
             The model to listen to
         vnm : VariableNodeMap
-            A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+            the correspondence between the ids of the nodes and the names of the variables (usually
+            ``model._variableNodeMap()``)
 
         """
         _pyagrumcpp.PythonBNListener_swiginit(self, _pyagrumcpp.new_PythonBNListener(model, vnm))
@@ -15412,14 +15810,15 @@ class PythonBNListener(object):
     def whenNodeAdded(self, source: object, id: int) -> None:
         r"""
 
-        Callback called when a node is added to the Bayesian network.
+        Called by aGrUM when a node is added to the model: calls the function given to ``setWhenNodeAdded``
+        with the id and the name of the node.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         id : int
             the id of the new node
-        name : str
-            the name of the new node
 
         """
         return _pyagrumcpp.PythonBNListener_whenNodeAdded(self, source, id)
@@ -15427,12 +15826,14 @@ class PythonBNListener(object):
     def whenNodeDeleted(self, arg2: object, id: int) -> None:
         r"""
 
-        Callback called when a node is removed from the Bayesian network.
+        Called by aGrUM when a node is removed from the model: calls the function given to ``setWhenNodeDeleted``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         id : int
-            the id of the deleted node
+            the id of the removed node
 
         """
         return _pyagrumcpp.PythonBNListener_whenNodeDeleted(self, arg2, id)
@@ -15440,14 +15841,16 @@ class PythonBNListener(object):
     def whenArcAdded(self, arg2: object, src: int, dst: int) -> None:
         r"""
 
-        Callback called when an arc is added to the Bayesian network.
+        Called by aGrUM when an arc is added to the model: calls the function given to ``setWhenArcAdded``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         src : int
-            the tail node id
+            the id of the tail of the arc
         dst : int
-            the head node id
+            the id of the head of the arc
 
         """
         return _pyagrumcpp.PythonBNListener_whenArcAdded(self, arg2, src, dst)
@@ -15455,14 +15858,16 @@ class PythonBNListener(object):
     def whenArcDeleted(self, arg2: object, src: int, dst: int) -> None:
         r"""
 
-        Callback called when an arc is removed from the Bayesian network.
+        Called by aGrUM when an arc is removed from the model: calls the function given to ``setWhenArcDeleted``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         src : int
-            the tail node id
+            the id of the tail of the arc
         dst : int
-            the head node id
+            the id of the head of the arc
 
         """
         return _pyagrumcpp.PythonBNListener_whenArcDeleted(self, arg2, src, dst)
@@ -15527,8 +15932,7 @@ class PythonMRFListener(object):
     Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
     when the structure of the model is changed.
 
-    PythonMRFListener(model:pyagrum.UGmodel,vnm:pyagrum.VariableNodeMap) -> PythonMRFListener
-        default constructor
+    PythonMRFListener(model, vnm) -> PythonMRFListener
 
     Notes
     -----
@@ -15539,7 +15943,8 @@ class PythonMRFListener(object):
     model : pyagrum.MarkovRandomField
         The model to listen to
     vnm : VariableNodeMap
-        A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+        the correspondence between the ids of the nodes and the names of the variables (usually
+        ``model._variableNodeMap()``)
 
     """
 
@@ -15552,8 +15957,7 @@ class PythonMRFListener(object):
         Listener for the modifications of an undirected graphical model (Markov random field). This listener is notified
         when the structure of the model is changed.
 
-        PythonMRFListener(model:pyagrum.UGmodel,vnm:pyagrum.VariableNodeMap) -> PythonMRFListener
-            default constructor
+        PythonMRFListener(model, vnm) -> PythonMRFListener
 
         Notes
         -----
@@ -15564,7 +15968,8 @@ class PythonMRFListener(object):
         model : pyagrum.MarkovRandomField
             The model to listen to
         vnm : VariableNodeMap
-            A translation unit between id of node and name of variable (usually : model._variableNodeMap()).
+            the correspondence between the ids of the nodes and the names of the variables (usually
+            ``model._variableNodeMap()``)
 
         """
         _pyagrumcpp.PythonMRFListener_swiginit(self, _pyagrumcpp.new_PythonMRFListener(model, vnm))
@@ -15573,14 +15978,15 @@ class PythonMRFListener(object):
     def whenNodeAdded(self, source: object, id: int) -> None:
         r"""
 
-        Callback called when a node is added to the Markov random field.
+        Called by aGrUM when a node is added to the Markov random field: calls the function given to
+        ``setWhenNodeAdded`` with the id and the name of the node.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         id : int
             the id of the new node
-        name : str
-            the name of the new node
 
         """
         return _pyagrumcpp.PythonMRFListener_whenNodeAdded(self, source, id)
@@ -15588,12 +15994,15 @@ class PythonMRFListener(object):
     def whenNodeDeleted(self, arg2: object, id: int) -> None:
         r"""
 
-        Callback called when a node is removed from the Markov random field.
+        Called by aGrUM when a node is removed from the Markov random field: calls the function given to
+        ``setWhenNodeDeleted``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         id : int
-            the id of the deleted node
+            the id of the removed node
 
         """
         return _pyagrumcpp.PythonMRFListener_whenNodeDeleted(self, arg2, id)
@@ -15601,10 +16010,12 @@ class PythonMRFListener(object):
     def whenEdgeAdded(self, arg2: object, n1: int, n2: int) -> None:
         r"""
 
-        Callback called when an edge is added to the Markov random field.
+        Called by aGrUM when an edge is added to the Markov random field: calls the function given to ``setWhenEdgeAdded``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         n1 : int
             the id of one node of the edge
         n2 : int
@@ -15616,10 +16027,13 @@ class PythonMRFListener(object):
     def whenEdgeDeleted(self, arg2: object, n1: int, n2: int) -> None:
         r"""
 
-        Callback called when an edge is removed from the Markov random field.
+        Called by aGrUM when an edge is removed from the Markov random field: calls the function given to
+        ``setWhenEdgeDeleted``.
 
         Parameters
         ----------
+        source : object
+            the object which sends the notification (not used)
         n1 : int
             the id of one node of the edge
         n2 : int
@@ -16907,7 +17321,13 @@ class IBayesNet(DAGmodel):
             If no variable's id matches varId.
 
         """
-        return _pyagrumcpp.IBayesNet_cpt(self, varId)
+        val = _pyagrumcpp.IBayesNet_cpt(self, varId)
+
+        val._model = self
+
+
+        return val
+
 
     def jointProbability(self, i: "pyagrum.Instantiation") -> float:
         r"""
@@ -17389,6 +17809,7 @@ class BayesNet(IBayesNet):
         Notes
         -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
+          - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).
           - the CPTs are randomly generated.
           - see also the function `pyagrum.fastBN`.
 
@@ -17406,6 +17827,9 @@ class BayesNet(IBayesNet):
 
         """
         return _pyagrumcpp.BayesNet_fastPrototype(*args)
+
+    def _toFast(self) -> str:
+        return _pyagrumcpp.BayesNet__toFast(self)
     __swig_destroy__ = _pyagrumcpp.delete_BayesNet
 
     def __init__(self, *args):
@@ -17432,7 +17856,13 @@ class BayesNet(IBayesNet):
             If no variable's id matches varId.
 
         """
-        return _pyagrumcpp.BayesNet_cpt(self, *args)
+        val = _pyagrumcpp.BayesNet_cpt(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def add(self, *args) -> int:
         r"""
@@ -18175,7 +18605,13 @@ class BayesNet(IBayesNet):
             If the graph does not contain the variable
 
         """
-        return _pyagrumcpp.BayesNet_variable(self, *args)
+        val = _pyagrumcpp.BayesNet_variable(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -18221,7 +18657,13 @@ class BayesNet(IBayesNet):
             if no variable with this name exists in the model
 
         """
-        return _pyagrumcpp.BayesNet_variableFromName(self, name)
+        val = _pyagrumcpp.BayesNet_variableFromName(self, name)
+
+        val._model = self
+
+
+        return val
+
 
     def minimalCondSet(self, *args) -> set[int]:
         r"""
@@ -18874,44 +19316,23 @@ class BayesNet(IBayesNet):
 
     def toFast(self, filename: str = None) -> str:
       """
-      Export the Bayesian network as *fast* syntax (in a string or in a python file)
+      Export the Bayesian network in *fast* syntax (the structure and the variables, not the parameters), read back by
+      `pyagrum.fastBN`. A name is quoted if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
 
       Parameters
       ----------
-      filename : Optional[str]
-        the name of the file (including the prefix), if None , use sys.stdout
+      filename : str, optional
+        if given, a Python file which builds the model with `pyagrum.fastBN` is written
+
+      Returns
+      -------
+      str
+        the fast description of the model (if filename is None)
       """
-
-      def _toFastBN(bn,pythoncode=False):
-        res = []
-        sovars = set()
-        for x, y in bn.arcs():
-          if x in sovars:
-            src = bn.variable(x).name()
-          else:
-            src = bn.variable(x).toFast()
-            sovars.add(x)
-          if y in sovars:
-            dst = bn.variable(y).name()
-          else:
-            dst = bn.variable(y).toFast()
-            sovars.add(y)
-          res.append(f"{src}->{dst}")
-
-        for x in bn.nodes():
-          if x not in sovars:
-            res .append(bn.variable(x).toFast())
-
-        if pythoncode:
-          return 'model=pyagrum.fastBN("""'+';\n     '.join(res)+'""")'
-        else:
-          return ';'.join(res)
-
       if filename is None:
-        return _toFastBN(self)
-      else:
-        with open(filename, "w") as pyfile:
-          print(_toFastBN(self,pythoncode=True), file=pyfile)
+        return self._toFast()
+      with open(filename, "w") as pyfile:
+        print(f"import pyagrum\n\nmodel = pyagrum.fastBN({self._toFast()!r})", file=pyfile)
 
 
     def __repr__(self) -> str:
@@ -19027,7 +19448,13 @@ class BayesNetFragment(IBayesNet, ):
             If no variable's id matches varId.
 
         """
-        return _pyagrumcpp.BayesNetFragment_cpt(self, *args)
+        val = _pyagrumcpp.BayesNetFragment_cpt(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def _variableNodeMap(self) -> "pyagrum.VariableNodeMap":
         return _pyagrumcpp.BayesNetFragment__variableNodeMap(self)
@@ -19053,7 +19480,13 @@ class BayesNetFragment(IBayesNet, ):
             If the graph does not contain the variable
 
         """
-        return _pyagrumcpp.BayesNetFragment_variable(self, *args)
+        val = _pyagrumcpp.BayesNetFragment_variable(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -19122,7 +19555,13 @@ class BayesNetFragment(IBayesNet, ):
             If the graph does not contain the variable
 
         """
-        return _pyagrumcpp.BayesNetFragment_variableFromName(self, name)
+        val = _pyagrumcpp.BayesNetFragment_variableFromName(self, name)
+
+        val._model = self
+
+
+        return val
+
 
     def toDot(self, *args) -> str:
         r"""
@@ -22390,7 +22829,7 @@ class GibbsSampling(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -23234,7 +23673,7 @@ class ImportanceSampling(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -24034,7 +24473,7 @@ class WeightedSampling(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -24834,7 +25273,7 @@ class MonteCarloSampling(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -25653,7 +26092,7 @@ class LoopyImportanceSampling(ImportanceSampling):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -26472,7 +26911,7 @@ class LoopyWeightedSampling(WeightedSampling):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -27291,7 +27730,7 @@ class LoopyGibbsSampling(GibbsSampling):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -28176,7 +28615,7 @@ class LoopyMonteCarloSampling(MonteCarloSampling):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -28963,7 +29402,7 @@ class LoopyBeliefPropagation(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -29664,7 +30103,7 @@ class GibbsBNdistance(ApproximationScheme):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -29965,7 +30404,7 @@ class MCBNDistance(ApproximationScheme):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -30293,12 +30732,12 @@ class BNDatabaseGenerator(object):
     def varOrderNames(self) -> tuple[str, ...]:
         r"""
 
-        The actual order for the variable (as a tuple of NodeId)
+        The current order of the variables (as a tuple of names).
 
         Returns
         -------
-        tuple
-          the tuple of names
+        tuple[str, ...]
+          the names of the variables, in their order in the database
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_varOrderNames(self)
@@ -30338,12 +30777,12 @@ class BNDatabaseGenerator(object):
     def varOrder(self) -> tuple[int, ...]:
         r"""
 
-        The actual order for the variable (as a tuple of NodeId)
+        The current order of the variables (as a tuple of node ids).
 
         Returns
         -------
-        tuple
-          the tuple of NodeId
+        tuple[int, ...]
+          the ids of the variables, in their order in the database
 
         """
         return _pyagrumcpp.BNDatabaseGenerator_varOrder(self)
@@ -32305,7 +32744,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -32591,7 +33030,7 @@ class BNLearner(object):
 
         Parameters
         ----------
-        var_names : str
+        var_name : str
             a variable's name
 
         Returns
@@ -33202,6 +33641,12 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
+
+  Warnings
+  --------
+  In the ``.jgum``, ``.bgum``, ``.bifxml`` and ``.pkl`` files, a variable whose name needs quotes (see
+  `pyagrum.quoteFastName`) is written with a quoted name (``'X-ray'[3]``): pyAgrum 3.3.2 or older reads it with the
+  quotes in the name.
   """
 # None: the writers use pyagrum.config["core","allowModificationWhenSaving"]
   allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
@@ -33238,7 +33683,8 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
-      - the type of the variables with different syntax (cf documentation).
+      - the type of the variables with different syntax (cf documentation),
+      - names possibly between single quotes (``"'Visit Asia'->X"``).
 
   Parameters
   ----------

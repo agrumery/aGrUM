@@ -397,6 +397,27 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(FastPrototypeQuotedNames) {
+    // the fast description of an MRF is read back by fastPrototype
+    {
+      const auto mrf  = gum::MarkovRandomField< double >::fastPrototype("'a--b'--C[3]--D;E");
+      const auto copy = gum::MarkovRandomField< double >::fastPrototype(mrf.toFast());
+      CHECK_EQ(copy.toFast(), mrf.toFast());
+      CHECK_EQ(copy.size(), mrf.size());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(copy.factor({"a--b", "C", "D"}));
+    }
+
+    const auto mn = gum::MarkovRandomField< double >::fastPrototype("'a--b'--C;'x\ny'--C");
+    CHECK_EQ(mn.size(), static_cast< gum::Size >(3));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mn.factor({"a--b", "C"}));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mn.factor({"x\ny", "C"}));
+    // a single dash is part of a name (legacy), an arc is refused unless the name is quoted
+    CHECK(gum::MarkovRandomField< double >::fastPrototype("A-B--C").exists("A-B"));
+    CHECK_THROWS_AS(gum::MarkovRandomField< double >::fastPrototype("A->B--C"),
+                    const gum::InvalidArgument&);
+    CHECK(gum::MarkovRandomField< double >::fastPrototype("'A->B'--C").exists("A->B"));
+  }
+
   GUM_TEST(MonoClique) {
     auto mn2 = gum::MarkovRandomField< float >::fastPrototype("A--B");
     GUM_CHECK_ASSERT_THROWS_NOTHING(mn2.factor({"A", "B"}));

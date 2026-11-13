@@ -330,7 +330,10 @@ gum.InvalidArgument
 
 %feature("docstring") gum::DiscreteVariable::toFast
 "
-Return the variable description in fast syntax (e.g. ``name[val1|val2|...]``).
+Return the variable description in fast syntax (e.g. ``name{val1|val2|...}``, ``name[min,max]``...).
+
+The name is written between single quotes if it would not be read back as is otherwise (see
+`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{yes|no}``.
 
 Returns
 -------

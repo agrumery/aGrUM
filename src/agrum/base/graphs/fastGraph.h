@@ -77,37 +77,34 @@ namespace gum {
      * "--" to list the variables of a single factor (a clique), which is a
      * different construct from a chain of pairwise edges. Reusing "--" here
      * would silently give the same token two incompatible meanings.
+     *
+     * A '-' inside '['...']', '{'...'}' (the domain of a variable: "A[-3,3]", "B{-1.5:6.3:5}") or
+     * a quoted name is not an operator (see fastSyntax.h).
      */
     GUM_SHARED_PUBLIC std::vector< std::pair< std::string, FastGraphOp > >
                       fastGraphTokenize(std::string_view chain);
-
-    /**
-     * @brief Finds the first '-' at bracket-depth 0, starting at @p from, skipping any
-     * '['...']' or '{'...'}' span.
-     *
-     * Node tokens built downstream by BayesNet/InfluenceDiagram's fastPrototype() may embed a
-     * fastVariable domain descriptor, e.g. "A[-3,3]" (negative range) or "B{-1.5:6.3:5}"
-     * (negative ticks): the '-' there is part of a number, not a topology operator, so it must
-     * not be mistaken for one.
-     *
-     * @return the position of the '-', std::string_view::npos if none.
-     */
-    std::size_t fastGraphFindDash(std::string_view chain, std::size_t from);
 
     /// the NodeId denoted by token if it is written with digits only (no sign) and is in the range
     /// of an int, std::nullopt otherwise
     GUM_SHARED_PUBLIC std::optional< NodeId > fastGraphNodeId(std::string_view token);
 
+    /// true if an unquoted token can name a node of fastGraph() or fastMarkedGraph(): no blank,
+    /// '<' nor '>' outside its brackets (a misplaced operator, e.g. "A<" in "A<->B" or "A o" in
+    /// "A o -B"); "A{<5|>=5}" is a name
+    GUM_SHARED_PUBLIC bool fastGraphIsNodeName(std::string_view token);
+
     /**
-     * @brief Splits a fast description into its chains, separated by ';' or by a line break.
+     * @brief Checks the NodeIds of a description read in NodeId mode.
      *
-     * Shared by fastGraph(), fastMarkedGraph() and the fastPrototype() of BayesNet,
-     * InfluenceDiagram and MarkovRandomField: a line break separates two chains (it is not
-     * removed, which would glue the names around it), except inside a '['...']' or '{'...'}'
-     * span (the domain of a variable, which may be written on several lines), where it is
-     * ignored; the blank chains (e.g. between ";;" or "; ;") are ignored.
+     * A graph stores its absent ids lower than its largest one (holes): as for the GUM format,
+     * their number must not exceed max(number of distinct ids, 65536), so that the memory of the
+     * graph is linear in the size of the description.
+     *
+     * @param desc the description, only used to report errors.
+     * @param ids the NodeIds of the description (possibly repeated).
+     * @throw InvalidArgument if there are too many holes.
      */
-    GUM_SHARED_PUBLIC std::vector< std::string > fastGraphChains(std::string_view desc);
+    GUM_SHARED_PUBLIC void fastGraphCheckNodeIds(std::string_view desc, std::vector< NodeId > ids);
 
   }   // namespace graph::detail
 #endif   // SWIG
@@ -127,16 +124,20 @@ namespace gum {
    * If every node token in @p desc parses as a non-negative integer, those
    * integers are used directly as NodeIds (addNodeWithId). Otherwise every
    * token — including numeric-looking ones — is treated as a string name
-   * (addNode + setName).
+   * (addNode + setName). A node name contains no blank, '<' nor '>', unless it is written between
+   * single quotes ("'Visit Asia'->X", a doubled quote in a quoted name stands for a quote, see
+   * fastSyntax.h); a quoted name is always a name ("'12'" is not a NodeId).
    *
    * @tparam GRAPH_TYPE Concrete graph type to build (DiGraph, UndiGraph,
    *         MixedGraph, DAG, PDAG, ...). Defaults to MixedGraph.
    * @param desc the DOT-like description.
    * @return the built graph.
+   * @throw InvalidArgument if the description is malformed (an operator without a following
+   *        node token, a node token which is not a node name, e.g. "A<" in "A<->B" or "A B" in
+   *        "A B->C", a malformed quoted name), or if the nodes are NodeIds and the largest one
+   *        leaves more than max(number of nodes, 65536) absent ids below it ("0->2000000000").
    * @throw InvalidArc if @p desc requires a directed arc but GRAPH_TYPE
-   *        cannot represent arcs (not GUM_DiGraphable), or if the
-   *        description is malformed (e.g. an operator without a following
-   *        node token).
+   *        cannot represent arcs (not GUM_DiGraphable).
    * @throw InvalidEdge if @p desc requires an undirected edge but
    *        GRAPH_TYPE cannot represent edges (not GUM_UndiGraphable).
    * @throw InvalidDirectedCycle propagated as-is if GRAPH_TYPE is a DAG (or

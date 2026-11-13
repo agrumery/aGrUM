@@ -65,7 +65,8 @@ __all__ = [
   "BayesNetFragment", "CPDAG", "CPTError", "ChainGraph", "CliqueGraph", "DAG", "DatabaseError", "DefaultInLabel",
   "DiGraph", "DiscreteVariable", "DiscretizedVariable", "DotOptions", "DuplicateElement",
   "DuplicateLabel", "DuplicateScheduleMultiDim", "Edge", "EdgeMark", "EdgeMark_Arrowhead", "EdgeMark_Circle",
-  "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FactoryError", "FactoryInvalidState",
+  "EdgeMark_Tail", "EssentialGraph", "ExactBNdistance", "FactoryError", "FactoryInvalidState", "FastSyntax",
+  "FastSyntaxCheck",
   "FatalError", "FormatNotFound", "GibbsBNdistance", "GibbsSampling", "Graph", "GraphError",
   "GumException", "GumIOError", "GumTypeError", "HedgeException", "ImportanceSampling",
   "IncompatibleEvidence", "IncompatibleScorePrior", "InformationTheory", "Instantiation",
@@ -86,12 +87,15 @@ __all__ = [
   "UndefinedIteratorValue", "UndiGraph", "UnexecutedScheduleOperation", "UnknownLabelInDatabase",
   "UnknownScheduleMultiDim", "UnknownScheduleOperation", "VarType_DISCRETIZED", "VarType_INTEGER",
   "VarType_LABELIZED", "VarType_NUMERICAL", "VarType_RANGE", "VariableElimination",
-  "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "availableGraphExts", "common", "config",
+  "WeightedSampling", "WrongClassElement", "about", "availableBNExts", "availableGraphExts", "checkFastSyntax", "common",
+  "config",
   "deprecated", "deprecatedCausalBN", "fastBN", "fastChainGraph", "fastDAG", "fastDiGraph",
-  "fastGraph", "fastMarkedGraph", "fastMixedGraph", "fastPAG", "fastPDAG", "fastUndiGraph", "fastVariable", "generateSample",
+  "fastGraph", "fastMarkedGraph", "fastMixedGraph", "fastNameNeedsQuotes", "fastPAG", "fastPDAG", "fastUndiGraph",
+  "fastVariable", "generateSample",
   "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior", "graphFromGUMString",
   "initRandom", "isOMP", "loadBN", "loadGraph", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
-  "randomDistribution", "randomGamma", "randomGeneratorSeed", "randomProba", "randomShuffle", "randomValue", "saveBN",
+  "quoteFastName", "randomDistribution", "randomGamma", "randomGeneratorSeed", "randomProba", "randomShuffle", "randomValue",
+  "saveBN",
   "saveGraph",
   "setNumberOfThreads", "statsObj",
 ]
@@ -204,6 +208,7 @@ from .pyagrumcpp import statsObj
 from .pyagrumcpp import _gum_pickle_load, _gum_pickle_save, _gum_set_name_property
 from .pyagrumcpp import fastGraph, fastDiGraph, fastUndiGraph, fastMixedGraph, fastDAG, fastPDAG, fastChainGraph
 from .pyagrumcpp import fastMarkedGraph, fastPAG
+from .pyagrumcpp import FastSyntax, FastSyntaxCheck, checkFastSyntax, fastNameNeedsQuotes, quoteFastName
 from .pyagrumcpp import availableGraphExts, graphFromGUMString, loadGraph, saveGraph
 from .pyagrumcpp import config
 from .pyagrumcpp import (

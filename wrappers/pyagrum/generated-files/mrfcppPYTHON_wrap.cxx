@@ -6383,6 +6383,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_MarkovRandomField__toFast(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkovRandomField< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField__toFast" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
+  {
+    try {
+      result = ((gum::MarkovRandomField< double > const *)arg1)->toFast();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_MarkovRandomField_fromBN(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
@@ -13280,6 +13311,11 @@ static PyMethodDef SwigMethods[] = {
 		"    - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).\n"
 		"    - the type of the variables with different syntax (cf documentation).\n"
 		"\n"
+		"Notes\n"
+		"-----\n"
+		"  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote): ``'a--b'--c``.\n"
+		"  - an unquoted name containing ``->`` or ``<-`` raises `pyagrum.InvalidArgument`.\n"
+		"\n"
 		"Parameters\n"
 		"----------\n"
 		"dotlike : str\n"
@@ -13293,6 +13329,7 @@ static PyMethodDef SwigMethods[] = {
 		"        the resulting Markov random field\n"
 		"\n"
 		""},
+	 { "MarkovRandomField__toFast", _wrap_MarkovRandomField__toFast, METH_O, NULL},
 	 { "MarkovRandomField_fromBN", _wrap_MarkovRandomField_fromBN, METH_O, "\n"
 		"\n"
 		"Create a Markov random field from a Bayesian network.\n"

@@ -4,7 +4,9 @@ Quick specification of graphs
 Graphs can also be built with a *fast* dot-like syntax, similar to the one used for graphical
 models (see :ref:`quick-specification-of-randomly-parameterized-graphical-models`) : ``'->'``
 denotes a directed arc, ``'<-'`` a directed arc in the other direction, ``'-'`` an undirected
-edge, ``';'`` separates independent chains.
+edge, ``';'`` separates independent chains. A name may be written between single quotes
+(``'Visit Asia'->X``, see :ref:`quoted-names-in-fast-syntax`); otherwise it contains neither
+space, ``'<'`` nor ``'>'``.
 
 .. code:: python
 
@@ -17,6 +19,8 @@ edge, ``';'`` separates independent chains.
     pyagrum.fastChainGraph('A->B-C')
     pyagrum.fastMarkedGraph('A->B;B<->C;C o-> D;D o-o E;E-F')
     pyagrum.fastPAG('X o-o Y;Y o-> Z')
+    pyagrum.fastPAG("'X'o-o'Y'")         # a circle may touch a quoted name
+    pyagrum.fastGraph('A->B-C')          # the type is chosen from the description (here a PDAG)
 
 .. note::
   A single ``'-'`` (not ``'--'``) is used for edges on purpose : :func:`pyagrum.fastMRF` already
@@ -26,6 +30,7 @@ edge, ``';'`` separates independent chains.
 
 .. pyagrum-functions::
 
+   pyagrum.fastGraph
    pyagrum.fastDiGraph
    pyagrum.fastUndiGraph
    pyagrum.fastMixedGraph

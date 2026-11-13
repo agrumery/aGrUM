@@ -128,6 +128,14 @@ namespace gum {
     static BayesNet< GUM_SCALAR > fastPrototype(std::string_view dotlike,
                                                 std::string_view domainSize = "[2]");
 
+    /**
+     * @brief The fast description of the Bayesian network, read back by fastPrototype() (the
+     * structure and the variables, not the parameters).
+     * @warning aGrUM/pyAgrum 3.3.2 or older read a quoted name with the quotes (see
+     * quoteFastName()).
+     */
+    std::string toFast() const;
+
     // ===========================================================================
     /// @name Constructors and Destructor
     // ===========================================================================

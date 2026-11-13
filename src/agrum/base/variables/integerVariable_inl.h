@@ -52,6 +52,7 @@
 
 #include <agrum/agrum.h>
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/core/hashTable.h>
 #include <agrum/base/variables/discreteVariable.h>
 
@@ -217,7 +218,7 @@ namespace gum {
   }
 
   INLINE std::string IntegerVariable::toFast() const {
-    return std::format("{}{}", name(), domain());
+    return std::format("{}{}", quoteFastName(name()), domain());
   }
 
   INLINE std::string IntegerVariable::stype() const { return "Integer"; }

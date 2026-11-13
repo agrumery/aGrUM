@@ -188,6 +188,11 @@ Create a Markov random field with a modified dot-like syntax which specifies:
     - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
     - the type of the variables with different syntax (cf documentation).
 
+Notes
+-----
+  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote): ``'a--b'--c``.
+  - an unquoted name containing ``->`` or ``<-`` raises `pyagrum.InvalidArgument`.
+
 Parameters
 ----------
 dotlike : str

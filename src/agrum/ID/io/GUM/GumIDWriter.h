@@ -67,6 +67,10 @@ namespace gum {
    * @ingroup id_io
    *
    * Supports both text (.jgum) and binary msgpack (.bgum) output.
+   *
+   * @warning The variables are written in fast syntax (DiscreteVariable::toFast()): a name which
+   * needs quotes (see quoteFastName()) is written quoted ('X-ray'[3]), and aGrUM/pyAgrum 3.3.2 or
+   * older read it with the quotes in the name.
    */
   template < GUM_Numeric GUM_SCALAR >
   class GumIDWriter: public IDWriter< GUM_SCALAR > {

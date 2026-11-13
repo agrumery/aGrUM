@@ -65,11 +65,17 @@ namespace gum {
   /**
    * Create a pointer on a Discrete Variable from a "fast" syntax
    *
+   * The name may be written between single quotes ('Visit Asia'{yes|no}, 'X-ray'[3]): it is then
+   * taken as is (no trimming, a doubled quote stands for a quote), and only an optional '+'
+   * (empirical ticks) and an optional domain may follow it (see fastSyntax.h).
+   *
    * @param var_description : the string in "fast" syntax
    * @param default_domain_size  : the domain size if the description does not give this
    * information. Note that if default_domain_size=1, a variable with a domain Size=1 is not an
    * error.
    * @return an unique_ptr on the new variable.
+   * @throw InvalidArgument if the description is malformed (no name, a number which cannot be
+   *        read, an unclosed quote...).
    */
   template < GUM_Numeric GUM_SCALAR = double >
   std::unique_ptr< DiscreteVariable > fastVariable(std::string      var_description,

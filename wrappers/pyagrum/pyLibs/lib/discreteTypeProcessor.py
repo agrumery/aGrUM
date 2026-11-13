@@ -880,7 +880,7 @@ class DiscreteTypeProcessor:
           varSyntax = ""
 
       if varSyntax != "":
-        var = pyagrum.fastVariable(variableName + varSyntax)
+        var = pyagrum.fastVariable(pyagrum.quoteFastName(variableName) + varSyntax)
         possibleValuesX = set(var.labels())
         f = {str(x) for x in foundValuesX}
         if not f.issubset(possibleValuesX):

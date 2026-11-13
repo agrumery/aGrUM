@@ -152,6 +152,12 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
       pkl suffix is used to save a BN using pickle. In this case, options are ignored.
 
       jgum/bgum suffixes use the native aGrUM JSON/binary format and also ignore ``allowModificationWhenSaving``.
+
+  Warnings
+  --------
+  In the ``.jgum``, ``.bgum``, ``.bifxml`` and ``.pkl`` files, a variable whose name needs quotes (see
+  `pyagrum.quoteFastName`) is written with a quoted name (``'X-ray'[3]``): pyAgrum 3.3.2 or older reads it with the
+  quotes in the name.
   """
   # None: the writers use pyagrum.config["core","allowModificationWhenSaving"]
   allow = () if allowModificationWhenSaving is None else (allowModificationWhenSaving,)
@@ -188,7 +194,8 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
-      - the type of the variables with different syntax (cf documentation).
+      - the type of the variables with different syntax (cf documentation),
+      - names possibly between single quotes (``"'Visit Asia'->X"``).
 
   Parameters
   ----------

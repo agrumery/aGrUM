@@ -24,12 +24,46 @@ The type of the (discrete) random variables can be specifiy with different synta
 
    pyagrum.fastVariable
 
+.. _quoted-names-in-fast-syntax:
+
+Names between quotes
+--------------------
+
+A name may be written between single quotes, in every *fast* syntax (variables, graphical models and graphs): every
+character is then part of the name, a doubled quote standing for a quote.
+
+.. code:: python
+
+    pyagrum.fastBN("'Visit Asia'{yes|no}->Dyspnoea<-'X-ray'[3];'l''eau'")
+    pyagrum.fastID("'my state'->*'my decision'->$'my utility'")
+    pyagrum.fastMRF("'a--b'--C")
+    pyagrum.fastDiGraph("'Visit Asia'->X")
+    pyagrum.fastPAG("'A'o->'B'")
+
+- A quote opens a quoted name only at the beginning of a name: ``O'Brien->X`` and the labels ``{l'eau|x}`` are
+  unchanged.
+- Without quotes, the name of a variable may contain spaces (``Visit Asia->X``), but not ``-``, ``;``, ``[``, ``{``...
+  The name of a node of a graph contains neither space, ``'<'`` nor ``'>'``.
+- In a quoted name, ``'12'`` is a name, not a node id; ``'X+'[0,1,2]`` is not empirical, ``'X'+[0,1,2]`` is.
+- ``toFast()`` quotes a name only if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
+
+.. warning::
+  The files saved by pyAgrum (``.jgum``, ``.bgum``, ``.bifxml``, pickle...) write the variables in *fast* syntax. A
+  name which needs quotes, such as ``X-ray`` (or the names ``X[0]`` of the variables of a `pyagrum.ktbn.KTBN`), is
+  written ``'X-ray'[3]``: pyAgrum 3.3.2 or older read it with the quotes in the name. The simple
+  names are written as before.
+
+.. pyagrum-functions::
+
+   pyagrum.quoteFastName
+   pyagrum.fastNameNeedsQuotes
+
 .. _quick-specification-of-randomly-parameterized-graphical-models:
 
 Quick specification of (randomly parameterized) graphical models
 ----------------------------------------------------------------
 
-These ``fastPrototype`` aGrUM's methods have also been wrapped in functions of pyagrum.
+Using the *fast* syntax, one can quickly specify a Bayesian network (arcs ``->``), an influence diagram (arcs, with the prefixes ``*`` and ``$`` for the decision and utility nodes) or a Markov random field (the variables of a factor separated by ``--``). The *fast* syntax specifies the variables and the structure of the graphical model, not its parameters (CPTs, factors, utilities): they are randomly generated. When a node appears several times, its first occurrence gives its variable and, in an influence diagram, its kind.
 
 .. code:: python
 
@@ -44,3 +78,23 @@ These ``fastPrototype`` aGrUM's methods have also been wrapped in functions of p
    pyagrum.fastBN
    pyagrum.fastMRF
    pyagrum.fastID
+
+Checking a description
+----------------------
+
+A description may be valid for several *fast* syntaxes: ``'A->B'`` is a directed, a mixed and a marked graph, a
+Bayesian network and an influence diagram, ``'A--B'`` only a Markov random field. `pyagrum.checkFastSyntax` gives the verdict for every syntax
+(this is how `pyagrum.fastGraph` chooses the type of graph it builds).
+
+.. code:: python
+
+    >>> pyagrum.checkFastSyntax("A{yes|no}->Visit Asia").validSyntaxes()
+    [<FastSyntax.BayesNet: 4>, <FastSyntax.InfluenceDiagram: 5>]
+
+.. pyagrum-functions::
+
+   pyagrum.checkFastSyntax
+
+.. pyagrum-class:: pyagrum.FastSyntaxCheck
+
+.. pyagrum-class:: pyagrum.FastSyntax

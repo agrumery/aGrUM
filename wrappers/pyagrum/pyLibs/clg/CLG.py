@@ -90,7 +90,7 @@ class CLG:
     """
     bn = pyagrum.BayesNet()
     for name in self.names():
-      bn.add(f"{name}[{domain}]")
+      bn.add(f"{pyagrum.quoteFastName(name)}[{domain}]")
     for arc in self.arcs():
       bn.addArc(self.variable(arc[0]).name(), self.variable(arc[1]).name())
 

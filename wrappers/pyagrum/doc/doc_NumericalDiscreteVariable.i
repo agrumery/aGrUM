@@ -105,6 +105,9 @@ Remove all the domain.
 "
 Return the variable description in fast syntax (e.g. ``name{v1|v2|...}``).
 
+The name is written between single quotes if it would not be read back as is otherwise (see
+`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'{0.5|1.5}``.
+
 Returns
 -------
 str

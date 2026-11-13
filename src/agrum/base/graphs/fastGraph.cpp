@@ -38,8 +38,11 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <algorithm>
+#include <cctype>
 #include <charconv>
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/graphs/fastGraph.h>
 
 #include <agrum/base/core/utils_string.h>
@@ -48,28 +51,13 @@ namespace gum {
 
   namespace graph::detail {
 
-    std::size_t fastGraphFindDash(std::string_view chain, std::size_t from) {
-      int depth = 0;
-      for (std::size_t i = from; i < chain.size(); ++i) {
-        const char c = chain[i];
-        if (c == '[' || c == '{') {
-          ++depth;
-        } else if (c == ']' || c == '}') {
-          if (depth > 0) --depth;
-        } else if ((c == '-') && (depth == 0)) {
-          return i;
-        }
-      }
-      return std::string_view::npos;
-    }
-
     std::vector< std::pair< std::string, FastGraphOp > > fastGraphTokenize(std::string_view chain) {
       std::vector< std::pair< std::string, FastGraphOp > > tokens;
       std::size_t                                          pos       = 0;
       FastGraphOp                                          pendingOp = FastGraphOp::None;
 
       while (pos <= chain.size()) {
-        const auto dashPos = fastGraphFindDash(chain, pos);
+        const auto dashPos = fast::detail::findTopLevel(chain, pos, "-");
 
         std::size_t opStart = dashPos;
         std::size_t opLen   = 1;
@@ -107,29 +95,25 @@ namespace gum {
       return static_cast< NodeId >(id);
     }
 
-    std::vector< std::string > fastGraphChains(std::string_view desc) {
-      // a line break separates two chains at bracket-depth 0; inside a '['...']' or '{'...'}' span
-      // (the domain of a variable, e.g. "B[1,\n5]"), it is ignored
-      std::string separated;
-      separated.reserve(desc.size());
-      int depth = 0;
-      for (const char c: desc) {
-        if (c == '[' || c == '{') {
-          ++depth;
-        } else if ((c == ']' || c == '}') && depth > 0) {
-          --depth;
-        }
-        if (c == '\n' || c == '\r') {
-          if (depth == 0) { separated.push_back(';'); }
-        } else {
-          separated.push_back(c);
-        }
-      }
-      std::vector< std::string > chains;
-      for (auto& chain: split(separated, ";")) {
-        if (!trim_copy(chain).empty()) { chains.push_back(std::move(chain)); }
-      }
-      return chains;
+    bool fastGraphIsNodeName(std::string_view token) {
+      return fast::detail::findTopLevel(token, 0, " \t\n\r\f\v<>") == std::string_view::npos;
+    }
+
+    void fastGraphCheckNodeIds(std::string_view desc, std::vector< NodeId > ids) {
+      // same bound as the GUM format (graphGumIO.cpp)
+      constexpr Size maxHoles = 65536;
+      if (ids.empty()) return;
+      std::sort(ids.begin(), ids.end());
+      ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+      const Size   nbNodes = ids.size();
+      const NodeId maxId   = ids.back();
+      // maxId + 1 - nbNodes holes > max(nbNodes, maxHoles)
+      if (maxId >= nbNodes + std::max(nbNodes, maxHoles))
+        GUM_ERROR(InvalidArgument,
+                  "fastGraph: the node id " << maxId << " is too large for " << nbNodes
+                                            << " nodes in '" << desc << "' (at most max(" << nbNodes
+                                            << ", " << maxHoles
+                                            << ") absent ids lower than the largest one)")
     }
 
   }   // namespace graph::detail

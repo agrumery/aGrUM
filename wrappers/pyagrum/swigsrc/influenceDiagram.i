@@ -45,6 +45,8 @@
 
 
 
+// the public toFast (with a filename) is defined below in %pythoncode
+%rename(_toFast) gum::InfluenceDiagram::toFast;
 %include "keepModelAlive.i"
 GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::variable)
 GUM_KEEP_MODEL_ALIVE(gum::InfluenceDiagram<double>::variableFromName)
@@ -253,50 +255,22 @@ def saveGUMstring(self, indent: int = None) -> str:
 
 def toFast(self, filename: str = None) -> str:
   """
-  Export the influence Diagram as *fast* syntax (in a string or in a python file)
+  Export the influence diagram in *fast* syntax (the structure and the variables, not the parameters), read back by
+  `pyagrum.fastID`. A name is quoted if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
 
   Parameters
   ----------
-  filename : Optional[str]
-    the name of the file (including the prefix), if None , use sys.stdout
+  filename : str, optional
+    if given, a Python file which builds the model with `pyagrum.fastID` is written
+
+  Returns
+  -------
+  str
+    the fast description of the model (if filename is None)
   """
-  def _toFastVar(model,i):
-    res=""
-    if model.isUtilityNode(i):
-      res="$"
-    elif model.isDecisionNode(i):
-      res="*"
-    return res+model.variable(i).toFast()
-
-  def _toFastBN(model,pythoncode=False):
-    res = []
-    sovars = set()
-    for x, y in model.arcs():
-      if x in sovars:
-        src = model.variable(x).name()
-      else:
-        src = _toFastVar(model,x)
-        sovars.add(x)
-      if y in sovars:
-        dst = model.variable(y).name()
-      else:
-         dst = _toFastVar(model,y)
-         sovars.add(y)
-      res.append(f"{src}->{dst}")
-
-    for x in model.nodes():
-      if x not in sovars:
-         res .append(_toFastVar(model,x))
-
-    if pythoncode:
-      return 'model=gum.fastID("""'+';\n     '.join(res)+'""")'
-    else:
-      return ';'.join(res)
-
   if filename is None:
-    return _toFastBN(self)
-  else:
-    with open(filename, "w") as pyfile:
-      print(_toFastBN(self,pythoncode=True), file=pyfile)
+    return self._toFast()
+  with open(filename, "w") as pyfile:
+    print(f"import pyagrum\n\nmodel = pyagrum.fastID({self._toFast()!r})", file=pyfile)
   }
 }

@@ -119,6 +119,7 @@ static int _pyagrum_import_numpy(void) {
 
 %include "graphs.i"
 %include "graphAlgorithms.i"
+%include "fastSyntax.i"
 
 /* %rename of the configuration: before the declaration of its class */
 %include "configurationPython.i"

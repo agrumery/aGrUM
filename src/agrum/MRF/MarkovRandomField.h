@@ -114,6 +114,14 @@ namespace gum {
                                                          std::string_view domain = "[2]");
 
     /**
+     * @brief The fast description of the Markov random field, read back by fastPrototype() (the
+     * factors and the variables, not the parameters).
+     * @warning aGrUM/pyAgrum 3.3.2 or older read a quoted name with the quotes (see
+     * quoteFastName()).
+     */
+    std::string toFast() const;
+
+    /**
      * build a Markov random field from a Bayesian network
      * @param bn the Bayesian network
      * @return a Markov random field

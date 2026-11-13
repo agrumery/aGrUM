@@ -56,48 +56,11 @@
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/dot/dotElements.h>
-#include <agrum/base/graphs/fastGraph.h>
+#include <agrum/base/graphicalModels/fastModel.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 #include <agrum/ID/influenceDiagram.h>
 
 namespace gum {
-  template < GUM_Numeric GUM_SCALAR >
-  NodeId build_node_for_ID(gum::InfluenceDiagram< GUM_SCALAR >& infdiag,
-                           std::string                          node,
-                           std::string_view                     domain) {
-    bool        isUtil  = false;
-    bool        isDeci  = false;
-    bool        isChanc = false;
-    std::string ds(domain);
-    switch (*(node.begin())) {
-      case '*' :
-        isDeci = true;
-        node.erase(0, 1);
-        break;
-      case '$' :
-        isUtil = true;
-        ds     = "[1]";
-        node.erase(0, 1);
-        break;
-      default : isChanc = true;
-    }
-    auto v = fastVariable< GUM_SCALAR >(node, ds);
-
-    NodeId res;
-    if (infdiag.exists(v->name())) {
-      res = infdiag.idFromName(v->name());
-    } else {
-      if (isChanc) res = infdiag.addChanceNode(*v);
-      else if (isDeci) res = infdiag.addDecisionNode(*v);
-      else if (isUtil) res = infdiag.addUtilityNode(*v);
-      else
-        GUM_ERROR(FatalError,
-                  "No type (chance, decision or utility) for the node '" << node << "'.")
-    }
-
-    return res;
-  }
-
   template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >
       InfluenceDiagram< GUM_SCALAR >::fastPrototype(std::string_view dotlike, Size domainSize) {
@@ -108,21 +71,23 @@ namespace gum {
   InfluenceDiagram< GUM_SCALAR >
       InfluenceDiagram< GUM_SCALAR >::fastPrototype(std::string_view dotlike,
                                                     std::string_view domain) {
+    using fast::detail::FastNodeKind;
+    const auto model = fast::detail::parseFastModel(dotlike,
+                                                    fast::detail::FastModelType::InfluenceDiagram,
+                                                    domain);
     gum::InfluenceDiagram< GUM_SCALAR > infdiag;
-
-    auto resolve
-        = [&](const std::string& node) { return build_node_for_ID(infdiag, node, domain); };
-    auto addArc = [&](NodeId tail, NodeId head, const std::string&) { infdiag.addArc(tail, head); };
-    auto addEdge = [&](NodeId, NodeId, const std::string& token) {
-      GUM_ERROR(InvalidEdge,
-                "fastPrototype: '" << token << "' is preceded by '-' but an InfluenceDiagram "
-                                   << "does not support edges")
-    };
-
-    for (const auto& chaine: graph::detail::fastGraphChains(dotlike)) {
-      using namespace graph::detail;
-      fastGraphWalkTokens(fastGraphTokenize(chaine), dotlike, resolve, addArc, addEdge);
+    std::vector< NodeId >               ids;
+    ids.reserve(model.nodes.size());
+    for (const auto& node: model.nodes) {
+      const auto v = fastVariable< GUM_SCALAR >(node.description, node.defaultDomain);
+      switch (node.kind) {
+        case FastNodeKind::Decision : ids.push_back(infdiag.addDecisionNode(*v)); break;
+        case FastNodeKind::Utility : ids.push_back(infdiag.addUtilityNode(*v)); break;
+        default : ids.push_back(infdiag.addChanceNode(*v));
+      }
     }
+    for (const auto& [tail, head]: model.arcs)
+      infdiag.addArc(ids[tail], ids[head]);
 
     for (const auto n: infdiag.nodes()) {
       if (infdiag.isChanceNode(n)) infdiag.cpt(n).randomCPT();
@@ -140,6 +105,15 @@ namespace gum {
   /*
    * Default constructor.
    */
+  template < GUM_Numeric GUM_SCALAR >
+  std::string InfluenceDiagram< GUM_SCALAR >::toFast() const {
+    return fast::detail::directedModelToFast(*this, [this](NodeId node) {
+      if (isUtilityNode(node)) return std::string("$");
+      if (isDecisionNode(node)) return std::string("*");
+      return std::string();
+    });
+  }
+
   template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram() : DAGmodel() {
     GUM_CONSTRUCTOR(InfluenceDiagram)

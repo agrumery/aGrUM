@@ -74,8 +74,8 @@ namespace gum {
      * @brief Scans one ";"-delimited chain of a marked graph: each '-' (outside brackets) is an
      * edge, with the mark just before it at the previous node and the mark just after it at the
      * next node: '<' or '>' is an arrowhead, 'o' is a circle when it is separated by a space from
-     * a node name on its side of the edge, anything else is a tail. Hence 'o' is a node name in
-     * "o->B", "A->o->B" or "A-o".
+     * a node name on its side of the edge or when it touches a quoted name ("'A'o->'B'"), anything
+     * else is a tail. Hence 'o' is a node name in "o->B", "A->o->B" or "A-o".
      */
     GUM_SHARED_PUBLIC std::vector< FastMarkedToken >
                       fastMarkedGraphTokenize(std::string_view chain);
@@ -91,7 +91,8 @@ namespace gum {
    * ("A-F" has a tail at both ends). A circle must be separated from the name of its node by a
    * space ("C o-> D", not "Co->D", where "Co" would be a node). Otherwise, and when no node name
    * lies on its side of the edge, 'o' is read as a node name: "o->B", "A->o->B" and "A-o" use
-   * a node named "o".
+   * a node named "o". A name may be quoted as in fastGraph() ("'Visit Asia' o-> X"); a circle may
+   * touch a quoted name ("'A'o->'B'", "A <-o'B'").
    *
    * An edge may be described several times with the same marks ("A->B; A->B"), but not with
    * different ones ("A->B; B->A", "A o-o B; A->B").
@@ -99,8 +100,11 @@ namespace gum {
    * @tparam GRAPH_TYPE MarkedGraph or one of its subclasses (PAG).
    * @param desc the DOT-like description.
    * @return the built graph.
-   * @throw InvalidEdge if the description is malformed (e.g. an operator without a following
-   *        node token) or if an edge is described with conflicting marks.
+   * @throw InvalidArgument if the description is malformed (an operator without a following node
+   *        token, a node token which is not a node name: e.g. "A>" in "A>-B", "A o" in "A o -B", a
+   *        malformed quoted name), or if the nodes are NodeIds and the largest one leaves more
+   *        than max(number of nodes, 65536) absent ids below it (e.g. "0->2000000000").
+   * @throw InvalidEdge if an edge is described with conflicting marks.
    * @throw DuplicateElement propagated as-is if @p desc reuses a name across distinct nodes.
    */
   template < typename GRAPH_TYPE = MarkedGraph >

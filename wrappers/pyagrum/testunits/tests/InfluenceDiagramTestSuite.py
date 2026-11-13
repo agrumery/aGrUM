@@ -223,6 +223,20 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
       gc.collect()
       self.assertEqual(obj.domainSize(), 3)
 
+  def testQuotedNamesRoundTrip(self):
+    model = gum.fastID("'my state'->*'my decision'->$'my utility'<-'X-ray';*'my decision'->'X-ray'")
+    self.assertTrue(model.isDecisionNode(model.idFromName("my decision")))
+    self.assertTrue(model.isUtilityNode(model.idFromName("my utility")))
+    model2 = gum.fastID(model.toFast())
+    self.assertEqual(set(model.names()), set(model2.names()))
+    for name in model.names():
+      n, n2 = model.idFromName(name), model2.idFromName(name)
+      self.assertEqual(model.isDecisionNode(n), model2.isDecisionNode(n2))
+      self.assertEqual(model.isUtilityNode(n), model2.isUtilityNode(n2))
+      self.assertEqual(
+        {model.variable(i).name() for i in model.parents(n)}, {model2.variable(i).name() for i in model2.parents(n2)}
+      )
+
   def testGetDecisionGraph(self):
     # *D1->C1->*D2: D1 is decision-ancestor of D2 via chance node C1; *D3 isolated
     id_ = gum.fastID("*D1->C1->*D2->$U;*D3->$U2")

@@ -408,14 +408,13 @@ class CredalNet(object):
     def credalNet_currentCpt(self) -> dict[int, list[list[list[float]]]]:
         r"""
 
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
+        The credal sets of the nodes, up to date (after ``bnToCredal`` or ``intervalToCredal``...).
 
         Returns
         -------
-        tbw
-            a constant reference to the (up-to-date) CredalNet CPTs.
+        dict[int, list[list[list[float]]]]
+            for each node id, for each instantiation of its parents (by index), the vertices of its credal set (one list of
+            probabilities per vertex)
 
         """
         return _cncpp.CredalNet_credalNet_currentCpt(self)
@@ -423,14 +422,13 @@ class CredalNet(object):
     def credalNet_srcCpt(self) -> dict[int, list[list[list[float]]]]:
         r"""
 
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
+        The credal sets of the nodes, as given when the credal net was built or set.
 
         Returns
         -------
-        tbw
-            a constant reference to the (up-to-date) CredalNet CPTs.
+        dict[int, list[list[list[float]]]]
+            for each node id, for each instantiation of its parents (by index), the vertices of its credal set (one list of
+            probabilities per vertex)
 
         """
         return _cncpp.CredalNet_credalNet_srcCpt(self)
@@ -441,7 +439,7 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-            The constant reference to the choosen NodeId
+            the id of the node
 
         Returns
         -------
@@ -457,7 +455,7 @@ class CredalNet(object):
         Parameters
         ----------
         id : int
-            the constant reference to the choosen NodeId
+            the id of the node
 
         Returns
         -------
@@ -527,14 +525,13 @@ class CredalNet(object):
     def get_binaryCPT_min(self) -> list[list[float]]:
         r"""
 
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
+        The lower probabilities of the value 1 of each binary node.
 
         Returns
         -------
-        tbw
-            a constant reference to the lower probabilities of each node X over the 'True' modality
+        list[list[float]]
+            for each node, the lower probabilities P(X=1 | pa(X)=j), one per instantiation j of its parents (empty before the
+            computation of the binary credal net)
 
         """
         return _cncpp.CredalNet_get_binaryCPT_min(self)
@@ -542,14 +539,13 @@ class CredalNet(object):
     def get_binaryCPT_max(self) -> list[list[float]]:
         r"""
 
-        Warnings
-        --------
-        Experimental function - Return type to be wrapped
+        The upper probabilities of the value 1 of each binary node.
 
         Returns
         -------
-        tbw
-            a constant reference to the upper probabilities of each node X over the 'True' modality
+        list[list[float]]
+            for each node, the upper probabilities P(X=1 | pa(X)=j), one per instantiation j of its parents (empty before the
+            computation of the binary credal net)
 
         """
         return _cncpp.CredalNet_get_binaryCPT_max(self)
@@ -698,7 +694,7 @@ class CNMonteCarloSampling(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises
@@ -1161,7 +1157,7 @@ class CNLoopyPropagation(object):
 
         Parameters
         ----------
-        tiemout : float
+        timeout : float
             stopping criterion on timeout (in seconds)
 
         Raises

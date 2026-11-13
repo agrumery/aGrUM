@@ -70,6 +70,10 @@ namespace gum {
    * avoiding any key-separator ambiguity with variable names.
    *
    * Supports both text (.jgum) and binary msgpack (.bgum) output.
+   *
+   * @warning The variables are written in fast syntax (DiscreteVariable::toFast()): a name which
+   * needs quotes (see quoteFastName()) is written quoted ('X-ray'[3]), and aGrUM/pyAgrum 3.3.2 or
+   * older read it with the quotes in the name.
    */
   template < GUM_Numeric GUM_SCALAR >
   class GumMRFWriter: public MRFWriter< GUM_SCALAR > {

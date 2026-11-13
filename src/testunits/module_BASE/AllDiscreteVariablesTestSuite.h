@@ -44,6 +44,7 @@
 #include <sstream>
 #include <string>
 
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/variables/allDiscreteVariables.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -244,6 +245,73 @@ namespace gum_tests {
     CHECK_EQ(s, (FASTVARDBL("A+[1:6:5]")->toFast()));    // Discretized
   }
 
+  GUM_TEST(QuotedNames) {
+    CHECK_EQ(FASTVARDBL("'Visit Asia'{yes|no}")->name(), "Visit Asia");
+    CHECK_EQ(FASTVARDBL("'l''eau'[3]")->name(), "l'eau");
+    // a quoted name is not trimmed
+    CHECK_EQ(FASTVARDBL("' x '")->name(), " x ");
+    CHECK_EQ(FASTVARDBL("' x '")->domainSize(), static_cast< gum::Size >(2));
+    CHECK_EQ(FASTVARDBL("'X[0]'{a|b}")->name(), "X[0]");
+    CHECK_EQ(FASTVARDBL("'a{b'{x|y}")->name(), "a{b");
+    // '+' is the empirical mark only after the quoted name
+    const auto notEmpirical = FASTVARDBL("'X+'[0,1,2]");
+    CHECK_EQ(notEmpirical->name(), "X+");
+    CHECK_FALSE(static_cast< const gum::IDiscretizedVariable& >(*notEmpirical).isEmpirical());
+    const auto empirical = FASTVARDBL("'X'+[0,1,2]");
+    CHECK_EQ(empirical->name(), "X");
+    CHECK(static_cast< const gum::IDiscretizedVariable& >(*empirical).isEmpirical());
+    // a quote in a label, or inside a word, is an ordinary character
+    CHECK_EQ(FASTVARDBL("A{l'eau|x}")->label(0), "l'eau");
+    CHECK_EQ(FASTVARDBL("O'Brien[3]")->name(), "O'Brien");
+    // legacy names are unchanged
+    CHECK_EQ(FASTVARDBL("X[0][2]")->name(), "X[0]");
+    CHECK_EQ(FASTVARDBL("Hello World ![3]")->name(), "Hello World !");
+    for (const std::string_view desc: {"'A", "''[2]", "'A'x[2]", "'A'+{a|b}", "'A'[2]x"}) {
+      CHECK_THROWS_AS(FASTVARDBL(std::string(desc)), const gum::InvalidArgument&);
+    }
+  }
+
+  GUM_TEST(MalformedDescriptions) {
+    // a number which cannot be read, a variable without name
+    for (const std::string_view desc: {"A[x]",
+                                       "A[1,x]",
+                                       "A[1:2:x]",
+                                       "A[99999999999]",
+                                       "A{1:x:3}",
+                                       "[3]",
+                                       "{a|b}",
+                                       "  [0,1,2]"}) {
+      CHECK_THROWS_AS(FASTVARDBL(std::string(desc)), const gum::InvalidArgument&);
+    }
+  }
+
+  GUM_TEST(ToFastQuotesTheNamesIfNeeded) {
+    for (const std::string_view domain:
+         {"{a|b}", "{1|3|5}", "{0.5|1.5}", "[3]", "[2,4]", "[0,1,2]", "+[0,1,2]"}) {
+      for (const std::string_view name: {"A",
+                                         "Visit Asia",
+                                         "O'Brien",
+                                         "X-ray",
+                                         "X[0]",
+                                         "l'eau",
+                                         " a",
+                                         "X+",
+                                         "*x",
+                                         "'q",
+                                         "rock 'n roll",
+                                         "a;b"}) {
+        const auto desc = gum::quoteFastName(name) + std::string(domain);
+        const auto var  = FASTVARDBL(desc);
+        CHECK_MESSAGE(var->name() == name, desc);
+        CHECK_MESSAGE(var->toFast() == desc, desc);
+        CHECK_MESSAGE(FASTVARDBL(var->toFast())->toFast() == desc, desc);
+      }
+    }
+    // a simple name is written as before
+    CHECK_EQ(FASTVARDBL("Visit Asia{yes|no}")->toFast(), "Visit Asia{yes|no}");
+    CHECK_EQ(FASTVARDBL("'X-ray'[3]")->toFast(), "'X-ray'[3]");
+  }
+
   GUM_TEST(FastNumericalWithoutInfinity) {
     std::string s;
     s = "A{0|1.15|inf}";   // NumericalDiscrete
@@ -253,9 +321,9 @@ namespace gum_tests {
     s = "A[3,2.5,inf]";    // Discretized
     // CHECK_THROWS_AS(FASTVARDBL(s), const gum::DefaultInLabel&);
     s = "A[inf]";             // Range
-    CHECK_THROWS_AS(FASTVARDBL(s), const std::invalid_argument&);
+    CHECK_THROWS_AS(FASTVARDBL(s), const gum::InvalidArgument&);
     s = "A[2,inf]";           // Range
-    CHECK_THROWS_AS(FASTVARDBL(s), const std::invalid_argument&);
+    CHECK_THROWS_AS(FASTVARDBL(s), const gum::InvalidArgument&);
     s = "A[inf,2,3,4,5,6]";   // Integer
     // CHECK_THROWS_AS(FASTVARDBL(s), const gum::DefaultInLabel&);
   }

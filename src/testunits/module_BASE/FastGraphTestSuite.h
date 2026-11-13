@@ -138,7 +138,7 @@ namespace gum_tests {
     // uses "--" to list the variables of a single factor (a clique), a
     // different construct from a chain of pairwise edges. Reusing it here
     // would silently clash, so "A--B" must fail rather than be misread.
-    CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >("A--B"), const gum::InvalidArc&);
+    CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >("A--B"), const gum::InvalidArgument&);
   }
 
   GUM_TEST(CycleIntoDAGThrows) {
@@ -196,7 +196,66 @@ namespace gum_tests {
   }
 
   GUM_TEST(TrailingOperatorThrows) {
-    CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >("A->"), const gum::InvalidArc&);
+    CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >("A->"), const gum::InvalidArgument&);
+  }
+
+  GUM_TEST(MisplacedOperatorIsMalformed) {
+    // '<', '>' and the inner blanks are not part of a name (they were read as the nodes "A<", "A>",
+    // "A B")
+    for (const std::string_view desc: {"A<->B", "A>-B", "A-B>", "A B->C", "A->B C"}) {
+      CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >(desc), const gum::InvalidArgument&);
+    }
+  }
+
+  GUM_TEST(NodeIdModeBoundsTheHoles) {
+    // at most max(number of nodes, 65536) absent ids lower than the largest one
+    CHECK_EQ(gum::fastGraph< gum::DiGraph >("0->65537").size(), static_cast< gum::Size >(2));
+    CHECK_THROWS_AS(gum::fastGraph< gum::DiGraph >("0->65538"), const gum::InvalidArgument&);
+    CHECK_THROWS_AS(gum::fastGraph< gum::DiGraph >("0->2000000000"), const gum::InvalidArgument&);
+    // a repeated id counts once
+    CHECK_THROWS_AS(gum::fastGraph< gum::DiGraph >("0->65538;0->65538"),
+                    const gum::InvalidArgument&);
+    // in name mode, a large number is a name
+    CHECK_EQ(gum::fastGraph< gum::DiGraph >("A->2000000000").size(), static_cast< gum::Size >(2));
+  }
+
+  GUM_TEST(QuotedNames) {
+    auto g = gum::fastGraph< gum::MixedGraph >("'Visit Asia'->X; 'a-b'-'c;d'\n'l''eau'<-X");
+    CHECK_EQ(g.size(), static_cast< gum::Size >(5));
+    for (const std::string_view name: {"Visit Asia", "X", "a-b", "c;d", "l'eau"}) {
+      CHECK_MESSAGE(g.idFromName(std::string(name)).has_value(), name);
+    }
+    CHECK(g.existsArc(*g.idFromName("Visit Asia"), *g.idFromName("X")));
+    CHECK(g.existsEdge(*g.idFromName("a-b"), *g.idFromName("c;d")));
+    CHECK(g.existsArc(*g.idFromName("X"), *g.idFromName("l'eau")));
+    // a quoted name may contain a line break
+    CHECK(gum::fastGraph< gum::DiGraph >("'a\nb'->C").idFromName("a\nb").has_value());
+    // an apostrophe inside a word is an ordinary character
+    CHECK(gum::fastGraph< gum::DiGraph >("O'Brien->X").idFromName("O'Brien").has_value());
+  }
+
+  GUM_TEST(QuotedNamesAreNames) {
+    // '12' is a name: the whole description is read in name mode
+    auto g = gum::fastGraph< gum::DiGraph >("'12'->3");
+    CHECK_EQ(g.size(), static_cast< gum::Size >(2));
+    CHECK(g.idFromName("12").has_value());
+    CHECK(g.idFromName("3").has_value());
+    // 12 and '12' are the same node
+    CHECK_EQ(gum::fastGraph< gum::DiGraph >("12->'12'").size(), static_cast< gum::Size >(1));
+  }
+
+  GUM_TEST(MalformedQuotedNames) {
+    for (const std::string_view desc: {"'A->B", "''->B", "'A'x->B", "'A' 'B'->C"}) {
+      CHECK_THROWS_AS(gum::fastGraph< gum::DiGraph >(desc), const gum::InvalidArgument&);
+    }
+  }
+
+  GUM_TEST(DomainsInNodeNames) {
+    // a domain is part of a node name: '<', '>' and blanks are allowed inside its brackets
+    for (const std::string_view desc: {"A{<5|>=5}->B", "A{very low|high}->B"}) {
+      const auto g = gum::fastGraph< gum::DiGraph >(desc);
+      CHECK_EQ(g.sizeArcs(), static_cast< gum::Size >(1));
+    }
   }
 
 }   // namespace gum_tests

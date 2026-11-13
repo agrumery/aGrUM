@@ -76,6 +76,10 @@ namespace gum {
    *http://www-2.cs.cmu.edu/afs/cs/user/fgcozman/www/Research/InterchangeFormat/
    * for information about this format.
    *
+   *
+   * @warning The variables are written in fast syntax (DiscreteVariable::toFast()): a name which
+   * needs quotes (see quoteFastName()) is written quoted ('X-ray'[3]), and aGrUM/pyAgrum 3.3.2 or
+   * older read it with the quotes in the name.
    */
   template < GUM_Numeric GUM_SCALAR >
   class BIFXMLBNWriter: public BNWriter< GUM_SCALAR > {

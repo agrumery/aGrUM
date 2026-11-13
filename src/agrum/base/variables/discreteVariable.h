@@ -135,7 +135,12 @@ namespace gum {
     /// returns the varType of variable
     VarType varType() const override = 0;
 
-    // returns the variable in fast syntax
+    /**
+     * @brief returns the variable in fast syntax (see fastVariable()): its name is quoted only if
+     * it would not be read back as is otherwise (see quoteFastName()).
+     * @warning aGrUM/pyAgrum 3.3.2 or older read a quoted name with the quotes in the name: this
+     * concerns the files written by the GUM and BIFXML writers.
+     */
     virtual std::string toFast() const = 0;
 
     /// @}

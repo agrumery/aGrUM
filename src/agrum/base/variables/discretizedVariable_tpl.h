@@ -40,6 +40,7 @@
 
 #pragma once
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/variables/discretizedVariable.h>   // to ease IDE parser
 #pragma once
 
@@ -349,7 +350,7 @@ namespace gum {
 
   template < typename T_TICKS >
   std::string DiscretizedVariable< T_TICKS >::toFast() const {
-    std::string result = name();
+    std::string result = quoteFastName(name());
     if (_is_empirical) result += "+";
     result += "[";
     bool first = true;

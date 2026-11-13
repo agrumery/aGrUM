@@ -862,6 +862,36 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(FastPrototypeQuotedNames) {
+    // the first occurrence of a node gives its kind: D is a chance node
+    {
+      const auto first = gum::InfluenceDiagram< double >::fastPrototype("D->X;*D->Y");
+      CHECK(first.isChanceNode(first.idFromName("D")));
+    }
+    // the fast description of an ID is read back by fastPrototype
+    {
+      const auto infdiag
+          = gum::InfluenceDiagram< double >::fastPrototype("C->*'my decision'->$U<-C");
+      const auto copy = gum::InfluenceDiagram< double >::fastPrototype(infdiag.toFast());
+      CHECK_EQ(copy.toFast(), infdiag.toFast());
+      CHECK(copy.isDecisionNode(copy.idFromName("my decision")));
+      CHECK(copy.isUtilityNode(copy.idFromName("U")));
+    }
+    for (const std::string_view desc: {"*->B", "$->B", "A->"}) {
+      CHECK_THROWS_AS(gum::InfluenceDiagram< double >::fastPrototype(desc),
+                      const gum::InvalidArgument&);
+    }
+
+    const auto infdiag = gum::InfluenceDiagram< double >::fastPrototype(
+        "'my state'->*'my decision'->$'my utility'");
+    CHECK(infdiag.isChanceNode(infdiag.idFromName("my state")));
+    CHECK(infdiag.isDecisionNode(infdiag.idFromName("my decision")));
+    CHECK(infdiag.isUtilityNode(infdiag.idFromName("my utility")));
+    // a quoted name beginning with '*' is a chance node
+    const auto star = gum::InfluenceDiagram< double >::fastPrototype("'*x'->$U");
+    CHECK(star.isChanceNode(star.idFromName("*x")));
+  }
+
   GUM_TEST(FastPrototypeVarType) {
     auto infdiag = gum::InfluenceDiagram< float >::fastPrototype(
         "a{1|4|6}->b{1|-4|6}->c{1|toto|6}->d{1.0|-4.0|6.0}->e{1|-4|6.0}->f{1.0|-4.0|+6.0}");

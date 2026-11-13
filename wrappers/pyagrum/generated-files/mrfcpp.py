@@ -295,7 +295,13 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
         return _mrfcpp.IMarkovRandomField_minimalCondSet(self, *args)
 
     def factor(self, *args) -> "pyagrum.Tensor":
-        return _mrfcpp.IMarkovRandomField_factor(self, *args)
+        val = _mrfcpp.IMarkovRandomField_factor(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def isIndependent(self, *args) -> bool:
         r"""
@@ -357,6 +363,11 @@ class MarkovRandomField(IMarkovRandomField):
             - the structure ``a--b--c;b--d--e;``. The substring ``a--b--c`` indicates a factor with the scope (a,b,c).
             - the type of the variables with different syntax (cf documentation).
 
+        Notes
+        -----
+          - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote): ``'a--b'--c``.
+          - an unquoted name containing ``->`` or ``<-`` raises `pyagrum.InvalidArgument`.
+
         Parameters
         ----------
         dotlike : str
@@ -371,6 +382,9 @@ class MarkovRandomField(IMarkovRandomField):
 
         """
         return _mrfcpp.MarkovRandomField_fastPrototype(*args)
+
+    def _toFast(self) -> str:
+        return _mrfcpp.MarkovRandomField__toFast(self)
 
     @staticmethod
     def fromBN(bn: "pyagrum.BayesNet") -> "pyagrum.MarkovRandomField":
@@ -665,7 +679,13 @@ class MarkovRandomField(IMarkovRandomField):
             if the node id does not exist
 
         """
-        return _mrfcpp.MarkovRandomField_variable(self, *args)
+        val = _mrfcpp.MarkovRandomField_variable(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def nodeId(self, var: "pyagrum.DiscreteVariable") -> int:
         r"""
@@ -711,7 +731,13 @@ class MarkovRandomField(IMarkovRandomField):
             if no variable with this name exists in the model
 
         """
-        return _mrfcpp.MarkovRandomField_variableFromName(self, name)
+        val = _mrfcpp.MarkovRandomField_variableFromName(self, name)
+
+        val._model = self
+
+
+        return val
+
 
     def names(self) -> set[str]:
         r"""
@@ -863,7 +889,13 @@ class MarkovRandomField(IMarkovRandomField):
             If no variable's id matches varId.
 
         """
-        return _mrfcpp.MarkovRandomField_factor(self, *args)
+        val = _mrfcpp.MarkovRandomField_factor(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def isIndependent(self, *args) -> bool:
         r"""
@@ -1080,43 +1112,23 @@ class MarkovRandomField(IMarkovRandomField):
 
     def toFast(self, filename: str = None) -> str:
       """
-      Export the MRF as *fast* syntax (in a string or in a python file)
+      Export the Markov random field in *fast* syntax (the structure and the variables, not the parameters), read back by
+      `pyagrum.fastMRF`. A name is quoted if it would not be read back as is otherwise (see `pyagrum.quoteFastName`).
 
       Parameters
       ----------
-      filename : Optional[str]
-        the name of the file (including the prefix), if None , use sys.stdout
+      filename : str, optional
+        if given, a Python file which builds the model with `pyagrum.fastMRF` is written
+
+      Returns
+      -------
+      str
+        the fast description of the model (if filename is None)
       """
-
-      def _toFastMRF(model,pythoncode=False):
-        res = []
-        sovars = set()
-        first = True
-        for f in model.factors():
-          l = []
-          for x in f:
-              if x in sovars:
-                src = model.variable(x).name()
-              else:
-                src = model.variable(x).toFast()
-                sovars.add(x)
-              l.append(src)
-          res.append("--".join(l))
-
-        for x in model.nodes():
-          if x not in sovars:
-            res.append(model.variable(x).toFast())
-
-        if pythoncode:
-          return 'model=pyagrum.fastMRF("""'+';\n     '.join(res)+'""")'
-        else:
-          return ';'.join(res)
-
       if filename is None:
-        return _toFastMRF(self)
-      else:
-        with open(filename, "w") as pyfile:
-          print(_toFastBN(self,pythoncode=True), file=pyfile)
+        return self._toFast()
+      with open(filename, "w") as pyfile:
+        print(f"import pyagrum\n\nmodel = pyagrum.fastMRF({self._toFast()!r})", file=pyfile)
 
 
     def __repr__(self) -> str:
@@ -2108,6 +2120,11 @@ def saveMRF(mn: MarkovRandomField, filename: str) -> None:
   pkl suffix is used to save a MRF using pickle.
 
   jgum/bgum suffixes use the native aGrUM JSON/binary format.
+
+  Warnings
+  --------
+  In the ``.jgum``, ``.bgum`` and ``.pkl`` files, a variable whose name needs quotes (see `pyagrum.quoteFastName`)
+  is written with a quoted name (``'X-ray'[3]``): pyAgrum 3.3.2 or older reads it with the quotes in the name.
   """
   extension = filename.split('.')[-1].upper()
 
@@ -2126,7 +2143,8 @@ def fastMRF(structure: str, domain: int | str = "[2]") -> MarkovRandomField:
   """
   Create a Markov random field with a modified dot-like syntax which specifies:
       - the structure 'a-b-c;b-d;c-e;' where each chain 'a-b-c' specifies a factor,
-      - the type of the variables with different syntax (cf documentation).
+      - the type of the variables with different syntax (cf documentation),
+      - names possibly between single quotes (``"'Visit Asia'--X"``).
 
   Parameters
   ----------

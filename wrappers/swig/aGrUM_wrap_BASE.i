@@ -60,6 +60,8 @@
 /* INCLUDES */
 %{
 #include <agrum/base.h>
+#include <agrum/base/core/fastSyntax.h>
+#include <agrum/base/graphicalModels/fastSyntaxCheck.h>
 #include <agrum/base/graphs/PAG.h>
 %}
 
@@ -208,6 +210,8 @@
 %include <agrum/base/graphs/MAG.h>
 %include <agrum/base/graphs/fastGraph.h>
 %include <agrum/base/graphs/fastMarkedGraph.h>
+%include <agrum/base/core/fastSyntax.h>
+%include <agrum/base/graphicalModels/fastSyntaxCheck.h>
 %include "aGrUM_wrap_graphAlgorithms.i"
 
 %include <agrum/base/graphs/cliqueGraph.h>

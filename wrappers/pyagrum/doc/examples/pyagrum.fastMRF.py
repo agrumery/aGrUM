@@ -10,3 +10,8 @@ print(mrf.variable("A"))
 # A:Range([0,5])
 print(mrf.variable("E"))
 # E:Discretized(<[1;2.5[,[2.5;3.9]>)
+
+# a name between single quotes may contain '--'
+mrf = gum.fastMRF("'a--b'--C")
+sorted(mrf.names())
+# ['C', 'a--b']

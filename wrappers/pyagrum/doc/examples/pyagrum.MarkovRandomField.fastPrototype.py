@@ -5,3 +5,8 @@ sorted(sorted(f) for f in mrf.factors())
 # [[0, 1, 2], [2, 3]]
 print(mrf.variable("C"))
 # C:Labelized({yes|no})
+
+# a name between single quotes may contain '--'
+mrf = gum.MarkovRandomField.fastPrototype("'a--b'--C")
+sorted(mrf.names())
+# ['C', 'a--b']

@@ -165,7 +165,10 @@ pyagrum.OutOfBounds
 
 %feature("docstring") gum::RangeVariable::toFast
 "
-Return the variable description in fast syntax (e.g. ``name[min,max]``).
+Return the variable description in fast syntax (e.g. ``name[n]`` or ``name[min,max]``).
+
+The name is written between single quotes if it would not be read back as is otherwise (see
+`pyagrum.quoteFastName`, and its warning about the saved files): ``'X-ray'[3]``.
 
 Returns
 -------

@@ -107,6 +107,14 @@ namespace gum {
     static InfluenceDiagram< GUM_SCALAR > fastPrototype(std::string_view dotlike,
                                                         std::string_view domain = "[2]");
 
+    /**
+     * @brief The fast description of the influence diagram, read back by fastPrototype() (the
+     * structure, the kinds of the nodes and the variables, not the parameters).
+     * @warning aGrUM/pyAgrum 3.3.2 or older read a quoted name with the quotes (see
+     * quoteFastName()).
+     */
+    std::string toFast() const;
+
     // ===========================================================================
     /// @name Constructors / Destructors
     // ===========================================================================
