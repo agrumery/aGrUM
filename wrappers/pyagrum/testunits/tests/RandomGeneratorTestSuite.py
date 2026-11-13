@@ -89,6 +89,20 @@ class RandomGeneratorTestCase(pyAgrumTestCase):
     guard.restore()
     self.assertNotEqual(gum.randomProba(), expected[0])
 
+  def testRandomNumpyGenerator(self):
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      gum.initRandom(42)
+      first = gum.randomNumpyGenerator().random(5).tolist()
+      gum.initRandom(42)
+      self.assertEqual(gum.randomNumpyGenerator().random(5).tolist(), first)
+      # each call draws a new seed from the generator of aGrUM
+      self.assertNotEqual(gum.randomNumpyGenerator().random(5).tolist(), first)
+
+    # the guard also gives back the numpy draws
+    with gum.RandomGeneratorGuard():
+      expected = gum.randomNumpyGenerator().random(5).tolist()
+    self.assertEqual(gum.randomNumpyGenerator().random(5).tolist(), expected)
+
   def testGuardRestoresOnException(self):
     seed = gum.randomGeneratorSeed()
     with gum.RandomGeneratorGuard():

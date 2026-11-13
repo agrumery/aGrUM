@@ -209,6 +209,22 @@ class TestMixtureLearning(pyAgrumTestCase):
     for w in bnm.weights().values():
       self.assertAlmostEqual(w, 1.0)
 
+  def testBNMBootstrapLearner_reproducibleFromTheSeedOfAgrum(self):
+    bn_ref = gum.fastBN("A->C<-B")
+    df = self._gen_df(bn_ref, n=200)
+
+    def learn(seed):
+      gum.initRandom(seed)
+      boot_learner = BNM.BNMBootstrapLearner(df, template=bn_ref)
+      boot_learner.useIter(5)
+      bnm = boot_learner.learnBNM()
+      return bnm.weights(), {name: bnm.BN(name) for name in bnm.names()}
+
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
+      seed = gum.randomValue(2**30) + 1
+      self.assertEqual(learn(seed), learn(seed))
+
   def testBNMBootstrapLearner_useIter(self):
     bn_ref = gum.fastBN("A->C<-B")
     df = self._gen_df(bn_ref, n=300)

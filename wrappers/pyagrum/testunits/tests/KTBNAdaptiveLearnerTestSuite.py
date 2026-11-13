@@ -120,11 +120,10 @@ class KTBNAdaptiveLearnerTestCase(pyAgrumTestCase):
     self._writeSolo()
     return gum.KTBNAdaptiveLearner(self._dir, "kad_solo", 8, kMax, NO_ATEMPORAL)
 
-  # the deterministic learning baseline: BIC structure score + greedy hill
-  # climbing, fixed seed (default algorithm is MIIC, non-deterministic).
+  # the learning baseline: BIC structure score + greedy hill climbing (learning
+  # draws no random number: the result only depends on the data).
   def _learn(self, l):
     l.useScoreBIC().useGreedyHillClimbing()
-    gum.initRandom(42)
     return l.learnKTBN()
 
   def _stateValue(self, l, key):
@@ -492,7 +491,6 @@ class KTBNAdaptiveLearnerTestCase(pyAgrumTestCase):
 
     lm = self._solo()
     lm.useMIIC().useMDLCorrection()
-    gum.initRandom(42)
     lm.learnKTBN()
     lm.latentVariables()  # must not throw
 

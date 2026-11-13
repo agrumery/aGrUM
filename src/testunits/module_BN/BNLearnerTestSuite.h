@@ -1329,9 +1329,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(_EM) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(42);                     // fix seed for deterministic EM initialisation
     gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/EM.csv"),
                                                std::vector< std::string >{"?"});
 
@@ -1347,14 +1344,15 @@ namespace gum_tests {
 
     CHECK_THROWS_AS(learner.learnParameters(dag), const gum::MissingValueInDatabase&);
 
-    // EM with log-likelihood's evolution rate stopping criterion
-    learner.useEM(1e-3, 0.15)
+    // EM with log-likelihood's evolution rate stopping criterion (tight enough for bn1 to be a
+    // fixed point of EM whatever the random initial CPTs)
+    learner.useEM(1e-6, 0.15)
         .EMsetMaxIter(10)
         .EMsetMaxTime(200)
         .EMdisableMaxIter()
         .EMdisableMaxTime()
         .useSmoothingPrior();
-    CHECK_EQ(learner.EMMinEpsilonRate(), 1e-3);
+    CHECK_EQ(learner.EMMinEpsilonRate(), 1e-6);
     CHECK_EQ(learner.EMisEnabledMinEpsilonRate(), true);
     CHECK_EQ(learner.EMisEnabledEpsilon(), false);
     CHECK_EQ(learner.EMisEnabledMaxIter(), false);
@@ -1369,7 +1367,7 @@ namespace gum_tests {
     const auto bn1 = learner.learnParameters(dag, false);
 
     // relaunch EM with the output of the previous EM to initialize the CPTs
-    learner.useEMWithRateCriterion(1e-3, 0.002);
+    learner.useEMWithRateCriterion(1e-6, 0.002);
     const auto bn2 = learner.learnParameters(bn1, false);
 
     // check that bn1 and bn2 are more or less the same

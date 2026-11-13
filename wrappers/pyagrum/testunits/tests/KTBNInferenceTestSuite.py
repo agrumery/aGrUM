@@ -118,7 +118,6 @@ def _checkAgainstOracle(tc, ktbn, dos, targets, T, evs=None):
 
 class KTBNInferenceTestCase(pyAgrumTestCase):
   def testRingStressAllLags(self):
-    gum.initRandom(1)
     m = gum.KTBN(3)
     m.addTemporal("P", 2)
     m.addArc("P", 0, "P", 1)
@@ -129,7 +128,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [("P", 4, 1)], [], 9)
 
   def testOrderOne(self):
-    gum.initRandom(2)
     m = gum.KTBN(1)
     m.addTemporal("P", 3)
     m.addAtemporal("C", 2)
@@ -139,7 +137,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [("C", AT, 1)], [], 5)
 
   def testIntraSliceArc(self):
-    gum.initRandom(3)
     m = gum.KTBN(2)
     m.addTemporal("A", 2)
     m.addTemporal("Z", 2)
@@ -150,7 +147,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [], [], 8)
 
   def testDeepReachBack(self):
-    gum.initRandom(4)
     m = gum.KTBN(4)
     m.addTemporal("X", 2)
     m.addTemporal("Y", 2)
@@ -162,7 +158,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [], [], 12)
 
   def testInterventionSemantics(self):
-    gum.initRandom(6)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addArc("X", 0, "X", 1)
@@ -186,7 +181,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [("X", 1, 0)], [], 3)
 
   def testHorizonConsistency(self):
-    gum.initRandom(7)
     m = gum.KTBN(3)
     m.addTemporal("X", 2)
     m.addAtemporal("C", 2)
@@ -206,7 +200,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
         self.assertLess(abs(x - y), TOL)
 
   def testTargetModes(self):
-    gum.initRandom(8)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addTemporal("Y", 2)
@@ -230,7 +223,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     self.assertFalse(ie.isInTargetMode())
 
   def testExceptions(self):
-    gum.initRandom(9)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addAtemporal("C", 2)
@@ -256,7 +248,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
       ie2.posterior("X", 4)  # slice >= horizon
 
   def testNameApiAndStaleness(self):
-    gum.initRandom(10)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addArc("X", 0, "X", 1)
@@ -289,7 +280,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     m.addArc("X", 0, "X", 1)
     m.addArc("Z", 0, "Z", 1)
     m.addArc("C", AT, "X", 1)
-    gum.initRandom(5)
     m.generateCPTs()
 
     byIndex, byLabel = gum.KTBNInference(m), gum.KTBNInference(m)
@@ -336,7 +326,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
       atomic.addIntervention({"nope": 0})
 
   def testWiderModel(self):
-    gum.initRandom(11)
     m = gum.KTBN(3)
     m.addTemporal("A", 2)
     m.addTemporal("B", 2)
@@ -359,7 +348,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
   # -- observations: an observation must revise the WHOLE network --
 
   def testObservationSmoothingBackwards(self):
-    gum.initRandom(20)
     m = gum.KTBN(2)
     m.addTemporal("X", 3)
     m.addTemporal("Y", 2)
@@ -370,7 +358,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [], [], 7, evs=[("X", 0, 2), ("Y", 6, 0)])
 
   def testObservationRevisesAtemporal(self):
-    gum.initRandom(21)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addAtemporal("C", 3)
@@ -382,7 +369,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [], [], 6, evs=[("X", 1, 0), ("X", 5, 1)])
 
   def testObservationAndInterventionTogether(self):
-    gum.initRandom(22)
     m = gum.KTBN(3)
     m.addTemporal("A", 2)
     m.addTemporal("B", 3)
@@ -397,7 +383,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     _checkAgainstOracle(self, m, [("B", 3, 0)], [], 9, evs=[("A", 8, 1), ("B", 6, 1)])
 
   def testSoftObservation(self):
-    gum.initRandom(27)
     m = gum.KTBN(2)
     m.addTemporal("X", 3)
     m.addArc("X", 0, "X", 1)
@@ -423,7 +408,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     self.assertLess(abs(p[0] + p[1] - 1.0), 1e-9)
 
   def testObservationApiContract(self):
-    gum.initRandom(28)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addAtemporal("C", 2)
@@ -464,7 +448,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
       ie.addObservation("X", 1, [-1.0, 2.0])
 
   def testImpossibleObservation(self):
-    gum.initRandom(29)
     m = gum.KTBN(2)
     m.addTemporal("X", 2)
     m.addArc("X", 0, "X", 1)
@@ -478,7 +461,6 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
       ie.makeInference(5)
 
   def testWindowIntrospection(self):
-    gum.initRandom(30)
     m = gum.KTBN(3)
     m.addTemporal("X", 2)
     m.addArc("X", 0, "X", 1)

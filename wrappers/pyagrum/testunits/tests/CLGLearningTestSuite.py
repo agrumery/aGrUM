@@ -40,6 +40,7 @@
 
 import unittest
 
+import pyagrum as gum
 from pyagrum.clg.CLG import CLG
 from pyagrum.clg.GaussianVariable import GaussianVariable
 from pyagrum.clg.learning import CLGLearner
@@ -74,6 +75,16 @@ class CLGLearningTestCase(pyAgrumTestCase):
     self.assertEqual(learner.test_indep(idA, idB, {idC}), False)
     self.assertEqual(learner.test_indep(idA, idD, set()), False)
     self.assertEqual(learner.test_indep(idA, idD, {idC}), True)
+
+  def test_SupremumDeviationReproducibleFromTheSeedOfAgrum(self):
+    def sd(seed):
+      gum.initRandom(seed)
+      return CLGLearner(self.agrumSrcDir("CLGLearningTestSuite2.csv")).supremum_deviation(n_sample=10, fwer_delta=0.05)
+
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
+      seed = gum.randomValue(2**30) + 1
+      self.assertEqual(sd(seed), sd(seed))
 
   def test_PCMB(self):
     # clg is a CLG model

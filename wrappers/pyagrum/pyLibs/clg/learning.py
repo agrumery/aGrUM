@@ -51,6 +51,8 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
+import pyagrum
+
 from .CLG import CLG
 from .GaussianVariable import GaussianVariable
 
@@ -185,13 +187,8 @@ class CLGLearner:
     K = len(next(iter(self.id2samples.values())))  # number of samples
 
     # create sigma: the n_sample × K matrix of i.i.d. Rademacher random variables
-    sigma = np.zeros((n_sample, K))
-    for j in range(n_sample):
-      for i in range(K):
-        rademacher = np.random.randint(-1, 1)
-        if rademacher == 0:
-          rademacher = 1
-        sigma[j][i] = rademacher
+    # (drawn with the random generator of aGrUM, see initRandom)
+    sigma = pyagrum.randomNumpyGenerator().choice([-1.0, 1.0], size=(n_sample, K))
 
     # iteration over combinations of each pair of variables X,Y and set of conditioned variables Z
     # calcul r_XYZ for every element X,Y,Z

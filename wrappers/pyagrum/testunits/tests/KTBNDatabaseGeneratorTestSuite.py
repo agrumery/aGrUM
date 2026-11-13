@@ -95,7 +95,6 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
     self.addCleanup(shutil.rmtree, self._dir, ignore_errors=True)
 
   def testDrawSingleTrajectory(self):
-    gum.initRandom(42)
     m = _model()
     T = 5
     gen = gum.KTBNDatabaseGenerator(m)
@@ -133,7 +132,6 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
     self.assertNotIn(",", content)
 
   def testDrawSamplesPerLength(self):
-    gum.initRandom(7)
     m = _model()
     gen = gum.KTBNDatabaseGenerator(m)
     lengths = [3, 4, 5]
@@ -142,7 +140,6 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
     _checkDrawSamples(self, lls, self._dir, "toto", lengths)
 
   def testDrawSamplesFixedLength(self):
-    gum.initRandom(11)
     m = _model()
     gen = gum.KTBNDatabaseGenerator(m)
     nbSamples, T = 4, 5
@@ -194,7 +191,6 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
     self.assertLess(t2.index("D"), t2.index("A"))
 
   def testDiscretizedLabelRendering(self):
-    gum.initRandom(123)
     m = gum.KTBN(2)
     m.add(gum.DiscretizedVariable("D", "", [0.0, 1.0, 2.0, 3.0]), True)
     m.addArc("D", 0, "D", 1)
@@ -222,7 +218,6 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
     self.assertLessEqual(rnd, 3.0)
 
   def testSampledFrequenciesMatchCPT(self):
-    gum.initRandom(42)
     m = gum.KTBN(2)
     m.add(gum.LabelizedVariable("X", "", 2), True)
     m.addArc("X", 0, "X", 1)
@@ -243,12 +238,15 @@ class KTBNDatabaseGeneratorTestCase(pyAgrumTestCase):
       if cur == 0:
         next0ByPrev[prev] += 1
 
+    # about 40000 and 20000 transitions (stationary P(X=0) = 2/3): the tolerance is
+    # more than 7 standard deviations
+    self.assertGreater(byPrev[0], 1000)
+    self.assertGreater(byPrev[1], 1000)
     tol = 0.02
     self.assertLess(abs(next0ByPrev[0] / byPrev[0] - 0.9), tol)
     self.assertLess(abs(next0ByPrev[1] / byPrev[1] - 0.2), tol)
 
   def testHigherOrderLag(self):
-    gum.initRandom(1)
     m = gum.KTBN(3)
     m.add(gum.LabelizedVariable("X", "", 2), True)
     m.addArc("X", 0, "X", 2)  # lag 2: X[t] depends only on X[t-2]

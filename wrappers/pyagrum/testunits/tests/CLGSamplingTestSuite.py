@@ -39,7 +39,11 @@
 ############################################################################
 
 import unittest
+import warnings
 
+import numpy as np
+
+import pyagrum as gum
 from pyagrum.clg import CLG, CLGVariableElimination, ForwardSampling, GaussianVariable
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
@@ -97,14 +101,36 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     clg = CLG()
     clg.add(GaussianVariable(mu=4.5, sigma=2, name="X"))
     clg.add(GaussianVariable(mu=3, sigma=2, name="Y"))
-    fs1 = ForwardSampling(clg)
-    fs1.makeSample(100, seed=42)
-    fs2 = ForwardSampling(clg)
-    fs2.makeSample(100, seed=42)
-    import numpy as np
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
+      seed = gum.randomValue(2**30) + 1
+      gum.initRandom(seed)
+      fs1 = ForwardSampling(clg)
+      fs1.makeSample(100)
+      gum.initRandom(seed)
+      fs2 = ForwardSampling(clg)
+      fs2.makeSample(100)
 
     self.assertTrue(np.array_equal(fs1.toarray("X"), fs2.toarray("X")))
     self.assertTrue(np.array_equal(fs1.toarray("Y"), fs2.toarray("Y")))
+
+  def test_seed_argument_is_deprecated(self):
+    # transitory: to be removed with the argument seed of makeSample (deprecated after 3.3.2)
+    import inspect
+
+    if "seed" not in inspect.signature(ForwardSampling.makeSample).parameters:
+      self.skipTest("the argument seed of makeSample is gone")
+    clg = CLG()
+    clg.add(GaussianVariable(mu=0, sigma=1, name="X"))
+    samples = []
+    for _ in range(2):
+      with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        samples.append(ForwardSampling(clg).makeSample(10, seed=1).toarray("X"))
+      self.assertEqual(len(w), 1)
+      self.assertTrue(issubclass(w[0].category, DeprecationWarning))
+      self.assertIn("deprecated after 3.3.2", str(w[0].message))
+    self.assertTrue(np.array_equal(samples[0], samples[1]))  # the given seed is still used
 
   def test_variance_theoretical(self):
     clg = CLG()
@@ -112,7 +138,7 @@ class CLGSamplingTestCase(pyAgrumTestCase):
     idY = clg.add(GaussianVariable(mu=0, sigma=2, name="Y"))
     clg.addArc(idX, idY, -1)
     fs = ForwardSampling(clg)
-    fs.makeSample(50000, seed=0)
+    fs.makeSample(50000)
     # Var(Y) = sigma_Y^2 + coef^2 * sigma_X^2 = 4 + 1 = 5
     DELTA = 0.15
     self.assertAlmostEqual(fs.variance_sample("Y"), 5.0, delta=DELTA)

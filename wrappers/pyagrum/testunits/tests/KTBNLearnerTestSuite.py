@@ -123,7 +123,6 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
 
   def _learn(self, l):
     l.useScoreBIC().useGreedyHillClimbing()
-    gum.initRandom(42)
     return l.learnKTBN()
 
   def _stateValue(self, l, key):
@@ -271,7 +270,6 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
 
     l = gum.KTBNLearner(self._dir, "ktbnl_gap", 4, 2, NO_ATEMPORAL, ["?"], True, True)
     l.useScoreBIC().useGreedyHillClimbing().useSmoothingPrior(1.0)
-    gum.initRandom(1)
     l.learnKTBN()
     self.assertGreater(l.nbDroppedRows(), 0)
     self.assertFalse(l.hasMissingValues())
@@ -410,7 +408,6 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
     self.assertEqual(self._stateValue(l.useNoCorrection(), "Correction"), "No correction")
 
     l.useMDLCorrection()
-    gum.initRandom(42)
     self._checkTemporalValidity(l.learnKTBN())
     l.latentVariables()  # must not throw
 

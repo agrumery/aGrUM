@@ -166,12 +166,13 @@ class TestCtbnModel(pyAgrumTestCase):
 
   def testRandomCTBNIsReproducible(self):
     # randomCTBN draws with the generator of pyAgrum; the seed comes from the generator, so that the run stays
-    # driven by core.randomSeed
-    seed = gum.randomValue(2**31 - 1)
-    models = []
-    for _ in range(2):
-      gum.initRandom(seed)
-      models.append(ct.randomCTBN((0.5, 1.5), n=5, parMax=2, modal=3))
+    # driven by core.randomSeed (never 0, the clock)
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      seed = gum.randomValue(2**31 - 1) + 1
+      models = []
+      for _ in range(2):
+        gum.initRandom(seed)
+        models.append(ct.randomCTBN((0.5, 1.5), n=5, parMax=2, modal=3))
     first, second = models
     self.assertEqual(sorted(first.arcs()), sorted(second.arcs()))
     for name in first.names():

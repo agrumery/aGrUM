@@ -318,7 +318,7 @@ class ForwardSamplingInference(CTBNInference):
 
     # start
     current = self._model.completeInstantiation()
-    rand = default_rng(_drawSeed()) if rng is None else rng
+    rand = pyagrum.randomNumpyGenerator() if rng is None else rng
     nb_events = 0
     indice = self._model.fullInstantiation()
     init(current)  # initialize the starting value of each variable

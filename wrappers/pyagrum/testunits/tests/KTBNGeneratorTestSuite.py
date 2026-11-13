@@ -75,7 +75,6 @@ def _checkArcsLegal(tc, m):
 
 class KTBNGeneratorTestCase(pyAgrumTestCase):
   def testGeneratorShapeAndLegality(self):
-    gum.initRandom(42)
     gen = gum.KTBNGenerator(3, 4, 2)
     m = gen.generate()
 
@@ -86,7 +85,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
     _checkArcsLegal(self, m)
 
   def testGeneratorGuaranteesEffectiveOrder(self):
-    gum.initRandom(7)
     for k in (2, 3, 5):
       gen = gum.KTBNGenerator(k, 3, 0)
       gen.setDensity(0.05)
@@ -95,14 +93,12 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
         self.assertEqual(_maxKernelLag(m), k - 1)
 
   def testGeneratorGuaranteeOrderIsANoOpForK1(self):
-    gum.initRandom(3)
     gen = gum.KTBNGenerator(1, 3, 1)
     m = gen.generate()
     self.assertEqual(m.k(), 1)
     _checkArcsLegal(self, m)
 
   def testGeneratorWithoutGuaranteeCanFallShort(self):
-    gum.initRandom(11)
     gen = gum.KTBNGenerator(5, 3, 0)
     gen.setGuaranteeOrder(False).setDensity(0.03)
     shortfalls = sum(1 for _ in range(40) if _maxKernelLag(gen.generate()) < 4)
@@ -110,10 +106,13 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
 
   def testGeneratorReproducibleFromSeed(self):
     # the draws of this leaf module use the generator of the core module, reached by initRandom
-    gum.initRandom(2024)
-    a = gum.KTBNGenerator(4, 3, 1).generate()
-    gum.initRandom(2024)
-    b = gum.KTBNGenerator(4, 3, 1).generate()
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed
+      seed = gum.randomValue(2**30) + 1
+      gum.initRandom(seed)
+      a = gum.KTBNGenerator(4, 3, 1).generate()
+      gum.initRandom(seed)
+      b = gum.KTBNGenerator(4, 3, 1).generate()
     self.assertEqual(a.sizeArcs(), b.sizeArcs())
     self.assertEqual(a.toString(), b.toString())
 
@@ -124,7 +123,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
       _checkArcsLegal(self, m)
 
   def testGeneratorDensityAndMaxArcs(self):
-    gum.initRandom(5)
     gen = gum.KTBNGenerator(3, 4, 1)
     self.assertGreater(gen.nbLegalArcs(), 0)
 
@@ -141,7 +139,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
     self.assertEqual(saturated.generate().sizeArcs(), saturated.nbLegalArcs())
 
   def testGeneratorMaxParentsIsRespected(self):
-    gum.initRandom(17)
     gen = gum.KTBNGenerator(3, 4, 1)
     gen.setDensity(1.0).setMaxParents(2).setGuaranteeOrder(False)
     m = gen.generate()
@@ -149,7 +146,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
       self.assertLessEqual(len(m.parents(base, slice_)), 2)
 
   def testGeneratorDomainRangeAndNoAtemporal(self):
-    gum.initRandom(23)
     gen = gum.KTBNGenerator(2, 5, 0)
     gen.setDomainRange(3, 5)
     m = gen.generate()
@@ -161,7 +157,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
       self.assertLessEqual(d, 5)
 
   def testGeneratorSingleAtemporalHasNoAtemporalArc(self):
-    gum.initRandom(31)
     gen = gum.KTBNGenerator(2, 2, 1)
     gen.setDensity(1.0)
     m = gen.generate()
@@ -169,7 +164,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
       self.assertFalse(tail[1] == AT and head[1] == AT)
 
   def testGeneratorOutputSurvivesUnrollAndRoundTrip(self):
-    gum.initRandom(99)
     gen = gum.KTBNGenerator(3, 3, 1)
     m = gen.generate()
 
@@ -207,7 +201,6 @@ class KTBNGeneratorTestCase(pyAgrumTestCase):
     for k in (1, 2, 3):
       for n in (0, 1, 3):
         for a in (0, 1, 2):
-          gum.initRandom(4)
           gen = gum.KTBNGenerator(k, n, a, 1000000)
           gen.setGuaranteeOrder(False)
           self.assertEqual(gen.generate().sizeArcs(), gen.nbLegalArcs())

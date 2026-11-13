@@ -126,10 +126,11 @@ def beeswarm(
   else:
     indices = np.arange(min(max_display, values.shape[1]))
 
+  rng = pyagrum.randomNumpyGenerator()  # the jitter follows the random generator of aGrUM (see initRandom)
   for k, j in enumerate(indices):
     base = y_positions[k]
     sequence = np.arange(values.shape[0])
-    np.random.shuffle(sequence)
+    rng.shuffle(sequence)
 
     shapes = values[sequence, j]
     rounded_x = np.round(shapes, 2)
@@ -138,7 +139,7 @@ def beeswarm(
     densities = np.array([density_map[val] for val in rounded_x])
 
     sigmas = (densities / np.max(densities)) * 0.1
-    ords = np.random.normal(loc=base, scale=sigmas)
+    ords = rng.normal(loc=base, scale=sigmas)
 
     vals = features[sequence, j]
 

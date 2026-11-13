@@ -8,6 +8,11 @@
     - `initRandom` now reaches the draws of all the modules (`KTBNGenerator`, ...: each module had its own generator,
       with a fixed seed). A new `pyagrum.ini` key `core.randomSeed` gives the seed at start (see aGrUM below) and
       `randomGeneratorSeed()` returns the seed in use. `import pyagrum` no longer calls `initRandom(0)`.
+    - New `randomNumpyGenerator()`: a `numpy.random.Generator` whose seed is drawn from the generator of aGrUM.
+      `pyagrum.clg` (`randomCLG`, `ForwardSampling`, `CLGLearner`), `pyagrum.bnmixture` (bootstrap weights) and the
+      beeswarm plot of `pyagrum.explain` now draw with it, so that `initRandom` makes them reproducible (they used
+      Python `random` or the global generator of numpy). The argument `seed` of `ForwardSampling.makeSample` is
+      deprecated after 3.3.2 (use `initRandom`).
     - Configuration of pyAgrum reorganized in lowerCamelCase, with sections by subject; the former names are
       deprecated after 3.3.2 and still work: `notebook.tensor_*` → `tensor.*` (`tensor_visible_digits` →
       `tensor.visibleDigits`...), `notebook.histogram_*` → `histogram.*`, `notebook.graphdiff_*` → `graphdiff.*`, the

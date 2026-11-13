@@ -173,13 +173,10 @@ namespace gum_tests {
       return "";
     }
 
-    // the deterministic learning baseline: BIC structure score + greedy hill
-    // climbing, fixed seed (default algorithm is MIIC, which is non-deterministic)
+    // the learning baseline: BIC structure score + greedy hill climbing (learning
+    // draws no random number: the result only depends on the data)
     static KTBN _learn_(Learner& l) {
       l.useScoreBIC().useGreedyHillClimbing();
-      gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-      gum::initRandom(42);
       return l.learnKTBN();
     }
 
@@ -563,8 +560,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(ConstraintBasedAndThickThinningAlgorithms) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     auto l = _solo_();
 
     l.usePC();
@@ -587,15 +582,12 @@ namespace gum_tests {
       if (use == 0) learner.usePC();
       else if (use == 1) learner.useFCI();
       else learner.useGreedyThickThinning();
-      gum::initRandom(42);
       const auto m = learner.learnKTBN();
       _checkTemporalValidity_(m);
     }
   }
 
   GUM_TEST(PreferredAlgoComesFromTheConfiguration) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     ConfigurationGuard guard;
     auto&              conf = gum::Configuration::instance();
     auto               l    = _solo_();
@@ -624,12 +616,10 @@ namespace gum_tests {
     conf.set("learning", "BNLearnerPreferredAlgo", "GreedyHillClimbing");
     auto preferred = _solo_(2);
     preferred.useScoreBIC();
-    gum::initRandom(42);
     const auto fromConfig = preferred.learnKTBN();
 
     auto explicitGHC = _solo_(2);
     explicitGHC.useScoreBIC().useGreedyHillClimbing();
-    gum::initRandom(42);
     const auto fromCall = explicitGHC.learnKTBN();
     CHECK_EQ(fromConfig.arcs().size(), fromCall.arcs().size());
     CHECK_EQ(fromConfig.arcs(), fromCall.arcs());
@@ -875,16 +865,13 @@ namespace gum_tests {
   }
 
   GUM_TEST(LatentVariablesAccessor) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     auto l = _solo_();
-    _learn_(l);                              // greedy hill climbing
+    _learn_(l);   // greedy hill climbing
     CHECK(l.latentVariables().empty());
 
     // a MIIC run still exposes a (possibly empty) set without throwing
     auto lm = _solo_();
     lm.useMIIC().useMDLCorrection();
-    gum::initRandom(42);
     lm.learnKTBN();
     GUM_CHECK_ASSERT_THROWS_NOTHING(lm.latentVariables());
   }

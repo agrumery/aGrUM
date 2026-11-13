@@ -38,8 +38,6 @@
 #                                                                          #
 ############################################################################
 
-from numpy.random import dirichlet
-
 import pyagrum
 import pyagrum.bnmixture as BNM
 
@@ -313,9 +311,10 @@ class BNMBootstrapLearner(IMixtureLearner):
     bnm = BNM.BootstrapMixture("bn0", refBN)
 
     alpha = [1 / n] * n
+    rng = pyagrum.randomNumpyGenerator()  # the draws follow the random generator of aGrUM (see initRandom)
 
     for i in range(self._iter):
-      weights_i = dirichlet(alpha) * n
+      weights_i = rng.dirichlet(alpha) * n
       for j in range(n):
         learner.setRecordWeight(j, weights_i[j])
 

@@ -225,9 +225,6 @@ namespace gum_tests {
   };
 
   GUM_TEST(RingStressAllLags) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(1);
     gum::KTBN< double > m(3);
     m.addTemporal("P", 2);
     m.addArc("P", 0, "P", 1);
@@ -239,9 +236,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(OrderOne) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(2);
     gum::KTBN< double > m(1);
     m.addTemporal("P", 3);
     m.addAtemporal("C", 2);
@@ -252,9 +246,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(IntraSliceArc) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(3);
     gum::KTBN< double > m(2);
     m.addTemporal("A", 2);
     m.addTemporal("Z", 2);
@@ -266,9 +257,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(DeepReachBack) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(4);
     gum::KTBN< double > m(4);
     m.addTemporal("X", 2);
     m.addTemporal("Y", 2);
@@ -282,9 +270,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(BarrenAndAtemporalPurge) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(5);
     gum::KTBN< double > m(3);
     m.addTemporal("Q", 2);
     m.addTemporal("R", 2);    // barren: never a parent
@@ -297,9 +282,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(InterventionSemantics) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(6);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addArc("X", 0, "X", 1);
@@ -324,9 +306,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(HorizonConsistency) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(7);
     gum::KTBN< double > m(3);
     m.addTemporal("X", 2);
     m.addAtemporal("C", 2);
@@ -351,9 +330,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(TargetModes) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(8);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addTemporal("Y", 2);
@@ -377,9 +353,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(Exceptions) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(9);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addAtemporal("C", 2);
@@ -404,9 +377,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(NameApiAndStaleness) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(10);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addArc("X", 0, "X", 1);
@@ -436,8 +406,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(InterventionByLabelAndBatch) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // an intervention value may be an index or a modality label, and several
     // interventions may be recorded in one batched call
     gum::KTBN< double > m(2);
@@ -447,7 +415,6 @@ namespace gum_tests {
     m.addArc("X", 0, "X", 1);
     m.addArc("Z", 0, "Z", 1);
     m.addArc("C", AT, "X", 1);
-    gum::initRandom(5);
     m.generateCPTs();
 
     // label form == index form
@@ -494,9 +461,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(WiderModel) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(11);
     gum::KTBN< double > m(3);
     m.addTemporal("A", 2);
     m.addTemporal("B", 2);
@@ -524,10 +488,7 @@ namespace gum_tests {
   // -----------------------------------------------------------------------
 
   GUM_TEST(ObservationSmoothingBackwards) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // an observation at the last slice must revise every earlier slice
-    gum::initRandom(20);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 3);
     m.addTemporal("Y", 2);
@@ -539,11 +500,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationRevisesAtemporal) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // the atemporal layer is the one thing that couples the whole horizon:
     // observing a temporal node late must move P(C).
-    gum::initRandom(21);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addAtemporal("C", 3);
@@ -556,10 +514,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationAndInterventionTogether) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // both at once: conditioning flows both ways, surgery only downstream
-    gum::initRandom(22);
     gum::KTBN< double > m(3);
     m.addTemporal("A", 2);
     m.addTemporal("B", 3);
@@ -575,11 +530,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationDeepReachBack) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // order 4: the interface spans three slices, so a late observation has to
     // travel back through several windows to reach slice 0.
-    gum::initRandom(23);
     gum::KTBN< double > m(4);
     m.addTemporal("X", 2);
     m.addTemporal("Y", 2);
@@ -594,11 +546,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationOrderOne) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // k=1: slices are coupled only through the atemporal layer, so that layer is
     // the entire interface and the whole backward pass rides on it.
-    gum::initRandom(24);
     gum::KTBN< double > m(1);
     m.addTemporal("P", 3);
     m.addAtemporal("C", 2);
@@ -609,11 +558,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationWithTargets) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // requisite pruning must keep the observed nodes and their ancestors even
     // when they are not targets -- their likelihood is what revises the target.
-    gum::initRandom(25);
     gum::KTBN< double > m(2);
     m.addTemporal("A", 2);
     m.addTemporal("B", 2);
@@ -629,9 +575,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationOnAtemporalNode) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(26);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addAtemporal("C", 3);
@@ -643,11 +586,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(SoftObservation) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // a likelihood vector, as in gum::BayesNet; a one-hot one must reproduce
     // a hard observation exactly.
-    gum::initRandom(27);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 3);
     m.addArc("X", 0, "X", 1);
@@ -674,9 +614,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(ObservationApiContract) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(28);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addAtemporal("C", 2);
@@ -716,10 +653,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(ImpossibleObservation) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // deterministic transition + a contradicting observation = probability 0
-    gum::initRandom(29);
     gum::KTBN< double > m(2);
     m.addTemporal("X", 2);
     m.addArc("X", 0, "X", 1);
@@ -733,10 +667,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(WindowIntrospection) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // the repeating window is compiled once and never rebuilt across horizons
-    gum::initRandom(30);
     gum::KTBN< double > m(3);
     m.addTemporal("X", 2);
     m.addArc("X", 0, "X", 1);
@@ -800,8 +731,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(BackwardSweepSurvivesOrdinaryEvidence) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // control: the guard must not fire on a well-conditioned model, and the
     // smoothed posteriors must remain proper distributions
     gum::KTBN< double > m(2);
@@ -810,7 +739,6 @@ namespace gum_tests {
     m.addArc("A", 0, "A", 1);
     m.addArc("B", 0, "B", 1);
     m.addArc("A", 1, "B", 1);
-    gum::initRandom(11);
     m.generateCPTs();
 
     gum::KTBNInference< double > ie(&m);
@@ -829,8 +757,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(WindowPotentialCacheIsExact) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // psi(t) is periodic in t % k on any slice carrying no temporal evidence, so
     // _windowPotentials_ memoizes it in 2k slots -- k for the initial windows,
     // k for the repeating one. Three paths must all agree with exact inference:
@@ -852,7 +778,6 @@ namespace gum_tests {
     m.addArc("Y", 1, "Y", 2);
     m.addArc("X", 2, "Y", 2);
     m.addArc("C", AT, "X", 2);
-    gum::initRandom(9);
     m.generateCPTs();
 
     constexpr int                 T  = 13;
@@ -928,15 +853,13 @@ namespace gum_tests {
   }
 
   GUM_TEST(WindowPotentialCacheSurvivesEditedCPTs) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // The cache is cleared per makeInference(): cpt() hands out a const reference
     // whose CONTENTS are mutable, so values may change between runs.
     gum::KTBN< double > m(2);
     m.addTemporal(gum::LabelizedVariable("X", "", 2));
     m.addArc("X", 0, "X", 1);
-    gum::initRandom(4);
-    m.generateCPTs();
+    m.cpt("X", 0).fillWith({0.5, 0.5});
+    m.cpt("X", 1).fillWith({0.5, 0.5, 0.5, 0.5});   // uniform kernel: P(X[5]=0) = 0.5
 
     gum::KTBNInference< double > ie(&m);
     ie.addObservation("X", 0, 0);

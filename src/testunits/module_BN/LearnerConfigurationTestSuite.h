@@ -84,7 +84,9 @@ namespace gum_tests {
     static gum::BayesNet< double > oneEMStep(NOISE useEM) {
       gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
 
-      gum::initRandom(42);
+      // drawn from the generator of the run (never 0, which means the clock) : the guard gives the
+      // state back, so every call draws the same seed
+      gum::initRandom(static_cast< unsigned int >(gum::randomValue(1u << 30)) + 1);
       gum::learning::BNLearner< double > l(GET_RESSOURCES_PATH("csv/EM.csv"),
                                            std::vector< std::string >{"?"});
       gum::DAG                           dag;

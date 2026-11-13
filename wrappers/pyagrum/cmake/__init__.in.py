@@ -94,7 +94,7 @@ __all__ = [
   "fastVariable", "generateSample",
   "getMaxNumberOfThreads", "getNumberOfLogicalProcessors", "getNumberOfThreads", "getPosterior", "graphFromGUMString",
   "initRandom", "isOMP", "loadBN", "loadGraph", "log2", "mutilateBN", "pyagrumcpp", "randomBN",
-  "quoteFastName", "randomDistribution", "randomGamma", "randomGeneratorSeed", "randomProba", "randomShuffle", "randomValue",
+  "quoteFastName", "randomDistribution", "randomGamma", "randomGeneratorSeed", "randomNumpyGenerator", "randomProba", "randomShuffle", "randomValue",
   "saveBN",
   "saveGraph",
   "setNumberOfThreads", "statsObj",
@@ -535,6 +535,23 @@ if TYPE_CHECKING:
 else:
   MatrixLike: TypeAlias = np.ndarray
   ArrayLike: TypeAlias = np.ndarray
+
+
+def randomNumpyGenerator() -> np.random.Generator:
+  """
+  A numpy random generator driven by the random generator of aGrUM.
+
+  The seed of the returned generator is drawn from the random generator of aGrUM: `pyagrum.initRandom`, the
+  configuration key ``core.randomSeed`` and `pyagrum.RandomGeneratorGuard` therefore also make the numpy draws
+  reproducible. Each call draws a new seed, so two calls give two different generators.
+
+  Returns
+  -------
+  numpy.random.Generator
+    a new numpy random generator.
+  """
+  return np.random.default_rng(randomValue(2**32))
+
 
 #: Any Bayesian Network inference engine (exact or approximate).
 #:

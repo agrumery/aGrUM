@@ -45,6 +45,7 @@ import os
 import re
 import sys
 import types
+import warnings
 from collections.abc import Callable, Iterable
 from datetime import datetime
 from pathlib import Path
@@ -1596,7 +1597,12 @@ def _check_examples() -> int:
   import pyagrum_apiinventory as api  # noqa: PLC0415 (module of the Sphinx sources)
 
   excluded = {"_build", "site", "Web"}  # outputs of the documentation builds, inside the Sphinx sources
-  inventory = api.Inventory(api.scan(doc / "sphinx", lambda rel: rel.split("/")[0] in excluded))
+  with warnings.catch_warnings():
+    # same filter as conf.py: pyagrum.lib.notebook warns when it is not imported from IPython
+    warnings.filterwarnings(
+      "ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning
+    )
+    inventory = api.Inventory(api.scan(doc / "sphinx", lambda rel: rel.split("/")[0] in excluded))
   examples = {path.stem for path in (doc / "examples").glob("*.py")}
   missing = sorted(set(inventory.pageNames()) - examples)
   # always listed (details or not): each example is written by hand

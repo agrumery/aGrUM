@@ -42,10 +42,13 @@
 This module implements the forward sampling algorithm for CLG
 """
 
+import warnings
 from typing import Any
 
 import numpy as np
 import pandas as pd
+
+import pyagrum
 
 from .CLG import CLG
 
@@ -64,14 +67,28 @@ class ForwardSampling:
     N : int
       Amount of samples.
     seed : int
-      Seed for the random number generator
+      Seed for the random number generator (deprecated).
 
     Returns
     -------
     ForwardSampling
       the object itself.
+
+    Warnings
+    --------
+    The argument ``seed`` is deprecated after 3.3.2: the samples are drawn with the random generator of aGrUM,
+    use `pyagrum.initRandom` (or `pyagrum.RandomGeneratorGuard`) to make them reproducible.
     """
-    nprng = np.random.default_rng(seed)
+    if seed is None:
+      nprng = pyagrum.randomNumpyGenerator()  # the draws follow the random generator of aGrUM (see initRandom)
+    else:
+      warnings.warn(
+        "ForwardSampling.makeSample(seed=...) is deprecated after 3.3.2, use pyagrum.initRandom "
+        "(or pyagrum.RandomGeneratorGuard) instead",
+        DeprecationWarning,
+        stacklevel=2,
+      )
+      nprng = np.random.default_rng(seed)
     self._id2samples = {}
 
     for node in self._model.topologicalOrder():

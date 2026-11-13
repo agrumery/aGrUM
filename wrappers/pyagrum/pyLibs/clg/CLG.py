@@ -44,8 +44,6 @@ The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a 
 
 from __future__ import annotations
 
-import random
-
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
@@ -732,13 +730,14 @@ def randomCLG(
   for name in bn.names():
     ordered_names[bn.idFromName(name)] = name
 
+  rng = pyagrum.randomNumpyGenerator()  # the draws follow the random generator of aGrUM (see initRandom)
   clg = CLG()
   for name in ordered_names:
     clg.add(
       GaussianVariable(
         name=name,
-        mu=random.uniform(MuMin, MuMax),
-        sigma=random.uniform(SigmaMin, SigmaMax),
+        mu=float(rng.uniform(MuMin, MuMax)),
+        sigma=float(rng.uniform(SigmaMin, SigmaMax)),
       )
     )
 
@@ -750,7 +749,7 @@ def randomCLG(
     arcs_to_add: list[tuple[int, int]] = []
     for child, parents in arcs_by_child.items():
       if len(parents) > max_parents:
-        parents = random.sample(parents, max_parents)
+        parents = [int(p) for p in rng.choice(parents, max_parents, replace=False)]
       for parent in parents:
         arcs_to_add.append((parent, child))
   else:
@@ -760,9 +759,9 @@ def randomCLG(
     clg.addArc(
       val1=arc[0],
       val2=arc[1],
-      coef=random.uniform(-ArcCoefMax, -ArcCoefMin)
-      if random.random() < 0.5
-      else random.uniform(ArcCoefMin, ArcCoefMax),
+      coef=float(rng.uniform(-ArcCoefMax, -ArcCoefMin))
+      if rng.random() < 0.5
+      else float(rng.uniform(ArcCoefMin, ArcCoefMax)),
     )
 
   return clg

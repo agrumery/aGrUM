@@ -63,26 +63,28 @@ def _model():
 class TestCtbnInference(pyAgrumTestCase):
   def testForwardSamplingIsReproducible(self):
     ctbn = _model()
-    # the seed comes from the generator, so that the run stays driven by core.randomSeed
-    seed = gum.randomValue(2**31 - 1)
-    results = []
-    for _ in range(2):
-      gum.initRandom(seed)
-      ie = ct.ForwardSamplingInference(ctbn)
-      ie.makeInference(timeHorizon=50, burnIn=10)
-      results.append(ie.posterior("B").toarray().tolist())
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
+      seed = gum.randomValue(2**31 - 1) + 1
+      results = []
+      for _ in range(2):
+        gum.initRandom(seed)
+        ie = ct.ForwardSamplingInference(ctbn)
+        ie.makeInference(timeHorizon=50, burnIn=10)
+        results.append(ie.posterior("B").toarray().tolist())
     self.assertEqual(results[0], results[1])
 
   def testParallelInferenceEqualsAverageInference(self):
     ctbn = _model()
-    seed = gum.randomValue(2**31 - 1)
-    gum.initRandom(seed)
-    seq = ct.ForwardSamplingInference(ctbn)
-    seq.averageInference(nbTrajectories=3, timeHorizon=50, burnIn=10)
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      seed = gum.randomValue(2**31 - 1) + 1  # never 0 (the clock)
+      gum.initRandom(seed)
+      seq = ct.ForwardSamplingInference(ctbn)
+      seq.averageInference(nbTrajectories=3, timeHorizon=50, burnIn=10)
 
-    gum.initRandom(seed)
-    par = ct.ForwardSamplingInference(ctbn)
-    nbEvents = par.makeParallelInference(nbTrajectories=3, timeHorizon=50, burnIn=10)
+      gum.initRandom(seed)
+      par = ct.ForwardSamplingInference(ctbn)
+      nbEvents = par.makeParallelInference(nbTrajectories=3, timeHorizon=50, burnIn=10)
 
     self.assertEqual(len(nbEvents), 3)
     self.assertTrue(all(n > 0 for n in nbEvents))

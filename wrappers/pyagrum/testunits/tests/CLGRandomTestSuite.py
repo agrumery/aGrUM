@@ -40,6 +40,7 @@
 
 import unittest
 
+import pyagrum as gum
 from pyagrum.clg import CLG, GaussianVariable
 from pyagrum.clg.CLG import randomCLG
 
@@ -57,6 +58,22 @@ class CLGRandomTestCase(pyAgrumTestCase):
   def test_returns_clg(self):
     clg = randomCLG(self.N, self.NAMES)
     self.assertIsInstance(clg, CLG)
+
+  def test_reproducible_from_the_seed_of_agrum(self):
+    def draw(seed):
+      gum.initRandom(seed)
+      clg = randomCLG(self.N, self.NAMES, max_parents=2)
+      return (
+        sorted(clg.arcs()),
+        [(clg.variable(n).mu(), clg.variable(n).sigma()) for n in clg.nodes()],
+        [clg.coefArc(a, b) for a, b in sorted(clg.arcs())],
+      )
+
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
+      seed = gum.randomValue(2**30) + 1
+      self.assertEqual(draw(seed), draw(seed))
+      self.assertNotEqual(draw(seed), draw(seed + 1))
 
   def test_node_count(self):
     clg = randomCLG(self.N, self.NAMES)

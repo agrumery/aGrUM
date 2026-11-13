@@ -202,13 +202,10 @@ namespace gum_tests {
       return s;
     }
 
-    // the deterministic learning baseline every structural assertion relies
-    // on: BIC + greedy hill climbing, fixed seed
+    // the learning baseline every structural assertion relies on: BIC + greedy
+    // hill climbing (learning draws no random number)
     static gum::KTBN< double > _learn_(Learner& l) {
       l.useScoreBIC().useGreedyHillClimbing();
-      gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-      gum::initRandom(42);
       return l.learnKTBN();
     }
 
@@ -496,8 +493,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(MissingValuesDoNotBlockLearning) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // The point of the complete-case selection: aGrUM's structure learning
     // refuses a database holding any missing value (IBNLearner::learnDag_), so
     // before it, learnKTBN() threw on ANY trajectory with a gap.
@@ -525,15 +520,12 @@ namespace gum_tests {
               true,
               /*ignoreMissingSymbols*/ true);
     l.useScoreBIC().useGreedyHillClimbing().useSmoothingPrior(1.0);
-    gum::initRandom(1);
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.learnKTBN());
     CHECK(l.nbDroppedRows() > gum::Size(0));
     CHECK(!l.hasMissingValues());
   }
 
   GUM_TEST(MissingAtemporalOnRowZero) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     // An atemporal value is constant down the trajectory, so any row carries it.
     // Reading row 0 blindly would drop every row of a trajectory whose atemporal
     // cell happens to be missing exactly there; the first NON-missing occurrence
@@ -556,7 +548,6 @@ namespace gum_tests {
               true,
               /*ignoreMissingSymbols*/ true);
     l.useScoreBIC().useGreedyHillClimbing().useSmoothingPrior(1.0);
-    gum::initRandom(1);
     gum::KTBN< double > m;
     GUM_CHECK_ASSERT_THROWS_NOTHING(m = l.learnKTBN());
     // C resolved to "a", not to the row-0 marker
@@ -584,13 +575,10 @@ namespace gum_tests {
   }
 
   GUM_TEST(LearnAllAlgorithms) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     const std::string dir = GET_RESSOURCES_PATH("outputs");
     const auto        net = _demoKTBN_();
 
-    // fixed seed -> reproducible files; TOPOLOGICAL gives a stable column order
-    gum::initRandom(42);
+    // TOPOLOGICAL gives a stable column order
     Generator gen(net);
     gen.drawSamples(3000, 8, dir, "ktbnl_gen", Generator::VarOrderMode::TOPOLOGICAL);
 
@@ -609,7 +597,6 @@ namespace gum_tests {
     for (const auto& [name, configure]: algos) {
       INFO("algorithm: " << name);   // tags which algorithm a failure came from
       configure(l);
-      gum::initRandom(42);
       const auto m = l.learnKTBN();
 
       CHECK_EQ(m.k(), gum::Size(4));
@@ -618,14 +605,15 @@ namespace gum_tests {
       _checkTemporalValidity_(m);
 
       // every planted arc recovered; time forces the temporal directions, the
-      // atemporal C-D edge may be oriented either way
+      // atemporal C-D edge and the intra-slice X-Y edge may be oriented either way
       CHECK(m.existsArc("C", AT, "X", 0));   // atemporal -> slice 0  (initial)
       CHECK(m.existsArc("Z", 0, "Z", 1));    // lag-1                 (initial)
       CHECK(m.existsArc("Z", 1, "Z", 2));    // lag-1                 (initial)
       CHECK(m.existsArc("X", 2, "X", 3));    // lag-1                 (transition)
       CHECK(m.existsArc("W", 0, "W", 3));    // lag-3, multi-lag      (transition)
-      CHECK(m.existsArc("X", 3, "Y", 3));    // intra-slice           (transition)
       CHECK(_hasCDedge_(m));
+      // intra-slice (transition)
+      CHECK((m.existsArc("X", 3, "Y", 3) || m.existsArc("Y", 3, "X", 3)));
     }
   }
 
@@ -749,8 +737,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(MIICCorrectionsAndLatentVariables) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     auto l = _solo_();
 
     // latent variables are a MIIC-only notion: while MIIC has not run, the
@@ -766,7 +752,6 @@ namespace gum_tests {
     // a full MIIC run keeps the temporal invariants and exposes (possibly
     // empty) latent-variable name pairs
     l.useMDLCorrection();
-    gum::initRandom(42);
     _checkTemporalValidity_(l.learnKTBN());
     GUM_CHECK_ASSERT_THROWS_NOTHING(l.latentVariables());
   }
@@ -988,8 +973,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(SearchSpaceControls) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
     auto l = _solo_();
 
     CHECK_EQ(&l.setMaxIndegree(0), &l);
@@ -1003,10 +986,8 @@ namespace gum_tests {
     CHECK_EQ(&l.allowArcDeletions(true), &l);
     CHECK_EQ(&l.allowArcReversals(true), &l);
     l.useScoreBIC().useExtendedGreedyHillClimbing();
-    gum::initRandom(42);
     CHECK_EQ(l.learnKTBN().sizeArcs(), gum::Size(0));   // nothing can be added
     l.allowArcAdditions(true);
-    gum::initRandom(42);
     CHECK_EQ(l.learnKTBN().sizeArcs(), gum::Size(2));
   }
 

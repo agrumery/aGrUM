@@ -11,6 +11,7 @@ Random functions
    pyagrum.initRandom
    pyagrum.randomGeneratorSeed
    pyagrum.randomProba
+   pyagrum.randomNumpyGenerator
    pyagrum.randomGamma
    pyagrum.randomShuffle
    pyagrum.randomDistribution

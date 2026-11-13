@@ -319,6 +319,7 @@ class TestConfig(pyAgrumTestCase):
 
   def testRandomSeedKeyHasNoEffectAfterStart(self):
     seed = gum.randomGeneratorSeed()
+    guard = gum.RandomGeneratorGuard()  # the seed of the run is given back at the end
     gum.config.push()
     try:
       gum.initRandom(7)
@@ -336,7 +337,7 @@ class TestConfig(pyAgrumTestCase):
       with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         gum.config.pop()
-      gum.initRandom(seed)
+      guard.restore()
 
   def testNoVisibleKeyStartsWithDefault(self):
     for section, option, meta, _ in gum.config.schema():

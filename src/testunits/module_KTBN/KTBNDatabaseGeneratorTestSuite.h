@@ -164,9 +164,6 @@ namespace gum_tests {
   };
 
   GUM_TEST(DrawSingleTrajectory) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(42);
     const auto        m   = _model_();
     const gum::Size   T   = 5;
     const std::string dir = GET_RESSOURCES_PATH("outputs");
@@ -218,9 +215,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesPerLength) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(7);
     const auto m = _model_();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
@@ -232,9 +226,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(DrawSamplesFixedLength) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(11);
     const auto m = _model_();
 
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
@@ -316,9 +307,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(DiscretizedLabelRendering) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(123);
     gum::KTBN< double > m(2);
     m.add(gum::DiscretizedVariable< double >("D", "", {0., 1., 2., 3.}), true);   // 3 intervals
     m.addArc("D", 0, "D", 1);
@@ -357,9 +345,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(SampledFrequenciesMatchCPT) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(42);
     gum::KTBN< double > m(2);
     m.add(gum::LabelizedVariable("X", "", 2), true);
     m.addArc("X", 0, "X", 1);
@@ -381,15 +366,16 @@ namespace gum_tests {
       ++byPrev[prev];
       if (cur == 0) ++next0ByPrev[prev];
     }
+    // about 40000 and 20000 transitions (stationary P(X=0) = 2/3): the tolerance is
+    // more than 7 standard deviations
+    CHECK(byPrev[0] > 1000);
+    CHECK(byPrev[1] > 1000);
     const double tol = 0.02;
     CHECK(std::abs(double(next0ByPrev[0]) / byPrev[0] - 0.9) < tol);   // P(X[t]=0 | X[t-1]=0)
     CHECK(std::abs(double(next0ByPrev[1]) / byPrev[1] - 0.2) < tol);   // P(X[t]=0 | X[t-1]=1)
   }
 
   GUM_TEST(HigherOrderLag) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(1);
     gum::KTBN< double > m(3);
     m.add(gum::LabelizedVariable("X", "", 2), true);
     m.addArc("X", 0, "X", 2);                         // lag 2: X[t] depends only on X[t-2]
@@ -433,9 +419,6 @@ namespace gum_tests {
   }
 
   GUM_TEST(ProgressNotifier) {
-    gum::RandomGeneratorGuard randomGuard;   // the seed of the run is given back at the end
-
-    gum::initRandom(42);
     const auto                                     m = _model_();
     gum::learning::KTBNDatabaseGenerator< double > gen(m);
 
