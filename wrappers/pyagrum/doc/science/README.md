@@ -12,9 +12,10 @@ citations as footnotes of the page.
 
 ## Format
 
-- A short reStructuredText fragment, no title: what the class implements, and from which work, each reference cited
-  by `:cite:` with its key in `refs.bib` (`:cite:`chickering1995transformational``).
-- One paragraph or a short bullet list; no code (code goes to `doc/examples`).
+- A reStructuredText fragment, no title: what the class implements, and from which work, each reference cited by
+  `:cite:` with its key in `refs.bib` (`:cite:`chickering1995transformational``).
+- It may explain the method, with formulas (`:math:` and `.. math::`), as long as it stays readable: aim at half an A4
+  page, one page at most. No code (code goes to `doc/examples`).
 
 ## References (`doc/sphinx/refs.bib`)
 
