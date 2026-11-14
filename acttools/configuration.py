@@ -111,8 +111,8 @@ def check_tools() -> tuple[str, str, str, str, str, str, str, str]:
   res = cmdline(exe_py + ' -c "import platform;print(platform.python_version())"')
   version, subversion, _patch = res.strip().split(".")
 
-  if int(version) < 3 or int(subversion) < 10:
-    config_critic("python<3.10 is not supported anymore.")
+  if int(version) < 3 or int(subversion) < 11:
+    config_critic("python<3.11 is not supported anymore.")
   version_py = f"{version}.{subversion}"
 
   exe_cmake = is_tool("cmake")
@@ -213,7 +213,7 @@ cfg.configFile = ".options.act3.pickle"
 
 cfg.nbr_tests_for_stats = 100
 
-cfg.minimal_python_api = "cp310"
+cfg.minimal_python_api = "cp311"
 
 # for message
 cfg.prefix_line = "🍋  "

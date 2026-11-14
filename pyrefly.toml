@@ -1,4 +1,4 @@
-python-version = "3.10.0"
+python-version = "3.11.0"
 preset = "basic"
 search_path = ["wrappers/pyagrum/pyLibs"]
 replace-imports-with-any = ["pydot", "pydot.*"]

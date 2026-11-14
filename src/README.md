@@ -12,7 +12,7 @@ C++ parts of aGrUM.
 
 - CMake (>= 3.15 recommended)
 - A C++20-capable compiler (GCC, Clang or MSVC)
-- Python 3.10+ if you plan to build the Python bindings
+- Python 3.11+ if you plan to build the Python bindings
 - Standard build tools (make, ninja)
 
 ### Quick build (out-of-source)

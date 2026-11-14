@@ -189,71 +189,71 @@ linux_agrum_x86_64:
   <<: *linux_x86_64_build_template
   image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD aGrUM cp310-cp310
+    - bash $LINUX_BUILD aGrUM cp311-cp311
 
-linux_pyagrum_x86_64_py310:
+linux_pyagrum_x86_64_py311:
   <<: *linux_x86_64_build_template
   stage: pyAgrum
   needs: []
   image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum cp310-cp310
+    - bash $LINUX_BUILD pyAgrum cp311-cp311
 
-linux_pyagrum_x86_64_py314:
+linux_pyagrum_x86_64_py315:
   <<: *linux_x86_64_build_template
   stage: pyAgrum
   needs: []
   image: $LINUX_64_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum cp314-cp314
+    - bash $LINUX_BUILD pyAgrum cp315-cp315
 
 # --- Linux aarch64 ---
 linux_agrum_aarch64:
   <<: *linux_aarch64_build_template
   image: $LINUX_AARCH_IMAGE
   script:
-    - bash $LINUX_BUILD aGrUM cp310-cp310
+    - bash $LINUX_BUILD aGrUM cp311-cp311
 
-linux_pyagrum_aarch64_py310:
+linux_pyagrum_aarch64_py311:
   <<: *linux_aarch64_build_template
   stage: pyAgrum
   needs: []
   image: $LINUX_AARCH_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum cp310-cp310
+    - bash $LINUX_BUILD pyAgrum cp311-cp311
 
-linux_pyagrum_aarch64_py314:
+linux_pyagrum_aarch64_py315:
   <<: *linux_aarch64_build_template
   stage: pyAgrum
   needs: []
   image: $LINUX_AARCH_IMAGE
   script:
-    - bash $LINUX_BUILD pyAgrum cp314-cp314
+    - bash $LINUX_BUILD pyAgrum cp315-cp315
 
 # --- MacOS ---
 macos_agrum:
   <<: *mac_win_main_template
   stage: aGrUM
   tags: ["macos", "conda"]
-  variables: { PYTHON_VERSION: "py310", TARGET: "aGrUM" }
+  variables: { PYTHON_VERSION: "py311", TARGET: "aGrUM" }
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
-macos_pyagrum_py310:
+macos_pyagrum_py311:
   <<: *mac_win_main_template
   stage: pyAgrum
   needs: []
   tags: ["macos", "conda"]
-  variables: { PYTHON_VERSION: "py310", TARGET: "pyAgrum" }
+  variables: { PYTHON_VERSION: "py311", TARGET: "pyAgrum" }
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
-macos_pyagrum_py314:
+macos_pyagrum_py315:
   <<: *mac_win_main_template
   stage: pyAgrum
   needs: []
   tags: ["macos", "conda"]
-  variables: { PYTHON_VERSION: "py314", TARGET: "pyAgrum" }
+  variables: { PYTHON_VERSION: "py315", TARGET: "pyAgrum" }
   script:
     - bash $OSX_BUILD $PYTHON_VERSION $TARGET
 
@@ -262,25 +262,25 @@ macos_arm_agrum:
   <<: *mac_win_main_template
   stage: aGrUM
   tags: ["aarch", "osx"]
-  variables: { PYTHON_VERSION: "py314", TARGET: "aGrUM" }
+  variables: { PYTHON_VERSION: "py315", TARGET: "aGrUM" }
   script:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
-macos_arm_pyagrum_py310:
+macos_arm_pyagrum_py311:
   <<: *mac_win_main_template
   stage: pyAgrum
   needs: []
   tags: ["aarch", "osx"]
-  variables: { PYTHON_VERSION: "py310", TARGET: "pyAgrum" }
+  variables: { PYTHON_VERSION: "py311", TARGET: "pyAgrum" }
   script:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
-macos_arm_pyagrum_py314:
+macos_arm_pyagrum_py315:
   <<: *mac_win_main_template
   stage: pyAgrum
   needs: []
   tags: ["aarch", "osx"]
-  variables: { PYTHON_VERSION: "py314", TARGET: "pyAgrum" }
+  variables: { PYTHON_VERSION: "py315", TARGET: "pyAgrum" }
   script:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
@@ -313,12 +313,12 @@ windows_conda_forge_dynamic:
   script:
     - *windows_conda_forge_script
 
-windows_pyagrum_2022_py310:
+windows_pyagrum_2022_py311:
   <<: *windows_main_template
   stage: windows-pyagrum-priority
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py310", TARGET: "pyAgrum", COMPILER: "mvsc22" }
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py311", TARGET: "pyAgrum", COMPILER: "mvsc22" }
   script:
     - *windows_build_script
 
@@ -331,7 +331,7 @@ windows_agrum_2022:
   # earlier stage fails.
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc22" }
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py311", TARGET: "aGrUM", COMPILER: "mvsc22" }
   script:
     - *windows_build_script
 
@@ -346,21 +346,21 @@ windows_conda_forge_static:
   script:
     - *windows_conda_forge_script
 
-windows_pyagrum_2022_py314:
+windows_pyagrum_2022_py315:
   <<: *windows_mr_template
   stage: windows-pyagrum-priority
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py314", TARGET: "pyAgrum", COMPILER: "mvsc22" }
+  variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py315", TARGET: "pyAgrum", COMPILER: "mvsc22" }
   script:
     - *windows_build_script
 
-windows_pyagrum_mingw_py314:
+windows_pyagrum_mingw_py315:
   <<: *windows_mr_template
   stage: windows-pyagrum-priority
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
+  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py315-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
   script:
     - *windows_build_script
 
@@ -369,7 +369,7 @@ windows_agrum_2019:
   stage: aGrUM
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MVSC19_GUMWIN, CONDA_ENV: "py310", TARGET: "aGrUM", COMPILER: "mvsc19" }
+  variables: { PATH: $PATH_MVSC19_GUMWIN, CONDA_ENV: "py311", TARGET: "aGrUM", COMPILER: "mvsc19" }
   script:
     - *windows_build_script
 
@@ -381,7 +381,7 @@ windows_agrum_mingw:
   stage: aGrUM
   needs: []
   tags: ["gumwin", "conda"]
-  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py314-mingw", TARGET: "aGrUM", COMPILER: "mingw64" }
+  variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py315-mingw", TARGET: "aGrUM", COMPILER: "mingw64" }
   script:
     - *windows_build_script
 
@@ -389,69 +389,69 @@ windows_agrum_mingw:
 #                            BUILD WHEELS                                      #
 ################################################################################
 
-linux_x86_64_wheel_py310_sabi_off:
+linux_x86_64_wheel_py311_sabi_off:
   <<: *linux_x86_64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
+    - bash $LINUX_WHEELHOUSE cp311-cp311 --stable_abi_off
 
-linux_x86_64_wheel_py310:
+linux_x86_64_wheel_py311:
   <<: *linux_x86_64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_WHEELHOUSE cp310-cp310
+    - bash $LINUX_WHEELHOUSE cp311-cp311
 
-linux_x86_64_nightly_wheel_py310:
+linux_x86_64_nightly_wheel_py311:
   <<: *linux_x86_64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
+    - bash $LINUX_NIGHTLY_WHEELHOUSE cp311-cp311
 
-linux_aarch64_wheel_py310_sabi_off:
+linux_aarch64_wheel_py311_sabi_off:
   <<: *linux_aarch64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_WHEELHOUSE cp310-cp310 --stable_abi_off
+    - bash $LINUX_WHEELHOUSE cp311-cp311 --stable_abi_off
 
-linux_aarch64_wheel_py310:
+linux_aarch64_wheel_py311:
   <<: *linux_aarch64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_WHEELHOUSE cp310-cp310
+    - bash $LINUX_WHEELHOUSE cp311-cp311
 
-linux_aarch64_nightly_wheel_py310:
+linux_aarch64_nightly_wheel_py311:
   <<: *linux_aarch64_wheel_template
   stage: build-wheels
   needs: []
   script:
-    - bash $LINUX_NIGHTLY_WHEELHOUSE cp310-cp310
+    - bash $LINUX_NIGHTLY_WHEELHOUSE cp311-cp311
 
-osx_wheel_py310:
+osx_wheel_py311:
   <<: *macos_build_template
   stage: build-wheels
   needs: []
   script:
-    - bash $OSX_WHEELHOUSE py310
+    - bash $OSX_WHEELHOUSE py311
 
-osx_arm_wheel_py310:
+osx_arm_wheel_py311:
   <<: *macos_arm_build_template
   stage: build-wheels
   needs: []
   script:
-    - bash $OSX_WHEELHOUSE_ARM py310
+    - bash $OSX_WHEELHOUSE_ARM py311
 
-windows_wheel_py310:
+windows_wheel_py311:
   <<: *windows_build_template
   stage: build-wheels
   needs: []
   variables:
     PATH: $PATH_MVSC22_GUMWIN
-    CONDA_ENV: "py310"
+    CONDA_ENV: "py311"
   script:
     - *windows_wheel_script
 
@@ -466,11 +466,11 @@ linux_pyagrum_wheel_x86_64_tests:
   tags: ["linux", "docker", "manylinux1"]
   retry: 1
   needs:
-    - job: linux_x86_64_wheel_py310
+    - job: linux_x86_64_wheel_py311
       artifacts: true
   parallel:
     matrix:
-      - PYTHON_VERSION: ["cp310", "cp311", "cp312", "cp313", "cp314"]
+      - PYTHON_VERSION: ["cp311", "cp312", "cp313", "cp314", "cp315"]
   script:
     - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
@@ -481,11 +481,11 @@ linux_pyagrum_wheel_aarch64_tests:
   tags: ["aarch", "docker", "linux"]
   retry: 1
   needs:
-    - job: linux_aarch64_wheel_py310
+    - job: linux_aarch64_wheel_py311
       artifacts: true
   parallel:
     matrix:
-      - PYTHON_VERSION: ["cp310", "cp311", "cp312", "cp313", "cp314"]
+      - PYTHON_VERSION: ["cp311", "cp312", "cp313", "cp314", "cp315"]
   script:
     - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
@@ -495,11 +495,11 @@ macos_pyagrum_tests:
   tags: ["macos", "python3"]
   retry: 1
   needs:
-    - job: osx_wheel_py310
+    - job: osx_wheel_py311
       artifacts: true
   parallel:
     matrix:
-      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
+      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
   script:
     - bash $OSX_TEST $PYTHON_VERSION
 
@@ -509,11 +509,11 @@ macos_arm_pyagrum_tests:
   tags: ["aarch", "pyenv", "osx"]
   retry: 1
   needs:
-    - job: osx_arm_wheel_py310
+    - job: osx_arm_wheel_py311
       artifacts: true
   parallel:
     matrix:
-      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
+      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
   script:
     - bash $OSX_TEST_ARM $PYTHON_VERSION
 
@@ -523,13 +523,13 @@ windows_64_pyagrum_tests:
   tags: ["gumwin"]
   retry: 1
   needs:
-    - job: windows_wheel_py310
+    - job: windows_wheel_py311
       artifacts: true
   variables:
     PATH: $PATH_MVSC22_GUMWIN
   parallel:
     matrix:
-      - PYTHON_VERSION: ["py310", "py311", "py312", "py313", "py314"]
+      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
   script:
     - *windows_64_test_script
 
@@ -557,7 +557,7 @@ linux_build:
 build_doc:
   <<: *linux_x86_64_wheel_template
   stage: deploy
-  image: agrumery/ubuntu_py310
+  image: agrumery/ubuntu_py311
   rules:
     - if: '$WHEELS_ONLY == "true"'
       when: never

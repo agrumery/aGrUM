@@ -6,7 +6,7 @@
 set -e -x
 
 if [ "$#" -ne 2 ]; then
-    echo "Expected two parameters: target type (aGrUM or pyAgrum) and python dir (e.g., cp310-cp310)"
+    echo "Expected two parameters: target type (aGrUM or pyAgrum) and python dir (e.g., cp311-cp311)"
     exit 1
 fi
 

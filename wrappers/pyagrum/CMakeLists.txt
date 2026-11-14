@@ -53,6 +53,8 @@ if(AGRUM_PYTHON_SABI AND AGRUM_PYTHON_NOGIL)
   message(FATAL_ERROR "AGRUM_PYTHON_SABI and AGRUM_PYTHON_NOGIL are mutually exclusive options. Please set only one of them.")
 endif()
 
+set(PYAGRUM_REQUIRED_PYTHON_VERSION 3.11)
+
 if(AGRUM_PYTHON_SABI AND CMAKE_VERSION VERSION_GREATER_EQUAL 3.26)
   find_package(Python ${PYAGRUM_REQUIRED_PYTHON_VERSION} COMPONENTS Interpreter Development.SABIModule NumPy REQUIRED)
 else()
@@ -62,7 +64,7 @@ endif()
 list(APPEND CMAKE_SWIG_FLAGS "-fastdispatch")
 
 if(AGRUM_PYTHON_SABI)
-  set(SWIG_COMPILE_FLAGS "-DPy_LIMITED_API=0x030A0000" CACHE STRING "C++ compiler flags used for wrapper code")
+  set(SWIG_COMPILE_FLAGS "-DPy_LIMITED_API=0x030B0000" CACHE STRING "C++ compiler flags used for wrapper code")
 elseif(AGRUM_PYTHON_NOGIL)
   set(SWIG_COMPILE_FLAGS "-DPy_GIL_DISABLED -DPy_NO_ENABLE_SHARED -DPy_NOGIL" CACHE STRING "C++ compiler flags used for wrapper code")
 else()

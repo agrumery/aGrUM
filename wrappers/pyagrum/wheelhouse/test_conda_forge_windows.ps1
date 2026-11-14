@@ -58,7 +58,7 @@ function Enable-Msvc2022 {
 # ---------------------------------------------------------------------------
 
 # Unique environment for this CI job.
-# Do NOT reuse the regular py310 environment: we want the current
+# Do NOT reuse the regular py311 environment: we want the current
 # conda-forge packages to be resolved at every execution.
 $CONDA_PREFIX_CI = Join-Path $env:TEMP "pyagrum-conda-forge-$CI_JOB_ID"
 

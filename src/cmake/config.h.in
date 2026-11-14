@@ -250,7 +250,7 @@
 // reinstantiates a DIFFERENT module's grammar (e.g. PRM's o3prm Parser, via
 // GUM_NO_EXTERN_TEMPLATE_CLASS), tagging it GUM_SHARED_PUBLIC/dllexport
 // instead of falling through correctly: LNK2019 on 47 PRM AST symbols
-// (O3Type, O3Label, O3Position, ...) on windows_pyagrum_2022_{py310,py314}
+// (O3Type, O3Label, O3Position, ...) on the windows_pyagrum_2022_* jobs
 // and windows_conda_forge.
 //
 // This chain only has to be correct for each grammar's own CoCo/R-generated

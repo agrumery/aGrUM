@@ -45,7 +45,7 @@ Never executed: checked by mypy through `act guideline --check pytyping` (agains
 disappears (e.g. an argument silently typed Any again).
 """
 
-from typing_extensions import assert_type
+from typing import assert_type
 
 import pyagrum as gum
 

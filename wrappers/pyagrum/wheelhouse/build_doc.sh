@@ -4,8 +4,8 @@ apt-get install -y pandoc graphviz
 
 root=$PWD
 
-virtualenv py310
-source py310/bin/activate
+virtualenv py311
+source py311/bin/activate
 
 python act clean
 
@@ -15,7 +15,7 @@ pip install -r wrappers/pyagrum/doc/sphinx/requirements.txt
 pip uninstall -y pyagrum
 
 echo "Building pyAgrum doc..."
-python act install release pyAgrum -j halfexcept1 -d $root/py310
+python act install release pyAgrum -j halfexcept1 -d $root/py311
 python act doc pyAgrum
 cd wrappers/pyagrum/doc/sphinx
 make html

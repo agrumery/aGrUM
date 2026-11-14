@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Need one parameter:
-#   - python dir (e.g., cp310-cp310)
+#   - python dir (e.g., cp311-cp311)
 
 set -e -x
 
 if [ "$#" -ne 1 ]; then
-    echo "Expected one parameter: python dir (e.g., cp310-cp310)."
+    echo "Expected one parameter: python dir (e.g., cp311-cp311)."
     return 1
 fi
 

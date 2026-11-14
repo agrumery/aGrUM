@@ -4,7 +4,7 @@ set -e -x
 
 echo "Script execution started."
 
-# Vérification du paramètre attendu (PYDIR, ex: cp310-cp310)
+# Vérification du paramètre attendu (PYDIR, ex: cp311-cp311)
 if [ "$#" -lt 1 ]; then
   echo "Error: Expected at least one parameter for the python install directory."
   exit 1

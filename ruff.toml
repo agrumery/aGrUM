@@ -1,5 +1,5 @@
-# Support Python 3.10+.
-target-version = "py310"
+# Support Python 3.11+.
+target-version = "py311"
 
 line-length = 120
 indent-width = 2
