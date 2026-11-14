@@ -16,6 +16,11 @@ variables:
   WINDOWS_TEST: "wrappers/pyagrum/wheelhouse/scripts/test_wheel_windows.ps1"
   WINDOWS_CONDA_FORGE_TEST: "wrappers/pyagrum/wheelhouse/test_conda_forge_windows.ps1"
   BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
+  # Oldest supported macOS: CMake/clang compile for it (ignored on Linux and Windows), so that
+  # a use of a newer macOS API fails here and not only at release time. Must be the same value
+  # as MACOSX_DEPLOYMENT_TARGET in aGrUM-deploy/.gitlab-ci.yml (release wheels).
+  # At least 13.3: pyAgrum uses std::to_chars(double).
+  MACOSX_DEPLOYMENT_TARGET: "14.0"
 
 # [NEO-2] a new commit on a branch cancels the interruptible jobs of the
 # previous pipeline of that branch; tags, schedules and master never are.

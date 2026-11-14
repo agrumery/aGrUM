@@ -201,20 +201,52 @@ def update_wheel_file(dist_info, stable_abi_off, minimal_python_api):
     critic(f"Could not update WHEEL file: {path}")
 
 
+def _macos_platform_tag(machine: str) -> str:
+  """macOS platform tag matching the OS version the binaries were compiled for.
+
+  - MACOSX_DEPLOYMENT_TARGET set (release CI): CMake and clang compile for it, so it is the
+    minimal macOS version.
+  - otherwise (local build): clang compiles for the running macOS.
+
+  sysconfig.get_platform() is not used: it gives the target of the Python interpreter
+  (e.g. 11.0 for conda), not the one of our binaries.
+  Since macOS 11, pip only accepts `macosx_<major>_0` tags: an explicit target X.Y (Y > 0) is
+  rounded up to (X+1).0 to never claim an older version, the running macOS is rounded down to
+  X.0 so that the wheel can be installed on the machine that built it.
+  """
+  target = os.environ.get("MACOSX_DEPLOYMENT_TARGET", "").strip()
+  version = target or platform.mac_ver()[0]
+  try:
+    parts = [int(p) for p in version.split(".")[:2]]
+  except ValueError:
+    critic(f"Invalid macOS version for the wheel tag: '{version}'")
+  major, minor = parts[0], parts[1] if len(parts) > 1 else 0
+  if major >= 11:
+    if target and minor > 0:
+      major += 1
+    minor = 0
+  return f"macosx_{major}_{minor}_{machine}"
+
+
+def _linux_platform_tag(machine: str) -> str:
+  """Linux platform tag.
+
+  The manylinux images (quay.io/pypa/manylinux_*) set AUDITWHEEL_PLAT to the tag matching
+  their glibc (e.g. manylinux_2_28_x86_64). Outside these images, the wheel is only valid on
+  the building machine: plain linux_<arch> (installable locally, refused by PyPI).
+  """
+  return os.environ.get("AUDITWHEEL_PLAT", "").strip() or f"linux_{machine}"
+
+
 def get_tags(stable_abi_off, minimal_python_api):
   """Get proper tags for PEP427 wheel filenames using only the standard library."""
   arch = sysconfig.get_platform().replace("-", "_").replace(".", "_")
-  # Normalize macOS tag: macosx_26_arm64 → macosx_26_0_arm64 (minor version required by pip)
   if arch.startswith("macosx_"):
-    parts = arch.split("_")
-    if len(parts) == 3:  # macosx, major, arch — minor is missing
-      arch = f"macosx_{parts[1]}_0_{parts[2]}"
-  if arch == "linux_x86_64":
-    arch = "manylinux2014_x86_64"
-  elif arch == "linux_i686":
-    arch = "manylinux2014_i686"
-  elif arch == "linux_aarch64":
-    arch = "manylinux2014_aarch64"
+    # macosx_11_0_arm64 / macosx_26_x86_64 -> arm64 / x86_64
+    machine = re.sub(r"^macosx(_\d+)+_", "", arch)
+    arch = _macos_platform_tag(machine)
+  elif arch.startswith("linux_"):
+    arch = _linux_platform_tag(arch[len("linux_") :])
 
   if stable_abi_off:
     impl = f"cp{sys.version_info.major}{sys.version_info.minor}"
