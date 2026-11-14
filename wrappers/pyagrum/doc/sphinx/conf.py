@@ -581,7 +581,8 @@ autodoc_type_aliases = {
 warnings.filterwarnings("ignore", message="The module 'pyagrum.lib.dynamicBN' is deprecated", category=FutureWarning)
 warnings.filterwarnings("ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning)
 
-# qiskit is an optional dependency of pyagrum.qBNSampling, absent from the documentation environment
+# Optional dependencies of pyagrum.qBNSampling, not installed for the doc build:
+# mocked so that autodoc can import qBNMC and qBNRejection and document them.
 autodoc_mock_imports = ["qiskit", "qiskit_aer"]
 
 suppress_warnings = [
