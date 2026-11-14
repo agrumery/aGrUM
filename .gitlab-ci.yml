@@ -17,29 +17,63 @@ variables:
   WINDOWS_CONDA_FORGE_TEST: "wrappers/pyagrum/wheelhouse/test_conda_forge_windows.ps1"
   BUILD_DOC: "wrappers/pyagrum/wheelhouse/build_doc.sh"
 
+# [NEO-2] a new commit on a branch cancels the interruptible jobs of the
+# previous pipeline of that branch; tags, schedules and master never are.
+workflow:
+  auto_cancel:
+    on_new_commit: interruptible
+  rules:
+    - if: $CI_COMMIT_TAG
+      auto_cancel:
+        on_new_commit: none
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      auto_cancel:
+        on_new_commit: none
+    - if: $CI_COMMIT_BRANCH == "master"
+      auto_cancel:
+        on_new_commit: none
+    # A push to a branch that has an open MR would otherwise create BOTH a
+    # branch pipeline and an MR pipeline, running the push jobs twice (incl.
+    # 3 jobs on the small gumwin pool). The MR pipeline already contains them.
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - when: always
+
 stages:
-  - windows-pyagrum-priority
   - aGrUM
   - pyAgrum
   - build-wheels
   - test-wheels
+  - doc
   - deploy
 
 ################################################################################
 #                              TEMPLATES                                       #
 ################################################################################
 
+# [NEO-1] Retry policy for ALL jobs (was `.windows_retry`, Windows only): only
+# retry on infrastructure failures. A genuine compile/link/test error would
+# fail again and just burn another full build on a shared runner.
+.infra_retry: &infra_retry
+  max: 1
+  when:
+    - runner_system_failure
+    - stuck_or_timeout_failure
+    - scheduler_failure
+
 .main_template: &main_template
   stage: aGrUM
-  retry: 1
+  retry: *infra_retry # [NEO-1] was: retry: 1
+  interruptible: true # [NEO-2]
   rules:
     - if: '$WHEELS_ONLY == "true"'
       when: never
-    - when: always
+    - when: on_success
 
 .mac_win_main_template: &mac_win_main_template
   stage: aGrUM
-  retry: 1
+  retry: *infra_retry # [NEO-1] was: retry: 1
+  interruptible: true # [NEO-2]
   rules:
     - if: '$WHEELS_ONLY == "true"'
       when: never
@@ -48,16 +82,6 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "web"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-# Windows retry policy: only retry on infrastructure failures. A genuine
-# compile/link error (e.g. LNK2019) would fail again and just burn another
-# full build on the small shared gumwin pool.
-.windows_retry: &windows_retry
-  max: 1
-  when:
-    - runner_system_failure
-    - stuck_or_timeout_failure
-    - scheduler_failure
-
 # Windows, every branch push: the small set of jobs covering the two Windows
 # configurations actually shipped (PyPI wheel = MSVC 2022 static,
 # conda-forge = MSVC 2022 BUILD_SHARED_LIBS=ON) plus C++ aGrUM.
@@ -65,7 +89,7 @@ stages:
 # have repeatedly slipped through macOS/Linux push CI.
 .windows_main_template: &windows_main_template
   stage: aGrUM
-  retry: *windows_retry
+  retry: *infra_retry
   interruptible: true
   rules:
     - if: '$WHEELS_ONLY == "true"'
@@ -79,7 +103,7 @@ stages:
 # Kept off plain branch pushes so the gumwin pool is not saturated.
 .windows_mr_template: &windows_mr_template
   stage: aGrUM
-  retry: *windows_retry
+  retry: *infra_retry
   interruptible: true
   rules:
     - if: '$WHEELS_ONLY == "true"'
@@ -98,9 +122,18 @@ stages:
     - if: $CI_PIPELINE_SOURCE == "web"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
+# [NEO-5] nightly wheels: not on MR pipelines, plain master pushes nor tags
+# (a release tag ships the regular wheels, not the nightly ones).
+.nightly_wheel_rules:
+  rules: &nightly_wheel_rules
+    - if: '$WHEELS_ONLY == "true"'
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
+
 .extended_template: &extended_template
   <<: *wheel_rules
-  retry: 1
+  retry: *infra_retry # [NEO-1] was: retry: 1
+  interruptible: true # [NEO-2]
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
     when: on_success
@@ -108,61 +141,141 @@ stages:
     paths:
       - wheels/*.whl
 
+# pip cache for the Linux docker jobs (every job reinstalls the test
+# requirements: jupyter, playwright, xgboost... and, on 3.15, builds pyyaml
+# from its sdist). Only the docker jobs: on the macOS/Windows shell runners
+# pip's per-user cache already persists between jobs, whereas a cache inside
+# $CI_PROJECT_DIR would be wiped by the git clean of every job.
+# `act clean` does not touch .cache/.
+.linux_pip_variables: &linux_pip_variables
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+.linux_x86_64_pip_cache: &linux_x86_64_pip_cache
+  key: pip-manylinux-x86_64
+  paths:
+    - .cache/pip
+
+.linux_aarch64_pip_cache: &linux_aarch64_pip_cache
+  key: pip-manylinux-aarch64
+  paths:
+    - .cache/pip
+
 .linux_x86_64_build_template: &linux_x86_64_build_template
   <<: *main_template
+  image: $LINUX_64_IMAGE
+  variables: *linux_pip_variables
+  cache: *linux_x86_64_pip_cache
   tags:
     - docker
     - gumlin
 
 .linux_aarch64_build_template: &linux_aarch64_build_template
   <<: *main_template
+  image: $LINUX_AARCH_IMAGE
+  variables: *linux_pip_variables
+  cache: *linux_aarch64_pip_cache
   tags:
     - docker
     - aarch
 
 .linux_x86_64_wheel_template: &linux_x86_64_wheel_template
   <<: *extended_template
+  stage: build-wheels
+  needs: []
   image: $LINUX_64_IMAGE
+  variables: *linux_pip_variables
+  cache: *linux_x86_64_pip_cache
   tags:
     - docker
     - gumlin
 
 .linux_aarch64_wheel_template: &linux_aarch64_wheel_template
   <<: *extended_template
+  stage: build-wheels
+  needs: []
   image: $LINUX_AARCH_IMAGE
+  variables: *linux_pip_variables
+  cache: *linux_aarch64_pip_cache
   tags:
     - docker
     - aarch
 
+# [NEO-4] `cache: build/` removed from the three templates below: the scripts
+# start with `act clean`, which deletes build/, so the cache was never used.
 .macos_build_template: &macos_build_template
   <<: *extended_template
   tags:
     - macos
     - conda
-  cache:
-    key: macos
-    paths:
-      - build/
 
 .macos_arm_build_template: &macos_arm_build_template
   <<: *extended_template
   tags:
     - aarch
     - osx
-  cache:
-    key: aarch
-    paths:
-      - build/
 
 .windows_build_template: &windows_build_template
   <<: *extended_template
   tags:
     - gumwin
     - conda
-  cache:
-    key: mvsc
-    paths:
-      - build/
+
+# Wheel tests. The macOS/Windows test jobs use the same runner tags as the
+# matching build jobs (they were on "python3"/"pyenv"/bare "gumwin" before,
+# although every test script does `conda activate`): the conda envs
+# py311..py315 then only have to exist on one set of runners.
+.wheel_test_template: &wheel_test_template
+  <<: *wheel_rules
+  stage: test-wheels
+  retry: *infra_retry # [NEO-1] was: retry: 1
+  interruptible: true # [NEO-2]
+
+.linux_x86_64_test_template: &linux_x86_64_test_template
+  <<: *wheel_test_template
+  image: $LINUX_64_IMAGE
+  tags: ["linux", "docker", "manylinux1"]
+  variables: *linux_pip_variables
+  cache: *linux_x86_64_pip_cache
+  script:
+    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
+
+.linux_aarch64_test_template: &linux_aarch64_test_template
+  <<: *wheel_test_template
+  image: $LINUX_AARCH_IMAGE
+  tags: ["aarch", "docker", "linux"]
+  variables: *linux_pip_variables
+  cache: *linux_aarch64_pip_cache
+  script:
+    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
+
+.macos_test_template: &macos_test_template
+  <<: *wheel_test_template
+  tags: ["macos", "conda"]
+  needs:
+    - job: osx_wheel_py311
+      artifacts: true
+  script:
+    - bash $OSX_TEST $PYTHON_VERSION
+
+.macos_arm_test_template: &macos_arm_test_template
+  <<: *wheel_test_template
+  tags: ["aarch", "osx"]
+  needs:
+    - job: osx_arm_wheel_py311
+      artifacts: true
+  script:
+    - bash $OSX_TEST_ARM $PYTHON_VERSION
+
+.windows_test_template: &windows_test_template
+  <<: *wheel_test_template
+  tags: ["gumwin", "conda"]
+  needs:
+    - job: windows_wheel_py311
+      artifacts: true
+  variables:
+    PATH: $PATH_MVSC22_GUMWIN
+  script:
+    - powershell -File $WINDOWS_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
 
 ################################################################################
 #                                SCRIPTS                                       #
@@ -174,9 +287,6 @@ stages:
 .windows_build_script: &windows_build_script
   - powershell -File $WINDOWS_BUILD -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -CONDA_ENV $CONDA_ENV -TARGET $TARGET -COMPILER $COMPILER
 
-.windows_64_test_script: &windows_64_test_script
-  - powershell -File $WINDOWS_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -PYTHON_VERSION $PYTHON_VERSION
-
 .windows_conda_forge_script: &windows_conda_forge_script
   - powershell -File $WINDOWS_CONDA_FORGE_TEST -CI_JOB_ID $CI_JOB_ID -CI_PROJECT_DIR $CI_PROJECT_DIR -BUILD_SHARED_LIBS $BUILD_SHARED_LIBS
 
@@ -184,10 +294,14 @@ stages:
 #                               ON PUSH                                        #
 ################################################################################
 
+# [NEO-3] Every job of this file has `needs: []` (except trigger_release, which
+# must wait for everything): stages are only labels. No job waits for, or is
+# blocked by, an unrelated job of an earlier stage.
+
 # --- Linux x86_64 ---
 linux_agrum_x86_64:
   <<: *linux_x86_64_build_template
-  image: $LINUX_64_IMAGE
+  needs: [] # [NEO-3]
   script:
     - bash $LINUX_BUILD aGrUM cp311-cp311
 
@@ -195,7 +309,6 @@ linux_pyagrum_x86_64_py311:
   <<: *linux_x86_64_build_template
   stage: pyAgrum
   needs: []
-  image: $LINUX_64_IMAGE
   script:
     - bash $LINUX_BUILD pyAgrum cp311-cp311
 
@@ -203,14 +316,13 @@ linux_pyagrum_x86_64_py315:
   <<: *linux_x86_64_build_template
   stage: pyAgrum
   needs: []
-  image: $LINUX_64_IMAGE
   script:
     - bash $LINUX_BUILD pyAgrum cp315-cp315
 
 # --- Linux aarch64 ---
 linux_agrum_aarch64:
   <<: *linux_aarch64_build_template
-  image: $LINUX_AARCH_IMAGE
+  needs: [] # [NEO-3]
   script:
     - bash $LINUX_BUILD aGrUM cp311-cp311
 
@@ -218,7 +330,6 @@ linux_pyagrum_aarch64_py311:
   <<: *linux_aarch64_build_template
   stage: pyAgrum
   needs: []
-  image: $LINUX_AARCH_IMAGE
   script:
     - bash $LINUX_BUILD pyAgrum cp311-cp311
 
@@ -226,7 +337,6 @@ linux_pyagrum_aarch64_py315:
   <<: *linux_aarch64_build_template
   stage: pyAgrum
   needs: []
-  image: $LINUX_AARCH_IMAGE
   script:
     - bash $LINUX_BUILD pyAgrum cp315-cp315
 
@@ -234,6 +344,7 @@ linux_pyagrum_aarch64_py315:
 macos_agrum:
   <<: *mac_win_main_template
   stage: aGrUM
+  needs: [] # [NEO-3]
   tags: ["macos", "conda"]
   variables: { PYTHON_VERSION: "py311", TARGET: "aGrUM" }
   script:
@@ -261,6 +372,7 @@ macos_pyagrum_py315:
 macos_arm_agrum:
   <<: *mac_win_main_template
   stage: aGrUM
+  needs: [] # [NEO-3]
   tags: ["aarch", "osx"]
   variables: { PYTHON_VERSION: "py315", TARGET: "aGrUM" }
   script:
@@ -285,16 +397,6 @@ macos_arm_pyagrum_py315:
     - bash $OSX_ARM_BUILD $PYTHON_VERSION $TARGET
 
 # --- Windows ---
-# The pyAgrum Windows jobs run in their own stage (windows-pyagrum-priority,
-# declared before aGrUM in the top-level `stages:` list) even though they need
-# nothing from it: all Windows jobs share the same small "gumwin" runner pool,
-# and GitLab assigns job IDs -- and with them, FIFO pickup priority on a shared
-# runner pool -- by STAGE INDEX first, not by a job's textual position within
-# the YAML file: reordering jobs within the same stage has no effect on pickup
-# order, only a genuinely earlier stage index does.
-# `needs: []` only affects readiness (lets these jobs start without waiting
-# for the aGrUM stage to finish), not this ID-assignment/pickup ordering.
-#
 # BUILD_SHARED_LIBS=ON is a SUPPORTED Windows configuration: the conda-forge
 # feedstock ships aGrUM as shared libraries (agrumBASE.dll, agrumBN.dll, ...)
 # because downstream projects link against them. Every symbol used across a
@@ -306,7 +408,7 @@ macos_arm_pyagrum_py315:
 
 windows_conda_forge_dynamic:
   <<: *windows_main_template
-  stage: windows-pyagrum-priority
+  stage: pyAgrum
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, BUILD_SHARED_LIBS: "ON" }
@@ -315,7 +417,7 @@ windows_conda_forge_dynamic:
 
 windows_pyagrum_2022_py311:
   <<: *windows_main_template
-  stage: windows-pyagrum-priority
+  stage: pyAgrum
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py311", TARGET: "pyAgrum", COMPILER: "mvsc22" }
@@ -325,10 +427,6 @@ windows_pyagrum_2022_py311:
 windows_agrum_2022:
   <<: *windows_main_template
   stage: aGrUM
-  # needs: [] so this job doesn't get skipped when windows-pyagrum-priority
-  # fails -- without it, a plain stage-sequenced job with no explicit needs
-  # is cancelled outright (skipped, never started) as soon as any job in an
-  # earlier stage fails.
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py311", TARGET: "aGrUM", COMPILER: "mvsc22" }
@@ -339,7 +437,7 @@ windows_agrum_2022:
 
 windows_conda_forge_static:
   <<: *windows_mr_template
-  stage: windows-pyagrum-priority
+  stage: pyAgrum
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, BUILD_SHARED_LIBS: "OFF" }
@@ -348,7 +446,7 @@ windows_conda_forge_static:
 
 windows_pyagrum_2022_py315:
   <<: *windows_mr_template
-  stage: windows-pyagrum-priority
+  stage: pyAgrum
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MVSC22_GUMWIN, CONDA_ENV: "py315", TARGET: "pyAgrum", COMPILER: "mvsc22" }
@@ -357,7 +455,7 @@ windows_pyagrum_2022_py315:
 
 windows_pyagrum_mingw_py315:
   <<: *windows_mr_template
-  stage: windows-pyagrum-priority
+  stage: pyAgrum
   needs: []
   tags: ["gumwin", "conda"]
   variables: { PATH: $PATH_MINGW_GUMWIN, CONDA_ENV: "py315-mingw", TARGET: "pyAgrum", COMPILER: "mingw64" }
@@ -391,43 +489,33 @@ windows_agrum_mingw:
 
 linux_x86_64_wheel_py311_sabi_off:
   <<: *linux_x86_64_wheel_template
-  stage: build-wheels
-  needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp311-cp311 --stable_abi_off
 
 linux_x86_64_wheel_py311:
   <<: *linux_x86_64_wheel_template
-  stage: build-wheels
-  needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp311-cp311
 
 linux_x86_64_nightly_wheel_py311:
   <<: *linux_x86_64_wheel_template
-  stage: build-wheels
-  needs: []
+  rules: *nightly_wheel_rules # [NEO-5]
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp311-cp311
 
 linux_aarch64_wheel_py311_sabi_off:
   <<: *linux_aarch64_wheel_template
-  stage: build-wheels
-  needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp311-cp311 --stable_abi_off
 
 linux_aarch64_wheel_py311:
   <<: *linux_aarch64_wheel_template
-  stage: build-wheels
-  needs: []
   script:
     - bash $LINUX_WHEELHOUSE cp311-cp311
 
 linux_aarch64_nightly_wheel_py311:
   <<: *linux_aarch64_wheel_template
-  stage: build-wheels
-  needs: []
+  rules: *nightly_wheel_rules # [NEO-5]
   script:
     - bash $LINUX_NIGHTLY_WHEELHOUSE cp311-cp311
 
@@ -459,105 +547,107 @@ windows_wheel_py311:
 #                            TEST WHEELS (MATRIX)                              #
 ################################################################################
 
+# MR, master and tag pipelines run the SAME tests (full matrices): an MR is the
+# last chance to catch a regression before master, and a tag must not discover
+# anything the MR did not already see. Only plain branch pushes without an
+# open MR get a reduced set (no wheel built or tested at all).
+
+# --- Linux x86_64 ---
 linux_pyagrum_wheel_x86_64_tests:
-  <<: *wheel_rules
-  stage: test-wheels
-  image: $LINUX_64_IMAGE
-  tags: ["linux", "docker", "manylinux1"]
-  retry: 1
+  <<: *linux_x86_64_test_template
   needs:
     - job: linux_x86_64_wheel_py311
       artifacts: true
   parallel:
     matrix:
       - PYTHON_VERSION: ["cp311", "cp312", "cp313", "cp314", "cp315"]
-  script:
-    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
+# The stable-ABI-off wheel is tagged cp311-cp311: only installable on 3.11.
+linux_pyagrum_wheel_x86_64_sabi_off_tests:
+  <<: *linux_x86_64_test_template
+  needs:
+    - job: linux_x86_64_wheel_py311_sabi_off
+      artifacts: true
+  variables:
+    <<: *linux_pip_variables
+    PYTHON_VERSION: "cp311"
+
+linux_pyagrum_wheel_x86_64_nightly_tests:
+  <<: *linux_x86_64_test_template
+  rules: *nightly_wheel_rules
+  needs:
+    - job: linux_x86_64_nightly_wheel_py311
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["cp311", "cp315"]
+
+# --- Linux aarch64 ---
 linux_pyagrum_wheel_aarch64_tests:
-  <<: *wheel_rules
-  stage: test-wheels
-  image: $LINUX_AARCH_IMAGE
-  tags: ["aarch", "docker", "linux"]
-  retry: 1
+  <<: *linux_aarch64_test_template
   needs:
     - job: linux_aarch64_wheel_py311
       artifacts: true
   parallel:
     matrix:
       - PYTHON_VERSION: ["cp311", "cp312", "cp313", "cp314", "cp315"]
-  script:
-    - bash $LINUX_TEST ${PYTHON_VERSION}-${PYTHON_VERSION}
 
-macos_pyagrum_tests:
-  <<: *wheel_rules
-  stage: test-wheels
-  tags: ["macos", "python3"]
-  retry: 1
+linux_pyagrum_wheel_aarch64_sabi_off_tests:
+  <<: *linux_aarch64_test_template
   needs:
-    - job: osx_wheel_py311
-      artifacts: true
-  parallel:
-    matrix:
-      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
-  script:
-    - bash $OSX_TEST $PYTHON_VERSION
-
-macos_arm_pyagrum_tests:
-  <<: *wheel_rules
-  stage: test-wheels
-  tags: ["aarch", "pyenv", "osx"]
-  retry: 1
-  needs:
-    - job: osx_arm_wheel_py311
-      artifacts: true
-  parallel:
-    matrix:
-      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
-  script:
-    - bash $OSX_TEST_ARM $PYTHON_VERSION
-
-windows_64_pyagrum_tests:
-  <<: *wheel_rules
-  stage: test-wheels
-  tags: ["gumwin"]
-  retry: 1
-  needs:
-    - job: windows_wheel_py311
+    - job: linux_aarch64_wheel_py311_sabi_off
       artifacts: true
   variables:
-    PATH: $PATH_MVSC22_GUMWIN
+    <<: *linux_pip_variables
+    PYTHON_VERSION: "cp311"
+
+linux_pyagrum_wheel_aarch64_nightly_tests:
+  <<: *linux_aarch64_test_template
+  rules: *nightly_wheel_rules
+  needs:
+    - job: linux_aarch64_nightly_wheel_py311
+      artifacts: true
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["cp311", "cp315"]
+
+# --- MacOS ---
+macos_pyagrum_tests:
+  <<: *macos_test_template
   parallel:
     matrix:
       - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
-  script:
-    - *windows_64_test_script
+
+# --- MacOS ARM ---
+macos_arm_pyagrum_tests:
+  <<: *macos_arm_test_template
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
+
+# --- Windows ---
+windows_64_pyagrum_tests:
+  <<: *windows_test_template
+  parallel:
+    matrix:
+      - PYTHON_VERSION: ["py311", "py312", "py313", "py314", "py315"]
 
 ################################################################################
-#                                  DEPLOY                                      #
+#                                   DOC                                        #
 ################################################################################
 
-linux_build:
-  image: agrumery/ubuntu
-  stage: deploy
-  tags: ["docker", "linux"]
-  cache:
-    key: linux
-    paths:
-      - build/
-  rules:
-    - if: '$WHEELS_ONLY == "true"'
-      when: never
-    - if: '$CI_COMMIT_TAG && $CI_PROJECT_PATH == "agrumery/aGrUM"'
-  script:
-    - apt-get install -y curl
-    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" -F "variables[DEPLOY_DOC]=TRUE"  https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
-  retry: 1
-
+# [NEO-3] build_doc builds pyAgrum itself and uses no artifact: it starts at t0
+# on gumlin. It sits in its own stage, before deploy, so that trigger_release
+# (no `needs`) waits for it: no release with DEPLOY_DOC=TRUE on a broken doc.
 build_doc:
   <<: *linux_x86_64_wheel_template
-  stage: deploy
+  stage: doc
+  needs: [] # [NEO-3]
   image: agrumery/ubuntu_py311
+  cache:
+    key: pip-ubuntu-py311
+    paths:
+      - .cache/pip
   rules:
     - if: '$WHEELS_ONLY == "true"'
       when: never
@@ -565,5 +655,39 @@ build_doc:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == "web"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  # The generated HTML (sphinx RTDDIR, see doc/sphinx/Makefile), to review the
+  # doc of an MR without rebuilding it.
+  artifacts:
+    name: "doc_${CI_COMMIT_REF_NAME}"
+    when: on_success
+    expire_in: 1 week
+    paths:
+      - build/pyAgrum/release/wrappers/pyagrum/docs/
   script:
     - bash $BUILD_DOC
+
+################################################################################
+#                                  DEPLOY                                      #
+################################################################################
+
+# Triggers the release pipeline of the deploy project (PyPI + doc).
+# No `needs`: on purpose, it waits for every job of every earlier stage.
+# Kept `retry: 1`: a single cheap curl call, where a network hiccup shows up
+# as a script failure. [NEO-2] never interruptible: it triggers the release.
+# [NEO-4] `cache: build/` removed: this job never builds anything.
+trigger_release:
+  image: agrumery/ubuntu
+  stage: deploy
+  tags: ["docker", "linux"]
+  interruptible: false
+  rules:
+    - if: '$WHEELS_ONLY == "true"'
+      when: never
+    - if: '$CI_COMMIT_TAG && $CI_PROJECT_PATH == "agrumery/aGrUM"'
+  script:
+    - apt-get update -qq && apt-get install -y -qq curl
+    # --fail: an HTTP error (bad token, wrong project...) must fail the job
+    # instead of being printed and ignored. (Not --fail-with-body: needs
+    # curl >= 7.76, unknown in agrumery/ubuntu.)
+    - curl --fail --show-error -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master -F "variables[AGRUM_TAG]=${CI_COMMIT_TAG}" -F "variables[AGRUM_BUILD]=1" -F "variables[DEPLOY_TO_PYPI]=TRUE" -F "variables[DEPLOY_DOC]=TRUE"  https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
+  retry: 1
