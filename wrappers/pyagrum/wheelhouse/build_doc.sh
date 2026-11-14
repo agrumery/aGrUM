@@ -1,6 +1,13 @@
 #!/bin/bash
 
-apt-get install -y pandoc graphviz
+# Fail on the first error: without it, only the exit code of the last command
+# (make html) counted, and sphinx does not run with -W, so a failed
+# `act install` or `pip install` could still end in a green job.
+# (No -u: the virtualenv activate script is not guaranteed nounset-safe.)
+set -e -x -o pipefail
+
+apt-get update -qq
+apt-get install -y -qq pandoc
 
 root=$PWD
 

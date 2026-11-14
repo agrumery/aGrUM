@@ -30,6 +30,11 @@ Check-LastCommand
 Write-Host "Building $TARGET..."
 Set-Location $CI_PROJECT_DIR
 python act clean
+Check-LastCommand
+
+# $? only reflects the LAST native command: Check-LastCommand must follow
+# every `python act ...`, otherwise a failed `act install` is hidden as soon
+# as the following `act test` succeeds.
 
 if ($COMPILER -eq "mingw64") {
     # Updating compiler path here because I'm annoyed of dealing with paths
@@ -40,23 +45,27 @@ if ($TARGET -eq "aGrUM") {
     # aGrUM does not support BUILD_SHARED_LIBS=ON under Windows (act itself now
     # refuses it, ActBuilderAgrum.check_consistency) -- pass --static_lib
     # explicitly instead of relying on a silent per-compiler default.
-    python act --compiler=$COMPILER --static_lib -d build -j except1 test release aGrUM
+    python act --compiler=$COMPILER --static_lib -d build -j half test release aGrUM
+    Check-LastCommand
 } else {
 
     if ($COMPILER -eq "mingw64") {
-        python act install release pyAgrum --compiler=mingw64 -d build -j except1 -m all -t all
+        python act install release pyAgrum --compiler=mingw64 -d build -j half -m all -t all
+        Check-LastCommand
         $files = @("libgcc_s_seh-1", "libgomp-1", "libstdc++-6", "libwinpthread-1")
 
         foreach ($file in $files) {
             Copy-Item -Path "C:\msys64\ucrt64\bin\$file.dll" -Destination "$PWD\build\pyagrum\release\wrappers\pyAgrum" -Force
         }
         python act test
+        Check-LastCommand
     } else {
-        python act install release pyAgrum --compiler=$COMPILER -d build -j except1 -m all -t all
+        python act install release pyAgrum --compiler=$COMPILER -d build -j half -m all -t all
+        Check-LastCommand
         python act test
+        Check-LastCommand
     }
 }
-Check-LastCommand
 
 Write-Host "Script completed successfully."
 exit 0

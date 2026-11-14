@@ -28,7 +28,7 @@ echo "Cleaning previous builds..."
 python act clean
 
 echo "Building pyAgrum wheel..."
-python act release wheel pyAgrum -j halfexcept1 -d ${CI_PROJECT_DIR}/wheels
+python act release wheel pyAgrum -j half -d ${CI_PROJECT_DIR}/wheels
 
 echo "Deactivating Conda environment..."
 conda deactivate

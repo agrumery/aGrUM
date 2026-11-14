@@ -33,7 +33,8 @@ Check-LastCommand
 Write-Host "Building the wheels..."
 Set-Location $CI_PROJECT_DIR
 python act clean
-python act --compiler=mvsc22 -d wheels release wheel pyAgrum -j halfexcept1
+Check-LastCommand
+python act --compiler=mvsc22 -d wheels release wheel pyAgrum -j half
 Check-LastCommand
 
 Write-Host "Script completed successfully."

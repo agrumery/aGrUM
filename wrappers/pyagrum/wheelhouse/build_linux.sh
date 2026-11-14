@@ -12,7 +12,7 @@ fi
 
 TARGET=$1
 PYDIR=$2
-shift
+shift 2
 ADDITIONAL_OPTIONS="$@"
 
 echo "Cleaning previous builds..."
@@ -21,11 +21,11 @@ echo "Cleaning previous builds..."
 # Check the target type
 if [ "${TARGET}" == "aGrUM" ]; then
     echo "Building aGrUM..."
-    /opt/python/${PYDIR}/bin/python act test release aGrUM -j halfexcept1 -m all -t all
+    /opt/python/${PYDIR}/bin/python act test release aGrUM -j half -m all -t all
 elif [ "${TARGET}" == "pyAgrum" ]; then
     echo "Building pyagrum..."
     /opt/python/${PYDIR}/bin/pip install -r wrappers/pyagrum/testunits/requirements.txt
-    /opt/python/${PYDIR}/bin/python act install release pyAgrum -j halfexcept1 -m all -t all -d build
+    /opt/python/${PYDIR}/bin/python act install release pyAgrum -j half -m all -t all -d build
 
     # TEMPORARY DIAGNOSTIC (2026-09-07): audits every leaf module import
     # independently instead of relying on the test harness, which aborts

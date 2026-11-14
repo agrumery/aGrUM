@@ -34,7 +34,7 @@ echo "Cleaning previous build artifacts..."
 python act clean
 
 echo "Building the pyAgrum wheel..."
-python act release wheel pyAgrum -j halfexcept1 -d ${CI_PROJECT_DIR}/wheels --compiler=clang
+python act release wheel pyAgrum -j half -d ${CI_PROJECT_DIR}/wheels --compiler=clang
 
 # Deactivate the conda environment
 echo "Build complete. Deactivating the conda environment..."

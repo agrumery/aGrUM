@@ -7,7 +7,7 @@ set -e -x
 
 if [ "$#" -lt 1 ]; then
     echo "Expected at least one parameter: python dir (e.g., cp311-cp311). Additional options are optional."
-    return 1
+    exit 1
 fi
 
 PYDIR=$1
@@ -24,6 +24,6 @@ echo "Installing numpy because of new dependency"
 /opt/python/${PYDIR}/bin/pip install numpy
 
 echo "Building pyAgrum wheel..."
-/opt/python/${PYDIR}/bin/python act release wheel pyAgrum -j halfexcept1 -d ${CI_PROJECT_DIR}/wheels ${ADDITIONAL_OPTIONS}
+/opt/python/${PYDIR}/bin/python act release wheel pyAgrum -j half -d ${CI_PROJECT_DIR}/wheels ${ADDITIONAL_OPTIONS}
 
 echo "Script execution completed."
