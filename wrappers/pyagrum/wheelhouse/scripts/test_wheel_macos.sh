@@ -1,6 +1,16 @@
 #!/bin/bash
 
-set -e -x
+# Tests the wheel(s) of wheels/ in a throwaway venv, private to this job.
+#
+# The conda env given as parameter (py311, ..., py315) is only used as the base
+# interpreter: nothing is installed in it anymore. Before, the wheel was
+# pip-(un)installed directly in the shared conda env, so two concurrent jobs on
+# the same Python version broke each other, a cancelled job left pyAgrum
+# installed, and the test dependencies were frozen at the env's creation date.
+# The dependencies now come fresh from requirements.txt, as on Linux (pip's
+# per-user cache makes it fast after the first job).
+
+set -e -x -o pipefail
 
 echo "Starting script..."
 
@@ -11,26 +21,29 @@ if [ "$#" -ne 1 ]; then
 fi
 
 PYENV=$1
-echo "Using environment: ${PYENV}"
+echo "Using environment (base interpreter): ${PYENV}"
 
-# Activate the specified environment.
 echo "Activating environment ${PYENV}..."
 source activate ${PYENV}
 
-# Uninstall any existing pyAgrum installations.
-echo "Uninstalling existing pyAgrum and pyAgrum-nightly packages..."
-pip uninstall -y pyAgrum pyAgrum-nightly
+VENV="${TMPDIR:-/tmp}/pyagrum-test-${CI_JOB_ID}"
+PY="${VENV}/bin/python"
 
-# Install new wheels from the wheels directory
+# Same job id = a retried job: start from scratch. Removed on any exit.
+rm -rf "${VENV}"
+trap 'rm -rf "${VENV}"' EXIT
+
+echo "Creating the job venv: ${VENV}"
+python -m venv "${VENV}"
+
+echo "Installing the test requirements..."
+"${PY}" -m pip install --upgrade pip
+"${PY}" -m pip install -r "${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/requirements.txt"
+
 echo "Installing new wheels..."
-pip install ${CI_PROJECT_DIR}/wheels/*.whl
+"${PY}" -m pip install "${CI_PROJECT_DIR}"/wheels/*.whl
 
-# Run the tests.
 echo "Running gumTest.py to validate installation..."
-python ${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/gumTest.py
-
-# Uninstall pyAgrum/pyAgrum-nightly after testing.
-echo "Uninstalling pyAgrum/pyAgrum-nightly..."
-pip uninstall -y pyAgrum pyAgrum-nightly
+"${PY}" "${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/gumTest.py"
 
 echo "Script execution finished."

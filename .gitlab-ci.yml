@@ -224,6 +224,9 @@ stages:
 # matching build jobs (they were on "python3"/"pyenv"/bare "gumwin" before,
 # although every test script does `conda activate`): the conda envs
 # py311..py315 then only have to exist on one set of runners.
+# The test scripts only use these envs as base interpreters: each job tests
+# the wheel in its own throwaway venv (concurrent jobs on the same Python
+# version no longer interfere), with fresh dependencies from requirements.txt.
 .wheel_test_template: &wheel_test_template
   <<: *wheel_rules
   stage: test-wheels
