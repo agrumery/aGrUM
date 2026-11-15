@@ -49,6 +49,7 @@
 #include <agrum/base/database/DBTranslator4LabelizedVariable.h>
 #include <agrum/base/database/DBTranslatorSet.h>
 #include <agrum/base/stattests/kNML.h>
+#include <agrum/base/stattests/priors/DirichletPriorFromDatabase.h>
 #include <agrum/base/stattests/priors/noPrior.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -101,6 +102,46 @@ namespace gum_tests {
     CHECK((score.score(6, 7, std::vector< gum::NodeId >{5, 1, 4})
            - score.score(6, 7, std::vector< gum::NodeId >{1, 4}))
           == doctest::Approx(0.0).epsilon(1e-2));
+  }
+
+  GUM_TEST(PriorIsAddedToTheMarginalCounts) {
+    // a Dirichlet prior learnt from the database itself, with a weight equal to its size, doubles
+    // all the counts: kNML with this prior is kNML without prior over the doubled database
+    const auto readAsia = [](gum::learning::DatabaseTable& database, std::size_t times) {
+      for (std::size_t t = 0; t < times; ++t) {
+        gum::learning::DBInitializerFromCSV initializer(GET_RESSOURCES_PATH("csv/asia.csv"));
+        if (t == 0) {
+          gum::learning::DBTranslatorSet                translator_set;
+          gum::learning::DBTranslator4LabelizedVariable translator;
+          for (std::size_t i = 0; i < initializer.variableNames().size(); ++i)
+            translator_set.insertTranslator(translator, i);
+          database = gum::learning::DatabaseTable(translator_set);
+          database.setVariableNames(initializer.variableNames());
+        }
+        initializer.fillDatabase(database);
+      }
+    };
+
+    gum::learning::DatabaseTable database, doubled;
+    readAsia(database, 1);
+    readAsia(doubled, 2);
+
+    gum::learning::DBRowGeneratorSet          genset;
+    gum::learning::DBRowGeneratorParser       parser(database.handler(), genset);
+    gum::learning::DBRowGeneratorParser       prior_parser(database.handler(), genset);
+    gum::learning::DirichletPriorFromDatabase prior(database, prior_parser);
+    prior.setWeight(double(database.nbRows()));
+    gum::learning::KNML score(parser, prior);
+
+    gum::learning::DBRowGeneratorParser doubled_parser(doubled.handler(), genset);
+    gum::learning::NoPrior              no_prior(doubled);
+    gum::learning::KNML                 expected(doubled_parser, no_prior);
+
+    CHECK_EQ(score.score(3, 4), doctest::Approx(expected.score(3, 4)).epsilon(1e-9));
+    CHECK_EQ(score.score(4, 7, std::vector< gum::NodeId >{5}),
+             doctest::Approx(expected.score(4, 7, std::vector< gum::NodeId >{5})).epsilon(1e-9));
+    CHECK_EQ(score.score(6, 7, std::vector< gum::NodeId >{1, 4}),
+             doctest::Approx(expected.score(6, 7, std::vector< gum::NodeId >{1, 4})).epsilon(1e-9));
   }
 
 } /* namespace gum_tests */

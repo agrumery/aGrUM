@@ -424,6 +424,8 @@
       iterations never stopped on `epsilon`); with evidence, the interval Λ of a node could collapse to its upper or
       lower bound (exact bounds are now found on binary polytrees); `CredalNet::approximatedBinarization` decoded the
       configurations of the parents in the wrong order (the binarized network did not have the original CPTs).
+    - `kNML` (MIIC's correction) with a prior: the pseudo-counts of the prior were added with the ids of the joint
+      counts instead of those of the marginal counts (wrong weights, out-of-bounds access).
 
 - Optimizations (aGrUM and pyAgrum)
 
