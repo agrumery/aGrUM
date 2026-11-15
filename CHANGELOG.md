@@ -429,6 +429,9 @@
     - `BNLearner`: `learnParameters` (and the initialization of EM) after a structure learning used the score of that
       learning, not the current one (`useScoreBDeu`... called in between was ignored); MIIC converted its mutual
       informations (in bits) with `exp` as if they were in nats, which biased the orientation of the triples.
+    - `DiscreteTypeProcessor`: MDLP no longer forces a cut point when none is informative (a `ValueError` says that the
+      variable cannot be discretized by MDLP); the elbow method crashed (1D input to `KBinsDiscretizer`), assigned a
+      point to the wrong center after an empty interval and divided by 0 on a flat curve.
 
 - Optimizations (aGrUM and pyAgrum)
 

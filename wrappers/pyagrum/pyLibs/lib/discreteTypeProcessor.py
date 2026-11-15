@@ -378,58 +378,34 @@ class DiscreteTypeProcessor:
 
     if discretizationStrategy not in {"kmeans", "quantile", "uniform"}:
       raise ValueError("cannot use elbow method with this type of discretization")
-    variationArray = numpy.zeros(14)
+    nbBins = range(2, 16)
+    variationArray = numpy.zeros(len(nbBins))
     Xsorted = X[X.argsort(axis=None)]
-    binEdgeMatrix = [[]] * 14
-    for k in range(2, 16):
+    binEdgeMatrix = []
+    for index, k in enumerate(nbBins):
       discretizer = skp.KBinsDiscretizer(
         k,
         strategy=discretizationStrategy,
         quantile_method="averaged_inverted_cdf",
         subsample=None,
       )
-      discretizer.fit(Xsorted)
+      discretizer.fit(Xsorted.reshape(-1, 1))
       binEdges = discretizer.bin_edges_[0]
       centresArray = (binEdges[1:] + binEdges[:-1]) / 2
       i = 0
       sumOfSquaredErrors = 0
       for x in Xsorted:
-        if x > binEdges[i + 1]:
+        while i < len(centresArray) - 1 and x > binEdges[i + 1]:
           i = i + 1
         sumOfSquaredErrors += (x - centresArray[i]) ** 2
-      variationArray[k - 2] = sumOfSquaredErrors
-      binEdgeMatrix[k - 2] = binEdges.to_list()
+      variationArray[index] = sumOfSquaredErrors
+      binEdgeMatrix.append(binEdges.tolist())
 
-    # we calculate the slope of the line that connects the first and last point on our graph
-    slope = (variationArray[13] - variationArray[0]) / 13
-
-    # we calculate the slope of the line perpendicular to it
-    otherSlope = -1 / slope
-
-    # we change the coordinate system to the one with the two lines previously mentioned as its axes
-    coordinateChangeMatrix = numpy.array([[1, slope], [1 / otherSlope, 1]])
-
-    # we linearly transform the coordinates of every point in our curve
-    transformedCoordinates = numpy.zeros((2, 14))
-    for i in range(14):
-      transformedCoordinates[:, i] = numpy.matmul(
-        coordinateChangeMatrix,
-        numpy.array([[i], [variationArray[i] - variationArray[0]]]),
-      ).reshape(2)
-
-    # we search for the minimum in our newly obtained curve
-    minkIndex = 0
-    for k in range(14):
-      if transformedCoordinates[1][minkIndex] > transformedCoordinates[1][k]:
-        minkIndex = k
-    # when we have found the minimum, we apply the inverse linear transformation to recover the optimal value of k
-    minimumVector = numpy.matmul(
-      numpy.linalg.inv(coordinateChangeMatrix),
-      transformedCoordinates[:, minkIndex].reshape(2, 1),
-    )
-
-    # we return the list of bin edges found using said optimal number of k
-    return binEdgeMatrix[int(round(minimumVector[0]))]
+    # the elbow is the point of the curve that is the farthest from the chord joining its first and last points
+    # (the distance is proportional to the vertical gap to the chord); a flat curve gives the smallest number of bins
+    last = len(nbBins) - 1
+    chord = variationArray[0] + (variationArray[last] - variationArray[0]) * numpy.arange(len(nbBins)) / last
+    return binEdgeMatrix[int(numpy.argmax(numpy.abs(variationArray - chord)))]
 
   def _discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
     """
@@ -940,6 +916,12 @@ class DiscreteTypeProcessor:
           numpy.unique(Xtransformed),
           possibleValuesY,
         )
+        if len(binEdges) == 2:
+          raise ValueError(
+            f"MDLP found no informative cut point for the variable {variableName} with respect to the target: "
+            "this variable cannot be discretized by MDLP. Use another discretization method for it "
+            "(setDiscretizationParameters)."
+          )
       elif self.discretizationParametersDictionary[variableName]["method"] == "NML":
         binEdges = self._discretizationNML(
           Xtransformed.flatten(),
@@ -1007,10 +989,7 @@ class DiscreteTypeProcessor:
       - 2 * minimalValues["rightSubintervalShannonEntropy"]
     )
 
-    if (
-      gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]
-      or len(Class0ByLargeInterval) == 1
-    ):
+    if gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]:
       binEdgesIndex.insert(position, minimalValues["boundaryIndex"])
 
       Class0ByLargeInterval.insert(position + 1, minimalValues["rightSubintervalClass0"])

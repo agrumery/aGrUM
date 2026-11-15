@@ -42,6 +42,7 @@ import copy
 import unittest
 import warnings
 
+import numpy as np
 import pandas as pd
 
 from pyagrum.lib.discreteTypeProcessor import DiscreteTypeProcessor
@@ -373,6 +374,37 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
         "var3": {"method": "NoDiscretization", "param": "[1,5]"},
       },
     )
+
+  def testMDLPWithoutInformativeCutRaises(self):
+    # x carries no information about y: MDLP accepts no cut point, and a variable with a single state is refused
+    rng = np.random.default_rng(0)
+    X = pd.DataFrame({"x": rng.normal(size=300)})
+    y = pd.Series((rng.random(300) < 0.5).astype(int))
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="MDLP")
+    with self.assertRaisesRegex(ValueError, "MDLP"):
+      discretizer.discretizedTemplate(X, y)
+
+  def testMDLPFindsTheThreshold(self):
+    rng = np.random.default_rng(1)
+    x = rng.uniform(0, 10, size=300)
+    X = pd.DataFrame({"x": x})
+    y = pd.Series((x > 6).astype(int))
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="MDLP")
+    var = discretizer.discretizedTemplate(X, y).variable("x")
+    self.assertEqual(var.domainSize(), 2)
+    self.assertAlmostEqual(var.ticks()[1], 6, delta=0.2)
+
+  def testElbowMethod(self):
+    rng = np.random.default_rng(2)
+    X = pd.DataFrame({"z": rng.uniform(0, 1, size=300)})
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="uniform", defaultNumberOfBins="elbowMethod")
+    var = discretizer.discretizedTemplate(X).variable("z")
+    self.assertTrue(2 <= var.domainSize() <= 15)
+
+    # three well separated clusters: the elbow is at three bins
+    X = pd.DataFrame({"z": np.concatenate([rng.normal(m, 0.1, size=100) for m in (0, 5, 10)])})
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="kmeans", defaultNumberOfBins="elbowMethod")
+    self.assertEqual(discretizer.discretizedTemplate(X).variable("z").domainSize(), 3)
 
 
 ts = unittest.TestSuite()
