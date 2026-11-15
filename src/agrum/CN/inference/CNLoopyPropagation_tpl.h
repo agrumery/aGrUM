@@ -894,7 +894,7 @@ namespace gum::credal {
           }
         }
 
-        lmin = lmax;
+        if (lmin != lmin && lmax == lmax) { lmin = lmax; }
 
         if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
@@ -1274,7 +1274,7 @@ namespace gum::credal {
 
           if (lmin != lmin && lmax == lmax) { lmin = lmax; }
 
-          lmax = lmin;
+          if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
           if (lmax != lmax && lmin != lmin) {
             std::cout << "pas de vraisemblance definie [lmin, lmax] (observations "

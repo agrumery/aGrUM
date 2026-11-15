@@ -983,7 +983,7 @@ namespace gum {
       const Size                nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
                                                ? this->threadRanges_.size() - 1
                                                : 1;   // no nested multithreading
-      std::vector< GUM_SCALAR > tEps(nb_threads, std::numeric_limits< GUM_SCALAR >::max());
+      std::vector< GUM_SCALAR > tEps(nb_threads, GUM_SCALAR(0));
 
       // create the function to be executed by the threads
       auto threadedEps = [this, &tEps](const std::size_t                              this_thread,

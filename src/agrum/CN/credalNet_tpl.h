@@ -969,9 +969,35 @@ namespace gum {
           auto entry_size = tensor->domainSize() / 2;
           std::vector< std::vector< std::vector< GUM_SCALAR > > > var_cpt(entry_size);
 
-          Size old_conf = 0;
+          // the original parents (in the order of the original cpt) and their bits: a binary
+          // configuration of the parents' bits is decoded into the original configuration
+          const auto& old_vars = current_bn->cpt(var).variablesSequence();
 
           for (Size conf = 0; conf < entry_size; conf++) {
+            Size old_conf = 0;
+            Size stride   = 1;
+            bool possible = true;
+
+            for (Idx k = 1; k < old_vars.size(); ++k) {
+              const NodeId par     = current_bn->nodeId(*old_vars[k]);
+              const auto&  pbits   = _var_bits_[par];
+              Idx          old_val = 0;
+
+              for (Size b = 0; b < pbits.size(); ++b)
+                old_val += ins.val(bin_bn->variable(pbits[b])) * (Size(1) << b);
+
+              // values beyond the domain size of a parent are never reached
+              if (old_val >= old_vars[k]->domainSize()) {
+                possible = false;
+                break;
+              }
+
+              old_conf += old_val * stride;
+              stride *= old_vars[k]->domainSize();
+            }
+
+            if (!possible) old_conf = 0;
+
             std::vector< std::vector< GUM_SCALAR > > pvar_cpt;
             auto verticessize = (*credalNet_current_cpt)[var][old_conf].size();
 
@@ -1048,10 +1074,6 @@ namespace gum {
 
             ++ins;
             ++ins;
-
-            old_conf++;
-
-            if (old_conf == (*credalNet_current_cpt)[var].size()) old_conf = 0;
           }   // end of new parent conf
 
           credalNet_bin_cpt->insert(_var_bits_[var][i], var_cpt);

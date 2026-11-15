@@ -419,6 +419,11 @@
       stopping criterion counts the effective size (Kish) of the weighted sample, (sum w)^2 / sum w^2, instead of the
       number of samples: a sample dominated by a few large weights no longer looks converged too early (the
       unweighted samplers are unchanged).
+    - `CNLoopyPropagation`: `epsilon` (and the stopping criterion) is the largest change of the marginals of an
+      iteration (it was the largest value of a per-thread maximum initialized to the largest double, so that the
+      iterations never stopped on `epsilon`); with evidence, the interval Λ of a node could collapse to its upper or
+      lower bound (exact bounds are now found on binary polytrees); `CredalNet::approximatedBinarization` decoded the
+      configurations of the parents in the wrong order (the binarized network did not have the original CPTs).
 
 - Optimizations (aGrUM and pyAgrum)
 

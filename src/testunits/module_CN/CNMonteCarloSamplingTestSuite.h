@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <format>
 #include <iostream>
 #include <string>
 
@@ -441,6 +442,38 @@ namespace gum_tests {
     GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.eraseAllEvidence(););
 
     clearCNet();
+  }
+
+  GUM_TEST(ApproximatedBinarizationKeepsTheParentConfigurations) {
+    // a precise credal network (min = max) binarized with parents whose domain size is not a power
+    // of 2: sampling gives the exact posteriors of the Bayesian network
+    auto bn = gum::BayesNet< double >::fastPrototype("X[3]->Y[2]<-Z[3]");
+    gum::LazyPropagation< double > exact(&bn);
+    exact.makeInference();
+
+    gum::credal::CredalNet< double > cnet(bn, bn);
+    cnet.intervalToCredal();
+    cnet.approximatedBinarization();
+    cnet.computeBinaryCPTMinMax();
+
+    gum::credal::CNMonteCarloSampling< double > mc(cnet);
+    mc.makeInference();
+
+    // probability of the k-th value in a tensor over one variable
+    const auto proba = [](const gum::Tensor< double >& t, gum::Idx k) {
+      gum::Instantiation inst(t);
+      inst.chgVal(0, k);
+      return t.get(inst);
+    };
+    const auto& bin = cnet.current_bn();
+    CHECK_EQ(proba(mc.marginalMin(bin.idFromName("Y")), 1),
+             doctest::Approx(proba(exact.posterior("Y"), 1)).epsilon(1e-9));
+    for (const std::string name: {"X", "Z"})
+      for (gum::Idx k = 0; k < 3; ++k) {
+        const auto indic = bin.idFromName(std::format("{}-v{}", name, k));
+        CHECK_EQ(proba(mc.marginalMin(indic), 1),
+                 doctest::Approx(proba(exact.posterior(name), k)).epsilon(1e-9));
+      }
   }
 
 }   // namespace gum_tests

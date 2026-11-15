@@ -418,6 +418,63 @@ namespace gum_tests {
     clearCNet();
   }
 
+  GUM_TEST(EpsilonIsTheLargestChangeOfTheMarginals) {
+    // epsilon is the largest change of a marginal bound between two iterations: it lies in [0,1],
+    // and with the default settings the scheme runs until it falls below the threshold
+    initCNet();
+    gum::credal::CNLoopyPropagation< double > lp(*cn);
+    lp.setVerbosity(true);   // needed to read the history
+    lp.insertEvidence(std::map< std::string, std::vector< double > >{{"L", {0.0, 1.0}}});
+    lp.makeInference();
+
+    const auto& history = lp.history();
+    REQUIRE_FALSE(history.empty());
+    for (const auto eps: history) {
+      CHECK_GE(eps, 0.0);
+      CHECK_LE(eps, 1.0);
+    }
+    CHECK_LE(history.back(), lp.epsilon());
+
+    clearCNet();
+  }
+
+  GUM_TEST(L2UIsExactOnABinaryPolytreeWithEvidence) {
+    // on a binary polytree, L2U gives the exact bounds; the evidence below A and B makes them
+    // depend on the likelihood intervals sent by the children
+    auto bnmin = gum::BayesNet< double >::fastPrototype("A->B->C");
+    auto bnmax = gum::BayesNet< double >(bnmin);
+    bnmin.cpt("A").fillWith({0.6, 0.3});
+    bnmax.cpt("A").fillWith({0.7, 0.4});
+    bnmin.cpt("B").fillWith({0.7, 0.2, 0.2, 0.6});
+    bnmax.cpt("B").fillWith({0.8, 0.3, 0.4, 0.8});
+    bnmin.cpt("C").fillWith({0.8, 0.1, 0.3, 0.5});
+    bnmax.cpt("C").fillWith({0.9, 0.2, 0.5, 0.7});
+
+    gum::credal::CredalNet< double > cnet(bnmin, bnmax);
+    cnet.intervalToCredal();
+    cnet.computeBinaryCPTMinMax();
+
+    gum::credal::CNLoopyPropagation< double > lp(cnet);
+    lp.insertEvidence(std::map< std::string, std::vector< double > >{{"C", {0.0, 1.0}}});
+    lp.makeInference();
+
+    // probability of the k-th value in a tensor over one variable
+    const auto proba = [](const gum::Tensor< double >& t, gum::Idx k) {
+      gum::Instantiation inst(t);
+      inst.chgVal(0, k);
+      return t.get(inst);
+    };
+    // exact bounds, computed by enumerating the vertices of the credal sets
+    const auto& bn = cnet.current_bn();
+    CHECK_EQ(proba(lp.marginalMin(bn.idFromName("A")), 1),
+             doctest::Approx(0.3596214511).epsilon(1e-6));
+    CHECK_EQ(proba(lp.marginalMax(bn.idFromName("A")), 1),
+             doctest::Approx(0.6373626374).epsilon(1e-6));
+    CHECK_EQ(proba(lp.marginalMin(bn.idFromName("B")), 1),
+             doctest::Approx(0.5405405405).epsilon(1e-6));
+    CHECK_EQ(proba(lp.marginalMax(bn.idFromName("B")), 1), doctest::Approx(0.875).epsilon(1e-6));
+  }
+
   GUM_TEST(ChangedParameterInvalidatesTheInference) {
     initCNet();
     gum::credal::CNLoopyPropagation< double > lp(*cn);
