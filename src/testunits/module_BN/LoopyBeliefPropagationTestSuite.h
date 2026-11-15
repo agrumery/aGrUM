@@ -716,7 +716,7 @@ namespace gum_tests {
     ie.makeInference();
     (void)ie.posterior("B");
 
-    const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.7, 0.3});
+    bn.cpt("A").fillWith({0.7, 0.3});
     ie.invalidateTensors();
     ie.makeInference();
     gum::Tensor< double > expected;

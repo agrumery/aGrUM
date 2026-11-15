@@ -42,6 +42,7 @@
 
 
 #include <string>
+#include <vector>
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/BN/BayesNet.h>
@@ -49,6 +50,7 @@
 #include <agrum/BN/inference/importanceSampling.h>
 #include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/tools/evidencePruning.h>
 #include <agrum/BN/inference/weightedSampling.h>
 
 #include <testunits/gumtest/AgrumTestSuite.h>
@@ -179,12 +181,51 @@ namespace gum_tests {
     SamplingIncompatibleEvidenceTestSuite::checkRejectionBound< gum::MonteCarloSampling >();
     SamplingIncompatibleEvidenceTestSuite::checkRejectionBound< gum::WeightedSampling >();
     SamplingIncompatibleEvidenceTestSuite::checkRejectionBound< gum::ImportanceSampling >();
+    SamplingIncompatibleEvidenceTestSuite::checkRejectionBound<
+        SamplingIncompatibleEvidenceTestSuite::LoopyMonteCarlo >();
+    SamplingIncompatibleEvidenceTestSuite::checkRejectionBound<
+        SamplingIncompatibleEvidenceTestSuite::LoopyWeighted >();
+    SamplingIncompatibleEvidenceTestSuite::checkRejectionBound<
+        SamplingIncompatibleEvidenceTestSuite::LoopyImportance >();
   }
 
   GUM_TEST(TimeLimitDuringRejections) {
     SamplingIncompatibleEvidenceTestSuite::checkTimeLimit< gum::MonteCarloSampling >();
     SamplingIncompatibleEvidenceTestSuite::checkTimeLimit< gum::WeightedSampling >();
     SamplingIncompatibleEvidenceTestSuite::checkTimeLimit< gum::ImportanceSampling >();
+    SamplingIncompatibleEvidenceTestSuite::checkTimeLimit<
+        SamplingIncompatibleEvidenceTestSuite::LoopyMonteCarlo >();
+    SamplingIncompatibleEvidenceTestSuite::checkTimeLimit<
+        SamplingIncompatibleEvidenceTestSuite::LoopyWeighted >();
+    SamplingIncompatibleEvidenceTestSuite::checkTimeLimit<
+        SamplingIncompatibleEvidenceTestSuite::LoopyImportance >();
+  }
+
+  GUM_TEST(PrunedDomains) {
+    // C = A AND B with C=1: A and B can only be 1
+    const auto                               andBn = SamplingIncompatibleEvidenceTestSuite::andBN();
+    gum::NodeProperty< gum::Idx >            evidence{{andBn.idFromName("C"), 1}};
+    gum::NodeProperty< std::vector< bool > > allowed;
+    CHECK(gum::pruneDomainsByEvidence(andBn, &evidence, allowed));
+    CHECK(allowed[andBn.idFromName("A")] == std::vector< bool >{false, true});
+    CHECK(allowed[andBn.idFromName("B")] == std::vector< bool >{false, true});
+    CHECK(allowed[andBn.idFromName("C")] == std::vector< bool >{false, true});
+    // with A=0 too, the domain of C becomes empty
+    evidence.insert(andBn.idFromName("A"), 0);
+    CHECK_FALSE(gum::pruneDomainsByEvidence(andBn, &evidence, allowed));
+    // without evidence, every value stays
+    CHECK(gum::pruneDomainsByEvidence(andBn, nullptr, allowed));
+    for (const auto node: andBn.nodes())
+      CHECK(allowed[node] == std::vector< bool >{true, true});
+
+    // Y = A XOR B and Z = NOT (A XOR B) with Y=1, Z=0: each CPT alone supports every value of A and
+    // B (nothing pruned)
+    const auto                    xorBn = SamplingIncompatibleEvidenceTestSuite::xorBN();
+    gum::NodeProperty< gum::Idx > xorEvidence{{xorBn.idFromName("Y"), 1},
+                                              {xorBn.idFromName("Z"), 0}};
+    CHECK(gum::pruneDomainsByEvidence(xorBn, &xorEvidence, allowed));
+    CHECK(allowed[xorBn.idFromName("A")] == std::vector< bool >{true, true});
+    CHECK(allowed[xorBn.idFromName("B")] == std::vector< bool >{true, true});
   }
 
   GUM_TEST(CompatibleEvidenceWithNullProbabilities) {

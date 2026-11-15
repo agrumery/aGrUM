@@ -197,7 +197,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(BgumPreservesStateOnCorruptBytes) {
-    constexpr auto                  path = GET_RESSOURCES_PATH("outputs/corrupt_id.bgum");
+    const TemporaryFile             file(".bgum");   // removed at the end of the test
+    const auto&                     path = file.path;
     gum::InfluenceDiagram< double > id;
     id.addChanceNode("existing[2]");
 
@@ -215,7 +216,8 @@ namespace gum_tests {
   }
 
   GUM_TEST(BgumRefusesAWrongLength) {
-    const auto path = GET_RESSOURCES_PATH("outputs/corrupt_id.bgum");
+    const TemporaryFile file(".bgum");   // removed at the end of the test
+    const auto&         path = file.path;
     // a truncated length field (4 bytes instead of 8), a length far above the size of the file,
     // a length above the size of the payload (truncated data)
     const std::string contents[] = {std::string(4, '\0'),

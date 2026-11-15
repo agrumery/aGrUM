@@ -113,8 +113,8 @@ double errorAfterInvalidateTensors() {
   ie.addEvidence("B", 1);
   ie.makeInference();
 
-  const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.999, 0.001});
-  const_cast< gum::Tensor< double >& >(bn.cpt("C")).fillWith({0.6, 0.4, 0.95, 0.05});
+  bn.cpt("A").fillWith({0.999, 0.001});
+  bn.cpt("C").fillWith({0.6, 0.4, 0.95, 0.05});
   ie.invalidateTensors();
   ie.makeInference();
 

@@ -2133,7 +2133,7 @@ namespace gum_tests {
     (void)ie.posterior("C");
 
     // without evidence: P(B) = P(A) . P(B|A)
-    const_cast< gum::Tensor< double >& >(bn.cpt("A")).fillWith({0.7, 0.3});
+    bn.cpt("A").fillWith({0.7, 0.3});
     ie.invalidateTensors();
     ie.makeInference();
     gum::Tensor< double > expected;
@@ -2145,7 +2145,7 @@ namespace gum_tests {
     ie.addEvidence("B", 1);
     ie.makeInference();
     (void)ie.posterior("C");
-    const_cast< gum::Tensor< double >& >(bn.cpt("C")).fillWith({0.6, 0.4, 0.5, 0.5});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.5, 0.5});
     ie.invalidateTensors();
     ie.makeInference();
     gum::Tensor< double > expectedC;
@@ -2158,7 +2158,7 @@ namespace gum_tests {
     ie.addEvidence("B", std::vector< double >{0.4, 0.6});
     ie.makeInference();
     (void)ie.posterior("A");
-    const_cast< gum::Tensor< double >& >(bn.cpt("B")).fillWith({0.5, 0.5, 0.2, 0.8});
+    bn.cpt("B").fillWith({0.5, 0.5, 0.2, 0.8});
     ie.invalidateTensors();
     ie.makeInference();
     gum::Tensor< double > expectedA;

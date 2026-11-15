@@ -2461,8 +2461,9 @@ namespace gum_tests {
         maxParents = std::max(maxParents, dag.parents(node).size());
       CHECK_LT(0u, maxParents);
 
-      // a bound that the learned DAG satisfies changes nothing
-      learner.setMaxIndegree(dag.size());
+      // a bound that the learned DAG satisfies changes nothing, even when it is reached (an
+      // off-by-one error would show)
+      learner.setMaxIndegree(maxParents);
       CHECK_EQ(learner.learnDAG().arcs(), dag.arcs());
 
       CHECK(!learner.maxIndegreeExceeded());

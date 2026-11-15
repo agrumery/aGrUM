@@ -48,6 +48,7 @@
 #include <iostream>
 
 #include <agrum/base/core/configuration/configuration.h>
+#include <agrum/base/core/threads/threads.h>
 
 #define xstrfy(s) strfy(s)
 #define strfy(x)  #x
@@ -71,6 +72,20 @@ namespace gum_tests {
 
     ConfigurationGuard(const ConfigurationGuard&)            = delete;
     ConfigurationGuard& operator=(const ConfigurationGuard&) = delete;
+  };
+
+  // Scope of a test that changes the global number of threads (gum::setNumberOfThreads): the
+  // number is restored on exit, even if an assertion throws.
+  struct NumberOfThreadsGuard {
+    NumberOfThreadsGuard() : _saved_(gum::getNumberOfThreads()) {}
+
+    ~NumberOfThreadsGuard() { gum::setNumberOfThreads(_saved_); }
+
+    NumberOfThreadsGuard(const NumberOfThreadsGuard&)            = delete;
+    NumberOfThreadsGuard& operator=(const NumberOfThreadsGuard&) = delete;
+
+    private:
+    unsigned int _saved_;
   };
 
   inline const std::string waiter[]{"[*  ]", "[ * ]", "[  *]", "[ * ]"};

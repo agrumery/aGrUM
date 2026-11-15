@@ -350,6 +350,9 @@ namespace gum_tests {
       mcs.setNumberOfThreads(run == 0 ? 1 : 4);
       mcs.setMaxTime(60);   // stop on epsilon, never on the time
       GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
+      // otherwise the numbers of samples differ (a slow machine), hence the results
+      REQUIRE(mcs.stateApproximationScheme()
+              == gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Epsilon);
       for (const auto node: cn->current_bn().nodes()) {
         results[run].push_back(mcs.marginalMin(node));
         results[run].push_back(mcs.marginalMax(node));
@@ -369,7 +372,7 @@ namespace gum_tests {
   // initial bounds min=1, max=0)
   GUM_TEST(CNMonteCarloSamplingWithFewThreads) {
     initDCNet();
-    const auto nbThreads = gum::getNumberOfThreads();
+    NumberOfThreadsGuard threads;   // the global number of threads is restored even on failure
     for (const unsigned int nt: {1u, 2u, 4u}) {
       gum::setNumberOfThreads(nt);
       gum::credal::CNMonteCarloSampling< double > mcs(*cn);
@@ -378,7 +381,6 @@ namespace gum_tests {
       GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
       checkTheBounds(mcs);
     }
-    gum::setNumberOfThreads(nbThreads);
     clearCNet();
   }
 

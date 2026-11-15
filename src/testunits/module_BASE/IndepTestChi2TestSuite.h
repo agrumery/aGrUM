@@ -403,6 +403,9 @@ namespace gum_tests {
 
     // p-value must match Chi2(df=3): one degree of freedom per nonempty row and column
     CHECK(stat.second == doctest::Approx(gum::Chi2::probaChi2(6.0, 3)).epsilon(1e-6));
+    // an oracle independent of the library: P(chi2(3) > 6) = erfc(sqrt(3)) + sqrt(12/pi) exp(-3)
+    // = 0.111610
+    CHECK(stat.second == doctest::Approx(0.111610).epsilon(1e-4));
 
     // verify the correction tightens the test: corrected p < uncorrected p
     CHECK(stat.second < gum::Chi2::probaChi2(6.0, 4));

@@ -75,7 +75,7 @@ namespace gum_tests {
   };
 
   GUM_TEST(RandomSeed) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
 
     gum::initRandom(20);
     const auto x1 = gum::randomProba();
@@ -91,24 +91,21 @@ namespace gum_tests {
     CHECK(fabs((gum::randomProba()) - (x1)) < 1e-5);
     CHECK(fabs((gum::randomProba()) - (x2)) < 1e-5);
     CHECK(fabs((gum::randomProba()) - (x3)) < 1e-5);
-
-    gum::initRandom(seed);
   }
 
   GUM_TEST(SeedInUse) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
     CHECK_EQ(gum::randomGeneratorSeed(), 42u);
-    gum::initRandom(0);   // the clock: the value in use is known, hence replayable
+    gum::initRandom(0);                    // the clock: the value in use is known, hence replayable
     const auto clock = gum::randomGeneratorSeed();
     const auto x     = gum::randomProba();
     gum::initRandom(clock);
     CHECK_EQ(gum::randomProba(), x);
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomSeedKeyHasNoEffectOnTheGenerator) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     {
       ConfigurationGuard guard;
       gum::config().takeNotices();
@@ -132,12 +129,11 @@ namespace gum_tests {
     }
     // the guard gave the seed read at start back: nothing to say
     CHECK(gum::config().takeNotices().empty());
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomSeedForStructure) {
     // the same seed gives the same generated structure
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
 
     const auto generate = [] {
       gum::MCBayesNetGenerator< double > gen(100, 150, 3);
@@ -152,12 +148,10 @@ namespace gum_tests {
     CHECK(bn1.dag() == bn2.dag());
     for (const auto node: bn1.nodes())
       CHECK_EQ(bn1.variable(node).name(), bn2.variable(node).name());
-
-    gum::initRandom(seed);
   }
 
   GUM_TEST(BugSeed) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(0);
     const auto x0 = gum::randomProba();
     gum::initRandom(10);
@@ -171,11 +165,10 @@ namespace gum_tests {
     CHECK_EQ(x10, gum::randomProba());
     gum::initRandom(42);
     CHECK_EQ(x42, gum::randomProba());
-    gum::initRandom(seed);
   }
 
   GUM_TEST(BugSeed2) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(0);
     const auto bn0 = gum::BayesNet< double >::fastPrototype("A->B<-C");
     gum::initRandom(10);
@@ -205,26 +198,23 @@ namespace gum_tests {
 
     for (const auto i: bn42.nodes())
       GUM_CHECK_TENSOR_ALMOST_EQUALS(bn42.cpt(i), bn42b.cpt(bn42.variable(i).name()));
-
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomValueZeroThrows) { CHECK_THROWS_AS(gum::randomValue(0), const gum::OutOfBounds&); }
 
   GUM_TEST(RandomValueRange) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
     for (int i = 0; i < 1000; ++i) {
       const auto v = gum::randomValue(5);
       CHECK(v < gum::Idx(5));
     }
-    gum::initRandom(seed);
   }
 
   // the draws depend only on the outputs of std::mt19937 (fixed by the standard): the same values
   // on every platform (the distributions of <random> differ between the standard libraries)
   GUM_TEST(PortableDraws) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
 
     std::vector< gum::Idx > values;
@@ -244,12 +234,10 @@ namespace gum_tests {
     // std::log and std::pow may differ in the last bit between the libraries
     CHECK(std::fabs(gum::randomGamma(2.5) - 3.4218334707071598) < 1e-12);
     CHECK(std::fabs(gum::randomGamma(0.5) - 0.095172959702188795) < 1e-12);
-
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomValueIsUniform) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
     std::vector< int > counts(7, 0);
     for (int i = 0; i < 70000; ++i)
@@ -258,11 +246,10 @@ namespace gum_tests {
       CHECK(std::abs(count - 10000) < 500);   // about 5 standard deviations
     for (int i = 0; i < 1000; ++i)
       CHECK(gum::randomValue((gum::Size(1) << 40) + 3) < (gum::Size(1) << 40) + 3);
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomProbaRange) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
     double sum = 0.0;
     for (int i = 0; i < 100000; ++i) {
@@ -271,7 +258,6 @@ namespace gum_tests {
       sum += p;
     }
     CHECK(std::fabs(sum / 100000 - 0.5) < 0.01);
-    gum::initRandom(seed);
   }
 
   GUM_TEST(RandomShuffleIsAPermutation) {
@@ -290,7 +276,7 @@ namespace gum_tests {
   }
 
   GUM_TEST(RandomGammaMean) {
-    const auto seed = gum::randomGeneratorSeed();
+    gum::RandomGeneratorGuard generator;   // restored even if the test fails
     gum::initRandom(42);
     for (const double shape: {0.3, 1.0, 2.5, 10.0}) {
       double sum = 0.0;
@@ -303,7 +289,6 @@ namespace gum_tests {
     }
     CHECK_THROWS_AS(gum::randomGamma(0.0), const gum::OutOfBounds&);
     CHECK_THROWS_AS(gum::randomGamma(-1.0), const gum::OutOfBounds&);
-    gum::initRandom(seed);
   }
 
   GUM_TEST(Int2PowBounds) {

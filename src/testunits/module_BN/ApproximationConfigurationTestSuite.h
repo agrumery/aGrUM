@@ -43,7 +43,9 @@
 
 #include <cmath>
 #include <string>
+#include <string_view>
 
+#include <agrum/base/core/approximations/approximationSchemeListener.h>
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
@@ -108,18 +110,36 @@ namespace gum_tests {
       scheme.setPeriodSize(period);
     }
 
+    // counts the ends of the computations of a scheme
+    class StopCounter: public gum::ApproximationSchemeListener {
+      public:
+      explicit StopCounter(gum::IApproximationSchemeConfiguration& scheme) :
+          gum::ApproximationSchemeListener(scheme) {}
+
+      void whenProgress(const void*, const gum::Size, const double, const double) override {}
+
+      void whenStop(const void*, std::string_view) override { ++stops; }
+
+      int stops = 0;
+    };
+
     // a parameter changed after an inference: the next inference is a new computation; nothing
     // changed: the next inference does nothing
     template < typename ENGINE >
     static void checkChangedParameterInvalidatesTheInference(ENGINE& engine, gum::Size period) {
       onlyMaxIterStops(engine, period);
       engine.setMaxIter(4 * period);
+      StopCounter counter(engine);
       engine.makeInference();
       CHECK_EQ(engine.nbrIterations(), 4 * period);
       const gum::Tensor< double > posterior = engine.posterior(0);
+      const int                   stops     = counter.stops;
+      CHECK_LT(0, stops);
 
       engine.makeInference();
-      CHECK_EQ((engine.posterior(0) - posterior).abs().max(), 0.0);   // not computed again
+      // not computed again (the posterior alone would not show it for a deterministic engine)
+      CHECK_EQ(counter.stops, stops);
+      CHECK_EQ((engine.posterior(0) - posterior).abs().max(), 0.0);
 
       engine.setMaxIter(10 * period);
       engine.makeInference();

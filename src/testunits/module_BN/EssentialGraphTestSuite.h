@@ -333,7 +333,8 @@ namespace gum_tests {
     CHECK(read.arcs() == eg.arcs());
     CHECK(read.edges() == eg.edges());
     CHECK_EQ(read.nameFromId(bn.idFromName("d")), "d");
-    const auto bgum = GET_RESSOURCES_PATH("outputs/essentialGraph.bgum");
+    const TemporaryFile file(".bgum");   // removed at the end of the test
+    const auto&         bgum = file.path;
     gum::saveGraphGUM(eg, bgum, true);
     CHECK(gum::loadGraphGUM< gum::EssentialGraph >(bgum, true).arcs() == eg.arcs());
 
