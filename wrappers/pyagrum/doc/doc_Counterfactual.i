@@ -41,25 +41,27 @@
 
 %feature("docstring") gum::Counterfactual
 "
-Computes a counterfactual distribution using Pearl's three-step algorithm.
+Computes a counterfactual distribution in the twin network of Balke and Pearl.
 
 A counterfactual query asks: 'Given that we observed *profile*, what would
 *on* have been if *whatif* had been set to the values in *values*?'
 
-The computation follows three steps:
-
-  1. **Abduction** -- compute the posterior distribution of parentless
-     (idiosyncratic) nodes in the original BN given the observed *profile*.
-  2. **Action** -- build a *twin* causal model in which the priors of those
-     nodes are replaced by their posteriors from step 1, then apply
-     ``do(whatif)`` on the twin.
-  3. **Prediction** -- evaluate the causal impact of the intervention on
-     the twin model to obtain the counterfactual distribution of *on*.
+The twin network (`pyagrum.counterfactualModel`) contains the real world and
+a copy ``V*`` of the *whatif* variables and of their descendants (the
+counterfactual world), both worlds sharing the other variables, in
+particular the parentless ones. The counterfactual distribution is the
+posterior of the copies of *on* given the *profile* (observed in the real
+world) and the values of the copies of *whatif*: the abduction, action and
+prediction steps of Pearl are done by a single exact inference, which keeps
+the dependencies created by the profile between the shared variables.
 
 Notes
 -----
 Prefer using the high-level function :func:`pyagrum.counterfactual`
 instead of constructing a Counterfactual object directly.
+
+A causal model with latent variables is refused (`pyagrum.InvalidArgument`):
+their distributions, needed for the abduction, are unknown.
 
 Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
     Parameters:
@@ -76,41 +78,11 @@ Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
           is returned.
 "
 
-%feature("docstring") gum::Counterfactual::counterFactualModel
-"
-Build the twin causal model from the original model and a factual profile.
-
-This static method implements steps 1-2 of the three-step counterfactual
-algorithm: it computes the posterior of parentless (idiosyncratic) nodes
-in the observational BN given the profile evidence, then replaces their
-prior distributions in a copy of the model with those posteriors.
-
-Parameters
-----------
-cm : pyagrum.CausalModel
-    The original causal model.
-profile : dict of str → str
-    The factual observation as ``{variable_name: value_name}``.
-whatif : set of str
-    Intervened variables in the counterfactual scenario. These are excluded
-    from the set of idiosyncratic nodes that get updated.
-
-Returns
--------
-pyagrum.CausalModel
-    The twin causal model ready for the prediction step.
-
-See Also
---------
-pyagrum.counterfactualModel : high-level function wrapper.
-"
-
 %feature("docstring") gum::Counterfactual::run
 "
-Execute the counterfactual computation (steps 2 and 3).
+Compute the counterfactual distribution by inference in the twin network.
 
-This method is called automatically by the constructor. Call it explicitly
-only if you need to re-run after modifying the object's state.
+This method is called automatically by the constructor.
 "
 
 %feature("docstring") gum::Counterfactual::originalModel
@@ -125,21 +97,35 @@ pyagrum.CausalModel
 
 %feature("docstring") gum::Counterfactual::twinModel
 "
-Return the twin causal model built during the abduction step.
+Return the twin network of Balke and Pearl used for the computation.
 
-The twin model has the same structure as the original but with updated
-priors for parentless nodes (based on the observed profile).
+It contains the variables of the original model (real world) and a copy
+``V*`` of each *whatif* variable and of each of their descendants
+(counterfactual world). See `pyagrum.counterfactualModel`.
 
 Returns
 -------
 pyagrum.CausalModel
-    The twin model.
+    The twin network.
 "
 
-// gum::Counterfactual::impact is documented in causal.i alongside its
-// %feature("shadow") wrapper (needed to fix a mis-rendered nested-template
-// return type annotation). %feature("docstring") here would be dead code:
-// shadow fully replaces the generated function, including its docstring.
+// gum::Counterfactual::impact (deprecated) is documented in causal_after_templates.i,
+// where it is rewritten in Python.
+
+%feature("docstring") gum::Counterfactual::copyName
+"
+Return the name of the copy of a variable in the twin network.
+
+Parameters
+----------
+name : str
+    The name of a variable of the original model.
+
+Returns
+-------
+str
+    The name of its copy in the counterfactual world (``name*``).
+"
 
 %feature("docstring") gum::Counterfactual::value
 "

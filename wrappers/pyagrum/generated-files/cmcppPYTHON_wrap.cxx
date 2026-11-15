@@ -4381,6 +4381,36 @@ SWIGINTERN PyAgrumDict *gum_CausalImpact_Sl_double_Sg__toDict(gum::CausalImpact<
     return PyAgrumHelper::PyDictFromASTtree(self->root());
   }
 
+SWIGINTERN int
+SWIG_AsPtr_std_string (PyObject * obj, std::string **val) 
+{
+  char* buf = 0 ; size_t size = 0; int alloc = SWIG_OLDOBJ;
+  if (SWIG_IsOK((SWIG_AsCharPtrAndSize(obj, &buf, &size, &alloc)))) {
+    if (buf) {
+      if (val) *val = new std::string(buf, size - 1);
+      if (alloc == SWIG_NEWOBJ) delete[] buf;
+      return SWIG_NEWOBJ;
+    } else {
+      if (val) *val = 0;
+      return SWIG_OLDOBJ;
+    }
+  } else {
+    PyErr_Clear();
+    static swig_type_info *descriptor = SWIG_TypeQuery("std::string" " *");
+    if (descriptor) {
+      std::string *vptr;
+      int res = SWIG_ConvertPtr(obj, (void**)&vptr, descriptor, 0);
+      if (SWIG_IsOK(res) && val) *val = vptr;
+      return res;
+    }
+  }
+  return SWIG_ERROR;
+}
+
+SWIGINTERN gum::CausalModel< double > gum_Counterfactual_Sl_double_Sg___twinNetwork(gum::CausalModel< double > const &cm,gum::Set< std::string > const &whatif){
+    return gum::Counterfactual< double >::counterFactualModel(cm, whatif);
+  }
+
 
 /* ---------------------------------------------------
  * C++ director class methods
@@ -12250,152 +12280,41 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Counterfactual_counterFactualModel__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_Counterfactual_copyName(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  gum::CausalModel< double > *arg1 = 0 ;
-  gum::HashTable< gum::Counterfactual< double >::VarName,gum::Counterfactual< double >::ValName > *arg2 = 0 ;
-  gum::Set< std::string > *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  gum::HashTable< std::string,std::string > temp2 ;
-  gum::Set< std::string > temp3 ;
-  SwigValueWrapper< gum::CausalModel< double > > result;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  std::string result;
   
   (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CausalModelT_double_t,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Counterfactual_counterFactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Counterfactual_counterFactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
   {
-    PyAgrumHelper::populateHashTableStrStrFromPyDict(temp2, swig_obj[1]);
-    arg2 = &temp2;
-  }
-  {
-    PyAgrumHelper::populateStringSetFromPySequence(temp3, swig_obj[2]);
-    arg3 = &temp3;
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Counterfactual_copyName" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Counterfactual_copyName" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
   }
   {
     try {
-      result = gum::Counterfactual< double >::SWIGTEMPLATEDISAMBIGUATOR counterFactualModel((gum::CausalModel< double > const &)*arg1,(gum::HashTable< std::string,std::string > const &)*arg2,(gum::Set< std::string > const &)*arg3);
+      result = gum::Counterfactual< double >::SWIGTEMPLATEDISAMBIGUATOR copyName((std::string const &)*arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj((new gum::CausalModel< double >(result)), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return resultobj;
 fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Counterfactual_counterFactualModel__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::CausalModel< double > *arg1 = 0 ;
-  gum::HashTable< gum::NodeId,gum::Idx > *arg2 = 0 ;
-  gum::NodeSet *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  gum::NodeSet _ns_temp3 ;
-  SwigValueWrapper< gum::CausalModel< double > > result;
-  
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CausalModelT_double_t,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Counterfactual_counterFactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Counterfactual_counterFactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_HashTableT_std__size_t_std__size_t_t,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Counterfactual_counterFactualModel" "', argument " "2"" of type '" "HashTable< gum::NodeId,gum::Idx > const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Counterfactual_counterFactualModel" "', argument " "2"" of type '" "HashTable< gum::NodeId,gum::Idx > const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::HashTable< gum::NodeId,gum::Idx > * >(argp2);
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg3 = &_ns_temp3;
-  }
-  {
-    try {
-      result = gum::Counterfactual< double >::SWIGTEMPLATEDISAMBIGUATOR counterFactualModel((gum::CausalModel< double > const &)*arg1,(gum::HashTable< std::size_t,std::size_t > const &)*arg2,(gum::Set< std::size_t > const &)*arg3);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj((new gum::CausalModel< double >(result)), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Counterfactual_counterFactualModel(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "Counterfactual_counterFactualModel", 0, 3, argv))) SWIG_fail;
-  --argc;
-  if (argc == 3) {
-    int _v = 0;
-    {
-      {
-        _v = PyDict_Check(argv[1]);
-      }
-    }
-    if (!_v) goto check_1;
-    {
-      {
-        _v = PySet_Check(argv[2]) || PyList_Check(argv[2]) || PyUnicode_Check(argv[2]) || PyBytes_Check(argv[2]);
-      }
-    }
-    if (!_v) goto check_1;
-    return _wrap_Counterfactual_counterFactualModel__SWIG_0(self, argc, argv);
-  }
-check_1:
-  
-  if (argc == 3) {
-    PyObject *retobj = _wrap_Counterfactual_counterFactualModel__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Counterfactual_counterFactualModel'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::Counterfactual< double >::counterFactualModel(gum::CausalModel< double > const &,HashTable< gum::Counterfactual< double >::VarName,gum::Counterfactual< double >::ValName > const &,gum::Set< std::string > const &)\n"
-    "    gum::Counterfactual< double >::counterFactualModel(gum::CausalModel< double > const &,HashTable< gum::NodeId,gum::Idx > const &,gum::NodeSet const &)\n");
-  return 0;
 }
 
 
@@ -12485,37 +12404,6 @@ SWIGINTERN PyObject *_wrap_Counterfactual_twinModel(PyObject *self, PyObject *ar
     }
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Counterfactual_impact(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Counterfactual< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::CausalImpact< double > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CounterfactualT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Counterfactual_impact" "', argument " "1"" of type '" "gum::Counterfactual< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Counterfactual< double > * >(argp1);
-  {
-    try {
-      result = (gum::CausalImpact< double > *) &((gum::Counterfactual< double > const *)arg1)->impact();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalImpactT_double_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -12714,6 +12602,45 @@ SWIGINTERN PyObject *_wrap_Counterfactual_toString(PyObject *self, PyObject *arg
     }
   }
   resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Counterfactual__twinNetwork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
+  gum::Set< std::string > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Set< std::string > temp2 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< gum::CausalModel< double > > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "Counterfactual__twinNetwork", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CausalModelT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Counterfactual__twinNetwork" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Counterfactual__twinNetwork" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  {
+    PyAgrumHelper::populateStringSetFromPySequence(temp2, swig_obj[1]);
+    arg2 = &temp2;
+  }
+  {
+    try {
+      result = gum_Counterfactual_Sl_double_Sg___twinNetwork((gum::CausalModel< double > const &)*arg1,(gum::Set< std::string > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::CausalModel< double >(result)), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -12942,51 +12869,6 @@ fail:
     "    gum::counterfactual< double >(gum::CausalModel< double > const &,gum::Set< std::string > const &,gum::Set< std::string > const &,HashTable< std::string,std::string > const &)\n"
     "    gum::counterfactual< double >(gum::CausalModel< double > const &,gum::Set< std::string > const &,gum::Set< std::string > const &)\n");
   return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap__counterfactualModel(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::CausalModel< double > *arg1 = 0 ;
-  gum::HashTable< std::string,std::string > *arg2 = 0 ;
-  gum::Set< std::string > *arg3 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  gum::HashTable< std::string,std::string > temp2 ;
-  gum::Set< std::string > temp3 ;
-  PyObject *swig_obj[3] ;
-  SwigValueWrapper< gum::CausalModel< double > > result;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "_counterfactualModel", 3, 3, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CausalModelT_double_t,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_counterfactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "_counterfactualModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
-  }
-  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
-  {
-    PyAgrumHelper::populateHashTableStrStrFromPyDict(temp2, swig_obj[1]);
-    arg2 = &temp2;
-  }
-  {
-    PyAgrumHelper::populateStringSetFromPySequence(temp3, swig_obj[2]);
-    arg3 = &temp3;
-  }
-  {
-    try {
-      result = gum::SWIGTEMPLATEDISAMBIGUATOR counterfactualModel< double >((gum::CausalModel< double > const &)*arg1,(gum::HashTable< std::string,std::string > const &)*arg2,(gum::Set< std::string > const &)*arg3);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj((new gum::CausalModel< double >(result)), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_OWN |  0 );
-  return resultobj;
-fail:
-  return NULL;
 }
 
 
@@ -13757,41 +13639,26 @@ static PyMethodDef SwigMethods[] = {
 	 { "CausalImpact_swigregister", CausalImpact_swigregister, METH_O, NULL},
 	 { "CausalImpact_swiginit", CausalImpact_swiginit, METH_VARARGS, NULL},
 	 { "new_Counterfactual", _wrap_new_Counterfactual, METH_VARARGS, NULL},
-	 { "Counterfactual_counterFactualModel", _wrap_Counterfactual_counterFactualModel, METH_VARARGS, "\n"
+	 { "Counterfactual_copyName", _wrap_Counterfactual_copyName, METH_O, "\n"
 		"\n"
-		"Build the twin causal model from the original model and a factual profile.\n"
-		"\n"
-		"This static method implements steps 1-2 of the three-step counterfactual\n"
-		"algorithm: it computes the posterior of parentless (idiosyncratic) nodes\n"
-		"in the observational BN given the profile evidence, then replaces their\n"
-		"prior distributions in a copy of the model with those posteriors.\n"
+		"Return the name of the copy of a variable in the twin network.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"cm : pyagrum.CausalModel\n"
-		"    The original causal model.\n"
-		"profile : dict of str → str\n"
-		"    The factual observation as ``{variable_name: value_name}``.\n"
-		"whatif : set of str\n"
-		"    Intervened variables in the counterfactual scenario. These are excluded\n"
-		"    from the set of idiosyncratic nodes that get updated.\n"
+		"name : str\n"
+		"    The name of a variable of the original model.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
-		"pyagrum.CausalModel\n"
-		"    The twin causal model ready for the prediction step.\n"
-		"\n"
-		"See Also\n"
-		"--------\n"
-		"pyagrum.counterfactualModel : high-level function wrapper.\n"
+		"str\n"
+		"    The name of its copy in the counterfactual world (``name*``).\n"
 		"\n"
 		""},
 	 { "Counterfactual_run", _wrap_Counterfactual_run, METH_O, "\n"
 		"\n"
-		"Execute the counterfactual computation (steps 2 and 3).\n"
+		"Compute the counterfactual distribution by inference in the twin network.\n"
 		"\n"
-		"This method is called automatically by the constructor. Call it explicitly\n"
-		"only if you need to re-run after modifying the object's state.\n"
+		"This method is called automatically by the constructor.\n"
 		"\n"
 		""},
 	 { "Counterfactual_originalModel", _wrap_Counterfactual_originalModel, METH_O, "\n"
@@ -13806,18 +13673,18 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Counterfactual_twinModel", _wrap_Counterfactual_twinModel, METH_O, "\n"
 		"\n"
-		"Return the twin causal model built during the abduction step.\n"
+		"Return the twin network of Balke and Pearl used for the computation.\n"
 		"\n"
-		"The twin model has the same structure as the original but with updated\n"
-		"priors for parentless nodes (based on the observed profile).\n"
+		"It contains the variables of the original model (real world) and a copy\n"
+		"``V*`` of each *whatif* variable and of each of their descendants\n"
+		"(counterfactual world). See `pyagrum.counterfactualModel`.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"pyagrum.CausalModel\n"
-		"    The twin model.\n"
+		"    The twin network.\n"
 		"\n"
 		""},
-	 { "Counterfactual_impact", _wrap_Counterfactual_impact, METH_O, NULL},
 	 { "Counterfactual_value", _wrap_Counterfactual_value, METH_O, "\n"
 		"\n"
 		"Return the counterfactual distribution as a tensor.\n"
@@ -13880,11 +13747,11 @@ static PyMethodDef SwigMethods[] = {
 		"    Human-readable summary of the counterfactual computation.\n"
 		"\n"
 		""},
+	 { "Counterfactual__twinNetwork", _wrap_Counterfactual__twinNetwork, METH_VARARGS, NULL},
 	 { "delete_Counterfactual", _wrap_delete_Counterfactual, METH_O, NULL},
 	 { "Counterfactual_swigregister", Counterfactual_swigregister, METH_O, NULL},
 	 { "Counterfactual_swiginit", Counterfactual_swiginit, METH_VARARGS, NULL},
 	 { "_counterfactual", _wrap__counterfactual, METH_VARARGS, NULL},
-	 { "_counterfactualModel", _wrap__counterfactualModel, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

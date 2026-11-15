@@ -90,6 +90,13 @@
       the draws of the rest of the program.
     - `pyagrum.qBNSampling` no longer depends on `qiskit-ibm-runtime`: `qBNMC.aerSimulation` uses the sampler of
       `qiskit-aer`.
+    - `counterfactual`: the abduction replaced each parentless variable by its own posterior, losing the dependence
+      created by the profile between them (wrong result for instance when Y = U1 xor U2 xor T). The counterfactual is
+      now a posterior in the twin network of Balke and Pearl (`counterfactualModel(cm, whatif)` builds it, with copies
+      `V*` of the whatif variables and of their descendants), which is exact. A causal model with latent variables is
+      refused (their distributions are unknown; they were ignored). Deprecated after 3.3.2: the argument `profile` of
+      `counterfactualModel` and `Counterfactual.counterFactualModel` (ignored, the twin network does not depend on
+      it) and `Counterfactual.impact`.
 
 - aGrUM
 

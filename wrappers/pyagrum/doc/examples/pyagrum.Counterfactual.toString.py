@@ -12,7 +12,6 @@ print(cf.toString())
 #  whatif = {X}
 #  profile: Y=yes
 #  values: X=no
-#  result (symbolic): P(Y|X)
 #  value (adapted to original variables):
 #
 #   Y                │

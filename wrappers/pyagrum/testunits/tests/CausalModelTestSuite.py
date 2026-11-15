@@ -234,6 +234,47 @@ class TestCausalModel(pyAgrumTestCase):
 
     self.assertEqual(pot[81 - 65], 1.0)
 
+  @staticmethod
+  def _xorModel():
+    # X = U1 xor U2, Y = U1 xor U2 xor T
+    bn = gum.fastBN("U1->X<-U2;U1->Y<-U2;T->Y")
+    for n in ("U1", "U2", "T"):
+      bn.cpt(n).fillWith([0.5, 0.5])
+    bn.cpt("X").fillFromFunction("(U1 + U2) % 2")
+    bn.cpt("Y").fillFromFunction("(U1 + U2 + T) % 2")
+    return gum.CausalModel(bn)
+
+  def testCounterfactualAbductionIsJoint(self):
+    # observing X=1, T=0 (hence Y=1): had T been 1, Y would have been 0 (U1 and U2 have uniform posteriors,
+    # only their joint posterior gives the answer)
+    cm = self._xorModel()
+    pot = gum.counterfactual(cm=cm, on={"Y"}, whatif={"T"}, profile={"X": "1", "T": "0", "Y": "1"}, values={"T": "1"})
+    self.assertAlmostEqual(pot[0], 1.0)
+    self.assertAlmostEqual(pot[1], 0.0)
+
+  def testTwinNetwork(self):
+    cm = self._xorModel()
+    twin = gum.counterfactualModel(cm, whatif="T")
+    self.assertEqual(set(twin.observationalBN().names()), {"U1", "U2", "T", "X", "Y", "T*", "Y*"})
+    self.assertEqual(set(twin.observationalBN().parents("Y*")), set(twin.observationalBN().ids(["U1", "U2", "T*"])))
+
+    with self.assertWarns(DeprecationWarning):
+      old = gum.counterfactualModel(cm, {"X": "1"}, {"T"})
+    self.assertEqual(set(old.observationalBN().names()), set(twin.observationalBN().names()))
+    with self.assertWarns(DeprecationWarning):
+      gum.Counterfactual.counterFactualModel(cm, {"X": "1"}, {"T"})
+    twin2 = gum.Counterfactual.counterFactualModel(cm, {"T"})
+    self.assertEqual(set(twin2.observationalBN().names()), set(twin.observationalBN().names()))
+
+    cf = gum.Counterfactual(cm, {"Y"}, {"T"}, {"X": "1", "T": "0", "Y": "1"}, {"T": "1"})
+    with self.assertWarns(DeprecationWarning):
+      cf.impact()
+
+  def testCounterfactualRefusesLatentVariables(self):
+    cm = gum.CausalModel(gum.fastBN("X->Y"), [("U", ["X", "Y"])])
+    with self.assertRaises(gum.InvalidArgument):
+      gum.counterfactual(cm=cm, on={"Y"}, whatif={"X"}, profile={"X": "0", "Y": "1"})
+
   def test_dagOnly_noObservationalBN(self):
     dag = gum.fastDAG("A->B->C")
     cm = gum.CausalModel(dag)

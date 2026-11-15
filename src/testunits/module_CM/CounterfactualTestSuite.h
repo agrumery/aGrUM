@@ -54,6 +54,7 @@
 
 #include <agrum/base/multidim/tensor.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/CM/causalModel.h>
 #include <agrum/CM/counterfactual.h>
@@ -139,10 +140,7 @@ namespace gum_tests {
 
 
     gum::Counterfactual cf(cm, on_names, whatif_names, profile, values);
-    CHECK_NOTHROW({
-      const auto _ = cf.toString();
-      (void)cf.impact().toString();
-    });
+    CHECK_NOTHROW({ const auto _ = cf.toString(); });
 
     const auto& got = cf.value();
     auto        I   = instFor(got, {{"salary", "81"}});
@@ -181,10 +179,7 @@ namespace gum_tests {
 
     gum::Counterfactual cf(cm, onIds, whatIfIds, profileIds, valuesIds);
 
-    CHECK_NOTHROW({
-      const auto _ = cf.toString();
-      (void)cf.impact().toString();
-    });
+    CHECK_NOTHROW({ const auto _ = cf.toString(); });
 
     const auto& got = cf.value();
     auto        I   = instFor(got, {{"salary", "81"}});
@@ -257,41 +252,141 @@ namespace gum_tests {
     gum::Set< std::string > whatif;
     whatif.insert("education");
 
-    // Build twin with the free function
-    auto twincm = gum::counterfactualModel< double >(cm, profile, whatif);
+    // Build the twin network with the free function
+    auto twincm = gum::counterfactualModel< double >(cm, whatif);
 
-    // Compute effect on the twin with existing causalImpact free fn
-    auto [_, adj, __]
-        = gum::causalImpact< double >(twincm, on_names, whatif, gum::Set< std::string >{}, values);
+    // The counterfactual is a posterior in the twin network: profile in the real world, values on
+    // the copies
+    const auto&                    twin = twincm.observationalBN();
+    gum::LazyPropagation< double > ie(&twin);
+    for (const auto& [name, label]: profile)
+      ie.addEvidence(name, label);
+    ie.addEvidence("education*", "medium");
+    ie.makeInference();
+    const auto& post = ie.posterior("salary*");
 
-    // Adapt to the original BN variables (same pattern as class)
-    gum::Tensor< double > adapted;
-    for (const auto& v: adj.variablesSequence()) {
-      adapted.add(cm.observationalBN().variableFromName(v->name()));
+    const auto got_free = gum::counterfactual< double >(cm, on_names, whatif, profile, values);
+    CHECK_EQ(post.domainSize(), got_free.domainSize());
+    for (gum::Idx i = 0; i < post.domainSize(); ++i) {
+      gum::Instantiation Ip(post), If(got_free);
+      Ip.chgVal(post.variable(0), i);
+      If.chgVal(got_free.variable(0), i);
+      CHECK_EQ(post.get(Ip), doctest::Approx(got_free.get(If)).epsilon(1e-10));
     }
-    adapted.fillWith(adj);
-
-    // Should match the free counterfactual helper
-    auto got_free = gum::counterfactual< double >(cm, on_names, whatif, profile, values);
-    GUM_CHECK_TENSOR_ALMOST_EQUALS(adapted, got_free);
   }
 
-  GUM_TEST(SimpleCounterFactual) {
-    const auto bn = gum::BayesNet< double >::fastPrototype("X->Y->Z");
-    const auto cm = gum::CausalModel(bn);
+  GUM_TEST(TwinNetworkStructure) {
+    // the copies are the whatif variables and their descendants; the other variables are shared
+    auto bn = gum::BayesNet< double >::fastPrototype("X->Y->Z;W->Y;W->V");
+    bn.generateCPTs();
+    const gum::CausalModel< double > cm(bn);
 
+    const auto  twincm = gum::counterfactualModel(cm, names({"X"}));
+    const auto& twin   = twincm.observationalBN();
+    CHECK_EQ(twin.size(), 8u);
+    for (const auto& n: {"V", "W", "X", "Y", "Z", "X*", "Y*", "Z*"})
+      CHECK_NOTHROW((void)twin.idFromName(n));
+    CHECK(twin.parents("X*").empty());
+    CHECK_EQ(twin.parents("Y*"), gum::NodeSet{twin.idFromName("X*"), twin.idFromName("W")});
+    CHECK_EQ(twin.parents("Z*"), gum::NodeSet{twin.idFromName("Y*")});
+
+    // a copy has the CPT of its original
+    gum::Instantiation Io(bn.cpt("Y")), It(twin.cpt("Y*"));
+    for (Io.setFirst(); !Io.end(); Io.inc()) {
+      It.chgVal("Y*", Io.val(bn.variableFromName("Y")));
+      It.chgVal("X*", Io.val(bn.variableFromName("X")));
+      It.chgVal("W", Io.val(bn.variableFromName("W")));
+      CHECK_EQ(twin.cpt("Y*").get(It), doctest::Approx(bn.cpt("Y").get(Io)));
+    }
+  }
+
+  GUM_TEST(CounterfactualAbductionIsJoint) {
+    // X = U1 xor U2, Y = U1 xor U2 xor T: observing X=1, T=0 (hence Y=1), had T been 1, Y would
+    // have been 0. The posteriors of U1 and U2 are uniform, only their joint posterior gives the
+    // answer.
+    auto bn = gum::BayesNet< double >::fastPrototype("U1->X<-U2;U1->Y<-U2;T->Y");
+    for (const auto& n: {"U1", "U2", "T"})
+      bn.cpt(n).fillWith({0.5, 0.5});
+    const auto xorFill = [&bn](const std::string& node, const std::vector< std::string >& parents) {
+      const auto& cpt = bn.cpt(node);
+      for (gum::Instantiation I(cpt); !I.end(); I.inc()) {
+        gum::Idx x = 0;
+        for (const auto& p: parents)
+          x ^= I.val(bn.variableFromName(p));
+        cpt.set(I, I.val(bn.variableFromName(node)) == x ? 1.0 : 0.0);
+      }
+    };
+    xorFill("X", {"U1", "U2"});
+    xorFill("Y", {"U1", "U2", "T"});
+    const gum::CausalModel< double > cm(bn);
+
+    gum::HashTable< std::string, std::string > profile;
+    profile.insert("X", "1");
+    profile.insert("T", "0");
+    profile.insert("Y", "1");
+    gum::HashTable< std::string, std::string > values;
+    values.insert("T", "1");
+
+    const auto         got = gum::counterfactual(cm, names({"Y"}), names({"T"}), profile, values);
+    gum::Instantiation I(got);
+    I.chgVal("Y", "0");
+    CHECK_EQ(got.get(I), doctest::Approx(1.0));
+    I.chgVal("Y", "1");
+    CHECK_EQ(got.get(I), doctest::Approx(0.0));
+  }
+
+  GUM_TEST(CounterfactualWithoutProfileIsTheCausalEffect) {
+    auto bn = gum::BayesNet< double >::fastPrototype("U->X->Y<-U");
+    bn.generateCPTs();
+    const gum::CausalModel< double > cm(bn);
+
+    const auto cf = gum::counterfactual(cm, names({"Y"}), names({"X"}));
+    const auto ce = gum::CausalImpact< double >(cm, names({"Y"}), names({"X"}), StrSet{}).eval();
+    for (gum::Instantiation I(cf); !I.end(); I.inc()) {
+      gum::Instantiation J(ce);
+      J.chgVal("X", I.val(cf.variable(cf.pos(cm.observationalBN().variableFromName("X")))));
+      J.chgVal("Y", I.val(cf.variable(cf.pos(cm.observationalBN().variableFromName("Y")))));
+      CHECK_EQ(cf.get(I), doctest::Approx(ce.get(J)).epsilon(1e-10));
+    }
+  }
+
+  GUM_TEST(CounterfactualOnANonDescendant) {
+    // W is not a descendant of X: its counterfactual value is its factual posterior, whatever x
+    auto bn = gum::BayesNet< double >::fastPrototype("W->X->Y;W->Y");
+    bn.generateCPTs();
+    const gum::CausalModel< double >           cm(bn);
     gum::HashTable< std::string, std::string > profile;
     profile.insert("Y", "1");
 
+    const auto got = gum::counterfactual(cm, names({"W"}), names({"X"}), profile);
+    gum::LazyPropagation< double > ie(&bn);
+    ie.addEvidence("Y", "1");
+    ie.makeInference();
+    const auto& pw = ie.posterior("W");
+    for (gum::Instantiation I(got); !I.end(); I.inc()) {
+      gum::Instantiation J(pw);
+      J.chgVal("W", I.val(got.variable(got.pos(cm.observationalBN().variableFromName("W")))));
+      CHECK_EQ(got.get(I), doctest::Approx(pw.get(J)).epsilon(1e-10));
+    }
+  }
+
+  GUM_TEST(CounterfactualRefusesLatentVariables) {
+    // a latent variable has no CPT: its posterior given the profile cannot be computed
+    auto bn = gum::BayesNet< double >::fastPrototype("X->Y");
+    bn.generateCPTs();
+    const gum::CausalModel< double > cm(bn, {{"U", bn.ids({"X", "Y"})}});
+
+    gum::HashTable< std::string, std::string > profile;
+    profile.insert("X", "0");
+    profile.insert("Y", "1");
     gum::Set< std::string > whatif;
     whatif.insert("X");
+    gum::Set< std::string > on;
+    on.insert("Y");
 
-    const auto twin = gum::counterfactualModel(cm, profile, whatif);
-
-    CHECK_NE(twin.observationalBN().size(), 0u);
-    CHECK_NE(twin.observationalBN().sizeArcs(), 0u);
-    CHECK_NE(twin.causalDAG().size(), 0u);
-    CHECK_NE(twin.causalDAG().sizeArcs(), 0u);
+    CHECK_THROWS_AS(gum::counterfactualModel(cm, whatif), gum::InvalidArgument&);
+    CHECK_THROWS_AS((gum::Counterfactual< double >(cm, on, whatif, profile)),
+                    gum::InvalidArgument&);
   }
 
 }   // namespace gum_tests

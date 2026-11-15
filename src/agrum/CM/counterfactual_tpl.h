@@ -37,12 +37,13 @@
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
-
-
 #pragma once
 
+#include <memory>
 #include <utility>
 
+#include <agrum/base/core/bijection.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/CM/counterfactual.h>
 
 namespace gum {
@@ -56,7 +57,13 @@ namespace gum {
                                                 const HashTable< VarName, ValName >& profile,
                                                 const HashTable< VarName, ValName >& values) :
       _cm(cm), _on(on), _whatif(whatif), _profile(profile), _values(values),
-      _twin(counterFactualModel(cm, profile, whatif)), _adaptedValue(), _ci(nullptr) {
+      _twin(counterFactualModel(cm, whatif)), _adaptedValue(), _ci(nullptr) {
+    for (const auto& name: on) {
+      if (whatif.contains(name)) {
+        GUM_ERROR(InvalidArgument,
+                  "The variable " << name << " cannot be both in 'on' and in 'whatif'.");
+      }
+    }
     run();
   }
 
@@ -72,115 +79,147 @@ namespace gum {
                                     _idAssignToNameAssign_(cm, profileIds),
                                     _idAssignToNameAssign_(cm, valuesIds)) {}
 
-  // ============================== TWIN BUILDERS ==============================
+  // ============================== TWIN NETWORK ===============================
 
   template < GUM_Numeric GUM_ELEMENT >
-  CausalModel< GUM_ELEMENT > Counterfactual< GUM_ELEMENT >::counterFactualModel(
-      const CausalModel< GUM_ELEMENT >&    cm,
-      const HashTable< VarName, ValName >& profile,
-      const Set< std::string >&            whatif) {
-    const auto&                origBN = cm.observationalBN();
-    CausalModel< GUM_ELEMENT > twincm(origBN);   // copy (serves as clone)
-
-    // 1) idiosyncratic = parentless \ (whatif ∪ latent)
-    NodeSet whatifIds;
-    for (const auto& w: whatif) {
-      whatifIds.insert(cm.idFromName(w));
-    }
-    NodeSet idiosyncratic;
-    for (auto nid: origBN.nodes()) {
-      if (origBN.parents(nid).size() == 0) { idiosyncratic.insert(nid); }
-    }
-    for (auto id: whatifIds) {
-      idiosyncratic.erase(id);
-    }
-    for (auto id: cm.latentVariablesIds()) {
-      idiosyncratic.erase(id);
-    }
-
-    // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-    gum::LazyPropagation< GUM_ELEMENT > ie(&origBN);
-    if (!profile.empty()) {
-      for (const auto& kv: profile) {
-        const auto&  varName = kv.first;
-        const auto&  valName = kv.second;
-        const NodeId nid     = cm.idFromName(varName);
-        const auto&  var     = origBN.variable(nid);
-        const Idx    valId   = var.index(valName);
-        ie.addEvidence(nid, valId);
-      }
-    }
-    ie.makeInference();
-    // 3) Replace priors in the twin with posteriors from the original
-    auto& twinBN = twincm.observationalBN();
-    for (auto f: idiosyncratic) {
-      const auto&                 name   = origBN.variable(f).name();
-      auto                        twinId = twinBN.idFromName(name);
-      const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
-      twinBN.cpt(twinId).fillWith(post);
-    }
-    return twincm;
+  std::string Counterfactual< GUM_ELEMENT >::copyName(const std::string& name) {
+    return name + "*";
   }
 
   template < GUM_Numeric GUM_ELEMENT >
   CausalModel< GUM_ELEMENT >
       Counterfactual< GUM_ELEMENT >::counterFactualModel(const CausalModel< GUM_ELEMENT >& cm,
-                                                         const HashTable< NodeId, Idx >& profileIds,
+                                                         const Set< std::string >&         whatif) {
+    NodeSet whatifIds;
+    for (const auto& w: whatif) {
+      whatifIds.insert(cm.idFromName(w));
+    }
+    return counterFactualModel(cm, whatifIds);
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT >
+      Counterfactual< GUM_ELEMENT >::counterFactualModel(const CausalModel< GUM_ELEMENT >& cm,
                                                          const NodeSet& whatifIds) {
-    const auto& origBN = cm.observationalBN();
-    // 1) idiosyncratic = parentless \ (whatif ∪ latent)
-    NodeSet idiosyncratic;
-    for (auto nid: origBN.nodes()) {
-      if (origBN.parents(nid).size() == 0) { idiosyncratic.insert(nid); }
-    }
-    for (auto id: whatifIds) {
-      idiosyncratic.erase(id);
-    }
-    for (auto id: cm.latentVariablesIds()) {
-      idiosyncratic.erase(id);
+    // a latent variable has no distribution: the twin network cannot be built
+    if (!cm.latentVariablesIds().empty()) {
+      GUM_ERROR(InvalidArgument,
+                "A counterfactual requires a causal model without latent variables (their "
+                "distributions, needed for the abduction, are unknown).");
     }
 
-    // 2) posterior(idiosyncratic | profile) in ORIGINAL BN
-    CausalModel< GUM_ELEMENT > twincm(origBN);
-    {
-      gum::LazyPropagation< GUM_ELEMENT > ie(&origBN);
-      if (!profileIds.empty()) {
-        for (const auto& kv: profileIds) {
-          const NodeId nid   = kv.first;
-          const Idx    valId = kv.second;
-          ie.addEvidence(nid, valId);
-        }
-      }
-      ie.makeInference();
-      auto& twinBN = twincm.observationalBN();
-      for (auto f: idiosyncratic) {
-        const auto&                 name   = origBN.variable(f).name();
-        const NodeId                twinId = twinBN.idFromName(name);
-        const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
-        twinBN.cpt(twinId).fillWith(post);
+    const auto& bn = cm.observationalBN();
+
+    // the counterfactual world: copies of the whatif variables and of their descendants, the other
+    // variables (in particular the parentless ones, the exogenous causes) being shared by both
+    // worlds
+    NodeSet copied = whatifIds;
+    for (const auto x: whatifIds) {
+      for (const auto d: bn.descendants(x)) {
+        copied.insert(d);
       }
     }
-    return twincm;
+
+    BayesNet< GUM_ELEMENT >     twin(bn);   // the real world
+    Bijection< NodeId, NodeId > copyOf;     // original -> copy
+    for (const auto v: bn.topologicalOrder()) {
+      if (!copied.contains(v)) continue;
+      const auto name = copyName(bn.variable(v).name());
+      if (bn.exists(name)) {
+        GUM_ERROR(InvalidArgument,
+                  "The name " << name
+                              << " of a counterfactual copy is already used in the causal model.");
+      }
+      std::unique_ptr< DiscreteVariable > var(bn.variable(v).clone());
+      var->setName(name);
+      copyOf.insert(v, twin.add(*var));
+    }
+
+    for (const auto v: copied) {
+      const NodeId c = copyOf.second(v);
+      if (whatifIds.contains(v)) {
+        // the intervened copy has no cause: a uniform prior, its value is given as evidence
+        twin.cpt(c).fillWith(GUM_ELEMENT(1)).normalize();
+        continue;
+      }
+      for (const auto p: bn.parents(v)) {
+        twin.addArc(copyOf.existsFirst(p) ? copyOf.second(p) : p, c);
+      }
+      // the copy has the CPT of its original (variables matched by name)
+      const auto&                cpt = twin.cpt(c);
+      std::vector< std::string > mapSrc;
+      for (const auto var: cpt.variablesSequence()) {
+        const auto&  name = var->name();
+        const NodeId n    = twin.idFromName(name);
+        mapSrc.push_back(copyOf.existsSecond(n) ? bn.variable(copyOf.first(n)).name() : name);
+      }
+      cpt.fillWith(bn.cpt(v), mapSrc);
+    }
+
+    return CausalModel< GUM_ELEMENT >(twin);
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT > Counterfactual< GUM_ELEMENT >::counterFactualModel(
+      const CausalModel< GUM_ELEMENT >& cm,
+      const HashTable< VarName, ValName >& /*profile*/,
+      const Set< std::string >& whatif) {
+    return counterFactualModel(cm, whatif);
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT > Counterfactual< GUM_ELEMENT >::counterFactualModel(
+      const CausalModel< GUM_ELEMENT >& cm,
+      const HashTable< NodeId, Idx >& /*profile*/,
+      const NodeSet& whatifIds) {
+    return counterFactualModel(cm, whatifIds);
   }
 
   // ================================ EXECUTION ================================
 
   template < GUM_Numeric GUM_ELEMENT >
   void Counterfactual< GUM_ELEMENT >::run() {
-    // Build symbolic effect on the twin
-    _ci = std::make_unique< CausalImpact< GUM_ELEMENT > >(_twin, _on, _whatif);
+    const auto& twin = _twin.observationalBN();
 
-    // Numeric evaluation on the twin
-    Tensor< GUM_ELEMENT > adj = _ci->eval();
+    // the name of a variable in the counterfactual world
+    const auto inCounterfactualWorld = [&twin](const std::string& name) {
+      return twin.exists(copyName(name)) ? copyName(name) : name;
+    };
 
-    // Slice by specified intervention values (partial instantiation, safe if some names are absent)
+    // the profile is observed in the real world
+    LazyPropagation< GUM_ELEMENT > ie(&twin);
+    for (const auto& [name, label]: _profile) {
+      ie.addEvidence(name, label);
+    }
+    NodeSet targets;
+    NodeSet whatifCopies;
+    for (const auto& name: _on)
+      targets.insert(twin.idFromName(inCounterfactualWorld(name)));
+    for (const auto& name: _whatif) {
+      const NodeId c = twin.idFromName(copyName(name));
+      targets.insert(c);
+      whatifCopies.insert(c);
+    }
+    ie.addJointTarget(targets);
+    ie.makeInference();
+    const auto joint = ie.jointPosterior(targets);
+
+    // the copies of whatif have no parent and no observed descendant: they are independent of the
+    // profile and P(on* | whatif*, profile) = P(on*, whatif* | profile) / P(whatif*)
+    VariableSet copies;
+    for (const auto c: whatifCopies)
+      copies.insert(&twin.variable(c));
+    Tensor< GUM_ELEMENT > adj = joint / joint.sumIn(copies);
+
+    // back to the variables of the original model
+    adj = _adaptToOriginalVariables_(adj, _cm);
+
+    // slice by the counterfactual values (partial instantiation, safe if some names are absent)
     if (!_values.empty() && adj.nbrDim() > 0) {
       auto I = makeInstantiationFromValues(adj, _values);   // keeps only vars present in `adj`
       if (I.nbrDim() > 0) adj = adj.extract(I);
     }
-
-    // Adapt tensor to ORIGINAL model variables
-    _adaptedValue = _adaptToOriginalVariables_(adj, _cm);
+    _adaptedValue = std::move(adj);
   }
 
   // =============================== ADAPTATION ================================
@@ -192,19 +231,74 @@ namespace gum {
     Tensor< GUM_ELEMENT > res;
     const auto&           bn = cm.observationalBN();
 
-    // keep adj variable order
-    for (const auto& v: adj.variablesSequence()) {
-      res.add(bn.variableFromName(v->name()));
+    // keep adj variable order, the copy V* being replaced by V
+    std::vector< std::string > mapSrc;
+    for (const auto v: adj.variablesSequence()) {
+      std::string name = v->name();
+      if (!bn.exists(name)) name.pop_back();   // V* -> V
+      res.add(bn.variableFromName(name));
+      mapSrc.push_back(v->name());
     }
-    res.fillWith(adj);
+    res.fillWith(adj, mapSrc);
     return res;
   }
 
-  // ============================ RESULT ACCESSOR ==============================
+  // ================================= ACCESSORS ==================================
 
   template < GUM_Numeric GUM_ELEMENT >
-  const CausalFormula< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::_ciResult() const {
-    return _ci->getResult();   // public accessor in CausalImpact
+  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::originalModel() const {
+    return _cm;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::twinModel() const {
+    return _twin;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const CausalImpact< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::impact() const {
+    if (_ci == nullptr) {
+      // P(on* | do(whatif*), profile) in the twin network
+      const auto&        twin = _twin.observationalBN();
+      Set< std::string > onCopies, whatifCopies, knowing;
+      for (const auto& name: _on)
+        onCopies.insert(twin.exists(copyName(name)) ? copyName(name) : name);
+      for (const auto& name: _whatif)
+        whatifCopies.insert(copyName(name));
+      for (const auto& [name, label]: _profile)
+        knowing.insert(name);
+      _ci = std::make_unique< CausalImpact< GUM_ELEMENT > >(_twin, onCopies, whatifCopies, knowing);
+    }
+    return *_ci;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Tensor< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::value() const {
+    return _adaptedValue;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Set< std::string >& Counterfactual< GUM_ELEMENT >::on() const {
+    return _on;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const Set< std::string >& Counterfactual< GUM_ELEMENT >::whatif() const {
+    return _whatif;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
+                   typename Counterfactual< GUM_ELEMENT >::ValName >&
+      Counterfactual< GUM_ELEMENT >::profile() const {
+    return _profile;
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
+  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
+                   typename Counterfactual< GUM_ELEMENT >::ValName >&
+      Counterfactual< GUM_ELEMENT >::values() const {
+    return _values;
   }
 
   // ================================= PRINT ==================================
@@ -256,10 +350,6 @@ namespace gum {
       os << "\n";
     }
 
-    os << " result (symbolic): ";
-    if (_ci && _ci->isIdentified()) os << _ciResult().toString() << "\n";
-    else os << "<unidentified>\n";
-
     if (_adaptedValue.nbrDim() > 0) {
       os << " value (adapted to original variables):\n";
       os << _adaptedValue << "\n";
@@ -268,7 +358,7 @@ namespace gum {
     return os.str();
   }
 
-  // ============================== HELPERS (IDs) ==============================
+  // ================================= HELPERS ==================================
 
   template < GUM_Numeric GUM_ELEMENT >
   Set< std::string >
@@ -316,97 +406,17 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_ELEMENT >
+  CausalModel< GUM_ELEMENT > counterfactualModel(const CausalModel< GUM_ELEMENT >& cm,
+                                                 const Set< std::string >&         whatif) {
+    return Counterfactual< GUM_ELEMENT >::counterFactualModel(cm, whatif);
+  }
+
+  template < GUM_Numeric GUM_ELEMENT >
   CausalModel< GUM_ELEMENT >
-      counterfactualModel(const CausalModel< GUM_ELEMENT >&            cm,
-                          const HashTable< std::string, std::string >& profile,
-                          const Set< std::string >&                    whatif) {
-    const auto& origBN = cm.observationalBN();
-
-    // Clone model (copy semantics)
-    CausalModel< GUM_ELEMENT > twincm(origBN);
-
-    // what-if ids
-    NodeSet whatifIds;
-    for (const auto& w: whatif)
-      whatifIds.insert(cm.idFromName(w));
-
-    // idiosyncratic = parentless \ (whatif ∪ latent)
-    NodeSet idiosyncratic;
-    for (auto nid: origBN.nodes())
-      if (origBN.parents(nid).size() == 0) idiosyncratic.insert(nid);
-    for (auto id: whatifIds)
-      idiosyncratic.erase(id);
-    for (auto id: cm.latentVariablesIds())
-      idiosyncratic.erase(id);
-
-    // Posteriors in the original BN
-    LazyPropagation< GUM_ELEMENT > ie(&origBN);
-    if (!profile.empty()) {
-      for (const auto& kv: profile) {
-        const NodeId nid   = cm.idFromName(kv.first);
-        const auto&  var   = origBN.variable(nid);
-        const Idx    valId = var.index(kv.second);
-        ie.addEvidence(nid, valId);
-      }
-    }
-    ie.makeInference();
-
-    // Update priors in the twin with posteriors
-    auto& twinBN = twincm.observationalBN();
-    for (auto f: idiosyncratic) {
-      const auto&                 name   = origBN.variable(f).name();
-      const NodeId                twinId = twinBN.idFromName(name);
-      const Tensor< GUM_ELEMENT > post   = ie.posterior(f);
-      twinBN.cpt(twinId).fillWith(post);
-    }
-
-    return twincm;
-  }
-
-  // ================================= ACCESSORS ==================================
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::originalModel() const {
-    return _cm;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const CausalModel< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::twinModel() const {
-    return _twin;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const CausalImpact< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::impact() const {
-    return *_ci;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const Tensor< GUM_ELEMENT >& Counterfactual< GUM_ELEMENT >::value() const {
-    return _adaptedValue;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const Set< std::string >& Counterfactual< GUM_ELEMENT >::on() const {
-    return _on;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const Set< std::string >& Counterfactual< GUM_ELEMENT >::whatif() const {
-    return _whatif;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
-                   typename Counterfactual< GUM_ELEMENT >::ValName >&
-      Counterfactual< GUM_ELEMENT >::profile() const {
-    return _profile;
-  }
-
-  template < GUM_Numeric GUM_ELEMENT >
-  const HashTable< typename Counterfactual< GUM_ELEMENT >::VarName,
-                   typename Counterfactual< GUM_ELEMENT >::ValName >&
-      Counterfactual< GUM_ELEMENT >::values() const {
-    return _values;
+      counterfactualModel(const CausalModel< GUM_ELEMENT >& cm,
+                          const HashTable< std::string, std::string >& /*profile*/,
+                          const Set< std::string >& whatif) {
+    return Counterfactual< GUM_ELEMENT >::counterFactualModel(cm, whatif);
   }
 
 }   // namespace gum

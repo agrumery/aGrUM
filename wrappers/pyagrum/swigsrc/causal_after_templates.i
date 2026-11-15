@@ -224,3 +224,96 @@
         return len(set(self.connectedComponents().values()))
 %}
 }
+
+// ---------------------------------------------------------------------------
+// Counterfactual: the twin network builder and the deprecated members
+//
+// Counterfactual::counterFactualModel (overloads deprecated after 3.3.2) and Counterfactual::impact
+// (deprecated after 3.3.2) are %ignored in causal.i. _twinNetwork wraps the non deprecated builder;
+// counterFactualModel and impact are rewritten in Python, emitting the DeprecationWarning.
+// ---------------------------------------------------------------------------
+%extend gum::Counterfactual< double > {
+  static gum::CausalModel< double > _twinNetwork(const gum::CausalModel< double >& cm,
+                                                 const gum::Set< std::string >&    whatif) {
+    return gum::Counterfactual< double >::counterFactualModel(cm, whatif);
+  }
+
+%pythoncode %{
+    @staticmethod
+    def counterFactualModel(cm, *args) -> "pyagrum.CausalModel":
+        """
+        Build the twin network of Balke and Pearl (see `pyagrum.counterfactualModel`).
+
+        Parameters
+        ----------
+        cm : pyagrum.CausalModel
+            The original causal model.
+        whatif : set of str
+            Intervened variables in the counterfactual scenario. The former call
+            ``counterFactualModel(cm, profile, whatif)`` is deprecated after 3.3.2: the
+            twin network does not depend on the profile.
+
+        Returns
+        -------
+        pyagrum.CausalModel
+            The twin network.
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If the causal model has latent variables, or if the name of a copy is
+            already used.
+
+        Warnings
+        --------
+        ``counterFactualModel(cm, profile, whatif)`` is deprecated after 3.3.2, use
+        ``counterFactualModel(cm, whatif)``.
+        """
+        if len(args) == 2:
+            import warnings
+
+            warnings.warn("Counterfactual.counterFactualModel(cm, profile, whatif) is deprecated after 3.3.2, "
+                          "use Counterfactual.counterFactualModel(cm, whatif)", DeprecationWarning, stacklevel=2)
+            args = args[1:]
+        if len(args) != 1:
+            raise TypeError("counterFactualModel(cm, whatif) expects 2 arguments")
+        whatif = args[0]
+        if isinstance(whatif, str):
+            whatif = {whatif}
+        p = Counterfactual._twinNetwork(cm, whatif)
+        p._model = cm
+        return p
+
+    def impact(self) -> "pyagrum.CausalImpact":
+        """
+        Return the causal impact P(on* | do(whatif*), profile) in the twin network.
+
+        It is not used to compute the counterfactual distribution, which is a posterior
+        in the twin network.
+
+        Returns
+        -------
+        pyagrum.CausalImpact
+            The causal impact in the twin network.
+
+        Warnings
+        --------
+        Deprecated after 3.3.2: the counterfactual is computed by inference in the twin
+        network, use `pyagrum.Counterfactual.twinModel` and `pyagrum.Counterfactual.value`.
+        """
+        import warnings
+
+        warnings.warn("Counterfactual.impact is deprecated after 3.3.2, use twinModel() and value()",
+                      DeprecationWarning, stacklevel=2)
+        twin = self.twinModel()
+        names = set(twin.observationalBN().names())
+        copy = Counterfactual.copyName
+        ci = CausalImpact(twin,
+                          on={copy(n) if copy(n) in names else n for n in self.on()},
+                          doing={copy(n) for n in self.whatif()},
+                          knowing=set(dict(self.profile()).keys()))
+        ci._model = self
+        return ci
+%}
+}
+

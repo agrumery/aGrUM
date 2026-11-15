@@ -54,10 +54,8 @@ namespace gum {
                                                      const HashTable< std::string, std::string >&,
                                                      const HashTable< std::string, std::string >&);
 
-  template CausalModel< double >
-      counterfactualModel< double >(const CausalModel< double >&,
-                                    const HashTable< std::string, std::string >&,
-                                    const Set< std::string >&);
+  template CausalModel< double > counterfactualModel< double >(const CausalModel< double >&,
+                                                               const Set< std::string >&);
 
 }   // namespace gum
 #endif

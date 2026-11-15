@@ -112,14 +112,15 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
 
 def counterfactual(cm, *, on, whatif, profile=None, values=None):
     """
-    Compute a counterfactual distribution using Pearl's three-step algorithm.
+    Compute a counterfactual distribution in the twin network of Balke and Pearl.
 
     Answers the question: 'Given that we observed *profile*, what would
     *on* have been if *whatif* had been set as specified in *values*?'
 
-    The computation follows three steps: abduction (update parentless node priors
-    from the profile), action (apply do(whatif) on the twin model), and
-    prediction (evaluate the causal effect on the twin).
+    The three steps of Pearl (abduction, action, prediction) are done by a
+    single exact inference in the twin network (`pyagrum.counterfactualModel`):
+    the profile is observed in the real world, the values are given to the
+    copies of *whatif*, and the result is the posterior of the copies of *on*.
 
     Parameters
     ----------
@@ -143,8 +144,14 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
     Returns
     -------
     pyagrum.Tensor
-        The counterfactual distribution P(on | do(whatif)) evaluated on the
-        twin model, optionally sliced by *values*.
+        The counterfactual distribution of *on* given *profile*, for each value
+        of *whatif* (or sliced by *values*).
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If the causal model has latent variables: their distributions,
+        needed for the abduction, are unknown.
     """
     p=_counterfactual(cm, on, whatif,
                            profile if profile is not None else {},
@@ -152,37 +159,62 @@ def counterfactual(cm, *, on, whatif, profile=None, values=None):
     p._model=cm
     return p
 
-def counterfactualModel(cm, profile=None, whatif=None):
+def counterfactualModel(cm, whatif=None, profile=None):
     """
-    Build the twin causal model for a counterfactual query.
+    Build the twin network of Balke and Pearl for a counterfactual query.
 
-    Implements steps 1-2 of Pearl's three-step counterfactual algorithm:
-    compute the posterior of parentless (idiosyncratic) nodes in the
-    observational BN given *profile* as evidence, then replace their priors
-    in a copy of the model with those posteriors.
+    The twin network contains the real world (the observational Bayesian
+    network of *cm*) and the counterfactual world: a copy ``V*`` of each
+    variable of *whatif* and of each of their descendants. A copy of a
+    *whatif* variable has no parent and a uniform prior; any other copy has
+    the conditional probability table of its original, its parents being the
+    copies of the original parents when they exist, the original parents
+    otherwise. The other variables, in particular the parentless ones, are
+    shared by both worlds. A counterfactual distribution is a posterior in
+    this network: the profile is observed in the real world and the
+    counterfactual values are given to the copies (see
+    `pyagrum.counterfactual`).
 
     Parameters
     ----------
     cm : pyagrum.CausalModel
         The original causal model.
+    whatif : str or set of str
+        Intervened variable(s) in the counterfactual scenario. A single
+        string is automatically converted to a one-element set.
     profile : dict of str → str, optional
-        The factual observation as ``{variable_name: value_name}``.
-        Default is empty (no observation; the twin model equals the original).
-    whatif : str or set of str, optional
-        Intervened variable(s) in the counterfactual scenario. These are
-        excluded from the set of idiosyncratic nodes that get updated.
-        A single string is automatically converted to a one-element set.
-        Default is empty.
+        Deprecated, ignored: the twin network does not depend on the
+        profile.
 
     Returns
     -------
     pyagrum.CausalModel
-        The twin causal model ready for the prediction step.
+        The twin network.
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If the causal model has latent variables (their distributions are
+        unknown), or if the name of a copy is already used.
+
+    Warnings
+    --------
+    The argument ``profile`` is deprecated after 3.3.2: the twin network does
+    not depend on it.
     """
-    p=_counterfactualModel(cm,
-                           profile if profile is not None else {},
-                           whatif  if whatif  is not None else set())
-    p._model=cm
+    if isinstance(whatif, dict):  # former positional order (cm, profile, whatif)
+        whatif, profile = profile, whatif
+    if profile is not None:
+        import warnings
+
+        warnings.warn("the argument profile of counterfactualModel is deprecated after 3.3.2 (the twin network does "
+                      "not depend on it), use counterfactualModel(cm, whatif)", DeprecationWarning, stacklevel=2)
+    if whatif is None:
+        whatif = set()
+    elif isinstance(whatif, str):
+        whatif = {whatif}
+    p = Counterfactual._twinNetwork(cm, whatif)
+    p._model = cm
     return p
 
 
@@ -1368,25 +1400,27 @@ _cmcpp.CausalImpact_swigregister(CausalImpact)
 class Counterfactual(object):
     r"""
 
-    Computes a counterfactual distribution using Pearl's three-step algorithm.
+    Computes a counterfactual distribution in the twin network of Balke and Pearl.
 
     A counterfactual query asks: 'Given that we observed *profile*, what would
     *on* have been if *whatif* had been set to the values in *values*?'
 
-    The computation follows three steps:
-
-      1. **Abduction** -- compute the posterior distribution of parentless
-         (idiosyncratic) nodes in the original BN given the observed *profile*.
-      2. **Action** -- build a *twin* causal model in which the priors of those
-         nodes are replaced by their posteriors from step 1, then apply
-         ``do(whatif)`` on the twin.
-      3. **Prediction** -- evaluate the causal impact of the intervention on
-         the twin model to obtain the counterfactual distribution of *on*.
+    The twin network (`pyagrum.counterfactualModel`) contains the real world and
+    a copy ``V*`` of the *whatif* variables and of their descendants (the
+    counterfactual world), both worlds sharing the other variables, in
+    particular the parentless ones. The counterfactual distribution is the
+    posterior of the copies of *on* given the *profile* (observed in the real
+    world) and the values of the copies of *whatif*: the abduction, action and
+    prediction steps of Pearl are done by a single exact inference, which keeps
+    the dependencies created by the profile between the shared variables.
 
     Notes
     -----
     Prefer using the high-level function :func:`pyagrum.counterfactual`
     instead of constructing a Counterfactual object directly.
+
+    A causal model with latent variables is refused (`pyagrum.InvalidArgument`):
+    their distributions, needed for the abduction, are unknown.
 
     Counterfactual(cm, on, whatif, profile={}, values={}) -> Counterfactual
         Parameters:
@@ -1411,45 +1445,30 @@ class Counterfactual(object):
         _cmcpp.Counterfactual_swiginit(self, _cmcpp.new_Counterfactual(*args))
 
     @staticmethod
-    def counterFactualModel(*args) -> "pyagrum.CausalModel":
+    def copyName(name: str) -> str:
         r"""
 
-        Build the twin causal model from the original model and a factual profile.
-
-        This static method implements steps 1-2 of the three-step counterfactual
-        algorithm: it computes the posterior of parentless (idiosyncratic) nodes
-        in the observational BN given the profile evidence, then replaces their
-        prior distributions in a copy of the model with those posteriors.
+        Return the name of the copy of a variable in the twin network.
 
         Parameters
         ----------
-        cm : pyagrum.CausalModel
-            The original causal model.
-        profile : dict of str → str
-            The factual observation as ``{variable_name: value_name}``.
-        whatif : set of str
-            Intervened variables in the counterfactual scenario. These are excluded
-            from the set of idiosyncratic nodes that get updated.
+        name : str
+            The name of a variable of the original model.
 
         Returns
         -------
-        pyagrum.CausalModel
-            The twin causal model ready for the prediction step.
-
-        See Also
-        --------
-        pyagrum.counterfactualModel : high-level function wrapper.
+        str
+            The name of its copy in the counterfactual world (``name*``).
 
         """
-        return _cmcpp.Counterfactual_counterFactualModel(*args)
+        return _cmcpp.Counterfactual_copyName(name)
 
     def run(self) -> None:
         r"""
 
-        Execute the counterfactual computation (steps 2 and 3).
+        Compute the counterfactual distribution by inference in the twin network.
 
-        This method is called automatically by the constructor. Call it explicitly
-        only if you need to re-run after modifying the object's state.
+        This method is called automatically by the constructor.
 
         """
         return _cmcpp.Counterfactual_run(self)
@@ -1470,33 +1489,19 @@ class Counterfactual(object):
     def twinModel(self) -> "pyagrum.CausalModel":
         r"""
 
-        Return the twin causal model built during the abduction step.
+        Return the twin network of Balke and Pearl used for the computation.
 
-        The twin model has the same structure as the original but with updated
-        priors for parentless nodes (based on the observed profile).
+        It contains the variables of the original model (real world) and a copy
+        ``V*`` of each *whatif* variable and of each of their descendants
+        (counterfactual world). See `pyagrum.counterfactualModel`.
 
         Returns
         -------
         pyagrum.CausalModel
-            The twin model.
+            The twin network.
 
         """
         return _cmcpp.Counterfactual_twinModel(self)
-
-    def impact(self) -> "pyagrum.CausalImpact":
-        r"""
-        Return the CausalImpact used to compute the counterfactual distribution.
-
-        The formula is evaluated on the twin model.
-
-        Returns
-        -------
-        pyagrum.CausalImpact
-            The identified causal impact on the twin model.
-        """
-        return _cmcpp.Counterfactual_impact(self)
-
-
 
     def value(self) -> "pyagrum.Tensor":
         r"""
@@ -1577,6 +1582,87 @@ class Counterfactual(object):
 
         """
         return _cmcpp.Counterfactual_toString(self)
+
+    @staticmethod
+    def _twinNetwork(cm: "CausalModel", whatif: set[str]) -> "pyagrum.CausalModel":
+        return _cmcpp.Counterfactual__twinNetwork(cm, whatif)
+
+    @staticmethod
+    def counterFactualModel(cm, *args) -> "pyagrum.CausalModel":
+        """
+        Build the twin network of Balke and Pearl (see `pyagrum.counterfactualModel`).
+
+        Parameters
+        ----------
+        cm : pyagrum.CausalModel
+            The original causal model.
+        whatif : set of str
+            Intervened variables in the counterfactual scenario. The former call
+            ``counterFactualModel(cm, profile, whatif)`` is deprecated after 3.3.2: the
+            twin network does not depend on the profile.
+
+        Returns
+        -------
+        pyagrum.CausalModel
+            The twin network.
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If the causal model has latent variables, or if the name of a copy is
+            already used.
+
+        Warnings
+        --------
+        ``counterFactualModel(cm, profile, whatif)`` is deprecated after 3.3.2, use
+        ``counterFactualModel(cm, whatif)``.
+        """
+        if len(args) == 2:
+            import warnings
+
+            warnings.warn("Counterfactual.counterFactualModel(cm, profile, whatif) is deprecated after 3.3.2, "
+                          "use Counterfactual.counterFactualModel(cm, whatif)", DeprecationWarning, stacklevel=2)
+            args = args[1:]
+        if len(args) != 1:
+            raise TypeError("counterFactualModel(cm, whatif) expects 2 arguments")
+        whatif = args[0]
+        if isinstance(whatif, str):
+            whatif = {whatif}
+        p = Counterfactual._twinNetwork(cm, whatif)
+        p._model = cm
+        return p
+
+    def impact(self) -> "pyagrum.CausalImpact":
+        """
+        Return the causal impact P(on* | do(whatif*), profile) in the twin network.
+
+        It is not used to compute the counterfactual distribution, which is a posterior
+        in the twin network.
+
+        Returns
+        -------
+        pyagrum.CausalImpact
+            The causal impact in the twin network.
+
+        Warnings
+        --------
+        Deprecated after 3.3.2: the counterfactual is computed by inference in the twin
+        network, use `pyagrum.Counterfactual.twinModel` and `pyagrum.Counterfactual.value`.
+        """
+        import warnings
+
+        warnings.warn("Counterfactual.impact is deprecated after 3.3.2, use twinModel() and value()",
+                      DeprecationWarning, stacklevel=2)
+        twin = self.twinModel()
+        names = set(twin.observationalBN().names())
+        copy = Counterfactual.copyName
+        ci = CausalImpact(twin,
+                          on={copy(n) if copy(n) in names else n for n in self.on()},
+                          doing={copy(n) for n in self.whatif()},
+                          knowing=set(dict(self.profile()).keys()))
+        ci._model = self
+        return ci
+
     __swig_destroy__ = _cmcpp.delete_Counterfactual
 
 # Register Counterfactual in _cmcpp:
@@ -1584,7 +1670,4 @@ _cmcpp.Counterfactual_swigregister(Counterfactual)
 
 def _counterfactual(*args) -> "pyagrum.Tensor":
     return _cmcpp._counterfactual(*args)
-
-def _counterfactualModel(cm: "CausalModel", profile: dict[str, str], whatif: set[str]) -> "pyagrum.CausalModel":
-    return _cmcpp._counterfactualModel(cm, profile, whatif)
 
