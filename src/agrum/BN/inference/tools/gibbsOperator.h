@@ -62,6 +62,16 @@ namespace gum {
    * @headerfile gibbsOperator.h <agrum/BN/inference/gibbsOperator.h>
    * @brief class containing all variables and methods required for Gibbssampling
    *
+   * A Gibbs move draws one variable given the others. A node whose CPT is deterministic (each row
+   * gives the probability 1 to a value: the node is a function of its parents) would then never
+   * change: a move of the node gives back the value of its parents, a move of a parent only accepts
+   * the values that keep it. Hence such a node (if not observed) is never drawn: its value is
+   * computed from its parents, and the move of a variable X draws X jointly with the deterministic
+   * nodes that depend on it (through deterministic nodes only), whose values follow X.
+   *
+   * Limit: a CPT that is only partly deterministic (some null parameters) may still prevent the
+   * chain from reaching some configurations.
+   *
    * @ingroup bn_approximation
    *
    */
@@ -183,6 +193,23 @@ namespace gum {
 
     // checks that the sample has a positive probability
     bool _isCompatible_(const Instantiation& I) const;
+
+    /// the non-observed nodes whose CPT is deterministic (never drawn: they follow their parents)
+    NodeSet _deterministic_;
+
+    /// for a drawn node, the deterministic nodes that depend on it through deterministic nodes only
+    /// (in a topological order)
+    NodeProperty< std::vector< NodeId > > _detDescendants_;
+
+    /// for a drawn node with deterministic descendants, the nodes whose CPT depends on its value
+    /// (itself, its children and the children of its deterministic descendants, these excluded)
+    NodeProperty< std::vector< NodeId > > _factors_;
+
+    // true if each row of the CPT of node gives the probability 1 to a value
+    bool _isDeterministic_(NodeId node) const;
+
+    // sets in I the value of the deterministic node given its parents
+    void _setDeterministicValue_(NodeId node, Instantiation* I) const;
 
     // Gibbs move of node id in the model where the null probabilities are replaced by epsilon times
     // _minNonZero_ (which must be computed beforehand)

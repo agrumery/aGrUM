@@ -50,6 +50,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
 #include <gumtest/AgrumApproximationUtils.h>
@@ -704,5 +705,72 @@ namespace gum_tests {
   // the inference follows the CPTs changed in place after invalidateTensors()
   GUM_TEST(GibbsInvalidateTensors) {
     CHECK_LE(errorAfterInvalidateTensors< gum::GibbsSampling< double > >(), 0.05);
+  }
+
+  // largest difference between the posteriors of a Gibbs sampler and of an exact inference
+  template < typename GIBBS >
+  double gibbsErrorWithEvidence(const gum::BayesNet< double >&           bn,
+                                const std::map< std::string, gum::Idx >& evidence) {
+    gum::LazyPropagation< double > lazy(&bn);
+    GIBBS                          inf(&bn);
+    inf.setVerbosity(false);
+    inf.setEpsilon(1e-2);
+    inf.setMaxTime(60);
+    for (const auto& [name, value]: evidence) {
+      lazy.addEvidence(name, value);
+      inf.addEvidence(name, value);
+    }
+    lazy.makeInference();
+    inf.makeInference();
+    double err = 0.0;
+    for (const auto node: bn.nodes()) {
+      if (evidence.contains(bn.variable(node).name())) continue;
+      const auto diff = (inf.posterior(node) - lazy.posterior(node)).abs().max();
+      if (diff > err) err = diff;
+    }
+    return err;
+  }
+
+  template < typename GIBBS >
+  void checkGibbsFollowsDeterministicNodes() {
+    // B and C are copies of A (deterministic CPTs): a move of A must change them too, else they
+    // keep the value of the first sample
+    auto copies = gum::BayesNet< double >::fastPrototype("A->B->C->D");
+    copies.cpt("A").fillWith({0.3, 0.7});
+    copies.cpt("B").fillWith({1, 0, 0, 1});
+    copies.cpt("C").fillWith({1, 0, 0, 1});
+    copies.cpt("D").fillWith({0.8, 0.2, 0.4, 0.6});
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(copies, {}), 0.05);
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(copies, {{"D", 1}}), 0.05);
+    // an observed deterministic node constrains its parents
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(copies, {{"C", 0}}), 0.05);
+
+    // a deterministic OR of two variables (as either in asia)
+    auto orGate = gum::BayesNet< double >::fastPrototype("A->C<-B;C->D");
+    orGate.cpt("A").fillWith({0.6, 0.4});
+    orGate.cpt("B").fillWith({0.7, 0.3});
+    orGate.cpt("C").fillWith({1, 0, 0, 1, 0, 1, 0, 1});
+    orGate.cpt("D").fillWith({0.9, 0.1, 0.2, 0.8});
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(orGate, {}), 0.05);
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(orGate, {{"D", 1}}), 0.05);
+
+    gum::BayesNet< double >  asia;
+    gum::BIFReader< double > reader(&asia, GET_RESSOURCES_PATH("bif/asia.bif"));
+    reader.trace(false);
+    reader.proceed();
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(asia, {}), 0.05);
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(asia, {{"dyspnoea", 0}, {"positive_XraY", 0}}), 0.05);
+
+    // every non-observed node is deterministic: the chain is constant, and exact
+    CHECK_LT(gibbsErrorWithEvidence< GIBBS >(copies, {{"A", 1}, {"D", 0}}), 1e-10);
+  }
+
+  GUM_TEST(GibbsFollowsDeterministicNodes) {
+    checkGibbsFollowsDeterministicNodes< gum::GibbsSampling< double > >();
+  }
+
+  GUM_TEST(LoopyGibbsFollowsDeterministicNodes) {
+    checkGibbsFollowsDeterministicNodes<
+        gum::LoopySamplingInference< double, gum::GibbsSampling > >();
   }
 }   // namespace gum_tests

@@ -82,7 +82,7 @@ namespace gum_tests {
                             gum::Size                                     maxIter,
                             gum::Size                                     period,
                             bool                                          verbosity) {
-      // a tolerance, since some defaults are written with a decimal literal (exp(-1.6) for Gibbs)
+      // a tolerance, since the defaults are written with decimal literals
       CHECK_LT(std::abs(scheme.epsilon() - epsilon), 1e-15);
       CHECK_LT(std::abs(scheme.minEpsilonRate() - rate), 1e-15);
       CHECK_EQ(scheme.maxIter(), maxIter);
@@ -161,7 +161,7 @@ namespace gum_tests {
     auto                         bn = buildBN();
     gum::GibbsSampling< double > gibbs(&bn);
 
-    checkScheme(gibbs, std::exp(-1.6), std::exp(-5), 10000000, 100, false);
+    checkScheme(gibbs, 0.01, 1e-5, 10000000, 100, false);
     CHECK_EQ(gibbs.maxTime(), 6000.);
     CHECK_EQ(gibbs.burnIn(), gum::Size(300));
     CHECK_EQ(gibbs.nbrDrawnVar(), gum::Size(6));
@@ -241,7 +241,7 @@ namespace gum_tests {
     // section
     gum::GibbsSampling< double > gibbs(&bn);
     CHECK_EQ(gibbs.periodSize(), gum::Size(7));
-    CHECK_LT(std::abs(gibbs.epsilon() - std::exp(-1.6)), 1e-15);
+    CHECK_LT(std::abs(gibbs.epsilon() - 0.01), 1e-15);
 
     // other schemes are not concerned
     checkScheme(gum::LoopyBeliefPropagation< double >(&bn), 1e-8, 1e-10, 100, 1, false);

@@ -95,6 +95,10 @@
 
     - New `gum::RandomGeneratorGuard`: saves the seed and the state of the generator of aGrUM, restored by `restore()`
       or by its destructor.
+    - Behaviour change: the defaults of `GibbsSampling` and `LoopyGibbsSampling` are now those of the other samplers,
+      `gibbs.epsilon` = 0.01 and `gibbs.minEpsilonRate` = 1e-5 (they were exp(-1.6) = 0.2 and exp(-5) = 0.0067, a
+      legacy of a former error: the sampling stopped at the end of the burn-in, with posteriors at about 0.1). The
+      inference is more precise and longer (about 38000 samples instead of 300).
     - Behaviour change: the random generator is now initialized at start from the new key `core.randomSeed` (default
       0, the clock): the draws of a program change at each run, unless it calls `initRandom` or sets this key in
       `agrum.ini`. The key is read once; changing it later only queues a notice saying to use `initRandom()`. There
@@ -303,6 +307,9 @@
       number of threads).
     - `MCBNDistance` and `GibbsBNdistance` enabled again the rate criterion during the computation (it could not be
       disabled).
+    - `GibbsSampling`, `LoopyGibbsSampling` and `GibbsBNdistance` never changed the value of a variable with a
+      deterministic CPT (a function of its parents, e.g. `either` in asia): it kept the value of the first sample, and
+      the posteriors were wrong whatever the number of samples. Such a variable now follows its parents.
     - FCI, Possible-D-Sep phase: a node adjacent to X or Y through a mandatory arc only was never tested as a
       singleton separating set (the pair may have been removed by the skeleton phase before the arc was added back).
     - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few

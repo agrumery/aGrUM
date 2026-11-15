@@ -93,12 +93,73 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void GibbsOperator< GUM_SCALAR >::updateSamplingNodes_() {
     samplingNodes_.clear();
+    _deterministic_.clear();
+    _detDescendants_.clear();
+    _factors_.clear();
+    bool unobserved = false;
     for (const auto node: samplingBn_.nodes())
-      if (hardEv_ == nullptr || !hardEv_->exists(node)) { samplingNodes_.insert(node); }
-    if (samplingNodes_.size() == 0) {
+      if (hardEv_ == nullptr || !hardEv_->exists(node)) {
+        unobserved = true;
+        if (_isDeterministic_(node)) _deterministic_.insert(node);
+        else samplingNodes_.insert(node);
+      }
+    if (!unobserved) {
       GUM_ERROR(InvalidArgument, "No node to sample (too many nodes or too much evidence)!")
     }
+    // if every non-observed node is deterministic, the chain is constant (and exact)
     if (nbr_ > samplingNodes_.size()) nbr_ = samplingNodes_.size();
+
+    if (_deterministic_.empty()) return;
+    const auto order = samplingBn_.topologicalOrder();
+    for (const auto node: samplingNodes_) {
+      // the deterministic nodes reached from node through deterministic nodes only
+      NodeSet               reached;
+      std::vector< NodeId > toVisit{node};
+      while (!toVisit.empty()) {
+        const auto current = toVisit.back();
+        toVisit.pop_back();
+        for (const auto child: samplingBn_.children(current))
+          if (_deterministic_.contains(child) && !reached.contains(child)) {
+            reached.insert(child);
+            toVisit.push_back(child);
+          }
+      }
+      if (reached.empty()) continue;
+
+      std::vector< NodeId > dets(reached.begin(), reached.end());
+      std::sort(dets.begin(), dets.end(), [&order](NodeId a, NodeId b) {
+        return order.pos(a) < order.pos(b);
+      });
+      NodeSet factors{node};
+      for (const auto child: samplingBn_.children(node))
+        if (!reached.contains(child)) factors.insert(child);
+      for (const auto det: dets)
+        for (const auto child: samplingBn_.children(det))
+          if (!reached.contains(child)) factors.insert(child);
+      _detDescendants_.insert(node, std::move(dets));
+      _factors_.insert(node, std::vector< NodeId >(factors.begin(), factors.end()));
+    }
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  bool GibbsOperator< GUM_SCALAR >::_isDeterministic_(NodeId node) const {
+    const auto&   cpt  = samplingBn_.cpt(node);
+    const Size    rows = cpt.domainSize() / samplingBn_.variable(node).domainSize();
+    Size          ones = 0;
+    Instantiation i(cpt);
+    for (i.setFirst(); !i.end(); i.inc())
+      if (cpt[i] == (GUM_SCALAR)1.0) ++ones;
+    return ones == rows;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  void GibbsOperator< GUM_SCALAR >::_setDeterministicValue_(NodeId node, Instantiation* I) const {
+    const auto& var = samplingBn_.variable(node);
+    const auto& cpt = samplingBn_.cpt(node);
+    for (Idx value = 0; value < var.domainSize(); ++value) {
+      I->chgVal(var, value);
+      if (cpt[*I] == (GUM_SCALAR)1.0) return;
+    }
   }
 
   // returns a first sample with a positive probability (see the documentation in gibbsOperator.h)
@@ -234,6 +295,47 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void GibbsOperator< GUM_SCALAR >::_GibbsSample_(NodeId id, Instantiation* I) {
+    if (_detDescendants_.exists(id)) {
+      // id is drawn jointly with the deterministic nodes that follow it
+      const auto& var     = samplingBn_.variable(id);
+      const auto& dets    = _detDescendants_[id];
+      const auto& factors = _factors_[id];
+
+      const Idx          old = I->val(var);
+      std::vector< Idx > oldDets;
+      for (const auto det: dets)
+        oldDets.push_back(I->val(samplingBn_.variable(det)));
+
+      Tensor< GUM_SCALAR > p;
+      p.add(var);
+      Instantiation                     ip(p);
+      std::vector< std::vector< Idx > > detValues(var.domainSize());
+      for (Idx x = 0; x < var.domainSize(); ++x) {
+        I->chgVal(var, x);
+        for (const auto det: dets) {
+          _setDeterministicValue_(det, I);
+          detValues[x].push_back(I->val(samplingBn_.variable(det)));
+        }
+        GUM_SCALAR weight = 1.0;
+        for (const auto factor: factors)
+          weight *= samplingBn_.cpt(factor)[*I];
+        ip.chgVal(var, x);
+        p.set(ip, weight);
+      }
+
+      Idx                       x      = old;
+      const std::vector< Idx >* values = &oldDets;
+      if (p.sum() != 0) {
+        p.normalize();
+        x      = p.draw();
+        values = &detValues[x];
+      }
+      I->chgVal(var, x);
+      for (Idx k = 0; k < dets.size(); ++k)
+        I->chgVal(samplingBn_.variable(dets[k]), (*values)[k]);
+      return;
+    }
+
     gum::Instantiation Itop(*I);
     Itop.erase(samplingBn_.variable(id));
     gum::Tensor< GUM_SCALAR > p = samplingBn_.cpt(id).extract(Itop);
