@@ -55,6 +55,20 @@
 %ignore gum::Counterfactual< double >::counterFactualModel;
 %ignore gum::Counterfactual< double >::impact;
 
+// CausalModel, CausalImpact and Counterfactual return references to objects they own, and
+// CausalImpact and Counterfactual reference the model given to their constructor: the
+// Python objects keep these models alive (gum.CausalModel(bn).observationalBN() is safe).
+%include "keepModelAlive.i"
+GUM_KEEP_MODEL_ALIVE(gum::CausalModel<double>::observationalBN)
+GUM_KEEP_MODEL_ALIVE(gum::CausalModel<double>::variable)
+GUM_KEEP_MODEL_ALIVE(gum::CausalImpact<double>::cm)
+GUM_KEEP_MODEL_ALIVE(gum::Counterfactual<double>::originalModel)
+GUM_KEEP_MODEL_ALIVE(gum::Counterfactual<double>::twinModel)
+GUM_KEEP_MODEL_ALIVE(gum::Counterfactual<double>::value)
+%pythonappend gum::Counterfactual<double>::Counterfactual %{
+  self._model = args[0]
+%}
+
 // DoorCriteria's two static methods are renamed the same way, so the
 // %extend %pythoncode kwargs wrappers in causal_after_templates.i can call
 // them back as plain class-qualified names (DoorCriteria._enumerate...Sets)
@@ -108,6 +122,7 @@
         _cmcpp.CausalImpact_swiginit(self, $action(cm, on, doing,
                                        knowing if knowing is not None else set(),
                                        False))
+        self._model = cm
 %}
 
 
@@ -165,6 +180,7 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
     lat, pot, expl = _causalImpact(cm, on, doing,
                                    knowing if knowing is not None else set(),
                                    values  if values  is not None else {})
+    lat._model = cm
     pot._model = cm
     return lat, (pot if lat.isIdentified() else None), expl
 

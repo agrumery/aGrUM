@@ -107,6 +107,7 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
     lat, pot, expl = _causalImpact(cm, on, doing,
                                    knowing if knowing is not None else set(),
                                    values  if values  is not None else {})
+    lat._model = cm
     pot._model = cm
     return lat, (pot if lat.isIdentified() else None), expl
 
@@ -856,7 +857,13 @@ class CausalModel(object):
             :meth:`hasObservationalBN`.
 
         """
-        return _cmcpp.CausalModel_observationalBN(self)
+        val = _cmcpp.CausalModel_observationalBN(self)
+
+        val._model = self
+
+
+        return val
+
 
     def causalDAG(self) -> "pyagrum.DAG":
         r"""
@@ -1036,7 +1043,13 @@ class CausalModel(object):
             if the model has no observational BayesNet (built from a DAG).
 
         """
-        return _cmcpp.CausalModel_variable(self, *args)
+        val = _cmcpp.CausalModel_variable(self, *args)
+
+        val._model = self
+
+
+        return val
+
 
     def __init__(self, *args):
         _cmcpp.CausalModel_swiginit(self, _cmcpp.new_CausalModel(*args))
@@ -1213,7 +1226,13 @@ class CausalImpact(object):
             The causal model.
 
         """
-        return _cmcpp.CausalImpact_cm(self)
+        val = _cmcpp.CausalImpact_cm(self)
+
+        val._model = self
+
+
+        return val
+
 
     def on(self) -> set[int]:
         r"""
@@ -1320,6 +1339,7 @@ class CausalImpact(object):
         _cmcpp.CausalImpact_swiginit(self, _cmcpp.new_CausalImpact(cm, on, doing,
                                        knowing if knowing is not None else set(),
                                        False))
+        self._model = cm
 
 
 
@@ -1444,6 +1464,11 @@ class Counterfactual(object):
     def __init__(self, *args):
         _cmcpp.Counterfactual_swiginit(self, _cmcpp.new_Counterfactual(*args))
 
+        self._model = args[0]
+
+
+
+
     @staticmethod
     def copyName(name: str) -> str:
         r"""
@@ -1484,7 +1509,13 @@ class Counterfactual(object):
             The original causal model passed to the constructor.
 
         """
-        return _cmcpp.Counterfactual_originalModel(self)
+        val = _cmcpp.Counterfactual_originalModel(self)
+
+        val._model = self
+
+
+        return val
+
 
     def twinModel(self) -> "pyagrum.CausalModel":
         r"""
@@ -1501,7 +1532,13 @@ class Counterfactual(object):
             The twin network.
 
         """
-        return _cmcpp.Counterfactual_twinModel(self)
+        val = _cmcpp.Counterfactual_twinModel(self)
+
+        val._model = self
+
+
+        return val
+
 
     def value(self) -> "pyagrum.Tensor":
         r"""
@@ -1515,7 +1552,13 @@ class Counterfactual(object):
             optionally sliced by *values* if provided at construction.
 
         """
-        return _cmcpp.Counterfactual_value(self)
+        val = _cmcpp.Counterfactual_value(self)
+
+        val._model = self
+
+
+        return val
+
 
     def on(self) -> set[str]:
         r"""

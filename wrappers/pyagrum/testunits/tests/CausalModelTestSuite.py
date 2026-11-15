@@ -318,8 +318,46 @@ class TestCausalModel(pyAgrumTestCase):
     self.assertTrue(cm2.existsArc("B", "C"))
     self.assertFalse(cm2.hasObservationalBN())
 
+  def _reuseFreedMemory(self):
+    # allocates other models so that the memory of a freed temporary is reused
+    return [gum.fastBN("X{a|b|c|d}->Y{a|b|c}->Z") for _ in range(20)]
 
-1
+  def test_returnedObjectsKeepTheTemporaryModelAlive(self):
+    bn = gum.fastBN("A->B->C")
+
+    obs = gum.CausalModel(bn).observationalBN()
+    var = gum.CausalModel(bn).variable("A")
+    self._reuseFreedMemory()
+    self.assertEqual(obs.names(), {"A", "B", "C"})
+    self.assertEqual(var.name(), "A")
+
+    cm = gum.CausalImpact(gum.CausalModel(bn), on="C", doing="A").cm()
+    self._reuseFreedMemory()
+    self.assertEqual(cm.observationalBN().names(), {"A", "B", "C"})
+
+    original = gum.Counterfactual(gum.CausalModel(bn), {"C"}, {"A"}).originalModel()
+    twin = gum.Counterfactual(gum.CausalModel(bn), {"C"}, {"A"}).twinModel()
+    self._reuseFreedMemory()
+    self.assertEqual(original.observationalBN().names(), {"A", "B", "C"})
+    self.assertEqual(twin.observationalBN().names(), {"A", "B", "C", "A*", "B*", "C*"})
+
+  def test_objectsKeepTheTemporaryModelOfTheirConstructorAlive(self):
+    bn = gum.fastBN("A->B->C")
+    cm = gum.CausalModel(bn)
+    expectedImpact = gum.CausalImpact(cm, on="C", doing="A").eval()
+    expectedCounterfactual = gum.Counterfactual(cm, {"C"}, {"A"}).value()
+
+    impact = gum.CausalImpact(gum.CausalModel(bn), on="C", doing="A")
+    counterfactual = gum.Counterfactual(gum.CausalModel(bn), {"C"}, {"A"})
+    lat, _, _ = gum.causalImpact(gum.CausalModel(bn), on="C", doing="A")
+    self._reuseFreedMemory()
+
+    self.assertEqual(impact.eval().names, expectedImpact.names)
+    self.assertEqual(impact.eval().tolist(), expectedImpact.tolist())
+    self.assertEqual(counterfactual.value().names, expectedCounterfactual.names)
+    self.assertEqual(counterfactual.value().tolist(), expectedCounterfactual.tolist())
+    self.assertEqual(lat.cm().observationalBN().names(), {"A", "B", "C"})
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCausalModel)

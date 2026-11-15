@@ -449,6 +449,10 @@
       and the coalition is set in every row of the background.
     - `causalImpact` with `knowing`: the third rule of the do-calculus removed the arcs into all of X instead of
       X(Z), the variables of X which are not ancestors of Z, and could answer P(Y | Z) for an effect that exists.
+    - `CausalModel.observationalBN`, `CausalModel.variable`, `CausalImpact.cm`, `Counterfactual.originalModel`,
+      `Counterfactual.twinModel` and `Counterfactual.value` keep their object alive, and `CausalImpact`,
+      `Counterfactual` and `causalImpact` keep their causal model alive: on a temporary model
+      (`CausalModel(bn).observationalBN().names()`), the result referenced a destroyed object (wrong names or crash).
 
 - Optimizations (aGrUM and pyAgrum)
 
