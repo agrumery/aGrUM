@@ -55,6 +55,13 @@ class PRMexplorerTestCase(pyAgrumTestCase):
       prm = gum.PRMexplorer()
       prm.load(self.agrumSrcDir("o3prm/DoesNotExist.o3prm"))
 
+  def testNothingLoaded(self):
+    prm = gum.PRMexplorer()
+    with self.assertRaises(gum.FatalError):
+      prm.classes()
+    with self.assertRaises(gum.FatalError):
+      prm.isType("t")
+
     with self.assertRaises(gum.FatalError):
       prm = gum.PRMexplorer()
       prm.load(self.agrumSrcDir("o3prm/AsiaWithError.o3prm"), "", False)

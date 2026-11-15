@@ -63,6 +63,8 @@
 
 #include <numpy/arrayobject.h>
 
+#include "extensions/pyagrumExceptionHandling.h"
+
 #ifndef PYAGRUM_HELPER
 #  define PYAGRUM_HELPER
 
@@ -265,6 +267,7 @@ namespace PyAgrumHelper {
           GUM_ERROR(gum::InvalidArgument, "An element in the set is not a tuple")
         }
       }
+      if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a list nor a set")
     }
@@ -410,6 +413,7 @@ namespace PyAgrumHelper {
         PyOwnedRef item(next);
         names.push_back(nameFromNameOrIndex(item.get(), map));
       }
+      if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
     }
@@ -464,6 +468,7 @@ namespace PyAgrumHelper {
           GUM_ERROR(gum::InvalidArgument, "An elmement in the sequence is not a int nor a long")
         }
       }
+      if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not an int, a list nor a set")
     }
@@ -492,6 +497,7 @@ namespace PyAgrumHelper {
         PyOwnedRef item(next);
         nodeset.insert(nodeIdFromNameOrIndex(item.get(), map));
       }
+      if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
     }
@@ -558,6 +564,7 @@ namespace PyAgrumHelper {
         if (str == "") GUM_ERROR(gum::InvalidArgument, "An element in the sequence is not a string")
         strset.insert(str);
       }
+      if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument is not a string, a list nor a set")
     }

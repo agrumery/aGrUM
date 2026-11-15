@@ -98,7 +98,11 @@ class PRMexplorer {
    * @param name The name of a possible Type<GUM_SCALAR> in this PRM.
    * @return Returns true if name names a Type<GUM_SCALAR> in this PRM.
    */
-  PyAgrumBool* isType(std::string name) { return PyBool_FromLong(_prm_->isType(name)); }
+  PyAgrumBool* isType(std::string name) {
+    if (_prm_ == nullptr) { GUM_ERROR(gum::FatalError, "No loaded prm.") }
+
+    return PyBool_FromLong(_prm_->isType(name));
+  }
 
   /**
    * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
@@ -508,6 +512,6 @@ class PRMexplorer {
     });
   }
 
-  gum::prm::PRM< double >* _prm_;   // will contain a reference to reader.prm() if reader is OK
+  gum::prm::PRM< double >* _prm_ = nullptr;   // reader.prm() once a prm is loaded
   gum::prm::o3prm::O3prmReader< double > _reader_;
 };

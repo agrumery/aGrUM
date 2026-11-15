@@ -239,26 +239,27 @@ class IMarkovRandomField(pyagrum.pyagrumcpp.UGmodel):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -796,26 +797,27 @@ class MarkovRandomField(IMarkovRandomField):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -1124,6 +1126,11 @@ class MarkovRandomField(IMarkovRandomField):
       -------
       str
         the fast description of the model (if filename is None)
+
+      Warnings
+      --------
+      A variable without factor is written alone: `pyagrum.fastMRF` reads it back with a factor of its own (a chain of one
+      variable is a factor), so the copy has one more factor.
       """
       if filename is None:
         return self._toFast()

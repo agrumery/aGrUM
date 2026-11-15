@@ -46480,237 +46480,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_dSeparation__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
-  gum::NodeId arg2 ;
-  gum::NodeId arg3 ;
-  gum::NodeSet *arg4 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  gum::NodeSet _ns_temp4 ;
-  bool result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_ImmutableMixedGraphChainGraph_dSeparation" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_ImmutableMixedGraphChainGraph_dSeparation" "', argument " "2"" of type '" "gum::NodeId""'");
-  } 
-  arg2 = static_cast< gum::NodeId >(val2);
-  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_ImmutableMixedGraphChainGraph_dSeparation" "', argument " "3"" of type '" "gum::NodeId""'");
-  } 
-  arg3 = static_cast< gum::NodeId >(val3);
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg4 = &_ns_temp4;
-  }
-  {
-    try {
-      result = (bool)((gum::ImmutableMixedGraph< gum::ChainGraph > const *)arg1)->dSeparation(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(gum::NodeSet const &)*arg4);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_dSeparation__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
-  gum::NodeSet *arg2 = 0 ;
-  gum::NodeSet *arg3 = 0 ;
-  gum::NodeSet *arg4 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  gum::NodeSet _ns_temp2 ;
-  gum::NodeSet _ns_temp3 ;
-  gum::NodeSet _ns_temp4 ;
-  bool result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__ChainGraph_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_ImmutableMixedGraphChainGraph_dSeparation" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::ChainGraph > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::ChainGraph > * >(argp1);
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg2 = &_ns_temp2;
-  }
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg3 = &_ns_temp3;
-  }
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg4 = &_ns_temp4;
-  }
-  {
-    try {
-      result = (bool)((gum::ImmutableMixedGraph< gum::ChainGraph > const *)arg1)->dSeparation((gum::NodeSet const &)*arg2,(gum::NodeSet const &)*arg3,(gum::NodeSet const &)*arg4);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_dSeparation(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[5] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "_ImmutableMixedGraphChainGraph_dSeparation", 0, 4, argv))) SWIG_fail;
-  --argc;
-  if (argc == 4) {
-    int _v = 0;
-    {
-      {
-        if (PySet_Check(argv[1]) || PyFrozenSet_Check(argv[1])) {
-          _v = 1;
-          PyObject* _tc_iter = PyObject_GetIter(argv[1]);
-          if (_tc_iter) {
-            PyObject* _tc_item;
-            while (_v && (_tc_item = PyIter_Next(_tc_iter)) != nullptr) {
-              if (PyUnicode_Check(_tc_item)) {
-                _v = 0; 
-              }
-              Py_DECREF(_tc_item);
-            }
-            Py_DECREF(_tc_iter);
-          }
-        } else {
-          _v = 0;
-        }
-      }
-    }
-    if (!_v) goto check_1;
-    {
-      {
-        if (PySet_Check(argv[2]) || PyFrozenSet_Check(argv[2])) {
-          _v = 1;
-          PyObject* _tc_iter = PyObject_GetIter(argv[2]);
-          if (_tc_iter) {
-            PyObject* _tc_item;
-            while (_v && (_tc_item = PyIter_Next(_tc_iter)) != nullptr) {
-              if (PyUnicode_Check(_tc_item)) {
-                _v = 0; 
-              }
-              Py_DECREF(_tc_item);
-            }
-            Py_DECREF(_tc_iter);
-          }
-        } else {
-          _v = 0;
-        }
-      }
-    }
-    if (!_v) goto check_1;
-    PyObject *retobj = _wrap__ImmutableMixedGraphChainGraph_dSeparation__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-check_1:
-  
-  if (argc == 4) {
-    PyObject *retobj = _wrap__ImmutableMixedGraphChainGraph_dSeparation__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_ImmutableMixedGraphChainGraph_dSeparation'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::ImmutableMixedGraph< gum::ChainGraph >::dSeparation(gum::NodeId,gum::NodeId,gum::NodeSet const &) const\n"
-    "    gum::ImmutableMixedGraph< gum::ChainGraph >::dSeparation(gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &) const\n");
-  return 0;
-}
-
-
 SWIGINTERN PyObject *_wrap__ImmutableMixedGraphChainGraph_toDot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::ImmutableMixedGraph< gum::ChainGraph > *arg1 = 0 ;
@@ -47630,237 +47399,6 @@ SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_consistentExtension(PyObject
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_dSeparation__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
-  gum::NodeId arg2 ;
-  gum::NodeId arg3 ;
-  gum::NodeSet *arg4 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  gum::NodeSet _ns_temp4 ;
-  bool result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_ImmutableMixedGraphPDAG_dSeparation" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "_ImmutableMixedGraphPDAG_dSeparation" "', argument " "2"" of type '" "gum::NodeId""'");
-  } 
-  arg2 = static_cast< gum::NodeId >(val2);
-  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "_ImmutableMixedGraphPDAG_dSeparation" "', argument " "3"" of type '" "gum::NodeId""'");
-  } 
-  arg3 = static_cast< gum::NodeId >(val3);
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg4 = &_ns_temp4;
-  }
-  {
-    try {
-      result = (bool)((gum::ImmutableMixedGraph< gum::PDAG > const *)arg1)->dSeparation(SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(gum::NodeSet const &)*arg4);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_dSeparation__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::ImmutableMixedGraph< gum::PDAG > *arg1 = 0 ;
-  gum::NodeSet *arg2 = 0 ;
-  gum::NodeSet *arg3 = 0 ;
-  gum::NodeSet *arg4 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  gum::NodeSet _ns_temp2 ;
-  gum::NodeSet _ns_temp3 ;
-  gum::NodeSet _ns_temp4 ;
-  bool result;
-  
-  (void)self;
-  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__ImmutableMixedGraphT_gum__PDAG_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "_ImmutableMixedGraphPDAG_dSeparation" "', argument " "1"" of type '" "gum::ImmutableMixedGraph< gum::PDAG > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::ImmutableMixedGraph< gum::PDAG > * >(argp1);
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[1]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp2.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg2 = &_ns_temp2;
-  }
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[2]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp3.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg3 = &_ns_temp3;
-  }
-  {
-    PyObject* _iter = PyObject_GetIter(swig_obj[3]);
-    if (!_iter) {
-      PyErr_SetString(PyExc_TypeError, "expected an iterable of int (node IDs)");
-      SWIG_fail;
-    }
-    PyObject* _item;
-    while ((_item = PyIter_Next(_iter)) != nullptr) {
-      long _val = PyLong_AsLong(_item);
-      Py_DECREF(_item);
-      if (_val == -1 && PyErr_Occurred()) {
-        Py_DECREF(_iter); SWIG_fail; 
-      }
-      _ns_temp4.insert(static_cast< gum::NodeId >(_val));
-    }
-    Py_DECREF(_iter);
-    if (PyErr_Occurred()) SWIG_fail;
-    arg4 = &_ns_temp4;
-  }
-  {
-    try {
-      result = (bool)((gum::ImmutableMixedGraph< gum::PDAG > const *)arg1)->dSeparation((gum::NodeSet const &)*arg2,(gum::NodeSet const &)*arg3,(gum::NodeSet const &)*arg4);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap__ImmutableMixedGraphPDAG_dSeparation(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[5] = {
-    0
-  };
-  
-  if (!(argc = SWIG_Python_UnpackTuple(args, "_ImmutableMixedGraphPDAG_dSeparation", 0, 4, argv))) SWIG_fail;
-  --argc;
-  if (argc == 4) {
-    int _v = 0;
-    {
-      {
-        if (PySet_Check(argv[1]) || PyFrozenSet_Check(argv[1])) {
-          _v = 1;
-          PyObject* _tc_iter = PyObject_GetIter(argv[1]);
-          if (_tc_iter) {
-            PyObject* _tc_item;
-            while (_v && (_tc_item = PyIter_Next(_tc_iter)) != nullptr) {
-              if (PyUnicode_Check(_tc_item)) {
-                _v = 0; 
-              }
-              Py_DECREF(_tc_item);
-            }
-            Py_DECREF(_tc_iter);
-          }
-        } else {
-          _v = 0;
-        }
-      }
-    }
-    if (!_v) goto check_1;
-    {
-      {
-        if (PySet_Check(argv[2]) || PyFrozenSet_Check(argv[2])) {
-          _v = 1;
-          PyObject* _tc_iter = PyObject_GetIter(argv[2]);
-          if (_tc_iter) {
-            PyObject* _tc_item;
-            while (_v && (_tc_item = PyIter_Next(_tc_iter)) != nullptr) {
-              if (PyUnicode_Check(_tc_item)) {
-                _v = 0; 
-              }
-              Py_DECREF(_tc_item);
-            }
-            Py_DECREF(_tc_iter);
-          }
-        } else {
-          _v = 0;
-        }
-      }
-    }
-    if (!_v) goto check_1;
-    PyObject *retobj = _wrap__ImmutableMixedGraphPDAG_dSeparation__SWIG_1(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-check_1:
-  
-  if (argc == 4) {
-    PyObject *retobj = _wrap__ImmutableMixedGraphPDAG_dSeparation__SWIG_0(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  
-fail:
-  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function '_ImmutableMixedGraphPDAG_dSeparation'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::ImmutableMixedGraph< gum::PDAG >::dSeparation(gum::NodeId,gum::NodeId,gum::NodeSet const &) const\n"
-    "    gum::ImmutableMixedGraph< gum::PDAG >::dSeparation(gum::NodeSet const &,gum::NodeSet const &,gum::NodeSet const &) const\n");
-  return 0;
 }
 
 
@@ -61075,7 +60613,7 @@ SWIGINTERN PyObject *_wrap_MeekRules_choices(PyObject *self, PyObject *args) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::vector< gum::Arc,std::allocator< gum::Arc > > *result = 0 ;
+  SwigValueWrapper< std::vector< gum::Arc,std::allocator< gum::Arc > > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -61087,14 +60625,14 @@ SWIGINTERN PyObject *_wrap_MeekRules_choices(PyObject *self, PyObject *args) {
   arg1 = reinterpret_cast< gum::MeekRules * >(argp1);
   {
     try {
-      result = (std::vector< gum::Arc,std::allocator< gum::Arc > > *) &((gum::MeekRules const *)arg1)->choices();
+      result = ((gum::MeekRules const *)arg1)->choices();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
   {
-    resultobj = PyAgrumHelper::PyListFromArcVect(*result);
+    resultobj = PyAgrumHelper::PyListFromArcVect(result);
     if (!resultobj) SWIG_fail;
   }
   return resultobj;
@@ -157040,6 +156578,13 @@ static PyMethodDef SwigMethods[] = {
 		"bool\n"
 		"  True if X and Y are d-separated (by Z if given), False otherwise.\n"
 		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  if X and Y are not disjoint\n"
+		"pyagrum.InvalidNode\n"
+		"  if a node of X, Y or Z is not a node of the DAG\n"
+		"\n"
 		"See Also\n"
 		"--------\n"
 		"pyagrum.graph.separation : the separation criterion of each kind of graph\n"
@@ -158193,6 +157738,13 @@ static PyMethodDef SwigMethods[] = {
 		"bool\n"
 		"  True if X and Y are c-separated (by Z if given), False otherwise.\n"
 		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  if X and Y are not disjoint\n"
+		"pyagrum.InvalidNode\n"
+		"  if a node of X, Y or Z is not a node of the chain graph\n"
+		"\n"
 		"See Also\n"
 		"--------\n"
 		"pyagrum.graph.separation : the separation criterion of each kind of graph\n"
@@ -158435,7 +157987,6 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG\n"
 		"\n"
 		""},
-	 { "_ImmutableMixedGraphChainGraph_dSeparation", _wrap__ImmutableMixedGraphChainGraph_dSeparation, METH_VARARGS, NULL},
 	 { "_ImmutableMixedGraphChainGraph_toDot", _wrap__ImmutableMixedGraphChainGraph_toDot, METH_VARARGS, "\n"
 		"\n"
 		"The chain components (nodes linked by undirected edges) are drawn in clusters (color of the key\n"
@@ -158687,7 +158238,6 @@ static PyMethodDef SwigMethods[] = {
 		"pyagrum.graph.consistentExtension : the same for a PDAG, a CPDAG or an MPDAG\n"
 		"\n"
 		""},
-	 { "_ImmutableMixedGraphPDAG_dSeparation", _wrap__ImmutableMixedGraphPDAG_dSeparation, METH_VARARGS, NULL},
 	 { "_ImmutableMixedGraphPDAG_toDot", _wrap__ImmutableMixedGraphPDAG_toDot, METH_VARARGS, "\n"
 		"\n"
 		"The compelled arcs are drawn with the color of the key ``dot.compelledArcColor`` of `pyagrum.config`. No\n"
@@ -158774,6 +158324,13 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"bool\n"
 		"  True if X and Y are d-separated (by Z if given), False otherwise.\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  if X and Y are not disjoint\n"
+		"pyagrum.InvalidNode\n"
+		"  if a node of X, Y or Z is not a node of the CPDAG\n"
 		"\n"
 		""},
 	 { "CPDAG_nodes", _wrap_CPDAG_nodes, METH_O, "\n"
@@ -158870,6 +158427,13 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"bool\n"
 		"  True if X and Y are d-separated (by Z if given), False otherwise.\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.InvalidArgument\n"
+		"  if X and Y are not disjoint\n"
+		"pyagrum.InvalidNode\n"
+		"  if a node of X, Y or Z is not a node of the MPDAG\n"
 		"\n"
 		""},
 	 { "MPDAG__fromCPDAGArcs", _wrap_MPDAG__fromCPDAGArcs, METH_VARARGS, NULL},
@@ -159752,6 +159316,8 @@ static PyMethodDef SwigMethods[] = {
 		"------\n"
 		"pyagrum.InvalidArgument\n"
 		"    if X and Y are not disjoint\n"
+		"pyagrum.InvalidNode\n"
+		"    if a node of X, Y or Z is not a node of the MAG\n"
 		"\n"
 		"See Also\n"
 		"--------\n"
@@ -175992,8 +175558,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "BNLearner_maxIndegreeExceeded", _wrap_BNLearner_maxIndegreeExceeded, METH_O, "\n"
 		"\n"
-		"Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds\n"
-		"the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.\n"
+		"Return whether the last learning of the selected constraint-based algorithm gave a DAG (``learnDAG()`` or ``learnBN()``)\n"
+		"exceeding the maximum indegree. It is ``False`` after a learning which gives no DAG (``learnPDAG()``, ``learnPAG()``...),\n"
+		"and always ``False`` for the score-based algorithms, which satisfy the bound.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

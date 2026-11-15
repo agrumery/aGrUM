@@ -52,6 +52,7 @@
 #pragma once
 
 #include <Python.h>
+#include <climits>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -75,11 +76,10 @@ namespace PyAgrumHelper {
     if (!PyLong_Check(pyslice))
       GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s slice must be an int")
     const long slice = PyLong_AsLong(pyslice);
-    if (slice == -1 && PyErr_Occurred()) {
-      PyErr_Clear();
-      GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s slice is too large")
-    }
-    return {base, int(slice)};
+    if (slice == -1 && PyErr_Occurred()) PyErr_Clear();
+    else if (slice <= INT_MAX && slice >= INT_MIN) return {base, int(slice)};
+    // a long may be wider than an int: no silent truncation
+    GUM_ERROR(gum::InvalidArgument, "a (base,slice) " << what << "'s slice is too large")
   }
 
   // Builds a gum::KTBNModality from a Python int (modality index) or str
@@ -91,11 +91,10 @@ namespace PyAgrumHelper {
     if (s != "") return gum::KTBNModality(s);
     if (PyLong_Check(o)) {
       const long index = PyLong_AsLong(o);
-      if (index == -1 && PyErr_Occurred()) {
-        PyErr_Clear();
-        GUM_ERROR(gum::InvalidArgument, "a KTBN modality index is too large")
-      }
-      return gum::KTBNModality(int(index));
+      if (index == -1 && PyErr_Occurred()) PyErr_Clear();
+      else if (index <= INT_MAX && index >= INT_MIN) return gum::KTBNModality(int(index));
+      // a long may be wider than an int: no silent truncation
+      GUM_ERROR(gum::InvalidArgument, "a KTBN modality index is too large")
     }
     GUM_ERROR(gum::InvalidArgument, "a KTBN modality value must be an int or a str");
   }

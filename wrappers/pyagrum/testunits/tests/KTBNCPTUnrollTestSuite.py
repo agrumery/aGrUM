@@ -94,6 +94,12 @@ class KTBNCPTTestCase(pyAgrumTestCase):
   def testFillCPT(self):
     m = _buildK2Model()  # parent order of X[1]: X[0] then C
 
+    # a slice or a modality index beyond an int is refused (it was truncated)
+    with self.assertRaises(gum.InvalidArgument):
+      m.fillCPT("X", 1, {("C", AT): 0, ("X", 2**32): 0}, [0.9, 0.1])
+    with self.assertRaises(gum.InvalidArgument):
+      m.fillCPT("X", 1, {("C", AT): 0, ("X", 0): 2**32}, [0.9, 0.1])
+
     m.fillCPT("X", 0, {}, [0.7, 0.3])
     m.fillCPT("C", AT, {}, [0.4, 0.6])
     m.fillCPT("X", 1, {("C", AT): 0, ("X", 0): 0}, [0.9, 0.1])

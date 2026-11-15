@@ -62,6 +62,15 @@ class BayesNetFragmentTestCase(pyAgrumTestCase):
     frag = gum.BayesNetFragment(bn)
     _ = gum.BayesNetFragment(frag)
 
+  def testStructureListener(self):
+    bn = self.fill()
+    frag = gum.BayesNetFragment(bn)
+    added = []
+    self.assertIsNotNone(frag.addStructureListener(whenNodeAdded=lambda i, s: added.append(s)))
+    frag.installNode("v1")
+    self.assertEqual(added, ["v1"])
+    self.assertIsNone(frag.addStructureListener())
+
   def testInstallNodes(self):
     bn = self.fill()
     frag = gum.BayesNetFragment(bn)

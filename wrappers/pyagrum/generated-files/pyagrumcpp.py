@@ -512,7 +512,7 @@ class _ConfigAccessor:
 class _DeprecatedConfigAccessor(_ConfigAccessor):
   def _warn(self):
     warnings.warn(
-      f"[pyAgrum] {self!r} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
+      f"[pyAgrum] {self!r} is deprecated after 3.0.0, use pyagrum.config.typed instead.",
       DeprecationWarning,
       stacklevel=3,
     )
@@ -1441,7 +1441,7 @@ class _Configuration(object):
 
       Warnings
       --------
-      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
       """
       return _CONFIG_ACCESSORS["asInt"](self)
 
@@ -1453,7 +1453,7 @@ class _Configuration(object):
 
       Warnings
       --------
-      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
       """
       return _CONFIG_ACCESSORS["asFloat"](self)
 
@@ -1465,7 +1465,7 @@ class _Configuration(object):
 
       Warnings
       --------
-      Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+      Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
       """
       return _CONFIG_ACCESSORS["asBool"](self)
 
@@ -4320,26 +4320,27 @@ class UndiGraph(object):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -4961,26 +4962,27 @@ class DiGraph(object):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -5550,6 +5552,13 @@ class DAG(DiGraph):
         -------
         bool
           True if X and Y are d-separated (by Z if given), False otherwise.
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if X and Y are not disjoint
+        pyagrum.InvalidNode
+          if a node of X, Y or Z is not a node of the DAG
 
         See Also
         --------
@@ -7378,6 +7387,13 @@ class ChainGraph(PDAG):
         bool
           True if X and Y are c-separated (by Z if given), False otherwise.
 
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if X and Y are not disjoint
+        pyagrum.InvalidNode
+          if a node of X, Y or Z is not a node of the chain graph
+
         See Also
         --------
         pyagrum.graph.separation : the separation criterion of each kind of graph
@@ -7766,9 +7782,6 @@ class _ImmutableMixedGraphChainGraph(_ImmutableGraphChainGraph):
         """
         return _pyagrumcpp._ImmutableMixedGraphChainGraph_consistentExtension(self)
 
-    def dSeparation(self, *args) -> bool:
-        return _pyagrumcpp._ImmutableMixedGraphChainGraph_dSeparation(self, *args)
-
     def toDot(self, *args) -> str:
         r"""
 
@@ -8110,9 +8123,6 @@ class _ImmutableMixedGraphPDAG(_ImmutableGraphPDAG):
         """
         return _pyagrumcpp._ImmutableMixedGraphPDAG_consistentExtension(self)
 
-    def dSeparation(self, *args) -> bool:
-        return _pyagrumcpp._ImmutableMixedGraphPDAG_dSeparation(self, *args)
-
     def toDot(self, *args) -> str:
         r"""
 
@@ -8245,6 +8255,13 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
         bool
           True if X and Y are d-separated (by Z if given), False otherwise.
 
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if X and Y are not disjoint
+        pyagrum.InvalidNode
+          if a node of X, Y or Z is not a node of the CPDAG
+
         """
         return _pyagrumcpp.CPDAG_dSeparation(self, *args)
 
@@ -8282,26 +8299,27 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -8518,6 +8536,13 @@ class MPDAG(_ImmutableMixedGraphPDAG):
         bool
           True if X and Y are d-separated (by Z if given), False otherwise.
 
+        Raises
+        ------
+        pyagrum.InvalidArgument
+          if X and Y are not disjoint
+        pyagrum.InvalidNode
+          if a node of X, Y or Z is not a node of the MPDAG
+
         """
         return _pyagrumcpp.MPDAG_dSeparation(self, *args)
 
@@ -8587,26 +8612,27 @@ class MPDAG(_ImmutableMixedGraphPDAG):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -9097,26 +9123,27 @@ class MarkedGraph(object):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -10091,6 +10118,8 @@ class MAG(_ImmutableGraphMarkedGraph):
         ------
         pyagrum.InvalidArgument
             if X and Y are not disjoint
+        pyagrum.InvalidNode
+            if a node of X, Y or Z is not a node of the MAG
 
         See Also
         --------
@@ -10133,26 +10162,27 @@ class MAG(_ImmutableGraphMarkedGraph):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -17030,26 +17060,27 @@ class MarkovBlanket(object):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -17868,26 +17899,27 @@ class IBayesNet(DAGmodel):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -18947,26 +18979,27 @@ class BayesNet(IBayesNet):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -19053,6 +19086,7 @@ class BayesNet(IBayesNet):
       for arc in listArcs:
         self.addArc(*arc)
       self.endTopologyTransformation()
+
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
@@ -20048,26 +20082,27 @@ class BayesNetFragment(IBayesNet, ):
       Returns
       -------
       numpy.ndarray
-        adjacency matrix (as numpy.ndarray) with nodeId as key.
+        adjacency matrix (as numpy.ndarray): row and column ``i`` are those of the ``i``-th node in increasing
+        order of the ids, i.e. of ``sorted(self.nodes())`` (the ids themselves when they are ``0..n-1``).
 
       """
       import numpy#this code is also generated in the submodules (id, mrf, ...), which do not import numpy
 
-      nodes=self.nodes()
-      n=self.size()
-      am=numpy.zeros((n,n)).astype(int)
+      position = {node: i for i, node in enumerate(sorted(self.nodes()))}
+      n = len(position)
+      am = numpy.zeros((n, n)).astype(int)
 
-      for node in nodes:
-          if hasattr(self,'adjacents'):
+      for node, i in position.items():
+          if hasattr(self, "adjacents"):
               for adjacent in self.adjacents(node):
-                  am[node,adjacent]=1
+                  am[i, position[adjacent]] = 1
               continue
-          if hasattr(self,'children'):
-              for children in self.children(node):
-                  am[node,children]=1
-          if hasattr(self,'neighbours'):
+          if hasattr(self, "children"):
+              for child in self.children(node):
+                  am[i, position[child]] = 1
+          if hasattr(self, "neighbours"):
               for neighbour in self.neighbours(node):
-                  am[node,neighbour]=1
+                  am[i, position[neighbour]] = 1
       return am
 
 
@@ -20121,6 +20156,46 @@ class BayesNetFragment(IBayesNet, ):
 
         """
         return _pyagrumcpp.BayesNetFragment_moralizedAncestralGraph(self, nodes)
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+        """
+        Add the listeners in parameters to the list of existing ones.
+
+        Parameters
+        ----------
+        whenNodeAdded : lambda expression
+          a function for when a node is added
+        whenNodeDeleted : lambda expression
+          a function for when a node is removed
+        whenArcAdded : lambda expression
+          a function for when an arc is added
+        whenArcDeleted : lambda expression
+          a function for when an arc is removed
+
+        Returns
+        -------
+        pyagrum.PythonBNListener | None
+          the new listener (kept alive by the model), on which other functions can be set; None if no function is given
+        """
+        if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+          return None
+
+        if not hasattr(self,"_listeners"):
+          self._listeners=[]
+
+        nl = PythonBNListener(self, self._variableNodeMap())
+        if whenNodeAdded is not None:
+          nl.setWhenNodeAdded(whenNodeAdded)
+        if whenNodeDeleted is not None:
+          nl.setWhenNodeDeleted(whenNodeDeleted)
+        if whenArcAdded is not None:
+          nl.setWhenArcAdded(whenArcAdded)
+        if whenArcDeleted is not None:
+          nl.setWhenArcDeleted(whenArcDeleted)
+
+        self._listeners.append(nl)
+        return nl
+
 
 # Register BayesNetFragment in _pyagrumcpp:
 _pyagrumcpp.BayesNetFragment_swigregister(BayesNetFragment)
@@ -34523,8 +34598,9 @@ class BNLearner(object):
     def maxIndegreeExceeded(self) -> bool:
         r"""
 
-        Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds
-        the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
+        Return whether the last learning of the selected constraint-based algorithm gave a DAG (``learnDAG()`` or ``learnBN()``)
+        exceeding the maximum indegree. It is ``False`` after a learning which gives no DAG (``learnPDAG()``, ``learnPAG()``...),
+        and always ``False`` for the score-based algorithms, which satisfy the bound.
 
         Returns
         -------

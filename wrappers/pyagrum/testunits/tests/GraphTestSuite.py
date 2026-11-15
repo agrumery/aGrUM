@@ -702,6 +702,31 @@ class TestGraph(pyAgrumTestCase):
     self.assertIn("pyagrum.PAG@", repr(gum.fastPAG("A o-> B")))
     self.assertIn("pyagrum.MarkedGraph@", repr(gum.fastMarkedGraph("A o-> B")))
 
+  def testAdjacencyMatrixWithSparseIds(self):
+    # a node is indexed by its position among the sorted ids (an erased node left a hole)
+    g = gum.DiGraph()
+    g.addNodes(4)
+    g.eraseNode(0)
+    g.addArc(1, 3)
+    m = g.adjacencyMatrix()
+    self.assertEqual(m.shape, (3, 3))
+    self.assertEqual(m.tolist(), [[0, 0, 1], [0, 0, 0], [0, 0, 0]])
+    u = gum.UndiGraph()
+    u.addNodes(3)
+    u.eraseNode(0)
+    u.addEdge(1, 2)
+    self.assertEqual(u.adjacencyMatrix().tolist(), [[0, 1], [1, 0]])
+
+  def testIteratorRaisingInAnArgument(self):
+    # the exception of the iteration is raised (it gave a partial set, then a SystemError)
+    def nodes():
+      yield 0
+      raise KeyError("in the iteration")
+
+    dag = gum.fastDAG("A->B->C")
+    with self.assertRaises(KeyError):
+      dag.dSeparation(nodes(), 2)
+
   def testFastPAG(self):
     p = gum.fastPAG("0 o-o 1;1 o-> 2;2<->3")
     self.assertIsInstance(p, gum.PAG)

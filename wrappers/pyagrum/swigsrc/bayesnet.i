@@ -161,7 +161,15 @@ def addArcs(self,listArcs):
   for arc in listArcs:
     self.addArc(*arc)
   self.endTopologyTransformation()
+}
+}
+%enddef
+IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
 
+// the structure listeners need only the DAG and the variables: a BayesNetFragment has them too
+%define ADD_BN_STRUCTURE_LISTENER(classname)
+%extend classname {
+%pythoncode {
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
     """
     Add the listeners in parameters to the list of existing ones.
@@ -203,7 +211,8 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
 }
 }
 %enddef
-IMPROVE_CONCRETEBAYESNET_API(gum::BayesNet);
+ADD_BN_STRUCTURE_LISTENER(gum::BayesNet);
+ADD_BN_STRUCTURE_LISTENER(gum::BayesNetFragment);
 
 // Renamed so the public saveGUM/saveGUMstring (added below in %pythoncode) can keep named arguments
 // and default indent to None: the library then uses pyagrum.config["core","jgumIndent"]

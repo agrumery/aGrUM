@@ -116,7 +116,7 @@ class TestConfig(pyAgrumTestCase):
       gum.config.pop()
 
   def testDeprecatedAccessors(self):
-    # asInt/asFloat/asBool are deprecated since 3.1.0 and delegate to typed
+    # asInt/asFloat/asBool are deprecated after 3.0.0 and delegate to typed
     for accessor, key, expected in (
       ("asInt", ("tensor", "visibleDigits"), int),
       ("asFloat", ("histogram", "epsilon"), float),
@@ -128,7 +128,7 @@ class TestConfig(pyAgrumTestCase):
       self.assertIsInstance(value, expected)
       self.assertEqual(len(w), 1)
       self.assertTrue(issubclass(w[0].category, DeprecationWarning))
-      self.assertIn("3.1.0", str(w[0].message))
+      self.assertIn("deprecated after 3.0.0", str(w[0].message))
 
   def testSchema(self):
     found = False

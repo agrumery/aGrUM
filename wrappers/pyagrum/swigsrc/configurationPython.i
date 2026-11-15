@@ -244,7 +244,7 @@ class _ConfigAccessor:
 class _DeprecatedConfigAccessor(_ConfigAccessor):
   def _warn(self):
     warnings.warn(
-      f"[pyAgrum] {self!r} is deprecated since 3.1.0, use pyagrum.config.typed instead.",
+      f"[pyAgrum] {self!r} is deprecated after 3.0.0, use pyagrum.config.typed instead.",
       DeprecationWarning,
       stacklevel=3,
     )
@@ -288,7 +288,7 @@ def asInt(self):
 
   Warnings
   --------
-  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
   """
   return _CONFIG_ACCESSORS["asInt"](self)
 
@@ -300,7 +300,7 @@ def asFloat(self):
 
   Warnings
   --------
-  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
   """
   return _CONFIG_ACCESSORS["asFloat"](self)
 
@@ -312,7 +312,7 @@ def asBool(self):
 
   Warnings
   --------
-  Deprecated since 3.1.0: use ``pyagrum.config.typed[section, key]``.
+  Deprecated after 3.0.0, use ``pyagrum.config.typed[section, key]``.
   """
   return _CONFIG_ACCESSORS["asBool"](self)
 
