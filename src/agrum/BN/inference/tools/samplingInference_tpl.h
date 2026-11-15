@@ -162,7 +162,7 @@ namespace gum {
 
     // an evidence proved incompatible is refused before any draw (the pruning is done on the
     // original BN: the sampling BN may have no null probability, e.g. for importance sampling)
-    checkEvidenceByPruning(this->BN(), this->hardEvidence());
+    prunedDomains_ = checkEvidenceByPruning(this->BN(), this->hardEvidence());
 
     this->initApproximationScheme();
     gum::Instantiation Ip;

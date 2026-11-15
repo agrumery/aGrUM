@@ -197,6 +197,10 @@ namespace gum {
     /// whether the referenced Bayesian network has been "contextualized"
     bool isContextualized = false;
 
+    /// the domains of the original BN pruned by the hard evidence at the beginning of each
+    /// inference (see checkEvidenceByPruning), empty without hard evidence
+    NodeProperty< std::vector< bool > > prunedDomains_;
+
     /// draws samples without updating the estimators
     virtual Instantiation burnIn_() = 0;
 

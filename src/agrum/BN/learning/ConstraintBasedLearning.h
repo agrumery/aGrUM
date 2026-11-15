@@ -123,7 +123,7 @@ namespace gum {
       /** The bound is used when orienting the v-structures, but the edges kept by the independence
        * tests are never removed to satisfy it: when the DAG of learnDAG() or learnBN() exceeds it,
        * OperationNotAllowed is raised or the DAG is returned (see setErrorOnExceededMaxIndegree).
-       * learnPDAG() does not check it. */
+       * learnPDAG() does not check it. maxIndegreeExceeded() becomes false. */
       void setMaxIndegree(gum::Size n);
 
       /// when the learned DAG exceeds the maximum indegree: raise OperationNotAllowed (true) or
@@ -134,6 +134,7 @@ namespace gum {
       bool errorOnExceededMaxIndegree() const;
 
       /// whether the last DAG learned by learnDAG() or learnBN() exceeds the maximum indegree
+      /// (false after setMaxIndegree())
       bool maxIndegreeExceeded() const;
       void addConstraints(const HashTable< std::pair< NodeId, NodeId >, char >& constraints);
       /// the latent couples (edges <->) found by the last learning: the reference is valid until

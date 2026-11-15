@@ -137,7 +137,8 @@ namespace gum {
       /** Threads optimal IBayesNet. */
       std::vector< VarMod2BNsMap< GUM_SCALAR >* > l_optimalNet_;
 
-      /// the generators used for computing random values
+      /// the generators used for computing random values, one per thread (seeded by the sampler
+      /// before each sample)
       std::vector< std::mt19937 > generators_;
 
       /** Fusion of threads optimal IBayesNet. */

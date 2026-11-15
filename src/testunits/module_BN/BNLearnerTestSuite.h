@@ -2487,6 +2487,11 @@ namespace gum_tests {
                || exceeding.existsArc(arc.head(), arc.tail())));
       GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnBN());
       CHECK(learner.maxIndegreeExceeded());
+      // the indicator is about the last learning: a PDAG is not checked
+      GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnPDAG());
+      CHECK(!learner.maxIndegreeExceeded());
+      GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnDAG());
+      CHECK(learner.maxIndegreeExceeded());
 
       // the option is kept by a copy of the learner
       Learner copy(learner);

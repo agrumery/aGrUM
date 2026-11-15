@@ -704,6 +704,7 @@ namespace gum::learning {
       }
     }
 
+    // also resets maxIndegreeExceeded(): it is about the learning which begins
     algo.setMaxIndegree(constraintIndegree_.maxIndegree());
     algo.setErrorOnExceededMaxIndegree(errorOnExceededMaxIndegree_);
     algo.setMandatoryGraph(mandatoryGraph);

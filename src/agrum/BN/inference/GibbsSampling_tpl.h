@@ -76,7 +76,10 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::monteCarloSample_() {
-    return GibbsOperator< GUM_SCALAR >::monteCarloSample();
+    // the pruning of SamplingInference (same BN, same hard evidence) is reused; without evidence,
+    // it was not done
+    return GibbsOperator< GUM_SCALAR >::monteCarloSample(
+        this->hardEvidence().empty() ? nullptr : &this->prunedDomains_);
   }
 
   template < GUM_Numeric GUM_SCALAR >

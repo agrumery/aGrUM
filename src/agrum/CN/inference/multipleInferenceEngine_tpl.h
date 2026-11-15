@@ -103,14 +103,9 @@ namespace gum {
       this->oldMarginalMax_.clear();
       this->oldMarginalMax_ = this->marginalMax_;
 
-      // init the random number generators
+      // one random number generator per thread: the sampler seeds it before each sample
       generators_.clear();
       generators_.resize(num_threads);
-      auto seed = currentRandomGeneratorValue();
-      for (auto& generator: generators_) {
-        generator.seed(seed);
-        seed = generator();
-      }
     }
 
     template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >

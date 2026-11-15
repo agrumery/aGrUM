@@ -1031,8 +1031,9 @@ bool
 
 %feature("docstring") gum::learning::IBNLearner::maxIndegreeExceeded
 "
-Return whether the last DAG learned (by ``learnDAG()`` or ``learnBN()``) by the selected constraint-based algorithm exceeds
-the maximum indegree. It is always ``False`` for the score-based algorithms, which satisfy the bound.
+Return whether the last learning of the selected constraint-based algorithm gave a DAG (``learnDAG()`` or ``learnBN()``)
+exceeding the maximum indegree. It is ``False`` after a learning which gives no DAG (``learnPDAG()``, ``learnPAG()``...),
+and always ``False`` for the score-based algorithms, which satisfy the bound.
 
 Returns
 -------

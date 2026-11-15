@@ -86,11 +86,14 @@ namespace gum {
    *
    * @param bn the Bayesian network.
    * @param hardEv the hard evidence (node -> observed value).
+   * @return the pruned domains (the output allowed of pruneDomainsByEvidence), empty without hard
+   * evidence (the pruning is then not done).
    * @throw IncompatibleEvidence if the pruning (see pruneDomainsByEvidence) proves that the
    * evidence has a null probability.
    */
   template < GUM_Numeric GUM_SCALAR >
-  void checkEvidenceByPruning(const IBayesNet< GUM_SCALAR >& bn, const NodeProperty< Idx >& hardEv);
+  NodeProperty< std::vector< bool > > checkEvidenceByPruning(const IBayesNet< GUM_SCALAR >& bn,
+                                                             const NodeProperty< Idx >&     hardEv);
 
 }   // namespace gum
 

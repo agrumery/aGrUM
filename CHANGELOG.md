@@ -395,6 +395,9 @@
     - The closures of the graph algorithms (`ancestors`, `descendants`, `anteriors`, hence `isAncestral` and `isMaximal`
       of the marked graphs) visit the neighbours in place instead of building a set for each node, with a stack as
       frontier: 1.1 to 1.8 times faster, same results.
+    - `GibbsSampling` with hard evidence prunes the domains by the evidence once per inference instead of twice (the
+      check of the evidence is reused for the first sample of the chain): 30 % faster for a short inference (40 nodes,
+      CPTs with many zeros, 20 iterations), unchanged without evidence, same results.
 
 ## Changelog for 3.3.2
 

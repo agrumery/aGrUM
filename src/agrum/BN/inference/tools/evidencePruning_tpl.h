@@ -135,14 +135,15 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  void checkEvidenceByPruning(const IBayesNet< GUM_SCALAR >& bn,
-                              const NodeProperty< Idx >&     hardEv) {
-    if (hardEv.empty()) return;   // without evidence, every domain keeps a value
+  NodeProperty< std::vector< bool > > checkEvidenceByPruning(const IBayesNet< GUM_SCALAR >& bn,
+                                                             const NodeProperty< Idx >& hardEv) {
     NodeProperty< std::vector< bool > > allowed;
+    if (hardEv.empty()) return allowed;   // without evidence, every domain keeps a value
     if (!pruneDomainsByEvidence(bn, &hardEv, allowed)) {
       GUM_ERROR(IncompatibleEvidence,
                 "The hard evidence has a null probability (incompatible with the model)")
     }
+    return allowed;
   }
 
 }   // namespace gum

@@ -1042,8 +1042,9 @@ namespace gum::learning {
     /// see setErrorOnExceededMaxIndegree
     bool errorOnExceededMaxIndegree() const;
 
-    /// whether the last DAG learned by the selected constraint-based algorithm exceeds the max
-    /// indegree (always false for the score-based algorithms, which satisfy it)
+    /// whether the last learning of the selected constraint-based algorithm gave a DAG exceeding
+    /// the max indegree (false after a learning which gives no DAG, e.g. learnPDAG() or learnPAG(),
+    /// and always false for the score-based algorithms, which satisfy it)
     bool maxIndegreeExceeded() const;
 
     /**

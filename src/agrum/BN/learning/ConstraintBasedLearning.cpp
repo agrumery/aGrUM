@@ -129,7 +129,10 @@ namespace gum {
       _forbiddenGraph_ = forbidGraph;
     }
 
-    void ConstraintBasedLearning::setMaxIndegree(gum::Size n) { _maxIndegree_ = n; }
+    void ConstraintBasedLearning::setMaxIndegree(gum::Size n) {
+      _maxIndegree_         = n;
+      _maxIndegreeExceeded_ = false;   // the verdict was about the former bound
+    }
 
     void ConstraintBasedLearning::setErrorOnExceededMaxIndegree(bool error) {
       _errorOnExceededMaxIndegree_ = error;

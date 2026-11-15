@@ -438,4 +438,61 @@ namespace gum_tests {
 
     clearCNet();
   }
+
+  GUM_TEST(ANewComputationForgetsTheFormerExpectations) {
+    // the expectations, dynamic expectations and vertices of a new computation (after a change of
+    // the approximation scheme) are those of a fresh inference: they were accumulated
+    initCNet();
+    std::map< std::string, std::vector< double > > modals;
+    gum::NodeId                                    last = 0;
+    for (const auto node: cn->current_bn().nodes()) {
+      modals[cn->current_bn().variable(node).name()] = {0.0, 10.0};
+      last                                           = node;
+    }
+    // with evidence, one iteration does not give the result of ten
+    const std::map< std::string, std::vector< double > > evidence{
+        {cn->current_bn().variable(last).name(), {1.0, 0.0}}};
+    const auto configure
+        = [&modals, &evidence](gum::credal::CNLoopyPropagation< double >& lp, gum::Size iter) {
+            lp.disableEpsilon();
+            lp.disableMinEpsilonRate();
+            lp.disableMaxTime();
+            lp.setPeriodSize(1);
+            lp.storeVertices(true);
+            lp.insertModals(modals);
+            lp.insertEvidence(evidence);
+            lp.setMaxIter(iter);
+          };
+
+    gum::credal::CNLoopyPropagation< double > again(*cn);
+    configure(again, 1);
+    again.makeInference();
+    gum::NodeProperty< double > firstMin, firstMax;
+    for (const auto node: cn->current_bn().nodes()) {
+      firstMin.insert(node, again.expectationMin(node));
+      firstMax.insert(node, again.expectationMax(node));
+    }
+    again.setMaxIter(10);
+    again.makeInference();
+
+    gum::credal::CNLoopyPropagation< double > fresh(*cn);
+    configure(fresh, 10);
+    fresh.makeInference();
+    // the two computations differ (otherwise the test would not show the accumulation)
+    bool differ = false;
+    for (const auto node: cn->current_bn().nodes())
+      differ = differ || firstMin[node] != doctest::Approx(fresh.expectationMin(node))
+            || firstMax[node] != doctest::Approx(fresh.expectationMax(node));
+    REQUIRE(differ);
+
+    for (const auto node: cn->current_bn().nodes()) {
+      const auto& name = cn->current_bn().variable(node).name();
+      CHECK(again.expectationMin(node) == doctest::Approx(fresh.expectationMin(node)));
+      CHECK(again.expectationMax(node) == doctest::Approx(fresh.expectationMax(node)));
+      CHECK(again.dynamicExpMin(name) == fresh.dynamicExpMin(name));
+      CHECK(again.dynamicExpMax(name) == fresh.dynamicExpMax(name));
+      CHECK(again.vertices(node) == fresh.vertices(node));
+    }
+    clearCNet();
+  }
 }   // namespace gum_tests

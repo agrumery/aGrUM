@@ -129,10 +129,14 @@ namespace gum {
      * then means "not found", not "does not exist". An exact inference (e.g. LazyPropagation) can
      * decide whether the evidence is compatible (evidence probability > 0).
      *
+     * @param prunedDomains if not null, the result of the pruning of step 0 (the output allowed of
+     * pruneDomainsByEvidence for samplingBn_ and hardEv_, already proved compatible): the pruning
+     * is not done again.
      * @throw IncompatibleEvidence if the pruning proves that the evidence has a null probability
      * @throw OperationNotAllowed if no sample with a positive probability is found
      */
-    Instantiation monteCarloSample();
+    Instantiation monteCarloSample(const NodeProperty< std::vector< bool > >* prunedDomains
+                                   = nullptr);
 
     /// draws next sample of Gibbs sampling
     Instantiation nextSample(Instantiation prev);

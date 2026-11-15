@@ -103,12 +103,15 @@ namespace gum {
 
   // returns a first sample with a positive probability (see the documentation in gibbsOperator.h)
   template < GUM_Numeric GUM_SCALAR >
-  Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample() {
+  Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample(
+      const NodeProperty< std::vector< bool > >* prunedDomains) {
     // From a sample with a null probability, every Gibbs move may have a null mass: the chain would
     // stay there forever. Hence the first sample must have a positive probability.
 
-    // 0. the values that cannot belong to such a sample are pruned
-    if (!pruneDomainsByEvidence(samplingBn_, hardEv_, _allowed_)) {
+    // 0. the values that cannot belong to such a sample are pruned (unless already done)
+    if (prunedDomains != nullptr) {
+      _allowed_ = *prunedDomains;
+    } else if (!pruneDomainsByEvidence(samplingBn_, hardEv_, _allowed_)) {
       GUM_ERROR(IncompatibleEvidence,
                 "The hard evidence has a null probability (incompatible with the model)")
     }

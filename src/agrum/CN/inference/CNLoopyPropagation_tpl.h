@@ -555,6 +555,13 @@ namespace gum::credal {
   void CNLoopyPropagation< GUM_SCALAR >::makeInference() {
     if (inference_up_to_date_) { return; }
 
+    // the expectations and the vertices are bounds over the results of this inference only (a
+    // former one, e.g. before a change of the approximation scheme, is forgotten)
+    _infE_::initExpectations_();
+    _infE_::dynamicExpMin_.clear();
+    _infE_::dynamicExpMax_.clear();
+    _infE_::initMarginalSets_();
+
     initialize_();
 
     _infE_::initApproximationScheme();
