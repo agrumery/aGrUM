@@ -280,7 +280,13 @@ namespace gum::learning {
                           : std::min(maxCondSetSize_, static_cast< Size >(dsep.size()));
 
       // the empty set was tested in Phase 1, and so were the singletons of the current neighbours
-      // of X or of Y (the adjacencies only shrink); the other nodes of dsep were not
+      // of X or of Y (the adjacencies only shrink), except the ones adjacent through a mandatory
+      // arc only: added after Phase 1, the pair may have been removed at level 0; the other nodes
+      // of dsep were not
+      const auto testedInPhase1 = [&](NodeId a, NodeId z) {
+        return pag.existsEdge(a, z) && !_mandatoryGraph_.existsArc(a, z)
+            && !_mandatoryGraph_.existsArc(z, a);
+      };
       for (Size k = 1; k <= maxK; ++k) {
         std::vector< std::size_t > idx(k);
         std::iota(idx.begin(), idx.end(), std::size_t(0));
@@ -292,7 +298,7 @@ namespace gum::learning {
           }
 
           const bool alreadyTested
-              = (k == 1) && (pag.existsEdge(X, cond[0]) || pag.existsEdge(Y, cond[0]));
+              = (k == 1) && (testedInPhase1(X, cond[0]) || testedInPhase1(Y, cond[0]));
           if (!alreadyTested) {
             const double pval = test_->statistics(X, Y, cond).second;
             if (pval > alpha_) {

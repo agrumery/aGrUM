@@ -303,6 +303,8 @@
       number of threads).
     - `MCBNDistance` and `GibbsBNdistance` enabled again the rate criterion during the computation (it could not be
       disabled).
+    - FCI, Possible-D-Sep phase: a node adjacent to X or Y through a mandatory arc only was never tested as a
+      singleton separating set (the pair may have been removed by the skeleton phase before the arc was added back).
     - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few
       identical samples (e.g. a Gibbs chain with near-deterministic CPTs and a small `burnIn`): their error, the
       length of a Wald confidence interval, was 0. It is now the length of the Wilson score interval, never 0.

@@ -844,6 +844,26 @@ namespace gum_tests {
     CHECK_FALSE(fci.learnPAG(fciNodes(4)).existsEdge(0, 3));
   }
 
+  // a mandatory arc X->C, although X _||_ C: Phase 1 removes X-C at level 0 (so X _||_ Y | {C} is
+  // not tested at level 1), then the arc is added back. Phase 3 must test the singleton {C}
+  GUM_TEST(_fci_possibledsep_tests_the_singletons_of_mandatory_arcs_) {
+    FCIAsiaDB db;
+    FCIOracle oracle(db.parser, db.prior);
+    oracle.independences = fciPossibleDSepCase({2});   // X _||_ Y | {C}
+
+    gum::DAG mandatory;
+    for (gum::NodeId i = 0; i < 4; ++i) {
+      mandatory.addNodeWithId(i);
+    }
+    mandatory.addArc(0, 2);
+    gum::learning::FCI fci;
+    fci.setIndependenceTest(oracle);
+    fci.setMandatoryGraph(mandatory);
+    const auto pag = fci.learnPAG(fciNodes(4));
+    CHECK(pag.existsEdge(0, 2));
+    CHECK_FALSE(pag.existsEdge(0, 3));
+  }
+
   // R4 on the discriminating path <D, A, B, C> (D=0, A=1, B=2, C=3): D _||_ B and D _||_ C |
   // dcCond, hence D *-> A <-* B (collider), A -> C (R1) and B o-* C, oriented by R4 according to
   // whether B is in the separating set of D and C
