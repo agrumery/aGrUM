@@ -43,6 +43,7 @@ import unittest
 import numpy as np
 import pandas as pd
 from scipy.stats import logistic, norm
+from sklearn.dummy import DummyRegressor
 
 import pyagrum.causal_model as gum
 import pyagrum.causalEffectEstimation as gcee
@@ -505,6 +506,87 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertRaises(gcee.IVError, cee.fitGeneralizedPlugIn)
 
     self.assertRaises(ValueError, cee.fitWald)
+
+  def test_XLearner_weights_the_effects_by_the_propensity(self):
+    # constant effect learners: tau0 = 0, tau1 = 1, hence ICE(x) = e(x) * tau0 + (1 - e(x)) * tau1 = 1 - e(x)
+    rng = np.random.default_rng(31)
+    n = 20000
+    X = rng.binomial(1, 0.5, n)
+    T = rng.binomial(1, np.where(X == 1, 0.9, 0.1))
+    Y = rng.normal(X + T, 1, n)
+    df = pd.DataFrame({"X": X, "T": T, "Y": Y})
+
+    bn = gum.fastBN("X->T->Y;X->Y")
+    cee = gcee.CausalEffectEstimation(df, gum.CausalModel(bn))
+    self.assertEqual(cee.identifyAdjustmentSet("T", "Y", verbose=False), cee._BACKDOOR)
+
+    cee.fitXLearner(
+      control_effect_learner=DummyRegressor(strategy="constant", constant=0.0),
+      treatment_effect_learner=DummyRegressor(strategy="constant", constant=1.0),
+    )
+    ice = cee.estimateCausalEffect(conditional=pd.DataFrame({"X": [0, 1], "T": [0, 0], "Y": [0.0, 0.0]}))
+    self.assertAlmostEqual(ice[0], 0.9, delta=0.02)
+    self.assertAlmostEqual(ice[1], 0.1, delta=0.02)
+
+  def test_PStratification_ICE_follows_the_rows(self):
+    # the effect is 1 in the stratum of the small propensities and 3 in the stratum of the large ones
+    rng = np.random.default_rng(37)
+    n = 20000
+    X = rng.normal(0, 1, n)
+    T = rng.binomial(1, 1 / (1 + np.exp(-X)))
+    Y = rng.normal(T * (1 + 2 * (X > 0)), 0.1, n)
+    df = pd.DataFrame({"X": X, "T": T, "Y": Y})
+
+    bn = gum.BayesNet()
+    bn.add(_getDiscretizedVariable("X", -4, 4, 8))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("Y", -1, 4, 10))
+    bn.addArc("X", "T")
+    bn.addArc("X", "Y")
+    bn.addArc("T", "Y")
+    cee = gcee.CausalEffectEstimation(df, gum.CausalModel(bn))
+    self.assertEqual(cee.identifyAdjustmentSet("T", "Y", verbose=False), cee._BACKDOOR)
+
+    cee.fitPStratification()
+    # rows given in a shuffled order, with an index which is not 0..n-1
+    shuffled = df.sample(frac=1, random_state=3)
+    shuffled.index = shuffled.index + n
+    ice = cee.estimateCausalEffect(conditional=shuffled, num_strata=2)
+    low = shuffled["X"].to_numpy() < -0.5
+    high = shuffled["X"].to_numpy() > 0.5
+    self.assertAlmostEqual(ice[low].mean(), 1.0, delta=0.1)
+    self.assertAlmostEqual(ice[high].mean(), 3.0, delta=0.1)
+
+  def test_TSLS_with_covariates(self):
+    # the ACE is the coefficient of the treatment, not a mean of all the coefficients
+    rng = np.random.default_rng(41)
+    n = 50000
+    U = rng.normal(0, 1, n)
+    X = rng.normal(0, 1, n)
+    W = rng.binomial(1, 1 / (1 + np.exp(-2 * X)))
+    T = rng.binomial(1, 1 / (1 + np.exp(-(U + 3 * W - 1.5 + X))))
+    Y = rng.normal(U + 2 * T + X, 0.5, n)
+    df = pd.DataFrame({"W": W, "X": X, "T": T, "Y": Y})
+
+    bn = gum.BayesNet()
+    bn.add(gum.IntegerVariable("W", "W", [0, 1]))
+    bn.add(_getDiscretizedVariable("X", -4, 4, 8))
+    bn.add(gum.IntegerVariable("T", "T", [0, 1]))
+    bn.add(_getDiscretizedVariable("Y", -10, 10, 20))
+    bn.addArc("X", "W")
+    bn.addArc("W", "T")
+    bn.addArc("X", "T")
+    bn.addArc("X", "Y")
+    bn.addArc("T", "Y")
+    cslbn = gum.CausalModel(bn)
+    cslbn.addLatentVariable("u", ("T", "Y"), True)
+    cee = gcee.CausalEffectEstimation(df, cslbn)
+    self.assertEqual(cee.identifyAdjustmentSet("T", "Y", verbose=False), cee._IV)
+
+    cee.fitTSLS()
+    self.assertAlmostEqual(cee.estimateCausalEffect(), 2.0, delta=_delta)
+    # conditional estimate: the selected rows keep their index
+    self.assertAlmostEqual(cee.estimateCausalEffect(conditional="X > 0"), 2.0, delta=2 * _delta)
 
 
 ts = unittest.TestSuite()

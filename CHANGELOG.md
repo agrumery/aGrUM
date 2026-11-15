@@ -432,6 +432,10 @@
     - `DiscreteTypeProcessor`: MDLP no longer forces a cut point when none is informative (a `ValueError` says that the
       variable cannot be discretized by MDLP); the elbow method crashed (1D input to `KBinsDiscretizer`), assigned a
       point to the wrong center after an empty interval and divided by 0 on a flat curve.
+    - `CausalEffectEstimation`: the X-learner combined its two effects with swapped weights (Künzel et al.:
+      e(x) tau0(x) + (1 - e(x)) tau1(x)); TSLS returned the mean of all the coefficients of the second stage instead of
+      the coefficient of the treatment, and misaligned the rows of a conditional estimate; the individual effects of
+      the propensity stratification were not in the order of the rows (the average effect was right).
 
 - Optimizations (aGrUM and pyAgrum)
 

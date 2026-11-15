@@ -443,11 +443,10 @@ class XLearner:
 
     tau0 = self.control_effect_learner.predict(X)
     tau1 = self.treatment_effect_learner.predict(X)
-    e = self.propensity_score_learner.predict_proba(X)
+    e = self.propensity_score_learner.predict_proba(X)[:, 1]
 
-    v_func = np.vectorize(lambda e0, e1, t0, t1: e0 * t0 + e1 * t1)
-
-    return v_func(e[:, 0], e[:, 1], tau0, tau1)
+    # Künzel et al. (2019): tau(x) = e(x) * tau0(x) + (1 - e(x)) * tau1(x)
+    return e * tau0 + (1 - e) * tau1
 
   def estimate_ate(
     self,
@@ -572,18 +571,23 @@ class PStratification:
       self.num_strata = 100
 
     e = self.propensity_score_learner.predict_proba(X)[:, 1]
-    e = pd.DataFrame({"e": e}).sort_values("e")
+    # positions of the rows sorted by propensity score
+    order = np.argsort(e, kind="stable")
+    y = np.asarray(y)
+    treatment = np.asarray(treatment)
 
-    indices_strata = np.array_split(e.index, self.num_strata, axis=0)
+    indices_strata = np.array_split(order, self.num_strata, axis=0)
 
     def _tauStratum(indices_stratum):
       y_strat = y[indices_stratum]
       T_strat = treatment[indices_stratum]
       return np.full(len(indices_stratum), y_strat[T_strat == 1].mean() - y_strat[T_strat == 0].mean())
 
-    tau_list = np.hstack([_tauStratum(id_stratum) for id_stratum in indices_strata])
+    # tau of each row, given back in the order of the rows of X
+    tau_list = np.empty(len(order))
+    tau_list[order] = np.hstack([_tauStratum(id_stratum) for id_stratum in indices_strata])
 
-    if np.isnan(tau_list[e.index]).sum() != 0:
+    if np.isnan(tau_list).sum() != 0:
       print(
         "Warning: The Positivity assumption is not satisfied across "
         "all strata.\nStrata lacking treatment or control have been "
@@ -591,7 +595,7 @@ class PStratification:
         "of strata [num_strata]. "
       )
 
-    return tau_list[e.index]
+    return tau_list
 
   # ecrire do-calculus not identifiable try catch
 

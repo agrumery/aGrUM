@@ -505,10 +505,12 @@ class TSLS:
         An array containing the predicted ICE.
     """
 
-    T_hat = self.treatment_learner.predict(X=pd.concat([pd.DataFrame(X), pd.DataFrame(w)], axis=1))
-    self.outcome_learner.fit(X=pd.concat([pd.DataFrame(X), pd.DataFrame({"T": T_hat})], axis=1), y=y)
+    X = pd.DataFrame(X)
+    T_hat = self.treatment_learner.predict(X=pd.concat([X, pd.DataFrame(w)], axis=1))
+    self.outcome_learner.fit(X=pd.concat([X, pd.DataFrame({"T": T_hat}, index=X.index)], axis=1), y=y)
 
-    return np.repeat(self.outcome_learner.coef_, len(X))
+    # the last coefficient is the one of the (predicted) treatment
+    return np.full(len(X), np.ravel(self.outcome_learner.coef_)[-1])
 
   def estimate_ate(
     self,
