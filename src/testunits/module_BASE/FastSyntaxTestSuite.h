@@ -43,6 +43,7 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/graphs/fastGraph.h>
@@ -96,6 +97,13 @@ namespace gum_tests {
       CHECK_THROWS_AS(gum::fastVariable< double >(std::string(desc)), const gum::InvalidArgument&);
       CHECK_THROWS_AS(gum::fastGraph< gum::MixedGraph >(desc), const gum::InvalidArgument&);
     }
+  }
+
+  GUM_TEST(SplitTopLevel) {
+    CHECK((gum::fast::detail::splitTopLevel("A--'B--C'--D[0,1]", "--")
+           == std::vector< std::string >{"A", "'B--C'", "D[0,1]"}));
+    // an empty separator would never advance
+    CHECK_THROWS_AS(gum::fast::detail::splitTopLevel("A--B", ""), const gum::InvalidArgument&);
   }
 
   GUM_TEST(QuoteOnlyWhenNeeded) {

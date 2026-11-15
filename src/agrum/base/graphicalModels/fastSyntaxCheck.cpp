@@ -75,39 +75,46 @@ namespace gum {
     return stream << toString(syntax);
   }
 
+  namespace {
+    /// the error of syntax for description (empty if valid): valid for a syntax = accepted by its
+    /// fast function; a graph is cheap to build, a model is only analysed (its parameters are not
+    /// generated)
+    std::string
+        verdict(FastSyntax syntax, const std::string& description, std::string_view domain) {
+      using fast::detail::FastModelType;
+      using fast::detail::parseFastModel;
+      try {
+        switch (syntax) {
+          case FastSyntax::UndiGraph : fastGraph< UndiGraph >(description); break;
+          case FastSyntax::DiGraph : fastGraph< DiGraph >(description); break;
+          case FastSyntax::MixedGraph : fastGraph< MixedGraph >(description); break;
+          case FastSyntax::MarkedGraph : fastMarkedGraph< MarkedGraph >(description); break;
+          case FastSyntax::BayesNet :
+            parseFastModel(description, FastModelType::BayesNet, domain);
+            break;
+          case FastSyntax::InfluenceDiagram :
+            parseFastModel(description, FastModelType::InfluenceDiagram, domain);
+            break;
+          case FastSyntax::MarkovRandomField :
+            parseFastModel(description, FastModelType::MarkovRandomField, domain);
+            break;
+        }
+        return std::string();
+      } catch (const Exception& e) { return e.errorType() + ": " + e.errorContent(); }
+    }
+  }   // namespace
+
   FastSyntaxCheck::FastSyntaxCheck(std::string_view description, std::string_view defaultDomain) :
-      _description_(description), _defaultDomain_(defaultDomain) {
+      _description_(description) {
     fastVariable< double >("x", defaultDomain);   // checks the default domain
+    for (std::size_t i = 0; i < _nbSyntaxes_; ++i)
+      _errors_[i] = verdict(static_cast< FastSyntax >(i), _description_, defaultDomain);
   }
 
   const std::string& FastSyntaxCheck::_check_(FastSyntax syntax) const {
     const auto i = static_cast< std::size_t >(syntax);
     if (i >= _nbSyntaxes_) GUM_ERROR(OutOfBounds, "unknown fast syntax " << i)
-    if (!_errors_[i]) {
-      // valid for a syntax = accepted by its fast function; a graph is cheap to build, a model is
-      // only analysed (its parameters are not generated)
-      using fast::detail::FastModelType;
-      using fast::detail::parseFastModel;
-      try {
-        switch (syntax) {
-          case FastSyntax::UndiGraph : fastGraph< UndiGraph >(_description_); break;
-          case FastSyntax::DiGraph : fastGraph< DiGraph >(_description_); break;
-          case FastSyntax::MixedGraph : fastGraph< MixedGraph >(_description_); break;
-          case FastSyntax::MarkedGraph : fastMarkedGraph< MarkedGraph >(_description_); break;
-          case FastSyntax::BayesNet :
-            parseFastModel(_description_, FastModelType::BayesNet, _defaultDomain_);
-            break;
-          case FastSyntax::InfluenceDiagram :
-            parseFastModel(_description_, FastModelType::InfluenceDiagram, _defaultDomain_);
-            break;
-          case FastSyntax::MarkovRandomField :
-            parseFastModel(_description_, FastModelType::MarkovRandomField, _defaultDomain_);
-            break;
-        }
-        _errors_[i] = std::string();
-      } catch (const Exception& e) { _errors_[i] = e.errorType() + ": " + e.errorContent(); }
-    }
-    return *_errors_[i];
+    return _errors_[i];
   }
 
   const std::string& FastSyntaxCheck::description() const { return _description_; }

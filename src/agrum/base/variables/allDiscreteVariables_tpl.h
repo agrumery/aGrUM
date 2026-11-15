@@ -296,6 +296,8 @@ namespace gum {
       } else if (!quotedName && name.back() == '+') {   // name is not empty
         name.pop_back();
         trim(name);
+        if (name.empty())
+          GUM_ERROR(InvalidArgument, "A variable has no name in the description (only '+')")
         return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks, true);
       } else {
         return std::make_unique< DiscretizedVariable< GUM_SCALAR > >(name, name, ticks);

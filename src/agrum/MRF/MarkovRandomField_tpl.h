@@ -120,19 +120,6 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string MarkovRandomField< GUM_SCALAR >::toFast() const {
-    NodeSet     written;
-    std::string fast;
-    // a node is written in full at its first occurrence, by its name afterwards
-    auto write = [&](NodeId node) {
-      const auto& var = this->variable(node);
-      if (written.exists(node)) return quoteFastName(var.name());
-      written.insert(node);
-      return var.toFast();
-    };
-    auto append = [&](const std::string& chain) {
-      if (!fast.empty()) fast += ';';
-      fast += chain;
-    };
     // in the order of the NodeIds: the description does not depend on the hash tables
     std::vector< std::vector< NodeId > > scopes;
     for (const auto& [scope, factor]: factors()) {
@@ -140,17 +127,7 @@ namespace gum {
       std::sort(scopes.back().begin(), scopes.back().end());
     }
     std::sort(scopes.begin(), scopes.end());
-    for (const auto& scope: scopes) {
-      std::string chain;
-      for (const auto node: scope) {
-        if (!chain.empty()) chain += "--";
-        chain += write(node);
-      }
-      append(chain);
-    }
-    for (const auto node: this->nodes())
-      if (!written.exists(node)) append(write(node));
-    return fast;
+    return fast::detail::chainsToFast(*this, scopes, "--", [](NodeId) { return std::string(); });
   }
 
   template < GUM_Numeric GUM_SCALAR >

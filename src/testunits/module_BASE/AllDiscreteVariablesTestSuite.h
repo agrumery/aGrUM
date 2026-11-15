@@ -280,7 +280,9 @@ namespace gum_tests {
                                        "A{1:x:3}",
                                        "[3]",
                                        "{a|b}",
-                                       "  [0,1,2]"}) {
+                                       "  [0,1,2]",
+                                       "+[0,1,2]",
+                                       " + [0,1,2]"}) {
       CHECK_THROWS_AS(FASTVARDBL(std::string(desc)), const gum::InvalidArgument&);
     }
   }

@@ -98,13 +98,6 @@ namespace gum {
     return infdiag;
   }
 
-  // ===========================================================================
-  // Constructors / Destructors
-  // ===========================================================================
-
-  /*
-   * Default constructor.
-   */
   template < GUM_Numeric GUM_SCALAR >
   std::string InfluenceDiagram< GUM_SCALAR >::toFast() const {
     return fast::detail::directedModelToFast(*this, [this](NodeId node) {
@@ -114,6 +107,13 @@ namespace gum {
     });
   }
 
+  // ===========================================================================
+  // Constructors / Destructors
+  // ===========================================================================
+
+  /*
+   * Default constructor.
+   */
   template < GUM_Numeric GUM_SCALAR >
   InfluenceDiagram< GUM_SCALAR >::InfluenceDiagram() : DAGmodel() {
     GUM_CONSTRUCTOR(InfluenceDiagram)

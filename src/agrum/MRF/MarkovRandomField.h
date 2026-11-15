@@ -116,6 +116,8 @@ namespace gum {
     /**
      * @brief The fast description of the Markov random field, read back by fastPrototype() (the
      * factors and the variables, not the parameters).
+     * @warning A variable without factor is written alone: fastPrototype() reads it back with a
+     * unary factor (a chain of one variable is a factor), so the copy has one more factor.
      * @warning aGrUM/pyAgrum 3.3.2 or older read a quoted name with the quotes (see
      * quoteFastName()).
      */

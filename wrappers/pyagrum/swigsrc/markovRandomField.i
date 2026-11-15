@@ -242,6 +242,11 @@ def toFast(self, filename: str = None) -> str:
   -------
   str
     the fast description of the model (if filename is None)
+
+  Warnings
+  --------
+  A variable without factor is written alone: `pyagrum.fastMRF` reads it back with a factor of its own (a chain of one
+  variable is a factor), so the copy has one more factor.
   """
   if filename is None:
     return self._toFast()

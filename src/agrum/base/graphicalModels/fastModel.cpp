@@ -45,7 +45,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6) & Christophe GONZALES(_at_AMU)
  */
 
+#include <set>
 #include <unordered_map>
+#include <utility>
 
 #include <agrum/base/core/fastSyntax.h>
 #include <agrum/base/graphicalModels/fastModel.h>
@@ -73,10 +75,12 @@ namespace gum::fast::detail {
       }
     };
 
-    /// refuses an unquoted token with a '<' or a '>' outside its domain: a misplaced operator
-    /// ("A<" in "A<->B", "A->B" in a Markov random field)
+    /// refuses an unquoted token with a '<' or a '>' outside its domain, or beginning or ending
+    /// with a '-': a misplaced operator ("A<" in "A<->B", "A->B" in a Markov random field, "-B"
+    /// in "A---B")
     void checkOperators(std::string_view token, std::string_view desc) {
-      if (findTopLevel(token, 0, "<>") != std::string_view::npos)
+      if (findTopLevel(token, 0, "<>") != std::string_view::npos || token.front() == '-'
+          || token.back() == '-')
         GUM_ERROR(InvalidArgument,
                   "fastPrototype: malformed description '"
                       << desc << "' ('" << token
@@ -90,6 +94,8 @@ namespace gum::fast::detail {
     ModelBuilder builder;
 
     if (type == FastModelType::MarkovRandomField) {
+      // as MarkovRandomField::addFactor: no empty factor, no factor twice (whatever the order)
+      std::set< std::set< std::size_t > > scopes;
       for (const auto& chain: splitChains(desc)) {
         std::vector< std::size_t > factor;
         for (const auto& piece: splitTopLevel(chain, "--")) {
@@ -99,6 +105,13 @@ namespace gum::fast::detail {
           factor.push_back(
               builder.node(std::move(token), std::string(defaultDomain), FastNodeKind::Chance));
         }
+        if (factor.empty())
+          GUM_ERROR(InvalidArgument,
+                    "fastPrototype: empty factor '" << chain << "' in '" << desc << "'")
+        if (!scopes.emplace(factor.begin(), factor.end()).second)
+          GUM_ERROR(InvalidArgument,
+                    "fastPrototype: the factor '" << chain << "' in '" << desc
+                                                  << "' is given twice")
         builder.model.factors.push_back(std::move(factor));
       }
       return std::move(builder.model);
@@ -115,7 +128,12 @@ namespace gum::fast::detail {
       }
       return builder.node(token, std::string(defaultDomain), FastNodeKind::Chance);
     };
-    auto addArc = [&](std::size_t tail, std::size_t head, const std::string&) {
+    // as BayesNet::addArc and InfluenceDiagram::addArc: no arc twice
+    std::set< std::pair< std::size_t, std::size_t > > arcs;
+    auto addArc = [&](std::size_t tail, std::size_t head, const std::string& token) {
+      if (!arcs.emplace(tail, head).second)
+        GUM_ERROR(DuplicateElement,
+                  "fastPrototype: the arc to '" << token << "' in '" << desc << "' is given twice")
       builder.model.arcs.emplace_back(tail, head);
     };
     auto addEdge = [&](std::size_t, std::size_t, const std::string& token) {

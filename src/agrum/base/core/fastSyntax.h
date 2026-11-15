@@ -124,6 +124,7 @@ namespace gum {
                                                std::size_t*     lastQuoteEnd = nullptr);
 
     /// splits s on sep found at bracket depth 0 and outside any quoted name (empty pieces kept)
+    /** @throw InvalidArgument if sep is empty */
     GUM_SHARED_PUBLIC std::vector< std::string > splitTopLevel(std::string_view s,
                                                                std::string_view sep);
 

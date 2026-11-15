@@ -167,6 +167,7 @@ namespace gum {
     }
 
     std::vector< std::string > splitTopLevel(std::string_view s, std::string_view sep) {
+      if (sep.empty()) GUM_ERROR(InvalidArgument, "splitTopLevel: empty separator")
       std::vector< std::string > pieces;
       std::size_t                pos = 0;
       while (true) {

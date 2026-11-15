@@ -49,7 +49,6 @@
 
 #include <array>
 #include <cstdint>
-#include <optional>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -86,8 +85,8 @@ namespace gum {
    * object is built: acyclicity (DAG, PDAG, ChainGraph, BayesNet, InfluenceDiagram), the children
    * of a utility node, the constraints of a PAG.
    *
-   * A syntax is checked the first time it is asked for (a graph is built, a model is only
-   * analysed).
+   * Every syntax is checked by the constructor (a graph is built, a model is only analysed): the
+   * object is never modified afterwards, hence it can be read by several threads.
    */
   class GUM_SHARED_PUBLIC FastSyntaxCheck {
     public:
@@ -118,11 +117,11 @@ namespace gum {
         = static_cast< std::size_t >(FastSyntax::MarkovRandomField) + 1;
 
     std::string _description_;
-    std::string _defaultDomain_;
-    /// the error of each syntax once checked (empty if valid), std::nullopt before
-    mutable std::array< std::optional< std::string >, _nbSyntaxes_ > _errors_;
+    /// the error of each syntax (empty if valid)
+    std::array< std::string, _nbSyntaxes_ > _errors_;
 
-    /// the error of syntax (empty if valid), checked if needed
+    /// the error of syntax (empty if valid)
+    /** @throw OutOfBounds if syntax is not a FastSyntax */
     const std::string& _check_(FastSyntax syntax) const;
   };
 

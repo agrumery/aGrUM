@@ -49,7 +49,7 @@
 
 #include <algorithm>
 #include <string>
-#include <utility>
+#include <string_view>
 #include <vector>
 
 #include <agrum/base/core/fastSyntax.h>
@@ -58,7 +58,10 @@
 namespace gum::fast::detail {
 
   template < typename MODEL, typename PREFIX >
-  std::string directedModelToFast(const MODEL& model, PREFIX prefix) {
+  std::string chainsToFast(const MODEL&                                model,
+                           const std::vector< std::vector< NodeId > >& chains,
+                           std::string_view                            link,
+                           PREFIX                                      prefix) {
     NodeSet     written;
     std::string fast;
     // a node is written in full at its first occurrence, by its name afterwards
@@ -72,18 +75,27 @@ namespace gum::fast::detail {
       if (!fast.empty()) fast += ';';
       fast += chain;
     };
-    // in the order of the NodeIds: the description does not depend on the hash tables
-    std::vector< Arc > arcs(model.arcs().begin(), model.arcs().end());
-    std::sort(arcs.begin(), arcs.end(), [](const Arc& a, const Arc& b) {
-      return std::pair(a.tail(), a.head()) < std::pair(b.tail(), b.head());
-    });
-    for (const auto& arc: arcs) {
-      const auto tail = write(arc.tail());
-      append(tail + "->" + write(arc.head()));
+    for (const auto& nodes: chains) {
+      std::string chain;
+      for (const auto node: nodes) {
+        if (!chain.empty()) chain += link;
+        chain += write(node);
+      }
+      append(chain);
     }
     for (const auto node: model.nodes())
       if (!written.exists(node)) append(write(node));
     return fast;
+  }
+
+  template < typename MODEL, typename PREFIX >
+  std::string directedModelToFast(const MODEL& model, PREFIX prefix) {
+    // in the order of the NodeIds: the description does not depend on the hash tables
+    std::vector< std::vector< NodeId > > arcs;
+    for (const auto& arc: model.arcs())
+      arcs.push_back({arc.tail(), arc.head()});
+    std::sort(arcs.begin(), arcs.end());
+    return chainsToFast(model, arcs, "->", prefix);
   }
 
 }   // namespace gum::fast::detail

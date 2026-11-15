@@ -786,6 +786,23 @@ class TestGraph(pyAgrumTestCase):
     cpp = {name.removeprefix("FastSyntax_") for name in dir(gum.pyagrumcpp) if name.startswith("FastSyntax_")}
     self.assertEqual(cpp, {syntax.name for syntax in gum.FastSyntax})
 
+  def testCheckFastSyntaxAgreesWithTheModels(self):
+    # valid for a model = accepted by its fast function, with the same exception
+    self.assertFalse(gum.checkFastSyntax("A->B;A->B").isValid(gum.FastSyntax.BayesNet))
+    with self.assertRaises(gum.DuplicateElement):
+      gum.fastBN("A->B;A->B")
+    with self.assertRaises(gum.DuplicateElement):
+      gum.fastID("A->B;A->B")
+    for desc in ("A--B;B--A", "A;A", "A;--", "A---B"):
+      with self.subTest(desc=desc):
+        self.assertFalse(gum.checkFastSyntax(desc).isValid(gum.FastSyntax.MarkovRandomField))
+        with self.assertRaises(gum.InvalidArgument):
+          gum.fastMRF(desc)
+    mrf = gum.fastMRF("'-B'--A")
+    self.assertEqual({mrf.variable(n).name() for n in mrf.nodes()}, {"-B", "A"})
+    with self.assertRaises(gum.InvalidArgument):
+      gum.fastVariable("+[0,1,2]")
+
   def testMAG(self):
     dag = gum.fastDAG("A->X<-T->Y<-B")
     t = dag.idFromName("T")

@@ -129,4 +129,26 @@ namespace gum_tests {
           == std::vector< FastSyntax >{FastSyntax::MarkedGraph});
   }
 
+  GUM_TEST(WhatTheModelsRefuseIsNotValid) {
+    // an arc given twice (BayesNet::addArc and InfluenceDiagram::addArc refuse it)
+    const auto twice = gum::checkFastSyntax("A->B;A->B");
+    CHECK(twice.isValid(FastSyntax::DiGraph));
+    CHECK_FALSE(twice.isValid(FastSyntax::BayesNet));
+    CHECK_FALSE(twice.isValid(FastSyntax::InfluenceDiagram));
+    CHECK_NE(twice.error(FastSyntax::BayesNet).find("twice"), std::string::npos);
+    CHECK_FALSE(gum::checkFastSyntax("A->B;B<-A").isValid(FastSyntax::BayesNet));
+
+    // a factor given twice (whatever the order) or empty (MarkovRandomField::addFactor refuses it)
+    for (const auto* desc: {"A--B;B--A", "A;A", "A;--", "A--B--C;C--A--B"}) {
+      CHECK_FALSE(gum::checkFastSyntax(desc).isValid(FastSyntax::MarkovRandomField));
+    }
+    CHECK(gum::checkFastSyntax("A--B;A").isValid(FastSyntax::MarkovRandomField));
+    CHECK(gum::checkFastSyntax("A--B;A--B--C").isValid(FastSyntax::MarkovRandomField));
+
+    // a '-' left at an end of a name by a misplaced "--": "A---B" is not A and "-B"
+    for (const auto* desc: {"A---B", "A---", "-A--B"})
+      CHECK_FALSE(gum::checkFastSyntax(desc).isValid(FastSyntax::MarkovRandomField));
+    CHECK(gum::checkFastSyntax("'-B'--A").isValid(FastSyntax::MarkovRandomField));
+  }
+
 }   // namespace gum_tests

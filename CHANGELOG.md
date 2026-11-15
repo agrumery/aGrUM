@@ -50,9 +50,12 @@
       (`O'Brien` and the labels `{l'eau|x}` are unchanged). A circle may touch a quoted name (`fastPAG("'A'o->'B'")`).
       New `quoteFastName` and `fastNameNeedsQuotes`.
     - New `checkFastSyntax` (and `FastSyntaxCheck`, `FastSyntax`): the syntaxes for which a fast description is valid
-      (`"A->B"` is a directed graph, a Bayesian network and an influence diagram), with the error for the others; a
-      syntax is checked only when it is asked for. `fastGraph` no longer parses the description in Python: it uses
-      `checkFastSyntax`, and returns a `MarkedGraph` for a description with marks (`"A o-> B"`, it raised an error).
+      (`"A->B"` is a directed graph, a Bayesian network and an influence diagram), with the error for the others; every
+      syntax is checked when the object is built (it is never modified, hence it can be read by several threads). Valid
+      means accepted by the fast function: an arc given twice (`fastBN`, `fastID`, `DuplicateElement`), an empty factor
+      or a factor given twice (`fastMRF`, `InvalidArgument`) are refused by the analysis of the description.
+      `fastGraph` no longer parses the description in Python: it uses `checkFastSyntax`, and returns a `MarkedGraph`
+      for a description with marks (`"A o-> B"`, it raised an error).
     - Behaviour change: a malformed fast description (an operator without a node, an unclosed quote, a misplaced `<` or
       `>`, a number which cannot be read, a variable without a name) raises `InvalidArgument` in every fast syntax
       (`fastBN("A->")` raised `InvalidArc`, `fastVariable("A[x]")` a Python `ValueError`, `fastBN("A<->B")` created a
@@ -302,6 +305,9 @@
       listen to the graph of an immutable graph class).
     - `MarkedGraph::addEdge` sets the marks before emitting `onEdgeAdded`: a listener can read the marks of the new
       edge (`markAt` raised `NotFound`).
+    - `fastMRF("A---B")` raises `InvalidArgument` (it gave the variables `A` and `-B`): an unquoted name of a fast
+      description of a model neither begins nor ends with `-`. `fastVariable("+[0,1,2]")` raises `InvalidArgument` (it
+      gave a variable with an empty name).
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
       mixture learners (without argument, the learner copies the state set by the `use...` methods).
     - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn

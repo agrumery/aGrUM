@@ -174,8 +174,6 @@ namespace gum {
     /// @}
 
     private:
-    /// The gamma distribution used to compute the Dirichlet unnormalized
-    /// samples.
     /// The parameters of the distribution.
     param_type _params_;
   };
