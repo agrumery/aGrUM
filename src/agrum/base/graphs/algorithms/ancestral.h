@@ -129,6 +129,7 @@ namespace gum::graph {
    * y \ z.
    * @warning @p g is supposed ancestral (without circle).
    * @throw InvalidArgument if @p x and @p y are not disjoint.
+   * @throw InvalidNode if a node of @p x, @p y or @p z is not a node of @p g.
    */
   GUM_SHARED_PUBLIC bool
       mSeparation(const MarkedGraph& g, const NodeSet& x, const NodeSet& y, const NodeSet& z);

@@ -219,9 +219,17 @@
 
     - `MeekRules::propagateToDAG` (used by PC to learn a DAG) could create an unshielded collider absent from the
       CPDAG, hence a DAG outside the learned Markov equivalence class; it is now a consistent extension (#207).
+    - `MeekRules::choices()`, for an input which is not an extendable PDAG: a choice could be the orientation erased by
+      the resolution of the double-headed arcs (hence not an arc of the result), and a pair of nodes could appear
+      several times, in both orientations. Each choice is now an arc of the result of `propagateToCPDAG` or
+      `propagateToDAG`, at most once per pair of nodes, in order of selection. In C++, `choices()` returns a
+      `std::vector<Arc>` by value (it was a const reference).
     - `graph::dSeparated` (hence `dSeparation` of `DAG`, `CPDAG`, `MPDAG` and of the models) and
       `graph::mSeparation`: a node of Y which belongs to Z is separated from any node, as a node of X in Z already
       was (it was reported as not separated, so that exchanging X and Y could change the answer).
+    - `graph::dSeparated`, `graph::cSeparated` and `graph::mSeparation` (hence `dSeparation`, `cSeparation`,
+      `mSeparation` of the graphs and of the models, and `pyagrum.graph.separation`) raise `InvalidNode` for a node of
+      X, Y or Z which is not a node of the graph (such a node was reported as separated from any node).
     - The constraint-based algorithms (PC, FCI, MIIC) ignored the maximum indegree outside the orientation of the
       v-structures: `learnDAG`/`learnBN` now raise `OperationNotAllowed` when the learned DAG exceeds it (their
       independence tests never remove an edge to satisfy it), or return the DAG (with a warning in pyAgrum) with the
@@ -290,6 +298,10 @@
       length of a Wald confidence interval, was 0. It is now the length of the Wilson score interval, never 0.
     - `UndiGraphListener` and `MixedGraphListener` were not exported from the shared libraries (link error of the
       structure listeners of `MarkovRandomField` with the shared build on Windows).
+    - `MixedGraphListener` takes a `const MixedGraph*`, as `DiGraphListener` and `UndiGraphListener` (it could not
+      listen to the graph of an immutable graph class).
+    - `MarkedGraph::addEdge` sets the marks before emitting `onEdgeAdded`: a listener can read the marks of the new
+      edge (`markAt` raised `NotFound`).
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
       mixture learners (without argument, the learner copies the state set by the `use...` methods).
     - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn

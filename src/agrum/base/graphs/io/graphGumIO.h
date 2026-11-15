@@ -48,6 +48,7 @@
 #ifndef GUM_GRAPH_GUM_IO_H
 #define GUM_GRAPH_GUM_IO_H
 
+#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>

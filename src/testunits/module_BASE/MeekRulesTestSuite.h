@@ -43,6 +43,7 @@
 
 #include <iostream>
 #include <utility>
+#include <vector>
 
 #include <agrum/base/graphs/algorithms/MeekRules.h>
 #include <agrum/base/graphs/algorithms/orientation.h>
@@ -565,6 +566,45 @@ namespace gum_tests {
         CHECK(oriented.existsArc(arc.tail(), arc.head()));
     }
     CHECK_LT(0, nonExtendable);
+  }
+
+  GUM_TEST(ChoicesAreArcsOfTheResult) {
+    // 3->2, 3->4, 0-2, 0-4 (not extendable): both orientations of 0-4 are derived, the
+    // resolution of the double-headed arc keeps 0->4
+    gum::MixedGraph mg;
+    mg.addNodes(5);
+    mg.addArc(3, 2);
+    mg.addArc(3, 4);
+    mg.addEdge(0, 2);
+    mg.addEdge(0, 4);
+    gum::MeekRules mr;
+    const auto     dag = mr.propagateToDAG(mg);
+    CHECK(dag.existsArc(0, 4));
+    CHECK((mr.choices() == std::vector< gum::Arc >{gum::Arc(0, 4)}));
+    const auto cpdag = mr.propagateToCPDAG(mg);
+    CHECK(cpdag.existsArc(0, 4));
+    CHECK((mr.choices() == std::vector< gum::Arc >{gum::Arc(0, 4)}));
+
+    // random PDAGs: each choice is an arc of the result, at most one choice per pair of nodes
+    const auto checkChoices = [](const std::vector< gum::Arc >& choices, const auto& result) {
+      gum::EdgeSet pairs;
+      for (const auto& arc: choices) {
+        CHECK(result.existsArc(arc.tail(), arc.head()));
+        const gum::Edge pair(arc.tail(), arc.head());
+        CHECK(!pairs.contains(pair));
+        pairs.insert(pair);
+      }
+    };
+    int resolutions = 0;   // the choices of propagateToCPDAG: resolved double-headed arcs
+    for (int i = 0; i < 500; ++i) {
+      const auto pdag    = randomPDAG(4 + gum::randomValue(8), 0.35, 0.3);
+      const auto cpdag_i = mr.propagateToCPDAG(pdag);
+      checkChoices(mr.choices(), cpdag_i);
+      if (!mr.choices().empty()) ++resolutions;
+      const auto oriented = mr.propagateToDAG(pdag);
+      checkChoices(mr.choices(), oriented);
+    }
+    CHECK_LT(0, resolutions);
   }
 
   // non-regression (#207): the DAG must stay in the Markov equivalence class of the CPDAG

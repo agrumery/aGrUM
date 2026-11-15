@@ -54,6 +54,22 @@ namespace gum {
 
   /// Returns the arcs for which the algorithm made an arbitrary orientation choice.
 
-  INLINE const std::vector< Arc >& MeekRules::choices() const { return _choices_; }
+  INLINE std::vector< Arc > MeekRules::choices() const {
+    std::vector< Arc > res;
+    res.reserve(_choices_.size());
+    for (const auto& arc: _choices_)
+      res.push_back(arc);
+    return res;
+  }
+
+  INLINE void MeekRules::_recordChoice_(const Arc& arc) {
+    if (!_choices_.exists(arc) && !_choices_.exists(Arc(arc.head(), arc.tail())))
+      _choices_.insert(arc);
+  }
+
+  INLINE void MeekRules::_keepReverseChoice_(const Arc& erased) {
+    if (_choices_.exists(erased))
+      _choices_.setAtPos(_choices_.pos(erased), Arc(erased.head(), erased.tail()));
+  }
 
 }   // namespace gum

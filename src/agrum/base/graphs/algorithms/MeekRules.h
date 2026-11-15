@@ -48,6 +48,9 @@
 #ifndef GUM_MEEKRULES_H
 #define GUM_MEEKRULES_H
 
+#include <vector>
+
+#include <agrum/base/core/sequence.h>
 #include <agrum/base/graphs/PDAG.h>
 
 namespace gum {
@@ -144,12 +147,16 @@ namespace gum {
     DAG propagateToDAG(const MixedGraph& mg, const NodeProperty< Size >& domainSizes);
 
     /// Returns the arcs for which the algorithm made an arbitrary orientation choice.
-    /** An arc is recorded here when the fixpoint iteration of the rules (for an input which is
-     *  not an extendable PDAG) derives both orientations of an edge. propagateToDAG also records
-     *  the orientations of the edges left undirected by propagateToCPDAG.
+    /** An arc is recorded here (once per pair of nodes) when the fixpoint iteration of the rules
+     *  (for an input which is not an extendable PDAG) derives both orientations of an edge.
+     *  propagateToCPDAG and propagateToDAG then replace it by the orientation kept by the
+     *  resolution of the double-headed arcs, and drop it if both orientations are erased.
+     *  propagateToDAG also records the orientations of the edges left undirected by
+     *  propagateToCPDAG. After propagateToCPDAG or propagateToDAG, each recorded arc is an arc of
+     *  the result.
      *  @return the list of arbitrarily chosen arcs, in order of selection
      */
-    const std::vector< Arc >& choices() const;
+    std::vector< Arc > choices() const;
 
     private:
     /// Applies Meek rules R1–R4 exhaustively and returns the resulting graph.
@@ -159,7 +166,14 @@ namespace gum {
     /// the rules, then the resolution of the double-headed arcs
     PDAG _propagatesToPDAG_(const MixedGraph& mg);
 
-    std::vector< Arc > _choices_;
+    /// the arbitrary choices, in order of selection (at most one orientation per pair of nodes)
+    Sequence< Arc > _choices_;
+
+    /// records arc as a choice, unless one of the orientations of its pair is already recorded
+    void _recordChoice_(const Arc& arc);
+
+    /// the choice recorded as erased (if any) is replaced by its reverse, the orientation kept
+    void _keepReverseChoice_(const Arc& erased);
 
     /// Tries to orient edges incident to xj using Meek rules R1–R4.
     /** @param graph the graph (modified in place)
@@ -170,10 +184,11 @@ namespace gum {
 
     /// Resolves double-headed arcs (x→y and y→x simultaneously) to avoid cycles.
     /** For each double-headed arc, erases one direction based on existing directed paths;
-     *  if neither direction creates a cycle, applies the min-parents heuristic.
+     *  if neither direction creates a cycle, applies the min-parents heuristic. The recorded
+     *  choices follow the orientations kept.
      *  @param mg the graph (modified in place)
      */
-    static void _orientDoubleHeadedArcs_(MixedGraph& mg);
+    void _orientDoubleHeadedArcs_(MixedGraph& mg);
 
     /// Returns true if the edge xi–xj can be oriented as xi→xj under Meek rules R1–R3.
     /** @param graph the graph

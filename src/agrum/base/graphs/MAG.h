@@ -144,6 +144,7 @@ namespace gum {
     NodeSet spouses(NodeId node) const;
 
     /// the mark of the edge src-dst at dst
+    /** @throw NotFound if there is no edge src-dst */
     EdgeMark markAt(NodeId src, NodeId dst) const;
 
     /// @}

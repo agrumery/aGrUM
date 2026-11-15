@@ -116,6 +116,13 @@ Returns
 -------
 bool
   True if X and Y are d-separated (by Z if given), False otherwise.
+
+Raises
+------
+pyagrum.InvalidArgument
+  if X and Y are not disjoint
+pyagrum.InvalidNode
+  if a node of X, Y or Z is not a node of the CPDAG
 "
 
 %feature("docstring") gum::CPDAG::contains

@@ -160,24 +160,31 @@ namespace gum {
     /// @{
 
     /// true if the mark at dst (on the edge src-dst) is an arrowhead
+    /** @throw NotFound if there is no edge src-dst */
     bool isArrowhead(NodeId src, NodeId dst) const;
 
     /// true if the mark at dst (on the edge src-dst) is a tail
+    /** @throw NotFound if there is no edge src-dst */
     bool isTail(NodeId src, NodeId dst) const;
 
     /// true if the mark at dst (on the edge src-dst) is a circle
+    /** @throw NotFound if there is no edge src-dst */
     bool isCircle(NodeId src, NodeId dst) const;
 
     /// true if the edge is x->y (tail at x, arrowhead at y)
+    /** @throw NotFound if there is no edge x-y */
     bool isDefinitelyDirected(NodeId x, NodeId y) const;
 
     /// true if the edge is x<->y
+    /** @throw NotFound if there is no edge x-y */
     bool isBidirected(NodeId x, NodeId y) const;
 
     /// true if the edge is x--y (tail at both ends)
+    /** @throw NotFound if there is no edge x-y */
     bool isUndirected(NodeId x, NodeId y) const;
 
     /// true if z is a collider on the path x-z-y (arrowheads at z on both edges)
+    /** @throw NotFound if there is no edge x-z or no edge z-y */
     bool isDefCollider(NodeId x, NodeId z, NodeId y) const;
 
     /// @}

@@ -45,9 +45,20 @@
 
 namespace gum::graph {
 
+  namespace detail {
+    template < typename G >
+    void checkSeparationNodes(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
+      for (const NodeSet* nodes: {&X, &Y, &Z})
+        for (const auto node: *nodes)
+          if (!g.existsNode(node))
+            GUM_ERROR(InvalidNode, "Node " << node << " is not a node of the graph.")
+    }
+  }   // namespace detail
+
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
     if (X == Y) GUM_ERROR(InvalidArgument, "Nodes X and Y must be different.")
+    detail::checkSeparationNodes(g, NodeSet{X}, NodeSet{Y}, Z);
     if (Z.contains(X) || Z.contains(Y)) return true;   // an observed node is separated
     NodeSet qX;
     qX.insert(X);
@@ -57,6 +68,7 @@ namespace gum::graph {
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
     if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
+    detail::checkSeparationNodes(g, X, Y, Z);
     // the observed nodes of Y are separated (the observed nodes of X start no path)
     return (graph::dConnected(g, X, Z) * (Y - Z)).empty();
   }
@@ -64,6 +76,7 @@ namespace gum::graph {
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z) {
     if (X == Y) GUM_ERROR(InvalidArgument, "Nodes X and Y must be different.")
+    detail::checkSeparationNodes(g, NodeSet{X}, NodeSet{Y}, Z);
     if (Z.contains(X) || Z.contains(Y)) return true;   // an observed node is separated
     NodeSet query{Z};
     query.insert(X);
@@ -77,6 +90,7 @@ namespace gum::graph {
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z) {
     if (!(X * Y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
+    detail::checkSeparationNodes(g, X, Y, Z);
 
     NodeSet query{Z};
     query += X;

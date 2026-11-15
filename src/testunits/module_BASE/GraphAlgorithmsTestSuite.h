@@ -42,6 +42,7 @@
 #pragma once
 
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include <agrum/base/graphs/algorithms/ancestral.h>
@@ -244,6 +245,24 @@ namespace gum_tests {
     CHECK_EQ(gum::graph::separation(chain, cA, cD, cB), gum::graph::cSeparated(chain, cA, cD, cB));
 
     CHECK_THROWS_AS(gum::graph::separation(dag, A, A, none), gum::InvalidArgument);
+
+    // a node which is not in the graph (in X, Y or Z) is rejected by the three criteria
+    const gum::NodeId  unknown = 99;
+    const gum::NodeSet U{unknown};
+    for (const auto& [x, y, z]: {std::tuple{U, B, none}, {A, U, none}, {A, B, U}}) {
+      CHECK_THROWS_AS(gum::graph::dSeparated(dag, x, y, z), gum::InvalidNode);
+      CHECK_THROWS_AS(gum::graph::cSeparated(cpdag.graph(), x, y, z), gum::InvalidNode);
+      CHECK_THROWS_AS(gum::graph::mSeparation(mag.graph(), x, y, z), gum::InvalidNode);
+      CHECK_THROWS_AS(gum::graph::separation(dag, x, y, z), gum::InvalidNode);
+      CHECK_THROWS_AS(gum::graph::separation(cpdag, x, y, z), gum::InvalidNode);
+      CHECK_THROWS_AS(gum::graph::separation(mag, x, y, z), gum::InvalidNode);
+    }
+    CHECK_THROWS_AS(gum::graph::dSeparated(dag, unknown, id("B"), none), gum::InvalidNode);
+    CHECK_THROWS_AS(gum::graph::dSeparated(dag, id("A"), id("B"), U), gum::InvalidNode);
+    CHECK_THROWS_AS(gum::graph::cSeparated(chain, unknown, cid("D"), none), gum::InvalidNode);
+    CHECK_THROWS_AS(gum::graph::cSeparated(chain, cid("A"), cid("D"), U), gum::InvalidNode);
+    CHECK_THROWS_AS(dag.dSeparation(id("A"), unknown, none), gum::InvalidNode);
+    CHECK_THROWS_AS(mag.mSeparation(unknown, id("B"), none), gum::InvalidNode);
   }
 
   GUM_TEST(SeparationInAClassWithReversibleEdges) {

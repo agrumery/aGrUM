@@ -116,9 +116,18 @@ namespace gum {
     if (!existsNode(x)) GUM_ERROR(InvalidNode, "Node (" << x << ") does not exist.")
     if (!existsNode(y)) GUM_ERROR(InvalidNode, "Node (" << y << ") does not exist.")
     if (x == y) GUM_ERROR(InvalidEdge, "No edge from the node " << x << " to itself.")
-    if (!existsEdge(x, y)) EdgeGraphPart::addEdge(x, y);
+    const bool newEdge = !existsEdge(x, y);
+    // the marks are set before the edge is added: the listeners of onEdgeAdded can read them
     _marks_.set(Arc(x, y), markAtY);
     _marks_.set(Arc(y, x), markAtX);
+    if (newEdge) {
+      try {
+        EdgeGraphPart::addEdge(x, y);
+      } catch (...) {
+        _eraseMarks_(x, y);
+        throw;
+      }
+    }
   }
 
   void MarkedGraph::_eraseMarks_(NodeId x, NodeId y) {

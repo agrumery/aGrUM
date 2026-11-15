@@ -42,6 +42,8 @@
 #pragma once
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/dot/dotOptions.h>
@@ -93,6 +95,34 @@ namespace gum_tests {
     CHECK_THROWS_AS(g.addEdge(1, 1, gum::EdgeMark::Tail, gum::EdgeMark::Arrowhead),
                     gum::InvalidEdge&);
     CHECK(!g.existsEdge(1, 1));
+  }
+
+  /// reads the marks of each edge when it is added
+  class MarkReader: public gum::Listener {
+    public:
+    explicit MarkReader(const gum::MarkedGraph& g) : g_(g) {}
+
+    void whenEdgeAdded(const void*, gum::NodeId x, gum::NodeId y) {
+      marks.emplace_back(g_.markAt(x, y), g_.markAt(y, x));
+    }
+
+    std::vector< std::pair< gum::EdgeMark, gum::EdgeMark > > marks;
+
+    private:
+    const gum::MarkedGraph& g_;
+  };
+
+  GUM_TEST(TheMarksCanBeReadWhenTheEdgeIsAdded) {
+    gum::MarkedGraph g;
+    g.addNodes(3);
+    MarkReader reader(g);
+    GUM_CONNECT(g, onEdgeAdded, reader, MarkReader::whenEdgeAdded);
+    g.addEdge(0, 1, gum::EdgeMark::Tail, gum::EdgeMark::Arrowhead);
+    g.addEdge(1, 2);
+    g.addEdge(0, 1, gum::EdgeMark::Arrowhead, gum::EdgeMark::Arrowhead);   // no new edge
+    REQUIRE_EQ(reader.marks.size(), 2u);
+    CHECK((reader.marks[0] == std::pair{gum::EdgeMark::Arrowhead, gum::EdgeMark::Tail}));
+    CHECK((reader.marks[1] == std::pair{gum::EdgeMark::Circle, gum::EdgeMark::Circle}));
   }
 
   GUM_TEST(DirectedView) {

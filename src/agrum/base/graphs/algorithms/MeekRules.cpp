@@ -133,8 +133,8 @@ namespace gum {
     // the arbitrary choices: the orientations of the edges left undirected
     for (const auto& edge: pdag->edges())
       if (dag.existsArc(edge.first(), edge.second()))
-        _choices_.emplace_back(edge.first(), edge.second());
-      else _choices_.emplace_back(edge.second(), edge.first());
+        _recordChoice_(Arc(edge.first(), edge.second()));
+      else _recordChoice_(Arc(edge.second(), edge.first()));
     return dag;
   }
 
@@ -167,19 +167,22 @@ namespace gum {
           if (tail_head && !head_tail) {
             // Erase the arc from head to tail to avoid cycles
             mg.eraseArc(Arc(arc.head(), arc.tail()));
+            _keepReverseChoice_(Arc(arc.head(), arc.tail()));
             withdrawFlag_arc = true;
 
             // Case 2: There is already a path from head to tail and no path from tail to head
           } else if (!tail_head && head_tail) {
             // Erase the arc from tail to head to avoid cycles
             mg.eraseArc(Arc(arc.tail(), arc.head()));
+            _keepReverseChoice_(Arc(arc.tail(), arc.head()));
             withdrawFlag_arc = true;
 
             // Case 3: There is no path between tail and head
           } else if (!tail_head && !head_tail) {
             // Choose an arbitrary orientation and erase the corresponding arc
-            // mg.eraseArc(Arc(arc.head(), arc.tail()));
-            mg.eraseArc(_selectArcToEraseByMinParents_(mg, arc.tail(), arc.head()));
+            const Arc erased = _selectArcToEraseByMinParents_(mg, arc.tail(), arc.head());
+            mg.eraseArc(erased);
+            _keepReverseChoice_(erased);
             withdrawFlag_arc = true;
           }
 
@@ -200,6 +203,8 @@ namespace gum {
           auto arc = *it;
           mg.eraseArc(Arc(arc.head(), arc.tail()));
           mg.eraseArc(Arc(arc.tail(), arc.head()));
+          _choices_.erase(Arc(arc.head(), arc.tail()));   // no orientation kept
+          _choices_.erase(Arc(arc.tail(), arc.head()));
           L.erase(arc);
         }
       }
@@ -241,7 +246,7 @@ namespace gum {
       }
       if (i_j && j_i) {
         // GUM_TRACE(" + add arc (" << xi << "," << xj << ")")
-        _choices_.emplace_back(xi, xj);
+        _recordChoice_(Arc(xi, xj));
       }
     }
     return res;

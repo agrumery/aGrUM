@@ -71,6 +71,13 @@
 
 namespace gum::graph {
 
+  namespace detail {
+    /// @throw InvalidNode if a node of @p X, @p Y or @p Z is not a node of @p g (shared by the
+    /// separation criteria: an unknown node would otherwise be reported as separated)
+    template < typename G >
+    void checkSeparationNodes(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z);
+  }   // namespace detail
+
   /**
    * @brief Returns true iff @p X and @p Y are d-separated by @p Z in @p g.
    *
@@ -85,6 +92,7 @@ namespace gum::graph {
    * @return true if X ⊥ Y | Z in the d-separation sense (always true if X or Y belongs to Z: an
    * observed node is separated from any node).
    * @throw InvalidArgument if X and Y are the same node.
+   * @throw InvalidNode if X, Y or a node of Z is not a node of g.
    */
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);
@@ -104,6 +112,7 @@ namespace gum::graph {
    * @return true if X ⊥ Y | Z in the d-separation sense. The nodes of X and Y which belong to Z
    * are observed, hence separated from any node: the result is the one for X \ Z and Y \ Z.
    * @throw InvalidArgument if X and Y are not disjoint.
+   * @throw InvalidNode if a node of X, Y or Z is not a node of g.
    */
   template < GUM_DiGraphable G >
   bool dSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z);
@@ -128,6 +137,7 @@ namespace gum::graph {
    * @return true if X ⊥ Y | Z in the c-separation sense (always true if X or Y belongs to Z: an
    * observed node is separated from any node).
    * @throw InvalidArgument if X and Y are the same node.
+   * @throw InvalidNode if X, Y or a node of Z is not a node of g.
    */
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, NodeId X, NodeId Y, const NodeSet& Z);
@@ -145,6 +155,7 @@ namespace gum::graph {
    * @param Z Conditioning set.
    * @return true if X ⊥ Y | Z in the c-separation sense.
    * @throw InvalidArgument if X and Y are not disjoint.
+   * @throw InvalidNode if a node of X, Y or Z is not a node of g.
    */
   template < GUM_MixedGraphable G >
   bool cSeparated(const G& g, const NodeSet& X, const NodeSet& Y, const NodeSet& Z);

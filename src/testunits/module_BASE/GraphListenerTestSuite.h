@@ -154,7 +154,7 @@ namespace gum_tests {
       int _nbrNode_, _nbrArcs_, _nbrEdges_;
 
       public:
-      MixedGraphCounter(gum::MixedGraph* g) : gum::MixedGraphListener(g) {
+      MixedGraphCounter(const gum::MixedGraph* g) : gum::MixedGraphListener(g) {
         _nbrNode_ = _nbrArcs_ = _nbrEdges_ = 0;
       }
 

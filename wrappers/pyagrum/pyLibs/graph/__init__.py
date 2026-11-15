@@ -503,10 +503,12 @@ def mixedOrientedPath(g, source, target) -> list[int] | None:
 
 def degeneracyOrdering(g) -> list[int]:
   """
-  A degeneracy (smallest-last) ordering of the skeleton of a graph with arcs and edges (family AE).
+  A degeneracy (smallest-last) ordering of a graph with arcs and edges (family AE), whatever their orientation.
 
-  Every node has at most d neighbours (by an arc or an edge) before it in the ordering, where d is the
-  degeneracy of the skeleton, the smallest such bound.
+  Every node has at most d connections (arcs and edges) with the nodes before it in the ordering, where d is
+  the smallest such bound. Two nodes connected twice (``x->y`` and ``y->x``, or ``x->y`` and ``x-y``) count as
+  two connections, so that d may exceed the degeneracy of the skeleton. When two nodes are never connected
+  twice (a PDAG, a CPDAG...), d is the degeneracy of the skeleton.
 
   Parameters
   ----------
@@ -754,6 +756,10 @@ def separation(g, X, Y, Z=None) -> bool:
   ------
   pyagrum.InvalidArgument
     if ``X`` and ``Y`` are not disjoint
+  pyagrum.InvalidNode
+    if a node id is not a node of the graph
+  pyagrum.NotFound
+    if a node name is not a name of the graph
 
   References
   ----------

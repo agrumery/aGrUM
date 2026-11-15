@@ -50,6 +50,7 @@
 
 #include <agrum/base/graphs/algorithms/ancestral.h>
 #include <agrum/base/graphs/algorithms/generic/reachability.h>
+#include <agrum/base/graphs/algorithms/generic/separation.h>
 #include <agrum/base/graphs/MAG.h>
 
 namespace gum::graph {
@@ -141,6 +142,7 @@ namespace gum::graph {
 
   bool mSeparation(const MarkedGraph& g, const NodeSet& x, const NodeSet& y, const NodeSet& z) {
     if (!(x * y).empty()) GUM_ERROR(InvalidArgument, "NodeSets X and Y must be disjoint.")
+    detail::checkSeparationNodes(g, x, y, z);
     const auto anteriorToZ = anteriorWalks(g, z) + z;   // ant(z) of Richardson and Spirtes
     // as graph::dSeparated: an observed node of x or y is separated from any node (it remains a
     // node of z on the paths between the other ones)

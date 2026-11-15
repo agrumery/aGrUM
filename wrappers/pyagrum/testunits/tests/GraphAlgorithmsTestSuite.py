@@ -339,6 +339,13 @@ class TestGraphAlgorithms(pyAgrumTestCase):
     self.assertEqual(gg.separation(chain, "A", "D", "B"), chain.cSeparation(0, 3, {1}))
     with self.assertRaises(gum.InvalidArgument):
       gg.separation(dag, "A", ["A", "B"])
+    # a node which is not in the graph is rejected (it was reported as separated)
+    with self.assertRaises(gum.InvalidNode):
+      dag.dSeparation(0, 99, set())
+    with self.assertRaises(gum.InvalidNode):
+      gum.MAG.fromDAG(dag).mSeparation({0}, {1}, {99})
+    with self.assertRaises(gum.InvalidNode):
+      chain.cSeparation(0, 99, set())
 
   def testInputOutput(self):
     self.assertIs(gg.fromGUMString, gum.graphFromGUMString)
