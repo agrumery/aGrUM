@@ -163,17 +163,17 @@ def counterfactualModel(cm, whatif=None, profile=None):
     """
     Build the twin network of Balke and Pearl for a counterfactual query.
 
-    The twin network contains the real world (the observational Bayesian
-    network of *cm*) and the counterfactual world: a copy ``V*`` of each
-    variable of *whatif* and of each of their descendants. A copy of a
-    *whatif* variable has no parent and a uniform prior; any other copy has
-    the conditional probability table of its original, its parents being the
-    copies of the original parents when they exist, the original parents
-    otherwise. The other variables, in particular the parentless ones, are
-    shared by both worlds. A counterfactual distribution is a posterior in
-    this network: the profile is observed in the real world and the
-    counterfactual values are given to the copies (see
-    `pyagrum.counterfactual`).
+    The twin network :cite:p:`balke1994probabilistic` contains the real
+    world (the observational Bayesian network of *cm*) and the
+    counterfactual world: a copy ``V*`` of each variable of *whatif* and of
+    each of their descendants. A copy of a *whatif* variable has no parent
+    and a uniform prior; any other copy has the conditional probability
+    table of its original, its parents being the copies of the original
+    parents when they exist, the original parents otherwise. The other
+    variables, in particular the parentless ones, are shared by both worlds.
+    A counterfactual distribution is a posterior in this network: the
+    profile is observed in the real world and the counterfactual values are
+    given to the copies (see `pyagrum.counterfactual`).
 
     Parameters
     ----------
