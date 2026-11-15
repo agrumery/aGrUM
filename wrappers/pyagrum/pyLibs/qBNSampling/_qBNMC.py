@@ -45,7 +45,7 @@ from qiskit.circuit.library import RYGate, XGate
 from qiskit_aer import AerSimulator
 from qiskit_aer.primitives import SamplerV2
 
-from pyagrum import BayesNet, Instantiation, OperationNotAllowed
+from pyagrum import BayesNet, Instantiation, OperationNotAllowed, randomValue
 from pyagrum import Tensor as Tensor
 
 
@@ -435,7 +435,8 @@ class qBNMC:
         Variable name → probability vector over its domain.
     """
     backend_aer = AerSimulator()
-    sampler_aer = SamplerV2()
+    # the shots follow the generator of pyAgrum (see pyagrum.initRandom)
+    sampler_aer = SamplerV2(seed=randomValue(2**31 - 1))
     circuit_aer = transpile(circuit, backend=backend_aer)
     job_aer = sampler_aer.run([circuit_aer], shots=shots)
     counts_aer = job_aer.result()[0].data.meas.get_counts()

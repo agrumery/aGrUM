@@ -348,6 +348,23 @@ def setNodesOptions(
       options.setNodeTooltip(i, f"({i}) {n}{res}")
 
 
+def _widthBounds(linkWidth: dict | None) -> tuple[float, float]:
+  """The smallest and the largest values shown by the widths of the links ((0, 0) without any)."""
+  return (min(linkWidth.values()), max(linkWidth.values())) if linkWidth else (0.0, 0.0)
+
+
+def _scaledWidth(value: float, bounds: tuple[float, float]) -> float:
+  """The width of a link: its value scaled between 0.1 and 5.1 (1.0 if all the values are equal)."""
+  minw, maxw = bounds
+  return 0.1 + 5 * (value - minw) / (maxw - minw) if maxw != minw else 1.0
+
+
+def _linkTooltip(n: int, j: int, separator: str, value=None) -> str:
+  """The tooltip of the link n-j, with its value if given."""
+  ends = f"{n}&nbsp;{separator}&nbsp;{j}"
+  return ends if value is None else f"{ends} : {value}"
+
+
 def setLinksOptions(
   options: pyagrum.DotOptions,
   links,
@@ -377,13 +394,12 @@ def setLinksOptions(
   separator: str
     the html entity between the ends of the arc in its tooltip
   """
-  minw, maxw = (0.0, 100.0) if linkWidth is None else (min(linkWidth.values()), max(linkWidth.values()))
+  bounds = _widthBounds(linkWidth)
   for a in links:
     (n, j) = a
     if linkWidth is not None and a in linkWidth:
-      pw = 0.1 + 5 * (linkWidth[a] - minw) / (maxw - minw) if maxw != minw else 1.0
-      options.setArcWidth(n, j, pw)
-      options.setArcTooltip(n, j, f"{n}&nbsp;{separator}&nbsp;{j} : {linkWidth[a]}")
+      options.setArcWidth(n, j, _scaledWidth(linkWidth[a], bounds))
+      options.setArcTooltip(n, j, _linkTooltip(n, j, separator, linkWidth[a]))
     if linkColor is not None and a in linkColor:
       options.setArcColor(n, j, proba2color(linkColor[a], cmapLink))
     if linkLabel is not None and a in linkLabel:
@@ -589,20 +605,18 @@ def inferenceArcsDot(arcs, nameOf, arcWidth: dict | None, arcColor: dict | None,
     the dot text of the arcs
   """
   link, symbol = ("->", "&rarr;") if oriented else ("--", "&mdash;")
-  minWidth = min(arcWidth.values()) if arcWidth else 0
-  maxWidth = max(arcWidth.values()) if arcWidth else 0
+  bounds = _widthBounds(arcWidth)
 
   res = ""
   for a in arcs:
     (n, j) = a
     pw = 1.0
-    av = f"{n}&nbsp;{symbol}&nbsp;{j}"
+    av = _linkTooltip(n, j, symbol)
     col = getBlackInTheme()
 
     if arcWidth is not None and a in arcWidth:
-      if maxWidth != minWidth:
-        pw = 0.1 + 5 * (arcWidth[a] - minWidth) / (maxWidth - minWidth)
-      av = f"{n}&nbsp;{symbol}&nbsp;{j} : {arcWidth[a]}"
+      pw = _scaledWidth(arcWidth[a], bounds)
+      av = _linkTooltip(n, j, symbol, arcWidth[a])
 
     if arcColor is not None and a in arcColor:
       col = proba2color(arcColor[a], cmapArc)

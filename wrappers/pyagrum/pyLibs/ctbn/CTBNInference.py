@@ -68,6 +68,11 @@ def _drawSeed() -> int:
   return pyagrum.randomValue(2**31 - 1)
 
 
+def _checkNbTrajectories(nbTrajectories: int) -> None:
+  if nbTrajectories < 1:
+    raise pyagrum.InvalidArgument(f"the number of trajectories must be positive (got {nbTrajectories})")
+
+
 def _sampleTrajectory(model: CTBN, timeHorizon: float, burnIn: int, seed: int) -> tuple[int, dict[str, np.ndarray]]:
   # run in a child process by ForwardSamplingInference.makeParallelInference: the posteriors are
   # given back as arrays (the tensors filled in the child are not shared with the parent)
@@ -410,7 +415,13 @@ class ForwardSamplingInference(CTBNInference):
     -------
     list[int]
         The number of runs of each sampling.
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If ``nbTrajectories`` is not positive.
     """
+    _checkNbTrajectories(nbTrajectories)
     seeds = [_drawSeed() for _ in range(nbTrajectories)]
     with ProcessPoolExecutor(max_workers=min(nbTrajectories, os.cpu_count() or 1)) as executor:
       results = list(executor.map(_sampleTrajectory, repeat(self._model), repeat(timeHorizon), repeat(burnIn), seeds))
@@ -432,7 +443,13 @@ class ForwardSamplingInference(CTBNInference):
         Duration of the sampling.
     burnIn : int
         Number of runs before starting the sampling (to ensure ergodicity).
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If ``nbTrajectories`` is not positive.
     """
+    _checkNbTrajectories(nbTrajectories)
     posteriorsList = [
       {nod: _newTensor(self._model.variable(nod)) for nod in self._model.names()} for _ in range(nbTrajectories)
     ]

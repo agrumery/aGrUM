@@ -620,7 +620,6 @@ class TestConfig(pyAgrumTestCase):
   def testKeysDeprecatedWithoutReplacement(self):
     # transitory: to be removed together with these deprecated keys in defaults.ini
     unused = (
-      ("credalnet", "histo_max_color"),
       ("bnmixture", "line_size"),
       ("bnmixture", "default_line_size"),
       ("ctbn", "show_latent_names"),

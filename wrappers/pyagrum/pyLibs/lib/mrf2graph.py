@@ -199,6 +199,11 @@ def MRFinference2UGdot(
   -------
   pydot.Dot
       The desired representation of the inference.
+
+  Warnings
+  --------
+  The images of the nodes are written in a temporary directory, removed when the returned graph is
+  deleted: render the graph (or its dot text) while the graph is alive.
   """
   if evs is None:
     evs = {}
@@ -280,6 +285,11 @@ def MRFinference2FactorGraphdot(
   -------
   pydot.Dot
       The desired representation of the inference.
+
+  Warnings
+  --------
+  The images of the nodes are written in a temporary directory, removed when the returned graph is
+  deleted: render the graph (or its dot text) while the graph is alive.
   """
   if evs is None:
     evs = {}

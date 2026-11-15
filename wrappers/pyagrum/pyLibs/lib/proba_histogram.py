@@ -490,7 +490,7 @@ def probaMinMaxH(
   vmin.reverse()
   vmax = pmax.tolist()
   vmax.reverse()
-  barsmax = ax.barh(ra, vmax, align="center", color="#BBFFAA")
+  barsmax = ax.barh(ra, vmax, align="center", color=pyagrum.config["credalnet", "histoMaxColor"])
   barsmin = ax.barh(ra, vmin, align="center", color=pyagrum.config["histogram", "color"])
 
   if pyagrum.config.typed["histogram", "usePercent"]:

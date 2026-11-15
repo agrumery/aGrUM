@@ -18,9 +18,10 @@
       `tensor.visibleDigits`...), `notebook.histogram_*` → `histogram.*`, `notebook.graphdiff_*` → `graphdiff.*`, the
       other keys of `notebook`, `factorgraph`, `influenceDiagram`, `credalnet`, `causal`, `ROC`, `ctbn` and `bnmixture`
       in lowerCamelCase (`notebook.graph_format` → `notebook.graphFormat`, `ctbn.graph_size` → `ctbn.graphSize`...).
-      `credalnet.histo_max_color`, `bnmixture.line_size` and `ctbn.show_latent_names`, `ctbn.latent_bgcolor`,
-      `ctbn.latent_fgcolor`, no longer used, are deprecated after 3.3.2. The arcs of the drawings of `bnmixture` use
-      `bnmixture.arcCmap` (it was read from `notebook.arcCmap`).
+      `bnmixture.line_size` and `ctbn.show_latent_names`, `ctbn.latent_bgcolor`, `ctbn.latent_fgcolor`, no longer
+      used, are deprecated after 3.3.2. The arcs of the drawings of `bnmixture` use `bnmixture.arcCmap` (it was read
+      from `notebook.arcCmap`). The color of the upper bounds in the histograms of a credal network is the new key
+      `credalnet.histoMaxColor` (it was fixed; `credalnet.histo_max_color`, never read, now redirects to it).
     - `showROC_PR(bgcolor=...)` now colors the background of the figure (it was ignored).
     - The keys of the configuration are displayed as they are declared (`maxNumberOfThreads`, it was `maxnumberofthreads`),
       in `print(pyagrum.config)`, `grep`, `diff`, `schema()` and in the messages; they are still found whatever their case.

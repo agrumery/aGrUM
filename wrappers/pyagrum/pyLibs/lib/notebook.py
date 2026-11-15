@@ -119,13 +119,17 @@ class FlowLayout:
 
   def add_html(self, html: str, caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
-    add an html element in the row (title is an obsolete parameter)
+    add an html element in the row
+
+    Warnings
+    --------
+    ``title`` is deprecated after 0.22.7, use ``caption`` instead.
     """
     if caption is None:
       if title is None:
         cap = ""
       else:
-        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
+        warnings.warn("`title` is deprecated after 0.22.7, use `caption` instead.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption
@@ -143,13 +147,16 @@ class FlowLayout:
   def add_plot(self, oAxes: "mpl.axes.Axes", caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
     Add a PNG representation of a Matplotlib Axes object
-    (title is an obsolete parameter)
+
+    Warnings
+    --------
+    ``title`` is deprecated after 0.22.7, use ``caption`` instead.
     """
     if caption is None:
       if title is None:
         cap = ""
       else:
-        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
+        warnings.warn("`title` is deprecated after 0.22.7, use `caption` instead.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption
@@ -190,13 +197,16 @@ class FlowLayout:
   def add(self, obj, caption: str | None = None, title: str | None = None) -> "FlowLayout":
     """
     add an element in the row by trying to treat it as plot or html if possible.
-    (title is an obsolete parameter)
+
+    Warnings
+    --------
+    ``title`` is deprecated after 0.22.7, use ``caption`` instead.
     """
     if caption is None:
       if title is None:
         cap = ""
       else:
-        warnings.warn("`title` is obsolete since `0.22.8`. Please use `caption`.", DeprecationWarning, stacklevel=2)
+        warnings.warn("`title` is deprecated after 0.22.7, use `caption` instead.", DeprecationWarning, stacklevel=2)
         cap = title
     else:
       cap = caption

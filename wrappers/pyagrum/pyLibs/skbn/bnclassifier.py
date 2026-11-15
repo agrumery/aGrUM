@@ -570,31 +570,29 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self, bn, targetAttribute, targetModality="", copy=False, threshold=0.5, variableList=None, dtype=str
   ):
     """
-    parameters:
-        bn: `pyagrum.BayesNet`
-            The Bayesian network we want to use for this classifier
-        targetAttribute: str
-            the attribute that will be the target in this classifier
-        targetModality: str
-            If this is a binary classifier we have to specify which modality we are looking at if the target
-            attribute has more than 2 possible values
-            if !="", a binary classifier is created.
-            if =="", a classifier is created that can be non-binary depending on the number of modalities
-            for targetAttribute. If binary, the second one is taken as targetModality.
-        copy: bool
-            Indicates whether we want to put a copy of bn in the classifier, or bn itself.
-        threshold: double
-            The classification threshold. If the probability that the target modality is true is larger than this
-            threshold we predict that modality
-        variableList: list(str)
-            A list of strings. variableList[i] is the name of the variable that has the index i. We use this information
-            when calling predict to know which column corresponds to which variable.
-            If this list is set to none, then we use the order in which the variables were added to the network.
+    Creates a BN classifier from an already trained pyAgrum Bayesian network.
 
-    returns:
-        void
-
-    Creates a BN classifier from an already trained pyAgrum Bayesian network
+    Parameters
+    ----------
+    bn : pyagrum.BayesNet
+        The Bayesian network we want to use for this classifier
+    targetAttribute : str
+        the attribute that will be the target in this classifier
+    targetModality : str
+        If this is a binary classifier we have to specify which modality we are looking at if the target
+        attribute has more than 2 possible values
+        if !="", a binary classifier is created.
+        if =="", a classifier is created that can be non-binary depending on the number of modalities
+        for targetAttribute. If binary, the second one is taken as targetModality.
+    copy : bool
+        Indicates whether we want to put a copy of bn in the classifier, or bn itself.
+    threshold : float
+        The classification threshold. If the probability that the target modality is true is larger than this
+        threshold we predict that modality
+    variableList : list[str]
+        A list of strings. variableList[i] is the name of the variable that has the index i. We use this information
+        when calling predict to know which column corresponds to which variable.
+        If this list is set to none, then we use the order in which the variables were added to the network.
     """
 
     self.fromModel_ = True
