@@ -11,4 +11,4 @@ print(f"MutualInformation(A;B,G)={it.mutualInformationXY():.4f}")
 print(f"MutualInformation(A;B,G|C)={it.mutualInformationXYgivenZ():.4f}")
 # MutualInformation(A;B,G|C)=0.1463
 print(f"VariationOfInformation(A;B,G)={it.variationOfInformationXY():.4f}")
-# VariationOfInformation(A;B,G)=2.9740
+# VariationOfInformation(A;B,G)=2.7072

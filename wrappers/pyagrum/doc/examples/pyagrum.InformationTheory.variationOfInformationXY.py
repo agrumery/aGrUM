@@ -7,4 +7,4 @@ bn.cpt("Y").fillWith([0.7, 0.3, 0.1, 0.9])
 ie = gum.LazyPropagation(bn)
 it = gum.InformationTheory(ie, "X", "Y", "Z")
 round(it.variationOfInformationXY(), 4)  # H(X|Y) + H(Y|X)
-# 1.9858
+# 1.717

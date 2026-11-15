@@ -16677,7 +16677,7 @@ class InformationTheory(object):
         Returns
         -------
           float
-            The variation of information between nodeset X and nodeset Y
+            The variation of information between nodeset X and nodeset Y: H(X|Y) + H(Y|X)
 
         """
         return _pyagrumcpp.InformationTheory_variationOfInformationXY(self)

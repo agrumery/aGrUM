@@ -320,6 +320,10 @@
     - `MCBNDistance` and `GibbsBNdistance` underestimated the Hellinger distance when the supports of the two BNs
       differ (the mass of Q where P is 0, never drawn, was missing): it is now computed as sqrt(2 - 2 rho) from the
       estimate of the Bhattacharyya coefficient rho.
+    - `InformationTheory` erased the joint targets of the inference given as argument (only X, Y and Z remained): they
+      are now restored.
+    - `InformationTheory.variationOfInformationXY` returned H(X)+H(Y) instead of H(X|Y)+H(Y|X) = H(X)+H(Y)-2I(X;Y)
+      (the test checked the same wrong formula).
     - FCI, Possible-D-Sep phase: a node adjacent to X or Y through a mandatory arc only was never tested as a
       singleton separating set (the pair may have been removed by the skeleton phase before the arc was added back).
     - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few

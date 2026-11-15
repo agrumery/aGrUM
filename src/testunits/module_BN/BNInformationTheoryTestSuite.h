@@ -86,9 +86,11 @@ namespace gum_tests {
                     - (it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
                GUM_VERY_SMALL_ERROR);
 
-      // V(X,Y)=2H(X,Y)-H(X)-H(Y)
+      // V(X,Y)=2H(X,Y)-H(X)-H(Y)=H(X|Y)+H(Y|X)
       CHECK_LT(fabs((it.variationOfInformationXY())
-                    - (2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+                    - (2 * it.entropyXY() - it.entropyX() - it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
+      CHECK_LT(fabs((it.variationOfInformationXY()) - (it.entropyXgivenY() + it.entropyYgivenX())),
                GUM_VERY_SMALL_ERROR);
     }
 
@@ -387,5 +389,31 @@ namespace gum_tests {
       CHECK_LT(fabs((mi(arc.first(), arc.second())) - (it.mutualInformationXY())),
                GUM_VERY_SMALL_ERROR);
     }
+  }
+
+  GUM_TEST(KeepsTheJointTargetsOfTheEngine) {
+    auto                 bn = gum::BayesNet< double >::fastPrototype("A->B->C->D->E;A->E");
+    gum::LazyPropagation ie(&bn);
+    ie.addJointTarget(bn.nodeset({"A", "B"}));
+    ie.addJointTarget(bn.nodeset({"D", "E"}));
+    const auto targets = ie.jointTargets();
+
+    // a joint posterior of A, C and E is needed: the targets of the engine must be the same after
+    auto it = gum::InformationTheory(ie, {"A"}, {"C"}, {"E"});
+    CHECK_EQ(ie.jointTargets(), targets);
+    // X, Y and Z containing a former target ({A,B} is contained in {A,B,C})
+    const auto it2 = gum::InformationTheory(ie, {"A", "B"}, {"C"});
+    CHECK_EQ(ie.jointTargets(), targets);
+    // X and Y contained in a target
+    const auto it3 = gum::InformationTheory(ie, {"D"}, {"E"});
+    CHECK_EQ(ie.jointTargets(), targets);
+
+    // the results do not depend on the targets of the engine
+    gum::LazyPropagation fresh(&bn);
+    auto                 ref = gum::InformationTheory(fresh, {"A"}, {"C"}, {"E"});
+    CHECK_LT(fabs(it.mutualInformationXYgivenZ() - ref.mutualInformationXYgivenZ()),
+             GUM_VERY_SMALL_ERROR);
+    ie.makeInference();
+    GUM_CHECK_ASSERT_THROWS_NOTHING(ie.jointPosterior(bn.nodeset({"A", "B"})));
   }
 }   // namespace gum_tests

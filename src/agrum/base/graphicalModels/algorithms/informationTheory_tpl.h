@@ -118,6 +118,9 @@ namespace gum {
       vZ_.insert(&engine_.model().variable(z));
 
     const NodeSet joint_vars = X_ + Y_ + Z_;
+    // the joint targets of the engine are restored at the end: the engine of the user is not
+    // changed
+    const auto savedTargets = engine_.jointTargets();
     if (!engine_.isJointTarget(joint_vars)) {
       // we check if it is not an implicit target : containng a node and some of its parent (could
       // be better)
@@ -127,10 +130,7 @@ namespace gum {
           implicit_target = true;
           break;
         }
-      if (!implicit_target) {
-        engine_.eraseAllJointTargets();
-        engine_.addJointTarget(joint_vars);
-      }
+      if (!implicit_target) engine_.addJointTarget(joint_vars);
     }
     engine_.makeInference();
 
@@ -145,6 +145,13 @@ namespace gum {
     }
     pX_ = pXY_.sumIn(vX_);
     pY_ = pXY_.sumIn(vY_);
+
+    // (adding joint_vars may also have removed the joint targets that it contains)
+    if (engine_.jointTargets() != savedTargets) {
+      engine_.eraseAllJointTargets();
+      for (const auto& target: savedTargets)
+        engine_.addJointTarget(target);
+    }
   }
 
   INFORMATION_THEORY_TEMPLATE
@@ -232,9 +239,12 @@ namespace gum {
 
   INFORMATION_THEORY_TEMPLATE
   GUM_SCALAR InformationTheory< INFERENCE_ENGINE, GUM_SCALAR >::variationOfInformationXY() {
-    return -pXY_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
-      // f(x,y)= -log(p(x)*p(y))
-      return GUM_LOG2_OR_0(pY_[i] * pX_[i]);
+    return pXY_.expectedValue([this](const gum::Instantiation& i) -> GUM_SCALAR {
+      // f(x,y)= -log(p(x,y)^2/(p(x)*p(y))) = -log p(x|y) - log p(y|x)
+      const auto& pxy = pXY_[i];
+      if (pxy == GUM_SCALAR(0.0)) return GUM_SCALAR(0.0);
+
+      return -GUM_LOG2_OR_0(pxy * pxy / (pX_[i] * pY_[i]));
     });
   }
 

@@ -163419,7 +163419,7 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"  float\n"
-		"    The variation of information between nodeset X and nodeset Y\n"
+		"    The variation of information between nodeset X and nodeset Y: H(X|Y) + H(Y|X)\n"
 		"\n"
 		""},
 	 { "InformationTheory_entropyXYgivenZ", _wrap_InformationTheory_entropyXYgivenZ, METH_O, "\n"

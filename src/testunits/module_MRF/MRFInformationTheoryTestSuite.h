@@ -84,9 +84,11 @@ namespace gum_tests {
                     - (it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
                GUM_VERY_SMALL_ERROR);
 
-      // V(X,Y)=2H(X,Y)-H(X)-H(Y)
+      // V(X,Y)=2H(X,Y)-H(X)-H(Y)=H(X|Y)+H(Y|X)
       CHECK_LT(fabs((it.variationOfInformationXY())
-                    - (2 * it.entropyXY() - it.entropyXgivenY() - it.entropyYgivenX())),
+                    - (2 * it.entropyXY() - it.entropyX() - it.entropyY())),
+               GUM_VERY_SMALL_ERROR);
+      CHECK_LT(fabs((it.variationOfInformationXY()) - (it.entropyXgivenY() + it.entropyYgivenX())),
                GUM_VERY_SMALL_ERROR);
     }
 
