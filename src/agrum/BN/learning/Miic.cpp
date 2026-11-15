@@ -648,7 +648,7 @@ namespace gum {
         double       Pyz  = std::get< 3 >(triple);
 
         if (Ixyz <= 0) {
-          const double expo = std::exp(Ixyz);
+          const double expo = std::exp(Ixyz * M_LN2);
           const double P0   = (1 + expo) / (1 + 3 * expo);
           if (Pxz == Pyz && Pyz == 0.5) {
             std::get< 2 >(triple) = P0;
@@ -661,7 +661,7 @@ namespace gum {
             }
           }
         } else {
-          const double expo = std::exp(-Ixyz);
+          const double expo = std::exp(-Ixyz * M_LN2);
           if (graph.existsArc(x, z) && Pxz >= 0.5) {
             std::get< 3 >(triple) = Pxz * (1 / (1 + expo) - 0.5) + 0.5;
           } else if (graph.existsArc(y, z) && Pyz >= 0.5) {

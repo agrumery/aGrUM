@@ -185,6 +185,9 @@ namespace gum {
       // create the prior
       createPrior_();
 
+      // a score created by a former structure learning follows the current settings
+      if (takeIntoAccountScore && (score_ != nullptr)) createScore_();
+
       // check that the database does not contain any missing value
       if (scoreDatabase_.databaseTable().hasMissingValues()
           || ((priorDatabase_ != nullptr)
@@ -223,6 +226,9 @@ namespace gum {
 
       // create the prior
       createPrior_();
+
+      // a score created by a former structure learning follows the current settings
+      if (takeIntoAccountScore && (score_ != nullptr)) createScore_();
 
       // propagate the messages of dag2BN_ to the BNLearner so that the objects that listen
       // to the BNLearner can be informed of the progress of the EM's execution by dag2BN_

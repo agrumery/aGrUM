@@ -2555,4 +2555,35 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(LearnParametersUsesTheCurrentScore) {
+    // after a structure learning, the parameters take into account the internal prior of the
+    // current score, even if the score was changed after the structure learning
+    gum::DAG dag;
+    for (gum::NodeId i = 0; i < 8; ++i)
+      dag.addNodeWithId(i);
+    for (gum::NodeId i = 0; i < 7; ++i)
+      dag.addArc(i, i + 1);
+
+    gum::learning::BNLearner< double > changed(GET_RESSOURCES_PATH("csv/asia3.csv"));
+    changed.useScoreK2();
+    changed.learnBN();
+    changed.useScoreBDeu();
+    const auto bn_changed = changed.learnParameters(dag);
+
+    gum::learning::BNLearner< double > direct(GET_RESSOURCES_PATH("csv/asia3.csv"));
+    direct.useScoreBDeu();
+    direct.learnBN();
+    const auto bn_direct = direct.learnParameters(dag);
+
+    for (const auto node: dag.nodes()) {
+      const auto& cpt_changed = bn_changed.cpt(node);
+      const auto& cpt_direct  = bn_direct.cpt(node);
+      // both networks have their own variables, in the same order: parse them in lockstep
+      gum::Instantiation inst_direct(cpt_direct);
+      for (gum::Instantiation inst(cpt_changed); !inst.end(); ++inst, ++inst_direct)
+        CHECK_EQ(cpt_changed.get(inst),
+                 doctest::Approx(cpt_direct.get(inst_direct)).epsilon(1e-12));
+    }
+  }
+
 } /* namespace gum_tests */

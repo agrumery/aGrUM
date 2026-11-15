@@ -426,6 +426,9 @@
       configurations of the parents in the wrong order (the binarized network did not have the original CPTs).
     - `kNML` (MIIC's correction) with a prior: the pseudo-counts of the prior were added with the ids of the joint
       counts instead of those of the marginal counts (wrong weights, out-of-bounds access).
+    - `BNLearner`: `learnParameters` (and the initialization of EM) after a structure learning used the score of that
+      learning, not the current one (`useScoreBDeu`... called in between was ignored); MIIC converted its mutual
+      informations (in bits) with `exp` as if they were in nats, which biased the orientation of the triples.
 
 - Optimizations (aGrUM and pyAgrum)
 
