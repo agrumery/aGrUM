@@ -39,7 +39,11 @@
 ############################################################################
 
 """
-This module is deprecated. Please use ``import pyagrum.ktbn``
+Deprecated module for dynamic Bayesian networks: use `pyagrum.ktbn` instead.
+
+Warnings
+--------
+The module ``pyagrum.lib.dynamicBN`` is deprecated after 3.1.1, use `pyagrum.ktbn` instead.
 """
 
 import warnings
@@ -53,7 +57,7 @@ import pyagrum
 import pyagrum.lib.dotstyle as gds
 
 warnings.warn(
-  "This module is deprecated since pyAgrum>=3.2. Please use the new c++ enhanced module : 'import pyagrum.ktbn' instead.",
+  "The module 'pyagrum.lib.dynamicBN' is deprecated after 3.1.1, use 'pyagrum.ktbn' instead.",
   FutureWarning,
   stacklevel=2,
 )

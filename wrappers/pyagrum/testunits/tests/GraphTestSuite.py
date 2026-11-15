@@ -1040,6 +1040,9 @@ class TestGraph(pyAgrumTestCase):
     self.assertFalse(hasattr(gum, "IntEnum"))
 
   def testPAGToMixedGraphKeepsTheNames(self):
+    # transitory: to be removed with PAG.toMixedGraph (deprecated after 3.3.2)
+    if not hasattr(gum.PAG, "toMixedGraph"):
+      self.skipTest("the deprecated PAG.toMixedGraph has been removed")
     pag = gum.fastPAG("A o-> B;B<->C")
     with self.assertWarns(DeprecationWarning):
       mg = pag.toMixedGraph()

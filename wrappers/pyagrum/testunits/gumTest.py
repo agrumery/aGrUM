@@ -104,7 +104,7 @@ def go():
 
   log = logging.getLogger("pyAgrum")
   log.setLevel(logging.DEBUG)  # better to have too much log than not enough
-  fh = logging.FileHandler(logfilename, mode="w", encoding=None, delay=False)
+  fh = logging.FileHandler(logfilename, mode="w", encoding="utf-8", delay=False)
   fh.setFormatter(logging.Formatter(FORMAT))
   log.addHandler(fh)
   log.propagate = False
@@ -187,7 +187,8 @@ def go():
   notif("-" * 70)
   notif(" log file ")
   notif("-" * 70)
-  with open(logfilename) as logfile:
+  # errors="replace": the standard output of the tests is redirected to this file, in another encoding
+  with open(logfilename, encoding="utf-8", errors="replace") as logfile:
     for f in logfile:
       if "[pyAgrum]" in f:
         notif(f.rstrip())

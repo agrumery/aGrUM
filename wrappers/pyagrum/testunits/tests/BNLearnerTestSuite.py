@@ -982,6 +982,14 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     # the DAG orients it, the latent couples are its edges <->
     dag = learner.learnDAG()
     self.assertEqual(dag.sizeArcs(), pag.sizeEdges())
+
+  def testFCILearnPAGDeprecatedToMixedGraph(self):
+    # transitory: to be removed with PAG.toMixedGraph (deprecated after 3.3.2)
+    if not hasattr(gum.PAG, "toMixedGraph"):
+      self.skipTest("the deprecated PAG.toMixedGraph has been removed")
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useFCI().setFCIAlpha(0.05)
+    pag = learner.learnPAG()
     with warnings.catch_warnings():
       warnings.simplefilter("ignore", DeprecationWarning)
       self.assertEqual(pag.toMixedGraph().size(), pag.size())

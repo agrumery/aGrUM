@@ -176,8 +176,13 @@ class TestOtherModelsListeners(pyAgrumTestCase):
 
   def testNoListenerIsANoOp(self):
     for model in (gum.BayesNet(), gum.InfluenceDiagram(), gum.MarkovRandomField()):
-      self.assertIsNone(model.addStructureListener())
-      self.assertFalse(hasattr(model, "_listeners"))
+      with self.subTest(model=type(model).__name__):
+        self.assertIsNone(model.addStructureListener())
+        # nothing is connected: the model still works, and a listener added afterwards is notified
+        events = []
+        model.addStructureListener(whenNodeAdded=lambda i, name: events.append(name))
+        model.add(gum.LabelizedVariable("a", "a", 2))
+        self.assertEqual(events, ["a"])
 
   def testAddStructureListenerReturnsTheListener(self):
     for model, cls in (
@@ -228,7 +233,7 @@ class TestListenerCallbacks(pyAgrumTestCase):
     ie.setBurnIn(10)
     ie.setVerbosity(True)
     messages = []
-    listener = gum.PythonApproximationListener(ie._asIApproximationSchemeConfiguration())
+    listener = gum.PythonApproximationListener(ie)
     listener.setWhenProgress(self._raise)
     listener.setWhenStop(messages.append)
     ie.listener = listener
@@ -248,7 +253,7 @@ class TestListenerCallbacks(pyAgrumTestCase):
 
   def testNonCallableIsRefused(self):
     ie = gum.GibbsSampling(gum.fastBN("A->B"))
-    listener = gum.PythonApproximationListener(ie._asIApproximationSchemeConfiguration())
+    listener = gum.PythonApproximationListener(ie)
     with self.assertRaises(gum.InvalidArgument):
       listener.setWhenStop(42)
     with self.assertRaises(gum.InvalidArgument):

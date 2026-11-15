@@ -40,6 +40,7 @@
 
 import textwrap
 import unittest
+from pathlib import Path
 
 import pyagrum as gum
 import pyagrum.graph as gg
@@ -329,7 +330,8 @@ class TestGraphAlgorithms(pyAgrumTestCase):
       gum.MAG.fromDAG(dag),
     ]
     for Z in (None, "C", "D", ["C", "D"]):
-      expected = dag.dSeparation(gg._nodes(dag, "A"), gg._nodes(dag, "B"), gg._nodes(dag, Z))
+      z = set() if Z is None else {dag.idFromName(name) for name in ([Z] if isinstance(Z, str) else Z)}
+      expected = dag.dSeparation({dag.idFromName("A")}, {dag.idFromName("B")}, z)
       for g in representations:
         with self.subTest(graph=type(g).__name__, Z=Z):
           self.assertEqual(gg.separation(g, "A", "B", Z), expected)
@@ -360,8 +362,8 @@ class TestGraphAlgorithms(pyAgrumTestCase):
       runExample(block, "pyagrum.graph")
 
   def testExampleOfTheSphinxPage(self):
-    with open("../doc/sphinx/graphAlgorithms.rst", encoding="utf-8") as f:
-      blocks = _codeBlocks(f.read())
+    page = Path(__file__).resolve().parents[2] / "doc" / "sphinx" / "graphAlgorithms.rst"
+    blocks = _codeBlocks(page.read_text(encoding="utf-8"))
     self.assertTrue(blocks)
     for block in blocks:
       runExample(block, "graphAlgorithms.rst")

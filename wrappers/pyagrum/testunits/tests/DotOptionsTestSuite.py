@@ -39,6 +39,7 @@
 ############################################################################
 
 import contextlib
+import importlib.util
 import io
 import os
 import shutil
@@ -419,10 +420,6 @@ class TestDotOptions(pyAgrumTestCase):
       import pyagrum.lib.bn_vs_bn as gcm
       import pyagrum.lib.cn2graph as gcn2
       import pyagrum.lib.dotstyle as gds
-
-      with warnings.catch_warnings():  # the deprecation of the module itself is not checked here
-        warnings.filterwarnings("ignore", message="This module is deprecated", category=FutureWarning)
-        import pyagrum.lib.dynamicBN as gdyn
       import pyagrum.lib.id2graph as gid2
       import pyagrum.lib.mrf2graph as gmrf2
       from pyagrum import ctbn
@@ -445,7 +442,6 @@ class TestDotOptions(pyAgrumTestCase):
       "MRFinference2UGdot": gmrf2.MRFinference2UGdot(mrf),
       "MRFinference2FactorGraphdot": gmrf2.MRFinference2FactorGraphdot(mrf),
       "LIMIDinference2dot": gid2.LIMIDinference2dot(diag, "6", gum.ShaferShenoyLIMIDInference(diag), {}, set()),
-      "_TimeSlicesToDot": gdyn._TimeSlicesToDot(gum.fastBN("a0->a1->at")),
       "graphDiffLegend": gcm.graphDiffLegend(),
       "CLG2dot": clgnb.CLG2dot(clg),
       "CLGInference2dot": clgnb.CLGInference2dot(clg),
@@ -454,6 +450,14 @@ class TestDotOptions(pyAgrumTestCase):
       "arcsCompLegend": bnmnb.arcsCompLegend(),
       "generalizedMarkovBlanket": gexpl.generalizedMarkovBlanket(bn, "B"),
     }
+    # transitory: to be removed with pyagrum.lib.dynamicBN (deprecated after 3.1.1)
+    if importlib.util.find_spec("pyagrum.lib.dynamicBN") is not None:
+      with warnings.catch_warnings():  # the deprecation of the module itself is not checked here
+        warnings.filterwarnings(
+          "ignore", message="The module 'pyagrum.lib.dynamicBN' is deprecated", category=FutureWarning
+        )
+        import pyagrum.lib.dynamicBN as gdyn
+      graphs["_TimeSlicesToDot"] = gdyn._TimeSlicesToDot(gum.fastBN("a0->a1->at"))
     if shutil.which("dot"):  # graphDiff positions the nodes with graphviz
       graphs["graphDiff"] = gcm.graphDiff(bn, gum.fastBN("A->B<-C<-D"))
     for name, graph in graphs.items():
@@ -484,6 +488,9 @@ class TestDotOptions(pyAgrumTestCase):
 
   def testDeprecatedColorsModule(self):
     """pyagrum.lib._colors is a deprecated relay to pyagrum.lib.dotstyle."""
+    # transitory: to be removed with pyagrum.lib._colors (deprecated after 3.2.1)
+    if importlib.util.find_spec("pyagrum.lib._colors") is None:
+      self.skipTest("the deprecated module pyagrum.lib._colors has been removed")
     try:
       import pyagrum.lib.dotstyle as gds
     except ImportError:

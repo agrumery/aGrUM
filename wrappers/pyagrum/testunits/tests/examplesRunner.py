@@ -110,16 +110,16 @@ def _trimmed(text: str) -> str:
 def runExample(source: str, name: str = "<example>") -> None:
   """Execute an example; raise AssertionError if a result differs from the one shown.
 
-  The example is isolated: the seed of the random generator, the configuration and the figures of matplotlib are
+  The example is isolated: the state of the random generator, the configuration and the figures of matplotlib are
   restored or closed afterwards (the hooks added to the configuration cannot be removed).
   """
   tree = ast.parse(source, name)
   lines = source.splitlines()
   env = {"__name__": "__main__"}
   cwd = os.getcwd()
-  seed = gum.randomGeneratorSeed()
   gum.config.push()
-  with tempfile.TemporaryDirectory() as tmp, warnings.catch_warnings():
+  # many examples call initRandom(42): the draws of the run go on after the example as if it had not been run
+  with gum.RandomGeneratorGuard(), tempfile.TemporaryDirectory() as tmp, warnings.catch_warnings():
     warnings.simplefilter("ignore")  # deprecated members are documented too
     os.chdir(tmp)  # the files written by the example
     try:
@@ -141,7 +141,6 @@ def runExample(source: str, name: str = "<example>") -> None:
     finally:
       os.chdir(cwd)
       gum.config.pop()
-      gum.initRandom(seed)  # many examples call initRandom(42): the next ones are driven by the run's seed again
       if "matplotlib.pyplot" in sys.modules:  # never imported here only to close figures
         sys.modules["matplotlib.pyplot"].close("all")
 

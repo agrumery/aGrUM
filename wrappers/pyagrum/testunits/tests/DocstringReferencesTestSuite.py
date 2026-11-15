@@ -135,14 +135,14 @@ class TestDocstringReferences(pyAgrumTestCase):
     inventory = Inventory(scan(_DOC / "sphinx", lambda rel: rel.split("/")[0] in _EXCLUDED))
     names = set(inventory.pageNames()) | set(inventory.classes)
     cls.docs = {}
-    for name in sorted(names):
-      try:
-        obj = resolve(name)
-      except Exception:  # optional dependency missing here
-        continue
+    for name in sorted(names):  # imported by Inventory: a name that cannot be imported is not listed
+      obj = resolve(name)
       doc = obj.__doc__ if inspect.ismodule(obj) else inspect.getdoc(obj)
       if doc:
         cls.docs[name] = doc
+
+  def testDocstringsAreChecked(self):
+    self.assertTrue(self.docs, "no docstring found: the checks below would pass without checking anything")
 
   def _check(self, finder, message):
     found = {}
