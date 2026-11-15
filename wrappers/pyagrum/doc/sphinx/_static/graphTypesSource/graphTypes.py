@@ -1,7 +1,7 @@
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
-#   Copyright (c) 2005-2025 by                                             #
+#   Copyright (c) 2005-2026 by                                             #
 #       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
 #       - Christophe GONZALES(_at_AMU)                                     #
 #                                                                          #
@@ -17,9 +17,20 @@
 #   (see https://agrum.gitlab.io/articles/dual-licenses-lgplv3mit.html)    #
 #                                                                          #
 #   This aGrUM/pyAgrum library is distributed in the hope that it will be  #
-#   useful, but WITHOUT ANY WARRANTY; without even the implied warranty    #
-#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the        #
-#   GNU General Public License for more details.                           #
+#   useful, but WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,          #
+#   INCLUDING BUT NOT LIMITED TO THE WARRANTIES MERCHANTABILITY or FITNESS #
+#   FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT. IN NO EVENT SHALL THE   #
+#   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER #
+#   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,        #
+#   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR  #
+#   OTHER DEALINGS IN THE SOFTWARE.                                        #
+#                                                                          #
+#   See LICENCES for more details.                                         #
+#                                                                          #
+#   SPDX-FileCopyrightText: Copyright 2005-2026                            #
+#       - Pierre-Henri WUILLEMIN(_at_LIP6)                                 #
+#       - Christophe GONZALES(_at_AMU)                                     #
+#   SPDX-License-Identifier: LGPL-3.0-or-later OR MIT                      #
 #                                                                          #
 #   Contact  : info_at_agrum_dot_org                                       #
 #   homepage : http://agrum.gitlab.io                                      #

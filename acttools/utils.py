@@ -193,21 +193,32 @@ def filterSources(paths: Iterator[str], pattern: str | None) -> Iterator[str]:
       yield p
 
 
+def _notHidden(paths: Iterator[str]) -> Iterator[str]:
+  """The paths outside hidden directories (tool caches such as .ipynb_checkpoints or .virtual_documents)."""
+  yield from (p for p in paths if not any(part.startswith(".") for part in Path(p).parts[:-1]))
+
+
 def srcPyNotebooks() -> Iterator[str]:
-  yield from (
-    f for f in recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb") if not f.endswith("-checkpoint.ipynb")
-  )
+  yield from _notHidden(recglob("wrappers/pyagrum/doc/sphinx/notebooks/", "*.ipynb"))
+
+
+# one short example per documented member: formatted, but without license header
+_DOC_EXAMPLES = Path("wrappers/pyagrum/doc/examples")
 
 
 def srcPyAgrum() -> Iterator[str]:
   for path in ("wrappers/pyagrum/testunits", "wrappers/pyagrum/cmake", "wrappers/pyagrum/pyLibs", "acttools"):
     yield from recglob(path, "*.py")
+  yield from (
+    f for f in _notHidden(recglob("wrappers/pyagrum/doc", "*.py")) if not Path(f).is_relative_to(_DOC_EXAMPLES)
+  )
   yield "act"
 
 
 def srcPyIpynbAgrum() -> Iterator[str]:
   yield from srcPyNotebooks()
   yield from srcPyAgrum()
+  yield from _notHidden(recglob(str(_DOC_EXAMPLES), "*.py"))
 
 
 def srcCmakeAgrum() -> Iterator[str]:

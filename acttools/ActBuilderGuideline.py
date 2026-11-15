@@ -522,7 +522,7 @@ def guideline(
     (
       "examples",
       "an example for every documented member and function of pyAgrum",
-      lambda: [(_check_examples(), "missing example")],
+      lambda: [(_check_examples(), "missing example or unimportable name")],
     ),
   ]
   dim = "\033[2m" if cfg.C_END else ""
@@ -653,25 +653,65 @@ def _check_code_format(
   return nbrError
 
 
+# a file that ruff would reformat: "Would reformat: <path>" (older ruff) or "--> <path>:<line>:<col>"
+_RUFF_UNFORMATTED = re.compile(r"^(?:Would reformat: (?P<old>.+)|\s*--> (?P<new>.+?):\d+:\d+)$")
+
+
+def _chunks(files: list[str], max_chars: int = 8000) -> Iterable[list[str]]:
+  """Split the files in lists whose command line stays short (Windows limits it to 32767 characters)."""
+  chunk, size = [], 0
+  for f in files:
+    if chunk and size + len(f) + 1 > max_chars:
+      yield chunk
+      chunk, size = [], 0
+    chunk.append(f)
+    size += len(f) + 1
+  if chunk:
+    yield chunk
+
+
 def _check_ruff_format(details: bool, correction: bool, dry_run: bool = False, source: str | None = None) -> int:
-  return _check_code_format(
-    sources=srcPyIpynbAgrum(),
-    tool_path=cfg.ruff,
-    tool_name="ruff",
-    check_cmd_fn=lambda t, s: f"{t} format --check {s}",
-    fix_cmd_fn=lambda t, s: f"{t} format {s}",
-    exceptions={
-      "/apps/",
-      "/notebooks-archives/",
-      "/generated-files/",
-      "Untitled*.ipynb",
-      "wrappers/pyagrum/cmake",
-    },
-    details=details,
-    correction=correction,
-    dry_run=dry_run,
-    source=source,
-  )
+  """Run `ruff format --check` on all the Python sources and notebooks at once (one process per file is 10 times slower).
+
+  With correction, the files that ruff would reformat are formatted. Returns the number of such files.
+  """
+  if cfg.ruff is None:
+    warn("No correct [[ruff]] tool has been found.")
+    return 0
+  exceptions = ("/apps/", "/notebooks-archives/", "/generated-files/", "Untitled*.ipynb", "wrappers/pyagrum/cmake")
+  files = [f for f in filterSources(srcPyIpynbAgrum(), source) if not any(e in f for e in exceptions)]
+  if dry_run:
+    for chunk in _chunks(files):
+      notif(f"  {cfg.ruff} format --check {' '.join(chunk)}")
+    return 0
+
+  unformatted: list[str] = []
+  failures = 0  # calls of ruff whose files could not all be checked
+  for chunk in _chunks(files):
+    res = subprocess_run([cfg.ruff, "format", "--check", *chunk], capture_output=True, text=True)
+    if res.returncode not in (0, 1):  # 2: ruff could not read or parse a file
+      error(f"ruff format failed: {(res.stderr or res.stdout).strip()}")
+      failures += 1
+      continue
+    found = [
+      os.path.normpath(m["old"] or m["new"])
+      for line in res.stdout.splitlines()
+      if (m := _RUFF_UNFORMATTED.match(line.rstrip()))
+    ]
+    if res.returncode == 1 and not found:
+      error(f"ruff format: unknown output, unformatted files not found in\n{res.stdout}")
+      failures += 1
+      continue
+    unformatted += found
+
+  if correction and unformatted:
+    for chunk in _chunks(unformatted):
+      subprocess_run([cfg.ruff, "format", *chunk], capture_output=True)
+  for f in unformatted:
+    notif(f"[[{f.split(os.sep)[-1]}]] : [[(✓)]]" if correction else f"err [[{f}]]")
+  if details:
+    notif(f"{len(files) - len(unformatted)} of {len(files)} files already formatted")
+  return len(unformatted) + failures
 
 
 def _check_ruff_lint(details: bool, correction: bool, dry_run: bool = False) -> int:
@@ -999,7 +1039,9 @@ def _check_LGPL_MIT_license_CPP(details: bool, correction: bool, source: str | N
 def _check_LGPL_MIT_license_py(details: bool, correction: bool, source: str | None = None) -> int:
   nbrError = 0
 
-  exceptions = []
+  exceptions = [
+    "doc/sphinx/_static/compare_classifiers.py",  # adapted from scikit-learn, BSD 3 clause
+  ]
   for pygum_file in filterSources(srcPyAgrum(), source):
     if details:
       notif_oneline(f"[[{pygum_file.split('/')[-1]}]]")
@@ -1586,9 +1628,11 @@ def _check_missing_docs(details: bool) -> int:
 def _check_examples() -> int:
   """Check that every documented member and function of pyAgrum has an example (doc/examples/<page name>.py).
 
-  The pages are found as the documentation build finds them (pyagrum_apiinventory in the Sphinx sources). There is no
-  correction: an example is written by hand. The examples themselves are run by ExamplesTestSuite. Returns the number
-  of pages without example.
+  The pages are found as the documentation build finds them (pyagrum_apiinventory in the Sphinx sources), in the
+  imported pyagrum: a documented name that it cannot import is an error (pyagrum older than the sources), unless a
+  module out of pyagrum is missing (optional dependency). There is no correction: an example is written by hand. The
+  examples themselves are run by ExamplesTestSuite. Returns the number of pages without example and of names that
+  cannot be imported.
   """
   doc = Path("wrappers", "pyagrum", "doc")
   sphinx = str(doc / "sphinx")
@@ -1603,12 +1647,26 @@ def _check_examples() -> int:
       "ignore", message=r"\s*\*\* pyagrum\.lib\.notebook has to be imported", category=UserWarning
     )
     inventory = api.Inventory(api.scan(doc / "sphinx", lambda rel: rel.split("/")[0] in excluded))
+  notif(f"  pages of [[pyagrum {gum.__version__}]] ({Path(gum.__file__).parent})")
+  unimportable = 0
+  for name in sorted(inventory.unavailable):
+    try:
+      api.resolve(name)
+    except ModuleNotFoundError as e:
+      if e.name and e.name.split(".")[0] != "pyagrum":
+        warn(f"  [[{name}]] not checked: optional module [[{e.name}]] is missing")
+        continue
+      unimportable += 1
+      notif(f"  err [[{name}]] cannot be imported (pyagrum older than the sources?): {e}")
+    except (ImportError, AttributeError) as e:
+      unimportable += 1
+      notif(f"  err [[{name}]] cannot be imported (pyagrum older than the sources?): {e}")
   examples = {path.stem for path in (doc / "examples").glob("*.py")}
   missing = sorted(set(inventory.pageNames()) - examples)
   # always listed (details or not): each example is written by hand
   for name in missing:
     notif(f"  err [[{doc / 'examples' / name}.py]] missing")
-  return len(missing)
+  return len(missing) + unimportable
 
 
 def get_template_license() -> tuple[str, str]:
