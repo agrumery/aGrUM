@@ -83,7 +83,7 @@ class CausalShallValues(ShallValues, CausalComputation):
     super().__init__(bn, background, sample_size, log)
     self.baseline = self._value(
       data=self._data,
-      counts=self.counts,
+      counts=np.ones(len(self._data)),
       elements=self.vars_ids,
       sigma=self.vars_ids,
       cache=FIFOCache(100),
@@ -122,11 +122,11 @@ class CausalShallValues(ShallValues, CausalComputation):
         self._chgCpt(doNet, tau, alpha)
         doLazy = pyagrum.LazyPropagation(doNet)
         doLazy.addTarget(tau[0])  # see if target should be added for optimization
-        idx = self._extract(self._data, tau, alpha)
+        rows = self._intervenedRows(self._data, tau, alpha, self.vars_ids)
         # Compute the value for this coalition.
         joint_with = self._value(
-          data=self._data[idx],
-          counts=self.counts[idx],
+          data=rows,
+          counts=np.ones(len(rows)),
           elements=self.vars_ids,
           sigma=sigma,
           cache=fifo_cache,
@@ -171,11 +171,11 @@ class CausalShallValues(ShallValues, CausalComputation):
           self._chgCpt(doNet, tau, alpha)  # BN knowing alpha
           doLazy = pyagrum.LazyPropagation(doNet)
           doLazy.addTarget(tau[0])  # just to speed up the calculation
-          idx = self._extract(self._data, tau, alpha)
+          rows = self._intervenedRows(self._data, tau, alpha, self.vars_ids)
           # Compute the value for this coalition.
           joint_with = self._value(
-            data=self._data[idx],
-            counts=self.counts[idx],
+            data=rows,
+            counts=np.ones(len(rows)),
             elements=self.vars_ids,
             sigma=sigma,
             cache=fifo_cache,

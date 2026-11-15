@@ -103,6 +103,32 @@ class ShapCausalTestCase(pyAgrumTestCase):
     for feat in imp_tuple:
       self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
 
+  @staticmethod
+  def _AtoY():
+    bn = gum.fastBN("A[2]->Y[2]")
+    bn.cpt("A").fillWith([0.1, 0.9])
+    bn.cpt("Y")[{"A": 0}] = [0.9, 0.1]
+    bn.cpt("Y")[{"A": 1}] = [0.2, 0.8]
+    return bn
+
+  def test_baseline_is_the_prior_of_the_target(self):
+    # a background covering the support: each configuration is weighted by its probability only
+    bn = self._AtoY()
+    bg = pd.DataFrame({"A": [0, 1, 1, 1, 1, 1, 1, 1, 1, 1], "Y": [0, 0, 1, 1, 1, 1, 1, 1, 1, 0]})
+    explainer = CausalShapValues(bn, "Y", (bg, False), logit=False)
+    py = gum.getPosterior(bn, target="Y", evs={})
+    self.assertAlmostEqual(explainer.baseline[0], py[0], 9)
+    self.assertAlmostEqual(explainer.baseline[1], py[1], 9)
+
+  def test_coalition_absent_from_the_background(self):
+    # no background row with A=0: v({A}) = P(Y | do(A=0)) all the same
+    bn = self._AtoY()
+    bg = pd.DataFrame({"A": [1, 1, 1], "Y": [0, 1, 1]})
+    explainer = CausalShapValues(bn, "Y", (bg, False), logit=False)
+    self.assertAlmostEqual(explainer.baseline[1], 0.8, 9)
+    result = explainer.compute(({"A": 0}, False))
+    self.assertAlmostEqual(result._values[1]["A"], 0.1 - 0.8, 9)
+
 
 ts = unittest.TestSuite()
 addTests(ts, ShapCausalTestCase)

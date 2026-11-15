@@ -436,6 +436,10 @@
       e(x) tau0(x) + (1 - e(x)) tau1(x)); TSLS returned the mean of all the coefficients of the second stage instead of
       the coefficient of the treatment, and misaligned the rows of a conditional estimate; the individual effects of
       the propensity stratification were not in the order of the rows (the average effect was right).
+    - `CausalShapValues` and `CausalShallValues`: each configuration of the background was weighted by its frequency
+      times its probability in the mutilated network (counted twice; the baseline of `CausalShapValues` was not P(Y)),
+      and a coalition whose values were not in the background got the value 0. The weight is now the probability only,
+      and the coalition is set in every row of the background.
 
 - Optimizations (aGrUM and pyAgrum)
 

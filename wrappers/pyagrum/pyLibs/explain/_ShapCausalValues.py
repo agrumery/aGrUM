@@ -114,13 +114,15 @@ class CausalShapValues(ShapleyValues, CausalComputation):
         data = self._labelToPos_df(data, [i for i in range(self.M) if i != self.target])
     self._data, self.counts = np.unique(data, return_counts=True, axis=0)
     self._N = len(self._data)
-    # Calculating the baseline
+    # Calculating the baseline (empty coalition): expectation over the ancestors of the target
+    players = sorted(self._causal_players)
+    rows = self._intervenedRows(self._data, [], np.array([], dtype=self._data.dtype), players)
     self.baseline = self.func(
       self._value(
-        data=self._data,
-        counts=self.counts,
-        elements=[i for i in range(self.M) if i != self.target],
-        sigma=self._mb,
+        data=rows,
+        counts=np.ones(len(rows)),
+        elements=players,
+        sigma=players,
         cache=FIFOCache(100),
         func1=self._posterior,
         params1={},
@@ -142,18 +144,18 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     for tau in coalitions:
       self.ie.eraseAllEvidence()  # Clears all evidence from the inference engine.
       doNet = self._doCalculus(self.bn, tau)  # Creates a new Bayesian Network to perform do-calculus.
-      sigma = self._outOfCoalition(tau, range(self.M))  # Extracts the nodes outside the coalition tau.
+      sigma = self._outOfCoalition(tau, elements)  # Players outside the coalition tau.
       alpha = x[tau]  # Instanciation of tau
       self._chgCpt(doNet, tau, alpha)  # Changes the conditional probability tables to perform do-calculus.
       doLazy = pyagrum.LazyPropagation(
         doNet
       )  # Creates a lazy propagation inference engine to compute partial join probabilities.
       doLazy.addTarget(self.target)
-      idx = self._extract(self._data, tau, alpha)
+      rows = self._intervenedRows(self._data, tau, alpha, elements)
       posterior_with = self.func(
         self._value(
-          data=self._data[idx],
-          counts=self.counts[idx],
+          data=rows,
+          counts=np.ones(len(rows)),
           elements=elements,
           sigma=sigma,
           cache=markovImpact,
@@ -186,7 +188,7 @@ class CausalShapValues(ShapleyValues, CausalComputation):
     for tau in coalitions:
       self.ie.eraseAllEvidence()  # Clears all evidence from the inference engine.
       doNet = self._doCalculus(self.bn, tau)  # Creates a new Bayesian Network to perform do-calculus.
-      sigma = self._outOfCoalition(tau, range(self.M))  # Extracts the nodes outside the coalition tau.
+      sigma = self._outOfCoalition(tau, elements)  # Players outside the coalition tau.
 
       for i in range(len(x)):  # Iterates over each example in x
         alpha = x[i, tau]  # Instanciation of tau
@@ -195,11 +197,11 @@ class CausalShapValues(ShapleyValues, CausalComputation):
           doNet
         )  # Creates a lazy propagation inference engine to compute partial join probabilities.
         doLazy.addTarget(self.target)
-        idx = self._extract(self._data, tau, alpha)
+        rows = self._intervenedRows(self._data, tau, alpha, elements)
         posterior_with = self.func(
           self._value(
-            data=self._data[idx],
-            counts=self.counts[idx],
+            data=rows,
+            counts=np.ones(len(rows)),
             elements=elements,
             sigma=sigma,
             cache=markovImpact,

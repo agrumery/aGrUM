@@ -39,6 +39,8 @@
 ############################################################################
 
 
+import numpy as np
+
 import pyagrum
 
 
@@ -67,7 +69,18 @@ class CausalComputation:
 
   @staticmethod
   def _weight(evidces: dict[int, int], count: int, doLazy: pyagrum.LazyPropagation) -> float:
-    # Returns the evidces probability.
+    # Returns the evidces probability in the mutilated network.
     # The signature must be : dict[int, int], int, **kwargs
+    # The rows are distinct configurations: their count in the background is not a weight (the probability
+    # already is), hence `count` is unused.
     doLazy.updateEvidence(evidces)
-    return doLazy.evidenceProbability() * count
+    return doLazy.evidenceProbability()
+
+  @staticmethod
+  def _intervenedRows(data: np.ndarray, tau: list[int], alpha: np.ndarray, columns: list[int]) -> np.ndarray:
+    # Returns the distinct background rows restricted to columns (other columns set to 0), with the coalition tau
+    # set to alpha: no row is discarded when alpha does not appear in the background.
+    rows = np.zeros_like(data)
+    rows[:, columns] = data[:, columns]
+    rows[:, tau] = alpha
+    return np.unique(rows, axis=0)

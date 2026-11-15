@@ -40,6 +40,7 @@
 
 import unittest
 
+import numpy as np
 import pandas as pd
 
 import pyagrum as gum
@@ -116,6 +117,29 @@ class ShallMarginalTestCase(pyAgrumTestCase):
     imp_plain = expl_plain.compute(df).importances
     for feat in imp_tuple:
       self.assertAlmostEqual(imp_tuple[feat], imp_plain[feat], 5)
+
+  def test_values_weighted_by_the_mutilated_network_only(self):
+    # A->B, no background row with A=0: the coalitions are computed on the background rows with A set to 0
+    bn = gum.fastBN("A[2]->B[2]")
+    bn.cpt("A").fillWith([0.1, 0.9])
+    bn.cpt("B")[{"A": 0}] = [0.7, 0.3]
+    bn.cpt("B")[{"A": 1}] = [0.4, 0.6]
+    bg = pd.DataFrame({"A": [1, 1, 1], "B": [0, 1, 1]})
+    explainer = CausalShallValues(bn, background=(bg, False), log=True)
+
+    def P(a, b):
+      return bn.cpt("A")[a] * bn.cpt("B")[{"A": a}][b]
+
+    v_empty = (P(1, 0) * np.log(P(1, 0)) + P(1, 1) * np.log(P(1, 1))) / (P(1, 0) + P(1, 1))
+    self.assertAlmostEqual(explainer.baseline, v_empty, 9)
+
+    # instance A=0, B=0
+    v_A = sum(bn.cpt("B")[{"A": 0}][b] * np.log(P(0, b)) for b in (0, 1))  # B follows P(B | A=0)
+    v_B = np.log(P(1, 0))  # A follows P(A), only A=1 in the background
+    v_AB = np.log(P(0, 0))
+    result = explainer.compute(({"A": 0, "B": 0}, False))
+    self.assertAlmostEqual(result["A"], ((v_A - v_empty) + (v_AB - v_B)) / 2, 9)
+    self.assertAlmostEqual(result["B"], ((v_B - v_empty) + (v_AB - v_A)) / 2, 9)
 
 
 ts = unittest.TestSuite()
