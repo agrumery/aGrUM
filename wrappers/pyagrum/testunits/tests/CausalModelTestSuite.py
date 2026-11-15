@@ -137,6 +137,11 @@ class TestCausalModel(pyAgrumTestCase):
     bn.cpt("y")[:] = [[0.1, 0.9], [0.2, 0.8]]
 
     d = gum.CausalModel(bn, [("lat1", ["x", "y"])])
+    # a name which is not a str is refused (it was read as "")
+    with self.assertRaises(TypeError):
+      gum.CausalModel(bn, [("lat2", ["x", 1])])
+    with self.assertRaises(TypeError):
+      gum.CausalModel(bn, [(2, ["x", "y"])])
 
     # from the formula \sum_{ z ,w  }{ P(z\mid w,x) \cdot P(w) \cdot
     #                                 \sum_{ x'  }{ P(y\mid w,x',z) \cdot P(x'\mid w) }

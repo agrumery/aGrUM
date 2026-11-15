@@ -132,6 +132,9 @@ class KTBNConstructionTestCase(pyAgrumTestCase):
     # a declared name that is not a node of the BN is rejected
     with self.assertRaises(gum.NotFound):
       gum.KTBN.fromBN(bn, {"Z"})
+    # a name which is not a str is refused (it was read as "")
+    with self.assertRaises(TypeError):
+      gum.KTBN.fromBN(bn, {"Z", 3})
 
     # toBN() returns an INDEPENDENT deep copy: mutating it must not touch the KTBN
     m = gum.KTBN(2)

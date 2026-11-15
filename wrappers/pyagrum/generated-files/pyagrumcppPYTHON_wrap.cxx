@@ -28388,7 +28388,7 @@ SWIGINTERN PyObject *_wrap_new_LabelizedVariable__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -64424,7 +64424,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_ids(PyObject *self, PyObject *args) {
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -64482,7 +64482,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_nodeset(PyObject *self, PyObject *args
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -64574,7 +64574,7 @@ SWIGINTERN PyObject *_wrap_GraphicalModel_variables__SWIG_1(PyObject *self, Py_s
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -66489,7 +66489,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_parents__SWIG_3(PyObject *self, Py_ssize_t n
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -66912,7 +66912,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_children__SWIG_3(PyObject *self, Py_ssize_t 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -67368,7 +67368,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_moralizedAncestralGraph__SWIG_1(PyObject *se
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -67672,7 +67672,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_2(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -67742,7 +67742,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -67765,7 +67765,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -67788,7 +67788,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssi
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -68298,7 +68298,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -68363,7 +68363,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -68386,7 +68386,7 @@ SWIGINTERN PyObject *_wrap_DAGmodel_minimalCondSet__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -69534,7 +69534,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_2(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -69604,7 +69604,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -69627,7 +69627,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -69650,7 +69650,7 @@ SWIGINTERN PyObject *_wrap_UGmodel_isIndependent__SWIG_3(PyObject *self, Py_ssiz
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -75457,7 +75457,7 @@ SWIGINTERN PyObject *_wrap_Tensor_reorganize__SWIG_1(PyObject *self, Py_ssize_t 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -75693,7 +75693,7 @@ SWIGINTERN PyObject *_wrap_Tensor_fillWith__SWIG_1(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -98839,7 +98839,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_evidenceJointImpact__SWIG_1(PyObject 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -98862,7 +98862,7 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_evidenceJointImpact__SWIG_1(PyObject 
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -102465,7 +102465,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_evidenceJointImpact__SWIG_1(PyO
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -102488,7 +102488,7 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_evidenceJointImpact__SWIG_1(PyO
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -143007,7 +143007,7 @@ SWIGINTERN PyObject *_wrap_BNDatabaseGenerator_setVarOrder__SWIG_1(PyObject *sel
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -143591,7 +143591,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_0(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -143669,7 +143669,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_1(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -143833,7 +143833,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner__SWIG_4(PyObject *self, Py_ssize_t nobj
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -147267,7 +147267,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_setTotalOrder__SWIG_0(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -149556,7 +149556,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_chi2__SWIG_0(PyObject *self, Py_ssize_t nob
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -149729,7 +149729,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_G2__SWIG_0(PyObject *self, Py_ssize_t nobjs
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -151633,7 +151633,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -151656,7 +151656,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_2(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -151710,7 +151710,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_logLikelihood__SWIG_3(PyObject *self, Py_ss
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -151927,7 +151927,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_score__SWIG_2(PyObject *self, Py_ssize_t no
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -152247,7 +152247,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_mutualInformation__SWIG_2(PyObject *self, P
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -152614,7 +152614,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_correctedMutualInformation__SWIG_2(PyObject
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[3], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -152882,7 +152882,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_rawPseudoCount__SWIG_1(PyObject *self, Py_s
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[1], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",

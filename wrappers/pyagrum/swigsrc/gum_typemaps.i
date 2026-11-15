@@ -372,7 +372,7 @@ typedef PyObject PyAgrumDict;
   for (Py_ssize_t _i = 0; _i < _n; ++_i) {
     PyObject* _item = PySequence_GetItem($input, _i);
     if (!_item) SWIG_fail;
-    if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+    if (!PyAgrumHelper::isStringPyObject(_item)) {
       // a non-string item would be read as "" (misleading NotFound "<>" later)
       PyErr_Format(PyExc_TypeError,
                    "expected a sequence of strings (item %zd is not a string)",
@@ -420,6 +420,13 @@ typedef PyObject PyAgrumDict;
   if (!_iter) SWIG_fail;
   PyObject* _item;
   while ((_item = PyIter_Next(_iter)) != NULL) {
+    if (!PyAgrumHelper::isStringPyObject(_item)) {
+      // a non-string item would be read as "" (misleading NotFound "<>" later)
+      PyErr_SetString(PyExc_TypeError, "expected a set of strings (an item is not a string)");
+      Py_DECREF(_item);
+      Py_DECREF(_iter);
+      SWIG_fail;
+    }
     _tmp_ss.insert(PyAgrumHelper::stringFromPyObject(_item));
     Py_DECREF(_item);
   }

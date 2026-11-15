@@ -7248,7 +7248,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_addLatentVariable__SWIG_0(PyObject *self,
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",
@@ -7333,7 +7333,7 @@ SWIGINTERN PyObject *_wrap_CausalModel_addLatentVariable__SWIG_1(PyObject *self,
     for (Py_ssize_t _i = 0; _i < _n; ++_i) {
       PyObject* _item = PySequence_GetItem(swig_obj[2], _i);
       if (!_item) SWIG_fail;
-      if (!PyUnicode_Check(_item) && !PyBytes_Check(_item)) {
+      if (!PyAgrumHelper::isStringPyObject(_item)) {
         // a non-string item would be read as "" (misleading NotFound "<>" later)
         PyErr_Format(PyExc_TypeError,
           "expected a sequence of strings (item %zd is not a string)",

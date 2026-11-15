@@ -150,7 +150,17 @@ namespace PyAgrumHelper {
       for (Py_ssize_t j = 0; j < nc; ++j) {
         PyOwnedRef child(PySequence_GetItem(pychildren.get(), j));
         if (child.get() == nullptr) return false;
+        if (!isStringPyObject(child.get())) {   // it would be read as "" (misleading NotFound)
+          PyErr_SetString(PyExc_TypeError,
+                          "CausalModel: the children of a latent variable must be names (str)");
+          return false;
+        }
         childNames.push_back(stringFromPyObject(child.get()));
+      }
+      if (!isStringPyObject(pyname.get())) {
+        PyErr_SetString(PyExc_TypeError,
+                        "CausalModel: the name of a latent variable must be a str");
+        return false;
       }
       cm.addLatentVariable(stringFromPyObject(pyname.get()), childNames, assumeNonSpurious);
     }

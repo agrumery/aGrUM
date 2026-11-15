@@ -77,6 +77,9 @@ namespace PyAgrumHelper {
     return gum::isBinaryGUMFile(path, binary == Py_True);
   }
 
+  // true if stringFromPyObject reads o as a string (otherwise it returns "")
+  bool isStringPyObject(PyObject* o) { return PyUnicode_Check(o) || PyBytes_Check(o); }
+
   std::string stringFromPyObject(PyObject* o) {
     std::string name = "";
     if (PyUnicode_Check(o)) {   // python3 string
