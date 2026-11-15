@@ -69,12 +69,14 @@ namespace gum {
 
   inline std::string _dsepExplanation_(const Set< std::string >& on,
                                        const Set< std::string >& doing,
-                                       const Set< std::string >& knowing) {
-    std::string os = std::format("No causal effect of {} on {} because they are d-separated "
-                                 "after removing incoming edges into {}",
+                                       const Set< std::string >& knowing,
+                                       const Set< std::string >& cut) {
+    std::string os = std::format("No causal effect of {} on {} because they are d-separated",
                                  _formatVarsForSentence_(doing),
-                                 _formatVarsForSentence_(on),
-                                 _formatVarsForSentence_(doing));
+                                 _formatVarsForSentence_(on));
+    if (!cut.empty()) {
+      os += std::format(" after removing incoming edges into {}", _formatVarsForSentence_(cut));
+    }
     if (!knowing.empty()) {
       os += std::format(" and conditioning on {}", _formatVarsForSentence_(knowing));
     }
@@ -232,8 +234,16 @@ namespace gum {
         }
       }
 
-      // fallback: no causal effect in G_bar(X)
-      const DAG gXbar = _removeIncomingIntoLocal_(cm.causalDAG(), i_doing);
+      // fallback: rule 3 of the do-calculus, no causal effect if Y and X are d-separated given K in
+      // G_{overline{X(K)}}, X(K) being the nodes of X which are not ancestors of any node of K
+      const DAG& dag  = cm.causalDAG();
+      NodeSet    xOfK = i_doing;
+      for (const auto k: i_knowing) {
+        for (const auto a: dag.ancestors(k)) {
+          xOfK.erase(a);
+        }
+      }
+      const DAG gXbar = _removeIncomingIntoLocal_(dag, xOfK);
       if (Separation::isDSeparated(gXbar, i_doing, i_on, cond)) {
         // P(Y | K) in the observational BN
         auto ast = std::make_unique< ASTposteriorProba< GUM_SCALAR > >(
@@ -241,12 +251,13 @@ namespace gum {
             cm.id2name(/*includeLatentVariables=*/false),
             on,
             knowing);
-        return CausalFormula< GUM_SCALAR >(cm,
-                                           std::move(ast),
-                                           on,
-                                           doing,
-                                           knowing,
-                                           _dsepExplanation_(on, doing, knowing));
+        return CausalFormula< GUM_SCALAR >(
+            cm,
+            std::move(ast),
+            on,
+            doing,
+            knowing,
+            _dsepExplanation_(on, doing, knowing, _idsToNames_(cm, xOfK)));
       }
     }
 

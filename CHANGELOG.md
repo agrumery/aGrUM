@@ -440,6 +440,8 @@
       times its probability in the mutilated network (counted twice; the baseline of `CausalShapValues` was not P(Y)),
       and a coalition whose values were not in the background got the value 0. The weight is now the probability only,
       and the coalition is set in every row of the background.
+    - `causalImpact` with `knowing`: the third rule of the do-calculus removed the arcs into all of X instead of
+      X(Z), the variables of X which are not ancestors of Z, and could answer P(Y | Z) for an effect that exists.
 
 - Optimizations (aGrUM and pyAgrum)
 

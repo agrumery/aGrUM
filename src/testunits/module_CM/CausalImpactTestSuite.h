@@ -775,4 +775,30 @@ namespace gum_tests {
     CHECK_EQ(t.size(), gum::Size(2));   // if there are 1 "frac" substring
   }
 
+  GUM_TEST(Rule3_KeepsTheIncomingArcsOfTheAncestorsOfKnowing) {
+    // Y->X->W: X is an ancestor of W, so that its incoming arcs are kept (G_{overline{X(W)}} = G)
+    // and Y is not d-separated from X given W. P(Y | do(X), W) = P(Y) (do(X) cuts Y from X and W),
+    // not P(Y | W).
+    auto bn = gum::BayesNet< double >::fastPrototype("Y->X->W");
+    bn.cpt("Y").fillWith({0.3, 0.7});
+    bn.cpt("X").fillWith({0.9, 0.1, 0.2, 0.8});
+    bn.cpt("W").fillWith({0.6, 0.4, 0.1, 0.9});
+    gum::CausalModel< double > cm(bn);
+
+    for (const bool direct: {false, true}) {
+      gum::CausalImpact< double > ci(cm, names({"Y"}), names({"X"}), names({"W"}), direct);
+      CHECK(ci.isIdentified());
+      // every entry of the result (whatever its variables) is P(Y=y)
+      const auto                   got = ci.eval();
+      const gum::DiscreteVariable* vy  = nullptr;
+      for (const auto v: got.variablesSequence())
+        if (v->name() == "Y") vy = v;
+      REQUIRE(vy != nullptr);
+      for (gum::Instantiation I(got); !I.end(); I.inc()) {
+        const auto y = I.val(*vy);
+        CHECK(got.get(I) == doctest::Approx(y == 0 ? 0.3 : 0.7));
+      }
+    }
+  }
+
 }   // namespace gum_tests
