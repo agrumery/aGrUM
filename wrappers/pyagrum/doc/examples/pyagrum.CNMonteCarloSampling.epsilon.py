@@ -10,5 +10,5 @@ bnmax.cpt("B")[:] = [[0.3, 0.9], [0.7, 0.5]]
 cn = gum.CredalNet(bnmin, bnmax)
 cn.intervalToCredal()
 ie = gum.CNMonteCarloSampling(cn)
-ie.epsilon()
-# 0.05
+ie.epsilon()  # by default, 1000 times the machine epsilon
+# 2.220446049250313e-13

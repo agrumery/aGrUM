@@ -138,6 +138,34 @@ class CredalNetTestCase(pyAgrumTestCase):
       self.assertAlmostEqual(pmin[b][parent_state], bn.cpt(b)[{"A": parent_state, "B": 1}])
       self.assertAlmostEqual(pmax[b][parent_state], bn.cpt(b)[{"A": parent_state, "B": 1}])
 
+  def testMonteCarloSamplingKeepsTheUserCriteria(self):
+    bn = gum.fastBN("A->B")
+    bnmin, bnmax = gum.BayesNet(bn), gum.BayesNet(bn)
+    bnmin.cpt("A").fillWith([0.2, 0.6])
+    bnmax.cpt("A").fillWith([0.4, 0.8])
+    bnmin.cpt("B")[:] = [[0.1, 0.7], [0.5, 0.3]]
+    bnmax.cpt("B")[:] = [[0.3, 0.9], [0.7, 0.5]]
+    cn = gum.CredalNet(bnmin, bnmax)
+    cn.intervalToCredal()
+    ie = gum.CNMonteCarloSampling(cn)
+    floor = ie.epsilon()
+    self.assertTrue(ie.isEnabledEpsilon())
+    self.assertFalse(ie.isEnabledMinEpsilonRate())
+    self.assertFalse(ie.isEnabledMaxIter())
+    # below the floor, the result would depend on the number of threads
+    with self.assertRaises(gum.OutOfBounds):
+      ie.setEpsilon(floor / 2)
+    self.assertEqual(ie.epsilon(), floor)
+
+    # only maxIter stops the inference
+    ie.disableEpsilon()
+    ie.setMaxIter(3000)
+    ie.setMaxTime(60)
+    ie.makeInference()
+    self.assertEqual(ie.nbrIterations(), 3000)
+    self.assertFalse(ie.isEnabledEpsilon())
+    self.assertTrue(ie.isEnabledMaxIter())
+
 
 ts = unittest.TestSuite()
 addTests(ts, CredalNetTestCase)

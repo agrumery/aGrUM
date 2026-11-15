@@ -271,4 +271,31 @@ namespace gum {
     if (onStop.hasListener()) { GUM_EMIT1(onStop, messageApproximationScheme()); }
   }
 
+  // the flags are written directly: a suspension is not a change of the parameters (the setters
+  // would outdate the result being computed)
+  INLINE
+      ApproximationScheme::CriteriaSuspension_::CriteriaSuspension_(ApproximationScheme& scheme) :
+      _scheme_(scheme), _epsilon_(scheme.enabled_eps_), _rate_(scheme.enabled_min_rate_eps_) {}
+
+  INLINE ApproximationScheme::CriteriaSuspension_::~CriteriaSuspension_() { restore(); }
+
+  INLINE void ApproximationScheme::CriteriaSuspension_::suspendEpsilon() {
+    _scheme_.enabled_eps_ = false;
+    _suspended_           = true;
+  }
+
+  INLINE void ApproximationScheme::CriteriaSuspension_::suspendMinEpsilonRate() {
+    _scheme_.enabled_min_rate_eps_ = false;
+    _suspended_                    = true;
+  }
+
+  INLINE void ApproximationScheme::CriteriaSuspension_::restore() {
+    if (!_suspended_) return;
+    _scheme_.enabled_eps_          = _epsilon_;
+    _scheme_.enabled_min_rate_eps_ = _rate_;
+    _suspended_                    = false;
+  }
+
+  INLINE bool ApproximationScheme::CriteriaSuspension_::isSuspended() const { return _suspended_; }
+
 }   // namespace gum

@@ -403,6 +403,57 @@ namespace gum_tests {
     CHECK_EQ(gibbs.nbrIterations(), static_cast< gum::Size >(1100));
   }
 
+  GUM_TEST(ComputationKeepsTheUserChoiceForTheRate) {
+    gum::BayesNet< double > netP;
+    {
+      gum::BIFReader< double > reader(&netP, GET_RESSOURCES_PATH("bif/bnP.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    gum::BayesNet< double > netQ;
+    {
+      gum::BIFReader< double > reader(&netQ, GET_RESSOURCES_PATH("bif/bnQ.bif"));
+      reader.trace(false);
+      reader.proceed();
+    }
+
+    const auto check = [](gum::ApproximationScheme& algo, auto compute) {
+      algo.disableEpsilon();
+      algo.setMaxIter(1000);
+
+      // a rate always reached: it stops the computation only if it is enabled
+      algo.setMinEpsilonRate(1e9);
+      compute();
+      CHECK_EQ(algo.stateApproximationScheme(),
+               gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Rate);
+      CHECK_LT(algo.nbrIterations(), static_cast< gum::Size >(1000));
+      CHECK(algo.isEnabledMinEpsilonRate());
+
+      algo.disableMinEpsilonRate();
+      compute();
+      CHECK_EQ(algo.stateApproximationScheme(),
+               gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Limit);
+      CHECK_EQ(algo.nbrIterations(), static_cast< gum::Size >(1000));
+      CHECK(!algo.isEnabledMinEpsilonRate());
+
+      // without the rate, the epsilon criterion still receives the errors of the samples
+      algo.setEpsilon(1e-15);
+      compute();
+      CHECK_EQ(algo.stateApproximationScheme(),
+               gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Limit);
+      CHECK_EQ(algo.nbrIterations(), static_cast< gum::Size >(1000));
+      CHECK(!algo.isEnabledMinEpsilonRate());
+    };
+
+    gum::MCBNDistance< double > mc(netP, netQ);
+    check(mc, [&mc] { mc.compute(); });
+
+    gum::GibbsBNdistance< double > gibbs(netP, netQ);
+    gibbs.setBurnIn(0);
+    check(gibbs, [&gibbs] { gibbs.compute(); });
+  }
+
   GUM_TEST(NotLazyComputeTakesChangedBNsIntoAccount) {
     gum::BayesNet< double > netP;
     {

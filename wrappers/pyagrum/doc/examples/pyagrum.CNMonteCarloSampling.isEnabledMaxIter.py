@@ -11,4 +11,4 @@ cn = gum.CredalNet(bnmin, bnmax)
 cn.intervalToCredal()
 ie = gum.CNMonteCarloSampling(cn)
 ie.isEnabledMaxIter()  # is the number of iterations a stopping criterion
-# True
+# False

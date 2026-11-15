@@ -120,10 +120,14 @@ namespace gum {
     GUM_SCALAR oldPQ      = 0.0;
     GUM_SCALAR pp, pq, pmid;
 
+    // the rate criterion is checked only after a sample which contributes to klPQ_ (if the user
+    // enabled it)
+    CriteriaSuspension_ rateCheck(*this);
+
     do {
-      // not through the setter: it would outdate the results being computed
-      this->enabled_min_rate_eps_ = false;
-      gum::Instantiation I        = drawSample_(topoOrder);
+      rateCheck.suspendMinEpsilonRate();
+      bool               contributes = false;   // true if the sample changes klPQ_
+      gum::Instantiation I           = drawSample_(topoOrder);
       updateApproximationScheme();
 
       Iq.setValsFrom(map, I);
@@ -137,7 +141,8 @@ namespace gum {
 
         if (pq != (GUM_SCALAR)0.0) {
           bhattacharya_ += std::sqrt(pq / pp);
-          this->enableMinEpsilonRate();
+          contributes = true;
+          rateCheck.restore();
           ratio = pq / pp;
           delta = (GUM_SCALAR)std::log2(ratio);
           klPQ_ += delta;
@@ -159,7 +164,7 @@ namespace gum {
         }
       }
 
-      if (this->isEnabledMinEpsilonRate()) {
+      if (contributes) {
         // delta is used as a temporary variable
         delta = klPQ_ / nbrIterations();
         error = (GUM_SCALAR)std::abs(delta - oldPQ);

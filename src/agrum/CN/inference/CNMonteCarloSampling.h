@@ -89,6 +89,8 @@ namespace gum {
       /// @{
       /** Initialize approximation Scheme. */
       void _mcInitApproximationScheme_();
+      /** The smallest epsilon: below, a variation of the bounds is rounding. */
+      static double _minimalEpsilon_();
       /** Initialize threads data. */
       void _mcThreadDataCopy_();
       /// @}
@@ -140,6 +142,19 @@ namespace gum {
       void makeInference() override;
 
       /// @}
+
+      /**
+       * @brief Set the threshold of the epsilon stopping criterion.
+       *
+       * The posteriors of a sample may differ by a few ulps from one thread to another: a variation
+       * of the bounds below 1000 times the machine epsilon of GUM_SCALAR is rounding, not a new
+       * vertex. A smaller threshold would make the number of samples, hence the result, depend on
+       * the number of threads: it is refused.
+       *
+       * @param eps The new threshold (at least 1000 times the machine epsilon of GUM_SCALAR).
+       * @throw OutOfBounds Raised if eps is below this floor.
+       */
+      void setEpsilon(double eps) override;
 
       /// unsigned int notOptDelete;
 

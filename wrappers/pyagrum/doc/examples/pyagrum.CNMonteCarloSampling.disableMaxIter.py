@@ -10,6 +10,7 @@ bnmax.cpt("B")[:] = [[0.3, 0.9], [0.7, 0.5]]
 cn = gum.CredalNet(bnmin, bnmax)
 cn.intervalToCredal()
 ie = gum.CNMonteCarloSampling(cn)
+ie.setMaxIter(5000)  # disabled by default, the setter enables it
 ie.isEnabledMaxIter()
 # True
 ie.disableMaxIter()

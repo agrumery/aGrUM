@@ -51,4 +51,24 @@ Class used for inferences in credal networks with Monte Carlo sampling algorithm
 CNMonteCarloSampling(cn) -> CNMonteCarloSampling
     Parameters:
         - **cn** (`pyagrum.CredalNet`) -- a credal network
+
+By default, the sampling stops when a period finds no new bound (epsilon is 1000 times the machine epsilon) or after
+60 seconds: the rate and the maximum number of iterations are disabled. These criteria can be changed; an epsilon
+below 1000 times the machine epsilon raises `pyagrum.OutOfBounds`, since the result would then depend on the number
+of threads.
+"
+
+%feature("docstring") gum::credal::CNMonteCarloSampling::setEpsilon
+"
+Set the threshold of the epsilon stopping criterion (and enable it).
+
+Parameters
+----------
+eps : float
+    the epsilon we want to use, at least 1000 times the machine epsilon
+
+Raises
+------
+pyagrum.OutOfBounds
+    If eps is below 1000 times the machine epsilon (the result would then depend on the number of threads)
 "

@@ -384,6 +384,37 @@ namespace gum_tests {
     clearCNet();
   }
 
+  // the constructor sets the default criteria; the inference keeps the user's ones
+  GUM_TEST(CNMonteCarloSamplingKeepsTheUserCriteria) {
+    initCNet();
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+
+    const double floor = 1000 * std::numeric_limits< double >::epsilon();
+    CHECK(mcs.isEnabledEpsilon());
+    CHECK_EQ(mcs.epsilon(), floor);
+    CHECK(!mcs.isEnabledMinEpsilonRate());
+    CHECK(!mcs.isEnabledMaxIter());
+    CHECK(mcs.isEnabledMaxTime());
+
+    // below the floor, the result would depend on the number of threads
+    CHECK_THROWS_AS(mcs.setEpsilon(floor / 2), gum::OutOfBounds);
+    CHECK_THROWS_AS(mcs.setEpsilon(0), gum::OutOfBounds);
+    CHECK_EQ(mcs.epsilon(), floor);
+
+    // only maxIter stops the inference
+    mcs.disableEpsilon();
+    mcs.setMaxIter(3000);
+    mcs.setMaxTime(60);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
+    CHECK_EQ(mcs.stateApproximationScheme(),
+             gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Limit);
+    CHECK_EQ(mcs.nbrIterations(), static_cast< gum::Size >(3000));
+    CHECK(!mcs.isEnabledEpsilon());
+    CHECK(mcs.isEnabledMaxIter());
+
+    clearCNet();
+  }
+
   GUM_TEST(CNMonteCarloSamplingListener) {
     initDCNet();
     gum::credal::CNMonteCarloSampling< double > mcs(*cn);

@@ -4305,7 +4305,6 @@ SWIGINTERN std::string gum_credal_CredalNet_Sl_double_Sg____repr__(gum::credal::
   }
 SWIGINTERN std::string gum_credal_CredalNet_Sl_double_Sg____str__(gum::credal::CredalNet< double > const *self){ return self->toString();}
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setVerbosity(gum::credal::CNMonteCarloSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setEpsilon(gum::credal::CNMonteCarloSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMinEpsilonRate(gum::credal::CNMonteCarloSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxIter(gum::credal::CNMonteCarloSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
 SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxTime(gum::credal::CNMonteCarloSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
@@ -6748,6 +6747,43 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_setEpsilon(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CNMonteCarloSampling_setEpsilon", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_setEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->setEpsilon(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_insertEvidenceFile(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
@@ -6829,43 +6865,6 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_setVerbosity(PyObject *self, PyO
   {
     try {
       gum_credal_CNMonteCarloSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_setEpsilon(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double > *arg1 = 0 ;
-  double arg2 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  double val2 ;
-  int ecode2 = 0 ;
-  PyObject *swig_obj[2] ;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "CNMonteCarloSampling_setEpsilon", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_setEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
-  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_setEpsilon" "', argument " "2"" of type '" "double""'");
-  } 
-  arg2 = static_cast< double >(val2);
-  {
-    try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -11242,6 +11241,21 @@ static PyMethodDef SwigMethods[] = {
 		"Starts the inference.\n"
 		"\n"
 		""},
+	 { "CNMonteCarloSampling_setEpsilon", _wrap_CNMonteCarloSampling_setEpsilon, METH_VARARGS, "\n"
+		"\n"
+		"Set the threshold of the epsilon stopping criterion (and enable it).\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"eps : float\n"
+		"    the epsilon we want to use, at least 1000 times the machine epsilon\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.OutOfBounds\n"
+		"    If eps is below 1000 times the machine epsilon (the result would then depend on the number of threads)\n"
+		"\n"
+		""},
 	 { "CNMonteCarloSampling_insertEvidenceFile", _wrap_CNMonteCarloSampling_insertEvidenceFile, METH_VARARGS, "\n"
 		"\n"
 		"Insert evidence from file.\n"
@@ -11258,19 +11272,6 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"v : bool\n"
 		"        verbosity\n"
-		"\n"
-		""},
-	 { "CNMonteCarloSampling_setEpsilon", _wrap_CNMonteCarloSampling_setEpsilon, METH_VARARGS, "\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"eps : float\n"
-		"    the epsilon we want to use\n"
-		"\n"
-		"Raises\n"
-		"------\n"
-		"pyagrum.OutOfBounds\n"
-		"    If eps<0\n"
 		"\n"
 		""},
 	 { "CNMonteCarloSampling_setMinEpsilonRate", _wrap_CNMonteCarloSampling_setMinEpsilonRate, METH_VARARGS, "\n"

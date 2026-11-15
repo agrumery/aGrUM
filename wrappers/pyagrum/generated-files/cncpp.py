@@ -567,6 +567,11 @@ class CNMonteCarloSampling(object):
         Parameters:
             - **cn** (`pyagrum.CredalNet`) -- a credal network
 
+    By default, the sampling stops when a period finds no new bound (epsilon is 1000 times the machine epsilon) or after
+    60 seconds: the rate and the maximum number of iterations are disabled. These criteria can be changed; an epsilon
+    below 1000 times the machine epsilon raises `pyagrum.OutOfBounds`, since the result would then depend on the number
+    of threads.
+
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -588,6 +593,24 @@ class CNMonteCarloSampling(object):
 
         """
         return _cncpp.CNMonteCarloSampling_makeInference(self)
+
+    def setEpsilon(self, eps: float) -> None:
+        r"""
+
+        Set the threshold of the epsilon stopping criterion (and enable it).
+
+        Parameters
+        ----------
+        eps : float
+            the epsilon we want to use, at least 1000 times the machine epsilon
+
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            If eps is below 1000 times the machine epsilon (the result would then depend on the number of threads)
+
+        """
+        return _cncpp.CNMonteCarloSampling_setEpsilon(self, eps)
 
     def insertEvidenceFile(self, path: str) -> None:
         r"""
@@ -645,22 +668,6 @@ class CNMonteCarloSampling(object):
 
         """
         return _cncpp.CNMonteCarloSampling_setVerbosity(self, v)
-
-    def setEpsilon(self, eps: float) -> None:
-        r"""
-
-        Parameters
-        ----------
-        eps : float
-            the epsilon we want to use
-
-        Raises
-        ------
-        pyagrum.OutOfBounds
-            If eps<0
-
-        """
-        return _cncpp.CNMonteCarloSampling_setEpsilon(self, eps)
 
     def setMinEpsilonRate(self, rate: float) -> None:
         r"""

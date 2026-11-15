@@ -172,31 +172,12 @@ namespace gum {
     // long as the prior outweighs the samples, the estimation hardly moves: the convergence
     // criteria (epsilon and rate) would stop the sampling and return the prior. They are suspended
     // until the samples outnumber the virtual ones (the limits on time and iterations still apply).
-    struct CriteriaSuspension {
-      SamplingInference< GUM_SCALAR >* inference;
-      const bool                       epsilon;
-      const bool                       rate;
-      bool                             suspended = false;
+    typename SamplingInference< GUM_SCALAR >::CriteriaSuspension_ criteria(*this);
 
-      // a suspension is not a change of the parameters: the setters would outdate the inference
-      // being computed
-      void suspend() {
-        inference->enabled_eps_          = false;
-        inference->enabled_min_rate_eps_ = false;
-        suspended                        = true;
-      }
-
-      void restore() {
-        if (!suspended) return;
-        if (epsilon) inference->enabled_eps_ = true;
-        if (rate) inference->enabled_min_rate_eps_ = true;
-        suspended = false;
-      }
-
-      ~CriteriaSuspension() { restore(); }
-    } criteria{this, this->isEnabledEpsilon(), this->isEnabledMinEpsilonRate()};
-
-    if (!_estimator_.isPriorOutweighed()) criteria.suspend();
+    if (!_estimator_.isPriorOutweighed()) {
+      criteria.suspendEpsilon();
+      criteria.suspendMinEpsilonRate();
+    }
 
     // Burn in
     Ip                = this->burnIn_();
@@ -212,7 +193,7 @@ namespace gum {
       _estimator_.update(Ip, w);
       ++nbrSamples;
       this->updateApproximationScheme();
-      if (criteria.suspended && _estimator_.isPriorOutweighed()) criteria.restore();
+      if (criteria.isSuspended() && _estimator_.isPriorOutweighed()) criteria.restore();
     } while (this->continueApproximationScheme(_estimator_.confidence()));
 
     if (nbrSamples == 0) {

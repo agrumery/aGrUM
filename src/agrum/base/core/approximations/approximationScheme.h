@@ -425,6 +425,48 @@ namespace gum {
     virtual void onApproximationSchemeChanged_();
 
     /**
+     * @brief Suspends convergence criteria during a computation, then restores the user's choices.
+     *
+     * A computation may have to ignore the epsilon or the rate criterion for a while (e.g. as long
+     * as the samples are too few to be meaningful). Changing the criteria through the setters would
+     * call onApproximationSchemeChanged_() (and outdate the result being computed) and lose the
+     * choices of the user. This RAII guard records these choices at construction and works on the
+     * flags directly: a criterion is restored only if the user had enabled it, at the latest when
+     * the guard is destroyed (even by an exception).
+     *
+     * The limits on time and iterations are never suspended.
+     */
+    class GUM_SHARED_PUBLIC CriteriaSuspension_ {
+      public:
+      /// Records the epsilon and rate criteria currently enabled in scheme.
+      explicit CriteriaSuspension_(ApproximationScheme& scheme);
+
+      CriteriaSuspension_(const CriteriaSuspension_&)            = delete;
+      CriteriaSuspension_& operator=(const CriteriaSuspension_&) = delete;
+
+      /// Restores the recorded choices.
+      ~CriteriaSuspension_();
+
+      /// Suspends the epsilon criterion (until restore()).
+      void suspendEpsilon();
+
+      /// Suspends the rate criterion (until restore()).
+      void suspendMinEpsilonRate();
+
+      /// Re-enables the suspended criteria which the user had enabled.
+      void restore();
+
+      /// @return true if a criterion is suspended.
+      bool isSuspended() const;
+
+      private:
+      ApproximationScheme& _scheme_;
+      const bool           _epsilon_;
+      const bool           _rate_;
+      bool                 _suspended_{false};
+    };
+
+    /**
      * @brief Read a non negative integer key of gum::Configuration.
      * @param section The name of the section of the configuration.
      * @param key The name of the key of the section.

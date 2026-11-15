@@ -109,16 +109,19 @@ namespace gum {
     // SAMPLING
     klPQ_ = klQP_ = hellinger_ = bhattacharya_ = jsd_ = (GUM_SCALAR)0.0;
     errorPQ_ = errorQP_ = 0;
-    /// bool check_rate;
     GUM_SCALAR delta, ratio, error;
     delta = ratio = error = (GUM_SCALAR)-1;
     GUM_SCALAR oldPQ      = 0.0;
     GUM_SCALAR pp, pq, pmid;
 
+    // the rate criterion is checked only after a sample which contributes to klPQ_ (if the user
+    // enabled it)
+    CriteriaSuspension_ rateCheck(*this);
+
     do {
-      // not through the setter: it would outdate the results being computed
-      this->enabled_min_rate_eps_ = false;
-      I                           = this->nextSample(I);
+      rateCheck.suspendMinEpsilonRate();
+      bool contributes = false;   // true if the sample changes klPQ_
+      I                = this->nextSample(I);
       updateApproximationScheme();
 
       //_p.synchroInstantiations( Ip,I);
@@ -133,8 +136,8 @@ namespace gum {
 
         if (pq != (GUM_SCALAR)0.0) {
           bhattacharya_ += std::sqrt(pq / pp);   // std::sqrt(pp*pq)/pp
-          /// check_rate=true;
-          this->enableMinEpsilonRate();   // replace check_rate=true;
+          contributes = true;
+          rateCheck.restore();
           ratio = pq / pp;
           delta = (GUM_SCALAR)std::log2(ratio);
           klPQ_ += delta;
@@ -157,7 +160,7 @@ namespace gum {
         }
       }
 
-      if (this->isEnabledMinEpsilonRate()) {   // replace check_rate
+      if (contributes) {
         // delta is used as a temporary variable
         delta = klPQ_ / nbrIterations();
         error = (GUM_SCALAR)std::abs(delta - oldPQ);

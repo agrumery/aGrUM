@@ -11,4 +11,4 @@ cn = gum.CredalNet(bnmin, bnmax)
 cn.intervalToCredal()
 ie = gum.CNMonteCarloSampling(cn)
 ie.isEnabledMinEpsilonRate()  # is the minimal epsilon rate a stopping criterion
-# True
+# False

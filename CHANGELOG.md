@@ -297,6 +297,12 @@
       inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
       depended on the number of threads (each sample now has its own seed) and the repetitive independence drew
       concurrently with the shared generator.
+    - `CNMonteCarloSampling` ignored the stopping criteria of the user: each `makeInference` set again epsilon,
+      disabled `maxIter` and the rate. These defaults are now set by the constructor and the user may change them;
+      an epsilon below 1000 times the machine epsilon raises `OutOfBounds` (below, the result would depend on the
+      number of threads).
+    - `MCBNDistance` and `GibbsBNdistance` enabled again the rate criterion during the computation (it could not be
+      disabled).
     - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few
       identical samples (e.g. a Gibbs chain with near-deterministic CPTs and a small `burnIn`): their error, the
       length of a Wald confidence interval, was 0. It is now the length of the Wilson score interval, never 0.

@@ -59,6 +59,12 @@ namespace gum::credal {
 
     this->setPeriodSize(1000);
 
+    // default criteria (the user may change them): the sampling stops when a period finds no new
+    // vertex (the variations below the floor are rounding), or on the time limit
+    setEpsilon(_minimalEpsilon_());   // and enables the criterion
+    this->disableMinEpsilonRate();
+    this->disableMaxIter();
+
     GUM_CONSTRUCTOR(CNMonteCarloSampling)
   }
 
@@ -177,16 +183,27 @@ namespace gum::credal {
 
   template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
   void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_mcInitApproximationScheme_() {
+    // the criteria are the user's ones (defaults set by the constructor)
+    this->initApproximationScheme();
+  }
+
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
+  double CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::_minimalEpsilon_() {
     // the posteriors of a sample may differ by a few ulps from one thread (inference engine) to
     // another: a variation of the bounds below this tolerance is rounding, not a new vertex (with a
     // threshold of 0, the number of samples, hence the result, depended on the number of threads)
-    this->setEpsilon(1000 * std::numeric_limits< GUM_SCALAR >::epsilon());
-    this->enableEpsilon();   // to be sure
+    return 1000 * static_cast< double >(std::numeric_limits< GUM_SCALAR >::epsilon());
+  }
 
-    this->disableMinEpsilonRate();
-    this->disableMaxIter();
-
-    this->initApproximationScheme();
+  template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
+  void CNMonteCarloSampling< GUM_SCALAR, BNInferenceEngine >::setEpsilon(double eps) {
+    if (eps < _minimalEpsilon_()) {
+      GUM_ERROR(OutOfBounds,
+                "The epsilon of CNMonteCarloSampling must be at least "
+                    << _minimalEpsilon_()
+                    << " (below, the result would depend on the number of threads)")
+    }
+    _infEs_::setEpsilon(eps);
   }
 
   template < GUM_Numeric GUM_SCALAR, class BNInferenceEngine >
