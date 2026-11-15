@@ -70,11 +70,18 @@ namespace gum {
    * @class InfluenceDiagramInference influenceDiagramInference.h
    *<agrum/ID/inference/influenceDiagramInference.h>
    * @brief This class implements an algorithm for inference
-   * in influence diagrams based upon  Shaffer-Shenoy's one for bayes net
+   * in influence diagrams based upon  Shafer-Shenoy's one for bayes net
    *inferences
    * @ingroup id_group
    *
-   * The class used for the triangulation is partialOrderedTriangulation.
+   * The decisions are solved by single policy update (Lauritzen and Nilsson 2001), which is exact
+   * if the diagram is soluble: there is an order of the decisions where each one is extremal (its
+   * utility descendants are d-separated from the families of the decisions not solved yet given
+   * its own family) once the previous ones are solved. When the decisions are totally ordered (a
+   * directed path goes through all of them, as in a classical influence diagram), the no-forgetting
+   * assumption is implicit: each decision is assumed to know the family of the previous one, and
+   * the diagram is then soluble. An explicit order given by addNoForgettingAssumption() takes
+   * precedence. Otherwise (a LIMID), solubility is checked as above.
    */
   template < GUM_Numeric GUM_SCALAR >
   class PYGUM_PUBLIC ShaferShenoyLIMIDInference: public InfluenceDiagramInference< GUM_SCALAR > {
@@ -193,6 +200,10 @@ namespace gum {
     std::vector< NodeSet > reversePartialOrder_;
     std::vector< NodeId >  solvabilityOrder_;
     std::vector< NodeId >  noForgettingOrder_;
+
+    /// the no-forgetting order applied: noForgettingOrder_ if given, else the order of the
+    /// decisions if they are totally ordered, else empty
+    std::vector< NodeId > activeNoForgettingOrder_;
 
     private:
     /// unnormalized moments of the total utility U: (phi, phi.U, phi.U^2). A missing proba means 1,

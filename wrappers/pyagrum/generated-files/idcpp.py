@@ -1141,11 +1141,10 @@ _idcpp.InfluenceDiagram_swigregister(InfluenceDiagram)
 class ShaferShenoyLIMIDInference(object):
     r"""
 
-    This inference considers the provided model as a LIMID rather than an influence diagram. It is an optimized
-    implementation of the LIMID resolution algorithm. However an inference on a classical influence diagram can be performed
-    by adding a assumption of the existence of the sequence of decision nodes to be solved, which also implies that the
-    decision choices can have an impact on the rest of the sequence (Non Forgetting Assumption,
-    cf. `pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption`).
+    This inference solves the model as a LIMID (limited memory influence diagram), where a decision only knows its
+    parents. When a directed path goes through all the decisions (a classical influence diagram), the no-forgetting
+    assumption is made: each decision also knows what the previous decisions knew. Another order of the decisions can be
+    given by `pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption`.
 
     """
 
@@ -1209,12 +1208,14 @@ class ShaferShenoyLIMIDInference(object):
     def hasNoForgettingAssumption(self) -> bool:
         r"""
 
-        Check whether the no-forgetting assumption has been added.
+        Check whether a no-forgetting order has been given by `pyagrum.ShaferShenoyLIMIDInference.addNoForgettingAssumption`.
+
+        The assumption made because the decisions are totally ordered is not reported here.
 
         Returns
         -------
         bool
-            True if the no-forgetting assumption is currently active
+            True if a no-forgetting order has been given
 
         """
         return _idcpp.ShaferShenoyLIMIDInference_hasNoForgettingAssumption(self)
@@ -1263,12 +1264,17 @@ class ShaferShenoyLIMIDInference(object):
     def isSolvable(self) -> bool:
         r"""
 
-        check wether the influence diagram is solvable or not
+        Check whether the influence diagram is soluble: then the strategy found is optimal.
+
+        A diagram with the no-forgetting assumption (given, or made because the decisions are totally ordered) is soluble. For
+        a LIMID, the decisions must be orderable so that each one is extremal once the previous ones are solved (its utility
+        descendants are d-separated from the families of the remaining decisions given its own family). The inference refuses
+        a diagram that is not soluble.
 
         Returns
         -------
         bool
-          True if the influence diagram is solvable
+          True if the influence diagram is soluble
 
         """
         return _idcpp.ShaferShenoyLIMIDInference_isSolvable(self)

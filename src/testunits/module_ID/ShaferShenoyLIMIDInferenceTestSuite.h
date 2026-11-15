@@ -368,7 +368,9 @@ namespace gum_tests {
     gum::ShaferShenoyLIMIDInference< double > inf(&model);
     inf.makeInference();
     CHECK((inf.MEU().first) == doctest::Approx(28).epsilon(GUM_SMALL_ERROR));
-    CHECK_EQ(inf.optimalDecision("Buy").sum(), 9);
+    // the decisions are totally ordered: no-forgetting is implicit and Buy also knows DoTest
+    // (3x3x3 configurations of its parents)
+    CHECK_EQ(inf.optimalDecision("Buy").sum(), 27);
   }
 
   GUM_TEST(BugFromNeapolitan2) {
@@ -395,7 +397,7 @@ namespace gum_tests {
 
     inf.makeInference();
     CHECK((inf.MEU().first) == doctest::Approx(40.6).epsilon(GUM_SMALL_ERROR));
-    CHECK_EQ(inf.optimalDecision("Buy").sum(), 9);
+    CHECK_EQ(inf.optimalDecision("Buy").sum(), 27);   // implicit no-forgetting (see above)
   }
 
   GUM_TEST(NewStructure) {
@@ -446,6 +448,25 @@ namespace gum_tests {
       ieid.addNoForgettingAssumption({"D1", "D3", "D2"});
       CHECK(ieid.isSolvable());
     }
+    {
+      // D3 is not ordered with D1 and D2 (a LIMID): no implicit no-forgetting. D3 is extremal, but
+      // then neither D1 nor D2 is: U depends on D1 through X given the family of D2, and on D2
+      // given the family of D1. D1 and D2 are in different levels of the partial order, and the
+      // extremality was only checked against the decisions of the same level
+      auto infdiag
+          = gum::InfluenceDiagram< double >::fastPrototype("*D1->X->$U<-*D2;D1->Y->D2;*D3->$V");
+      auto ieid = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
+      CHECK(!ieid.isSolvable());
+      CHECK_THROWS_AS(ieid.makeInference(), gum::FatalError);
+    }
+    {
+      // the same decisions, totally ordered: no-forgetting is implicit and the diagram is soluble
+      auto infdiag = gum::InfluenceDiagram< double >::fastPrototype("*D1->X->$U<-*D2;D1->Y->D2");
+      auto ieid    = gum::ShaferShenoyLIMIDInference< double >(&infdiag);
+      CHECK(ieid.isSolvable());
+      CHECK(!ieid.hasNoForgettingAssumption());
+      CHECK(ieid.reducedGraph().existsArc(infdiag.idFromName("D1"), infdiag.idFromName("D2")));
+    }
   }
 
   GUM_TEST(NoForgettingAssumption) {
@@ -464,7 +485,9 @@ namespace gum_tests {
     CHECK_EQ(dag.parents(infdiag.idFromName("D1")), infdiag.nodeset({}));
     CHECK_EQ(dag.parents(infdiag.idFromName("D2")), infdiag.nodeset({"D1"}));
     CHECK_EQ(dag.parents(infdiag.idFromName("D3")), infdiag.nodeset({"D2"}));
-    CHECK_EQ(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D3", "R4"}));
+    // the decisions are totally ordered: no-forgetting is implicit, hence the same reduction as
+    // with the explicit order below (Nilsson and Lauritzen 2000)
+    CHECK_EQ(dag.parents(infdiag.idFromName("D4")), infdiag.nodeset({"D2", "R4"}));
 
     CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D11"}), const gum::NotFound&);
     CHECK_THROWS_AS(ieid.addNoForgettingAssumption({"D4", "D1", "D2", "D3"}),

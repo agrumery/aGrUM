@@ -99,6 +99,11 @@
       `klQP`) when a configuration has a positive probability in P and a null one in Q (resp. the reverse), instead of
       the sum over the other configurations, which could even be negative; `errorPQ` (resp. `errorQP`) still counts
       these configurations.
+    - Behaviour change: `ShaferShenoyLIMIDInference` makes the no-forgetting assumption when the decisions are totally
+      ordered (a classical influence diagram), as with `addNoForgettingAssumption` in this order: the strategy is the
+      optimal one of the influence diagram (the policies may have more parents). For a LIMID, the solubility check
+      compared only the decisions of a same level: some non soluble LIMIDs were accepted, and their strategy was not
+      guaranteed to be optimal; the extremality is now checked against all the remaining decisions.
     - Behaviour change: the defaults of `GibbsSampling` and `LoopyGibbsSampling` are now those of the other samplers,
       `gibbs.epsilon` = 0.01 and `gibbs.minEpsilonRate` = 1e-5 (they were exp(-1.6) = 0.2 and exp(-5) = 0.0067, a
       legacy of a former error: the sampling stopped at the end of the burn-in, with posteriors at about 0.1). The

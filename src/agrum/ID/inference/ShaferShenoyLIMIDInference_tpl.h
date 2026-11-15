@@ -79,6 +79,7 @@ namespace gum {
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::clear() {
     GraphicalModelInference< GUM_SCALAR >::clear();
     noForgettingOrder_.clear();
+    activeNoForgettingOrder_.clear();
     reduced_.clear();
     reducedJunctionTree_.clear();
     solvabilityOrder_.clear();
@@ -433,6 +434,12 @@ namespace gum {
     for (const auto& arc: infdiag.arcs())
       reduced_.addArc(arc.tail(), arc.head());
 
+    // no-forgetting: explicit order, else implicit when the decisions are totally ordered
+    activeNoForgettingOrder_ = noForgettingOrder_;
+    if (activeNoForgettingOrder_.empty() && infdiag.decisionNodeSize() > 1
+        && infdiag.decisionOrderExists())
+      activeNoForgettingOrder_ = infdiag.decisionOrder();
+
     _completingNoForgettingAssumption_();
     _creatingPartialOrder_(utilities);
     _checkingSolvability_(utilities);
@@ -447,9 +454,9 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_completingNoForgettingAssumption_() {
     // force no forgetting if necessary
-    if (hasNoForgettingAssumption()) {
-      auto last = *(noForgettingOrder_.begin());
-      for (auto node: noForgettingOrder_)
+    if (!activeNoForgettingOrder_.empty()) {
+      auto last = *(activeNoForgettingOrder_.begin());
+      for (auto node: activeNoForgettingOrder_)
         if (node == last)   // first one
           continue;
         else {              // we deal with last->node
@@ -465,33 +472,45 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   void ShaferShenoyLIMIDInference< GUM_SCALAR >::_checkingSolvability_(const NodeSet& utilities) {
-    if (hasNoForgettingAssumption()) {
-      solvabilityOrder_ = noForgettingOrder_;
+    // with the no-forgetting assumption, the diagram is soluble (Lauritzen and Nilsson 2001)
+    if (!activeNoForgettingOrder_.empty()) {
+      solvabilityOrder_ = activeNoForgettingOrder_;
       std::reverse(solvabilityOrder_.begin(), solvabilityOrder_.end());
       return;
     }
 
+    // Lauritzen and Nilsson (2001): the LIMID is soluble if its decisions can be ordered so that
+    // each one is extremal once the previous ones are solved, i.e. its utility descendants are
+    // d-separated from the families of all the remaining decisions given its own family. The
+    // candidates are tried in the reverse partial order, but the extremality is checked against all
+    // the remaining decisions (not only the ones of the same level)
     solvabilityOrder_.clear();
-    for (const auto& sen: reversePartialOrder()) {
-      NodeSet tobetested = sen;
-      while (!tobetested.empty()) {
-        bool foundOne = false;
-        for (const auto& node: tobetested) {
-          const auto us = utilities * reduced_.descendants(node);
-          NodeSet    decs;
-          for (const auto dec: tobetested)
-            if (dec != node) decs += reduced_.family(dec);
-          if (reduced_.dSeparation(decs, us, reduced_.family(node))) {
-            solvabilityOrder_.push_back(node);
-            foundOne = true;
-            tobetested.erase(node);
-            break;
-          }
+    std::vector< NodeId > candidates;
+    NodeSet               remaining;
+    for (const auto& sen: reversePartialOrder())
+      for (const auto node: sen) {
+        candidates.push_back(node);
+        remaining.insert(node);
+      }
+
+    while (!remaining.empty()) {
+      bool foundOne = false;
+      for (const auto node: candidates) {
+        if (!remaining.contains(node)) continue;
+        const auto us = utilities * reduced_.descendants(node);
+        NodeSet    decs;
+        for (const auto dec: remaining)
+          if (dec != node) decs += reduced_.family(dec);
+        if (reduced_.dSeparation(decs, us, reduced_.family(node))) {
+          solvabilityOrder_.push_back(node);
+          remaining.erase(node);
+          foundOne = true;
+          break;
         }
-        if (!foundOne) {   // no solvability
-          solvabilityOrder_.clear();
-          return;
-        }
+      }
+      if (!foundOne) {   // no solvability
+        solvabilityOrder_.clear();
+        return;
       }
     }
   }
