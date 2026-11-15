@@ -48,6 +48,8 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <limits>
+
 #include <agrum/BN/algorithms/divergence/BNdistance.h>
 #include <agrum/BN/algorithms/divergence/exactBNdistance.h>
 #include <agrum/BN/IBayesNet.h>
@@ -124,6 +126,9 @@ namespace gum {
     jsd_ /= 2.0;
     hellinger_    = std::sqrt(hellinger_);
     bhattacharya_ = -std::log(bhattacharya_);
+    // a configuration with p>0 and q=0 makes KL(P||Q) infinite (and symmetrically for KL(Q||P))
+    if (errorPQ_ > 0) klPQ_ = std::numeric_limits< GUM_SCALAR >::infinity();
+    if (errorQP_ > 0) klQP_ = std::numeric_limits< GUM_SCALAR >::infinity();
   }
 
 }   // namespace gum

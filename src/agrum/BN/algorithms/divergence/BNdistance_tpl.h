@@ -132,6 +132,13 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
+  bool BNdistance< GUM_SCALAR >::pHasNullParameter_() const {
+    for (const auto node: p_.nodes())
+      if (p_.cpt(node).min() == (GUM_SCALAR)0.0) return true;
+    return false;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
   const IBayesNet< GUM_SCALAR >& BNdistance< GUM_SCALAR >::p() const {
     return p_;
   }

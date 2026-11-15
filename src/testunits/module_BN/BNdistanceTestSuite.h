@@ -403,6 +403,82 @@ namespace gum_tests {
     CHECK_EQ(gibbs.nbrIterations(), static_cast< gum::Size >(1100));
   }
 
+  GUM_TEST(SampledDistancesWithDifferentSupports) {
+    // P(A=0,B=1)=0 and Q(A=1,B=1)=0: each BN gives a positive probability to a configuration that
+    // the other one excludes, so that the Jensen-Shannon divergence depends on the two missing
+    // masses
+    auto p = gum::BayesNet< double >::fastPrototype("A->B");
+    p.cpt("A").fillWith({0.4, 0.6});
+    p.cpt("B").fillWith({1.0, 0.0, 0.3, 0.7});
+    auto q = gum::BayesNet< double >::fastPrototype("A->B");
+    q.cpt("A").fillWith({0.7, 0.3});
+    q.cpt("B").fillWith({0.5, 0.5, 1.0, 0.0});
+
+    // P without null parameter: only the samples where Q is null matter
+    auto pFull = gum::BayesNet< double >::fastPrototype("A->B");
+    pFull.cpt("A").fillWith({0.4, 0.6});
+    pFull.cpt("B").fillWith({0.9, 0.1, 0.3, 0.7});
+
+    const auto check = [](const gum::BayesNet< double >& bn1, const gum::BayesNet< double >& bn2) {
+      gum::ExactBNdistance< double > exact(bn1, bn2);
+      const double                   jsd = exact.jsd();
+
+      gum::MCBNDistance< double >    mc(bn1, bn2);
+      gum::GibbsBNdistance< double > gibbs(bn1, bn2);
+      for (gum::ApproximationScheme* algo: {static_cast< gum::ApproximationScheme* >(&mc),
+                                            static_cast< gum::ApproximationScheme* >(&gibbs)}) {
+        algo->disableEpsilon();
+        algo->disableMinEpsilonRate();
+        algo->setMaxIter(200000);
+      }
+      for (const double estimate: {mc.jsd(), gibbs.jsd()}) {
+        // the missing masses would lower the estimate by 0.385 (p, q) and 0.21 (pFull, q)
+        CHECK(fabs(estimate - jsd) < 0.02);
+        CHECK(estimate >= 0.0);
+        CHECK(estimate <= 1.0);
+      }
+      // the Hellinger estimate takes the mass of Q where P is null into account (2 - 2 rho)
+      for (const double estimate: {mc.hellinger(), gibbs.hellinger()})
+        CHECK(fabs(estimate - exact.hellinger()) < 0.02);
+      // a configuration where P is positive and Q is null makes KL(P||Q) infinite
+      if (exact.errorPQ() > 0) {
+        CHECK(std::isinf(exact.klPQ()));
+        CHECK(std::isinf(mc.klPQ()));
+        CHECK(std::isinf(gibbs.klPQ()));
+      } else {
+        CHECK(!std::isinf(exact.klPQ()));
+      }
+      CHECK_EQ(std::isinf(exact.klQP()), exact.errorQP() > 0);
+    };
+
+    check(p, q);
+    check(pFull, q);
+    check(pFull, pFull);   // same BN: the estimate stays in [0,1] (no negative noise)
+  }
+
+  GUM_TEST(GibbsDistanceFollowsDeterministicNodes) {
+    // B is a copy of A in P: the Gibbs chain on P must move A and B together, else it keeps the
+    // configuration of its first sample
+    auto p = gum::BayesNet< double >::fastPrototype("A->B->C");
+    p.cpt("A").fillWith({0.3, 0.7});
+    p.cpt("B").fillWith({1.0, 0.0, 0.0, 1.0});
+    p.cpt("C").fillWith({0.8, 0.2, 0.4, 0.6});
+    auto q = gum::BayesNet< double >::fastPrototype("A->B->C");
+    q.cpt("A").fillWith({0.5, 0.5});
+    q.cpt("B").fillWith({0.9, 0.1, 0.2, 0.8});
+    q.cpt("C").fillWith({0.7, 0.3, 0.3, 0.7});
+
+    gum::ExactBNdistance< double > exact(p, q);
+    gum::GibbsBNdistance< double > gibbs(p, q);
+    gibbs.disableEpsilon();
+    gibbs.disableMinEpsilonRate();
+    gibbs.setMaxIter(200000);
+    CHECK(fabs(gibbs.klPQ() - exact.klPQ()) < 0.02);
+    CHECK(fabs(gibbs.hellinger() - exact.hellinger()) < 0.02);
+    CHECK(fabs(gibbs.bhattacharya() - exact.bhattacharya()) < 0.02);
+    CHECK(fabs(gibbs.jsd() - exact.jsd()) < 0.02);
+  }
+
   GUM_TEST(ComputationKeepsTheUserChoiceForTheRate) {
     gum::BayesNet< double > netP;
     {

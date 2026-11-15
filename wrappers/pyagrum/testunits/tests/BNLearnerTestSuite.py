@@ -95,7 +95,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
-    self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
+    # KL(learned || reference) is infinite: the reference excludes configurations (deterministic CPT of the OR)
+    # that the learned BN allows. KL(reference || learned) measures how well the learned BN covers the reference.
+    self.assertEqual(res["errorQP"], 0)
+    self.assertLess(res["klQP"], 0.05)
 
   def testExtendedHillClimbingAccurate(self):
     reference = gum.loadBN(self.agrumSrcDir("asia2.bif"), verbose=False)
@@ -126,7 +129,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
-    self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
+    # KL(learned || reference) is infinite: the reference excludes configurations (deterministic CPT of the OR)
+    # that the learned BN allows. KL(reference || learned) measures how well the learned BN covers the reference.
+    self.assertEqual(res["errorQP"], 0)
+    self.assertLess(res["klQP"], 0.05)
 
   def testLocalSearchWithTabu(self):
     with self.assertRaises(gum.GumIOError):
@@ -141,7 +147,10 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     bn = learner.learnBN()
     f = gum.ExactBNdistance(bn, reference)
     res = f.compute()
-    self.assertAlmostEqual(res["klPQ"], 0.5, delta=0.5)
+    # KL(learned || reference) is infinite: the reference excludes configurations (deterministic CPT of the OR)
+    # that the learned BN allows. KL(reference || learned) measures how well the learned BN covers the reference.
+    self.assertEqual(res["errorQP"], 0)
+    self.assertLess(res["klQP"], 0.05)
 
   def testParameterLearning(self):
     bn = gum.loadBN(self.agrumSrcDir("asia_bool.bgum"), verbose=False)

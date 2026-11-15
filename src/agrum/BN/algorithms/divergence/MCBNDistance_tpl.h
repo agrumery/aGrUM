@@ -49,6 +49,9 @@
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
  */
 
+#include <algorithm>
+#include <limits>
+
 #include <agrum/base/core/approximations/approximationScheme.h>
 #include <agrum/base/core/hashTable.h>
 #include <agrum/BN/algorithms/divergence/MCBNDistance.h>
@@ -119,6 +122,7 @@ namespace gum {
     delta = ratio = error = (GUM_SCALAR)-1;
     GUM_SCALAR oldPQ      = 0.0;
     GUM_SCALAR pp, pq, pmid;
+    GUM_SCALAR sumRatio = 0.0;   // sum of q/p over the samples: estimates Q(p > 0)
 
     // the rate criterion is checked only after a sample which contributes to klPQ_ (if the user
     // enabled it)
@@ -137,8 +141,6 @@ namespace gum {
       pmid = (pp + pq) / 2.0;
 
       if (pp != (GUM_SCALAR)0.0) {
-        hellinger_ += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
-
         if (pq != (GUM_SCALAR)0.0) {
           bhattacharya_ += std::sqrt(pq / pp);
           contributes = true;
@@ -149,7 +151,10 @@ namespace gum {
 
           // pmid!=0
           jsd_ -= std::log2(pp / pmid) + ratio * std::log2(pq / pmid);
+          sumRatio += ratio;
         } else {
+          // q=0: pmid=p/2, the term log2(p/pmid) is 1 and the term of q is 0
+          jsd_ -= (GUM_SCALAR)1.0;
           errorPQ_++;
         }
       }
@@ -172,10 +177,20 @@ namespace gum {
       }
     } while (continueApproximationScheme(error));
 
-    klPQ_         = -klPQ_ / (nbrIterations());
-    klQP_         = -klQP_ / (nbrIterations());
-    jsd_          = -0.5 * jsd_ / (nbrIterations());
-    hellinger_    = std::sqrt(hellinger_ / nbrIterations());
-    bhattacharya_ = -std::log(bhattacharya_ / (nbrIterations()));
+    klPQ_ = -klPQ_ / (nbrIterations());
+    klQP_ = -klQP_ / (nbrIterations());
+    jsd_  = -0.5 * jsd_ / (nbrIterations());
+    // the configurations where p=0 are never drawn. If p has a null parameter, their part of the
+    // divergence, Q(p=0)/2, is estimated with Q(p=0) = 1 - E_P[q/p]; otherwise Q(p=0) = 0 exactly
+    if (this->pHasNullParameter_()) jsd_ += 0.5 * ((GUM_SCALAR)1.0 - sumRatio / nbrIterations());
+    jsd_ = std::clamp(jsd_, (GUM_SCALAR)0.0, (GUM_SCALAR)1.0);   // the estimation may leave [0,1]
+    // H^2 = sum (sqrt(p)-sqrt(q))^2 = 2 - 2 rho with rho = sum sqrt(p.q) = E_P[sqrt(q/p)]: unlike
+    // the mean of (sqrt(p)-sqrt(q))^2/p, this estimate takes into account the mass of Q where p=0
+    // (never drawn)
+    const GUM_SCALAR rho = bhattacharya_ / nbrIterations();
+    hellinger_           = std::sqrt(std::max((GUM_SCALAR)0.0, (GUM_SCALAR)2.0 - 2 * rho));
+    bhattacharya_        = -std::log(rho);
+    // a sample with p>0 and q=0 proves that KL(P||Q) is infinite
+    if (errorPQ_ > 0) klPQ_ = std::numeric_limits< GUM_SCALAR >::infinity();
   }
 }   // namespace gum

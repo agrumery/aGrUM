@@ -164,6 +164,9 @@ namespace gum {
     /// the results are outdated: the next access computes them again
     void setOutdated_();
 
+    /// true if a parameter of p is null: some configurations may then have a null probability in p
+    bool pHasNullParameter_() const;
+
     const IBayesNet< GUM_SCALAR >& p_;
     const IBayesNet< GUM_SCALAR >& q_;
 
