@@ -185,6 +185,11 @@ namespace gum {
     Size maxArcs_;
     Size maxModality_;
     DAG  dag_;
+
+    private:
+    /// @throw OperationNotAllowed if a connected DAG with nbrNodes nodes cannot have maxArcs arcs,
+    /// i.e. unless nbrNodes - 1 <= maxArcs <= nbrNodes * (nbrNodes - 1) / 2
+    static void _checkArcs_(Size nbrNodes, Size maxArcs);
   };
 
 } /* namespace gum */

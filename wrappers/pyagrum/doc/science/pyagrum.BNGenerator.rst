@@ -8,10 +8,9 @@ pyAgrum starts from a random tree on which ``n_nodes``/2 arc reversals are appli
 polytree, a step uses *add or remove* with probability :math:`p = 0.3`, *add and remove* with probability
 :math:`q = 0.4`, and a jump otherwise; from a multiconnected graph, it uses *add or remove* with probability
 :math:`p + q` (a step back to a polytree being then accepted with probability :math:`p/(p+q)`), and a jump otherwise.
-A change that exceeds ``n_arcs`` is
-rejected; the result has usually ``n_arcs`` arcs or slightly fewer.
+A change that exceeds ``n_arcs`` is rejected: the result has ``n_arcs`` arcs or slightly fewer for a sparse graph,
+often clearly fewer for a dense one.
 
-Each variable gets a domain size drawn uniformly between 2 and ``n_modmax``. Each entry of a CPT is drawn uniformly
-in :math:`[0, 1]`, and each distribution is then normalized. Unlike the uniform drawing of :cite:`ide2002random` (a
-Dirichlet distribution of parameter 1), these distributions are not uniform on the probability simplex: they are less
-often close to a deterministic one.
+Each variable gets a domain size drawn uniformly between 2 and ``n_modmax``. As in :cite:`ide2002random`, each
+distribution of a CPT (one per configuration of the parents) is drawn uniformly on the probability simplex, i.e. from a
+Dirichlet distribution of parameter 1, by the sorted spacings of uniform draws.

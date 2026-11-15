@@ -11,4 +11,4 @@ learner.allowArcReversals(False)
 dict(s[:2] for s in learner.state())["Arc reversals"]
 # 'forbidden'
 learner.learnKTBN().sizeArcs()
-# 2
+# 3

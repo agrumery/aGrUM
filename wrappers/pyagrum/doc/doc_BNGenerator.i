@@ -54,7 +54,11 @@ BNGenerator() -> BNGenerator
 
 %feature("docstring") BNGenerator::generate
 "
-Generate a new Bayesian network
+Generate a new Bayesian network.
+
+The DAG is connected, with at most n_arcs arcs; each variable has a domain size drawn uniformly between 2
+and n_modmax; each distribution of a CPT (one per configuration of the parents) is drawn uniformly on the
+probability simplex, i.e. from a Dirichlet distribution of parameter 1.
 
 Parameters
 ----------
@@ -62,7 +66,7 @@ n_nodes : int
     the number of nodes (default=10)
 n_arcs : int
     the maximum number of arcs (default=15)
-n_nodmax : int
+n_modmax : int
     the max number of modalities for a node (default=4)
 
 Returns
@@ -75,5 +79,5 @@ Raises
   pyagrum.OperationNotAllowed
     If n_modmax < 2
   pyagrum.OperationNotAllowed
-    If n_arcs is incompatible with n_nodes (not enough arcs)
+    If n_arcs < n_nodes - 1 or n_arcs > n_nodes * (n_nodes - 1) / 2 (no connected DAG has n_arcs arcs)
 "

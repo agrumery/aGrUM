@@ -74575,17 +74575,54 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Tensor_randomCPT(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_Tensor_randomCPT__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::Tensor< double > *arg1 = 0 ;
+  gum::Idx *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  gum::Idx temp2 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  gum::Tensor< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_randomCPT" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Tensor< double > * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tensor_randomCPT" "', argument " "2"" of type '" "gum::Idx""'");
+  } 
+  temp2 = static_cast< gum::Idx >(val2);
+  arg2 = &temp2;
+  {
+    try {
+      result = (gum::Tensor< double > *) &((gum::Tensor< double > const *)arg1)->randomCPT((gum::Idx const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tensor_randomCPT__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::Tensor< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  PyObject *swig_obj[1] ;
   gum::Tensor< double > *result = 0 ;
   
   (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__TensorT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tensor_randomCPT" "', argument " "1"" of type '" "gum::Tensor< double > const *""'"); 
@@ -74603,6 +74640,34 @@ SWIGINTERN PyObject *_wrap_Tensor_randomCPT(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Tensor_randomCPT(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Tensor_randomCPT", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    PyObject *retobj = _wrap_Tensor_randomCPT__SWIG_1(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  if (argc == 2) {
+    PyObject *retobj = _wrap_Tensor_randomCPT__SWIG_0(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Tensor_randomCPT'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::Tensor< double >::randomCPT(gum::Idx const &) const\n"
+    "    gum::Tensor< double >::randomCPT() const\n");
+  return 0;
 }
 
 
@@ -161939,14 +162004,27 @@ static PyMethodDef SwigMethods[] = {
 		"    self (in-place modification)\n"
 		"\n"
 		""},
-	 { "Tensor_randomCPT", _wrap_Tensor_randomCPT, METH_O, "\n"
+	 { "Tensor_randomCPT", _wrap_Tensor_randomCPT, METH_VARARGS, "\n"
 		"\n"
-		"Fill the tensor as a random conditional probability table (each conditional distribution sums to 1).\n"
+		"Fill the tensor as a random conditional probability table.\n"
+		"\n"
+		"For each configuration of the other variables, the distribution of the conditioned variable is drawn\n"
+		"uniformly on the probability simplex, i.e. from a Dirichlet distribution of parameter 1.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"varId : int\n"
+		"    the position of the conditioned variable in the tensor (default: 0, the first variable)\n"
 		"\n"
 		"Returns\n"
 		"-------\n"
 		"Tensor\n"
 		"    self (in-place modification)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"pyagrum.OutOfBounds\n"
+		"    if varId is not a position of a variable of the tensor\n"
 		"\n"
 		""},
 	 { "Tensor_noising", _wrap_Tensor_noising, METH_VARARGS, "\n"
@@ -163310,7 +163388,11 @@ static PyMethodDef SwigMethods[] = {
 	 { "PythonDatabaseGeneratorListener_swiginit", PythonDatabaseGeneratorListener_swiginit, METH_VARARGS, NULL},
 	 { "BNGenerator_generate", _wrap_BNGenerator_generate, METH_VARARGS, "\n"
 		"\n"
-		"Generate a new Bayesian network\n"
+		"Generate a new Bayesian network.\n"
+		"\n"
+		"The DAG is connected, with at most n_arcs arcs; each variable has a domain size drawn uniformly between 2\n"
+		"and n_modmax; each distribution of a CPT (one per configuration of the parents) is drawn uniformly on the\n"
+		"probability simplex, i.e. from a Dirichlet distribution of parameter 1.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -163318,7 +163400,7 @@ static PyMethodDef SwigMethods[] = {
 		"    the number of nodes (default=10)\n"
 		"n_arcs : int\n"
 		"    the maximum number of arcs (default=15)\n"
-		"n_nodmax : int\n"
+		"n_modmax : int\n"
 		"    the max number of modalities for a node (default=4)\n"
 		"\n"
 		"Returns\n"
@@ -163331,7 +163413,7 @@ static PyMethodDef SwigMethods[] = {
 		"  pyagrum.OperationNotAllowed\n"
 		"    If n_modmax < 2\n"
 		"  pyagrum.OperationNotAllowed\n"
-		"    If n_arcs is incompatible with n_nodes (not enough arcs)\n"
+		"    If n_arcs < n_nodes - 1 or n_arcs > n_nodes * (n_nodes - 1) / 2 (no connected DAG has n_arcs arcs)\n"
 		"\n"
 		""},
 	 { "new_BNGenerator", _wrap_new_BNGenerator, METH_NOARGS, "\n"
@@ -164268,7 +164350,7 @@ static PyMethodDef SwigMethods[] = {
 		"-----\n"
 		"  - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.\n"
 		"  - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).\n"
-		"  - the CPTs are randomly generated.\n"
+		"  - the CPTs are randomly generated (see `pyagrum.BayesNet.generateCPTs`).\n"
 		"  - see also the function `pyagrum.fastBN`.\n"
 		"\n"
 		"Parameters\n"
@@ -164864,10 +164946,16 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Randomly generates CPTs for a given structure.\n"
 		"\n"
+		"Each distribution of a node (one per configuration of its parents) is drawn uniformly on the\n"
+		"probability simplex, i.e. from a Dirichlet distribution of parameter 1.\n"
+		"\n"
 		""},
 	 { "BayesNet_generateCPT", _wrap_BayesNet_generateCPT, METH_VARARGS, "\n"
 		"\n"
 		"Randomly generate CPT for a given node in a given structure.\n"
+		"\n"
+		"Each distribution of the node (one per configuration of its parents) is drawn uniformly on the\n"
+		"probability simplex, i.e. from a Dirichlet distribution of parameter 1.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"

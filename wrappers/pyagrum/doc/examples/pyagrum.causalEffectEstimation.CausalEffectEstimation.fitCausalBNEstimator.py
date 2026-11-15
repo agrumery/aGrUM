@@ -10,4 +10,4 @@ cee.identifyAdjustmentSet("T", "Y", verbose=False)
 # 'Backdoor'
 cee.fitCausalBNEstimator()
 round(float(cee.estimateCausalEffect()), 2)  # P(Y=1|do(T=1)) - P(Y=1|do(T=0))
-# -0.09
+# -0.6

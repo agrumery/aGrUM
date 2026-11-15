@@ -1553,4 +1553,44 @@ namespace gum_tests {
     // no variables added: internal vector is empty, data() returns nullptr
     CHECK_EQ(t.content()->data(), nullptr);
   }
+
+  GUM_TEST(RandomCPTOnAnyPosition) {
+    const auto a = gum::LabelizedVariable("a", "", 2);
+    const auto b = gum::LabelizedVariable("b", "", 3);
+    const auto c = gum::LabelizedVariable("c", "", 4);
+
+    gum::Tensor< double > p;
+    p << a << b << c;
+    p.randomCPT(1);   // a distribution of b for each value of (a, c)
+
+    gum::Instantiation I(p);
+    for (I.setFirstNotVar(b); !I.end(); I.incNotVar(b)) {
+      double cum = 0.0;
+      for (I.setFirstVar(b); !I.end(); I.incVar(b))
+        cum += p[I];
+      CHECK((cum) == doctest::Approx(1.0).epsilon(1e-6));
+      I.unsetEnd();
+    }
+
+    CHECK_THROWS_AS(p.randomCPT(3), const gum::OutOfBounds&);
+  }
+
+  GUM_TEST(RandomCPTIsUniformOnTheSimplex) {
+    // Dirichlet(1) on 3 values: each probability follows a Beta(1, 2), hence P(p > 1/2) = 1/4
+    // (the normalization of 3 uniform draws gives about 1/6)
+    const auto x = gum::LabelizedVariable("x", "", 3);
+    const auto y = gum::RangeVariable("y", "", 0, 9999);
+
+    gum::Tensor< double > p;
+    p << x << y;
+    p.randomCPT();
+
+    gum::Instantiation I(p);
+    I.chgVal(x, 0);
+    gum::Size above = 0;
+    for (I.setFirstNotVar(x); !I.end(); I.incNotVar(x))
+      if (p[I] > 0.5) ++above;
+
+    CHECK((double(above) / 10000.0) == doctest::Approx(0.25).epsilon(0.08));
+  }
 }   // namespace gum_tests

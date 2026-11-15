@@ -164,8 +164,18 @@ namespace gum {
     /** generate a random Distribution in the Tensor */
     const Tensor< GUM_SCALAR >& randomDistribution() const;
 
-    /** generate a random CPT in the Tensor */
-    const Tensor< GUM_SCALAR >& randomCPT() const;
+    /**
+     * @brief generate a random CPT in the Tensor
+     *
+     * Each distribution of the variable at position varId (one per configuration of the other
+     * variables) is drawn uniformly on the probability simplex, i.e. from a Dirichlet distribution of
+     * parameter 1 (see gum::randomDistribution).
+     * If the Tensor is empty, the argument is not used.
+     *
+     * @param varId the position of the conditioned variable in the Tensor
+     * @throw OutOfBounds if varId>=nbrDim()
+     */
+    const Tensor< GUM_SCALAR >& randomCPT(const Idx& varId = 0) const;
 
     /** add a noise in a CPT by mixing (1-alpha)this+alpha.randomCPT()
      * @warning alpha in [0,1]

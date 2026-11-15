@@ -9,4 +9,4 @@ cee = pycee.CausalEffectEstimation(df, gum.CausalModel(bn))
 cee.useUnknownAdjustment("T", "Y")  # only the causal BN estimator can be used
 cee.fitCausalBNEstimator()
 round(float(cee.estimateCausalEffect()), 2)
-# -0.09
+# -0.6

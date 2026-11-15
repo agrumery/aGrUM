@@ -885,12 +885,25 @@ Tensor
 
 %feature("docstring") gum::Tensor::randomCPT
 "
-Fill the tensor as a random conditional probability table (each conditional distribution sums to 1).
+Fill the tensor as a random conditional probability table.
+
+For each configuration of the other variables, the distribution of the conditioned variable is drawn
+uniformly on the probability simplex, i.e. from a Dirichlet distribution of parameter 1.
+
+Parameters
+----------
+varId : int
+    the position of the conditioned variable in the tensor (default: 0, the first variable)
 
 Returns
 -------
 Tensor
     self (in-place modification)
+
+Raises
+------
+pyagrum.OutOfBounds
+    if varId is not a position of a variable of the tensor
 "
 
 %feature("docstring") gum::Tensor::uniformTensor

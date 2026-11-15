@@ -13977,18 +13977,31 @@ class Tensor(object):
         return val
 
 
-    def randomCPT(self) -> "pyagrum.Tensor":
+    def randomCPT(self, *args) -> "pyagrum.Tensor":
         r"""
 
-        Fill the tensor as a random conditional probability table (each conditional distribution sums to 1).
+        Fill the tensor as a random conditional probability table.
+
+        For each configuration of the other variables, the distribution of the conditioned variable is drawn
+        uniformly on the probability simplex, i.e. from a Dirichlet distribution of parameter 1.
+
+        Parameters
+        ----------
+        varId : int
+            the position of the conditioned variable in the tensor (default: 0, the first variable)
 
         Returns
         -------
         Tensor
             self (in-place modification)
 
+        Raises
+        ------
+        pyagrum.OutOfBounds
+            if varId is not a position of a variable of the tensor
+
         """
-        val = _pyagrumcpp.Tensor_randomCPT(self)
+        val = _pyagrumcpp.Tensor_randomCPT(self, *args)
 
         return self
 
@@ -16513,7 +16526,11 @@ class BNGenerator(object):
     def generate(self, n_nodes: int=10, n_arcs: int=15, n_modmax: int=4) -> "pyagrum.BayesNet":
         r"""
 
-        Generate a new Bayesian network
+        Generate a new Bayesian network.
+
+        The DAG is connected, with at most n_arcs arcs; each variable has a domain size drawn uniformly between 2
+        and n_modmax; each distribution of a CPT (one per configuration of the parents) is drawn uniformly on the
+        probability simplex, i.e. from a Dirichlet distribution of parameter 1.
 
         Parameters
         ----------
@@ -16521,7 +16538,7 @@ class BNGenerator(object):
             the number of nodes (default=10)
         n_arcs : int
             the maximum number of arcs (default=15)
-        n_nodmax : int
+        n_modmax : int
             the max number of modalities for a node (default=4)
 
         Returns
@@ -16534,7 +16551,7 @@ class BNGenerator(object):
           pyagrum.OperationNotAllowed
             If n_modmax < 2
           pyagrum.OperationNotAllowed
-            If n_arcs is incompatible with n_nodes (not enough arcs)
+            If n_arcs < n_nodes - 1 or n_arcs > n_nodes * (n_nodes - 1) / 2 (no connected DAG has n_arcs arcs)
 
         """
         return _pyagrumcpp.BNGenerator_generate(self, n_nodes, n_arcs, n_modmax)
@@ -18020,7 +18037,7 @@ class BayesNet(IBayesNet):
         -----
           - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
           - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).
-          - the CPTs are randomly generated.
+          - the CPTs are randomly generated (see `pyagrum.BayesNet.generateCPTs`).
           - see also the function `pyagrum.fastBN`.
 
         Parameters
@@ -18710,6 +18727,9 @@ class BayesNet(IBayesNet):
 
         Randomly generates CPTs for a given structure.
 
+        Each distribution of a node (one per configuration of its parents) is drawn uniformly on the
+        probability simplex, i.e. from a Dirichlet distribution of parameter 1.
+
         """
         return _pyagrumcpp.BayesNet_generateCPTs(self)
 
@@ -18717,6 +18737,9 @@ class BayesNet(IBayesNet):
         r"""
 
         Randomly generate CPT for a given node in a given structure.
+
+        Each distribution of the node (one per configuration of its parents) is drawn uniformly on the
+        probability simplex, i.e. from a Dirichlet distribution of parameter 1.
 
         Parameters
         ----------

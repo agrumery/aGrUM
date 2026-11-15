@@ -12,4 +12,4 @@ mix.refName
 mix.names()
 # ['bn1', 'bn2', 'bn3', 'bn4', 'bn5']
 mix.existsArc("A", "B") + mix.existsArc("B", "A")  # how many bootstrapped BNs link A and B
-# 3
+# 1

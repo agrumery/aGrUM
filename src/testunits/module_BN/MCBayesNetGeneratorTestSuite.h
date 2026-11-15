@@ -163,4 +163,19 @@ namespace gum_tests {
     gum::LazyPropagation< double > lazyInf(&bn);
     GUM_CHECK_ASSERT_THROWS_NOTHING(lazyInf.makeInference());
   }
+
+  GUM_TEST(NumberOfArcsOfAConnectedDAG) {
+    // a connected DAG with 5 nodes has between 4 and 10 arcs
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::MCBayesNetGenerator< double >(5, 4, 3));
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gum::MCBayesNetGenerator< double >(5, 10, 3));
+    CHECK_THROWS_AS(gum::MCBayesNetGenerator< double >(5, 3, 3), const gum::OperationNotAllowed&);
+    CHECK_THROWS_AS(gum::MCBayesNetGenerator< double >(5, 11, 3), const gum::OperationNotAllowed&);
+    CHECK_THROWS_AS(gum::MCBayesNetGenerator< double >(0, 0, 3), const gum::OperationNotAllowed&);
+
+    gum::MCBayesNetGenerator< double > gen(5, 6, 3);
+    CHECK_THROWS_AS(gen.setMaxArcs(11), const gum::OperationNotAllowed&);
+    CHECK_THROWS_AS(gen.setNbrNodes(3), const gum::OperationNotAllowed&);   // at most 3 arcs
+    GUM_CHECK_ASSERT_THROWS_NOTHING(gen.setNbrNodes(4));
+    CHECK_EQ(gen.nbrNodes(), gum::Size(4));
+  }
 }   // namespace gum_tests

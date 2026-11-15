@@ -97,6 +97,8 @@
       refused (their distributions are unknown; they were ignored). Deprecated after 3.3.2: the argument `profile` of
       `counterfactualModel` and `Counterfactual.counterFactualModel` (ignored, the twin network does not depend on
       it) and `Counterfactual.impact`.
+    - `Tensor.randomCPT(varId=0)` takes the position of the conditioned variable. The random CPTs (`fastBN`,
+      `randomBN`, `BNGenerator`, `BayesNet.generateCPTs`) are drawn from a Dirichlet of parameter 1 (see aGrUM).
 
 - aGrUM
 
@@ -238,6 +240,12 @@
       `std::set<std::string>` (they were a `std::unordered_set<std::string>`)**: the names are checked and reported in
       the same order on every platform. C++ code naming `std::unordered_set` must name `std::set` (no change in
       pyAgrum, which still takes a Python `set`).
+    - Behaviour change: the random CPTs (`SimpleCPTGenerator`, hence `BayesNet::generateCPTs`, `fastBN`, the
+      generators of Bayesian networks) draw each conditional distribution uniformly on the probability simplex
+      (Dirichlet of parameter 1, as Ide and Cozman), instead of normalizing uniform draws in [0, 1]. The CPTs generated
+      for a given seed change. `Tensor::randomCPT(varId = 0)` takes the position of the conditioned variable.
+    - The generators of Bayesian networks give the bounds of the number of arcs (n - 1 to n(n - 1)/2) when they refuse
+      it.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 

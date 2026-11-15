@@ -60,7 +60,8 @@ namespace gum {
    * @brief Class for generating Conditional Probability Tables.
    * @ingroup bn_generator
    *
-   * This class implements a CPTGenerator CPT generation algorithm.
+   * Each conditional distribution is drawn uniformly on the probability simplex, i.e. from a
+   * Dirichlet distribution of parameter 1 (see Tensor::randomCPT).
    */
   template < GUM_Numeric GUM_SCALAR >
   class SimpleCPTGenerator: public ICPTGenerator< GUM_SCALAR > {
@@ -85,8 +86,8 @@ namespace gum {
     // ############################################################################
     /// @{
     /**
-     * Generates a CPT using floats.
-     * @param varId The variable id of the CPT owner.
+     * Generates a CPT: each distribution of the CPT owner is drawn from a Dirichlet(1).
+     * @param varId The position of the CPT owner in the CPT.
      * @param cpt A reference on the CPT to fill.
      */
     void generateCPT(const Idx& varId, const Tensor< GUM_SCALAR >& cpt) const override;

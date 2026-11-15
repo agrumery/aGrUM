@@ -62,13 +62,24 @@ namespace gum {
     GUM_CONSTRUCTOR(IBayesNetGenerator);
     nbrNodes_ = nbrNodes;
 
-    if (maxArcs < nbrNodes - 1 || maxArcs > (nbrNodes * (nbrNodes - 1)) / 2)
-      GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
+    _checkArcs_(nbrNodes, maxArcs);
 
     if (maxModality < 2) GUM_ERROR(OperationNotAllowed, " maxModality must be at least equal to 2 ")
 
     maxArcs_     = maxArcs;
     maxModality_ = maxModality;
+  }
+
+  template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
+  void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::_checkArcs_(Size nbrNodes, Size maxArcs) {
+    if (nbrNodes == 0) GUM_ERROR(OperationNotAllowed, "the number of nodes must be at least 1")
+    const Size minArcs = nbrNodes - 1;
+    const Size maxDAG  = nbrNodes * (nbrNodes - 1) / 2;
+    if (maxArcs < minArcs || maxArcs > maxDAG)
+      GUM_ERROR(OperationNotAllowed,
+                "a connected DAG with " << nbrNodes << " nodes has between " << minArcs << " and "
+                                        << maxDAG << " arcs (maximum number of arcs: " << maxArcs
+                                        << ")")
   }
 
   // Destructor.
@@ -109,16 +120,14 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
-    if ((maxArcs_ < nbrNodes - 1) || (maxArcs_ > (nbrNodes * (nbrNodes - 1)) / 2))
-      GUM_ERROR(OperationNotAllowed, " nbrNodes value not possible ")
+    _checkArcs_(nbrNodes, maxArcs_);
 
     nbrNodes_ = nbrNodes;
   }
 
   template < GUM_Numeric GUM_SCALAR, template < typename > class ICPTGenerator >
   void IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setMaxArcs(Size maxArcs) {
-    if (maxArcs < nbrNodes_ - 1 || maxArcs > (nbrNodes_ * (nbrNodes_ - 1)) / 2)
-      GUM_ERROR(OperationNotAllowed, " maxArcs value not possible ")
+    _checkArcs_(nbrNodes_, maxArcs);
 
     maxArcs_ = maxArcs;
   }

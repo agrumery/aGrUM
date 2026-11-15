@@ -72,7 +72,7 @@ namespace gum {
   template < GUM_Numeric GUM_SCALAR >
   void SimpleCPTGenerator< GUM_SCALAR >::generateCPT(const Idx&                  varId,
                                                      const Tensor< GUM_SCALAR >& cpt) const {
-    cpt.random().normalizeAsCPT(varId);
+    cpt.randomCPT(varId);
   }
 
 } /* namespace gum */

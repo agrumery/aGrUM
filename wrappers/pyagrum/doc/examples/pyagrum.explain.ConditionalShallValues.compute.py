@@ -10,4 +10,4 @@ explanation = explainer.compute(df.head(5))  # explains the log-likelihood of th
 explanation.values_type
 # 'SHALL'
 {v: round(imp, 4) for v, imp in sorted(explanation.importances.items())}
-# {'A': 0.3719, 'B': 0.1703, 'C': 0.094, 'Y': 0.0938}
+# {'A': 0.3799, 'B': 0.2007, 'C': 0.5348, 'Y': 0.7566}

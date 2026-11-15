@@ -919,6 +919,23 @@ class TestRandomBN(BayesNetTestCase):
         break
     self.assertFalse(all2)
 
+  def testBNGeneratorNumberOfArcs(self):
+    # a connected DAG with 5 nodes has between 4 and 10 arcs
+    gen = gum.BNGenerator()
+    self.assertEqual(gen.generate(5, 4).sizeArcs(), 4)
+    self.assertLessEqual(gen.generate(5, 10).sizeArcs(), 10)
+    with self.assertRaises(gum.OperationNotAllowed):
+      gen.generate(5, 3)
+    with self.assertRaises(gum.OperationNotAllowed):
+      gen.generate(5, 11)
+
+  def testRandomCPTOnAnyPosition(self):
+    p = gum.Tensor().add(gum.RangeVariable("a", "", 0, 1)).add(gum.RangeVariable("b", "", 0, 2))
+    p.randomCPT(1)
+    self.assertTrue(numpy.allclose(p.sumOut("b").toarray(), 1.0))
+    with self.assertRaises(gum.OutOfBounds):
+      p.randomCPT(2)
+
 
 class TestGraphicalConcepts(BayesNetTestCase):
   def testChildren(self):

@@ -808,16 +808,19 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::randomCPT() const {
+  const Tensor< GUM_SCALAR >& Tensor< GUM_SCALAR >::randomCPT(const Idx& varId) const {
     if (this->domainSize() == 0) {
       this->fillWith((GUM_SCALAR)1.0);
     } else {
+      if (varId >= this->nbrDim()) {
+        GUM_ERROR(OutOfBounds, varId << " is not a position for " << *this)
+      }
       gum::Instantiation I(*this);
-      const auto&        v = this->variable(0);
+      const auto&        v = this->variable(varId);
       for (I.setFirstNotVar(v); !I.end(); I.incNotVar(v)) {
         const auto& distrib = gum::randomDistribution< GUM_SCALAR >(v.domainSize());
         for (I.setFirstVar(v); !I.end(); I.incVar(v)) {
-          this->set(I, distrib[I.val(0)]);
+          this->set(I, distrib[I.val(varId)]);
         }
         I.unsetEnd();
       }

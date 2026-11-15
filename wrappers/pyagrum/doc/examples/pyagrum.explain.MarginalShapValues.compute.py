@@ -10,4 +10,4 @@ explanation = explainer.compute(df.head(5))  # explains the first 5 rows
 sorted(explanation.keys())  # one explanation per value of Y
 # [0, 1]
 {v: round(imp, 4) for v, imp in sorted(explanation.importances[1].items())}  # A acts on Y only through B
-# {'A': 0.0, 'B': 0.184, 'C': 0.4901}
+# {'A': 0.0, 'B': 0.4733, 'C': 0.1445}

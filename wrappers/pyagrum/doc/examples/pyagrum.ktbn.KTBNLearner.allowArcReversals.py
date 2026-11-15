@@ -9,4 +9,4 @@ learner = ktbn.KTBNLearner(".", "traj", 50, 2, gum.fastBN("X;Y"))  # k=2, variab
 learner.useExtendedGreedyHillClimbing()
 learner.allowArcReversals(False)
 learner.learnKTBN().sizeArcs()
-# 2
+# 3

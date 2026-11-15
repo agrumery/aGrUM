@@ -606,7 +606,7 @@ Notes
 -----
   - If the dot-like string contains such a specification more than once for a variable, the first specification will be used.
   - a name may be written between single quotes (``'Visit Asia'{yes|no}``, a doubled quote standing for a quote).
-  - the CPTs are randomly generated.
+  - the CPTs are randomly generated (see `pyagrum.BayesNet.generateCPTs`).
   - see also the function `pyagrum.fastBN`.
 
 Parameters
@@ -626,6 +626,9 @@ pyagrum.BayesNet
 "
 Randomly generate CPT for a given node in a given structure.
 
+Each distribution of the node (one per configuration of its parents) is drawn uniformly on the
+probability simplex, i.e. from a Dirichlet distribution of parameter 1.
+
 Parameters
 ----------
 node : int | str
@@ -635,6 +638,9 @@ node : int | str
 %feature("docstring") gum::BayesNet::generateCPTs
 "
 Randomly generates CPTs for a given structure.
+
+Each distribution of a node (one per configuration of its parents) is drawn uniformly on the
+probability simplex, i.e. from a Dirichlet distribution of parameter 1.
 "
 
 %feature("docstring") gum::BayesNet::loadBIF
