@@ -308,6 +308,8 @@
     - `fastMRF("A---B")` raises `InvalidArgument` (it gave the variables `A` and `-B`): an unquoted name of a fast
       description of a model neither begins nor ends with `-`. `fastVariable("+[0,1,2]")` raises `InvalidArgument` (it
       gave a variable with an empty name).
+    - A deprecated key of the configuration must be documented by `deprecated after <last tag with the key>`
+      (`SyntaxError` otherwise): the deprecation message, built from this documentation, is always a sentence.
     - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
       mixture learners (without argument, the learner copies the state set by the `use...` methods).
     - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn

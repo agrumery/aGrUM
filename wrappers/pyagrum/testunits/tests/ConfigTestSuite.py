@@ -195,7 +195,7 @@ class TestConfig(pyAgrumTestCase):
 
   def testDeprecatedKey(self):
     cfg = self._freshConfig(
-      "[sec]\n### int :: the answer\nnewkey = 42\n### deprecated -> sec.newkey :: renamed\noldkey = 0\n"
+      "[sec]\n### int :: the answer\nnewkey = 42\n### deprecated -> sec.newkey :: deprecated after 1.0.0\noldkey = 0\n"
     )
 
     with warnings.catch_warnings(record=True) as w:

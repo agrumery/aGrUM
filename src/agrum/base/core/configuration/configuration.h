@@ -53,7 +53,8 @@
  * where type is one of `int`, `float`, `bool`, `str`, `uint32` (an `int` in the range of a 32-bit
  * unsigned integer, i.e. `int[0,4294967295]`), an enumeration `v1|v2|...` or a
  * deprecation: `deprecated -> section.key` (redirected to its replacement) or `deprecated type`
- * (without replacement: the key keeps its type and its value). Lines starting with `#` (but not
+ * (without replacement: the key keeps its type and its value), whose documentation begins with
+ * `deprecated after <last tag with the key>`. Lines starting with `#` (but not
  * `###`) or `;` are free comments.
  *
  * @author Pierre-Henri WUILLEMIN(_at_LIP6)
@@ -180,8 +181,9 @@ namespace gum {
      * @brief Builds a configuration from a defaults text.
      * @param defaultsText the content of a defaults ini.
      * @param origin the name used in error messages to designate the defaults text.
-     * @throws SyntaxError if the text or its metadata are malformed, or if a deprecated key points
-     *         to an unknown (or itself deprecated) key.
+     * @throws SyntaxError if the text or its metadata are malformed, if a deprecated key points
+     *         to an unknown (or itself deprecated) key, or if its documentation does not begin with
+     *         'deprecated after'.
      * @throws InvalidArgument if a default value does not respect its own declared type.
      */
     explicit Configuration(std::string_view defaultsText, std::string_view origin = "defaults.ini");
@@ -197,8 +199,9 @@ namespace gum {
      * empty is ignored. A deprecated key may point to a key defined by another source.
      * @param sources the defaults texts, in reading order.
      * @throws SyntaxError if a text or its metadata are malformed, if a section is opened twice in
-     *         a source, if a key is defined twice, or if a deprecated key points to an unknown (or
-     *         itself deprecated) key.
+     *         a source, if a key is defined twice, if a deprecated key points to an unknown (or
+     *         itself deprecated) key, or if its documentation does not begin with 'deprecated
+     * after'.
      * @throws InvalidArgument if a default value does not respect its own declared type.
      */
     explicit Configuration(std::initializer_list< DefaultsSource > sources);

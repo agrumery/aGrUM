@@ -450,6 +450,17 @@ namespace gum {
 
   void Configuration::_checkSchema_() {
     for (auto& item: _items_) {
+      // the deprecation message is built from the documentation: "'s.k' is deprecated after x.y.z"
+      if ((item.meta.kind == Kind::DEPRECATED || item.meta.deprecated)
+          && !item.meta.doc.starts_with("deprecated after ")) {
+        GUM_SYNTAX_ERROR(
+            "deprecated key '"
+                << item.section << "." << item.key
+                << "' must be documented by 'deprecated after <last tag with the key>'",
+            item.origin,
+            0,
+            0)
+      }
       if (item.meta.kind == Kind::DEPRECATED) {
         const auto pos = _tryFind_(item.meta.targetSection, item.meta.targetKey);
         if (pos == _npos_) {
@@ -522,9 +533,9 @@ namespace gum {
     const auto& item       = _items_[pos];
     const bool  redirected = item.meta.kind == Kind::DEPRECATED;
     if (!redirected && !item.meta.deprecated) return pos;
-    // the documentation of a deprecated key says since when: 'deprecated after x.y.z'
-    std::string message = "'" + item.section + "." + item.key + "' is "
-                        + (item.meta.doc.empty() ? std::string("deprecated") : item.meta.doc);
+    // the documentation of a deprecated key says since when: 'deprecated after x.y.z' (checked by
+    // _checkSchema_)
+    std::string message = "'" + item.section + "." + item.key + "' is " + item.meta.doc;
     if (redirected)
       message += ", use '" + item.meta.targetSection + "." + item.meta.targetKey + "' instead";
     Notice notice{Notice::Kind::DEPRECATION, message + "."};

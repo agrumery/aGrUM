@@ -268,25 +268,39 @@ Color = #FF7F64
                     const gum::SyntaxError&);       // not a key
     CHECK_THROWS_AS(gum::Configuration(h + "### int :: x\nk = abc\n"),
                     const gum::InvalidArgument&);   // default violating its own type
-    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated -> s.nokey :: x\nold = 1\n"),
-                    const gum::SyntaxError&);       // deprecated -> unknown target
-    CHECK_THROWS_AS(gum::Configuration(h
-                                       + "### int :: x\nnew = 1\n"
-                                         "### deprecated -> s.new :: x\nmid = 1\n"
-                                         "### deprecated -> s.mid :: x\nold = 1\n"),
-                    const gum::SyntaxError&);   // deprecated -> deprecated
-    CHECK_THROWS_AS(gum::Configuration(h
-                                       + "### deprecated int :: x\nunused = 1\n"
-                                         "### deprecated -> s.unused :: x\nold = 1\n"),
-                    const gum::SyntaxError&);       // deprecated -> deprecated without replacement
-    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated :: x\nold = 1\n"),
-                    const gum::SyntaxError&);       // deprecated without type
-    CHECK_THROWS_AS(gum::Configuration(h + "### deprecatedint :: x\nold = 1\n"),
-                    const gum::SyntaxError&);       // deprecated not followed by a blank
-    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated deprecated int :: x\nold = 1\n"),
-                    const gum::SyntaxError&);       // deprecated twice
-    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated int :: x\nold = abc\n"),
-                    const gum::InvalidArgument&);   // default violating its own type
+    CHECK_THROWS_AS(
+        gum::Configuration(h + "### deprecated -> s.nokey :: deprecated after 1.0.0\nold = 1\n"),
+        const gum::SyntaxError&);                   // deprecated -> unknown target
+    CHECK_THROWS_AS(
+        gum::Configuration(h
+                           + "### int :: x\nnew = 1\n"
+                             "### deprecated -> s.new :: deprecated after 1.0.0\nmid = 1\n"
+                             "### deprecated -> s.mid :: deprecated after 1.0.0\nold = 1\n"),
+        const gum::SyntaxError&);   // deprecated -> deprecated
+    CHECK_THROWS_AS(
+        gum::Configuration(h
+                           + "### deprecated int :: deprecated after 1.0.0\nunused = 1\n"
+                             "### deprecated -> s.unused :: deprecated after 1.0.0\nold = 1\n"),
+        const gum::SyntaxError&);               // deprecated -> deprecated without replacement
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated :: deprecated after 1.0.0\nold = 1\n"),
+                    const gum::SyntaxError&);   // deprecated without type
+    CHECK_THROWS_AS(
+        gum::Configuration(h + "### deprecatedint :: deprecated after 1.0.0\nold = 1\n"),
+        const gum::SyntaxError&);               // deprecated not followed by a blank
+    CHECK_THROWS_AS(gum::Configuration(
+                        h + "### deprecated deprecated int :: deprecated after 1.0.0\nold = 1\n"),
+                    const gum::SyntaxError&);   // deprecated twice
+    CHECK_THROWS_AS(
+        gum::Configuration(h + "### deprecated int :: deprecated after 1.0.0\nold = abc\n"),
+        const gum::InvalidArgument&);           // default violating its own type
+    // a deprecated key is documented by 'deprecated after <last tag with the key>'
+    CHECK_THROWS_AS(gum::Configuration(
+                        h + "### int :: x\nnew = 1\n### deprecated -> s.new :: renamed\nold = 1\n"),
+                    const gum::SyntaxError&);
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated int\nold = 1\n"),
+                    const gum::SyntaxError&);
+    CHECK_THROWS_AS(gum::Configuration(h + "### deprecated int :: last used in 1.0.0\nold = 1\n"),
+                    const gum::SyntaxError&);
 
     // four '#' is a free comment, not a metadata line
     CHECK_NOTHROW(gum::Configuration(h + "#### int ::\nk = 1\n"));
@@ -389,7 +403,7 @@ Color = #FF7F64
 
   GUM_TEST(ConfigurationDeprecatedKey) {
     gum::Configuration c("[s]\n### int :: the new one\nnew = 1\n"
-                         "### deprecated -> s.new :: replaced\nold = 0\n");
+                         "### deprecated -> s.new :: deprecated after 1.0.0\nold = 0\n");
 
     CHECK(c.takeNotices().empty());
 
@@ -403,7 +417,7 @@ Color = #FF7F64
     CHECK_EQ(c.typed< std::int64_t >("s", "old"), 5);
     CHECK_EQ(c.takeNotices().size(), std::size_t(1));   // the same notice is queued once
 
-    CHECK_EQ(c.doc("s", "old"), "deprecated -> s.new :: replaced");
+    CHECK_EQ(c.doc("s", "old"), "deprecated -> s.new :: deprecated after 1.0.0");
     CHECK_THROWS_AS(c.set("s", "old", "abc"), const gum::InvalidArgument&);
 
     // a deprecated key is hidden
@@ -577,8 +591,9 @@ Color = #FF7F64
 
   GUM_TEST(ConfigurationSaveMigratesDeprecatedKeys) {
     const auto filename = ConfigurationTestSuite::tempFile();
-    const auto defaults = std::string("[s]\n### int :: the answer\nnewkey = 1\n"
-                                      "### deprecated -> s.newkey :: renamed\noldkey = 0\n");
+    const auto defaults
+        = std::string("[s]\n### int :: the answer\nnewkey = 1\n"
+                      "### deprecated -> s.newkey :: deprecated after 1.0.0\noldkey = 0\n");
     {
       std::ofstream f(filename);
       f << "[s]\noldkey = 42\n";
@@ -599,7 +614,7 @@ Color = #FF7F64
 
   GUM_TEST(ConfigurationSameNoticeIsQueuedOnce) {
     gum::Configuration c("[s]\n### int :: the answer\nnewkey = 1\n"
-                         "### deprecated -> s.newkey :: renamed\noldkey = 0\n");
+                         "### deprecated -> s.newkey :: deprecated after 1.0.0\noldkey = 0\n");
 
     for (int i = 0; i < 100; ++i)
       c.get("s", "oldkey");
@@ -636,7 +651,7 @@ Color = #FF7F64
     gum::Configuration c("[s]\n### int :: an int\nn = 4\n### float :: a float\nx = 1e-6\n"
                          "### bool :: a bool\nb = no\n### a|B :: an enum\ne = b\n"
                          "### str :: a str\nt = text\n"
-                         "### deprecated -> s.n :: renamed\nold = 0\n");
+                         "### deprecated -> s.n :: deprecated after 1.0.0\nold = 0\n");
 
     CHECK_EQ(std::get< std::int64_t >(c.getValue("s", "n")), 4);
     CHECK_EQ(std::get< double >(c.getValue("s", "x")), 1e-6);
@@ -852,12 +867,13 @@ Color = #FF7F64
   GUM_TEST(ConfigurationSourcesDeprecatedKeysCrossSources) {
     // an alias of the second source to a key of the first one, and an alias of the first source to
     // a key of the second one
-    gum::Configuration c{{"[a]\n### int :: new key\nnewname = 1\n"
-                          "### deprecated -> a.latekey :: old name\nolderfirst = 0\n",
-                          "first.ini"},
-                         {"[a]\n### deprecated -> a.newname :: old name\noldname = 0\n"
-                          "### int :: key defined after its alias\nlatekey = 7\n",
-                          "second.ini"}};
+    gum::Configuration c{
+        {"[a]\n### int :: new key\nnewname = 1\n"
+         "### deprecated -> a.latekey :: deprecated after 1.0.0\nolderfirst = 0\n",
+         "first.ini"},
+        {"[a]\n### deprecated -> a.newname :: deprecated after 1.0.0\noldname = 0\n"
+         "### int :: key defined after its alias\nlatekey = 7\n",
+         "second.ini"}};
 
     CHECK_EQ(c.get("a", "oldname"), "1");
     c.set("a", "oldname", "4");
@@ -910,8 +926,9 @@ Color = #FF7F64
 
     // a deprecated key of the second source pointing to an unknown key
     try {
-      gum::Configuration c{{"[a]\n### int :: x\nk = 1\n", "first.ini"},
-                           {"[a]\n### deprecated -> a.nokey :: x\nold = 1\n", "second.ini"}};
+      gum::Configuration c{
+          {"[a]\n### int :: x\nk = 1\n", "first.ini"},
+          {"[a]\n### deprecated -> a.nokey :: deprecated after 1.0.0\nold = 1\n", "second.ini"}};
       FAIL("an alias to an unknown key must be refused");
     } catch (const gum::SyntaxError& e) { CHECK_EQ(e.filename(), "second.ini"); }
 
