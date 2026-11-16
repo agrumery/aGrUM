@@ -159,11 +159,10 @@ namespace gum {
           if (n_ij) { score -= n_ij * std::log(n_ij); }
         }
 
-        // divide by log(2), since the log likelihood uses log_2
-        score *= this->one_log2_;
-
-        // finally, remove the penalty
+        // remove the penalty from the log-likelihood in nats (AIC = LL - penalty), then divide by
+        // log(2), since the score uses log_2
         score -= penalty;
+        score *= this->one_log2_;
 
         return score;
       } else {
@@ -187,11 +186,10 @@ namespace gum {
         }
         score -= N * std::log(N);
 
-        // divide by log(2), since the log likelihood uses log_2
-        score *= this->one_log2_;
-
-        // finally, remove the penalty
+        // remove the penalty from the log-likelihood in nats (AIC = LL - penalty), then divide by
+        // log(2), since the score uses log_2
         score -= penalty;
+        score *= this->one_log2_;
 
         return score;
       }

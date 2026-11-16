@@ -9,7 +9,7 @@ the count of :math:`X_i = k` and of the :math:`j`-th configuration of its :math:
 .. math::
 
    \mathrm{LL}_i = \sum_{j,k} N_{ijk} \log_2 \frac{N_{ijk}}{N_{ij}}, \qquad
-   \mathrm{AIC}_i = \mathrm{LL}_i - q_i(r_i-1), \qquad
+   \mathrm{AIC}_i = \mathrm{LL}_i - q_i(r_i-1)\log_2 e, \qquad
    \mathrm{BIC}_i = \mathrm{LL}_i - \tfrac{1}{2}\, q_i(r_i-1) \log_2 N,
 
 .. math::
@@ -17,8 +17,8 @@ the count of :math:`X_i = k` and of the :math:`j`-th configuration of its :math:
    \mathrm{BD}_i = \sum_{j=1}^{q_i} \Big[\log_2 \frac{\Gamma(N'_{ij})}{\Gamma(N_{ij}+N'_{ij})}
                  + \sum_{k=1}^{r_i} \log_2 \frac{\Gamma(N_{ijk}+N'_{ijk})}{\Gamma(N'_{ijk})}\Big]
 
-(AIC :cite:`akaike1974new`, BIC :cite:`schwarz1978estimating`, BD :cite:`heckerman1995learning`). The penalty of
-AIC being subtracted from a log-likelihood in bits, it weighs :math:`\ln 2 \approx 0.69` times Akaike's one. BD
+(AIC :cite:`akaike1974new`, BIC :cite:`schwarz1978estimating`, BD :cite:`heckerman1995learning`). AIC and BIC are
+the criteria of Akaike and Schwarz expressed in bits (divided by :math:`\ln 2`). BD
 takes its hyperparameters :math:`N'_{ijk}` from the prior, which is then mandatory; BDeu :cite:`buntine1991theory`
 uses :math:`N'_{ijk} = 1/(r_i q_i)` (an equivalent sample size of 1) and K2 :cite:`cooper1992bayesian`
 :math:`N'_{ijk} = 1`. A prior given to another score adds its pseudo-counts to the counts (to these implicit

@@ -58,7 +58,8 @@ namespace gum_tests {
     static double _score_(const std::vector< double >& N_ijk,
                           const std::vector< double >& N_ij,
                           const double                 penalty) {
-      double score = -penalty;
+      // AIC = LL - penalty in nats, hence LL_2 - penalty / ln(2) in bits
+      double score = -penalty / std::log(2.0);
       double N     = 0;
       for (const auto n_ijk: N_ijk)
         if (n_ijk) {

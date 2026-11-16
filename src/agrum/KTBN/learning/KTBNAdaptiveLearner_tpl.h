@@ -53,6 +53,7 @@
 #include <format>
 #include <fstream>
 #include <memory>
+#include <numbers>
 #include <unordered_map>
 
 #include <agrum/base/core/configuration/configuration.h>
@@ -1547,8 +1548,8 @@ namespace gum::learning {
         // reward fit, penalise complexity: log2L − ½·df·log2(N)
         return _log2Likelihood_(net) - 0.5 * _countParameters_(net) * logN;
       case OrderScoreType::AIC :
-        // lighter, sample-size-independent penalty: log2L − df
-        return _log2Likelihood_(net) - _countParameters_(net);
+        // lighter, sample-size-independent penalty: Akaike's lnL − df, in bits log2L − df·log2(e)
+        return _log2Likelihood_(net) - _countParameters_(net) * std::numbers::log2e;
       case OrderScoreType::fNML :
         // per-node multinomial parametric complexity (regret): log2L − Σ log2Cnr
         return _fNMLScore_(net);

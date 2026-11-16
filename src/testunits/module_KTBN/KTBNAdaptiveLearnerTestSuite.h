@@ -44,6 +44,7 @@
 #include <cmath>
 #include <fstream>
 #include <map>
+#include <numbers>
 #include <set>
 #include <string>
 #include <type_traits>
@@ -759,7 +760,7 @@ namespace gum_tests {
       CHECK(std::abs(l.scorePerCandidateK()[0].second - expected) < 1e-6);
     }
 
-    // AIC (bare df) and fNML (per-node regret) vs their oracles; reuse "best"
+    // AIC (df in nats) and fNML (per-node regret) vs their oracles; reuse "best"
     // above as the reference net — valid since kMax=2 makes structure learning
     // independent of the order score
     {
@@ -771,7 +772,9 @@ namespace gum_tests {
       lAIC.useOrderScoreAIC();
       _learn_(lAIC);
       CHECK_EQ(lAIC.scorePerCandidateK().size(), std::size_t(1));
-      CHECK(std::abs(lAIC.scorePerCandidateK()[0].second - (logL - df)) < 1e-6);
+      // Akaike's criterion in bits: (lnL - df) / ln 2 = log2L - df * log2(e)
+      CHECK(std::abs(lAIC.scorePerCandidateK()[0].second - (logL - df * std::numbers::log2e))
+            < 1e-6);
 
       Learner lfNML(dir, "kad_alt", 4, 2);
       lfNML.useOrderScorefNML();

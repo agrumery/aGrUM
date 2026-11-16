@@ -104,6 +104,8 @@
       the new key `skbn.tanSignificance` of `pyagrum.config`, 0.01); `TANSignificance=1` gives the TAN of Friedman et
       al. (all the features, a spanning tree). Behaviour change: the features independent of the class are no longer
       used, and the edges are no longer pruned below half of the mean conditional mutual information.
+    - The AIC score is the criterion of Akaike (see aGrUM): the structures learned with `useScoreAIC` and the order
+      selected by `KTBNAdaptiveLearner.useOrderScoreAIC` may change.
 
 - aGrUM
 
@@ -251,6 +253,10 @@
       for a given seed change. `Tensor::randomCPT(varId = 0)` takes the position of the conditioned variable.
     - The generators of Bayesian networks give the bounds of the number of arcs (n - 1 to n(n - 1)/2) when they refuse
       it.
+    - Behaviour change: `ScoreAIC` subtracts its penalty q(r - 1) from the log-likelihood in nats before converting to
+      bits, as `ScoreBIC` does: the score is Akaike's criterion divided by ln 2. The penalty was subtracted from the
+      log-likelihood in bits, so that it weighed only ln 2 (0.69) times Akaike's one and the learned structures had too
+      many arcs. Same correction for the AIC order selection score of `KTBNAdaptiveLearner`.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
