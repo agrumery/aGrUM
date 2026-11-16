@@ -213,6 +213,111 @@ class BNClassifierFitTestCase(pyAgrumTestCase):
     clf.fit(X, y)
     self.assertTrue(hasattr(clf, "bn_"))
 
+  @staticmethod
+  def _tanData():
+    # X0 and X1 depend on Y and are strongly dependent given Y, X2 and X3 are independent noise
+    rng = np.random.default_rng(0)
+    n = 400
+    y = rng.integers(0, 2, n)
+    x0 = y + rng.integers(0, 2, n)
+    x1 = (x0 + (rng.random(n) < 0.1)) % 3
+    x2 = rng.integers(0, 3, n)
+    x3 = rng.integers(0, 3, n)
+    return np.column_stack([x0, x1, x2, x3]), y
+
+  @staticmethod
+  def _featureArcs(clf):
+    target = clf.bn_.idFromName(clf.target_)
+    return target, {(t, h) for t, h in clf.bn_.arcs() if t != target}
+
+  def testTANIsASpanningTreeOverTheFeatures(self):
+    # with a significance of 1, every feature and every pair is kept (TAN of Friedman et al.): the pairs
+    # with almost no conditional mutual information must still be used to span the features
+    X, y = self._tanData()
+    clf = skbn.createBNClassifier(learningMethod="TAN", TANSignificance=1)
+    clf.fit(X, y)
+    target, featureArcs = self._featureArcs(clf)
+    features = set(clf.bn_.nodes()) - {target}
+    self.assertEqual(clf.bn_.children(target), features)
+    self.assertEqual(len(featureArcs), len(features) - 1)
+    self.assertTrue(all(len(clf.bn_.parents(f) - {target}) <= 1 for f in features))
+
+  def testSelectiveTANDropsTheFeaturesIndependentOfTheClass(self):
+    X, y = self._tanData()
+    clf = skbn.createBNClassifier(learningMethod="TAN")
+    clf.fit(X, y)
+    target, featureArcs = self._featureArcs(clf)
+    x0, x1, x2, x3 = (clf.bn_.idFromName(f"x{i}") for i in range(4))
+    self.assertEqual(clf.bn_.children(target), {x0, x1})
+    self.assertEqual({frozenset(a) for a in featureArcs}, {frozenset((x0, x1))})
+    for x in (x2, x3):
+      self.assertEqual(clf.bn_.parents(x) | clf.bn_.children(x), set())
+    self.assertEqual(len(clf.predict(X[:5])), 5)
+
+  def testSelectiveTANIsAForest(self):
+    # two blocks (X0, X1) and (X2, X3), each one dependent on Y, independent of each other given Y
+    rng = np.random.default_rng(1)
+    n = 400
+    y = rng.integers(0, 2, n)
+    x0 = y + rng.integers(0, 2, n)
+    x1 = (x0 + (rng.random(n) < 0.1)) % 3
+    x2 = 2 * y - rng.integers(0, 2, n)
+    x3 = (x2 + (rng.random(n) < 0.1)) % 3
+    X = np.column_stack([x0, x1, x2, x3])
+    clf = skbn.createBNClassifier(learningMethod="TAN")
+    clf.fit(X, y)
+    target, featureArcs = self._featureArcs(clf)
+    x0, x1, x2, x3 = (clf.bn_.idFromName(f"x{i}") for i in range(4))
+    self.assertEqual(clf.bn_.children(target), {x0, x1, x2, x3})
+    self.assertEqual({frozenset(a) for a in featureArcs}, {frozenset((x0, x1)), frozenset((x2, x3))})
+
+  def testSelectiveTANWithoutSignificantFeatureWarns(self):
+    X, y = self._tanData()
+    noise = X[:, 2:]
+    clf = skbn.createBNClassifier(learningMethod="TAN")
+    with self.assertWarns(UserWarning):
+      clf.fit(noise, y)
+    self.assertEqual(clf.bn_.sizeArcs(), 0)
+    # the features are ignored: the same prediction for every row
+    proba = clf.predict_proba(noise)
+    self.assertTrue(np.allclose(proba, proba[0]))
+    self.assertEqual(len(set(clf.predict(noise))), 1)
+
+  def testTANSignificanceComesFromTheConfiguration(self):
+    X, y = self._tanData()
+    clf = skbn.createBNClassifier(learningMethod="TAN")
+    self.assertIsNone(clf.get_params()["TANSignificance"])
+    pyagrum.config.push()
+    try:
+      pyagrum.config["skbn", "tanSignificance"] = 1
+      clf.fit(X, y)
+    finally:
+      pyagrum.config.pop()
+    target, featureArcs = self._featureArcs(clf)
+    self.assertEqual(len(clf.bn_.children(target)), 4)
+    self.assertEqual(len(featureArcs), 3)
+
+  def testTANSignificanceIsInZeroOne(self):
+    X, y = self._tanData()
+    for significance in [0, -0.1, 1.5]:
+      with self.assertRaises(ValueError):
+        pyagrum.config["skbn", "tanSignificance"] = significance
+      # scikit-learn estimators do not raise in __init__ or set_params: the value is checked by fit
+      clf = skbn.createBNClassifier(learningMethod="TAN", TANSignificance=significance)
+      with self.assertRaises(ValueError):
+        clf.fit(X, y)
+
+  def testTANWithASingleFeatureIsANaiveBayes(self):
+    X, y = _make_binary()
+    clf = skbn.createBNClassifier(learningMethod="TAN", TANSignificance=1)
+    clf.fit(X[:, :1], y)
+    self.assertIsNotNone(clf.bn_)
+    target = clf.bn_.idFromName(clf.target_)
+    self.assertEqual(clf.bn_.size(), 2)
+    self.assertEqual(clf.bn_.sizeArcs(), 1)
+    self.assertEqual(clf.bn_.children(target), set(clf.bn_.nodes()) - {target})
+    self.assertEqual(len(clf.predict(X[:5, :1])), 5)
+
   def testLearningChowLiu(self):
     X, y = _make_binary()
     clf = skbn.createBNClassifier(learningMethod="Chow-Liu")

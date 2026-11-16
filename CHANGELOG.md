@@ -99,6 +99,11 @@
       it) and `Counterfactual.impact`.
     - `Tensor.randomCPT(varId=0)` takes the position of the conditioned variable. The random CPTs (`fastBN`,
       `randomBN`, `BNGenerator`, `BayesNet.generateCPTs`) are drawn from a Dirichlet of parameter 1 (see aGrUM).
+    - `skbn.BNClassifier` with `learningMethod="TAN"` learns a selective TAN (Blanco et al., 2005): the features and
+      the edges of the tree are selected by G-tests at the level of the new parameter `TANSignificance` (by default,
+      the new key `skbn.tanSignificance` of `pyagrum.config`, 0.01); `TANSignificance=1` gives the TAN of Friedman et
+      al. (all the features, a spanning tree). Behaviour change: the features independent of the class are no longer
+      used, and the edges are no longer pruned below half of the mean conditional mutual information.
 
 - aGrUM
 
@@ -404,6 +409,7 @@
     - `CredalNet.setCPT` can be called from Python (its vertices, a list of lists of probabilities, could not be
       converted).
     - `skbn.BNClassifier`: an unfitted classifier can be pickled, copied and cloned (it failed with scikit-learn 1.8).
+    - `skbn.BNClassifier` with `learningMethod="TAN"` and a single feature: `fit` failed (the network was lost).
     - `clg.CLG.asDiscreteBN` and the `NoDiscretization` parameters of `DiscreteTypeProcessor` quote the names of the
       variables (a name such as `X-ray` was misread).
     - `help(pyagrum.config.typed)` (and `asInt`, `asFloat`, `asBool`) shows the documentation of the accessor.

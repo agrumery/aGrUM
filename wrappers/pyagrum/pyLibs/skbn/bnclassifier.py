@@ -76,6 +76,7 @@ def createBNClassifier(
   priorWeight=None,
   possibleSkeleton=None,
   DirichletCsv=None,
+  TANSignificance=None,
   discretizationStrategy="quantile",
   discretizationNbBins=5,
   discretizationThreshold=25,
@@ -102,6 +103,9 @@ def createBNClassifier(
       Weight of the prior. By default (None), ``pyagrum.config['learning', 'priorWeight']`` is used when the classifier is fitted.
   possibleSkeleton : pyagrum.UndiGraph, optional
   DirichletCsv : str, optional
+  TANSignificance : float, optional
+      Level, in ]0,1], of the independence tests of the TAN classifier. By default (None),
+      ``pyagrum.config['skbn', 'tanSignificance']`` is used when the classifier is fitted.
   discretizationStrategy : str, default="quantile"
       Possible values: quantile, uniform, kmeans, NML, CAIM, MDLP.
   discretizationNbBins : int, default=5
@@ -125,10 +129,16 @@ def createBNClassifier(
     priorWeight=priorWeight,
     possibleSkeleton=possibleSkeleton,
     DirichletCsv=DirichletCsv,
+    TANSignificance=TANSignificance,
     usePR=usePR,
     beta=beta,
     significant_digit=significant_digit,
   )
+
+
+def _checkTANSignificance(significance):
+  if not 0 < significance <= 1:
+    raise ValueError(f"TANSignificance must be in ]0,1] (got {significance})")
 
 
 def _bestTypedVal(v: gum.DiscreteVariable, idx: int) -> str | int | float:
@@ -201,6 +211,15 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 the file name of the csv file we want to use for the dirichlet prior. Will be ignored if prior is not
                 set to Dirichlet.
 
+            TANSignificance: float
+                The level, in ]0,1], of the independence tests of the TAN classifier: a feature is kept if its
+                dependence on the class is significant, an edge between two features is a candidate for the tree if
+                their dependence given the class is significant (selective TAN). With 1, every feature and every edge
+                is kept (TAN of Friedman et al.). The dropped features stay in the network as isolated nodes; if no
+                feature is kept, a warning is emitted and the classifier predicts the prior of the class. If None,
+                ``pyagrum.config['skbn', 'tanSignificance']`` is used when the classifier is fitted. Ignored by the
+                other learning methods.
+
             discretizationStrategy: str
                 sets the default method of discretization for this discretizer. This method will be used if the user has
                 not specified another method for that specific variable using the setDiscretizationParameters method
@@ -249,6 +268,7 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     priorWeight=None,
     possibleSkeleton=None,
     DirichletCsv=None,
+    TANSignificance=None,
     usePR=False,
     beta=1,
     significant_digit=10,
@@ -299,6 +319,15 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
             DirichletCsv: str
                 the file name of the csv file we want to use for the dirichlet prior. Will be ignored if prior is not
                 set to Dirichlet.
+
+            TANSignificance: float
+                The level, in ]0,1], of the independence tests of the TAN classifier: a feature is kept if its
+                dependence on the class is significant, an edge between two features is a candidate for the tree if
+                their dependence given the class is significant (selective TAN). With 1, every feature and every edge
+                is kept (TAN of Friedman et al.). The dropped features stay in the network as isolated nodes; if no
+                feature is kept, a warning is emitted and the classifier predicts the prior of the class. If None,
+                ``pyagrum.config['skbn', 'tanSignificance']`` is used when the classifier is fitted. Ignored by the
+                other learning methods.
 
             discretizationStrategy: str
                 sets the default method of discretization for this discretizer. This method will be used if the user has
@@ -352,6 +381,9 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     self.possibleSkeleton = possibleSkeleton
 
     self.DirichletCsv = DirichletCsv
+
+    # checked when the classifier is fitted (scikit-learn estimators do not raise in __init__ or set_params)
+    self.TANSignificance = TANSignificance
 
     self.significant_digit = significant_digit
 
@@ -494,7 +526,11 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     if self.learningMethod == "NaiveBayes":
       self.bn_ = BN_fitNaiveBayes(X, y, self.bn_, self.learner_, variableNames, self.target_, self.constraints)
     elif self.learningMethod == "TAN":
-      self.bn_ = BN_fitTAN(X, y, self.bn_, self.learner_, variableNames, self.target_)
+      significance = (
+        self.TANSignificance if self.TANSignificance is not None else gum.config.typed["skbn", "tanSignificance"]
+      )
+      _checkTANSignificance(significance)
+      self.bn_ = BN_fitTAN(X, y, self.bn_, self.learner_, variableNames, self.target_, significance)
     elif self.learningMethod == "Chow-Liu":
       self.bn_ = BN_fitChowLiu(X, y, self.bn_, self.learner_, variableNames, self.target_)
     else:

@@ -91,9 +91,11 @@ def _fitStandard(X, y, learner, learningMethod, possibleSkeleton, scoringType, c
   return bn
 
 
-def _fitTAN(X, y, bn, learner, variableList, target):
+def _fitTAN(X, y, bn, learner, variableList, target, significance):
   """
-  Uses Tree-Augmented NaiveBayes to learn the network structure and its parameters.
+  Uses the selective Tree-Augmented NaiveBayes (Blanco et al., 2005) to learn the network structure and its
+  parameters: the features dependent on the class, then the edges between them, are selected by G2 tests at the
+  level ``significance`` (with ``significance=1``, every feature and every edge is kept: TAN of Friedman et al., 1997).
 
   Parameters
   ---------
@@ -101,27 +103,40 @@ def _fitTAN(X, y, bn, learner, variableList, target):
       training data
       y: array-like of shape (n_samples)
       Target values
+      significance: float
+      level of the independence tests, in ]0,1]
 
   """
-
-  # a list of all the variables in our Bayesian network sorted by their index
 
   # the number of columns in our data
   d = X.shape[1]
 
-  # If there is only one input column, TAN works exactly the same as NaiveBayes
-  if d < 2:
-    _fitNaiveBayes(X, y, bn, learner, variableList, target, None)
-    return
+  # the features whose dependence on the class is significant
+  selected = [i for i in range(d) if learner.G2(variableList[i], target)[1] <= significance]
+
+  if len(selected) == 0:
+    warnings.warn(
+      f"TAN: no feature is significantly dependent on the class at level {significance}: the classifier predicts the "
+      "prior of the class",
+      stacklevel=2,
+    )
+
+  # with less than two features, TAN works exactly the same as NaiveBayes
+  if len(selected) < 2:
+    return _fitNaiveBayes(X, y, bn, learner, [variableList[i] for i in selected], target, None)
 
   probabilityY = learner.pseudoCount([target]).normalize().tolist()
   mutualInformation = dict()
   undirectedGraph = pyagrum.UndiGraph()
 
-  # we calculate the mutual information of all pairs of variables
-  for i in range(d):
+  # we calculate the conditional mutual information of the pairs of features whose dependence given the class is
+  # significant
+  for i in selected:
     undirectedGraph.addNodeWithId(i)
-    for j in range(i):
+  for a, i in enumerate(selected):
+    for j in selected[:a]:
+      if learner.G2(variableList[i], variableList[j], [target])[1] > significance:
+        continue
       probabilityList = learner.pseudoCount([variableList[i], variableList[j], target]).normalize().tolist()
       probabilityXi = learner.pseudoCount([variableList[i], target]).normalize().tolist()
       probabilityXj = learner.pseudoCount([variableList[j], target]).normalize().tolist()
@@ -136,20 +151,12 @@ def _fitTAN(X, y, bn, learner, variableList, target):
                 / (probabilityXi[yIndex][xiIndex] * probabilityXj[yIndex][xjIndex])
               )
       mutualInformation[(i, j)] = temp
-  # if the mutual information between two variables is bigger than this threshold, we add an edge between them
-  threshold = 0
-  for var in mutualInformation:
-    threshold = threshold + mutualInformation[var]
-  threshold = float(threshold) / (d * (d - 1))
 
   mutualInformation = {k: v for k, v in sorted(mutualInformation.items(), key=(lambda item: item[1]), reverse=True)}
 
+  # maximum weight spanning tree (Kruskal) of each connected component, as in Friedman et al. (1997)
   for var in mutualInformation:
     (i, j) = var
-    # since it's sorted in descending order we know that if this value is under the threshold all the other following values will also be under the threshold
-    if mutualInformation[var] < threshold:
-      break
-    # if the mutual information between xi and xj we add an edge between the two nodes
     undirectedGraph.addEdge(i, j)
 
     # if the edge causes a cycle, we delete the edge and pass on to the following pair of variables
@@ -186,7 +193,7 @@ def _fitTAN(X, y, bn, learner, variableList, target):
         if headId not in ListOfNodes:
           bn.addArc(variableList[tailId], variableList[headId])
           ListOfNodes.append(headId)
-  for i in range(d):
+  for i in selected:
     bn.addArc(target, variableList[i])
 
   bn = learner.learnParameters(bn.dag())
