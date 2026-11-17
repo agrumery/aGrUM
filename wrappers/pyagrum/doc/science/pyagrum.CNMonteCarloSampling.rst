@@ -15,14 +15,14 @@ inside the exact one and grows towards it with the number of samples. It is not 
 error bar, and an extreme combination of vertices that is unlikely under the uniform drawing (when the optimum needs a
 precise vertex in many local sets) may be reached late, or never.
 
-**The stopping criterion.** The samples are drawn by periods of ``periodSize`` (1000) samples. After each period,
-:math:`\varepsilon` is the largest change of a lower or upper bound, over all the values of all the variables, during
-the period; the sampling stops when :math:`\varepsilon` is at most ``epsilon``, by default :math:`1000` times the
-machine epsilon (about :math:`2.2 \times 10^{-13}`): a whole period has found no new bound. A smaller ``epsilon`` is
-refused, since a change below this tolerance is rounding. The sampling also stops after ``maxTime`` (60 seconds by
-default); ``minEpsilonRate`` and ``maxIter`` are disabled by default. Each sample is drawn from its own random
-generator, seeded by the seed of the inference and the index of the sample, so the result does not depend on the
-number of threads.
+**The stopping criterion.** The samples are drawn by periods of ``periodSize`` (1000 by default, section
+``CNMontecarlo`` of `pyagrum.config`, as ``maxTime``) samples. After each period, :math:`\varepsilon` is the largest
+change of a lower or upper bound, over all the values of all the variables, during the period; the sampling stops when
+:math:`\varepsilon` is at most ``epsilon``, by default :math:`1000` times the machine epsilon (about
+:math:`2.2 \times 10^{-13}`): a whole period has found no new bound. A smaller ``epsilon`` is refused, since a change
+below this tolerance is rounding. The sampling also stops after ``maxTime`` (60 seconds by default);
+``minEpsilonRate`` and ``maxIter`` are disabled by default. Each sample is drawn from its own random generator, seeded
+by the seed of the inference and the index of the sample, so the result does not depend on the number of threads.
 
 **Dynamic networks.** For a dynamic credal network whose variables are named ``X_0``, ``X_1``, ... ``X_T``, the
 default drawing is independent for each time slice (the dynamic strong extension of :cite:`hourbracq2013dynamic`).

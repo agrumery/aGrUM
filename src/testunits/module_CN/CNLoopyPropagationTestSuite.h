@@ -46,6 +46,7 @@
 #include <string>
 
 #include <agrum/base/core/approximations/approximationSchemeListener.h>
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/threads/threadExecutor.h>
 #include <agrum/base/core/threads/threads.h>
 #include <agrum/BN/BayesNet.h>
@@ -82,7 +83,11 @@ namespace gum_tests {
       nbr_++;
     }
 
-    void whenStop(const void* buffer, std::string_view s) override { msg_ = s; }
+    // the last period is notified by whenStop, not by whenProgress
+    void whenStop(const void* buffer, std::string_view s) override {
+      nbr_++;
+      msg_ = s;
+    }
 
     int nbr() const { return nbr_; }
 
@@ -549,6 +554,82 @@ namespace gum_tests {
       CHECK(again.dynamicExpMin(name) == fresh.dynamicExpMin(name));
       CHECK(again.dynamicExpMax(name) == fresh.dynamicExpMax(name));
       CHECK(again.vertices(node) == fresh.vertices(node));
+    }
+    clearCNet();
+  }
+
+  GUM_TEST(L2UConvergesWithTheDefaultCriteria) {
+    // on a binary network with loops and evidence, the first error is close to 1 (0.995 here: the
+    // evidence changes the bounds of the observed variable): the scheme must not stop there, and
+    // the default criteria must give the bounds obtained with very strict criteria. The CPTs are
+    // fixed: with node-to-neighbours messages, the error may decrease non monotonically and the
+    // default epsilon be reached on a quiet iteration before the convergence (rare, about 1e-5 off)
+    auto bn = gum::BayesNet< double >::fastPrototype("A->B->D;A->C->D;D->E;C->E;B->F;E->F");
+    bn.cpt("A").fillWith({0.3, 0.7});
+    bn.cpt("B").fillWith({0.8, 0.2, 0.25, 0.75});
+    bn.cpt("C").fillWith({0.6, 0.4, 0.1, 0.9});
+    bn.cpt("D").fillWith({0.9, 0.1, 0.4, 0.6, 0.3, 0.7, 0.05, 0.95});
+    bn.cpt("E").fillWith({0.7, 0.3, 0.2, 0.8, 0.35, 0.65, 0.15, 0.85});
+    bn.cpt("F").fillWith({0.95, 0.05, 0.5, 0.5, 0.6, 0.4, 0.1, 0.9});
+    gum::credal::CredalNet< double > cnet(bn, bn);
+    cnet.bnToCredal(0.8, false);
+    cnet.computeBinaryCPTMinMax();
+
+    const auto evidence = std::map< std::string, std::vector< double > >{{"F", {0.0, 1.0}}};
+
+    gum::credal::CNLoopyPropagation< double > byDefault(cnet);
+    byDefault.setVerbosity(true);   // needed to read the history
+    byDefault.insertEvidence(evidence);
+    byDefault.makeInference();
+
+    gum::credal::CNLoopyPropagation< double > strict(cnet);
+    strict.setEpsilon(1e-12);
+    strict.setMinEpsilonRate(1e-14);
+    strict.setMaxIter(10000);
+    strict.insertEvidence(evidence);
+    strict.makeInference();
+
+    // one entry of the history per computed iteration (the period size is 1)
+    CHECK_EQ(byDefault.history().size(), byDefault.nbrIterations());
+    CHECK_GT(byDefault.nbrIterations(), static_cast< gum::Size >(1));
+    for (const auto node: cnet.current_bn().nodes()) {
+      const auto         defaultMin = byDefault.marginalMin(node);
+      const auto         defaultMax = byDefault.marginalMax(node);
+      const auto         strictMin  = strict.marginalMin(node);
+      const auto         strictMax  = strict.marginalMax(node);
+      gum::Instantiation inst(defaultMin);
+      for (inst.setFirst(); !inst.end(); ++inst) {
+        CHECK_EQ(defaultMin[inst], doctest::Approx(strictMin[inst]).epsilon(1e-6));
+        CHECK_EQ(defaultMax[inst], doctest::Approx(strictMax[inst]).epsilon(1e-6));
+      }
+    }
+  }
+
+  GUM_TEST(L2UDefaultsComeFromTheConfiguration) {
+    initCNet();
+    {
+      gum::credal::CNLoopyPropagation< double > lp(*cn);
+      CHECK_EQ(lp.epsilon(), doctest::Approx(1e-8));
+      CHECK_EQ(lp.minEpsilonRate(), doctest::Approx(1e-10));
+      CHECK_EQ(lp.maxIter(), static_cast< gum::Size >(100));
+      CHECK_EQ(lp.periodSize(), static_cast< gum::Size >(1));
+      CHECK(!lp.verbosity());
+      CHECK(!lp.isEnabledMaxTime());   // no timeout
+    }
+    {
+      auto&              conf = gum::Configuration::instance();
+      ConfigurationGuard guard;
+      conf.set("CNLoopy", "maxIter", "7");
+      conf.set("CNLoopy", "epsilon", "0.001");
+      conf.set("CNLoopy", "minEpsilonRate", "0.0001");
+      conf.set("CNLoopy", "periodSize", "2");
+      conf.set("CNLoopy", "verbosity", "True");
+      gum::credal::CNLoopyPropagation< double > lp(*cn);
+      CHECK_EQ(lp.epsilon(), doctest::Approx(0.001));
+      CHECK_EQ(lp.minEpsilonRate(), doctest::Approx(0.0001));
+      CHECK_EQ(lp.maxIter(), static_cast< gum::Size >(7));
+      CHECK_EQ(lp.periodSize(), static_cast< gum::Size >(2));
+      CHECK(lp.verbosity());
     }
     clearCNet();
   }

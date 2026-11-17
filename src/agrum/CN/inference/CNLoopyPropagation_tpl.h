@@ -742,9 +742,6 @@ namespace gum::credal {
     const DAG& graphe = _bnet_->dag();
 
     GUM_SCALAR eps;
-    // to validate TestSuite
-    _infE_::continueApproximationScheme(1.);
-
     do {
       for (auto node: active_nodes_set_) {
         for (auto chil: graphe.children(node)) {
@@ -787,9 +784,6 @@ namespace gum::credal {
     }
 
     GUM_SCALAR eps;
-    // validate TestSuite
-    _infE_::continueApproximationScheme(1.);
-
     do {
       for (Size j = 0, theEnd = nbrArcs / 2; j < theEnd; j++) {
         auto w1 = randomValue(nbrArcs);
@@ -832,9 +826,6 @@ namespace gum::credal {
     }
 
     GUM_SCALAR eps;
-    // validate TestSuite
-    _infE_::continueApproximationScheme(1.);
-
     do {
       for (const auto it: seq) {
         if (_cn_->currentNodeType(it->tail()) == CredalNet< GUM_SCALAR >::NodeType::Indic
@@ -1521,6 +1512,10 @@ namespace gum::credal {
 
     _inferenceType_       = InferenceType::nodeToNeighbours;
     inference_up_to_date_ = false;
+
+    // epsilon, minimal epsilon rate, maximum number of iterations, period size and verbosity (no
+    // timeout)
+    this->setFromConfiguration_("CNLoopy", false);
 
     GUM_CONSTRUCTOR(CNLoopyPropagation)
   }

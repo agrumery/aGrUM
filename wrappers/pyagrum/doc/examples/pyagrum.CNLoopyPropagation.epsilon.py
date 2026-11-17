@@ -11,4 +11,4 @@ cn.intervalToCredal()
 cn.computeBinaryCPTMinMax()
 ie = gum.CNLoopyPropagation(cn)
 ie.epsilon()
-# 0.05
+# 1e-08

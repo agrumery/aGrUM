@@ -568,9 +568,10 @@ class CNMonteCarloSampling(object):
             - **cn** (`pyagrum.CredalNet`) -- a credal network
 
     By default, the sampling stops when a period finds no new bound (epsilon is 1000 times the machine epsilon) or after
-    60 seconds: the rate and the maximum number of iterations are disabled. These criteria can be changed; an epsilon
-    below 1000 times the machine epsilon raises `pyagrum.OutOfBounds`, since the result would then depend on the number
-    of threads.
+    ``pyagrum.config['CNMontecarlo','maxTime']`` seconds (60 unless configured), the samples being drawn by periods of
+    ``pyagrum.config['CNMontecarlo','periodSize']`` (1000) samples: the rate and the maximum number of iterations are
+    disabled. These criteria can be changed; an epsilon below 1000 times the machine epsilon raises `pyagrum.OutOfBounds`,
+    since the result would then depend on the number of threads.
 
     """
 
@@ -1117,6 +1118,10 @@ class CNLoopyPropagation(object):
     CNLoopyPropagation(cn) -> CNLoopyPropagation
         Parameters:
           - **cn** (`pyagrum.CredalNet`) -- a Credal network
+
+    The default stopping criteria (epsilon, rate, maximum number of iterations, period size) and verbosity are the keys
+    of the section ``CNLoopy`` of `pyagrum.config` (epsilon 1e-8, rate 1e-10, 100 iterations unless configured); there
+    is no time limit by default.
 
     """
 

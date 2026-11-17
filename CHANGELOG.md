@@ -519,6 +519,13 @@
       `Counterfactual.twinModel` and `Counterfactual.value` keep their object alive, and `CausalImpact`,
       `Counterfactual` and `causalImpact` keep their causal model alive: on a temporary model
       (`CausalModel(bn).observationalBN().names()`), the result referenced a destroyed object (wrong names or crash).
+    - `CNLoopyPropagation` stopped after one iteration on a network with evidence, with bounds wrong by up to 0.1: a
+      dummy error of 1 recorded before the first iteration made the rate of the first real error (close to 1) look
+      negligible. Its default criteria are the new section `CNLoopy` of the configuration (epsilon 1e-8, rate 1e-10,
+      100 iterations, as `lbp`); they were the generic ones of `approximation` (epsilon 0.05, rate 0.01), too loose.
+      `CNMonteCarloSampling` recorded the same dummy error (the rate is disabled by default); its defaults (60 seconds,
+      periods of 1000 samples) are the new section `CNMontecarlo`. For both, the history has one error per computed
+      period and the listeners no longer receive a progress at the start.
 
 - Optimizations (aGrUM and pyAgrum)
 

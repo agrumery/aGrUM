@@ -51,4 +51,8 @@ Class used for inferences in credal networks with Loopy Propagation algorithm.
 CNLoopyPropagation(cn) -> CNLoopyPropagation
     Parameters:
       - **cn** (`pyagrum.CredalNet`) -- a Credal network
+
+The default stopping criteria (epsilon, rate, maximum number of iterations, period size) and verbosity are the keys
+of the section ``CNLoopy`` of `pyagrum.config` (epsilon 1e-8, rate 1e-10, 100 iterations unless configured); there
+is no time limit by default.
 "

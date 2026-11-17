@@ -82,7 +82,11 @@ namespace gum_tests {
       nbr_++;
     }
 
-    void whenStop(const void* buffer, std::string_view s) { msg_ = s; }
+    // the last period is notified by whenStop, not by whenProgress
+    void whenStop(const void* buffer, std::string_view s) {
+      nbr_++;
+      msg_ = s;
+    }
 
     int nbr() { return nbr_; }
 
@@ -413,6 +417,41 @@ namespace gum_tests {
     CHECK(!mcs.isEnabledEpsilon());
     CHECK(mcs.isEnabledMaxIter());
 
+    clearCNet();
+  }
+
+  GUM_TEST(CNMonteCarloSamplingDefaultsComeFromTheConfiguration) {
+    initCNet();
+    {
+      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+      CHECK_EQ(mcs.maxTime(), 60.);
+      CHECK(mcs.isEnabledMaxTime());
+      CHECK_EQ(mcs.periodSize(), static_cast< gum::Size >(1000));
+    }
+    {
+      auto&              conf = gum::Configuration::instance();
+      ConfigurationGuard guard;
+      conf.set("CNMontecarlo", "maxTime", "12.5");
+      conf.set("CNMontecarlo", "periodSize", "20");
+      gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+      CHECK_EQ(mcs.maxTime(), 12.5);
+      CHECK(mcs.isEnabledMaxTime());
+      CHECK_EQ(mcs.periodSize(), static_cast< gum::Size >(20));
+    }
+    clearCNet();
+  }
+
+  GUM_TEST(CNMonteCarloSamplingHistoryHasOneErrorPerPeriod) {
+    // the history only contains the errors of the sampled periods
+    initCNet();
+    gum::credal::CNMonteCarloSampling< double > mcs(*cn);
+    mcs.setVerbosity(true);
+    mcs.disableEpsilon();
+    mcs.setPeriodSize(100);
+    mcs.setMaxIter(500);
+    GUM_CHECK_ASSERT_THROWS_NOTHING(mcs.makeInference());
+    CHECK_EQ(mcs.nbrIterations(), static_cast< gum::Size >(500));
+    CHECK_EQ(mcs.history().size(), static_cast< gum::Size >(5));
     clearCNet();
   }
 

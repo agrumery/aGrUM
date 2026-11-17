@@ -41,6 +41,7 @@
 #pragma once
 
 
+#include <agrum/base/core/configuration/configuration.h>
 #include <agrum/base/core/exceptions.h>
 #include <agrum/CN/inference/CNMonteCarloSampling.h>
 
@@ -54,10 +55,10 @@ namespace gum::credal {
     _infEs_::storeVertices_ = false;
     _infEs_::storeBNOpt_    = false;
 
-    this->setMaxTime(60);
-    this->enableMaxTime();
-
-    this->setPeriodSize(1000);
+    // the time limit (enabled) and the period size come from the configuration
+    const auto& conf = Configuration::instance();
+    this->setMaxTime(conf.typed< double >("CNMontecarlo", "maxTime"));
+    this->setPeriodSize(this->sizeFromConfiguration_("CNMontecarlo", "periodSize"));
 
     // default criteria (the user may change them): the sampling stops when a period finds no new
     // vertex (the variations below the floor are rounding), or on the time limit
@@ -86,57 +87,54 @@ namespace gum::credal {
     _mcInitApproximationScheme_();
     _mcThreadDataCopy_();
 
-    // don't put it after burnIn, it could stop with timeout : we want at
-    // least one burnIn and one periodSize
-    GUM_SCALAR eps = 1.;   // to validate testSuite ?
+    // at least one period is sampled, whatever the stopping criteria
+    GUM_SCALAR eps;
 
     auto psize = this->periodSize();
 
-    if (this->continueApproximationScheme(eps)) {
-      // compute the number of threads to use
-      const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
-                                ? this->getNumberOfThreads()
-                                : 1;   // no nested multithreading
+    // compute the number of threads to use
+    const Size nb_threads = ThreadExecutor::nbRunningThreadsExecutors() == 0
+                              ? this->getNumberOfThreads()
+                              : 1;   // no nested multithreading
 
-      // dispatch {0,...,psize} among the threads
-      const auto ranges = gum::dispatchRangeToThreads(0, psize, (unsigned int)(nb_threads));
+    // dispatch {0,...,psize} among the threads
+    const auto ranges = gum::dispatchRangeToThreads(0, psize, (unsigned int)(nb_threads));
 
-      // each sample draws with a generator seeded by (seed of the inference, index of the sample):
-      // the samples, hence the result, do not depend on the number of threads
-      const auto seed        = currentRandomGeneratorValue();
-      Size       firstSample = 0;   // index of the first sample of the current period
+    // each sample draws with a generator seeded by (seed of the inference, index of the sample):
+    // the samples, hence the result, do not depend on the number of threads
+    const auto seed        = currentRandomGeneratorValue();
+    Size       firstSample = 0;   // index of the first sample of the current period
 
-      // create the function to be executed by the threads
-      auto threadedExec = [this, ranges, seed, &firstSample](const std::size_t this_thread,
-                                                             const std::size_t nb_threads) {
-        auto&       generator  = this->generators_[this_thread];
-        const auto& this_range = ranges[this_thread];
-        for (Idx j = this_range.first; j < this_range.second; ++j) {
-          const auto    sample = static_cast< std::uint64_t >(firstSample + j);
-          std::seed_seq sequence{seed,
-                                 static_cast< unsigned int >(sample & 0xFFFFFFFFu),
-                                 static_cast< unsigned int >(sample >> 32)};
-          generator.seed(sequence);
-          _threadInference_(this_thread);
-          _threadUpdate_(this_thread);
-        }
-      };
+    // create the function to be executed by the threads
+    auto threadedExec = [this, ranges, seed, &firstSample](const std::size_t this_thread,
+                                                           const std::size_t nb_threads) {
+      auto&       generator  = this->generators_[this_thread];
+      const auto& this_range = ranges[this_thread];
+      for (Idx j = this_range.first; j < this_range.second; ++j) {
+        const auto    sample = static_cast< std::uint64_t >(firstSample + j);
+        std::seed_seq sequence{seed,
+                               static_cast< unsigned int >(sample & 0xFFFFFFFFu),
+                               static_cast< unsigned int >(sample >> 32)};
+        generator.seed(sequence);
+        _threadInference_(this_thread);
+        _threadUpdate_(this_thread);
+      }
+    };
 
-      do {
-        eps = 0;
+    do {
+      eps = 0;
 
-        // launch the threads
-        ThreadExecutor::execute(nb_threads, threadedExec);
-        firstSample += psize;
+      // launch the threads
+      ThreadExecutor::execute(nb_threads, threadedExec);
+      firstSample += psize;
 
-        this->updateApproximationScheme(int(psize));
+      this->updateApproximationScheme(int(psize));
 
-        this->updateMarginals_();        // fusion threads + update margi
+      this->updateMarginals_();        // fusion threads + update margi
 
-        eps = this->computeEpsilon_();   // also updates oldMargi
+      eps = this->computeEpsilon_();   // also updates oldMargi
 
-      } while (this->continueApproximationScheme(eps));
-    }
+    } while (this->continueApproximationScheme(eps));
 
     if (!this->modal_.empty()) { this->expFusion_(); }
 

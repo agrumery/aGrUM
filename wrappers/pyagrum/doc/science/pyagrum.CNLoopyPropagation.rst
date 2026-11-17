@@ -35,7 +35,10 @@ iteration.
 
 **The stopping criterion.** After each iteration, :math:`\varepsilon` is the largest change of a lower or upper
 posterior over all the variables. The propagation stops when no node has a new message to send (``nodeToNeighbours``),
-or with the criteria of the approximation scheme: :math:`\varepsilon` at most ``epsilon`` (0.05 by default), relative
-change of :math:`\varepsilon` between two iterations below ``minEpsilonRate`` (0.01), ``maxIter`` (10000) iterations;
-there is no time limit by default. On a network with loops, the convergence of L2U is not proved, although it is
-usually observed :cite:`antonucci2010generalized`.
+or with the criteria of the approximation scheme: :math:`\varepsilon` at most ``epsilon`` (:math:`10^{-8}` by
+default), relative change of :math:`\varepsilon` between two iterations below ``minEpsilonRate`` (:math:`10^{-10}`),
+``maxIter`` (100) iterations; these defaults are the keys of the section ``CNLoopy`` of `pyagrum.config`, and there is
+no time limit by default. With ``nodeToNeighbours``, :math:`\varepsilon` may decrease non monotonically (an iteration
+where the active nodes hardly change, followed by larger changes), so that ``epsilon`` can be reached before the
+convergence. On a network with loops, the convergence of L2U is not proved, although it is usually observed
+:cite:`antonucci2010generalized`.
