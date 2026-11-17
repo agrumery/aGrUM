@@ -135,8 +135,9 @@ namespace gum {
      * @param max_cardinality Maximum set size (0 = no limit).
      * @param only_minimal If true, return only minimal adjustment sets.
      *
-     * @return std::optional<NodeSet> The first valid backdoor adjustment set found, or
-     * std::nullopt if none exists.
+     * @return std::optional<NodeSet> The first valid backdoor adjustment set found by the
+     * enumeration (by increasing size, then by node ids): a smallest set, or std::nullopt if none
+     * exists.
      */
     static std::optional< NodeSet > firstBackdoor(const DAG&     dag,
                                                   NodeId         X,
@@ -199,8 +200,9 @@ namespace gum {
      * @param max_cardinality Maximum set size (0 = no limit).
      * @param only_minimal If true, return only minimal adjustment sets.
      *
-     * @return std::optional<NodeSet> The first valid frontdoor adjustment set found, or
-     * std::nullopt if none exists.
+     * @return std::optional<NodeSet> The first valid frontdoor adjustment set found by the
+     * enumeration (by increasing size, then by node ids): a smallest set, or std::nullopt if none
+     * exists.
      */
     static std::optional< NodeSet > firstFrontdoor(const DAG&     dag,
                                                    NodeId         X,

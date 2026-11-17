@@ -26,7 +26,6 @@ When there is no directed path from :math:`X` to :math:`Y` (no causal effect), e
 connected component is returned alone.
 
 **Which set is used.** ``firstBackdoor`` and ``firstFrontdoor`` return the first set met by the enumeration: a
-smallest set. The enumerations return their sets sorted in the lexicographic order of the node ids, and
-`pyagrum.CausalModel.backDoor` and ``frontDoor`` (used by `pyagrum.causalImpact`) return the first set of this sorted
-list: a minimal set with the smallest ids, which is not always a smallest one (:math:`\{0, 5\}` comes before
-:math:`\{2\}`).
+smallest set, ties broken by the node ids. `pyagrum.CausalModel.backDoor` and ``frontDoor`` (used by
+`pyagrum.causalImpact`) return the same set. The enumerations return all their sets sorted in the lexicographic order
+of the node ids (:math:`\{0, 5\}` comes before :math:`\{2\}`).

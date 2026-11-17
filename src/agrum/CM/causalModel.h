@@ -245,8 +245,9 @@ namespace gum {
      * @brief Find a backdoor adjustment set \(Z\) between `cause` and `effect`
      *        (IDs only).
      *
-     * Enumerates admissible backdoor sets in the current causal DAG
-     * (excluding latent variables) and returns the **first** valid one found.
+     * Returns a smallest admissible backdoor set in the current causal DAG
+     * (excluding latent variables), ties broken by the node ids
+     * (see DoorCriteria::firstBackdoor).
      * Returns `std::nullopt` if no backdoor set exists at all.
      * Note: an **empty** set is a valid backdoor when X has no back-door paths.
      *
@@ -266,8 +267,9 @@ namespace gum {
      * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
      *        (IDs only).
      *
-     * Enumerates admissible frontdoor sets in the current causal DAG
-     * (excluding latent variables) and returns the **first** valid one found.
+     * Returns a smallest admissible frontdoor set in the current causal DAG
+     * (excluding latent variables), ties broken by the node ids
+     * (see DoorCriteria::firstFrontdoor).
      * Returns `std::nullopt` if no frontdoor set exists at all.
      * Note: an **empty** set is a valid frontdoor in degenerate cases.
      *
@@ -285,8 +287,9 @@ namespace gum {
      * @brief Find a frontdoor adjustment set \(Z\) between `cause` and `effect`
      *        (IDs only).
      *
-     * Enumerates admissible frontdoor sets in the current causal DAG
-     * (excluding latent variables) and returns the **first** valid one found.
+     * Returns a smallest admissible frontdoor set in the current causal DAG
+     * (excluding latent variables), ties broken by the node ids
+     * (see DoorCriteria::firstFrontdoor).
      * Returns `std::nullopt` if no frontdoor set exists at all.
      * Note: an **empty** set is a valid frontdoor in degenerate cases.
      *

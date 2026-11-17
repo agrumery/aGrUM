@@ -104,6 +104,8 @@
       the new key `skbn.tanSignificance` of `pyagrum.config`, 0.01); `TANSignificance=1` gives the TAN of Friedman et
       al. (all the features, a spanning tree). Behaviour change: the features independent of the class are no longer
       used, and the edges are no longer pruned below half of the mean conditional mutual information.
+    - `CausalModel.backDoor` and `CausalModel.frontDoor` (hence `causalImpact`) return a smallest adjustment set, as
+      `DoorCriteria.firstBackdoor`/`firstFrontdoor` (see aGrUM).
     - The AIC score is the criterion of Akaike (see aGrUM): the structures learned with `useScoreAIC` and the order
       selected by `KTBNAdaptiveLearner.useOrderScoreAIC` may change.
 
@@ -257,6 +259,10 @@
       bits, as `ScoreBIC` does: the score is Akaike's criterion divided by ln 2. The penalty was subtracted from the
       log-likelihood in bits, so that it weighed only ln 2 (0.69) times Akaike's one and the learned structures had too
       many arcs. Same correction for the AIC order selection score of `KTBNAdaptiveLearner`.
+    - `CausalModel::backDoor` and `CausalModel::frontDoor` return a smallest adjustment set (ties broken by the node
+      ids), the set of `DoorCriteria::firstBackdoor`/`firstFrontdoor`; they returned the first set in the
+      lexicographic order of the ids, minimal but not always smallest ({0, 5} before {2}). They no longer enumerate
+      all the sets.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 

@@ -199,7 +199,8 @@ bool
 
 %feature("docstring") gum::DoorCriteria::firstBackdoor
 "
-Return the first valid backdoor adjustment set for the causal effect of X on Y.
+Return the first valid backdoor adjustment set for the causal effect of X on Y: the sets are tried by
+increasing size, then by node ids, so that it is a smallest one.
 
 Parameters
 ----------
@@ -224,7 +225,8 @@ list of int or None
 
 %feature("docstring") gum::DoorCriteria::firstFrontdoor
 "
-Return the first valid frontdoor adjustment set for the causal effect of X on Y.
+Return the first valid frontdoor adjustment set for the causal effect of X on Y: the sets are tried by
+increasing size, then by node ids, so that it is a smallest one.
 
 Parameters
 ----------

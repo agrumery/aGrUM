@@ -168,7 +168,8 @@ bool
 "
 Find a backdoor adjustment set between cause and effect.
 
-Returns the first valid backdoor adjustment set found. A backdoor set Z
+Returns a smallest valid backdoor adjustment set (ties broken by the node ids,
+as `pyagrum.DoorCriteria.firstBackdoor`). A backdoor set Z
 blocks all spurious (non-causal) paths between cause and effect while
 leaving all directed causal paths open, enabling estimation of the causal
 effect P(effect | do(cause)) via standard conditioning on Z.
@@ -197,7 +198,8 @@ pyagrum.DoorCriteria.enumerateBackdoorSets : enumerate all valid sets.
 "
 Find a frontdoor adjustment set between cause and effect.
 
-Returns the first valid frontdoor adjustment set found. A frontdoor set Z
+Returns a smallest valid frontdoor adjustment set (ties broken by the node ids,
+as `pyagrum.DoorCriteria.firstFrontdoor`). A frontdoor set Z
 intercepts all directed paths from cause to effect and enables estimation of
 P(effect | do(cause)) even in the presence of unobserved confounders.
 

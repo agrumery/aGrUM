@@ -386,9 +386,8 @@ namespace gum {
                 "CausalModel::backDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    const auto candidates = DoorCriteria::enumerateBackdoorSets(_causalDAG_, cause, effect, lat);
-    if (candidates.empty()) return std::nullopt;
-    return candidates.front();   // first valid set (may itself be empty)
+    // a smallest valid set (may itself be empty), ties broken by node ids
+    return DoorCriteria::firstBackdoor(_causalDAG_, cause, effect, lat);
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -400,9 +399,8 @@ namespace gum {
                 "CausalModel::frontDoor: 'cause' and 'effect' must be observed (non-latent).");
     }
 
-    const auto candidates = DoorCriteria::enumerateFrontdoorSets(_causalDAG_, cause, effect, lat);
-    if (candidates.empty()) return std::nullopt;
-    return candidates.front();   // first valid set (may itself be empty)
+    // a smallest valid set (may itself be empty), ties broken by node ids
+    return DoorCriteria::firstFrontdoor(_causalDAG_, cause, effect, lat);
   }
 
   // ===============================

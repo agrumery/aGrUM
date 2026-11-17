@@ -47,6 +47,7 @@
 
 #include <agrum/CM/causalImpact.h>
 #include <agrum/CM/causalModel.h>
+#include <agrum/CM/doorCriteria.h>
 #include <agrum/CM/tools/doAST.h>
 
 namespace gum_tests {
@@ -345,6 +346,38 @@ namespace gum_tests {
     // Returned set must not contain latents.
     for (auto n: bd.value())
       CHECK(!cm.latentVariablesIds().contains(n));
+  }
+
+  GUM_TEST(BackdoorIsASmallestSet) {
+    // {A,B} and {C} are both minimal backdoor sets; {A,B} has the smallest ids
+    auto bn = gum::BayesNet< double >::fastPrototype("A->X;B->X;C->A;C->B;C->Y;X->Y");
+    gum::CausalModel< double > cm(bn);
+
+    const auto bd = cm.backDoor("X", "Y");
+    REQUIRE(bd.has_value());
+    CHECK_EQ(bd.value(), gum::NodeSet{bn.idFromName("C")});
+    CHECK_EQ(
+        bd.value(),
+        gum::DoorCriteria::firstBackdoor(cm.causalDAG(), bn.idFromName("X"), bn.idFromName("Y"))
+            .value());
+  }
+
+  GUM_TEST(FrontdoorIsASmallestSet) {
+    // {A,B} and {C} are both minimal frontdoor sets; {A,B} has the smallest ids
+    auto bn = gum::BayesNet< double >::fastPrototype("A->C;B->C;C->Y;X->A;X->B");
+    gum::CausalModel< double > cm(bn);
+    std::vector< gum::NodeId > kids{bn.idFromName("X"), bn.idFromName("Y")};
+    cm.addLatentVariable("U", kids);
+
+    const auto fd = cm.frontDoor("X", "Y");
+    REQUIRE(fd.has_value());
+    CHECK_EQ(fd.value(), gum::NodeSet{bn.idFromName("C")});
+    CHECK_EQ(fd.value(),
+             gum::DoorCriteria::firstFrontdoor(cm.causalDAG(),
+                                               bn.idFromName("X"),
+                                               bn.idFromName("Y"),
+                                               cm.latentVariablesIds())
+                 .value());
   }
 
   GUM_TEST(BackdoorWithLatentOnly_NoObservedSet) {
