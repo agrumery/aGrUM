@@ -79,12 +79,64 @@ class TestMixtureInference(pyAgrumTestCase):
     ie.setEvidence({"A": 0})
     ie.makeInference()
     p_mix = ie.posterior("C")
-    # posterior = normalize(Σ wᵢ · P_BNᵢ(C | evs))
+    # A has the same prior in both BNs: P_BNᵢ(A=0) does not change the weights, posterior = normalize(Σ wᵢ · P_BNᵢ(C | evs))
     p0 = gum.getPosterior(bn0, target="C", evs={"A": 0})
     p1 = gum.getPosterior(bn1, target="C", evs={"A": 0})
     p_manual = (p0 + 2 * p1.toVarsIn(bn0)).normalize()
     for v, v_ref in zip(p_mix.tolist(), p_manual.tolist()):
       self.assertAlmostEqual(v, v_ref, places=5)
+
+  def testBNMixtureInference_posteriorIsThePosteriorOfTheMixture(self):
+    # P(A | B=1) in the mixture 0.5 b1 + 0.5 b2: (0.5*0.09 + 0.5*0.01, 0.5*0.09 + 0.5*0.81) normalized = (0.1, 0.9)
+    b1 = gum.fastBN("A->B")
+    b1.cpt("A").fillWith([0.9, 0.1])
+    b1.cpt("B")[{"A": 0}] = [0.9, 0.1]
+    b1.cpt("B")[{"A": 1}] = [0.1, 0.9]
+    b2 = gum.BayesNet(b1)
+    b2.cpt("A").fillWith([0.1, 0.9])
+    bnm = BNM.BNMixture()
+    bnm.add("b1", b1, w=0.5)
+    bnm.add("b2", b2, w=0.5)
+    ie = BNM.BNMixtureInference(bnm)
+    ie.setEvidence({"B": 1})
+    ie.makeInference()
+    for v, v_ref in zip(ie.posterior("A").tolist(), [0.1, 0.9]):
+      self.assertAlmostEqual(v, v_ref, places=10)
+
+    # a BN in which the evidence is impossible does not count
+    b3 = gum.BayesNet(b1)
+    b3.cpt("B")[{"A": 0}] = [1.0, 0.0]
+    b3.cpt("B")[{"A": 1}] = [1.0, 0.0]
+    bnm.add("b3", b3, w=10.0)
+    ie = BNM.BNMixtureInference(bnm)
+    ie.setEvidence({"B": 1})
+    for v, v_ref in zip(ie.posterior("A").tolist(), [0.1, 0.9]):
+      self.assertAlmostEqual(v, v_ref, places=10)
+
+    # without evidence, the weighted mean of the priors of A: (0.5 [0.9, 0.1] + 0.5 [0.1, 0.9] + 10 [0.9, 0.1]) / 11
+    ie = BNM.BNMixtureInference(bnm)
+    for v, v_ref in zip(ie.posterior("A").tolist(), [9.5 / 11, 1.5 / 11]):
+      self.assertAlmostEqual(v, v_ref, places=10)
+
+  def testBNMixtureInference_impossibleEvidenceRaises(self):
+    b1 = gum.fastBN("A->B")
+    b1.cpt("B")[{"A": 0}] = [1.0, 0.0]
+    b1.cpt("B")[{"A": 1}] = [1.0, 0.0]
+    bnm = BNM.BNMixture()
+    bnm.add("b1", b1, w=1.0)
+    ie = BNM.BNMixtureInference(bnm)
+    ie.setEvidence({"B": 1})
+    with self.assertRaises(gum.IncompatibleEvidence):
+      ie.posterior("A")
+
+  def testBNMixtureInference_evidenceNeedsTheProbabilityOfTheEvidence(self):
+    bnm = BNM.BNMixture()
+    bnm.add("b1", gum.fastBN("A->B"), w=1.0)
+    ie = BNM.BNMixtureInference(bnm, engine=gum.VariableElimination)
+    self.assertEqual(len(ie.posterior("A").tolist()), 2)  # no evidence: any engine
+    ie.setEvidence({"B": 1})
+    with self.assertRaises(gum.InvalidArgument):
+      ie.posterior("A")
 
   def testBootstrapMixtureInference_posterior(self):
     bn0 = gum.fastBN("A->C<-B")

@@ -42,6 +42,7 @@ import unittest
 
 import pyagrum as gum
 import pyagrum.ctbn as ct
+from pyagrum.ctbn.constants import FAIL_TO_REJECT
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
@@ -199,6 +200,113 @@ class TestCtbnIndependence(pyAgrumTestCase):
     self.assertGreaterEqual(countRep1, minRep)
     self.assertGreaterEqual(countRep2, minRep)
     self.assertGreaterEqual(countRep3, minRep)
+
+  def testDegreesOfFreedomAreTheTotalCounts(self):
+    # The degrees of freedom of the F test are the transition counts over all the trajectories (Bregoli et al.
+    # 2020, eq. 18): two copies of a trajectory double them.
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+    ctbn.addArc("Y", "X")
+    ctbn.CIM("X")[{"Y": 0}] = [[-1, 1], [1, -1]]
+    ctbn.CIM("X")[{"Y": 1}] = [[-3, 3], [3, -3]]
+    ctbn.CIM("Y")[:] = [[-1, 1], [1, -1]]
+
+    ie = ct.ForwardSamplingInference(ctbn)
+    ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_indep_dof.csv"), n=1, timeHorizon=20, burnIn=10)
+    once = ct.Trajectory(self.agrumSrcDir("trajectory_indep_dof.csv"), ctbn=ctbn)
+    twice = ct.Trajectory({0: once.data[0], 1: once.data[0]}, ctbn=ctbn)
+
+    test1 = ct.FChi2Test(once)
+    test1.testIndep("X", "Y", [])
+    test2 = ct.FChi2Test(twice)
+    test2.testIndep("X", "Y", [])
+
+    for i in range(2):
+      self.assertGreater(test1.r2[{"X#i": i}], 0)
+      self.assertEqual(test2.r1[{"X#i": i, "Y": 0}], 2 * test1.r1[{"X#i": i, "Y": 0}])
+      self.assertEqual(test2.r2[{"X#i": i}], 2 * test1.r2[{"X#i": i}])
+
+  def testDependenceIsFoundWithManyTrajectories(self):
+    # X jumps 1.5 times faster when Y=1: with 100 trajectories, about 2500 transitions of X, the dependence is
+    # far beyond the acceptance interval of the F test.
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+    ctbn.addArc("Y", "X")
+    ctbn.CIM("X")[{"Y": 0}] = [[-1, 1], [1, -1]]
+    ctbn.CIM("X")[{"Y": 1}] = [[-1.5, 1.5], [1.5, -1.5]]
+    ctbn.CIM("Y")[:] = [[-1, 1], [1, -1]]
+
+    ie = ct.ForwardSamplingInference(ctbn)
+    ie.writeTrajectoryCSV(self.agrumSrcDir("trajectory_indep_many.csv"), n=100, timeHorizon=20, burnIn=10)
+    traj = ct.Trajectory(self.agrumSrcDir("trajectory_indep_many.csv"), ctbn=ctbn)
+    test = ct.FChi2Test(traj)
+    self.assertFalse(test.testIndep("X", "Y", []))
+
+  def testFTestComparesOnlyTheExitRates(self):
+    # X leaves each state at rate 1 whatever Y: only its destination depends on Y (0->1->2 when Y=0, 0->2->1 when
+    # Y=1). The time to transition test compares the exit rates only (Bregoli et al. 2020, eq. 18): it accepts,
+    # and the state to state test finds the dependence.
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 3))
+    ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+    ctbn.addArc("Y", "X")
+
+    def trajectory(y, cycle):
+      # a row (t, X, x) is a jump of X out of x at time t; the last rows give the states at the horizon
+      traj = [(0.0, "X", cycle[0]), (0.0, "Y", y)]
+      traj += [(float(t), "X", cycle[(t - 1) % 3]) for t in range(1, 60)]
+      traj += [(60.0, "X", cycle[59 % 3]), (60.0, "Y", y)]
+      return traj
+
+    traj = ct.Trajectory({0: trajectory("0", "012"), 1: trajectory("1", "102")}, ctbn=ctbn)
+    test = ct.FChi2Test(traj)
+    test.addVariables("X", "Y", [])
+    self.assertEqual(test.nullTimeToTransitionHypothesisF("X", "Y", []), FAIL_TO_REJECT)
+    self.assertFalse(test.testIndep("X", "Y", []))
+
+  def testSignificanceLevelsComeFromTheConfiguration(self):
+    # X jumps every time unit when Y=0 and every 1.44 time units when Y=1 (600 time units each): the F test rejects
+    # the independence at 10% but not at 5% (the default).
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+    ctbn.addArc("Y", "X")
+
+    def trajectory(y, dwell):
+      # a row (t, X, x) is a jump of X out of x at time t; the last rows give the states at the horizon
+      n = round(600 / dwell)
+      traj = [(0.0, "X", "0"), (0.0, "Y", y)]
+      traj += [(dwell * t, "X", str((t - 1) % 2)) for t in range(1, n)]
+      traj += [(600.0, "X", str((n - 1) % 2)), (600.0, "Y", y)]
+      return traj
+
+    traj = ct.Trajectory({0: trajectory("0", 1.0), 1: trajectory("1", 1.44)}, ctbn=ctbn)
+
+    test = ct.FChi2Test(traj)
+    self.assertEqual(test.fSignificance, 0.05)
+    self.assertEqual(test.chi2Significance, 0.05)
+    self.assertTrue(test.testIndep("X", "Y", []))
+
+    gum.config.push()
+    try:
+      gum.config["ctbn", "fSignificance"] = 0.1
+      gum.config["ctbn", "chi2Significance"] = 0.2
+      test10 = ct.FChi2Test(traj)
+    finally:
+      gum.config.pop()
+    self.assertEqual(test10.fSignificance, 0.1)
+    self.assertEqual(test10.chi2Significance, 0.2)
+    self.assertFalse(test10.testIndep("X", "Y", []))
+    # the levels are read when the test is created
+    self.assertTrue(test.testIndep("X", "Y", []))
+
+  def testSignificanceLevelsAreInZeroOne(self):
+    for key in ["fSignificance", "chi2Significance"]:
+      for significance in [0, -0.1, 1, 1.5]:
+        with self.assertRaises(ValueError):
+          gum.config["ctbn", key] = significance
 
 
 ts = unittest.TestSuite()

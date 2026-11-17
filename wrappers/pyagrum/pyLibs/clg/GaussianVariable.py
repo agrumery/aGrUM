@@ -44,6 +44,19 @@ class GaussianVariable: Continuous Gaussian Variable
 
 
 class GaussianVariable:
+  """
+  A continuous Gaussian variable: a name, a mean (the intercept when the variable has parents in a CLG) and a standard
+  deviation.
+
+  The standard deviation must be positive for a variable of a `pyagrum.clg.CLG`; 0 is only accepted by the constructor,
+  for the posterior of an observed variable (a point mass) built by the inference.
+
+  Raises
+  ------
+  ValueError
+    if sigma is negative.
+  """
+
   def __init__(self, name: str, mu: float, sigma: float):
     if sigma < 0:
       raise ValueError(f"sigma must be non-negative, got {sigma}.")
@@ -105,10 +118,15 @@ class GaussianVariable:
     Parameters
     ----------
     sigma : float
-      The new standard deviation of the variable.
+      The new standard deviation of the variable, positive.
+
+    Raises
+    ------
+    ValueError
+      if sigma is not positive.
     """
-    if sigma < 0:
-      raise ValueError(f"sigma must be non-negative, got {sigma}.")
+    if not sigma > 0:
+      raise ValueError(f"sigma must be positive, got {sigma}.")
     self._sigma = sigma
 
   def __eq__(self, other: object) -> bool:

@@ -40,6 +40,8 @@
 
 import unittest
 
+import numpy
+
 import pyagrum as gum
 import pyagrum.ctbn as ct
 
@@ -178,6 +180,15 @@ class TestCtbnCIM(pyAgrumTestCase):
     self.assertEqual(amal[{"A": "a0", "B": "b1", xi: "x1", xj: "x1", yi: "y1", yj: "y1"}], -14)
 
     self.assertSetEqual(set(amal.varNames), set([xi, xj, yi, yj, "A", "B"]))
+
+  def testFromMatrixAcceptsAnyNumericMatrix(self):
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    for mat in [numpy.array([[-1, 1], [2, -2]]), [[-1, 1], [2, -2]]]:
+      ctbn.CIM("X").fromMatrix(mat)
+      self.assertEqual(ctbn.CIM("X").toMatrix().tolist(), [[-1.0, 1.0], [2.0, -2.0]])
+    with self.assertRaises(ValueError):
+      ctbn.CIM("X").fromMatrix([[-1, 1, 0], [2, -2, 0]])
 
 
 ts = unittest.TestSuite()

@@ -40,6 +40,8 @@
 
 import unittest
 
+import numpy as np
+
 import pyagrum as gum
 from pyagrum.clg.CLG import CLG
 from pyagrum.clg.GaussianVariable import GaussianVariable
@@ -85,6 +87,32 @@ class CLGLearningTestCase(pyAgrumTestCase):
       # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
       seed = gum.randomValue(2**30) + 1
       self.assertEqual(sd(seed), sd(seed))
+
+  def test_SupremumDeviationIsTheBoundOfTheTheorem(self):
+    delta = 0.05
+    n = 10
+    with gum.RandomGeneratorGuard():  # the seed of the run is given back at the end
+      seed = gum.randomValue(2**30) + 1
+      gum.initRandom(seed)
+      learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite1.csv"))
+      sd = learner.supremum_deviation(n_sample=n, fwer_delta=delta)
+      # the same random signs as the ones drawn by supremum_deviation
+      gum.initRandom(seed)
+      terms = np.array(list(learner.r_XYZ.values()))
+      K = terms.shape[1]
+      sigma = gum.randomNumpyGenerator().choice([-1.0, 1.0], size=(n, K))
+
+    # each term of the r-centered statistic lies in [-1, 1]
+    self.assertLessEqual(np.max(np.abs(terms)), 1.0)
+
+    # Theorem 3.1 of Pellegrina et al. with z = 1, c = 2 and ln(4/delta), whatever the number of tests
+    z = 1.0
+    c = 2.0
+    lam = np.log(4 / delta)
+    R = np.mean(np.max(sigma @ terms.T / K, axis=1))
+    Rt = R + 2 * z * np.sqrt(lam / (2 * n * K))
+    expected = 2 * Rt + np.sqrt(c * (4 * K * Rt + c * lam) * lam) / K + c * lam / K + c * np.sqrt(lam / (2 * K))
+    self.assertAlmostEqual(sd, expected, places=10)
 
   def test_PCMB(self):
     # clg is a CLG model
@@ -177,6 +205,16 @@ class CLGLearningTestCase(pyAgrumTestCase):
 
     for arc in clg.arcs():
       self.assertAlmostEqual(arc2coef[arc], clg.coefArc(*arc), delta=delta)
+
+  def test_Rule3NeedsNonAdjacentParents(self):
+    # C[x] holds the nodes y with x - y (y in C[x] and x in C[y]) or x -> y (y in C[x] only)
+    learner = CLGLearner(self.agrumSrcDir("CLGLearningTestSuite2.csv"))
+    # 0 - 2 -> 1, 0 - 3 -> 1, 0 - 1 and 2 - 3: Meek's rule 3 does not apply, as 2 and 3 are adjacent
+    C = {0: {1, 2, 3}, 1: {0}, 2: {0, 1, 3}, 3: {0, 1, 2}}
+    self.assertEqual(learner.three_rules(C), {0: {1, 2, 3}, 1: {0}, 2: {0, 1, 3}, 3: {0, 1, 2}})
+    # without 2 - 3, rule 3 orients 0 -> 1
+    C = {0: {1, 2, 3}, 1: {0}, 2: {0, 1}, 3: {0, 1}}
+    self.assertEqual(learner.three_rules(C), {0: {1, 2, 3}, 1: set(), 2: {0, 1}, 3: {0, 1}})
 
 
 ts = unittest.TestSuite()

@@ -39,6 +39,7 @@
 ############################################################################
 
 import unittest
+import unittest.mock
 
 import pyagrum as gum
 import pyagrum.bnmixture as BNM
@@ -84,6 +85,41 @@ class TestMixtureLearning(pyAgrumTestCase):
     target = gum.BNLearner(df)
     lrn_bn.updateState(target)
     self.assertIsInstance(target.learnBN(), gum.BayesNet)
+
+  @staticmethod
+  def _algo_and_score(learner):
+    # the score is only shown for a score-based algorithm
+    return [line.split(":")[1].strip() for line in str(learner).splitlines() if line.startswith(("Algorithm", "Score"))]
+
+  def testBNMLearner_missingSettingsComeFromTheReference(self):
+    bn_ref = gum.fastBN("A->C<-B")
+    df = self._gen_df(bn_ref, n=100)
+    # the reference (highest weight) has no setting: the default settings of BNLearner
+    lrn = BNM.BNMLearner([2.0, 1.0], [df, df])
+    lrn.learnBNM()
+    default_algo = self._algo_and_score(gum.BNLearner(df))[0]
+    learner = gum.BNLearner(df)
+    lrn.updateState(learner, score="BIC")  # one setting does not change the algorithm
+    self.assertEqual(self._algo_and_score(learner)[0], default_algo)
+    learner.useGreedyHillClimbing()
+    self.assertEqual(self._algo_and_score(learner), ["Greedy Hill Climbing", "BIC"])
+
+    # the reference has settings: a database with another setting keeps them
+    lrn = BNM.BNMLearner([2.0, 1.0], [df, df], states=[{"algorithm": "Greedy Hill Climbing", "score": "BIC"}, {}])
+    lrn.learnBNM()
+    learner = gum.BNLearner(df)
+    lrn.updateState(learner, correction="NML")
+    self.assertEqual(self._algo_and_score(learner), ["Greedy Hill Climbing", "BIC"])
+    learner = gum.BNLearner(df)
+    lrn.updateState(learner)
+    self.assertEqual(self._algo_and_score(learner), ["Greedy Hill Climbing", "BIC"])
+
+  def testBNMLearner_updateState_unknownSettingRaises(self):
+    bn_ref = gum.fastBN("A->C<-B")
+    df = self._gen_df(bn_ref, n=50)
+    lrn = BNM.BNMLearner([1.0], [df])
+    with self.assertRaises(gum.ArgumentError):
+      lrn.updateState(gum.BNLearner(df), scor="BIC")
 
   def testBNMLearner_updateState_allScoreTypes(self):
     bn_ref = gum.fastBN("A->C<-B")
@@ -234,6 +270,33 @@ class TestMixtureLearning(pyAgrumTestCase):
       # the seed comes from the generator, so that the run stays driven by core.randomSeed (never 0, the clock)
       seed = gum.randomValue(2**30) + 1
       self.assertEqual(learn(seed), learn(seed))
+
+  def testBNMBootstrapLearner_bayesianBootstrapWeights(self):
+    # Bayesian bootstrap (Rubin 1981): record weights n * Dirichlet(1, ..., 1), summing to n, with
+    # E[sum_j w_j^2] / n = 2n / (n + 1) (about n / 2 records in effect, as with resampling with replacement)
+    bn_ref = gum.fastBN("A->C<-B")
+    n = 100
+    df = self._gen_df(bn_ref, n=n)
+    boot_learner = BNM.BNMBootstrapLearner(df, template=bn_ref)
+    boot_learner.useIter(20)
+
+    weights = []
+    setRecordWeight = gum.BNLearner.setRecordWeight
+
+    def spy(self, i, w):
+      weights.append(w)
+      return setRecordWeight(self, i, w)
+
+    with unittest.mock.patch.object(gum.BNLearner, "setRecordWeight", spy):
+      boot_learner.learnBNM()
+
+    replications = [weights[k : k + n] for k in range(n, len(weights), n)]  # the first n reset the weights to 1
+    self.assertEqual(len(replications), 20)
+    for w in replications:
+      self.assertAlmostEqual(sum(w), n)
+    meanSquares = sum(sum(x * x for x in w) / n for w in replications) / len(replications)
+    self.assertGreater(meanSquares, 1.5)
+    self.assertLess(meanSquares, 3.0)
 
   def testBNMBootstrapLearner_useIter(self):
     bn_ref = gum.fastBN("A->C<-B")

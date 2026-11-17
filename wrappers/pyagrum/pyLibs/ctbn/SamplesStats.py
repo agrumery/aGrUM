@@ -283,20 +283,21 @@ def computeCIMFromStats(X: str, M: pyagrum.Tensor, T: pyagrum.Tensor) -> pyagrum
 
   while not i.end():
     iTime.setVals(i)
+    t = T.get(iTime)
 
-    iSum = pyagrum.Instantiation(i)
-    sumCIM = 0
-    iSum.setFirstVar(i.variable(posJ))
-    while not iSum.end():
-      sumCIM += M.get(iSum)
-      iSum.incVar(i.variable(posJ))
-
-    if i.val(posI) == i.val(posJ):
-      if T.get(iTime) != 0:
-        res.set(i, -round(sumCIM / T.get(iTime), 3))
-    else:
-      if T.get(iTime) != 0:
-        res.set(i, round((M.get(i) / T.get(iTime)), 3))
+    if t != 0:  # maximum likelihood estimates, not rounded
+      if i.val(posI) == i.val(posJ):
+        # the diagonal is minus the sum of the other rates of the row
+        iSum = pyagrum.Instantiation(i)
+        sumCIM = 0.0
+        iSum.setFirstVar(i.variable(posJ))
+        while not iSum.end():
+          if iSum.val(posJ) != i.val(posI):
+            sumCIM += M.get(iSum) / t
+          iSum.incVar(i.variable(posJ))
+        res.set(i, -sumCIM)
+      else:
+        res.set(i, M.get(i) / t)
     i.inc()
 
   return res
@@ -323,7 +324,7 @@ class Trajectory:
   ctbn : CTBN
       The CTBN used to link the names in the trajectory to pyAgrum variables.
   timeHorizon : float
-      The time length of the trajectory.
+      The time length of the first trajectory (each trajectory is read up to its own end).
   """
 
   def __init__(self, source, ctbn: CTBN | None = None):
@@ -371,6 +372,7 @@ class Trajectory:
     data = self.data
     for i in range(len(data)):
       traj = data[i]
+      horizon = traj[-1][0]  # the last rows give the states at the end of this trajectory
       prev_duration = 0.0
       duration = 0.0
 
@@ -405,7 +407,7 @@ class Trajectory:
           Txu[inst1] += duration - prev_duration
 
           # update M
-          if time < self.timeHorizon and var == X:
+          if time < horizon and var == X:
             nextv = findNextValue(X, traj, l)
             if nextv != X_value:
               inst2 = u_values.copy()
@@ -414,9 +416,9 @@ class Trajectory:
               Mxu[inst2] += 1
         ########## end check
 
-        if time < self.timeHorizon and var == X:
+        if time < horizon and var == X:
           X_value = findNextValue(X, traj, l)
-        elif time < self.timeHorizon and var in inst_u:
+        elif time < horizon and var in inst_u:
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStats(self, X: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor]:
@@ -515,6 +517,7 @@ class Trajectory:
     data = self.data
     for i in range(len(data)):
       traj = data[i]
+      horizon = traj[-1][0]  # the last rows give the states at the end of this trajectory
       prev_duration = 0.0
       duration = 0.0
 
@@ -556,7 +559,7 @@ class Trajectory:
           Txyu[inst2] += duration - prev_duration
 
           # update M
-          if time < self.timeHorizon and var == X:
+          if time < horizon and var == X:
             nextv = findNextValue(X, traj, l)
             if nextv != X_value:
               inst3 = u_values.copy()
@@ -566,17 +569,18 @@ class Trajectory:
               Mxyu[inst3] += 1
         ########## end check
 
-        if time < self.timeHorizon and var == X:
+        if time < horizon and var == X:
           X_value = findNextValue(X, traj, l)
-        elif time < self.timeHorizon and var == Y:
+        elif time < horizon and var == Y:
           Y_value = findNextValue(Y, traj, l)
-        elif time < self.timeHorizon and var in inst_u:
+        elif time < horizon and var in inst_u:
           u_values[var] = findNextValue(var, traj, l)
 
   def computeStatsForTests(self, X: str, Y: str, U: list[str]) -> tuple[pyagrum.Tensor, pyagrum.Tensor, pyagrum.Tensor]:
     """
     Computes time spent and number of transitions values of ``X`` when conditioned by ``Y`` and ``U`` and
-    returns them as `pyagrum.Tensor`. Used for independence testing.
+    returns them as `pyagrum.Tensor`. Used for independence testing: times and counts are totals over all the
+    trajectories, since the counts are the degrees of freedom of the tests.
 
     Parameters
     ----------
@@ -593,7 +597,6 @@ class Trajectory:
         The resulting tensors.
     """
     par = [self.ctbn.variable(nv) for nv in U]
-    n = len(self.data)
 
     Txu = pyagrum.Tensor()
     Txyu = pyagrum.Tensor()
@@ -632,7 +635,7 @@ class Trajectory:
     Txu.putFirst(X_from.name())
     Txyu.putFirst(X_from.name())
     Mxyu = Mxyu.putFirst(X_to.name())
-    return (Txu / n, Txyu / n, Mxyu / n)
+    return (Txu, Txyu, Mxyu)
 
 
 class Stats:

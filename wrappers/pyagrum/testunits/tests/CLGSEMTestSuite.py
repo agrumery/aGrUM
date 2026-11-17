@@ -123,6 +123,46 @@ B=0.0+1.5A[0.5]
     with self.assertRaises(SyntaxError):
       gclg.SEM.toclg(bad_sem)
 
+  def test_exponent_notation_roundtrip(self):
+    model = gclg.CLG()
+    model.add(gclg.GaussianVariable("A", 2e-05, 3e20))
+    model.add(gclg.GaussianVariable("B", -1.5e10, 1e-07))
+    model.addArc("A", "B", 1e-05)
+    model2 = gclg.SEM.toclg(gclg.SEM.tosem(model))
+    self.assertEqual(model, model2)
+    self.assertEqual(model2.coefArc("A", "B"), 1e-05)
+    self.assertEqual(model2.variable("A").mu(), 2e-05)
+    self.assertEqual(model2.variable("A").sigma(), 3e20)
+    self.assertEqual(model2.variable("B").mu(), -1.5e10)
+
+  def test_exponent_is_read_before_a_variable_named_e(self):
+    model = gclg.SEM.toclg("""
+e=0[1]
+A=0[1]
+B=1e-05A - 2E+3*A + 2e[1]
+""")
+    self.assertEqual(model.coefArc("A", "B"), 1e-05 - 2000)
+    self.assertEqual(model.coefArc("e", "B"), 2)
+    self.assertEqual(len(model.arcs()), 2)
+
+  def test_coefficient_and_name_do_not_merge(self):
+    model = gclg.CLG()
+    model.add(gclg.GaussianVariable("e3", 0, 1))
+    model.add(gclg.GaussianVariable("B", 0, 1))
+    model.addArc("e3", "B", 2)
+    model2 = gclg.SEM.toclg(gclg.SEM.tosem(model))
+    self.assertEqual(model, model2)
+    self.assertEqual(model2.variable("B").mu(), 0)
+
+  def test_unknown_variable_raises(self):
+    with self.assertRaises(SyntaxError):
+      gclg.SEM.toclg("A=0[1]\nB=2Z[1]")
+
+  def test_unrecognized_token_raises(self):
+    for bad_sem in ["A=0[1]\nB=2A$[1]", "A=0[1]\nB=2A", "A=0[1]\nB=2A[1]+A", "A=0[1]\nB=2A 3A[1]"]:
+      with self.assertRaises(SyntaxError):
+        gclg.SEM.toclg(bad_sem)
+
   def test_comments_ignored(self):
     sem = """
 # full comment line

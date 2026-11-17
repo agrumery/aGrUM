@@ -55,6 +55,12 @@ from .canonicalForm import CanonicalForm
 from .GaussianVariable import GaussianVariable
 
 
+def _check_sigma(name: str, sigma: float) -> None:
+  # a variable of a CLG needs a positive standard deviation: its density is divided by sigma^2
+  if not sigma > 0:
+    raise ValueError(f"The standard deviation of '{name}' must be positive in a CLG, got {sigma}.")
+
+
 class CLG:
   _graph: pyagrum.DAG
   _id2var: dict[int, GaussianVariable]
@@ -117,6 +123,7 @@ class CLG:
     self._arc2coef = {}
     for node_id in sorted(state["_id2var"]):
       var = state["_id2var"][node_id]
+      _check_sigma(var.name(), var.sigma())
       self._graph.addNodeWithId(node_id)
       self._graph.setName(node_id, var.name())
       self._id2var[node_id] = var
@@ -156,7 +163,7 @@ class CLG:
     Raises
     ------
     ValueError
-      if the argument is None.
+      if the argument is None, or if the standard deviation of the variable is not positive.
 
     NameError
       if the name of the variable is empty.
@@ -170,6 +177,7 @@ class CLG:
       raise NameError(f"The name cannot be '{var.name()}'.")
     if self._graph.idFromName(var.name()) is not None:
       raise NameError(f"A variable with the same name ({var.name()}) already exists in this CLG.")
+    _check_sigma(var.name(), var.sigma())
 
     n = self._graph.addNode()
     self._graph.setName(n, var.name())
@@ -204,13 +212,16 @@ class CLG:
     node : int
       The id of the variable.
     sigma : float
-      The new standard deviation of the variable.
+      The new standard deviation of the variable, positive.
 
     Raises
     ------
     pyagrum.NotFound
       if the node is not found in the CLG.
+    ValueError
+      if sigma is not positive.
     """
+    _check_sigma(self._id2var[node].name(), sigma)
     self._id2var[node].setSigma(sigma)
 
   def nameOrId(self, val: int | str) -> int:

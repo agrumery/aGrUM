@@ -143,7 +143,8 @@ class ForwardSampling:
 
   def variance_sample(self, val: int | str | None) -> float | dict[str, float]:
     """
-    Figure out the variance of variable <val> in the samples.
+    Figure out the variance of variable <val> in the samples (unbiased estimate, divided by N-1 for N samples, as
+    ``covariance_sample``).
 
     Parameters
     ----------
@@ -156,13 +157,13 @@ class ForwardSampling:
       The variance of variable <val>'s samples or all the variances as a dict if <val> is None.
     """
     if val is None:
-      return {self._model.variable(k).name(): self._id2samples[k].var() for k in self._model.topologicalOrder()}
+      return {self._model.variable(k).name(): self._id2samples[k].var(ddof=1) for k in self._model.topologicalOrder()}
     else:
-      return self._id2samples[self._model.nameOrId(val)].var()
+      return self._id2samples[self._model.nameOrId(val)].var(ddof=1)
 
   def stddev_sample(self, val: int | str | None) -> float | dict[str, float]:
     """
-    Figure out the standard deviation of variable <val> in the samples.
+    Figure out the standard deviation of variable <val> in the samples (square root of ``variance_sample``).
 
     Parameters
     ----------
@@ -175,13 +176,13 @@ class ForwardSampling:
       The standard deviation of variable <val>'s samples or all the standard deviations as a dict if <val> is None.
     """
     if val is None:
-      return {self._model.variable(k).name(): self._id2samples[k].std() for k in self._model.topologicalOrder()}
+      return {self._model.variable(k).name(): self._id2samples[k].std(ddof=1) for k in self._model.topologicalOrder()}
     else:
-      return self._id2samples[self._model.nameOrId(val)].std()
+      return self._id2samples[self._model.nameOrId(val)].std(ddof=1)
 
   def covariance_sample(self, vals: list[int | str] | None = None) -> np.ndarray:
     """
-    Computes the covariance between variables in <vals>.
+    Computes the covariance between variables in <vals> (unbiased estimate, divided by N-1 for N samples).
 
     Parameters
     ----------
@@ -191,7 +192,8 @@ class ForwardSampling:
     Returns
     -------
     np.ndarray
-      The covariance between variables in <vals> or all the covariances if <vals> is None.
+      The covariance between variables in <vals> (rows in the order of <vals>) or all the covariances if <vals> is
+      None (rows in the order of the ids of the model, ``nodes()``).
     """
     if vals is None:
       samples = [self._id2samples[k] for k in self._model.nodes()]

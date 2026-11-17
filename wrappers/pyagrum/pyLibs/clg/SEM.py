@@ -53,24 +53,29 @@ class SEM:
   """
   This class is used to parse a SEM into a CLG model or convert a CLG model into a SEM.
 
-  code
-  ----
+  Each equation reads ``name = terms [stddev]``: the terms are a constant, a variable or a coefficient times a
+  variable (``2.5*A`` or ``2.5A``), separated by ``+`` or ``-``, and the standard deviation of the noise is written
+  between brackets at the end. The numbers may use the exponent notation (``1e-05``); in ``2e3A``, the exponent is
+  read first (2000 times ``A``): write ``2*e3`` for 2 times a variable ``e3``. A line without ``=`` continues the
+  previous equation and ``#`` starts a comment.
 
-  sem = SEM('''
-  # hyper parameters
-  A = 4[5]
-  B = 3[5]
-  C = -2[5]
-
-  # equations
-  D = A[.2]  # D is a noisy version of A
-  E = 1 + D + 2
-  B[2]
-  F = E + C + 3.5*B + E[0.001]
-  ''')
+  Examples
+  --------
+  >>> sem = SEM.toclg('''
+  ... # hyper parameters
+  ... A = 4[5]
+  ... B = 3[5]
+  ... C = -2[5]
+  ...
+  ... # equations
+  ... D = A[.2]  # D is a noisy version of A
+  ... E = 1 + D + 2
+  ...     B[2]
+  ... F = E + C + 3.5*B + E[0.001]
+  ... ''')
   """
 
-  NUMBER = r"[0-9]*\.?[0-9]*"
+  NUMBER = r"(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?"
   ID = r"[a-zA-Z_]\w*"
   FIND_VAR = rf"^({ID})$"
   FIND_STDDEV = rf"^\[({NUMBER})\]$"
@@ -78,9 +83,9 @@ class SEM:
   FIND_TERM = rf"^({NUMBER})\*?({ID})$"
 
   _reg_variable = re.compile(FIND_VAR)
-  _reg_stddev = re.compile(FIND_STDDEV)
-  _reg_term = re.compile(FIND_TERM)
-  _reg_float = re.compile(FIND_FLOAT)
+  _reg_stddev = re.compile(rf"\[({NUMBER})\]")
+  # a term: signs, then a number possibly followed by a variable, or a variable alone
+  _reg_term = re.compile(rf"([+-]*)(?:({NUMBER})\*?({ID})?|({ID}))")
 
   def __init__(self):
     """
@@ -127,66 +132,46 @@ class SEM:
 
     Returns
     -------
-    tuple[str, dict[str, str | float], float]
-      The name of the variable, the dictionary of the terms and the standard deviation.
+    tuple[str, dict[str, float], float]
+      The name of the variable, the dictionary of the terms (the key "" for the constant) and the standard deviation.
+
+    Raises
+    ------
+    SyntaxError
+      If the line does not follow the syntax of a SEM.
     """
-
-    ss = s.split("#")[0]
-    ss = "".join(ss.split())
-    # allow every tokens to be separated with "+"
-    ss = ss.replace("-+", "-")
-    ss = ss.replace("-", "+-")
-    ss = ss.replace("=", "=+")
-    ss = ss.replace("[", "+[")
-
-    # to be sure there are now empty tokens
-    tokens = [s for s in ss.split("+") if s != ""]
-
-    token = tokens.pop()
-    if SEM._reg_stddev.match(token) is None:
-      raise SyntaxError(f"{token=} not recognized as a stdev")
-    stddev = token[1:-1]
-
-    tokens.reverse()
-    token = tokens.pop()
-    if token[-1] != "=":
+    ss = "".join(s.split("#")[0].split())
+    if "=" not in ss:
       raise SyntaxError("No affectation operator ('=')")
-    variable = token[:-1]
+    variable, rhs = ss.split("=", 1)
     if SEM._reg_variable.match(variable) is None:
       raise SyntaxError(f"{variable=} not a variable")
 
     terms: dict[str, float] = {}
-    for token in tokens:
-      # get rid of "-" at the beginning of token
-      if token[0] == "-":
-        coef = -1.0
-        token = token[1:]
-      else:
-        coef = 1.0
+    pos = 0
+    while True:
+      if (m := SEM._reg_stddev.match(rhs, pos)) is not None:
+        if m.end() != len(rhs):
+          raise SyntaxError(f"Tokens after stddev: '{rhs[m.end() :]}'")
+        return variable, terms, float(m.group(1))
 
-      if (m := SEM._reg_variable.match(token)) is not None:
-        var = m.group(0)
-      elif (m := SEM._reg_float.match(token)) is not None:
-        coef *= float(m.group(0))
-        var = ""
-      elif (m := SEM._reg_term.match(token)) is not None:
-        coef *= float(m.group(1))
-        var = m.group(2)
-      else:
-        break
+      m = SEM._reg_term.match(rhs, pos)
+      # a term other than the first one starts with a sign
+      if m is None or m.end() == pos or (pos > 0 and m.group(1) == ""):
+        if pos == len(rhs):
+          raise SyntaxError("No stddev ('[...]') at the end of the equation")
+        raise SyntaxError(f"'{rhs[pos:]}' not recognized")
+
+      coef = -1.0 if m.group(1).count("-") % 2 == 1 else 1.0
+      if m.group(4) is not None:  # a variable alone
+        var = m.group(4)
+      else:  # a number, possibly followed by a variable
+        coef *= float(m.group(2))
+        var = m.group(3) if m.group(3) is not None else ""
 
       # allow more than one term for the same variable (or more than one constant)
-      if var in terms:
-        terms[var] += coef
-      else:
-        terms[var] = coef
-
-    if len(terms) > len(tokens):
-      raise SyntaxError("Some tokens not recognized")
-    if len(terms) + 2 < len(tokens):
-      raise SyntaxError("Tokens after stddev")
-
-    return variable, terms, float(stddev)
+      terms[var] = terms.get(var, 0.0) + coef
+      pos = m.end()
 
   @staticmethod
   def toclg(sem: str) -> CLG:
@@ -220,7 +205,7 @@ class SEM:
 
     # parsing the canonic_form
     clg = CLG()
-    arcs: list[tuple[str, str, float]] = []
+    arcs: list[tuple[str, str, float, str]] = []
     for line in canonic_form:
       try:
         var, terms, stddev = SEM._parse_line(line)
@@ -231,9 +216,12 @@ class SEM:
         if parent == "":
           mu = terms[""]
         else:
-          arcs.append((parent, var, terms[parent]))
+          arcs.append((parent, var, terms[parent], line))
       clg.add(GaussianVariable(var, mu, stddev))
-    for head, tail, coef in arcs:
+    names = set(clg.names())
+    for head, tail, coef, line in arcs:
+      if head not in names:
+        raise SyntaxError(f"In line {line}, unknown variable '{head}'.")
       clg.addArc(head, tail, coef)
 
     return clg
@@ -259,13 +247,18 @@ class SEM:
       line = ""
 
       # after the "="
+      # "coef*name", so that the coefficient and the name never merge (2 times e3 is not 2e3)
       for parent in clg.parents(node):
-        if clg._arc2coef[(parent, node)] == 1:
-          line += f"+{clg._id2var[parent].name()}"
-        elif clg._arc2coef[(parent, node)] < 0:
-          line += f"-{-clg._arc2coef[(parent, node)]}{clg._id2var[parent].name()}"
+        coef = clg._arc2coef[(parent, node)]
+        name = clg._id2var[parent].name()
+        if coef == 1:
+          line += f"+{name}"
+        elif coef == -1:
+          line += f"-{name}"
+        elif coef < 0:
+          line += f"-{-coef}*{name}"
         else:
-          line += f"+{clg._arc2coef[(parent, node)]}{clg._id2var[parent].name()}"
+          line += f"+{coef}*{name}"
       line += f"[{clg._id2var[node].sigma()}]"
 
       # before the "="

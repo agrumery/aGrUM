@@ -232,7 +232,8 @@ class ForwardSamplingInference(CTBNInference):
 
     def init(current):
       """
-      Initializes posteriors and draw the initial values of each variable using uniform distribution.
+      Initializes posteriors and draw the initial values of each variable using uniform distribution (the time is
+      counted after the burn-in only).
 
       Parameters
       ----------
@@ -247,7 +248,6 @@ class ForwardSamplingInference(CTBNInference):
         v = self._model.variable(nod)
         newval = int(rand.choice(v.domainSize()))
         current.chgVal(v.name(), newval)
-        posteriors[v.name()][newval] = 1
 
     def getNextEvent(current: pyagrum.Instantiation, indice: pyagrum.Instantiation) -> tuple[int | None, float | None]:
       """
@@ -287,7 +287,7 @@ class ForwardSamplingInference(CTBNInference):
 
     def sampleNextState(current: pyagrum.Instantiation, indice: pyagrum.Instantiation, nextEvt: str | int) -> str:
       """
-      Draw the next state of the variable nextEvt using uniform distribution over its states.
+      Draw the next state of the variable nextEvt, x' with probability q_xx' / q_x.
       ``current`` will contain the new value of ``nextEvt``.
 
       Parameters
@@ -332,12 +332,11 @@ class ForwardSamplingInference(CTBNInference):
     while nb_events < burnIn:
       # find next variable which will change its value
       nextEvt, dt = getNextEvent(current, indice)
-      if nextEvt is None:  # if none of variables changes
-        pass
-      else:
-        # find the value of the variable which will change its value and let this variable update his value
-        sampleNextState(current, indice, nextEvt)
-        nb_events += 1  # an event means a variable changes its value
+      if nextEvt is None:  # absorbing state: no variable will ever change
+        break
+      # find the value of the variable which will change its value and let this variable update his value
+      sampleNextState(current, indice, nextEvt)
+      nb_events += 1  # an event means a variable changes its value
 
     # SAMPLING
     duration = 0.0

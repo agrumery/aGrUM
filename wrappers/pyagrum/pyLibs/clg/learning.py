@@ -68,7 +68,6 @@ class CLGLearner:
   sepset: dict[tuple[int, int], set[int]]
   _SD: float
   _V: set[int]
-  _N: int
   r_XYZ: dict[tuple[frozenset[int], frozenset[int]], list[float]]
 
   def __init__(self, filename: str, *, n_sample: int = 15, fwer_delta: float = 0.05):
@@ -96,8 +95,6 @@ class CLGLearner:
       self.id2samples[node] = self._df[self._model.name(node)].tolist()
 
     self._V = set(self._model.nodes())  # set of int
-    L = len(self._V)  # the degree of int set
-    self._N = L * (L - 1) * (2 ** (L - 3))  # the maximum number of hypotheses that coulbe be tested is N
     self.r_XYZ = {}
 
     # lazy computation of supremum deviation : if needed and _SD is None, then call suppremum_deviation
@@ -105,12 +102,15 @@ class CLGLearner:
     self._fwer_delta = fwer_delta
     self._SD = None
 
-  def Pearson_coeff(self, X: int, Y: int, Z: set[int]) -> None:
+  def independenceStatistic(self, X: int, Y: int, Z: set[int]) -> None:
     """
-    Estimate Pearson's linear correlation(using linear regression when Z is not empty).
+    Compute the terms of the r-centered statistic of X and Y given Z, stored in ``r_XYZ``.
 
-    Parmeters
-    ---------
+    The values of X and Y (their residuals given Z when Z is not empty) are centered; each term is
+    x_i y_i / max(|x_i|, |y_i|)^2, between -1 and 1, and the statistic is their mean.
+
+    Parameters
+    ----------
     X : int
       id of the first variable tested.
     Y : int
@@ -120,7 +120,6 @@ class CLGLearner:
     """
     K = len(self.id2samples[X])  # number of samples
 
-    r = np.zeros(K)
     if Z == set():  # if Z is an empty set
       # x and y are observations for X and Y
       x = self.id2samples[X]
@@ -140,15 +139,36 @@ class CLGLearner:
       regressor_y.fit(sample_Z, sample_Y)
       y = sample_Y - regressor_y.predict(sample_Z)
 
-    # all vectors have been centered around 0
-    x -= np.mean(x)
-    y -= np.mean(y)
-    x /= np.std(x)
-    y /= np.std(y)
-    for i in range(K):
-      r[i] = (x[i] * y[i] * K) / (K - 1)
+    # r-centered statistic (eq. 12 of Simionato and Vandin): each term x_i y_i / max(|x_i|, |y_i|)^2 lies in [-1, 1]
+    x = np.asarray(x, dtype=float) - np.mean(x)
+    y = np.asarray(y, dtype=float) - np.mean(y)
+    scale = np.maximum(np.abs(x), np.abs(y)) ** 2
+    r = np.divide(x * y, scale, out=np.zeros(K), where=scale > 0)
 
     self.r_XYZ[tuple((frozenset({X, Y}), frozenset(Z)))] = r
+
+  def Pearson_coeff(self, X: int, Y: int, Z: set[int]) -> None:
+    """
+    Compute the terms of the statistic of the independence test of X and Y given Z, stored in ``r_XYZ``.
+
+    Warnings
+    --------
+    Pearson_coeff is deprecated after 3.3.2, use `pyagrum.clg.learning.CLGLearner.independenceStatistic` instead:
+    the terms are those of the r-centered statistic, no longer of Pearson's correlation.
+
+    Parameters
+    ----------
+    X : int
+      id of the first variable tested.
+    Y : int
+      id of the second variable tested.
+    Z : set[int]
+      The conditioned variable's id set.
+    """
+    warnings.warn(
+      "Pearson_coeff is deprecated after 3.3.2, use independenceStatistic instead", DeprecationWarning, stacklevel=2
+    )
+    self.independenceStatistic(X, Y, Z)
 
   @staticmethod
   def generate_XYZ(l: list[int]) -> Generator[tuple[int, int, set[int]], None, None]:
@@ -193,14 +213,7 @@ class CLGLearner:
     # iteration over combinations of each pair of variables X,Y and set of conditioned variables Z
     # calcul r_XYZ for every element X,Y,Z
     for X, Y, Z in CLGLearner.generate_XYZ(self._model.nodes()):
-      self.Pearson_coeff(X, Y, Z)
-
-    # [a, b] is range of F
-    b = np.mean(list(self.r_XYZ.values())[0])
-    a = np.mean(list(self.r_XYZ.values())[0])
-    for r in self.r_XYZ.values():
-      b = max(np.mean(r), b)
-      a = min(np.mean(r), a)
+      self.independenceStatistic(X, Y, Z)
 
     # calcul n-MCERA: n-samples Monte-Carlo Empirical Rademacher Average
     R = 0.0
@@ -215,11 +228,12 @@ class CLGLearner:
       R += sup
     R /= n_sample
 
-    # calcul the final SD: supremum_deviation
-    z = max(np.abs(a), np.abs(b))
-    c = np.abs(b - a)
+    # calcul the final SD: supremum_deviation (Theorem 3.1 of Pellegrina et al., one bound for all the functions of F)
+    # the functions of F take their values in [a, b] = [-1, 1]: z = max(|a|, |b|), c = b - a
+    z = 1.0
+    c = 2.0
 
-    temp = np.log(4 / (fwer_delta / self._N))
+    temp = np.log(4 / fwer_delta)
     R_hat = R + 2 * z * np.sqrt(temp / (2 * n_sample * K))
     SD = 2 * R_hat
     SD = SD + np.sqrt(c * (4 * K * R_hat + c * temp) * temp) / K
@@ -234,7 +248,9 @@ class CLGLearner:
 
   def test_indep(self, X: int, Y: int, Z: set[int]) -> bool:
     """
-    Perform a standard statistical test and use Bonferroni correction to correct for multiple hypothesis testing.
+    Test the independence of X and Y given Z: the confidence interval of the statistic, of half-width the supremum
+    deviation, must contain 0. The supremum deviation bounds all the tests at once, so that the family-wise error
+    rate stays below ``fwer_delta``.
 
     Parameters
     ----------
@@ -516,7 +532,9 @@ class CLGLearner:
       for Xi in self._V:
         for Xj in C[Xi]:
           if Xi in C[Xj]:  # Xi - Xj
-            for Xk, Xl in itertools.combinations(C[Xi] - {Xj}, 2):  # Xk and Xl are not adjacent
+            for Xk, Xl in itertools.combinations(C[Xi] - {Xj}, 2):
+              if Xl in C[Xk] or Xk in C[Xl]:  # Xk and Xl must not be adjacent
+                continue
               if Xi in C[Xk] and Xi in C[Xl]:  # Xi - Xk and Xi - Xl
                 if (Xj in C[Xk] and Xk not in C[Xj]) and (Xj in C[Xl] and Xl not in C[Xj]):  # Xk -> Xj and Xl -> Xj
                   # Orient Xi -> Xj

@@ -373,6 +373,51 @@
       the same result as `averageInference`. The forward sampling of CTBN and `ctbn.randomCTBN` are reproducible
       after `initRandom` (their draws did not use the generator of pyAgrum); `randomCTBN` with one variable (the
       default) raised `ValueError`.
+    - `ctbn.Learner` (CTPC) and `ctbn.FChi2Test`: the transition counts used as degrees of freedom of the F test and in
+      the chi-square statistic were divided by the number of trajectories, so that real dependencies were missed (an
+      arc removed) when learning from several trajectories; they are now the total counts (Bregoli et al. 2020). The F
+      test compared every rate of the matrices instead of the exit rates only, which added spurious arcs for the
+      variables with 3 states or more (the destinations of the transitions are compared by the chi-square test).
+      The significance levels of the two tests are the new keys `ctbn.fSignificance` and `ctbn.chi2Significance`
+      (0.05 each; the F test, two-sided, used 10%). CTPC no longer repeats an independence test when no conditioning
+      set of the current size remains. The learned rates are no longer rounded to 3 decimals (rates below 0.0005
+      became 0, and the F test of CTPC depended on the time unit).
+    - `ctbn.CIM.fromMatrix` accepts a matrix of integers and a list of lists (it raised `TypeError` or
+      `AttributeError`); a matrix of wrong shape raises `ValueError` (it raised `AttributeError`).
+    - `ctbn.ForwardSamplingInference`: the state drawn before the burn-in was counted for one unit of time in the
+      posteriors, and the burn-in never ended in an absorbing state (all the exit rates 0).
+    - `ctbn.Trajectory` (hence `ctbn.Learner`): the duration of the first trajectory was used for all of them, so that
+      the rates learned from trajectories of different durations were wrong, or a `TypeError` was raised.
+    - `bnmixture.BNMixtureInference.posterior` returns the posterior of the mixture: with evidence, the weight of each
+      BN is multiplied by the probability it gives to the evidence (it returned the mean of the posteriors weighted by
+      the prior weights). An engine without `evidenceProbability` (`VariableElimination`) raises `InvalidArgument`
+      when there is evidence, and an evidence impossible in every BN raises `IncompatibleEvidence`.
+    - `clg.CLGLearner`: Meek's rule 3 oriented an edge without checking that the two other parents were not adjacent,
+      hence arcs without justification in the learned graph.
+    - `clg.CLGLearner`: the bound of the independence tests did not satisfy the hypotheses of the theorem (statistic
+      with unbounded terms, range of the means instead of the terms, delta also divided by the number of tests), so
+      that the family-wise error rate was not controlled. The test now uses the r-centered statistic of Simionato and
+      Vandin (2024), whose terms lie in [-1, 1], with the bound of the theorem: the error rate is at most
+      `fwer_delta`, at the price of power (weak dependencies need more records). The terms stored in `r_XYZ` are those
+      of this statistic, no longer of Pearson's correlation: `CLGLearner.Pearson_coeff` is deprecated after 3.3.2, use
+      `independenceStatistic`.
+    - `clg.SEM`: numbers in exponent notation, which `tosem` and `saveCLG` write for small or large values, were not
+      read back: `B = 1e-05A[1]` gave a parent `e` and a coefficient -5 on `A` (a wrong model without error when a
+      variable `e` exists, a `TypeError` otherwise). The exponent is now read; `tosem` writes `b*Y` so that a
+      coefficient and a name never merge; an unknown parent or an unrecognized part of a line raises `SyntaxError`.
+    - `clg.CLG`: a variable with a null standard deviation was accepted, then the inference raised `ZeroDivisionError`
+      and `logLikelihood` returned nan. `add`, `setSigma` (also `GaussianVariable.setSigma`) and unpickling raise
+      `ValueError` when sigma is not positive (hence `SEM.toclg` with `[0]` and `CLGLearner` on a constant column); the
+      posterior of an observed variable keeps a null standard deviation.
+    - `clg.ForwardSampling`: `variance_sample` and `stddev_sample` divided by N whereas `covariance_sample` divides by
+      N-1, so that the variances were not the diagonal of the covariance matrix; all of them now divide by N-1.
+    - `bnmixture.BNMLearner` and `BNMBootstrapLearner.updateState`: as soon as one setting was given, the missing ones
+      took fixed values (greedy hill climbing, BDeu, MDL, no prior), so that giving only a score changed the algorithm
+      (MIIC by default). The missing settings are now those of the reference learner (the default settings of
+      `BNLearner` for the reference itself); an unknown setting raises `ArgumentError`.
+    - `bnmixture.BNMBootstrapLearner`: the record weights of the bootstrap BNs were drawn from a Dirichlet(1/n)
+      distribution, so that each BN rested in effect on about 2 records; they follow the Bayesian bootstrap of Rubin
+      (n times a Dirichlet(1, ..., 1) vector, about n/2 records in effect, as resampling with replacement).
     - `CNMonteCarloSampling` computed wrong bounds: the CPTs of the sampled networks are changed in place and the
       inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
       depended on the number of threads (each sample now has its own seed) and the repetitive independence drew

@@ -387,11 +387,17 @@ class CIM:
 
     Parameters
     ----------
-    mat : numpy.array
-        Matrix to convert into a CIM.
+    mat : array_like
+        Matrix to convert into a CIM (a numpy array or a list of lists of numbers).
+
+    Raises
+    ------
+    ValueError
+        If the CIM is conditional, or if the shape of ``mat`` does not match the CIM.
     """
     if not self.isIM():
       raise ValueError("The cim is conditionnal.")
+    mat = numpy.asarray(mat, dtype=float)
     i = self.instantiation()
     iI = pyagrum.Instantiation()
     iJ = pyagrum.Instantiation()
@@ -404,7 +410,7 @@ class CIM:
       else:
         iJ.add(v)
     if mat.shape != (siz, siz):
-      raise AttributeError(f"Shape {mat.shape} should be {(siz, siz)}")
+      raise ValueError(f"Shape {mat.shape} should be {(siz, siz)}")
 
     iI.setFirst()
     for lin in mat:

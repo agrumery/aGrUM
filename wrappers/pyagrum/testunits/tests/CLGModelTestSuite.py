@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import os
+import tempfile
 import unittest
 
 import pyagrum
@@ -76,6 +78,46 @@ class CLGModelTestCase(pyAgrumTestCase):
     clg.add(GaussianVariable("X", 0, 1))
     with self.assertRaises(NameError):
       clg.add(GaussianVariable("X", 1, 2))
+
+  def test_add_zero_sigma_raises(self):
+    clg = CLG()
+    with self.assertRaises(ValueError):
+      clg.add(GaussianVariable("X", 0, 0))
+    self.assertEqual(clg.names(), [])
+
+  def test_setSigma_zero_raises(self):
+    clg = CLG()
+    nid = clg.add(GaussianVariable("X", 0, 1))
+    with self.assertRaises(ValueError):
+      clg.setSigma(nid, 0)
+    self.assertEqual(clg.variable(nid).sigma(), 1)
+
+  def test_zero_sigma_from_sem_raises(self):
+    with self.assertRaises(ValueError):
+      gclg.SEM.toclg("A=0[0]")
+
+  def test_variable_setSigma_zero_raises(self):
+    clg = CLG()
+    nid = clg.add(GaussianVariable("X", 0, 1))
+    with self.assertRaises(ValueError):
+      clg.variable(nid).setSigma(0)  # the variable is shared with the CLG
+    self.assertEqual(clg.variable(nid).sigma(), 1)
+
+  def test_unpickle_zero_sigma_raises(self):
+    # a state with a null standard deviation (e.g. saved before it was refused)
+    state = CLG().__getstate__()
+    state["_id2var"] = {0: GaussianVariable("X", 0, 0)}
+    clg = CLG.__new__(CLG)
+    with self.assertRaises(ValueError):
+      clg.__setstate__(state)
+
+  def test_learner_on_constant_column_raises(self):
+    with tempfile.TemporaryDirectory() as tmp:
+      filename = os.path.join(tmp, "constant.csv")
+      with open(filename, "w") as f:
+        f.write("A,B\n1.0,2.0\n1.0,3.5\n1.0,0.5\n")
+      with self.assertRaises(ValueError):
+        gclg.CLGLearner(filename)
 
   # --- addArc ---
 

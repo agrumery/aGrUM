@@ -215,10 +215,12 @@ class CLGRandomTestCase(pyAgrumTestCase):
     with self.assertRaises(ValueError):
       GaussianVariable(name="X", mu=0, sigma=-1)
 
-  def test_gaussian_variable_set_sigma_zero_allowed(self):
+  def test_gaussian_variable_set_sigma_zero_raises(self):
+    # 0 is only accepted by the constructor (posterior of an observed variable)
     v = GaussianVariable(name="X", mu=0, sigma=1)
-    v.setSigma(0)
-    self.assertEqual(v.sigma(), 0)
+    with self.assertRaises(ValueError):
+      v.setSigma(0)
+    self.assertEqual(v.sigma(), 1)
 
   def test_gaussian_variable_set_sigma_negative_raises(self):
     v = GaussianVariable(name="X", mu=0, sigma=1)

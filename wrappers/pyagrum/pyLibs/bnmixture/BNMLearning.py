@@ -46,16 +46,30 @@ class IMixtureLearner:
   def __init__(self):
     raise NotImplementedError("Learner interface should not be initialized !")
 
+  _STATE_KEYS = (
+    "algorithm",
+    "order",
+    "tabu_size",
+    "nb_decrease",
+    "score",
+    "correction",
+    "prior",
+    "source",
+    "prior_weight",
+  )
+
   def updateState(self, learner: pyagrum.BNLearner, **kargs):
     """
-    Updates a learner using methods in parameters. If there are no parameters given, ``learner`` will copy state of the reference learner, if it exists.
+    Updates a learner: it first copies the state of the reference learner (if it exists and is not ``learner``
+    itself), then applies the settings given in parameters. A setting that is not given keeps the value of the
+    reference learner, or the default value of `pyagrum.BNLearner` for the reference learner itself.
 
     Parameters
     ----------
     learner : pyagrum.BNLearner
         Learner to update.
     algorithm : str
-        Algorithm to use.
+        Algorithm to use: "Greedy Hill Climbing", "MIIC", "K2" or "Local Search with Tabu List".
     order : list[str or int]
         Order for K2 algorithm.
     tabu_size : int
@@ -63,20 +77,30 @@ class IMixtureLearner:
     nb_decrease : int
         decrease for local search with tabu list (by default, ``pyagrum.config['learning', 'tabuNbDecrease']``).
     score : str
-        Type of score to use: AIC, BD, BDeu (default), BIC, fNML, K2 or Log2Likelihood.
+        Type of score to use: AIC, BD, BDeu, BIC, fNML, K2 or Log2Likelihood.
     correction : str
-        Correction to use.
+        Correction to use: "MDL", "NML" or "No correction".
     prior : str
-        Prior to use.
+        Prior to use: "-" (no prior), "Dirichlet", "BDEU" or "Smoothing".
     source : str | pyagrum.BayesNet
         Source for dirichlet prior
     prior_weight : float
         Weight used for prior (by default, ``pyagrum.config['learning', 'priorWeight']``).
+
+    Raises
+    ------
+    pyagrum.ArgumentError
+        If a setting is unknown, or has an unknown value, or if K2 is used without an order.
     """
-    if len(kargs) == 0 and self._ref_learner is not None:
+    unknown = sorted(set(kargs) - set(IMixtureLearner._STATE_KEYS))
+    if unknown:
+      raise pyagrum.ArgumentError(f"Unknown settings {unknown}. Use {list(IMixtureLearner._STATE_KEYS)}.")
+
+    if self._ref_learner is not None and learner is not self._ref_learner:
       learner.copyState(self._ref_learner)
-    else:
-      zemethod = kargs.get("algorithm", "Greedy Hill Climbing")
+
+    if "algorithm" in kargs:
+      zemethod = kargs["algorithm"]
       if zemethod == "Greedy Hill Climbing":
         learner.useGreedyHillClimbing()
       elif zemethod == "MIIC":
@@ -88,9 +112,10 @@ class IMixtureLearner:
       elif zemethod == "Local Search with Tabu List":
         learner.useLocalSearchWithTabuList(kargs.get("tabu_size"), kargs.get("nb_decrease"))
       else:
-        raise pyagrum.ArgumentError(f"could not find the algorithm {kargs['algorithm']}")
+        raise pyagrum.ArgumentError(f"could not find the algorithm {zemethod}")
 
-      zescore = kargs.get("score", "BDeu")
+    if "score" in kargs:
+      zescore = kargs["score"]
       if zescore == "K2":
         learner.useScoreK2()
       elif zescore == "AIC":
@@ -108,7 +133,8 @@ class IMixtureLearner:
       else:
         raise pyagrum.ArgumentError(f"could not find a suitable score : {zescore}")
 
-      zecorrec = kargs.get("correction", "MDL")
+    if "correction" in kargs:
+      zecorrec = kargs["correction"]
       if zecorrec == "MDL":
         learner.useMDLCorrection()
       elif zecorrec == "NML":
@@ -118,7 +144,8 @@ class IMixtureLearner:
       else:
         raise pyagrum.ArgumentError(f"could not find a suitable correction : {zecorrec}")
 
-      zeprior = kargs.get("prior", "-")
+    if "prior" in kargs:
+      zeprior = kargs["prior"]
       if zeprior == "-":
         learner.useNoPrior()
       elif zeprior == "Dirichlet":
@@ -161,7 +188,8 @@ class BNMLearner(IMixtureLearner):
   source : list[str] | list[pandas.DataFrame]
       Samples to learn from (csv format for now).
   states : list[dict], optional
-      List of learners state.
+      Settings of the learner of each database (see ``updateState``): the reference database starts from the default
+      settings of `pyagrum.BNLearner`, the other ones from those of the reference.
   template : pyagrum.BayesNet, optional
           BN to use to find modalities.
 
@@ -275,6 +303,14 @@ class BNMBootstrapLearner(IMixtureLearner):
       Database to learn from (csv format for now).
   template : pyagrum.BayesNet | Optional
       BN to use to find modalities.
+  N : int
+      Number of bootstrap BNs (100 by default, see `pyagrum.bnmixture.BNMBootstrapLearner.useIter`).
+
+  Notes
+  -----
+  Each bootstrap BN is learned from the whole database with random record weights: ``n`` times a
+  Dirichlet(1, ..., 1) vector (Bayesian bootstrap), whose means and variances are close to those of the counts of
+  a resampling with replacement.
   """
 
   def __init__(self, source, template=None, N=100):
@@ -312,7 +348,7 @@ class BNMBootstrapLearner(IMixtureLearner):
     refBN.setProperty("name", "bn0")
     bnm = BNM.BootstrapMixture("bn0", refBN)
 
-    alpha = [1 / n] * n
+    alpha = [1.0] * n  # Bayesian bootstrap (Rubin 1981)
     rng = pyagrum.randomNumpyGenerator()  # the draws follow the random generator of aGrUM (see initRandom)
 
     for i in range(self._iter):

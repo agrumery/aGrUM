@@ -136,13 +136,10 @@ class Learner:
           UXj = parentsIdList.copy()
           UXj.remove(Xj)
 
-          loop: list[list[int]] | combinations[tuple[int, ...]]
-          if b == 0:
-            loop = [[]]
-          elif b <= len(UXj):
-            loop = combinations(UXj, b)
+          if b > len(UXj):  # no conditioning set of size b
+            continue
 
-          for SXiXj in loop:
+          for SXiXj in combinations(UXj, b):  # one empty set when b == 0
             SXiXj = list(SXiXj)
             independance_test = test.testIndep(newCtbn.name(Xi), newCtbn.name(Xj), [newCtbn.name(id) for id in SXiXj])
 

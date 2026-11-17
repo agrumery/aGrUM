@@ -42,7 +42,6 @@
 This file contains constants and defines types.
 """
 
-ALPHA: float = 0.95
 INFINITY: float = 10e9
 REJECT = True
 FAIL_TO_REJECT = False

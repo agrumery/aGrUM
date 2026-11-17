@@ -39,6 +39,7 @@
 ############################################################################
 
 import unittest
+import unittest.mock
 
 import pyagrum as gum
 import pyagrum.ctbn as ct
@@ -142,6 +143,64 @@ class TestCtbnLearner(pyAgrumTestCase):
     self.assertGreaterEqual(countRep1, minRep)
     self.assertGreaterEqual(countRep2, minRep)
     self.assertGreaterEqual(countRep3, minRep)
+
+  def testTrajectoriesOfDifferentDurations(self):
+    # X jumps at every time unit, during 10 time units in a trajectory and 20 in the other: q_0 = 15 jumps / 15
+    # time units, q_1 = 13 / 15, whatever the order of the trajectories
+    # (Y never changes)
+    def trajectory(horizon):
+      # a row (t, X, x) is a jump of X out of x at time t; the last rows give the states at the horizon
+      traj = [(0.0, "X", "0"), (0.0, "Y", "0")]
+      traj += [(float(t), "X", str((t - 1) % 2)) for t in range(1, horizon)]
+      traj += [(float(horizon), "X", str((horizon - 1) % 2)), (float(horizon), "Y", "0")]
+      return traj
+
+    for data in [{0: trajectory(10), 1: trajectory(20)}, {0: trajectory(20), 1: trajectory(10)}]:
+      ctbn = ct.CTBN()
+      ctbn.add(gum.LabelizedVariable("X", "X", 2))
+      ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+      ct.Learner(data).fitParameters(ctbn)
+      self.assertAlmostEqual(ctbn.CIM("X")[{"X#i": 0, "X#j": 1}], 1.0)
+      self.assertAlmostEqual(ctbn.CIM("X")[{"X#i": 1, "X#j": 0}], 13 / 15)
+
+      # the counts of the independence tests
+      test = ct.FChi2Test(ct.Trajectory(data, ctbn=ctbn))
+      test.testIndep("X", "Y", [])
+      self.assertEqual(test.r2.toarray().tolist(), [15.0, 13.0])
+
+  def testCTPCTestsEachConditioningSetOnce(self):
+    # the independence tests are replaced by a rule (X is independent of A only): with the two parents A and B of X,
+    # A is removed with the empty set (b=0), then no set of size 1 remains for B
+    ctbn = ct.CTBN()
+    for name in ["X", "A", "B"]:
+      ctbn.add(gum.LabelizedVariable(name, name, 2))
+    data = {0: [(0.0, "X", "0"), (0.0, "A", "0"), (0.0, "B", "0"), (1.0, "X", "0"), (1.0, "A", "0"), (1.0, "B", "0")]}
+
+    calls = []
+
+    def testIndep(self, X, Y, U):
+      calls.append((X, Y, tuple(sorted(U))))
+      return (X, Y) == ("X", "A")
+
+    with unittest.mock.patch.object(ct.FChi2Test, "testIndep", testIndep):
+      learned = ct.Learner(data).learnCTBN(template=ctbn)
+
+    self.assertEqual(len(calls), len(set(calls)))
+    arcs = {(learned.name(a), learned.name(b)) for a, b in learned.arcs()}
+    self.assertIn(("B", "X"), arcs)
+    self.assertNotIn(("A", "X"), arcs)
+
+  def testSmallRatesAreNotRounded(self):
+    # X leaves 0 at t=4000 and 12000, leaves 1 at t=8000, horizon 16000: q_0 = 2 / 8000, q_1 = 1 / 8000
+    data = {0: [(0.0, "X", "0"), (4000.0, "X", "0"), (8000.0, "X", "1"), (12000.0, "X", "0"), (16000.0, "X", "1")]}
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    ct.Learner(data).fitParameters(ctbn)
+    cim = ctbn.CIM("X")
+    self.assertAlmostEqual(cim[{"X#i": 0, "X#j": 1}], 2 / 8000, places=15)
+    self.assertAlmostEqual(cim[{"X#i": 1, "X#j": 0}], 1 / 8000, places=15)
+    for i in range(2):
+      self.assertEqual(cim[{"X#i": i, "X#j": 0}] + cim[{"X#i": i, "X#j": 1}], 0.0)
 
 
 ts = unittest.TestSuite()

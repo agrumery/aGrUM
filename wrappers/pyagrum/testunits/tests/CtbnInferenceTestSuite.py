@@ -99,6 +99,23 @@ class TestCtbnInference(pyAgrumTestCase):
     # A is a 2-state chain (rates 2 and 1): P(A) = [1/3, 2/3]
     np.testing.assert_allclose(ie.posterior("A").toarray(), [1 / 3, 2 / 3], atol=0.05)
 
+  def testSampleCountsOnlyTheTimeAfterTheBurnIn(self):
+    ctbn = _model()
+    ie = ct.ForwardSamplingInference(ctbn)
+    posteriors = {name: gum.Tensor().add(ctbn.variable(name)) for name in ctbn.names()}
+    ie.makeSample(posteriors, timeHorizon=0.5, burnIn=10)
+    for name in ctbn.names():
+      self.assertAlmostEqual(posteriors[name].sum(), 0.5)
+
+  def testBurnInStopsInAnAbsorbingState(self):
+    # a0 is absorbing: the process stays there after its first transition
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("A", "A", ["a0", "a1"]))
+    ctbn.CIM("A").fromMatrix(np.array([[0.0, 0.0], [1.0, -1.0]]))
+    ie = ct.ForwardSamplingInference(ctbn)
+    ie.makeInference(timeHorizon=10, burnIn=10)
+    self.assertEqual(ie.posterior("A").toarray().tolist(), [1.0, 0.0])
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCtbnInference)

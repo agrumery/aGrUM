@@ -224,7 +224,7 @@ def BNMixtureInference2dot(
 ):
   """
 
-  Creates a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
+  Creates a HTML representation of the inference graph of a BNM.BNMixture (posteriors of the mixture).
 
   Parameters
   ----------
@@ -432,7 +432,7 @@ def showBNMixtureInference(
   dag=None,
 ):
   """
-  Displays a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
+  Displays a HTML representation of the inference graph of a BNM.BNMixture (posteriors of the mixture).
 
   Parameters
   ----------
@@ -493,7 +493,7 @@ def showBootstrapMixtureInference(
   show_mu_sigma=False,
 ):
   """
-  Displays a HTML representation of the inference graph of a BNM.BNMixture (average of all posteriors in the BNMixture).
+  Displays a HTML representation of the inference graph of a BNM.BNMixture (posteriors of the mixture).
 
   Parameters
   ----------

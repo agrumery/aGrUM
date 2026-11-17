@@ -164,6 +164,19 @@ class CLGSamplingTestCase(pyAgrumTestCase):
 
     self.assertEqual(cov.shape, (3, 3))
 
+  def test_variance_is_the_diagonal_of_the_covariance(self):
+    clg = CLG()
+    a = clg.add(GaussianVariable(mu=0, sigma=1, name="A"))
+    b = clg.add(GaussianVariable(mu=1, sigma=2, name="B"))
+    clg.addArc(a, b, 0.5)
+    fs = ForwardSampling(clg)
+    fs.makeSample(10)
+    cov = fs.covariance_sample()
+    for i, name in [(a, "A"), (b, "B")]:
+      self.assertAlmostEqual(fs.variance_sample(name), cov[i, i], places=12)
+      self.assertAlmostEqual(fs.stddev_sample(name), cov[i, i] ** 0.5, places=12)
+    self.assertAlmostEqual(fs.variance_sample(None)["B"], cov[b, b], places=12)
+
 
 ts = unittest.TestSuite()
 addTests(ts, CLGSamplingTestCase)

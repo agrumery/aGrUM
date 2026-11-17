@@ -47,7 +47,7 @@ from scipy.stats import chi2, f
 import pyagrum
 from pyagrum.ctbn import Stats, Trajectory
 from pyagrum.ctbn.CIM import CIM
-from pyagrum.ctbn.constants import ALPHA, FAIL_TO_REJECT, REJECT
+from pyagrum.ctbn.constants import FAIL_TO_REJECT, REJECT
 from pyagrum.ctbn.CTBN import CTBN
 
 
@@ -133,6 +133,9 @@ class FChi2Test(IndepTest):
   one of the 2 tests (F and chi2) contradict the independence hypothesis. If the hyopothesis is not rejected,
   the variables are considered independent.
 
+  The F test is two-sided, with the significance level ``pyagrum.config['ctbn', 'fSignificance']``; the chi2 test
+  uses ``pyagrum.config['ctbn', 'chi2Significance']``. Both levels are read when the object is created.
+
   Parameters
   ----------
   tr : Trajectory
@@ -141,6 +144,8 @@ class FChi2Test(IndepTest):
 
   def __init__(self, tr: Trajectory):
     self.tr = tr
+    self.fSignificance: float = pyagrum.config.typed["ctbn", "fSignificance"]
+    self.chi2Significance: float = pyagrum.config.typed["ctbn", "chi2Significance"]
     self.stats_added = False
     self.chiSqValue = None
 
@@ -223,7 +228,7 @@ class FChi2Test(IndepTest):
 
   def computeF(self) -> pyagrum.Tensor:
     """
-    Compute F-test value for every instance of the variables.
+    Compute F-test value for every instance of the variables (the test reads only the diagonal, the exit rates).
 
     Returns
     -------
@@ -297,8 +302,11 @@ class FChi2Test(IndepTest):
     rej = False
     i: pyagrum.Instantiation
     for i in F.loopIn():
-      max_f = f.ppf(ALPHA, self.r1.get(i), self.r2.get(i))
-      min_f = f.ppf(1 - ALPHA, self.r1.get(i), self.r2.get(i))
+      # only the exit rates q_x (diagonal), the destinations are tested by the chi2 test
+      if i[self.x_from] != i[self.x_to]:
+        continue
+      min_f = f.ppf(self.fSignificance / 2, self.r1.get(i), self.r2.get(i))
+      max_f = f.ppf(1 - self.fSignificance / 2, self.r1.get(i), self.r2.get(i))
       logging.debug("\t%f, %f, %f", F.get(i), min_f, max_f)
       if not (min_f <= F.get(i) <= max_f):
         # Reject the hypothesis
@@ -336,7 +344,7 @@ class FChi2Test(IndepTest):
     chiSqValue: pyagrum.Tensor = self.computeChi2()
 
     degrees_of_freedom: int = card_val_x - 1
-    max_chi2 = chi2.ppf(ALPHA, degrees_of_freedom)
+    max_chi2 = chi2.ppf(1 - self.chi2Significance, degrees_of_freedom)
 
     logging.debug("max chi2: %f", max_chi2)
     logging.debug(chiSqValue)

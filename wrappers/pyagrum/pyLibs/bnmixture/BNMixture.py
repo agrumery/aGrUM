@@ -346,8 +346,8 @@ class BNMixture(IMixture):
   The **reference BN** (``refBN``) is the BN with the highest weight; it is
   recomputed by :meth:`updateRef`.  It serves as the structural template for
   visualisation and variable look-ups, but plays no special role during inference:
-  :class:`~pyagrum.bnmixture.BNMixtureInference` returns the weight-averaged
-  posterior over *all* BNs in the mixture.
+  :class:`~pyagrum.bnmixture.BNMixtureInference` returns the posterior of the
+  mixture over *all* BNs (each BN weighted by its weight times the probability of the evidence).
 
   Notes
   -----
@@ -380,8 +380,9 @@ class BootstrapMixture(IMixture):
   weighted) database.  It is the primary estimate: its posteriors are the ones
   returned by :class:`~pyagrum.bnmixture.BootstrapMixtureInference`.
 
-  The other BNs are learned from Bayesian bootstrap resamples of the same database
-  (Dirichlet-drawn record weights simulate resampling with replacement).  They are
+  The other BNs are learned by Bayesian bootstrap of the same database: the records are weighted
+  by ``n`` times a Dirichlet(1, ..., 1) vector, whose means and variances are close to those of the
+  counts of a resampling with replacement.  They are
   used exclusively to quantify the stability of the reference estimate: arc-confidence
   scores and quantile intervals on posteriors.
 

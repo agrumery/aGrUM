@@ -124,20 +124,40 @@ class BNMixtureInference(IMixtureInference):
     Returns
     -------
     pyagrum.Tensor
-        The weighted mean (over all the BNs in the model) of the posterior of a variable.
+        The posterior of a variable in the mixture: the mean of the posteriors of the BNs, each one weighted by its
+        weight times the probability it gives to the evidence (the weights alone without evidence).
 
     Raises
     ------
     pyagrum.InvalidArgument
-        If the mixture was empty when this inference object was created.
+        If the mixture was empty when this inference object was created, or if there is evidence and the inference
+        engine does not compute the probability of the evidence (as `pyagrum.VariableElimination`).
+    pyagrum.IncompatibleEvidence
+        If the evidence is impossible in every BN of the mixture.
     """
     if not self._inferences:
       raise pyagrum.InvalidArgument("Cannot compute posterior: the mixture is empty.")
-    posts = self._posteriors(name)
+
+    # P(x | e) = sum_i w_i P_i(e) P_i(x | e) / sum_i w_i P_i(e)
+    weights = {bn_name: self._bnm.weight(bn_name) for bn_name in self._inferences}
+    if any(ie.nbrEvidence() > 0 for ie in self._inferences.values()):
+      for bn_name, ie in self._inferences.items():
+        if not hasattr(ie, "evidenceProbability"):
+          raise pyagrum.InvalidArgument(
+            f"Cannot compute the posterior of the mixture: {type(ie).__name__} does not compute the probability of "
+            "the evidence."
+          )
+        try:
+          weights[bn_name] *= ie.evidenceProbability()
+        except pyagrum.IncompatibleEvidence:  # impossible in this BN only
+          weights[bn_name] = 0.0
+      if sum(weights.values()) == 0:
+        raise pyagrum.IncompatibleEvidence("The evidence is impossible in every BN of the mixture.")
 
     ret = pyagrum.Tensor().fillWith(0)
-    for bn_name in posts:
-      ret += posts[bn_name].toVarsIn(self._bnm) * self._bnm.weight(bn_name)
+    for bn_name, ie in self._inferences.items():
+      if weights[bn_name] > 0:
+        ret += pyagrum.Tensor(ie.posterior(name)).toVarsIn(self._bnm) * weights[bn_name]
 
     return ret.normalize()
 
