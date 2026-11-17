@@ -32366,6 +32366,12 @@ class BNLearner(object):
 
     This class provides functionality for learning Bayesian Networks from data.
 
+    The stopping criteria and the verbosity (`pyagrum.BNLearner.setEpsilon`, `pyagrum.BNLearner.setMaxIter`,
+    `pyagrum.BNLearner.setMaxTime`, etc.) concern the structure learning: a setter applies to every
+    structure-learning algorithm, a getter returns the value of the selected algorithm, and the results of its last
+    learning (`pyagrum.BNLearner.nbrIterations`, `pyagrum.BNLearner.history`, etc.). EM has its own stopping
+    criteria, set by `pyagrum.BNLearner.useEM` and the ``EM*`` methods.
+
     BNLearner(filename,inducedTypes=True) -> BNLearner
         Parameters:
             - **source** (*str* or *pandas.DataFrame*) -- the data to learn from

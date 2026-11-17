@@ -900,6 +900,127 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(ApproximationParametersAreReadableBeforeLearning) {
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+
+    learner.useGreedyHillClimbing();
+    CHECK_EQ(learner.epsilon(), 0.0);   // default of the greedy hill climbing
+    CHECK(!learner.isEnabledMaxIter());
+
+    learner.setEpsilon(0.1);
+    learner.setMaxIter(5);
+    learner.setMaxTime(2.0);
+    learner.setMinEpsilonRate(0.2);
+    learner.setPeriodSize(3);
+    learner.setVerbosity(true);
+    CHECK_EQ(learner.epsilon(), 0.1);
+    CHECK_EQ(learner.maxIter(), static_cast< gum::Size >(5));
+    CHECK(learner.isEnabledMaxIter());
+    CHECK_EQ(learner.maxTime(), 2.0);
+    CHECK(learner.isEnabledMaxTime());
+    CHECK_EQ(learner.minEpsilonRate(), 0.2);
+    CHECK_EQ(learner.periodSize(), static_cast< gum::Size >(3));
+    CHECK(learner.verbosity());
+
+    // no learning yet: there is no result to read
+    CHECK_EQ(learner.stateApproximationScheme(),
+             gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Undefined);
+    CHECK_THROWS_AS(learner.nbrIterations(), const gum::OperationNotAllowed&);
+  }
+
+  GUM_TEST(ApproximationParametersFollowTheSelectedAlgorithm) {
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+
+    learner.useGreedyHillClimbing();
+    learner.learnBN();
+    CHECK_EQ(learner.epsilon(), 0.0);
+
+    // the local search with tabu list disables the threshold on epsilon by default
+    learner.useLocalSearchWithTabuList();
+    CHECK(!learner.isEnabledEpsilon());
+    CHECK_EQ(learner.stateApproximationScheme(),
+             gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Undefined);
+  }
+
+  GUM_TEST(ApproximationSettersReachEveryStructureAlgorithm) {
+    const std::vector< gum::NodeId > order{1, 5, 2, 6, 0, 3, 4, 7};
+    for (int algo = 0; algo < 8; ++algo) {
+      CAPTURE(algo);
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+      learner.setMaxIter(1);
+      learner.setMaxTime(100.0);
+      switch (algo) {
+        case 0 : learner.useGreedyHillClimbing(); break;
+        case 1 : learner.useExtendedGreedyHillClimbing(); break;
+        case 2 : learner.useGreedyThickThinning(); break;
+        case 3 : learner.useLocalSearchWithTabuList(); break;
+        case 4 : learner.useK2(order); break;
+        case 5 : learner.useMIIC(); break;
+        case 6 : learner.usePC(); break;
+        default : learner.useFCI(); break;
+      }
+      CHECK_EQ(learner.maxIter(), static_cast< gum::Size >(1));
+      CHECK(learner.isEnabledMaxIter());
+      CHECK_EQ(learner.maxTime(), 100.0);
+      CHECK(learner.isEnabledMaxTime());
+      if (algo < 5) {   // the score-based algorithms stop on the limit of iterations
+        learner.learnDAG();
+        CHECK_EQ(learner.stateApproximationScheme(),
+                 gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE::Limit);
+        CHECK_EQ(learner.nbrIterations(), static_cast< gum::Size >(1));
+      }
+    }
+  }
+
+  GUM_TEST(ExtendedGreedyHillClimbingSendsItsProgress) {
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+    aSimpleBNLeanerListener            listen(learner);
+    learner.useExtendedGreedyHillClimbing();
+    learner.setVerbosity(true);
+    learner.learnBN();
+    CHECK_GT(listen.getNbr(), static_cast< gum::Size >(0));
+    CHECK_EQ(learner.history().size(), learner.nbrIterations());
+  }
+
+  GUM_TEST(GenericApproximationSettersDoNotChangeEM) {
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia.csv"));
+    learner.useEMWithRateCriterion(1e-3);
+    const double em_rate     = learner.EMMinEpsilonRate();
+    const double em_eps      = learner.EMEpsilon();
+    const auto   em_max_iter = learner.EMMaxIter();
+    const double em_max_time = learner.EMMaxTime();
+    const auto   em_period   = learner.EMPeriodSize();
+    const bool   em_verbose  = learner.EMVerbosity();
+    const bool   em_use_eps  = learner.EMisEnabledEpsilon();
+    const bool   em_use_rate = learner.EMisEnabledMinEpsilonRate();
+    const bool   em_use_iter = learner.EMisEnabledMaxIter();
+    const bool   em_use_time = learner.EMisEnabledMaxTime();
+
+    // 0 is a valid threshold for the structure learning (and the default of the greedy hill
+    // climbing) even if EM refuses it
+    GUM_CHECK_ASSERT_THROWS_NOTHING(learner.setEpsilon(0.0));
+    learner.setMinEpsilonRate(0.5);
+    learner.setMaxIter(1);
+    learner.setMaxTime(0.5);
+    learner.setPeriodSize(7);
+    learner.setVerbosity(!em_verbose);
+    learner.disableMinEpsilonRate();
+    learner.enableEpsilon();
+    learner.disableMaxIter();
+    learner.enableMaxTime();
+
+    CHECK_EQ(learner.EMMinEpsilonRate(), em_rate);
+    CHECK_EQ(learner.EMEpsilon(), em_eps);
+    CHECK_EQ(learner.EMMaxIter(), em_max_iter);
+    CHECK_EQ(learner.EMMaxTime(), em_max_time);
+    CHECK_EQ(learner.EMPeriodSize(), em_period);
+    CHECK_EQ(learner.EMVerbosity(), em_verbose);
+    CHECK_EQ(learner.EMisEnabledEpsilon(), em_use_eps);
+    CHECK_EQ(learner.EMisEnabledMinEpsilonRate(), em_use_rate);
+    CHECK_EQ(learner.EMisEnabledMaxIter(), em_use_iter);
+    CHECK_EQ(learner.EMisEnabledMaxTime(), em_use_time);
+  }
+
   GUM_TEST(_DBNTonda) {
     gum::BayesNet< double > dbn;
     gum::NodeId             bf_0 = dbn.add(gum::LabelizedVariable("bf_0", "bf_0", 4));
@@ -1408,7 +1529,7 @@ namespace gum_tests {
     bn.addArc(gum::NodeId(3), gum::NodeId(2));
 
     learner.useEM(1e-3);
-    learner.setMaxIter(10);
+    learner.EMsetMaxIter(10);
     learner.useSmoothingPrior();
 
     GUM_CHECK_ASSERT_THROWS_NOTHING(learner.learnParameters(bn));

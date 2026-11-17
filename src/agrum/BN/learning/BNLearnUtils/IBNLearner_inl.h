@@ -842,192 +842,121 @@ namespace gum::learning {
 
   INLINE bool IBNLearner::isScoreBased() const { return !isConstraintBased(); }
 
-  INLINE void
-      IBNLearner::setCurrentApproximationScheme(const ApproximationScheme* approximationScheme) {
-    currentAlgorithm_ = approximationScheme;
-  }
-
-  INLINE void IBNLearner::distributeProgress(const ApproximationScheme* approximationScheme,
-                                             Size                       pourcent,
-                                             double                     error,
-                                             double                     time) {
-    setCurrentApproximationScheme(approximationScheme);
+  INLINE void IBNLearner::distributeProgress(const ApproximationScheme* /*approximationScheme*/,
+                                             Size   pourcent,
+                                             double error,
+                                             double time) {
     if (onProgress.hasListener()) GUM_EMIT3(onProgress, pourcent, error, time);
   }
 
-  INLINE void IBNLearner::distributeStop(const ApproximationScheme* approximationScheme,
-                                         std::string_view           message) {
-    setCurrentApproximationScheme(approximationScheme);
+  INLINE void IBNLearner::distributeStop(const ApproximationScheme* /*approximationScheme*/,
+                                         std::string_view message) {
     if (onStop.hasListener()) GUM_EMIT1(onStop, message);
   }
 
   INLINE void IBNLearner::setEpsilon(double eps) {
-    algoK2_.approximationScheme().setEpsilon(eps);
-    greedyHillClimbing_.setEpsilon(eps);
-    localSearchWithTabuList_.setEpsilon(eps);
-    dag2BN_.setEpsilon(eps);
+    for (auto scheme: structureSchemes_())
+      scheme->setEpsilon(eps);
   }
 
-  INLINE double IBNLearner::epsilon() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->epsilon();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE double IBNLearner::epsilon() const { return selectedScheme_().epsilon(); }
 
   INLINE void IBNLearner::disableEpsilon() {
-    algoK2_.approximationScheme().disableEpsilon();
-    greedyHillClimbing_.disableEpsilon();
-    localSearchWithTabuList_.disableEpsilon();
-    dag2BN_.disableEpsilon();
+    for (auto scheme: structureSchemes_())
+      scheme->disableEpsilon();
   }
 
   INLINE void IBNLearner::enableEpsilon() {
-    algoK2_.approximationScheme().enableEpsilon();
-    greedyHillClimbing_.enableEpsilon();
-    localSearchWithTabuList_.enableEpsilon();
-    dag2BN_.enableEpsilon();
+    for (auto scheme: structureSchemes_())
+      scheme->enableEpsilon();
   }
 
-  INLINE bool IBNLearner::isEnabledEpsilon() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledEpsilon();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE bool IBNLearner::isEnabledEpsilon() const { return selectedScheme_().isEnabledEpsilon(); }
 
   INLINE void IBNLearner::setMinEpsilonRate(double rate) {
-    algoK2_.approximationScheme().setMinEpsilonRate(rate);
-    greedyHillClimbing_.setMinEpsilonRate(rate);
-    localSearchWithTabuList_.setMinEpsilonRate(rate);
-    dag2BN_.setMinEpsilonRate(rate);
+    for (auto scheme: structureSchemes_())
+      scheme->setMinEpsilonRate(rate);
   }
 
-  INLINE double IBNLearner::minEpsilonRate() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->minEpsilonRate();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE double IBNLearner::minEpsilonRate() const { return selectedScheme_().minEpsilonRate(); }
 
   INLINE void IBNLearner::disableMinEpsilonRate() {
-    algoK2_.approximationScheme().disableMinEpsilonRate();
-    greedyHillClimbing_.disableMinEpsilonRate();
-    localSearchWithTabuList_.disableMinEpsilonRate();
-    dag2BN_.disableMinEpsilonRate();
+    for (auto scheme: structureSchemes_())
+      scheme->disableMinEpsilonRate();
   }
 
   INLINE void IBNLearner::enableMinEpsilonRate() {
-    algoK2_.approximationScheme().enableMinEpsilonRate();
-    greedyHillClimbing_.enableMinEpsilonRate();
-    localSearchWithTabuList_.enableMinEpsilonRate();
-    dag2BN_.enableMinEpsilonRate();
+    for (auto scheme: structureSchemes_())
+      scheme->enableMinEpsilonRate();
   }
 
   INLINE bool IBNLearner::isEnabledMinEpsilonRate() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMinEpsilonRate();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+    return selectedScheme_().isEnabledMinEpsilonRate();
   }
 
   INLINE void IBNLearner::setMaxIter(Size max) {
-    algoK2_.approximationScheme().setMaxIter(max);
-    greedyHillClimbing_.setMaxIter(max);
-    localSearchWithTabuList_.setMaxIter(max);
-    dag2BN_.setMaxIter(max);
+    for (auto scheme: structureSchemes_())
+      scheme->setMaxIter(max);
   }
 
-  INLINE Size IBNLearner::maxIter() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxIter();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE Size IBNLearner::maxIter() const { return selectedScheme_().maxIter(); }
 
   INLINE void IBNLearner::disableMaxIter() {
-    algoK2_.approximationScheme().disableMaxIter();
-    greedyHillClimbing_.disableMaxIter();
-    localSearchWithTabuList_.disableMaxIter();
-    dag2BN_.disableMaxIter();
+    for (auto scheme: structureSchemes_())
+      scheme->disableMaxIter();
   }
 
   INLINE void IBNLearner::enableMaxIter() {
-    algoK2_.approximationScheme().enableMaxIter();
-    greedyHillClimbing_.enableMaxIter();
-    localSearchWithTabuList_.enableMaxIter();
-    dag2BN_.enableMaxIter();
+    for (auto scheme: structureSchemes_())
+      scheme->enableMaxIter();
   }
 
-  INLINE bool IBNLearner::isEnabledMaxIter() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxIter();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE bool IBNLearner::isEnabledMaxIter() const { return selectedScheme_().isEnabledMaxIter(); }
 
   INLINE void IBNLearner::setMaxTime(double timeout) {
-    algoK2_.approximationScheme().setMaxTime(timeout);
-    greedyHillClimbing_.setMaxTime(timeout);
-    localSearchWithTabuList_.setMaxTime(timeout);
-    dag2BN_.setMaxTime(timeout);
+    for (auto scheme: structureSchemes_())
+      scheme->setMaxTime(timeout);
   }
 
-  INLINE double IBNLearner::maxTime() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->maxTime();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE double IBNLearner::maxTime() const { return selectedScheme_().maxTime(); }
 
-  INLINE double IBNLearner::currentTime() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->currentTime();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE double IBNLearner::currentTime() const { return selectedScheme_().currentTime(); }
 
   INLINE void IBNLearner::disableMaxTime() {
-    algoK2_.approximationScheme().disableMaxTime();
-    greedyHillClimbing_.disableMaxTime();
-    localSearchWithTabuList_.disableMaxTime();
-    dag2BN_.disableMaxTime();
+    for (auto scheme: structureSchemes_())
+      scheme->disableMaxTime();
   }
 
   INLINE void IBNLearner::enableMaxTime() {
-    algoK2_.approximationScheme().enableMaxTime();
-    greedyHillClimbing_.enableMaxTime();
-    localSearchWithTabuList_.enableMaxTime();
-    dag2BN_.enableMaxTime();
+    for (auto scheme: structureSchemes_())
+      scheme->enableMaxTime();
   }
 
-  INLINE bool IBNLearner::isEnabledMaxTime() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->isEnabledMaxTime();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE bool IBNLearner::isEnabledMaxTime() const { return selectedScheme_().isEnabledMaxTime(); }
 
   INLINE void IBNLearner::setPeriodSize(Size p) {
-    algoK2_.approximationScheme().setPeriodSize(p);
-    greedyHillClimbing_.setPeriodSize(p);
-    localSearchWithTabuList_.setPeriodSize(p);
-    dag2BN_.setPeriodSize(p);
+    for (auto scheme: structureSchemes_())
+      scheme->setPeriodSize(p);
   }
 
-  INLINE Size IBNLearner::periodSize() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->periodSize();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE Size IBNLearner::periodSize() const { return selectedScheme_().periodSize(); }
 
   INLINE void IBNLearner::setVerbosity(bool v) {
-    algoK2_.approximationScheme().setVerbosity(v);
-    greedyHillClimbing_.setVerbosity(v);
-    localSearchWithTabuList_.setVerbosity(v);
-    dag2BN_.setVerbosity(v);
+    for (auto scheme: structureSchemes_())
+      scheme->setVerbosity(v);
   }
 
-  INLINE bool IBNLearner::verbosity() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->verbosity();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE bool IBNLearner::verbosity() const { return selectedScheme_().verbosity(); }
 
   INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
          IBNLearner::stateApproximationScheme() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->stateApproximationScheme();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+    return selectedScheme_().stateApproximationScheme();
   }
 
-  INLINE Size IBNLearner::nbrIterations() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->nbrIterations();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
-  }
+  INLINE Size IBNLearner::nbrIterations() const { return selectedScheme_().nbrIterations(); }
 
   INLINE const std::vector< double >& IBNLearner::history() const {
-    if (currentAlgorithm_ != nullptr) return currentAlgorithm_->history();
-    else GUM_ERROR(FatalError, "No chosen algorithm for learning")
+    return selectedScheme_().history();
   }
 
   // EM methods

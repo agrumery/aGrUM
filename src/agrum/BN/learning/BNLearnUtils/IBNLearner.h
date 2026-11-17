@@ -52,6 +52,7 @@
 #ifndef GUM_LEARNING_GENERIC_BN_LEARNER_H
 #define GUM_LEARNING_GENERIC_BN_LEARNER_H
 
+#include <array>
 #include <cstdint>
 #include <memory>
 #include <sstream>
@@ -1358,9 +1359,6 @@ namespace gum::learning {
     Size tabuListSize_{100};
     Size nbDecreasingChanges_{2};
 
-    // the current algorithm as an approximationScheme
-    const ApproximationScheme* currentAlgorithm_{nullptr};
-
     /// reads a file and returns a databaseVectInRam
     static DatabaseTable readFile_(std::string_view                  filename,
                                    const std::vector< std::string >& missing_symbols);
@@ -1373,6 +1371,12 @@ namespace gum::learning {
 
     /// create the score used for learning
     void createScore_();
+
+    /// the approximation scheme of the selected structure-learning algorithm
+    const ApproximationScheme& selectedScheme_() const;
+
+    /// the approximation schemes of all the structure-learning algorithms (EM's one excluded)
+    std::array< ApproximationScheme*, 8 > structureSchemes_();
 
     /// create the parameter estimator used for learning
     ParamEstimator* createParamEstimator_(const DBRowGeneratorParser& parser,
@@ -1406,13 +1410,13 @@ namespace gum::learning {
     /// @name redistribute signals AND implementation of interface
     /// IApproximationSchemeConfiguration
     // ##########################################################################
-    // in order to not pollute the proper code of IBNLearner, we
-    // directly
-    // implement those
-    // very simples methods here.
-    /// {@    /// distribute signals
-    void setCurrentApproximationScheme(const ApproximationScheme* approximationScheme);
-
+    /** The stopping criteria and the verbosity concern the structure learning only: a setter
+     * applies to every structure-learning algorithm, a getter reads the approximation scheme of
+     * the selected algorithm (its parameters, and the results of its last run). EM has its own
+     * approximation scheme, configured by the EM* methods.
+     */
+    /// {@
+    /// distribute signals
     void distributeProgress(const ApproximationScheme* approximationScheme,
                             Size                       pourcent,
                             double                     error,

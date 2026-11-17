@@ -368,7 +368,6 @@ namespace gum::learning {
       filename_                   = from.filename_;
       tabuListSize_               = from.tabuListSize_;
       nbDecreasingChanges_        = from.nbDecreasingChanges_;
-      currentAlgorithm_           = nullptr;
     }
 
     return *this;
@@ -442,7 +441,6 @@ namespace gum::learning {
       initialDag_                 = std::move(from.initialDag_);
       tabuListSize_               = from.tabuListSize_;
       nbDecreasingChanges_        = std::move(from.nbDecreasingChanges_);
-      currentAlgorithm_           = nullptr;
     }
 
     return *this;
@@ -894,6 +892,31 @@ namespace gum::learning {
     }
   }
 
+  const ApproximationScheme& IBNLearner::selectedScheme_() const {
+    switch (selectedAlgo_) {
+      case AlgoType::K2 : return algoK2_.approximationScheme();
+      case AlgoType::GREEDY_HILL_CLIMBING : return greedyHillClimbing_;
+      case AlgoType::LOCAL_SEARCH_WITH_TABU_LIST : return localSearchWithTabuList_;
+      case AlgoType::MIIC : return algoMiic_;
+      case AlgoType::PC : return algoPC_;
+      case AlgoType::FCI : return algoFCI_;
+      case AlgoType::EXTENDED_GREEDY_HILL_CLIMBING : return extendedGreedyHillClimbing_;
+      case AlgoType::GREEDY_THICK_THINNING : return greedyThickThinning_;
+    }
+    GUM_ERROR(FatalError, "unknown structure-learning algorithm")
+  }
+
+  std::array< ApproximationScheme*, 8 > IBNLearner::structureSchemes_() {
+    return {&algoK2_.approximationScheme(),
+            &greedyHillClimbing_,
+            &localSearchWithTabuList_,
+            &algoMiic_,
+            &algoPC_,
+            &algoFCI_,
+            &extendedGreedyHillClimbing_,
+            &greedyThickThinning_};
+  }
+
   DAG IBNLearner::learnDag_() {
     // check that the database does not contain any missing value
     if (scoreDatabase_.databaseTable().hasMissingValues()
@@ -1037,7 +1060,7 @@ namespace gum::learning {
         selector.useArcReversals(allowArcReversals_);
         selector.useArcTriangleDeletions(allowArcTriangleDeletions_);
 
-        return greedyHillClimbing_.learnStructure(selector, init_graph);
+        return extendedGreedyHillClimbing_.learnStructure(selector, init_graph);
       }
 
       // ========================================================================

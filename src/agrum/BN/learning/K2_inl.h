@@ -98,6 +98,11 @@ namespace gum {
       return GreedyHillClimbing::approximationScheme();
     }
 
+    /// returns the approximation policy of the learning algorithm
+    INLINE const ApproximationScheme& K2::approximationScheme() const {
+      return GreedyHillClimbing::approximationScheme();
+    }
+
   } /* namespace learning */
 
 } /* namespace gum */

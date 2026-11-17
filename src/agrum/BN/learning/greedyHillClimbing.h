@@ -117,6 +117,9 @@ namespace gum {
       /// returns the approximation policy of the learning algorithm
       ApproximationScheme& approximationScheme();
 
+      /// returns the approximation policy of the learning algorithm
+      const ApproximationScheme& approximationScheme() const;
+
       /// learns the structure of a Bayes net
       /** @param selector A selector class that computes the best changes that
        * can be applied and that enables the user to get them very easily.

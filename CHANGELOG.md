@@ -113,6 +113,10 @@
     - `DiscreteTypeProcessor`: MDLP and CAIM accept a class with any number of values (they required a binary
       class). Behaviour change: the candidate cut points of NML are the midpoints of consecutive distinct values (bins of
       the width of the precision around isolated values were favoured), and NML is much faster.
+    - `BNLearner`: the stopping criteria (`setEpsilon`, `setMaxIter`, `setMaxTime`, ...) can be read before learning,
+      follow the selected algorithm and no longer change the ones of EM (see aGrUM). Behaviour change: EM is
+      configured only by `useEM*` and the `EM*` methods (for instance, `setMaxIter` no longer limits EM, and
+      `setVerbosity` no longer fills `EMHistory`).
 
 - aGrUM
 
@@ -270,6 +274,14 @@
       all the sets.
     - New constructor `CausalModel(structure, observationalBN)`: the causal DAG of a causal model (latent variables,
       spurious arcs) with the parameters of another Bayesian network on the same observed DAG.
+    - Behaviour change: the stopping criteria and the verbosity of `IBNLearner` (`setEpsilon`, `setMaxIter`, ...)
+      concern the structure learning only. A setter applies to every structure-learning algorithm (the greedy thick
+      thinning ignored them) and no longer to EM, which has its own `EM*` methods: `setEpsilon(0)` raised
+      `OutOfBounds` (EM refuses 0) and `setEpsilon` switched EM to the criterion on the difference. A getter reads the
+      selected algorithm, also before learning (it raised `FatalError`, and kept the algorithm of the last learning
+      after a `use*`). The extended greedy hill climbing sends its progress and gives its results (`nbrIterations`,
+      `history`, ...): it learned with the scheme of the greedy hill climbing while its own one was listened to (the
+      learned structures do not change). `IBNLearner::setCurrentApproximationScheme` is removed (internal).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 

@@ -1208,6 +1208,63 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     pc.setPCAlpha(0.01)
     fci.setFCIAlpha(0.99)
 
+  def testApproximationParametersBeforeLearning(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useGreedyHillClimbing()
+    self.assertEqual(learner.epsilon(), 0.0)
+    learner.setEpsilon(0.1)
+    learner.setMaxIter(5)
+    self.assertEqual(learner.epsilon(), 0.1)
+    self.assertEqual(learner.maxIter(), 5)
+    self.assertTrue(learner.isEnabledMaxIter())
+    # the parameters follow the selected algorithm
+    learner.useMIIC()
+    self.assertEqual(learner.maxIter(), 5)
+    # no learning yet: no result to read
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.nbrIterations()
+
+  def testApproximationSettersReachEveryScoreBasedAlgorithm(self):
+    for algo in [
+      "useGreedyHillClimbing",
+      "useExtendedGreedyHillClimbing",
+      "useGreedyThickThinning",
+      "useLocalSearchWithTabuList",
+    ]:
+      with self.subTest(algo=algo):
+        learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+        learner.setMaxIter(1)
+        getattr(learner, algo)()
+        learner.learnDAG()
+        self.assertEqual(learner.nbrIterations(), 1)
+        self.assertEqual(learner.messageApproximationScheme(), "stopped with max iteration=1")
+
+  def testGenericApproximationSettersDoNotChangeEM(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
+    learner.useEMWithRateCriterion(1e-3)
+    before = (
+      learner.EMEpsilon(),
+      learner.EMMinEpsilonRate(),
+      learner.EMMaxIter(),
+      learner.EMMaxTime(),
+      learner.EMisEnabledEpsilon(),
+      learner.EMisEnabledMinEpsilonRate(),
+      learner.EMisEnabledMaxTime(),
+    )
+    learner.setEpsilon(0)  # valid for the structure learning, refused by EM
+    learner.setMaxIter(1)
+    learner.setMaxTime(0.5)
+    after = (
+      learner.EMEpsilon(),
+      learner.EMMinEpsilonRate(),
+      learner.EMMaxIter(),
+      learner.EMMaxTime(),
+      learner.EMisEnabledEpsilon(),
+      learner.EMisEnabledMinEpsilonRate(),
+      learner.EMisEnabledMaxTime(),
+    )
+    self.assertEqual(before, after)
+
   def testDefaultParametersComeFromTheConfiguration(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia.csv"))
 

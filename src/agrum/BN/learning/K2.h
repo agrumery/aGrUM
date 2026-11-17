@@ -102,6 +102,9 @@ namespace gum {
       /// returns the approximation policy of the learning algorithm
       ApproximationScheme& approximationScheme();
 
+      /// returns the approximation policy of the learning algorithm
+      const ApproximationScheme& approximationScheme() const;
+
       /// sets the order on the variables
       void setOrder(const Sequence< NodeId >& order);
 
