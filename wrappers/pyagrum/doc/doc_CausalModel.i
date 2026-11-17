@@ -81,6 +81,17 @@ CausalModel(dag, latents=None, assumeNonSpurious=False) -> CausalModel
         - **assumeNonSpurious** (*bool*) -- same meaning as above.
 
     :func:`hasObservationalBN` returns False on the resulting model.
+
+CausalModel(cm, bn) -> CausalModel
+    Build a causal model with the structure of ``cm`` (causal DAG, latent variables, spurious arcs)
+    and the parameters of ``bn``, for instance parameters learned from data.
+
+    Parameters:
+        - **cm** (`pyagrum.CausalModel`) -- the causal model giving the structure (it may have no
+          BayesNet).
+        - **bn** (`pyagrum.BayesNet`) -- the new observational Bayesian network. Its DAG (node ids,
+          names and arcs) must be the observed DAG of ``cm``, otherwise `pyagrum.InvalidArgument` is
+          raised.
 "
 
 %feature("docstring") gum::CausalModel::addLatentVariable

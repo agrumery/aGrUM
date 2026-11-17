@@ -47,6 +47,7 @@ from sklearn.dummy import DummyRegressor
 
 import pyagrum.causal_model as gum
 import pyagrum.causalEffectEstimation as gcee
+from pyagrum.causalEffectEstimation._causalBNEstimator import CausalBNEstimator
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
@@ -587,6 +588,17 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     self.assertAlmostEqual(cee.estimateCausalEffect(), 2.0, delta=_delta)
     # conditional estimate: the selected rows keep their index
     self.assertAlmostEqual(cee.estimateCausalEffect(conditional="X > 0"), 2.0, delta=2 * _delta)
+
+  def test_CausalBNEstimator_keeps_the_latent_variables(self):
+    # U confounds X and Y: the effect of X on Y is not identifiable, before and after fitting
+    bn = gum.fastBN("Z->X->Y;Z->Y;W->X")
+    cm = gum.CausalModel(bn, [("U", ["X", "Y"])], True)
+    df = gum.generateSample(bn, 1000)[0]
+
+    estimator = CausalBNEstimator(cm, "X", "Y")
+    fitted = estimator.fit(df)
+    self.assertEqual(fitted.latentVariablesNames(), {"U"})
+    self.assertRaises(gum.HedgeException, estimator.estimate_ate)
 
 
 ts = unittest.TestSuite()

@@ -96,6 +96,25 @@ namespace gum {
     GUM_CONSTRUCTOR(CausalModel)
   }
 
+  template < GUM_Numeric GUM_SCALAR >
+  CausalModel< GUM_SCALAR >::CausalModel(const CausalModel&            structure,
+                                         const BayesNet< GUM_SCALAR >& observationalBN) :
+      _observationalBN_(observationalBN), _observedDAG_(_observedDagFromBN_(observationalBN)),
+      _causalDAG_(structure._causalDAG_), _ids_names_(structure._ids_names_) {
+    // DiGraph::operator== compares the node ids and the arcs, not the names
+    bool same = (_observedDAG_ == structure._observedDAG_);
+    for (auto id: _observedDAG_.nodes()) {
+      if (!same) break;
+      same = (_observedDAG_.nameFromId(id) == structure._observedDAG_.nameFromId(id));
+    }
+    if (!same) {
+      GUM_ERROR(InvalidArgument,
+                "CausalModel: the DAG of the Bayesian network (node ids, names and arcs) is not "
+                "the observed DAG of the causal model.");
+    }
+    GUM_CONSTRUCTOR(CausalModel)
+  }
+
   /// Copy constructor
   template < GUM_Numeric GUM_SCALAR >
   CausalModel< GUM_SCALAR >::CausalModel(const CausalModel& other) :

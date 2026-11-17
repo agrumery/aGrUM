@@ -105,8 +105,8 @@ class CausalBNEstimator:
 
     parameter_learner.fitParameters(bn)
 
-    causal_model = pyagrum.CausalModel(bn)
-    self.causal_model = causal_model
+    # keep the latent variables and the spurious arcs of the causal model
+    self.causal_model = pyagrum.CausalModel(self.causal_model, bn)
 
     return self.causal_model
 

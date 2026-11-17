@@ -252,6 +252,20 @@ class TestCausalModel(pyAgrumTestCase):
     self.assertAlmostEqual(pot[0], 1.0)
     self.assertAlmostEqual(pot[1], 0.0)
 
+  def testStructureWithNewParameters(self):
+    bn = gum.fastBN("Z->X->Y;Z->Y;W->X")
+    structure = gum.CausalModel(bn, [("U", ["X", "Y"])], True)
+    structure.assumeSpurious("Z", "X")
+
+    bn2 = gum.BayesNet(bn)
+    bn2.generateCPTs()
+    cm = gum.CausalModel(structure, bn2)
+    self.assertEqual(cm.latentVariablesNames(), {"U"})
+    self.assertTrue(cm.isAssumedSpurious("Z", "X"))
+    self.assertEqual(cm.observationalBN().cpt("Y").tolist(), bn2.cpt("Y").tolist())
+
+    self.assertRaises(gum.InvalidArgument, gum.CausalModel, structure, gum.fastBN("Z->X->Y;W->X"))
+
   def testTwinNetwork(self):
     cm = self._xorModel()
     twin = gum.counterfactualModel(cm, whatif="T")

@@ -4364,13 +4364,13 @@ SWIG_From_size_t  (size_t value)
 #endif
 }
 
-SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_8(gum::BayesNet< double > const &bn,PyObject *latents,bool assumeNonSpurious=false){
+SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_9(gum::BayesNet< double > const &bn,PyObject *latents,bool assumeNonSpurious=false){
     auto cm = std::make_unique<gum::CausalModel<double>>(bn);
     if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
       throw PythonErrorAlreadySet();
     return cm.release();
   }
-SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_10(gum::DAG const &dag,PyObject *latents,bool assumeNonSpurious=false){
+SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_11(gum::DAG const &dag,PyObject *latents,bool assumeNonSpurious=false){
     auto cm = std::make_unique<gum::CausalModel<double>>(dag);
     if (!PyAgrumHelper::addLatentsFromPyObject(*cm, latents, assumeNonSpurious))
       throw PythonErrorAlreadySet();
@@ -7132,6 +7132,49 @@ fail:
 SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
+  gum::BayesNet< double > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__CausalModelT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::CausalModel< double > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_gum__BayesNetT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "2"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::BayesNet< double > * >(argp2);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new gum::CausalModel< double >((gum::CausalModel< double > const &)*arg1,(gum::BayesNet< double > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_7(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   gum::CausalModel< double > *result = 0 ;
@@ -7161,7 +7204,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_7(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_8(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CausalModel< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -9771,7 +9814,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_8(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_9(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
@@ -9800,7 +9843,7 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_8(PyObject *self, Py_ssize_t no
   arg3 = static_cast< bool >(val3);
   {
     try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_8((gum::BayesNet< double > const &)*arg1,arg2,arg3);
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_9((gum::BayesNet< double > const &)*arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9813,7 +9856,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_9(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_10(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
   PyObject *arg2 = 0 ;
@@ -9834,49 +9877,7 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_9(PyObject *self, Py_ssize_t no
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_8((gum::BayesNet< double > const &)*arg1,arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_10(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
-  PyObject *resultobj = 0;
-  gum::DAG *arg1 = 0 ;
-  PyObject *arg2 = 0 ;
-  bool arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  bool val3 ;
-  int ecode3 = 0 ;
-  gum::CausalModel< double > *result = 0 ;
-  
-  (void)self;
-  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
-  }
-  arg1 = reinterpret_cast< gum::DAG * >(argp1);
-  arg2 = swig_obj[1];
-  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CausalModel" "', argument " "3"" of type '" "bool""'");
-  } 
-  arg3 = static_cast< bool >(val3);
-  {
-    try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_10((gum::DAG const &)*arg1,arg2,arg3);
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_9((gum::BayesNet< double > const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9893,6 +9894,48 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_11(PyObject *self, Py_ssize_t n
   PyObject *resultobj = 0;
   gum::DAG *arg1 = 0 ;
   PyObject *arg2 = 0 ;
+  bool arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val3 ;
+  int ecode3 = 0 ;
+  gum::CausalModel< double > *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_gum__DAG,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_CausalModel" "', argument " "1"" of type '" "gum::DAG const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  arg2 = swig_obj[1];
+  ecode3 = SWIG_AsVal_bool(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_CausalModel" "', argument " "3"" of type '" "bool""'");
+  } 
+  arg3 = static_cast< bool >(val3);
+  {
+    try {
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_11((gum::DAG const &)*arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_12(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   gum::CausalModel< double > *result = 0 ;
@@ -9910,7 +9953,7 @@ SWIGINTERN PyObject *_wrap_new_CausalModel__SWIG_11(PyObject *self, Py_ssize_t n
   arg2 = swig_obj[1];
   {
     try {
-      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_10((gum::DAG const &)*arg1,arg2);
+      result = (gum::CausalModel< double > *)new_gum_CausalModel_Sl_double_Sg___SWIG_11((gum::DAG const &)*arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -9960,35 +10003,35 @@ check_2:
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_3;
-    return _wrap_new_CausalModel__SWIG_6(self, argc, argv);
+    return _wrap_new_CausalModel__SWIG_7(self, argc, argv);
   }
 check_3:
   
   if (argc == 1) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_7(self, argc, argv);
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_8(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__CausalModelT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_5;
     {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_5;
-    return _wrap_new_CausalModel__SWIG_4(self, argc, argv);
+    return _wrap_new_CausalModel__SWIG_6(self, argc, argv);
   }
 check_5:
   
   if (argc == 2) {
     int _v = 0;
     {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_6;
@@ -9997,7 +10040,7 @@ check_5:
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_6;
-    return _wrap_new_CausalModel__SWIG_2(self, argc, argv);
+    return _wrap_new_CausalModel__SWIG_4(self, argc, argv);
   }
 check_6:
   
@@ -10008,35 +10051,33 @@ check_6:
       _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_7;
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_9(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-check_7:
-  
-  if (argc == 2) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_11(self, argc, argv);
-    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
-    SWIG_fail;
-  }
-  if (argc == 3) {
-    int _v = 0;
-    {
-      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
-      _v = SWIG_CheckState(res);
-    }
-    if (!_v) goto check_9;
     {
       int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
     }
-    if (!_v) goto check_9;
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_1(self, argc, argv);
+    if (!_v) goto check_7;
+    return _wrap_new_CausalModel__SWIG_2(self, argc, argv);
+  }
+check_7:
+  
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_8;
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_10(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
-check_9:
+check_8:
   
+  if (argc == 2) {
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_12(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
   if (argc == 3) {
     int _v = 0;
     {
@@ -10045,10 +10086,11 @@ check_9:
     }
     if (!_v) goto check_10;
     {
-      _v = (argv[1] != 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
     }
     if (!_v) goto check_10;
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_8(self, argc, argv);
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_1(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10056,6 +10098,11 @@ check_10:
   
   if (argc == 3) {
     int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_11;
     {
       int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_std__allocatorT_std__pairT_std__string_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t_t_t_t, SWIG_POINTER_NO_NULL | 0);
       _v = SWIG_CheckState(res);
@@ -10068,7 +10115,20 @@ check_10:
 check_11:
   
   if (argc == 3) {
-    PyObject *retobj = _wrap_new_CausalModel__SWIG_10(self, argc, argv);
+    int _v = 0;
+    {
+      int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DAG, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+    }
+    if (!_v) goto check_12;
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_11(self, argc, argv);
+    if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
+    SWIG_fail;
+  }
+check_12:
+  
+  if (argc == 3) {
+    PyObject *retobj = _wrap_new_CausalModel__SWIG_9(self, argc, argv);
     if (!SWIG_Python_TypeErrorOccurred(retobj)) return retobj;
     SWIG_fail;
   }
@@ -10082,6 +10142,7 @@ fail:
     "    gum::CausalModel< double >::CausalModel(gum::DAG const &,gum::LatentDescriptorVector const &,bool)\n"
     "    gum::CausalModel< double >::CausalModel(gum::DAG const &,gum::LatentDescriptorVector const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::DAG const &)\n"
+    "    gum::CausalModel< double >::CausalModel(gum::CausalModel< double > const &,gum::BayesNet< double > const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::CausalModel< double > const &)\n"
     "    gum::CausalModel< double >::CausalModel(gum::CausalModel< double > &&)\n"
     "    gum::CausalModel< double >::CausalModel(gum::BayesNet< double > const &,PyObject *,bool)\n"

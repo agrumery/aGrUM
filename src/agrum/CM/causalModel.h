@@ -154,6 +154,20 @@ namespace gum {
                          const LatentDescriptorVector& latentVarsDescriptor = {},
                          bool                          assumeNonSpurious    = false);
 
+    /**
+     * @brief Construct a causal model with the structure of another one and new parameters.
+     * @param structure the causal model whose causal DAG (latent variables, spurious arcs) is kept
+     * @param observationalBN the new observed Bayesian network
+     *
+     * Typical use: give to a causal model the parameters learned from data on the DAG of its
+     * observed part. `structure` may have no observational BN (see hasObservationalBN()).
+     *
+     * @throw gum::InvalidArgument if the DAG of `observationalBN` (node ids, names and arcs) is not
+     * the observed DAG of `structure`.
+     */
+    explicit CausalModel(const CausalModel&            structure,
+                         const BayesNet< GUM_SCALAR >& observationalBN);
+
     /// Copy constructor
     CausalModel(const CausalModel& other);
 

@@ -124,6 +124,43 @@ namespace gum_tests {
     CHECK_NOTHROW(cm.variable(0));
   }
 
+  GUM_TEST(CopyWithNewParameters) {
+    auto                       bn = gum::BayesNet< double >::fastPrototype("Z->X->Y;Z->Y;W->X");
+    gum::CausalModel< double > structure(bn,
+                                         {{"U", {bn.idFromName("X"), bn.idFromName("Y")}}},
+                                         true);
+    structure.assumeSpurious("Z", "X");
+
+    auto bn2 = gum::BayesNet< double >(bn);
+    bn2.generateCPTs();
+    const gum::CausalModel< double > cm(structure, bn2);
+
+    CHECK_EQ(cm.latentVariablesNames(), structure.latentVariablesNames());
+    CHECK_EQ(cm.causalDAG(), structure.causalDAG());
+    CHECK(cm.isAssumedSpurious("Z", "X"));
+    CHECK_EQ(cm.observationalBN().cpt("Y").toString(), bn2.cpt("Y").toString());
+    CHECK_NE(cm.observationalBN().cpt("Y").toString(),
+             structure.observationalBN().cpt("Y").toString());
+
+    // a model built from a plain DAG receives its parameters
+    const gum::CausalModel< double > dagOnly(bn.dag());
+    CHECK(!dagOnly.hasObservationalBN());
+    CHECK(gum::CausalModel< double >(dagOnly, bn2).hasObservationalBN());
+  }
+
+  GUM_TEST(CopyWithNewParametersChecksTheDAG) {
+    auto                             bn = gum::BayesNet< double >::fastPrototype("A->B->C");
+    const gum::CausalModel< double > structure(bn);
+
+    // another arc
+    auto other = gum::BayesNet< double >::fastPrototype("A->B->C;A->C");
+    CHECK_THROWS_AS(gum::CausalModel< double >(structure, other), const gum::InvalidArgument&);
+
+    // same ids and arcs, other names
+    auto renamed = gum::BayesNet< double >::fastPrototype("A->B->D");
+    CHECK_THROWS_AS(gum::CausalModel< double >(structure, renamed), const gum::InvalidArgument&);
+  }
+
   GUM_TEST(LatentFromIds) {
     auto                       bn = gum::BayesNet< double >::fastPrototype("X->Y");
     std::vector< gum::NodeId > childIds;

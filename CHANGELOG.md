@@ -106,6 +106,8 @@
       used, and the edges are no longer pruned below half of the mean conditional mutual information.
     - `CausalModel.backDoor` and `CausalModel.frontDoor` (hence `causalImpact`) return a smallest adjustment set, as
       `DoorCriteria.firstBackdoor`/`firstFrontdoor` (see aGrUM).
+    - New constructor `CausalModel(cm, bn)`: the structure of `cm` (latent variables, spurious arcs) with the
+      parameters of `bn` (see aGrUM).
     - The AIC score is the criterion of Akaike (see aGrUM): the structures learned with `useScoreAIC` and the order
       selected by `KTBNAdaptiveLearner.useOrderScoreAIC` may change.
 
@@ -263,6 +265,8 @@
       ids), the set of `DoorCriteria::firstBackdoor`/`firstFrontdoor`; they returned the first set in the
       lexicographic order of the ids, minimal but not always smallest ({0, 5} before {2}). They no longer enumerate
       all the sets.
+    - New constructor `CausalModel(structure, observationalBN)`: the causal DAG of a causal model (latent variables,
+      spurious arcs) with the parameters of another Bayesian network on the same observed DAG.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
@@ -469,6 +473,8 @@
       e(x) tau0(x) + (1 - e(x)) tau1(x)); TSLS returned the mean of all the coefficients of the second stage instead of
       the coefficient of the treatment, and misaligned the rows of a conditional estimate; the individual effects of
       the propensity stratification were not in the order of the rows (the average effect was right).
+    - `CausalEffectEstimation.fitCausalBNEstimator`: the fitted causal model lost its latent variables and its spurious
+      arcs, so that an effect not identifiable (hedge) was estimated with an adjustment set ignoring the confounding.
     - `CausalShapValues` and `CausalShallValues`: each configuration of the background was weighted by its frequency
       times its probability in the mutilated network (counted twice; the baseline of `CausalShapValues` was not P(Y)),
       and a coalition whose values were not in the background got the value 0. The weight is now the probability only,
