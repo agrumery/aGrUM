@@ -117,6 +117,12 @@
       follow the selected algorithm and no longer change the ones of EM (see aGrUM). Behaviour change: EM is
       configured only by `useEM*` and the `EM*` methods (for instance, `setMaxIter` no longer limits EM, and
       `setVerbosity` no longer fills `EMHistory`).
+    - **Python 3.11 to 3.15 are supported; Python 3.10 is no longer supported** (`Requires-Python: >=3.11`, stable ABI
+      `cp311`).
+    - The wheels carry the platform they were built for: on macOS, the minimal version given by
+      `MACOSX_DEPLOYMENT_TARGET` (macOS 14.0 for the released wheels; the running version for a local build), on Linux
+      the manylinux tag of the build image (`linux_<arch>` outside of it, instead of a `manylinux2014` tag claimed for
+      any build). The description of the package is declared as reStructuredText.
 
 - aGrUM
 
@@ -282,6 +288,10 @@
       after a `use*`). The extended greedy hill climbing sends its progress and gives its results (`nbrIterations`,
       `history`, ...): it learned with the scheme of the greedy hill climbing while its own one was listened to (the
       learned structures do not change). `IBNLearner::setCurrentApproximationScheme` is removed (internal).
+    - CI: redundant pipelines auto-cancelled, jobs started without waiting for the previous stage, retries only on
+      infrastructure failures, a documentation stage, a pip cache; every `act` command of the build scripts is checked
+      (a failing step no longer goes unnoticed), the wheels are tested in a throwaway venv per job, and the macOS jobs
+      compile for the oldest supported macOS (14.0).
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
