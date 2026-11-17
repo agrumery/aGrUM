@@ -344,8 +344,7 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNLearner< GUM_SCALAR >& KTBNLearner< GUM_SCALAR >::useScoreMDL() {
-    _forEachLearner_([](BNLearner< GUM_SCALAR >& l) { l.useScoreMDL(); });
-    return *this;
+    return useScoreBIC();   // ScoreMDL is ScoreBIC
   }
 
   template < GUM_Numeric GUM_SCALAR >

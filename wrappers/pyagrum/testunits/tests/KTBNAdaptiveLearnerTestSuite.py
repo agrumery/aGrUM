@@ -271,8 +271,6 @@ class KTBNAdaptiveLearnerTestCase(pyAgrumTestCase):
     self.assertEqual(self._stateValue(l, "Structure score"), "BD")
     l.useScoreLog2Likelihood()
     self.assertEqual(self._stateValue(l, "Structure score"), "Log2Likelihood")
-    l.useScoreMDL()
-    self.assertEqual(self._stateValue(l, "Structure score"), "MDL")
     l.useScorefNML()  # void return, not chainable
     self.assertEqual(self._stateValue(l, "Structure score"), "fNML")
 

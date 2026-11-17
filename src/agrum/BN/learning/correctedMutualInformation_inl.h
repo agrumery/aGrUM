@@ -94,7 +94,7 @@ namespace gum {
     INLINE void CorrectedMutualInformation::clear() {
       _NH_.clear();
       _k_NML_.clear();
-      _score_MDL_.clear();
+      _score_BIC_.clear();
       clearCache();
     }
 
@@ -122,7 +122,7 @@ namespace gum {
     INLINE void CorrectedMutualInformation::setNumberOfThreads(Size nb) {
       _NH_.setNumberOfThreads(nb);
       _k_NML_.setNumberOfThreads(nb);
-      _score_MDL_.setNumberOfThreads(nb);
+      _score_BIC_.setNumberOfThreads(nb);
     }
 
     /// returns the number of threads used to parse the database
@@ -140,7 +140,7 @@ namespace gum {
     INLINE void CorrectedMutualInformation::setMinNbRowsPerThread(const std::size_t nb) const {
       _NH_.setMinNbRowsPerThread(nb);
       _k_NML_.setMinNbRowsPerThread(nb);
-      _score_MDL_.setMinNbRowsPerThread(nb);
+      _score_BIC_.setMinNbRowsPerThread(nb);
     }
 
     /// returns the minimum of rows that each thread should process

@@ -24,6 +24,14 @@ uses :math:`N'_{ijk} = 1/(r_i q_i)` (an equivalent sample size of 1) and K2 :cit
 :math:`N'_{ijk} = 1`. A prior given to another score adds its pseudo-counts to the counts (to these implicit
 hyperparameters for BDeu and K2, with a warning).
 
+fNML :cite:`silander2008factorized` replaces the BIC penalty by the regret of the normalized maximum likelihood of
+each conditional distribution, without any parameter to tune:
+:math:`\mathrm{fNML}_i = \mathrm{LL}_i - \sum_{j=1}^{q_i} \log_2 C(r_i, N_{ij})`, with
+:math:`C(r, n) = \sum_{h_1+\dots+h_r=n} \frac{n!}{h_1!\cdots h_r!} \prod_k (h_k/n)^{h_k}`. :math:`C` is tabulated for
+:math:`r \le 5` and :math:`n < 1000`, computed beyond by the recurrence of :cite:`kontkanen2007linear` over
+:math:`r`, starting for :math:`n \ge 1000` from the asymptotic expansion of :math:`C(2, n)` given by
+:cite:`kontkanen2003efficient`.
+
 **Priors** (``useXXXPrior``, none by default, weight :math:`w` given by ``pyagrum.config["learning", "priorWeight"]``,
 1): pseudo-counts :math:`N'_{ijk} = w` for the smoothing (Laplace for :math:`w=1`); :math:`w/(r_i q_i)` for BDeu;
 :math:`w` times the joint distribution of the family for a Dirichlet prior from a Bayesian network, or its frequency

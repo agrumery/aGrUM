@@ -61,9 +61,9 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/IBayesNet.h>
 
-#include <numpy/arrayobject.h>
-
 #include "extensions/pyagrumExceptionHandling.h"
+
+#include <numpy/arrayobject.h>
 
 #ifndef PYAGRUM_HELPER
 #  define PYAGRUM_HELPER

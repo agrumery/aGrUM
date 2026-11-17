@@ -447,7 +447,7 @@ namespace gum_tests {
   GUM_TEST(ApproximatedBinarizationKeepsTheParentConfigurations) {
     // a precise credal network (min = max) binarized with parents whose domain size is not a power
     // of 2: sampling gives the exact posteriors of the Bayesian network
-    auto bn = gum::BayesNet< double >::fastPrototype("X[3]->Y[2]<-Z[3]");
+    auto                           bn = gum::BayesNet< double >::fastPrototype("X[3]->Y[2]<-Z[3]");
     gum::LazyPropagation< double > exact(&bn);
     exact.makeInference();
 

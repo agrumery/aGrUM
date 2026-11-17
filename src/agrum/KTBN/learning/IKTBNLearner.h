@@ -133,8 +133,10 @@ namespace gum {
       virtual IKTBNLearner< GUM_SCALAR >& useScoreBDeu()           = 0;
       virtual IKTBNLearner< GUM_SCALAR >& useScoreBIC()            = 0;
       virtual IKTBNLearner< GUM_SCALAR >& useScoreLog2Likelihood() = 0;
-      virtual IKTBNLearner< GUM_SCALAR >& useScoreMDL()            = 0;
-      virtual void                        useScorefNML()           = 0;
+      /// @deprecated deprecated after 3.3.2: ScoreMDL is ScoreBIC, use useScoreBIC()
+      [[deprecated("IKTBNLearner::useScoreMDL is deprecated after 3.3.2, use useScoreBIC")]]
+      virtual IKTBNLearner< GUM_SCALAR >& useScoreMDL()  = 0;
+      virtual void                        useScorefNML() = 0;
 
       /// @}
       // #######################################################################

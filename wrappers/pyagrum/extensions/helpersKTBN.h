@@ -51,8 +51,8 @@
  */
 #pragma once
 
-#include <Python.h>
 #include <climits>
+#include <Python.h>
 #include <tuple>
 #include <utility>
 #include <vector>

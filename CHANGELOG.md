@@ -117,6 +117,9 @@
       follow the selected algorithm and no longer change the ones of EM (see aGrUM). Behaviour change: EM is
       configured only by `useEM*` and the `EM*` methods (for instance, `setMaxIter` no longer limits EM, and
       `setVerbosity` no longer fills `EMHistory`).
+    - New `BNLearner.useScorefNML`: the factorized normalized maximum likelihood score (Silander et al., 2008), which
+      existed in aGrUM but was not exposed. "fNML" is also accepted by `skbn.BNClassifier(scoringType=...)` and
+      `bnmixture.BNMLearner` (`score=`), and `bnmixture.BNMBootstrapLearner` gains `useScorefNML`.
     - **Python 3.11 to 3.15 are supported; Python 3.10 is no longer supported** (`Requires-Python: >=3.11`, stable ABI
       `cp311`).
     - The wheels carry the platform they were built for: on macOS, the minimal version given by
@@ -288,6 +291,9 @@
       after a `use*`). The extended greedy hill climbing sends its progress and gives its results (`nbrIterations`,
       `history`, ...): it learned with the scheme of the greedy hill climbing while its own one was listened to (the
       learned structures do not change). `IBNLearner::setCurrentApproximationScheme` is removed (internal).
+    - `BNLearner::useScorefNML` returns the learner, as the other score setters. `ScoreMDL`, an alias of `ScoreBIC`,
+      and the `useScoreMDL` of `IBNLearner`, `IKTBNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` are deprecated
+      after 3.3.2: use `ScoreBIC` and `useScoreBIC`. The MDL correction of MIIC does not change.
     - CI: redundant pipelines auto-cancelled, jobs started without waiting for the previous stage, retries only on
       infrastructure failures, a documentation stage, a pip cache; every `act` command of the build scripts is checked
       (a failing step no longer goes unnoticed), the wheels are tested in a throwaway venv per job, and the macOS jobs

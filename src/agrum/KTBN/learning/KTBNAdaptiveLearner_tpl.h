@@ -66,7 +66,6 @@
 #include <agrum/BN/learning/scores/scoreBIC.h>
 #include <agrum/BN/learning/scores/scorefNML.h>
 #include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
-#include <agrum/BN/learning/scores/scoreMDL.h>
 #include <agrum/KTBN/learning/KTBNAdaptiveLearner.h>
 
 namespace gum::learning {
@@ -359,7 +358,6 @@ namespace gum::learning {
       case IBNLearner::ScoreType::fNML : return ScorefNML::isPriorCompatible(prior, _priorWeight_);
       case IBNLearner::ScoreType::LOG2LIKELIHOOD :
         return ScoreLog2Likelihood::isPriorCompatible(prior, _priorWeight_);
-      case IBNLearner::ScoreType::MDL : return ScoreMDL::isPriorCompatible(prior, _priorWeight_);
       default : return "";   // K2 is never recorded by this learner's setters
     }
   }
@@ -449,7 +447,6 @@ namespace gum::learning {
         case IBNLearner::ScoreType::LOG2LIKELIHOOD :
           add("Structure score", "Log2Likelihood");
           break;
-        case IBNLearner::ScoreType::MDL : add("Structure score", "MDL"); break;
         default : add("Structure score", "(other)"); break;
       }
     }
@@ -543,8 +540,7 @@ namespace gum::learning {
 
   template < GUM_Numeric GUM_SCALAR >
   KTBNAdaptiveLearner< GUM_SCALAR >& KTBNAdaptiveLearner< GUM_SCALAR >::useScoreMDL() {
-    _score_ = IBNLearner::ScoreType::MDL;
-    return *this;
+    return useScoreBIC();   // ScoreMDL is ScoreBIC
   }
 
   template < GUM_Numeric GUM_SCALAR >
@@ -1238,7 +1234,6 @@ namespace gum::learning {
         case IBNLearner::ScoreType::BD : learner.useScoreBD(); break;
         case IBNLearner::ScoreType::BIC : learner.useScoreBIC(); break;
         case IBNLearner::ScoreType::LOG2LIKELIHOOD : learner.useScoreLog2Likelihood(); break;
-        case IBNLearner::ScoreType::MDL : learner.useScoreMDL(); break;
         case IBNLearner::ScoreType::fNML : learner.useScorefNML(); break;
         default : break;   // BDeu (guarded out) and K2 (never recorded)
       }

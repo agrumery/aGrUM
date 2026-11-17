@@ -81,6 +81,10 @@
 // wrapper to return the original `self` instead, mirroring the
 // SETPROP_THEN_RETURN_SELF idiom used for BNLearner (swigsrc/learning.i) and
 // CHANGE_THEN_RETURN_SELF for Tensor (swigsrc/tensor.i).
+// useScoreMDL is deprecated in C++ (ScoreMDL is ScoreBIC) and never exposed in Python
+%ignore gum::learning::KTBNLearner<double>::useScoreMDL;
+%ignore gum::learning::KTBNAdaptiveLearner<double>::useScoreMDL;
+
 %define KTBN_LEARNER_RETURN_SELF(classname, methodname)
 %pythonappend classname::methodname %{
         return self
@@ -93,7 +97,6 @@ KTBN_LEARNER_RETURN_SELF(classname, useScoreBD);
 KTBN_LEARNER_RETURN_SELF(classname, useScoreBDeu);
 KTBN_LEARNER_RETURN_SELF(classname, useScoreBIC);
 KTBN_LEARNER_RETURN_SELF(classname, useScoreLog2Likelihood);
-KTBN_LEARNER_RETURN_SELF(classname, useScoreMDL);
 KTBN_LEARNER_RETURN_SELF(classname, useGreedyHillClimbing);
 KTBN_LEARNER_RETURN_SELF(classname, useExtendedGreedyHillClimbing);
 KTBN_LEARNER_RETURN_SELF(classname, useMIIC);

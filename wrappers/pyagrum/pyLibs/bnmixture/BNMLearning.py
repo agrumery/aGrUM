@@ -63,7 +63,7 @@ class IMixtureLearner:
     nb_decrease : int
         decrease for local search with tabu list (by default, ``pyagrum.config['learning', 'tabuNbDecrease']``).
     score : str
-        Type of score to use.
+        Type of score to use: AIC, BD, BDeu (default), BIC, fNML, K2 or Log2Likelihood.
     correction : str
         Correction to use.
     prior : str
@@ -103,6 +103,8 @@ class IMixtureLearner:
         learner.useScoreBDeu()
       elif zescore == "Log2Likelihood":
         learner.useScoreLog2Likelihood()
+      elif zescore == "fNML":
+        learner.useScorefNML()
       else:
         raise pyagrum.ArgumentError(f"could not find a suitable score : {zescore}")
 
@@ -378,6 +380,9 @@ class BNMBootstrapLearner(IMixtureLearner):
 
   def useScoreBIC(self):
     self._ref_learner.useScoreBIC()
+
+  def useScorefNML(self):
+    self._ref_learner.useScorefNML()
 
   def useScoreK2(self):
     self._ref_learner.useScoreK2()

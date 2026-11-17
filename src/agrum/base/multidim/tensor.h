@@ -168,9 +168,9 @@ namespace gum {
      * @brief generate a random CPT in the Tensor
      *
      * Each distribution of the variable at position varId (one per configuration of the other
-     * variables) is drawn uniformly on the probability simplex, i.e. from a Dirichlet distribution of
-     * parameter 1 (see gum::randomDistribution).
-     * If the Tensor is empty, the argument is not used.
+     * variables) is drawn uniformly on the probability simplex, i.e. from a Dirichlet distribution
+     * of parameter 1 (see gum::randomDistribution). If the Tensor is empty, the argument is not
+     * used.
      *
      * @param varId the position of the conditioned variable in the Tensor
      * @throw OutOfBounds if varId>=nbrDim()

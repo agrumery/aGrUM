@@ -55,8 +55,8 @@
 #include <agrum/config.h>
 
 #include <agrum/base/stattests/kNML.h>
+#include <agrum/BN/learning/scores/scoreBIC.h>
 #include <agrum/BN/learning/scores/scoreLog2Likelihood.h>
-#include <agrum/BN/learning/scores/scoreMDL.h>
 
 namespace gum {
   namespace learning {
@@ -308,9 +308,9 @@ namespace gum {
       /// the object computing the NML k score
       KNML _k_NML_;
 
-      /** @brief a score MDL used to compute the size N of the database,
-       * including the a prior*/
-      ScoreMDL _score_MDL_;
+      /** @brief the BIC score, used by the MDL correction to compute the size N
+       * of the database, including the prior */
+      ScoreBIC _score_BIC_;
 
       /// the mode used for the correction
       KModeTypes _kmode_{KModeTypes::MDL};

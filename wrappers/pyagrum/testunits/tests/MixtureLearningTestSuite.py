@@ -90,7 +90,7 @@ class TestMixtureLearning(pyAgrumTestCase):
     df = self._gen_df(bn_ref, n=100)
     lrn = BNM.BNMLearner([1.0], [df])
     # with a prior: in 100 random samples, a configuration of the parents may never appear (DatabaseError without prior)
-    for score in ("K2", "AIC", "BIC", "BD", "BDeu", "Log2Likelihood"):
+    for score in ("K2", "AIC", "BIC", "BD", "BDeu", "fNML", "Log2Likelihood"):
       learner = gum.BNLearner(df)
       lrn.updateState(learner, score=score, prior="Smoothing")
       self.assertIsInstance(learner.learnBN(), gum.BayesNet, msg=f"score={score}")
@@ -195,6 +195,16 @@ class TestMixtureLearning(pyAgrumTestCase):
     self.assertFalse(learner.isConstraintBased())
     boot_learner.updateState(learner, algorithm="MIIC", correction="NML")
     self.assertTrue(learner.isConstraintBased())
+
+  def testBNMBootstrapLearner_useScorefNML(self):
+    bn_ref = gum.fastBN("A->C<-B")
+    df = self._gen_df(bn_ref, n=50)
+    boot_learner = BNM.BNMBootstrapLearner(df, template=bn_ref)
+    boot_learner.useGreedyHillClimbing()
+    boot_learner.useScorefNML()
+    learner = gum.BNLearner(df)
+    boot_learner.updateState(learner)
+    self.assertEqual(learner.state()["Score"][0], "fNML")
 
   def testBNMBootstrapLearner_learnBNM_basic(self):
     bn_ref = gum.fastBN("A->C<-B")

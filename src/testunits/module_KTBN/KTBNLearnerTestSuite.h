@@ -706,7 +706,6 @@ namespace gum_tests {
     CHECK_EQ(_stateValue_(l.useScoreBDeu(), "Score"), "BDeu");
     CHECK_EQ(_stateValue_(l.useScoreBIC(), "Score"), "BIC");
     CHECK_EQ(_stateValue_(l.useScoreLog2Likelihood(), "Score"), "Log2Likelihood");
-    CHECK_EQ(_stateValue_(l.useScoreMDL(), "Score"), "MDL");
     l.useScorefNML();   // the only non-chaining score setter
     CHECK_EQ(_stateValue_(l, "Score"), "fNML");
 

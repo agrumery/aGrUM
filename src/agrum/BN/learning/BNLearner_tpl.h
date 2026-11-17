@@ -636,7 +636,10 @@ namespace gum {
         case ScoreType::BD : useScoreBD(); break;
         case ScoreType::BDeu : useScoreBDeu(); break;
         case ScoreType::fNML : useScorefNML(); break;
-        case ScoreType::MDL : useScoreMDL(); break;
+        case ScoreType::MDL :   // copied as is, without the deprecated useScoreMDL()
+          scoreType_ = ScoreType::MDL;
+          checkScorePriorCompatibility();
+          break;
         case ScoreType::LOG2LIKELIHOOD : useScoreLog2Likelihood(); break;
       }
 
@@ -949,6 +952,12 @@ namespace gum {
     template < GUM_Numeric GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScoreBIC() {
       IBNLearner::useScoreBIC();
+      return *this;
+    }
+
+    template < GUM_Numeric GUM_SCALAR >
+    BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::useScorefNML() {
+      IBNLearner::useScorefNML();
       return *this;
     }
 

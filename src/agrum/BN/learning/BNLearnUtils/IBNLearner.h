@@ -766,6 +766,8 @@ namespace gum::learning {
     void useScoreLog2Likelihood();
 
     /// indicate that we wish to use a MDL score
+    /// @deprecated deprecated after 3.3.2: ScoreMDL is ScoreBIC, use useScoreBIC()
+    [[deprecated("IBNLearner::useScoreMDL is deprecated after 3.3.2, use useScoreBIC")]]
     void useScoreMDL();
 
     /// @}

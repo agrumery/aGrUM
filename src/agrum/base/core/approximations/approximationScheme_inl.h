@@ -274,7 +274,7 @@ namespace gum {
   // the flags are written directly: a suspension is not a change of the parameters (the setters
   // would outdate the result being computed)
   INLINE
-      ApproximationScheme::CriteriaSuspension_::CriteriaSuspension_(ApproximationScheme& scheme) :
+  ApproximationScheme::CriteriaSuspension_::CriteriaSuspension_(ApproximationScheme& scheme) :
       _scheme_(scheme), _epsilon_(scheme.enabled_eps_), _rate_(scheme.enabled_min_rate_eps_) {}
 
   INLINE ApproximationScheme::CriteriaSuspension_::~CriteriaSuspension_() { restore(); }

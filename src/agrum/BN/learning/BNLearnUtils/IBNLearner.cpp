@@ -581,7 +581,7 @@ namespace gum::learning {
         break;
 
       case ScoreType::MDL :
-        score_ = new ScoreMDL(scoreDatabase_.parser(),
+        score_ = new ScoreBIC(scoreDatabase_.parser(),
                               *prior_,
                               ranges_,
                               scoreDatabase_.nodeId2Columns());
@@ -1232,7 +1232,7 @@ namespace gum::learning {
 
       case LOG2LIKELIHOOD : return ScoreLog2Likelihood::isPriorCompatible(prior, priorWeight_);
 
-      case MDL : return ScoreMDL::isPriorCompatible(prior, priorWeight_);
+      case MDL : return ScoreBIC::isPriorCompatible(prior, priorWeight_);
 
       default : return "IBNLearner does not support yet this score";
     }

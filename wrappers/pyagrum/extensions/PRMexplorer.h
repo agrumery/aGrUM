@@ -512,6 +512,6 @@ class PRMexplorer {
     });
   }
 
-  gum::prm::PRM< double >* _prm_ = nullptr;   // reader.prm() once a prm is loaded
+  gum::prm::PRM< double >*               _prm_ = nullptr;   // reader.prm() once a prm is loaded
   gum::prm::o3prm::O3prmReader< double > _reader_;
 };

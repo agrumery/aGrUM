@@ -50,7 +50,6 @@
 
 #include <vector>
 
-#include <agrum/base/core/sequence.h>
 #include <agrum/base/graphs/PDAG.h>
 
 namespace gum {

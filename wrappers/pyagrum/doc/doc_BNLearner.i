@@ -773,6 +773,15 @@ Indicate that we wish to use a BIC score.
 "
 
 
+%feature("docstring") gum::learning::BNLearner::useScorefNML
+"
+Indicate that we wish to use a fNML (factorized normalized maximum likelihood) score.
+
+Like BIC, fNML penalizes the log-likelihood, but its penalty is the exact regret of the normalized maximum
+likelihood of each family :cite:p:`silander2008factorized`, without any parameter to tune.
+"
+
+
 %feature("docstring") gum::learning::BNLearner::useScoreK2
 "
 Indicate that we wish to use a K2 score.

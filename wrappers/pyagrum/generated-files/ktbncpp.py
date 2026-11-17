@@ -1854,25 +1854,6 @@ class KTBNLearner(object):
         return val
 
 
-    def useScoreMDL(self) -> "pyagrum.KTBNLearner":
-        r"""
-
-        Use the MDL score for structure learning.
-
-        Returns
-        -------
-        pyagrum.ktbn.KTBNLearner
-            self, for chaining
-
-        """
-        val = _ktbncpp.KTBNLearner_useScoreMDL(self)
-
-        return self
-
-
-        return val
-
-
     def useScorefNML(self) -> None:
         r"""
 
@@ -3066,15 +3047,6 @@ class KTBNAdaptiveLearner(object):
 
     def useScoreLog2Likelihood(self) -> "pyagrum.KTBNAdaptiveLearner":
         val = _ktbncpp.KTBNAdaptiveLearner_useScoreLog2Likelihood(self)
-
-        return self
-
-
-        return val
-
-
-    def useScoreMDL(self) -> "pyagrum.KTBNAdaptiveLearner":
-        val = _ktbncpp.KTBNAdaptiveLearner_useScoreMDL(self)
 
         return self
 

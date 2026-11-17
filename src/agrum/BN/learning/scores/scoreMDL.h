@@ -63,8 +63,10 @@ namespace gum {
      *
      * @warning If you pass a prior to the score, this one will be added
      * into the log-likelihood part of the score.
+     *
+     * @deprecated deprecated after 3.3.2: ScoreMDL is ScoreBIC, use ScoreBIC
      */
-    using ScoreMDL = ScoreBIC;
+    using ScoreMDL [[deprecated("ScoreMDL is deprecated after 3.3.2, use ScoreBIC")]] = ScoreBIC;
 
 
   } /* namespace learning */

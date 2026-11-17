@@ -392,6 +392,8 @@ namespace gum::learning {
 
     BNLearner< GUM_SCALAR >& useScoreBIC();
 
+    BNLearner< GUM_SCALAR >& useScorefNML();
+
     BNLearner< GUM_SCALAR >& useScoreK2();
 
     BNLearner< GUM_SCALAR >& useScoreLog2Likelihood();

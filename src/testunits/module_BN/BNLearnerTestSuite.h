@@ -44,6 +44,7 @@
 // floating point env
 #include <algorithm>
 #include <cfenv>
+#include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -2705,6 +2706,47 @@ namespace gum_tests {
         CHECK_EQ(cpt_changed.get(inst),
                  doctest::Approx(cpt_direct.get(inst_direct)).epsilon(1e-12));
     }
+  }
+
+  GUM_TEST(ScorefNMLIsTheLogLikelihoodMinusTheNMLRegret) {
+    gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("csv/asia3.csv"));
+    learner.useGreedyHillClimbing();   // the score is only reported for score-based algorithms
+    CHECK_EQ(&learner.useScorefNML(), &learner);
+
+    const auto scoreOf = [](const gum::learning::BNLearner< double >& l) {
+      for (const auto& [key, value, comment]: l.state())
+        if (key == "Score") return value;
+      return std::string();
+    };
+    CHECK_EQ(scoreOf(learner), "fNML");
+    const gum::learning::BNLearner< double > copy(learner);
+    CHECK_EQ(scoreOf(copy), "fNML");
+
+    // log2 of the normalizing sum of the NML distribution of a binary variable over n records:
+    // C(2, n) = sum_h binom(n, h) (h/n)^h ((n-h)/n)^(n-h), computed in log space
+    const auto log2C2 = [](double n) {
+      double sum = 0.0;
+      for (double h = 0.0; h <= n; ++h) {
+        double lterm = std::lgamma(n + 1) - std::lgamma(h + 1) - std::lgamma(n - h + 1);
+        if (h > 0) lterm += h * std::log(h / n);
+        if (h < n) lterm += (n - h) * std::log((n - h) / n);
+        sum += std::exp(lterm);
+      }
+      return std::log2(sum);
+    };
+
+    // asia3.csv has 934 records: the regret is read from a precomputed table (n < 1000), whose
+    // entries are within 1e-6 bit of the exact values
+    const std::vector< std::string > target{"lung_cancer"};
+    const std::vector< std::string > parents{"smoking"};
+    double                           regret = 0.0;
+    for (const double n_j: learner.rawPseudoCount(parents))
+      regret += log2C2(n_j);
+    CHECK(std::abs(learner.score(target[0], parents)
+                   - (learner.logLikelihood(target, parents) - regret))
+          < 1e-5);
+    CHECK(std::abs(learner.score(target[0]) - (learner.logLikelihood(target) - log2C2(934.0)))
+          < 1e-5);
   }
 
 } /* namespace gum_tests */

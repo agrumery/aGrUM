@@ -145624,6 +145624,37 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_BNLearner_useScorefNML(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  gum::learning::BNLearner< double > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_useScorefNML" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::learning::BNLearner< double > *) &(arg1)->useScorefNML();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_BNLearner_useScoreK2(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::BNLearner< double > *arg1 = 0 ;
@@ -174497,6 +174528,14 @@ static PyMethodDef SwigMethods[] = {
 	 { "BNLearner_useScoreBIC", _wrap_BNLearner_useScoreBIC, METH_O, "\n"
 		"\n"
 		"Indicate that we wish to use a BIC score.\n"
+		"\n"
+		""},
+	 { "BNLearner_useScorefNML", _wrap_BNLearner_useScorefNML, METH_O, "\n"
+		"\n"
+		"Indicate that we wish to use a fNML (factorized normalized maximum likelihood) score.\n"
+		"\n"
+		"Like BIC, fNML penalizes the log-likelihood, but its penalty is the exact regret of the normalized maximum\n"
+		"likelihood of each family :cite:p:`silander2008factorized`, without any parameter to tune.\n"
 		"\n"
 		""},
 	 { "BNLearner_useScoreK2", _wrap_BNLearner_useScoreK2, METH_O, "\n"

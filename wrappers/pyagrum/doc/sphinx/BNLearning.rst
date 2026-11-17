@@ -107,8 +107,11 @@ Class BNLearner
       - `useScoreBD <#pyagrum.BNLearner.useScoreBD>`_
       - `useScoreBDeu <#pyagrum.BNLearner.useScoreBDeu>`_
     * - `useScoreBIC <#pyagrum.BNLearner.useScoreBIC>`_
+      - `useScorefNML <#pyagrum.BNLearner.useScorefNML>`_
       - `useScoreK2 <#pyagrum.BNLearner.useScoreK2>`_
-      - `useScoreLog2Likelihood <#pyagrum.BNLearner.useScoreLog2Likelihood>`_
+    * - `useScoreLog2Likelihood <#pyagrum.BNLearner.useScoreLog2Likelihood>`_
+      -
+      -
     * - `useMDLCorrection <#pyagrum.BNLearner.useMDLCorrection>`_
       - `useNMLCorrection <#pyagrum.BNLearner.useNMLCorrection>`_
       - `useNoCorrection <#pyagrum.BNLearner.useNoCorrection>`_

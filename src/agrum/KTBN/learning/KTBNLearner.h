@@ -284,6 +284,8 @@ namespace gum {
       KTBNLearner< GUM_SCALAR >& useScoreBDeu() override;
       KTBNLearner< GUM_SCALAR >& useScoreBIC() override;
       KTBNLearner< GUM_SCALAR >& useScoreLog2Likelihood() override;
+      /// @deprecated deprecated after 3.3.2: ScoreMDL is ScoreBIC, use useScoreBIC()
+      [[deprecated("KTBNLearner::useScoreMDL is deprecated after 3.3.2, use useScoreBIC")]]
       KTBNLearner< GUM_SCALAR >& useScoreMDL() override;
       void                       useScorefNML() override;
 

@@ -15820,37 +15820,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNLearner_useScoreMDL(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::learning::KTBNLearner< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::learning::KTBNLearner< double > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNLearner_useScoreMDL" "', argument " "1"" of type '" "gum::learning::KTBNLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::KTBNLearner< double > * >(argp1);
-  {
-    try {
-      result = (gum::learning::KTBNLearner< double > *) &(arg1)->useScoreMDL();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_KTBNLearner_useScorefNML(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::KTBNLearner< double > *arg1 = 0 ;
@@ -21429,37 +21398,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useScoreMDL(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject *swig_obj[1] ;
-  gum::learning::KTBNAdaptiveLearner< double > *result = 0 ;
-  
-  (void)self;
-  if (!args) SWIG_fail;
-  swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNAdaptiveLearner_useScoreMDL" "', argument " "1"" of type '" "gum::learning::KTBNAdaptiveLearner< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::learning::KTBNAdaptiveLearner< double > * >(argp1);
-  {
-    try {
-      result = (gum::learning::KTBNAdaptiveLearner< double > *) &(arg1)->useScoreMDL();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__learning__KTBNAdaptiveLearnerT_double_t, 0 |  0 );
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_KTBNAdaptiveLearner_useScorefNML(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::learning::KTBNAdaptiveLearner< double > *arg1 = 0 ;
@@ -26169,16 +26107,6 @@ static PyMethodDef SwigMethods[] = {
 		"    self, for chaining\n"
 		"\n"
 		""},
-	 { "KTBNLearner_useScoreMDL", _wrap_KTBNLearner_useScoreMDL, METH_O, "\n"
-		"\n"
-		"Use the MDL score for structure learning.\n"
-		"\n"
-		"Returns\n"
-		"-------\n"
-		"pyagrum.ktbn.KTBNLearner\n"
-		"    self, for chaining\n"
-		"\n"
-		""},
 	 { "KTBNLearner_useScorefNML", _wrap_KTBNLearner_useScorefNML, METH_O, "\n"
 		"\n"
 		"Use the fNML score for structure learning.\n"
@@ -26874,7 +26802,6 @@ static PyMethodDef SwigMethods[] = {
 	 { "KTBNAdaptiveLearner_useScoreBDeu", _wrap_KTBNAdaptiveLearner_useScoreBDeu, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useScoreBIC", _wrap_KTBNAdaptiveLearner_useScoreBIC, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useScoreLog2Likelihood", _wrap_KTBNAdaptiveLearner_useScoreLog2Likelihood, METH_O, NULL},
-	 { "KTBNAdaptiveLearner_useScoreMDL", _wrap_KTBNAdaptiveLearner_useScoreMDL, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useScorefNML", _wrap_KTBNAdaptiveLearner_useScorefNML, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useGreedyHillClimbing", _wrap_KTBNAdaptiveLearner_useGreedyHillClimbing, METH_O, NULL},
 	 { "KTBNAdaptiveLearner_useExtendedGreedyHillClimbing", _wrap_KTBNAdaptiveLearner_useExtendedGreedyHillClimbing, METH_O, NULL},

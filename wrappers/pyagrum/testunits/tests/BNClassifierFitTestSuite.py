@@ -80,6 +80,12 @@ def _make_multiclass(n_classes=3, n_samples=100, n_features=4):
 
 
 class BNClassifierFitTestCase(pyAgrumTestCase):
+  def testFitWithTheFNMLScore(self):
+    X, y = _make_binary()
+    clf = skbn.createBNClassifier(learningMethod="GHC", scoringType="fNML")
+    clf.fit(X, y)
+    self.assertEqual(clf.learner_.state()["Score"][0], "fNML")
+
   def testFitNumpyFloat(self):
     X, y = _make_binary()
     clf = skbn.createBNClassifier()

@@ -175,16 +175,6 @@ pyagrum.ktbn.KTBNLearner
     self, for chaining
 "
 
-%feature("docstring") gum::learning::KTBNLearner::useScoreMDL
-"
-Use the MDL score for structure learning.
-
-Returns
--------
-pyagrum.ktbn.KTBNLearner
-    self, for chaining
-"
-
 %feature("docstring") gum::learning::KTBNLearner::useScorefNML
 "
 Use the fNML score for structure learning.

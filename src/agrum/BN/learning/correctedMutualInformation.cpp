@@ -66,7 +66,7 @@ namespace gum {
         const std::vector< std::pair< std::size_t, std::size_t > >& ranges,
         const Bijection< NodeId, std::size_t >&                     nodeId2columns) :
         _NH_(parser, prior, ranges, nodeId2columns), _k_NML_(parser, prior, ranges, nodeId2columns),
-        _score_MDL_(parser, prior, ranges, nodeId2columns) {
+        _score_BIC_(parser, prior, ranges, nodeId2columns) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
@@ -76,13 +76,13 @@ namespace gum {
         const Prior&                            prior,
         const Bijection< NodeId, std::size_t >& nodeId2columns) :
         _NH_(parser, prior, nodeId2columns), _k_NML_(parser, prior, nodeId2columns),
-        _score_MDL_(parser, prior, nodeId2columns) {
+        _score_BIC_(parser, prior, nodeId2columns) {
       GUM_CONSTRUCTOR(CorrectedMutualInformation);
     }
 
     /// copy constructor
     CorrectedMutualInformation::CorrectedMutualInformation(const CorrectedMutualInformation& from) :
-        _NH_(from._NH_), _k_NML_(from._k_NML_), _score_MDL_(from._score_MDL_),
+        _NH_(from._NH_), _k_NML_(from._k_NML_), _score_BIC_(from._score_BIC_),
         _kmode_(from._kmode_), _use_ICache_(from._use_ICache_), _use_HCache_(from._use_HCache_),
         _use_KCache_(from._use_KCache_), _use_CnrCache_(from._use_CnrCache_),
         _ICache_(from._ICache_), _KCache_(from._KCache_) {
@@ -92,7 +92,7 @@ namespace gum {
     /// move constructor
     CorrectedMutualInformation::CorrectedMutualInformation(CorrectedMutualInformation&& from) :
         _NH_(std::move(from._NH_)), _k_NML_(std::move(from._k_NML_)),
-        _score_MDL_(std::move(from._score_MDL_)), _kmode_(from._kmode_),
+        _score_BIC_(std::move(from._score_BIC_)), _kmode_(from._kmode_),
         _use_ICache_(from._use_ICache_), _use_HCache_(from._use_HCache_),
         _use_KCache_(from._use_KCache_), _use_CnrCache_(from._use_CnrCache_),
         _ICache_(std::move(from._ICache_)), _KCache_(std::move(from._KCache_)) {
@@ -116,7 +116,7 @@ namespace gum {
       if (this != &from) {
         _NH_           = from._NH_;
         _k_NML_        = from._k_NML_;
-        _score_MDL_    = from._score_MDL_;
+        _score_BIC_    = from._score_BIC_;
         _kmode_        = from._kmode_;
         _use_ICache_   = from._use_ICache_;
         _use_HCache_   = from._use_HCache_;
@@ -134,7 +134,7 @@ namespace gum {
       if (this != &from) {
         _NH_           = std::move(from._NH_);
         _k_NML_        = std::move(from._k_NML_);
-        _score_MDL_    = std::move(from._score_MDL_);
+        _score_BIC_    = std::move(from._score_BIC_);
         _kmode_        = from._kmode_;
         _use_ICache_   = from._use_ICache_;
         _use_HCache_   = from._use_HCache_;
@@ -159,7 +159,7 @@ namespace gum {
 
       _NH_.setRanges(new_ranges);
       _k_NML_.setRanges(new_ranges);
-      _score_MDL_.setRanges(new_ranges);
+      _score_BIC_.setRanges(new_ranges);
 
       if (old_ranges != ranges()) clear();
     }
@@ -169,7 +169,7 @@ namespace gum {
       std::vector< std::pair< std::size_t, std::size_t > > old_ranges = ranges();
       _NH_.clearRanges();
       _k_NML_.clearRanges();
-      _score_MDL_.clearRanges();
+      _score_BIC_.clearRanges();
       if (old_ranges != ranges()) clear();
     }
 
@@ -304,7 +304,7 @@ namespace gum {
           }
 
           // compute the size of the database, including the a priori
-          const double N = _score_MDL_.N(idset);
+          const double N = _score_BIC_.N(idset);
 
           score = 0.5 * (rx - 1) * (ry - 1) * rui * std::log2(N);
         } break;

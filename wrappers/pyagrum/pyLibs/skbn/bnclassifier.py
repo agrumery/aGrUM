@@ -183,11 +183,12 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 A string designating the scoring method we want to use. Since scoring is used while constructing the
                 network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
                 with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
-                possible values are:  AIC, BIC, BD, BDeu, K2, Log2
+                possible values are:  AIC, BIC, BD, BDeu, fNML, K2, Log2
                 AIC means Akaike information criterion
                 BIC means Bayesian Information criterion
                 BD means Bayesian-Dirichlet scoring
                 BDeu means Bayesian-Dirichlet equivalent uniform
+                fNML means factorized normalized maximum likelihood
                 Log2 means log2 likelihood ratio test
 
             constraints: dict()
@@ -293,11 +294,12 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 A string designating the type of scoring we want to use. Since scoring is used while constructing the
                 network and not when learning its parameters, the scoring will be ignored if using a learning algorithm
                 with a fixed network structure such as Chow-Liu, TAN or NaiveBayes.
-                possible values are:  AIC, BIC, BD, BDeu, K2, Log2
+                possible values are:  AIC, BIC, BD, BDeu, fNML, K2, Log2
                 AIC means Akaike information criterion
                 BIC means Bayesian Information criterion
                 BD means Bayesian-Dirichlet scoring
                 BDeu means Bayesian-Dirichlet equivalent uniform
+                fNML means factorized normalized maximum likelihood
                 Log2 means log2 likelihood ratio test
 
             constraints: dict()

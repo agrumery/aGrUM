@@ -39,6 +39,7 @@
 ############################################################################
 
 import inspect
+import math
 import os
 import tempfile
 import unittest
@@ -875,6 +876,28 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       learner.useScoreBIC()
       learner.useGreedyHillClimbing()
       learner.learnBN()
+
+  def test_useScorefNML(self):
+    learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))
+    learner.useGreedyHillClimbing()
+    self.assertEqual(learner.useScorefNML().state()["Score"][0], "fNML")  # chainable
+
+    # fNML = log2-likelihood - log2 C(2, n): normalizing sum of the NML distribution of a binary variable
+    n = learner.nbRows()
+
+    def lterm(h):
+      res = math.lgamma(n + 1) - math.lgamma(h + 1) - math.lgamma(n - h + 1)
+      if h > 0:
+        res += h * math.log(h / n)
+      if h < n:
+        res += (n - h) * math.log((n - h) / n)
+      return res
+
+    log2C = math.log2(sum(math.exp(lterm(h)) for h in range(n + 1)))
+    # asia3.csv has 934 records: the regret is read from a precomputed table (n < 1000), whose entries are within
+    # 1e-6 bit of the exact values
+    self.assertAlmostEqual(learner.score(LUNG), learner.logLikelihood([LUNG]) - log2C, delta=1e-5)
+    self.assertIsInstance(learner.learnDAG(), gum.DAG)  # structure learned with the fNML score
 
   def test_mutualInfo(self):
     learner = gum.BNLearner(self.agrumSrcDir("asia3.csv"))

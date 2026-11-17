@@ -524,8 +524,6 @@ namespace gum_tests {
     CHECK_EQ(_stateValue_(l, "Structure score"), "BD");
     l.useScoreLog2Likelihood();
     CHECK_EQ(_stateValue_(l, "Structure score"), "Log2Likelihood");
-    l.useScoreMDL();
-    CHECK_EQ(_stateValue_(l, "Structure score"), "MDL");
     l.useScorefNML();   // void return, so not chainable
     CHECK_EQ(_stateValue_(l, "Structure score"), "fNML");
 

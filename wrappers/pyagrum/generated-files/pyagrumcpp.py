@@ -32879,6 +32879,17 @@ class BNLearner(object):
         """
         return _pyagrumcpp.BNLearner_useScoreBIC(self)
 
+    def useScorefNML(self) -> "pyagrum.BNLearner":
+        r"""
+
+        Indicate that we wish to use a fNML (factorized normalized maximum likelihood) score.
+
+        Like BIC, fNML penalizes the log-likelihood, but its penalty is the exact regret of the normalized maximum
+        likelihood of each family :cite:p:`silander2008factorized`, without any parameter to tune.
+
+        """
+        return _pyagrumcpp.BNLearner_useScorefNML(self)
+
     def useScoreK2(self) -> "pyagrum.BNLearner":
         r"""
 

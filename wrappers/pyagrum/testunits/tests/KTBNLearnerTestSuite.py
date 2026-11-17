@@ -356,7 +356,6 @@ class KTBNLearnerTestCase(pyAgrumTestCase):
     self.assertEqual(self._stateValue(l.useScoreBDeu(), "Score"), "BDeu")
     self.assertEqual(self._stateValue(l.useScoreBIC(), "Score"), "BIC")
     self.assertEqual(self._stateValue(l.useScoreLog2Likelihood(), "Score"), "Log2Likelihood")
-    self.assertEqual(self._stateValue(l.useScoreMDL(), "Score"), "MDL")
     l.useScorefNML()
     self.assertEqual(self._stateValue(l, "Score"), "fNML")
 
