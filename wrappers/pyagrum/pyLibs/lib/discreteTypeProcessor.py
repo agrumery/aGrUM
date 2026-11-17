@@ -105,7 +105,7 @@ class DiscreteTypeProcessor:
   Warnings
   --------
   - The data are represented by tabular data (X and possibly y) where the columns are the variables and the rows are the samples. Generally, X can be replaced by a the name of a csv file.
-  - In the case of a classification, y is the class variable and X are the features. y has not to be binary.
+  - In the case of a classification, y is the class variable and X are the features. y may have any number of classes.
 
   Parameters
   ----------
@@ -407,6 +407,44 @@ class DiscreteTypeProcessor:
     chord = variationArray[0] + (variationArray[last] - variationArray[0]) * numpy.arange(len(nbBins)) / last
     return binEdgeMatrix[int(numpy.argmax(numpy.abs(variationArray - chord)))]
 
+  @staticmethod
+  def _classCountsByValue(X, y, possibleValuesX, possibleValuesY):
+    """
+    Counts the samples of each class for each distinct value of x.
+
+    Parameters
+    ----------
+        X: ndarray with shape (n,1) where n is the number of samples
+            Column-vector that contains all the data that needs to be discretized
+        y: ndarray with shape (n,1) where n is the number of samples
+            Column-vector that contains the class for each sample
+        possibleValuesX: one dimensional ndarray
+            Contains all the possible values that x can take sorted in increasing order, without duplicates
+        possibleValuesY: one dimensional ndarray
+            Contains the possible values of y
+    Returns
+    -------
+        ndarray
+          a matrix whose row i contains the number of samples of each class among those whose value is possibleValuesX[i]
+    """
+    classIndex = {c: i for i, c in enumerate(possibleValuesY)}
+    try:
+      classes = numpy.array([classIndex[c] for c in y.ravel()], dtype=int)
+    except KeyError as e:
+      raise ValueError(f"The class {e.args[0]} is not in the possible values of y ({list(possibleValuesY)})") from None
+    counts = numpy.zeros((len(possibleValuesX), len(classIndex)))
+    numpy.add.at(counts, (numpy.searchsorted(possibleValuesX, X.ravel()), classes), 1)
+    return counts
+
+  @staticmethod
+  def _entropy(counts):
+    """
+    Shannon entropy (in bits) of the class distribution of each row of counts (or of counts if it is a vector).
+    """
+    total = counts.sum(axis=-1, keepdims=True)
+    p = numpy.divide(counts, total, out=numpy.zeros_like(counts), where=total > 0)
+    return -(p * numpy.log2(p, out=numpy.zeros_like(p), where=p > 0)).sum(axis=-1)
+
   def _discretizationMDLP(self, X, y, possibleValuesX, possibleValuesY):
     """
     Uses the MDLP algorithm described in Fayyad and Irani, 1993 to discretize the values of x.
@@ -426,150 +464,46 @@ class DiscreteTypeProcessor:
         list[float]
          a list of the edges of the bins that are chosen by this algorithm
     """
-    xAndY = numpy.concatenate((X, y), axis=1)
-    xAndY = xAndY[xAndY[:, 0].argsort()]
+    counts = self._classCountsByValue(X, y, possibleValuesX, possibleValuesY)
+    cuts = []
+    self._splitIntervalMDLP(counts, 0, len(possibleValuesX), cuts)
     B = (possibleValuesX[1:] + possibleValuesX[:-1]) / 2
-    [class0, _] = possibleValuesY
+    return [possibleValuesX[0]] + [B[cut - 1] for cut in sorted(cuts)] + [possibleValuesX[-1]]
 
-    binEdgesIndex = []
-    nbElementsByIntervalClass0 = numpy.zeros(len(B) + 1)
-    nbElementsByIntervalClass1 = numpy.zeros(len(B) + 1)
-    currentIntervalIndex = 0
-    for X in xAndY:
-      if currentIntervalIndex < len(B) and X[0] > B[currentIntervalIndex]:
-        currentIntervalIndex += 1
-      if X[1] == class0:
-        nbElementsByIntervalClass0[currentIntervalIndex] += 1
-      else:
-        nbElementsByIntervalClass1[currentIntervalIndex] += 1
+  @staticmethod
+  def _splitIntervalMDLP(counts, low, high, cuts):
+    """
+    Recursively splits the interval of the values of indices low, ..., high-1 with the MDLP criterion. A cut c separates
+    the values of indices low, ..., c-1 from the values of indices c, ..., high-1; accepted cuts are appended to cuts.
+    """
+    if high - low < 2:
+      return
+    total = counts[low:high].sum(axis=0)
+    left = numpy.cumsum(counts[low : high - 1], axis=0)
+    right = total - left
+    N = total.sum()
+    leftEntropy = DiscreteTypeProcessor._entropy(left)
+    rightEntropy = DiscreteTypeProcessor._entropy(right)
+    classInformationEntropy = (left.sum(axis=1) * leftEntropy + right.sum(axis=1) * rightEntropy) / N
+    best = int(numpy.argmin(classInformationEntropy))
 
-    Class0ByLargeInterval = [nbElementsByIntervalClass0.sum()]
-    Class1ByLargeInterval = [nbElementsByIntervalClass1.sum()]
+    entropy = DiscreteTypeProcessor._entropy(total)
+    gain = entropy - classInformationEntropy[best]
+    # numbers of classes present in the interval and in both sub-intervals
+    k, k1, k2 = (numpy.count_nonzero(c) for c in (total, left[best], right[best]))
+    deltaS = math.log2(3**k - 2) - (k * entropy - k1 * leftEntropy[best] - k2 * rightEntropy[best])
+    if gain <= (math.log2(N - 1) + deltaS) / N:
+      return
 
-    totalCountByLargeInterval = [Class0ByLargeInterval[0] + Class1ByLargeInterval[0]]
-
-    probabilityClass0 = Class0ByLargeInterval[0] / totalCountByLargeInterval[0]
-    probabilityClass1 = Class1ByLargeInterval[0] / totalCountByLargeInterval[0]
-    shannonEntropyByLargeInterval = [
-      (-1) * (probabilityClass0 * math.log2(probabilityClass0) + probabilityClass1 * math.log2(probabilityClass1))
-    ]
-
-    continueDividingInterval = [True]
-
-    currentValues = {}
-    minimalValues = {}
-
-    while any(continueDividingInterval):
-      minimalValues["classInformationEntropy"] = math.inf
-      for param in (
-        "boundaryIndex",
-        "leftSubintervalClass0",
-        "leftSubintervalClass1",
-        "leftSubintervalShannonEntropy",
-        "rightSubintervalClass0",
-        "rightSubintervalClass1",
-        "rightSubintervalShannonEntropy",
-      ):
-        (currentValues[param], minimalValues[param]) = (0, 0)
-
-      position = 0
-      while currentValues["boundaryIndex"] < len(B):
-        while not continueDividingInterval[position]:
-          position = position + 1
-          currentValues["boundaryIndex"] = binEdgesIndex[position - 1] + 1
-
-        if position < len(binEdgesIndex) and currentValues["boundaryIndex"] == binEdgesIndex[position]:
-          # this function decides whether to accept the cut point in this interval and updates the relevant lists if
-          # the value is accepted.
-          self._divideIntervalMDLP(
-            minimalValues,
-            shannonEntropyByLargeInterval,
-            Class0ByLargeInterval,
-            Class1ByLargeInterval,
-            continueDividingInterval,
-            totalCountByLargeInterval,
-            position,
-            binEdgesIndex,
-          )
-          position += 1
-          while position < len(continueDividingInterval) and not continueDividingInterval[position]:
-            position += 1
-          if position == len(continueDividingInterval):
-            break
-          else:
-            currentValues["boundaryIndex"] = binEdgesIndex[position - 1] + 1
-          (
-            currentValues["leftSubintervalClass0"],
-            currentValues["leftSubintervalClass1"],
-          ) = (0, 0)
-          minimalValues["classInformationEntropy"] = math.inf
-          continue
-
-        currentValues["leftSubintervalClass0"] += nbElementsByIntervalClass0[currentValues["boundaryIndex"]]
-        currentValues["leftSubintervalClass1"] += nbElementsByIntervalClass1[currentValues["boundaryIndex"]]
-
-        totalCountLeftInterval = currentValues["leftSubintervalClass0"] + currentValues["leftSubintervalClass1"]
-
-        probabilityClass0 = currentValues["leftSubintervalClass0"] / totalCountLeftInterval
-        probabilityClass1 = currentValues["leftSubintervalClass1"] / totalCountLeftInterval
-        currentValues["leftSubintervalShannonEntropy"] = 0
-        if probabilityClass0 > 0:
-          currentValues["leftSubintervalShannonEntropy"] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
-        if probabilityClass1 > 0:
-          currentValues["leftSubintervalShannonEntropy"] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
-
-        classInformationEntropy = (totalCountLeftInterval / totalCountByLargeInterval[position]) * currentValues[
-          "leftSubintervalShannonEntropy"
-        ]
-
-        currentValues["rightSubintervalClass0"] = (
-          Class0ByLargeInterval[position] - currentValues["leftSubintervalClass0"]
-        )
-        currentValues["rightSubintervalClass1"] = (
-          Class1ByLargeInterval[position] - currentValues["leftSubintervalClass1"]
-        )
-        NRightInterval = currentValues["rightSubintervalClass0"] + currentValues["rightSubintervalClass1"]
-
-        probabilityClass0 = currentValues["rightSubintervalClass0"] / NRightInterval
-        probabilityClass1 = currentValues["rightSubintervalClass1"] / NRightInterval
-        currentValues["rightSubintervalShannonEntropy"] = 0
-        if probabilityClass0 > 0:
-          currentValues["rightSubintervalShannonEntropy"] += (-1) * probabilityClass0 * math.log2(probabilityClass0)
-        if probabilityClass1 > 0:
-          currentValues["rightSubintervalShannonEntropy"] += (-1) * probabilityClass1 * math.log2(probabilityClass1)
-
-        classInformationEntropy += (NRightInterval / totalCountByLargeInterval[position]) * currentValues[
-          "rightSubintervalShannonEntropy"
-        ]
-
-        if classInformationEntropy < minimalValues["classInformationEntropy"]:
-          minimalValues = currentValues.copy()
-          minimalValues["classInformationEntropy"] = classInformationEntropy
-
-        currentValues["boundaryIndex"] += 1
-
-      if continueDividingInterval[-1]:
-        self._divideIntervalMDLP(
-          minimalValues,
-          shannonEntropyByLargeInterval,
-          Class0ByLargeInterval,
-          Class1ByLargeInterval,
-          continueDividingInterval,
-          totalCountByLargeInterval,
-          position,
-          binEdgesIndex,
-        )
-    binEdges = [xAndY[0][0]]
-    for index in binEdgesIndex:
-      binEdges.append(B[index])
-    binEdges.append(xAndY[-1][0])
-
-    return binEdges
+    cut = low + best + 1
+    cuts.append(cut)
+    DiscreteTypeProcessor._splitIntervalMDLP(counts, low, cut, cuts)
+    DiscreteTypeProcessor._splitIntervalMDLP(counts, cut, high, cuts)
 
   @staticmethod
   def _discretizationCAIM(X, y, possibleValuesX, possibleValuesY):
     """
-    Applies the CAIM algorithm to discretize the values of x
+    Applies the CAIM algorithm (Kurgan and Cios, 2004) to discretize the values of x
 
     Parameters
     ----------
@@ -586,110 +520,57 @@ class DiscreteTypeProcessor:
         list[float]
           a list of the edges of the bins that are chosen by this algorithm
     """
-    xAndY = numpy.concatenate((X, y), axis=1)
-    xAndY = xAndY[xAndY[:, 0].argsort()]
-    B = (possibleValuesX[1:] + possibleValuesX[:-1]) / 2
-    [class0, _] = possibleValuesY
+    counts = DiscreteTypeProcessor._classCountsByValue(X, y, possibleValuesX, possibleValuesY)
+    nbClasses = numpy.count_nonzero(counts.sum(axis=0))
 
-    binEdgesIndex = []
-    nbElementsByIntervalClass0 = numpy.zeros(len(B) + 1)
-    nbElementsByIntervalClass1 = numpy.zeros(len(B) + 1)
-    currentIntervalIndex = 0
-    for X in xAndY:
-      if currentIntervalIndex < len(B) and X[0] > B[currentIntervalIndex]:
-        currentIntervalIndex += 1
-      if X[1] == class0:
-        nbElementsByIntervalClass0[currentIntervalIndex] += 1
-      else:
-        nbElementsByIntervalClass1[currentIntervalIndex] += 1
-
-    Class0ByLargeInterval = [nbElementsByIntervalClass0.sum()]
-    Class1ByLargeInterval = [nbElementsByIntervalClass1.sum()]
-
-    k = 0
+    # the interval r contains the values of indices bounds[r], ..., bounds[r+1]-1
+    bounds = [0, len(possibleValuesX)]
+    intervalCounts = [counts.sum(axis=0)]
     globalCAIM = 0.0
-    oldCaim = 0.0
     while True:
-      caimMax = 0
-      maxPosition = 0
-      maxBoundaryIndex = 0
-      position = 0
-      currentSumClass0 = 0
-      currentSumClass1 = 0
-      maxLeftIntervalClass0 = currentSumClass0
-      maxLeftIntervalClass1 = currentSumClass1
-      maxRightIntervalClass0 = maxLeftIntervalClass0
-      maxRightIntervalClass1 = maxLeftIntervalClass1
-
-      for boundaryIndex in range(len(B)):
-        if position < len(binEdgesIndex) and boundaryIndex == binEdgesIndex[position]:
-          position += 1
-          if Class0ByLargeInterval[position] > Class1ByLargeInterval[position]:
-            oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[position], 2) / (
-              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
-            )
-          else:
-            oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[position], 2) / (
-              Class0ByLargeInterval[position] + Class1ByLargeInterval[position]
-            )
-          currentSumClass0 = 0
-          currentSumClass1 = 0
+      # max_r^2 / M_r for each interval r
+      terms = [c.max() ** 2 / c.sum() for c in intervalCounts]
+      sumOfTerms = sum(terms)
+      best = None
+      for r, (low, high) in enumerate(zip(bounds[:-1], bounds[1:])):
+        if high - low < 2:
           continue
+        left = numpy.cumsum(counts[low : high - 1], axis=0)
+        right = intervalCounts[r] - left
+        caim = (
+          sumOfTerms - terms[r] + left.max(axis=1) ** 2 / left.sum(axis=1) + right.max(axis=1) ** 2 / right.sum(axis=1)
+        ) / (len(intervalCounts) + 1)
+        i = int(numpy.argmax(caim))
+        if best is None or caim[i] > best[0]:
+          best = (caim[i], r, low + i + 1, left[i], right[i])
 
-        currentSumClass0 += nbElementsByIntervalClass0[boundaryIndex]
-        currentSumClass1 += nbElementsByIntervalClass1[boundaryIndex]
-        caim = oldCaim
-
-        if currentSumClass0 > currentSumClass1:
-          caim = caim + math.pow(currentSumClass0, 2) / (currentSumClass0 + currentSumClass1)
-        else:
-          caim = caim + math.pow(currentSumClass1, 2) / (currentSumClass0 + currentSumClass1)
-
-        intervalClass0 = Class0ByLargeInterval[position] - currentSumClass0
-        intervalClass1 = Class1ByLargeInterval[position] - currentSumClass1
-
-        if intervalClass0 > intervalClass1:
-          caim = caim + math.pow(intervalClass0, 2) / (intervalClass0 + intervalClass1)
-        else:
-          caim = caim + math.pow(intervalClass1, 2) / (intervalClass0 + intervalClass1)
-
-        caim = caim / (len(Class0ByLargeInterval) + 1)
-
-        if caim > caimMax:
-          maxLeftIntervalClass0 = currentSumClass0
-          maxLeftIntervalClass1 = currentSumClass1
-          maxRightIntervalClass0 = intervalClass0
-          maxRightIntervalClass1 = intervalClass1
-          caimMax = caim
-          maxBoundaryIndex = boundaryIndex
-          maxPosition = position
-
-      if caimMax > globalCAIM:
-        globalCAIM = caimMax
-        binEdgesIndex.insert(maxPosition, maxBoundaryIndex)
-        Class0ByLargeInterval.insert(maxPosition + 1, maxRightIntervalClass0)
-        Class1ByLargeInterval.insert(maxPosition + 1, maxRightIntervalClass1)
-        Class0ByLargeInterval[maxPosition] = maxLeftIntervalClass0
-        Class1ByLargeInterval[maxPosition] = maxLeftIntervalClass1
-        k = k + 1
-        if Class0ByLargeInterval[0] > Class1ByLargeInterval[0]:
-          oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class0ByLargeInterval[0], 2) / (
-            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
-          )
-        else:
-          oldCaim = globalCAIM * len(Class0ByLargeInterval) - math.pow(Class1ByLargeInterval[0], 2) / (
-            Class0ByLargeInterval[0] + Class1ByLargeInterval[0]
-          )
-
-      else:
+      # as in Kurgan and Cios, a cut is accepted if it increases CAIM or if there are fewer intervals than classes
+      if best is None or (best[0] <= globalCAIM and len(intervalCounts) >= nbClasses):
         break
+      globalCAIM, r, cut, leftCounts, rightCounts = best
+      bounds.insert(r + 1, cut)
+      intervalCounts[r : r + 1] = [leftCounts, rightCounts]
 
-    binEdges = [xAndY[0][0]]
-    for index in binEdgesIndex:
-      binEdges.append(B[index])
-    binEdges.append(xAndY[-1][0])
+    B = (possibleValuesX[1:] + possibleValuesX[:-1]) / 2
+    return [possibleValuesX[0]] + [B[cut - 1] for cut in bounds[1:-1]] + [possibleValuesX[-1]]
 
-    return binEdges
+  @staticmethod
+  def _regretOfTwoBins(h):
+    """
+    Parametric complexity (regret) of a 2-bin histogram of h samples (Kontkanen and Myllymäki, 2007, eq. 19), summed in
+    log space so that the binomial coefficients do not overflow.
+    """
+    if h == 0:
+      return 1.0
+    k = numpy.arange(h + 1)
+    logTerms = (
+      scipy.special.gammaln(h + 1)
+      - scipy.special.gammaln(k + 1)
+      - scipy.special.gammaln(h - k + 1)
+      + scipy.special.xlogy(k, k / h)
+      + scipy.special.xlogy(h - k, (h - k) / h)
+    )
+    return numpy.exp(logTerms).sum()
 
   @staticmethod
   def _discretizationNML(X, possibleValuesX, kMax=10, epsilon=None):
@@ -707,91 +588,67 @@ class DiscreteTypeProcessor:
         kMax: int
             the maximum number of bins before the algorithm stops itself.
         epsilon: float or None
-            the value of epsilon used in the algorithm. Should be as small as possible. If None is passed the value is
-            automatically calculated.
+            the precision of the data: the range of the data is extended by epsilon/2 on both sides. If None is passed,
+            the smallest gap between two distinct values is used.
     Returns
     -------
         list[float]
           a list of the edges of the bins that are chosen by this algorithm
     """
-    Xsorted = X[X.argsort(axis=None)]
     if epsilon is None:
-      epsilon = numpy.amin(possibleValuesX[1:] - possibleValuesX[:-1]) / 2
-    epsilon = epsilon / 2
-    candidateCutPoints = numpy.zeros(2 * len(possibleValuesX))
-    for i in range(len(possibleValuesX)):
-      candidateCutPoints[2 * i] = possibleValuesX[i] - epsilon
-      candidateCutPoints[2 * i + 1] = possibleValuesX[i] + epsilon
+      epsilon = numpy.amin(possibleValuesX[1:] - possibleValuesX[:-1])
+    # candidate cut points: the midpoints of consecutive distinct values (one of the choices of section 4 of the
+    # article, instead of the x +- epsilon/2 of eq. 22 which produces bins of width epsilon around isolated values),
+    # with both end points: candidates[0] and candidates[-1] are always in the histogram
+    candidates = numpy.concatenate(
+      [
+        [possibleValuesX[0] - epsilon / 2],
+        (possibleValuesX[1:] + possibleValuesX[:-1]) / 2,
+        [possibleValuesX[-1] + epsilon / 2],
+      ]
+    )
+    E = len(candidates)
+    # counts[e]: number of samples lower than or equal to candidates[e]
+    counts = numpy.searchsorted(numpy.sort(X), candidates, side="right").astype(float)
+    n = counts[-1]
 
-    E = len(candidateCutPoints)
+    def binCost(e, start):
+      # -h (log(epsilon h) - log(L n)) for the bins ]candidates[start], candidates[e]] (eq. 21)
+      h = counts[e] - counts[start]
+      length = candidates[e] - candidates[start]
+      return -scipy.special.xlogy(h, epsilon * h / (length * n))
 
-    binCount = numpy.zeros(E)
-    counter = 0
-    j = 0
-    for x in Xsorted:
-      while x > candidateCutPoints[j]:
-        binCount[j] = counter
-        j = j + 1
-      counter = counter + 1
-    binCount[j] = counter
-    n = binCount[-1]
-    Rkminus1 = numpy.ones(E)
-    Rk = numpy.zeros(E)
-    for i in range(1, E):
-      ne = int(binCount[i])
-      total_amount = 0
-      for h1 in range(ne + 1):
-        h2 = ne - h1
-        total_amount += math.pow(h1 / ne, h1) * math.pow(h2 / ne, h2) * scipy.special.comb(ne, h1)
-      Rk[i] = total_amount
+    # regrets of 1-bin and 2-bin histograms of the samples up to each candidate, then recursion (eq. 18)
+    previousRegret = numpy.ones(E)
+    regret = numpy.array([DiscreteTypeProcessor._regretOfTwoBins(int(h)) for h in counts])
 
-    k = 2
+    previousB = numpy.full(E, math.inf)
+    previousB[1:] = binCost(numpy.arange(1, E), 0)  # eq. 30
+    scores = []
+    predecessors = []
+    for K in range(2, kMax + 1):
+      B = numpy.full(E, math.inf)
+      predecessor = numpy.zeros(E, dtype=int)
+      for e in range(K, E):
+        starts = numpy.arange(K - 1, e)
+        values = previousB[starts] + binCost(e, starts) + numpy.log(regret[e] / previousRegret[starts])
+        best = int(numpy.argmin(values))
+        # log of the ratio of the binomial coefficients counting the cut point sets (eq. 28)
+        B[e] = values[best] + math.log((E - K) / (K - 1))
+        predecessor[e] = starts[best]
+      scores.append(B[-1])
+      predecessors.append(predecessor)
+      previousRegret, regret = regret, regret + counts * previousRegret / (K - 1)
+      previousB = B
 
-    Bkminus1 = numpy.zeros(E)
-    for e in range(1, E):
-      ne = binCount[e]
-      Bkminus1[e] = -ne * (math.log(2 * epsilon * ne) - math.log(n * (candidateCutPoints[e] - candidateCutPoints[0])))
-
-    Bk = numpy.zeros(E)
-    cutpoints = [candidateCutPoints[0]]
-    Bvalues = [Bkminus1[-1]]
-    minimumeprime = 0
-    while k <= kMax:
-      for e in range(k, E):
-        minimum = math.inf
-        minimumeprime = 0
-        for eprime in range(k - 1, e):
-          if binCount[e] > binCount[eprime]:
-            temp = Bkminus1[eprime] - (binCount[e] - binCount[eprime]) * (
-              math.log(2 * epsilon * (binCount[e] - binCount[eprime]))
-              - math.log(n * (candidateCutPoints[e] - candidateCutPoints[eprime]))
-            )
-          else:
-            temp = Bkminus1[eprime]
-          temp = temp + math.log(Rk[e] / Rkminus1[eprime])
-          if minimum > temp:
-            minimum = temp
-            minimumeprime = eprime
-        minimum = minimum + math.log((E - k) / (k - 1))
-        Bk[e] = minimum
-      cutpoints.append(candidateCutPoints[minimumeprime])
-      Bvalues.append(Bk[-1])
-
-      k = k + 1
-      temp = Rk
-      Rk = Rk + numpy.multiply(binCount, Rkminus1) / (k - 2)
-      Rkminus1 = temp
-      Bkminus1 = Bk
-    minimum = math.inf
-    minimumIndex = 0
-    for k in range(1, len(Bvalues)):
-      if Bvalues[k] < minimum:
-        minimum = Bvalues[k]
-        minimumIndex = k
-    cutpoints = sorted(set(cutpoints[: minimumIndex + 1]))
-    cutpoints.append(candidateCutPoints[-1])
-
-    return cutpoints
+    # optimal number of bins, then the cut points by following the predecessors back from the last candidate
+    bestK = int(numpy.argmin(scores)) + 2
+    cuts = []
+    e = E - 1
+    for K in range(bestK, 1, -1):
+      e = predecessors[K - 2][e]
+      cuts.append(e)
+    return [candidates[0]] + [candidates[e] for e in reversed(cuts)] + [candidates[-1]]
 
   def _createVariable(self, variableName, X, y=None, possibleValuesY=None):
     """
@@ -952,7 +809,7 @@ class DiscreteTypeProcessor:
           + str(self.discretizationParametersDictionary[variableName]["param"])
           + " bins for the variable "
           + str(variableName)
-          + "gave only 1 bin. Try increasing the number of bins used by this variable using "
+          + " gave only 1 bin. Try increasing the number of bins used by this variable using "
           "setDiscretizationParameters to avoid this error"
         )
 
@@ -964,69 +821,6 @@ class DiscreteTypeProcessor:
       self.discretizationParametersDictionary.pop(variableName)
 
     return var
-
-  @staticmethod
-  def _divideIntervalMDLP(
-    minimalValues,
-    shannonEntropyByLargeInterval,
-    Class0ByLargeInterval,
-    Class1ByLargeInterval,
-    continueDividingInterval,
-    totalCountByLargeInterval,
-    position,
-    binEdgesIndex,
-  ):
-    shannonEntropy = shannonEntropyByLargeInterval[position]
-
-    gain = shannonEntropy - minimalValues["classInformationEntropy"]
-
-    # all the 2's here should be replaced by the number of classes present in the interval. However we know that if
-    # the number of classes in the interval is equal to 1, then the shannon entropy will be 0 so the product of the 2
-    # will be 0.
-    deltaS = math.log2(7) - (
-      2 * shannonEntropy
-      - 2 * minimalValues["leftSubintervalShannonEntropy"]
-      - 2 * minimalValues["rightSubintervalShannonEntropy"]
-    )
-
-    if gain > (math.log2(totalCountByLargeInterval[position] - 1) + deltaS) / totalCountByLargeInterval[position]:
-      binEdgesIndex.insert(position, minimalValues["boundaryIndex"])
-
-      Class0ByLargeInterval.insert(position + 1, minimalValues["rightSubintervalClass0"])
-      Class1ByLargeInterval.insert(position + 1, minimalValues["rightSubintervalClass1"])
-      continueDividingInterval.insert(position + 1, True)
-      totalCountByLargeInterval.insert(
-        position + 1,
-        minimalValues["rightSubintervalClass0"] + minimalValues["rightSubintervalClass1"],
-      )
-      shannonEntropyByLargeInterval.insert(position + 1, minimalValues["rightSubintervalShannonEntropy"])
-
-      Class0ByLargeInterval[position] = minimalValues["leftSubintervalClass0"]
-      Class1ByLargeInterval[position] = minimalValues["leftSubintervalClass1"]
-      totalCountByLargeInterval[position] = (
-        minimalValues["leftSubintervalClass0"] + minimalValues["leftSubintervalClass1"]
-      )
-      shannonEntropyByLargeInterval[position] = minimalValues["leftSubintervalShannonEntropy"]
-
-      # if the class information entropy is 0, then we have perfectly cut the interval so that a class only appears
-      # on one side, so we do not need to cut any further.
-      if minimalValues["leftSubintervalShannonEntropy"] == 0:
-        continueDividingInterval[position] = False
-      if minimalValues["rightSubintervalShannonEntropy"] == 0:
-        continueDividingInterval[position + 1] = False
-
-        # if there are no tensor boundary points left in this interval, we can't divide it any further
-      if position > 0 and minimalValues["boundaryIndex"] - 1 == binEdgesIndex[position - 1]:
-        continueDividingInterval[position] = False
-
-      if minimalValues["boundaryIndex"] == 0:
-        continueDividingInterval[position] = False
-
-      if position < len(binEdgesIndex) - 1 and binEdgesIndex[position] + 1 == binEdgesIndex[position + 1]:
-        continueDividingInterval[position + 1] = False
-      position += 1
-    else:
-      continueDividingInterval[position] = False
 
   def discretizedTemplate(self, X, y=None, *, possibleValuesY=None, template=None):
     """

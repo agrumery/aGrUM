@@ -39,6 +39,8 @@
 ############################################################################
 
 import copy
+import itertools
+import math
 import unittest
 import warnings
 
@@ -393,6 +395,91 @@ class DiscreteTypeProcessorTestCase(pyAgrumTestCase):
     var = discretizer.discretizedTemplate(X, y).variable("x")
     self.assertEqual(var.domainSize(), 2)
     self.assertAlmostEqual(var.ticks()[1], 6, delta=0.2)
+
+  def testMDLPWithThreeClasses(self):
+    rng = np.random.default_rng(3)
+    x = rng.uniform(0, 9, size=300)
+    X = pd.DataFrame({"x": x})
+    y = pd.Series(np.where(x < 3, "a", np.where(x < 6, "b", "c")))
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="MDLP")
+    var = discretizer.discretizedTemplate(X, y).variable("x")
+    self.assertEqual(var.domainSize(), 3)
+    self.assertAlmostEqual(var.ticks()[1], 3, delta=0.2)
+    self.assertAlmostEqual(var.ticks()[2], 6, delta=0.2)
+
+  def testCAIMWithThreeClasses(self):
+    rng = np.random.default_rng(4)
+    x = rng.uniform(0, 9, size=300)
+    X = pd.DataFrame({"x": x})
+    y = pd.Series(np.where(x < 3, 0, np.where(x < 6, 1, 2)))
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="CAIM")
+    var = discretizer.discretizedTemplate(X, y).variable("x")
+    # at least as many intervals as classes, and the two class boundaries are found
+    self.assertGreaterEqual(var.domainSize(), 3)
+    for boundary in (3, 6):
+      self.assertTrue(any(abs(t - boundary) < 0.2 for t in var.ticks()[1:-1]))
+
+  @staticmethod
+  def _nmlCriterion(cuts, candidates, counts, epsilon, E):
+    # criterion (24) of Kontkanen and Myllymaki (2007) for the histogram whose bins end at candidates[cuts]
+    n = int(counts[-1])
+
+    def regret(K, h):
+      if h == 0 or K == 1:
+        return 1.0
+      c1 = 1.0
+      c2 = sum(math.comb(h, k) * (k / h) ** k * ((h - k) / h) ** (h - k) for k in range(h + 1))
+      for j in range(3, K + 1):
+        c1, c2 = c2, c2 + h * c1 / (j - 2)
+      return c2
+
+    value, previous = 0.0, 0
+    for e in cuts:
+      h = counts[e] - counts[previous]
+      if h > 0:
+        value -= h * (math.log(epsilon * h) - math.log((candidates[e] - candidates[previous]) * n))
+      previous = e
+    K = len(cuts)
+    # E counts both end points, hence E - 2 inner candidate cut points
+    return value + math.log(regret(K, n)) + math.log(math.comb(E - 2, K - 1))
+
+  def testNMLIsOptimal(self):
+    # exhaustive search over all the cut point sets: NML must return the one with the smallest criterion
+    rng = np.random.default_rng(5)
+    values = np.array([0.0, 1.0, 2.0, 3.0, 5.0, 6.0, 7.0, 9.0])
+    kMax = 4
+    for _ in range(10):
+      x = rng.choice(values, size=40, p=rng.dirichlet(np.ones(len(values))))
+      possible = np.unique(x)
+      # candidate cut points: midpoints of consecutive values, range extended by half the smallest gap on both sides
+      epsilon = np.amin(possible[1:] - possible[:-1])
+      candidates = np.concatenate(
+        [[possible[0] - epsilon / 2], (possible[1:] + possible[:-1]) / 2, [possible[-1] + epsilon / 2]]
+      )
+      counts = np.array([np.sum(x <= c) for c in candidates])
+      E = len(candidates)
+      best = min(
+        (self._nmlCriterion(list(inner) + [E - 1], candidates, counts, epsilon, E), list(inner) + [E - 1])
+        for K in range(2, kMax + 1)
+        for inner in itertools.combinations(range(1, E - 1), K - 1)
+      )
+      expected = [candidates[0]] + [candidates[e] for e in best[1]]
+      discretizer = DiscreteTypeProcessor(discretizationThreshold=1)
+      discretizer.setDiscretizationParameters("x", "NML", kMax)
+      found = discretizer.discretizedTemplate(pd.DataFrame({"x": x})).variable("x").ticks()
+      np.testing.assert_allclose(found, expected)
+
+  def testNMLWithManySamples(self):
+    # more than a thousand samples in a bin: the regret must stay finite
+    rng = np.random.default_rng(6)
+    x = np.round(np.concatenate([rng.normal(0, 1, size=1000), rng.normal(10, 1, size=1000)]), 1)
+    X = pd.DataFrame({"x": x})
+    discretizer = DiscreteTypeProcessor(defaultDiscretizationMethod="NML", discretizationThreshold=10)
+    ticks = discretizer.discretizedTemplate(X).variable("x").ticks()
+    self.assertTrue(np.all(np.isfinite(ticks)))
+    # the bin that contains the gap between the two clusters contains few samples
+    counts, _ = np.histogram(x, bins=ticks)
+    self.assertLess(counts[np.searchsorted(ticks, 5) - 1], 0.05 * len(x))
 
   def testElbowMethod(self):
     rng = np.random.default_rng(2)

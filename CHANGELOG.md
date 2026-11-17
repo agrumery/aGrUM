@@ -110,6 +110,9 @@
       parameters of `bn` (see aGrUM).
     - The AIC score is the criterion of Akaike (see aGrUM): the structures learned with `useScoreAIC` and the order
       selected by `KTBNAdaptiveLearner.useOrderScoreAIC` may change.
+    - `DiscreteTypeProcessor`: MDLP and CAIM accept a class with any number of values (they required a binary
+      class). Behaviour change: the candidate cut points of NML are the midpoints of consecutive distinct values (bins of
+      the width of the precision around isolated values were favoured), and NML is much faster.
 
 - aGrUM
 
@@ -468,7 +471,10 @@
       informations (in bits) with `exp` as if they were in nats, which biased the orientation of the triples.
     - `DiscreteTypeProcessor`: MDLP no longer forces a cut point when none is informative (a `ValueError` says that the
       variable cannot be discretized by MDLP); the elbow method crashed (1D input to `KBinsDiscretizer`), assigned a
-      point to the wrong center after an empty interval and divided by 0 on a flat curve.
+      point to the wrong center after an empty interval and divided by 0 on a flat curve. NML did not return the
+      histogram minimizing its criterion (the scores of a number of bins overwrote those of the previous one while
+      being computed, and the cut points were not traced back from the optimum), and its criterion was NaN beyond
+      about 1030 samples (overflow of the binomial coefficients, now summed in log space).
     - `CausalEffectEstimation`: the X-learner combined its two effects with swapped weights (Künzel et al.:
       e(x) tau0(x) + (1 - e(x)) tau1(x)); TSLS returned the mean of all the coefficients of the second stage instead of
       the coefficient of the treatment, and misaligned the rows of a conditional estimate; the individual effects of
