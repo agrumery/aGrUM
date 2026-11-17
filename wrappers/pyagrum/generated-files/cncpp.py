@@ -236,7 +236,7 @@ class CredalNet(object):
     def instantiation(self, id: int) -> "pyagrum.Instantiation":
         r"""
 
-        Get an Instantiation from a node id, usefull to fill the constraints of the network.
+        Get an Instantiation from a node id, useful to fill the constraints of the network.
 
         bnet accessors / shortcuts.
 
@@ -299,11 +299,19 @@ class CredalNet(object):
     def lagrangeNormalization(self) -> None:
         r"""
 
-        Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
+        Laplace smoothing of the counts of a BayesNet storing counts of events, such that no probability is 0.
 
-        Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
+        Use this method when using a single BayesNet storing counts of events: for each configuration of the parents where a
+        count is 0, 1 is added to all the counts of the configuration (the other configurations are unchanged). This call is
+        irreversible and modifies the counts stored by the original network.
 
-        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
+        Does not compute the parameters but keeps the smoothed counts only. Call ``idmLearning`` to compute the probabilities
+        (with any parameter value).
+
+        Raises
+        ------
+        pyagrum.OperationNotAllowed
+            If the network contains probabilities instead of counts.
 
         """
         return _cncpp.CredalNet_lagrangeNormalization(self)
@@ -330,11 +338,11 @@ class CredalNet(object):
 
         Approximate binarization.
 
-        Each bit has a lower and upper probability which is the lowest - resp. highest - over all vertices of the credal set. Enlarge the orignal credal sets and may induce huge imprecision.
+        Each bit has a lower and upper probability which is the lowest - resp. highest - over all vertices of the credal set. Enlarge the original credal sets and may induce huge imprecision.
 
         Warnings
         --------
-        Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead
+        Enlarge the original credal sets and therefore induce huge imprecision by propagation. Not recommended, use `pyagrum.CNMonteCarloSampling` instead.
 
         """
         return _cncpp.CredalNet_approximatedBinarization(self)
@@ -400,7 +408,8 @@ class CredalNet(object):
         Returns
         -------
         pyagrum.BayesNet
-            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
+            the current Bayesian network (the binarized one if any, the original one otherwise), used for its graph only:
+            its CPTs do not matter.
 
         """
         return _cncpp.CredalNet_current_bn(self)
@@ -443,8 +452,11 @@ class CredalNet(object):
 
         Returns
         -------
-        pyagrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
+        int
+            the type of the node, one of ``CredalNet.NodeType_Precise`` (a single distribution for each configuration of
+            the parents), ``CredalNet.NodeType_Vacuous`` (the credal sets contain every distribution),
+            ``CredalNet.NodeType_Credal`` (any other credal set) and ``CredalNet.NodeType_Indic`` (indicator node added by
+            the binarization), in the binarized network if any, in the original network otherwise.
 
         """
         return _cncpp.CredalNet_currentNodeType(self, id)
@@ -459,8 +471,10 @@ class CredalNet(object):
 
         Returns
         -------
-        pyagrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
+        int
+            the type of the node in the original network, one of ``CredalNet.NodeType_Precise`` (a single distribution for
+            each configuration of the parents), ``CredalNet.NodeType_Vacuous`` (the credal sets contain every distribution)
+            and ``CredalNet.NodeType_Credal`` (any other credal set).
 
         """
         return _cncpp.CredalNet_nodeType(self, id)

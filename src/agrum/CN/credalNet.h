@@ -442,14 +442,14 @@ namespace gum {
       /**
        * @return Returns a constant reference to the original BayesNet (used as
        * a
-       * DAG, it's CPTs does not matter).
+       * DAG, its CPTs do not matter).
        */
       const BayesNet< GUM_SCALAR >& src_bn() const;
 
       /**
-       * @return Returs a constant reference to the actual BayesNet (used as a
+       * @return Returns a constant reference to the actual BayesNet (used as a
        * DAG,
-       * it's CPTs does not matter).
+       * its CPTs do not matter).
        */
       const BayesNet< GUM_SCALAR >& current_bn() const;
 

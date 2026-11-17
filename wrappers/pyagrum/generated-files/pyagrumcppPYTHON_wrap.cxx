@@ -164005,10 +164005,9 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "StructuralMetrics_sid", _wrap_StructuralMetrics_sid, METH_VARARGS, "\n"
 		"\n"
-		"Compute the Structural Intervention Distance (SID) between two DAGs\n"
-		"(Peters & Bühlmann, 2015).\n"
+		"Compute the Structural Intervention Distance (SID) between two DAGs.\n"
 		"\n"
-		"SID counts the number of ordered pairs (i, j) for which the\n"
+		"SID :cite:p:`peters2015structural` counts the number of ordered pairs (i, j) for which the\n"
 		"parent-adjustment set for the causal effect of i on j in the reference graph\n"
 		"is incorrectly reproduced by the test graph.\n"
 		"\n"

@@ -94,6 +94,7 @@ def createBNClassifier(
   Parameters
   ----------
   learningMethod : str, default="MIIC"
+      Possible values: Chow-Liu, NaiveBayes, TAN, MIIC, MIICMDL, MIICNML, GHC, Tabu.
   prior : str, optional
       Possible values: Smoothing, BDeu, Dirichlet, NoPrior.
   scoringType : str, default="BIC"
@@ -165,16 +166,21 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
 
   Parameters
   ----------
+            type_processor: pyagrum.lib.discreteTypeProcessor.DiscreteTypeProcessor
+                The processor which gives the type of each variable and discretizes the continuous ones (see
+                ``createBNClassifier(...)`` to build one from simple discretization parameters).
+
             learningMethod: str
-                A string designating which learning algorithm we want to use. Possible values are: Chow-Liu, NaiveBayes,
-                TAN, MIIC + (MDL ou NML), GHC, Tabu.
+                A string designating which learning algorithm we want to use. Possible values are: Chow-Liu,
+                NaiveBayes, TAN, MIIC, MIICMDL, MIICNML, GHC, Tabu.
                 GHC designates Greedy Hill Climbing.
-                MIIC designates Multivariate Information based Inductive Causation
+                MIIC designates Multivariate Information based Inductive Causation; MIICMDL and MIICNML use MIIC with
+                the MDL or the NML correction.
                 TAN designates Tree-augmented NaiveBayes
-                Tabu designated Tabu list searching
+                Tabu designates Tabu list searching
 
             prior: str
-                A string designating the type of a priorsmoothing we want to use. Possible values are Smoothing,
+                A string designating the type of prior we want to use. Possible values are Smoothing,
                 BDeu, Dirichlet and NoPrior .
                 Note: if using Dirichlet smoothing DirichletCsv cannot be set to none
                 By default (when prior is None) : a smoothing(0.01) is applied.
@@ -221,38 +227,18 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 ``pyagrum.config['skbn', 'tanSignificance']`` is used when the classifier is fitted. Ignored by the
                 other learning methods.
 
-            discretizationStrategy: str
-                sets the default method of discretization for this discretizer. This method will be used if the user has
-                not specified another method for that specific variable using the setDiscretizationParameters method
-                possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
-
-            discretizationNbBins: str or int
-                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
-                also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-                If the method used is NML, this parameter sets the maximum number of bins up to which the NML
-                algorithm searches for the optimal number of bins. In this case this parameter must be an int
-                If any other discretization method is used, this parameter is ignored.
-
-            discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continuous only if it has more unique values
-                than this number (if the number is an int greater than 1).
-                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
-                this number.
-                For instance, if you have entered 0.95, the variable will be treated as continuous only if more than 95%
-                of its values are unique.
-
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threshold or ROC's threshold by
+                indicates if the threshold to choose is Precision-Recall curve's threshold or ROC's threshold by
                 default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
                 Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
                 the target's class.
 
-    beta: float
-        if you choose the Precision-Recall curve's threshold, the F-beta score is maximized. By default, beta=1
-        to have the F1 score. A value inferior of 1 will give more weight to precision. A value superior of 1
-        will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall,
-        while beta = 2 does the opposite.
+            beta: float
+                if you choose the Precision-Recall curve's threshold, the F-beta score is maximized. By default, beta=1
+                to have the F1 score. A value inferior of 1 will give more weight to precision. A value superior of 1
+                will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall,
+                while beta = 2 does the opposite.
 
             significant_digit:
                 number of significant digits when computing probabilities
@@ -277,13 +263,18 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
     """
     Parameters
     ----------
+            type_processor: pyagrum.lib.discreteTypeProcessor.DiscreteTypeProcessor
+                The processor which gives the type of each variable and discretizes the continuous ones (see
+                ``createBNClassifier(...)`` to build one from simple discretization parameters).
+
             learningMethod: str
-                A string designating which type of learning we want to use. Possible values are: Chow-Liu, NaiveBayes,
-                TAN, MIIC + (MDL ou NML), GHC, Tabu.
+                A string designating which learning algorithm we want to use. Possible values are: Chow-Liu,
+                NaiveBayes, TAN, MIIC, MIICMDL, MIICNML, GHC, Tabu.
                 GHC designates Greedy Hill Climbing.
-                MIIC designates Multivariate Information based Inductive Causation
+                MIIC designates Multivariate Information based Inductive Causation; MIICMDL and MIICNML use MIIC with
+                the MDL or the NML correction.
                 TAN designates Tree-augmented NaiveBayes
-                Tabu designated Tabu list searching
+                Tabu designates Tabu list searching
 
             prior: str
                 A string designating the type of prior we want to use. Possible values are Smoothing, BDeu ,
@@ -331,32 +322,18 @@ class BNClassifier(sklearn.base.ClassifierMixin, sklearn.base.BaseEstimator):
                 ``pyagrum.config['skbn', 'tanSignificance']`` is used when the classifier is fitted. Ignored by the
                 other learning methods.
 
-            discretizationStrategy: str
-                sets the default method of discretization for this discretizer. This method will be used if the user has
-                not specified another method for that specific variable using the setDiscretizationParameters method
-                possible values are: 'quantile', 'uniform', 'kmeans', 'NML', 'CAIM' and 'MDLP'
-
-            discretizationNbBins: str or int
-                sets the number of bins if the method used is quantile, kmeans, uniform. In this case this parameter can
-                also be set to the string 'elbowMethod' so that the best number of bins is found automatically.
-                If the method used is NML, this parameter sets the the maximum number of bins up to which the NML
-                algorithm searches for the optimal number of bins. In this case this parameter must be an int
-                If any other discetization method is used, this parameter is ignored.
-
-            discretizationThreshold: int or float
-                When using default parameters a variable will be treated as continuous only if it has more unique values
-                than this number (if the number is an int greater than 1).
-                If the number is a float between 0 and 1, we will test if the proportion of unique values is bigger than
-                this number.
-                For instance, if you have entered 0.95, the variable will be treated as continouus only if more than 95%
-                of its values are unique.
-
             usePR: bool
-                indicates if the threshold to choose is Prevision-Recall curve's threshold or ROC's threshold by
+                indicates if the threshold to choose is Precision-Recall curve's threshold or ROC's threshold by
                 default.
                 ROC curves should be used when there are roughly equal numbers of observations for each class.
                 Precision-Recall curves should be used when there is a moderate to large class imbalance especially for
                 the target's class.
+
+            beta: float
+                if you choose the Precision-Recall curve's threshold, the F-beta score is maximized. By default, beta=1
+                to have the F1 score. A value inferior of 1 will give more weight to precision. A value superior of 1
+                will give more weight to recall. For example, beta = 0.5 makes precision twice as important as recall,
+                while beta = 2 does the opposite.
 
             significant_digit:
                 number of significant digits when computing probabilities

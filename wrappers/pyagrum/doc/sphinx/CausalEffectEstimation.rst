@@ -5,12 +5,12 @@ Causal Effect Estimation
 
 The Neyman-Rubin Potential Outcomes Framework is an approach for estimating
 causal effects (also known as treatment effects) in causal inference. It defines
-causality through the tensor outcomes :math:`Y` of a binary intervention :math:`T`.
-The causal effect, defined as the difference between these tensor outcomes,
+causality through the potential outcomes :math:`Y` of a binary intervention :math:`T`.
+The causal effect, defined as the difference between these potential outcomes,
 is the core focus of this framework. :cite:t:`rubin2005causal`
 
-However, since only one of the tensor outcomes is observed—either the unit receives
-the intervention or it does not—the difference in *tensor* outcomes is unobservable.
+However, since only one of the potential outcomes is observed—either the unit receives
+the intervention or it does not—the difference in *potential* outcomes is unobservable.
 This is known as the "Fundamental Problem of Causal Inference".
 
 Recent advancements have developed improved statistical estimators for causal effects,

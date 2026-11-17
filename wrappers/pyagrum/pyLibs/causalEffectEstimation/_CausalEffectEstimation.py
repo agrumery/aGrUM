@@ -71,7 +71,7 @@ from ._utils import (
 class CausalEffectEstimation:
   """
   Estimates causal effects using a dataset and a causal graph within
-  the Neyman-Rubin Tensor Outcomes framework.
+  the Neyman-Rubin Potential Outcomes framework.
 
   This class performs causal identification based on user-specified datasets
   and causal graphical models. It determines the appropriate adjustment method
@@ -242,7 +242,7 @@ class CausalEffectEstimation:
   ) -> None:
     """
     Specify the (General) Frontdoor Adjustment.
-    :cite:t:`guo2023targeted`.
+    :cite:t:`guo2026flexible`.
 
     Notes
     -----
@@ -276,7 +276,7 @@ class CausalEffectEstimation:
   ) -> None:
     """
     Specify the (Generalized) Instrumental Variable Adjustment.
-    :cite:t:`brito2012generalized`,
+    :cite:t:`brito2002generalized`,
     :cite:t:`van2015efficiently`.
 
 
@@ -709,7 +709,7 @@ class CausalEffectEstimation:
     Inspired by Guo et al. (2023).
 
     :cite:t:`fulcher2020robust`,
-    :cite:t:`guo2023targeted`.
+    :cite:t:`guo2026flexible`.
 
     Parameters
     ----------
@@ -738,7 +738,7 @@ class CausalEffectEstimation:
     Basic implementation of the second plug-in estimator in
     Guo et al. (2023). Must provide covariates.
     :cite:t:`fulcher2020robust`,
-    :cite:t:`guo2023targeted`.
+    :cite:t:`guo2026flexible`.
 
     Parameters
     ----------
@@ -889,13 +889,7 @@ class CausalEffectEstimation:
     Returns
     -------
     float or np.ndarray
-        If ``return_ci`` is ``False``, returns the estimated causal effect
-            as a float.
-
-        If ``return_ci`` is ``True``, returns a tuple containing:
-          - The estimated causal effect (float)
-          - The lower and upper bounds of the confidence interval
-            (tuple of floats)
+        The ACE or the CACE (float), or the ICE of each row of ``conditional`` (np.ndarray).
 
     Raises
     ------

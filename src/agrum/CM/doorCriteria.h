@@ -230,15 +230,16 @@ namespace gum {
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Start node.
      * @param Y End node.
-     * @return Set of nodes on at least one X->..->Y directed path.
+     * @return Set of the nodes, other than X and Y, on at least one X->..->Y directed path;
+     * std::nullopt if there is no directed path from X to Y.
      */
     static std::optional< NodeSet > nodesOnDirectedPaths(const DAG& dag, NodeId X, NodeId Y);
 
     /**
      * @brief Compute the "backdoor reach" of a node.
      *
-     * Backdoor reach = set of nodes reachable from X by traversing one
-     * incoming edge (parent step) followed by any sequence of child steps.
+     * Backdoor reach = set of nodes (other than X) reachable from X by a path without collider
+     * starting with an incoming edge: parent steps followed by child steps.
      *
      * @param dag Directed acyclic graph representing the causal structure.
      * @param X Node of interest (typically the treatment).

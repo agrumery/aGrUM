@@ -232,7 +232,7 @@ namespace gum {
     bool existsArc(std::string_view x, std::string_view y) const;
 
     /**
-     * @brief Mark an arc as spurious: present in observationalBN, removed from causalDAG.
+     * @brief Mark an arc as spurious: kept in observationalBN, removed from causalDAG.
      * Throws if arc is not present in observationalBN.
      */
     void assumeSpurious(NodeId x, NodeId y);

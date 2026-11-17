@@ -35,10 +35,10 @@ The module contains two classes:
 qBNMC — Circuit encoding
 --------------------------
 
-Based on :cite:t:`borujeni2020quantum`.
+Based on :cite:t:`borujeni2021quantum`.
 
 Each variable in the Bayesian network is mapped to ⌈log₂(domainSize)⌉ qubits
-(equation 21 of the paper). The CPT of each node is encoded via multi-qubit
+(Section 3.3 of the paper). The CPT of each node is encoded via multi-qubit
 RY rotations (Section 3.2, Fig. 5):
 
 - root nodes receive unconditional rotations;

@@ -138,7 +138,7 @@ bool
 
 %feature("docstring") gum::DoorCriteria::nodesOnDirectedPaths
 "
-Return the set of nodes lying on any directed path from X to Y.
+Return the set of the intermediate nodes of the directed paths from X to Y.
 
 Parameters
 ----------
@@ -151,17 +151,19 @@ Y : int
 
 Returns
 -------
-set of int
-    NodeIds of all nodes (including X and Y) that lie on at least one
-    directed path from X to Y. Empty if no directed path exists.
+set of int or None
+    NodeIds of the nodes, other than X and Y, that lie on at least one
+    directed path from X to Y (empty for the arc X→Y alone). None if no
+    directed path exists.
 "
 
 %feature("docstring") gum::DoorCriteria::backdoorReach
 "
-Return all nodes reachable from X via a backdoor path.
+Return all nodes reachable from X via a backdoor path without collider.
 
-A backdoor path starts with an arc pointing *into* X (i.e. it begins by
-going to a parent of X) and then follows any sequence of edges.
+Such a path starts with an arc pointing *into* X (it begins by going to a
+parent of X), goes up through parents, then down through children
+(X ← ... ← U → ... → V): it is open when nothing is observed.
 
 Parameters
 ----------
@@ -173,7 +175,7 @@ X : int
 Returns
 -------
 set of int
-    NodeIds of all nodes reachable from X via a backdoor path.
+    NodeIds of all nodes (other than X) reachable from X via such a path.
 "
 
 %feature("docstring") gum::DoorCriteria::hasBackdoorPath

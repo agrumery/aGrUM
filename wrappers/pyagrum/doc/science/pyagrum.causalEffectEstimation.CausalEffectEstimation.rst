@@ -8,7 +8,7 @@ statistical; the module follows the lecture notes :cite:`wager2022stats,neal2020
 :math:`Y` d-separated once the arc :math:`T \to Y` is removed; the covariates are the parents of :math:`Y`); back-door
 set (`pyagrum.CausalModel.backDoor`); generalized front-door :cite:`fulcher2020robust` (mediators on the directed
 paths from :math:`T` to :math:`Y`, covariates gathered from the back-door sets of :math:`(T, M)` and :math:`(M, Y)`);
-conditional instrument :cite:`brito2012generalized`, searched among the parents of :math:`T`, its conditioning set
+conditional instrument :cite:`brito2002generalized`, searched among the parents of :math:`T`, its conditioning set
 being the nearest separator of :cite:`van2015efficiently`. Otherwise only the estimator by do-calculus can be used.
 
 **Estimators** (:math:`\hat e(x) = \hat P(T=1 \mid x)`, :math:`\hat\mu` regressions of the outcome; by default
@@ -24,7 +24,7 @@ linear regressions for the outcomes and logistic regressions for the probabiliti
   inverse propensity weighting :math:`\frac1n \sum_i \big(\frac{t_i}{\hat e(x_i)} - \frac{1 - t_i}{1 - \hat e(x_i)}\big) y_i`
   (not normalized); stratification into ``num_strata`` (100) strata of equal size on :math:`\hat e`, the differences
   in means of the strata being averaged with their sizes (strata without treated or control units are ignored).
-- Front-door :cite:`guo2023targeted`: the plug-in estimate of
+- Front-door :cite:`guo2026flexible`: the plug-in estimate of
   :math:`\sum_m (P(m \mid T{=}1) - P(m \mid T{=}0)) \sum_t P(t)\,E[Y \mid m, t]`, computed as
   :math:`\frac1n \sum_i \big(\frac{\hat P(T=1 \mid m_i)}{\hat P(T=1)} - \frac{\hat P(T=0 \mid m_i)}{\hat P(T=0)}\big)
   \sum_t \hat P(t)\,\hat\mu(m_i, t)`; with covariates, :math:`\xi(m, x) = \sum_t \hat\mu(m, x, t)\,\hat P(t \mid x)` is

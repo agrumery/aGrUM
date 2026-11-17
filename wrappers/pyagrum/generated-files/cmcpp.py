@@ -68,9 +68,10 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
     Identify and evaluate the causal effect of do(doing) on on, optionally
     conditioning on knowing.
 
-    The identification procedure tries in order: d-separation (no effect),
-    backdoor adjustment, frontdoor adjustment, and general do-calculus
-    (ID algorithm).
+    The identification procedure tries in order: backdoor adjustment and
+    frontdoor adjustment (for a single cause, a single effect and no
+    knowing), d-separation by the third rule of the do-calculus (no effect),
+    and general do-calculus (ID and IDC algorithms).
 
     Parameters
     ----------
@@ -405,7 +406,7 @@ class DoorCriteria(object):
     def nodesOnDirectedPaths(dag: "pyagrum.DAG", X: int, Y: int) -> set[int] | None:
         r"""
 
-        Return the set of nodes lying on any directed path from X to Y.
+        Return the set of the intermediate nodes of the directed paths from X to Y.
 
         Parameters
         ----------
@@ -418,9 +419,10 @@ class DoorCriteria(object):
 
         Returns
         -------
-        set of int
-            NodeIds of all nodes (including X and Y) that lie on at least one
-            directed path from X to Y. Empty if no directed path exists.
+        set of int or None
+            NodeIds of the nodes, other than X and Y, that lie on at least one
+            directed path from X to Y (empty for the arc X→Y alone). None if no
+            directed path exists.
 
         """
         return _cmcpp.DoorCriteria_nodesOnDirectedPaths(dag, X, Y)
@@ -429,10 +431,11 @@ class DoorCriteria(object):
     def backdoorReach(dag: "pyagrum.DAG", X: int) -> set[int]:
         r"""
 
-        Return all nodes reachable from X via a backdoor path.
+        Return all nodes reachable from X via a backdoor path without collider.
 
-        A backdoor path starts with an arc pointing *into* X (i.e. it begins by
-        going to a parent of X) and then follows any sequence of edges.
+        Such a path starts with an arc pointing *into* X (it begins by going to a
+        parent of X), goes up through parents, then down through children
+        (X ← ... ← U → ... → V): it is open when nothing is observed.
 
         Parameters
         ----------
@@ -444,7 +447,7 @@ class DoorCriteria(object):
         Returns
         -------
         set of int
-            NodeIds of all nodes reachable from X via a backdoor path.
+            NodeIds of all nodes (other than X) reachable from X via such a path.
 
         """
         return _cmcpp.DoorCriteria_backdoorReach(dag, X)
@@ -657,11 +660,12 @@ class CausalModel(object):
     def assumeSpurious(self, *args) -> None:
         r"""
 
-        Mark an arc in the causal DAG as spurious.
+        Mark an arc of the observational Bayesian network as spurious.
 
         A spurious arc x→y means the observed correlation between x and y is believed
-        to be explained by a latent common cause rather than a direct causal effect.
-        This changes the structural interpretation but does not remove the arc.
+        to be explained by a latent common cause rather than a direct causal effect:
+        the arc stays in the observational Bayesian network and is removed from the
+        causal DAG.
 
         Parameters
         ----------
@@ -669,6 +673,11 @@ class CausalModel(object):
             Tail of the arc (NodeId or variable name).
         y : int or str
             Head of the arc (NodeId or variable name).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If the arc x→y is not in the observational Bayesian network.
 
         """
         return _cmcpp.CausalModel_assumeSpurious(self, *args)
@@ -676,7 +685,8 @@ class CausalModel(object):
     def assumeNonSpurious(self, *args) -> None:
         r"""
 
-        Mark an arc in the causal DAG as non-spurious (a genuine causal effect).
+        Mark an arc of the observational Bayesian network as non-spurious (a genuine
+        causal effect): the arc is added to the causal DAG if it is not there.
 
         Parameters
         ----------
@@ -684,6 +694,11 @@ class CausalModel(object):
             Tail of the arc (NodeId or variable name).
         y : int or str
             Head of the arc (NodeId or variable name).
+
+        Raises
+        ------
+        pyagrum.InvalidArgument
+            If the arc x→y is not in the observational Bayesian network.
 
         """
         return _cmcpp.CausalModel_assumeNonSpurious(self, *args)
@@ -703,7 +718,8 @@ class CausalModel(object):
         Returns
         -------
         bool
-            True if the arc x→y is marked as spurious.
+            True if the arc x→y is in the observational Bayesian network and not in the
+            causal DAG.
 
         """
         return _cmcpp.CausalModel_isAssumedSpurious(self, *args)

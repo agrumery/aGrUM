@@ -94,10 +94,9 @@ pyagrum.InvalidNode
 
 %feature("docstring") gum::StructuralMetrics::sid
 "
-Compute the Structural Intervention Distance (SID) between two DAGs
-(Peters & Bühlmann, 2015).
+Compute the Structural Intervention Distance (SID) between two DAGs.
 
-SID counts the number of ordered pairs (i, j) for which the
+SID :cite:p:`peters2015structural` counts the number of ordered pairs (i, j) for which the
 parent-adjustment set for the causal effect of i on j in the reference graph
 is incorrectly reproduced by the test graph.
 

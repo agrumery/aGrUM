@@ -141,9 +141,10 @@ def causalImpact(cm, *, on, doing, knowing=None, values=None):
     Identify and evaluate the causal effect of do(doing) on on, optionally
     conditioning on knowing.
 
-    The identification procedure tries in order: d-separation (no effect),
-    backdoor adjustment, frontdoor adjustment, and general do-calculus
-    (ID algorithm).
+    The identification procedure tries in order: backdoor adjustment and
+    frontdoor adjustment (for a single cause, a single effect and no
+    knowing), d-separation by the third rule of the do-calculus (no effect),
+    and general do-calculus (ID and IDC algorithms).
 
     Parameters
     ----------

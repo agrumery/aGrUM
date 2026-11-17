@@ -1,4 +1,4 @@
-qBNMC encodes a Bayesian network as a quantum circuit, following :cite:`borujeni2020quantum`, so that measuring all
+qBNMC encodes a Bayesian network as a quantum circuit, following :cite:`borujeni2021quantum`, so that measuring all
 the qubits draws a sample of the joint distribution. A variable with :math:`d` values is represented by
 :math:`\lceil \log_2 d \rceil` qubits, a value by its binary code (the codes beyond :math:`d - 1` get a null
 probability). The probabilities are loaded by rotations: the gate :math:`R_Y(\theta)` maps :math:`|0\rangle` to

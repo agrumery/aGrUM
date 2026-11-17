@@ -132,11 +132,12 @@ bool
 
 %feature("docstring") gum::CausalModel::assumeSpurious
 "
-Mark an arc in the causal DAG as spurious.
+Mark an arc of the observational Bayesian network as spurious.
 
 A spurious arc x→y means the observed correlation between x and y is believed
-to be explained by a latent common cause rather than a direct causal effect.
-This changes the structural interpretation but does not remove the arc.
+to be explained by a latent common cause rather than a direct causal effect:
+the arc stays in the observational Bayesian network and is removed from the
+causal DAG.
 
 Parameters
 ----------
@@ -144,11 +145,17 @@ x : int or str
     Tail of the arc (NodeId or variable name).
 y : int or str
     Head of the arc (NodeId or variable name).
+
+Raises
+------
+pyagrum.InvalidArgument
+    If the arc x→y is not in the observational Bayesian network.
 "
 
 %feature("docstring") gum::CausalModel::assumeNonSpurious
 "
-Mark an arc in the causal DAG as non-spurious (a genuine causal effect).
+Mark an arc of the observational Bayesian network as non-spurious (a genuine
+causal effect): the arc is added to the causal DAG if it is not there.
 
 Parameters
 ----------
@@ -156,6 +163,11 @@ x : int or str
     Tail of the arc (NodeId or variable name).
 y : int or str
     Head of the arc (NodeId or variable name).
+
+Raises
+------
+pyagrum.InvalidArgument
+    If the arc x→y is not in the observational Bayesian network.
 "
 
 %feature("docstring") gum::CausalModel::isAssumedSpurious
@@ -172,7 +184,8 @@ y : int or str
 Returns
 -------
 bool
-    True if the arc x→y is marked as spurious.
+    True if the arc x→y is in the observational Bayesian network and not in the
+    causal DAG.
 "
 
 %feature("docstring") gum::CausalModel::backDoor

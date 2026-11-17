@@ -257,8 +257,8 @@ class qBNRejection:
       k += 1
       if k > 20:
         raise RuntimeError(
-          "qBNRejection.getSample: evidence not satisfied after 2^20 Grover iterates — "
-          "evidence may be inconsistent or have near-zero probability"
+          "qBNRejection.getSample: evidence not satisfied after 22 attempts (the last one with 2^21 Grover "
+          "iterates) — evidence may be inconsistent or have near-zero probability"
         )
 
       circuit.data = circuit.data[:-n_meas_ops]

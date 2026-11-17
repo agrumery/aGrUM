@@ -142,10 +142,10 @@ Parameters
 ----------
 doOperatorPrefix : str, optional
     Prefix for the do-operator notation. Defaults to
-    ``gum.config[\"causal\", \"latexDoPrefix\"]``.
+    ``pyagrum.config[\"causal\", \"latexDoPrefix\"]``.
 doOperatorSuffix : str, optional
     Suffix for the do-operator notation. Defaults to
-    ``gum.config[\"causal\", \"latexDoSuffix\"]``.
+    ``pyagrum.config[\"causal\", \"latexDoSuffix\"]``.
 
 Returns
 -------
