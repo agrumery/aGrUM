@@ -801,4 +801,34 @@ namespace gum_tests {
     }
   }
 
+  GUM_TEST(Rule3_AncestorsAreTakenInTheCausalDAG) {
+    // U->X1->X2->W, U->Y: X1 is an ancestor of W in G (through X2), so its incoming arc U->X1 is
+    // kept and rule 3 does not apply (Y-U-X1 is open given W). Taking the ancestors in the graph
+    // without the arcs into X would remove U->X1 and wrongly give P(Y | W). P(Y | do(X1,X2), W) =
+    // P(Y): do(X2) cuts W from U.
+    auto bn = gum::BayesNet< double >::fastPrototype("U->X1->X2->W;U->Y");
+    bn.cpt("U").fillWith({0.3, 0.7});
+    bn.cpt("X1").fillWith({0.9, 0.1, 0.2, 0.8});
+    bn.cpt("X2").fillWith({0.8, 0.2, 0.3, 0.7});
+    bn.cpt("W").fillWith({0.6, 0.4, 0.1, 0.9});
+    bn.cpt("Y").fillWith({0.25, 0.75, 0.85, 0.15});
+    gum::CausalModel< double > cm(bn);
+    const double               py0 = 0.3 * 0.25 + 0.7 * 0.85;
+
+    for (const bool direct: {false, true}) {
+      gum::CausalImpact< double > ci(cm, names({"Y"}), names({"X1", "X2"}), names({"W"}), direct);
+      CHECK(ci.isIdentified());
+      // every entry of the result (whatever its variables) is P(Y=y)
+      const auto                   got = ci.eval();
+      const gum::DiscreteVariable* vy  = nullptr;
+      for (const auto v: got.variablesSequence())
+        if (v->name() == "Y") vy = v;
+      REQUIRE(vy != nullptr);
+      for (gum::Instantiation I(got); !I.end(); I.inc()) {
+        const auto y = I.val(*vy);
+        CHECK(got.get(I) == doctest::Approx(y == 0 ? py0 : 1 - py0));
+      }
+    }
+  }
+
 }   // namespace gum_tests

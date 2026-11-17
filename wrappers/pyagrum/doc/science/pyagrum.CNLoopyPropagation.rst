@@ -25,7 +25,8 @@ are computed in the same way. The posterior of :math:`X` combines the two interv
    \overline{P}(X = 1 \mid e) = \frac{1}{1 + \left(1/\overline{\pi} - 1\right)/\overline{\Lambda}},
 
 and :math:`P(X = 0 \mid e)` follows by complement. Only hard evidence is accepted (an observed variable has
-:math:`\Lambda = \infty` for the value 1, :math:`0` for the value 0).
+:math:`\Lambda = \infty` for the value 1, :math:`0` for the value 0). An impossible evidence leaves both bounds of
+a message undefined, and the inference stops with an error.
 
 **Initialization and schedule.** The :math:`\pi` intervals are first propagated in a topological order and every
 :math:`\Lambda` is 1, so that without evidence the first values are the forward bounds. By default

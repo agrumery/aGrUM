@@ -138,6 +138,17 @@ class CredalNetTestCase(pyAgrumTestCase):
       self.assertAlmostEqual(pmin[b][parent_state], bn.cpt(b)[{"A": parent_state, "B": 1}])
       self.assertAlmostEqual(pmax[b][parent_state], bn.cpt(b)[{"A": parent_state, "B": 1}])
 
+  def testLoopyPropagationRaisesOnImpossibleEvidence(self):
+    bn = gum.fastBN("A->B->C")
+    bn.cpt("B")[:] = [[1.0, 0.0], [1.0, 0.0]]  # B never takes the value 1
+    cn = gum.CredalNet(bn, gum.BayesNet(bn))
+    cn.intervalToCredal()
+    cn.computeBinaryCPTMinMax()
+    ie = gum.CNLoopyPropagation(cn)
+    ie.addEvidence("B", 1)
+    with self.assertRaises(gum.IncompatibleEvidence):
+      ie.makeInference()
+
   def testMonteCarloSamplingKeepsTheUserCriteria(self):
     bn = gum.fastBN("A->B")
     bnmin, bnmax = gum.BayesNet(bn), gum.BayesNet(bn)

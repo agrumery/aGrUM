@@ -643,10 +643,7 @@ class _ICSW:
         return -np.log(p**t * (1 - p) ** (1 - t))
         ## NOT FINISHED
 
-    print(Likelihood(np.zeros(2 * X.shape[1])))
-
     res = minimize(fun=Likelihood, x0=np.zeros(2 * X.shape[1]))
-    print(res.x)
     return res.x
 
   def predict(

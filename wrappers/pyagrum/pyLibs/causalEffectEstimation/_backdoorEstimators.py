@@ -38,6 +38,7 @@
 #                                                                          #
 ############################################################################
 
+import warnings
 from typing import Any
 
 import numpy as np
@@ -588,11 +589,11 @@ class PStratification:
     tau_list[order] = np.hstack([_tauStratum(id_stratum) for id_stratum in indices_strata])
 
     if np.isnan(tau_list).sum() != 0:
-      print(
-        "Warning: The Positivity assumption is not satisfied across "
-        "all strata.\nStrata lacking treatment or control have been "
-        "filled with numpy.nan values. Consider reducing the number "
-        "of strata [num_strata]. "
+      warnings.warn(
+        "The Positivity assumption is not satisfied across all strata. "
+        "Strata lacking treatment or control have been filled with numpy.nan values. "
+        "Consider reducing the number of strata [num_strata].",
+        stacklevel=2,
       )
 
     return tau_list
@@ -629,7 +630,7 @@ class PStratification:
     tau = self.predict(X, treatment, y)
 
     if np.isnan(tau).sum() != 0:
-      print("The ACE is calculated after excluding the NaN values.")
+      warnings.warn("The ACE is calculated after excluding the NaN values.", stacklevel=2)
     return tau[~np.isnan(tau)].mean()
 
 

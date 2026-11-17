@@ -55,4 +55,7 @@ CNLoopyPropagation(cn) -> CNLoopyPropagation
 The default stopping criteria (epsilon, rate, maximum number of iterations, period size) and verbosity are the keys
 of the section ``CNLoopy`` of `pyagrum.config` (epsilon 1e-8, rate 1e-10, 100 iterations unless configured); there
 is no time limit by default.
+
+An impossible evidence (no message can be computed from it) makes ``makeInference()`` raise
+`pyagrum.IncompatibleEvidence`.
 "

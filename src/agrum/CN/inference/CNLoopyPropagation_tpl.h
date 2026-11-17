@@ -119,22 +119,12 @@ namespace gum::credal {
           lmax = lmin;
         }
 
-        // cas limites sur min
-        if (min == INF_ && lmin == 0.) {
-          std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
-        }
-
         if (lmin == INF_) {   // cas infini
           msg_p_min = GUM_SCALAR(1.);
         } else if (min == 0. || lmin == 0.) {
           msg_p_min = GUM_SCALAR(0.);
         } else {
           msg_p_min = GUM_SCALAR(1. / (1. + ((1. / min - 1.) * 1. / lmin)));
-        }
-
-        // cas limites sur max
-        if (max == INF_ && lmax == 0.) {
-          std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
         }
 
         if (lmax == INF_) {   // cas infini
@@ -151,8 +141,8 @@ namespace gum::credal {
       if (msg_p_max != msg_p_max && msg_p_min == msg_p_min) { msg_p_max = msg_p_min; }
 
       if (msg_p_max != msg_p_max && msg_p_min != msg_p_min) {
-        std::cout << std::endl;
-        std::cout << "pas de proba calculable (verifier observations)" << std::endl;
+        GUM_ERROR(IncompatibleEvidence,
+                  "CNLoopyPropagation: no message can be computed, the evidence is impossible")
       }
 
       res << "P(" << _bnet_->variable(node).name() << " | e) = ";
@@ -255,7 +245,6 @@ namespace gum::credal {
       }
 
       if (non_defini_max && non_defini_min) {
-        std::cout << "undefined msg" << std::endl;
         continue;
       } else if (non_defini_min && !non_defini_max) {
         res_min = res_max;
@@ -890,9 +879,8 @@ namespace gum::credal {
         if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
         if (lmax != lmax && lmin != lmin) {
-          std::cout << "no likelihood defined [lmin, lmax] (incompatibles "
-                       "evidence ?)"
-                    << std::endl;
+          GUM_ERROR(IncompatibleEvidence,
+                    "CNLoopyPropagation: no message can be computed, the evidence is impossible")
         }
 
         if (lmin < 0.) { lmin = 0.; }
@@ -988,9 +976,8 @@ namespace gum::credal {
         } else if (max != -2.) {
           min = max;
         } else {
-          std::cout << std::endl;
-          std::cout << "!!!! pas de message L calculable !!!!" << std::endl;
-          return;
+          GUM_ERROR(IncompatibleEvidence,
+                    "CNLoopyPropagation: no message can be computed, the evidence is impossible")
         }
       }
 
@@ -1079,10 +1066,8 @@ namespace gum::credal {
     if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
     if (lmax != lmax && lmin != lmin) {
-      std::cout << "pas de vraisemblance definie [lmin, lmax] (observations "
-                   "incompatibles ?)"
-                << std::endl;
-      return;
+      GUM_ERROR(IncompatibleEvidence,
+                "CNLoopyPropagation: no message can be computed, the evidence is impossible")
     }
 
     if (lmin < 0.) { lmin = 0.; }
@@ -1125,9 +1110,8 @@ namespace gum::credal {
       if (max < 0.) { max = 0.; }
 
       if (min == INF_ || max == INF_) {
-        std::cout << " ERREUR msg P min = max = INF " << std::endl;
-        std::cout.flush();
-        return;
+        GUM_ERROR(IncompatibleEvidence,
+                  "CNLoopyPropagation: no message can be computed, the evidence is impossible")
       }
 
       NodesP_min_[X] = min;
@@ -1155,22 +1139,12 @@ namespace gum::credal {
       GUM_SCALAR msg_p_min;
       GUM_SCALAR msg_p_max;
 
-      // cas limites sur min
-      if (min == INF_ && lmin == 0.) {
-        std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
-      }
-
       if (lmin == INF_) {   // cas infini
         msg_p_min = GUM_SCALAR(1.);
       } else if (min == 0. || lmin == 0.) {
         msg_p_min = 0;
       } else {
         msg_p_min = GUM_SCALAR(1. / (1. + ((1. / min - 1.) * 1. / lmin)));
-      }
-
-      // cas limites sur max
-      if (max == INF_ && lmax == 0.) {
-        std::cout << "MESSAGE P ERR (negatif) : pi = inf, l = 0" << std::endl;
       }
 
       if (lmax == INF_) {   // cas infini
@@ -1181,22 +1155,13 @@ namespace gum::credal {
         msg_p_max = GUM_SCALAR(1. / (1. + ((1. / max - 1.) * 1. / lmax)));
       }
 
-      if (msg_p_min != msg_p_min && msg_p_max == msg_p_max) {
-        msg_p_min = msg_p_max;
-        std::cout << std::endl;
-        std::cout << "msg_p_min is NaN" << std::endl;
-      }
+      if (msg_p_min != msg_p_min && msg_p_max == msg_p_max) { msg_p_min = msg_p_max; }
 
-      if (msg_p_max != msg_p_max && msg_p_min == msg_p_min) {
-        msg_p_max = msg_p_min;
-        std::cout << std::endl;
-        std::cout << "msg_p_max is NaN" << std::endl;
-      }
+      if (msg_p_max != msg_p_max && msg_p_min == msg_p_min) { msg_p_max = msg_p_min; }
 
       if (msg_p_max != msg_p_max && msg_p_min != msg_p_min) {
-        std::cout << std::endl;
-        std::cout << "pas de message P calculable (verifier observations)" << std::endl;
-        return;
+        GUM_ERROR(IncompatibleEvidence,
+                  "CNLoopyPropagation: no message can be computed, the evidence is impossible")
       }
 
       if (msg_p_min < 0.) { msg_p_min = 0.; }
@@ -1268,10 +1233,8 @@ namespace gum::credal {
           if (lmax != lmax && lmin == lmin) { lmax = lmin; }
 
           if (lmax != lmax && lmin != lmin) {
-            std::cout << "pas de vraisemblance definie [lmin, lmax] (observations "
-                         "incompatibles ?)"
-                      << std::endl;
-            return;
+            GUM_ERROR(IncompatibleEvidence,
+                      "CNLoopyPropagation: no message can be computed, the evidence is impossible")
           }
 
           if (lmin < 0.) { lmin = 0.; }
@@ -1372,13 +1335,8 @@ namespace gum::credal {
         }
 
         if (min == INF_ || max == INF_) {
-          std::cout << " min ou max === INF_ !!!!!!!!!!!!!!!!!!!!!!!!!! " << std::endl;
-          return;
-        }
-
-        if (min == INF_ && lmin == 0.) {
-          std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
-          return;
+          GUM_ERROR(IncompatibleEvidence,
+                    "CNLoopyPropagation: no message can be computed, the evidence is impossible")
         }
 
         if (lmin == INF_) {
@@ -1387,11 +1345,6 @@ namespace gum::credal {
           msg_p_min = GUM_SCALAR(0.);
         } else {
           msg_p_min = GUM_SCALAR(1. / (1. + ((1. / min - 1.) * 1. / lmin)));
-        }
-
-        if (max == INF_ && lmax == 0.) {
-          std::cout << "proba ERR (negatif) : pi = inf, l = 0" << std::endl;
-          return;
         }
 
         if (lmax == INF_) {
@@ -1403,22 +1356,13 @@ namespace gum::credal {
         }
       }
 
-      if (msg_p_min != msg_p_min && msg_p_max == msg_p_max) {
-        msg_p_min = msg_p_max;
-        std::cout << std::endl;
-        std::cout << "msg_p_min is NaN" << std::endl;
-      }
+      if (msg_p_min != msg_p_min && msg_p_max == msg_p_max) { msg_p_min = msg_p_max; }
 
-      if (msg_p_max != msg_p_max && msg_p_min == msg_p_min) {
-        msg_p_max = msg_p_min;
-        std::cout << std::endl;
-        std::cout << "msg_p_max is NaN" << std::endl;
-      }
+      if (msg_p_max != msg_p_max && msg_p_min == msg_p_min) { msg_p_max = msg_p_min; }
 
       if (msg_p_max != msg_p_max && msg_p_min != msg_p_min) {
-        std::cout << std::endl;
-        std::cout << "Please check the observations (no proba can be computed)" << std::endl;
-        return;
+        GUM_ERROR(IncompatibleEvidence,
+                  "CNLoopyPropagation: no message can be computed, the evidence is impossible")
       }
 
       if (msg_p_min < 0.) { msg_p_min = 0.; }

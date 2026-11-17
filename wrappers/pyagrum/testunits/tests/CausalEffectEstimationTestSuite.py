@@ -47,6 +47,7 @@ from sklearn.dummy import DummyRegressor
 
 import pyagrum.causal_model as gum
 import pyagrum.causalEffectEstimation as gcee
+from pyagrum.causalEffectEstimation._backdoorEstimators import PStratification
 from pyagrum.causalEffectEstimation._causalBNEstimator import CausalBNEstimator
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
@@ -557,6 +558,22 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
     high = shuffled["X"].to_numpy() > 0.5
     self.assertAlmostEqual(ice[low].mean(), 1.0, delta=0.1)
     self.assertAlmostEqual(ice[high].mean(), 3.0, delta=0.1)
+
+  def test_PStratification_warns_when_a_stratum_lacks_treatment(self):
+    # T = (X > 0): the strata of the small propensities have no treated row
+    rng = np.random.default_rng(11)
+    n = 1000
+    X = rng.normal(0, 1, (n, 1))
+    T = (X[:, 0] > 0).astype(int)
+    Y = rng.normal(T, 0.1)
+    ps = PStratification(num_strata=10)
+    ps.fit(X, T, Y)
+    with self.assertWarnsRegex(UserWarning, "Positivity"):
+      ice = ps.predict(X, T, Y)
+    self.assertTrue(np.isnan(ice).any())
+    with self.assertWarnsRegex(UserWarning, "excluding the NaN values"):
+      ace = ps.estimate_ate(X, T, Y)
+    self.assertFalse(np.isnan(ace))
 
   def test_TSLS_with_covariates(self):
     # the ACE is the coefficient of the treatment, not a mean of all the coefficients

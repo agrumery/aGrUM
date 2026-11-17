@@ -480,6 +480,27 @@ namespace gum_tests {
     CHECK_EQ(proba(lp.marginalMax(bn.idFromName("B")), 1), doctest::Approx(0.875).epsilon(1e-6));
   }
 
+  GUM_TEST(L2URaisesOnImpossibleEvidence) {
+    // B (resp. C) never takes the value 1: no message can be computed from an observation B=1
+    // (resp. C=1), the inference must fail instead of returning arbitrary bounds
+    for (const auto& observed: {"B", "C"}) {
+      auto bnmin = gum::BayesNet< double >::fastPrototype("A->B->C");
+      bnmin.cpt("A").fillWith({0.6, 0.4});
+      bnmin.cpt("B").fillWith({0.7, 0.3, 0.2, 0.8});
+      bnmin.cpt("C").fillWith({0.8, 0.2, 0.3, 0.7});
+      bnmin.cpt(observed).fillWith({1.0, 0.0, 1.0, 0.0});
+      auto bnmax = gum::BayesNet< double >(bnmin);
+
+      gum::credal::CredalNet< double > cnet(bnmin, bnmax);
+      cnet.intervalToCredal();
+      cnet.computeBinaryCPTMinMax();
+
+      gum::credal::CNLoopyPropagation< double > lp(cnet);
+      lp.insertEvidence(std::map< std::string, std::vector< double > >{{observed, {0.0, 1.0}}});
+      CHECK_THROWS_AS(lp.makeInference(), gum::IncompatibleEvidence&);
+    }
+  }
+
   GUM_TEST(ChangedParameterInvalidatesTheInference) {
     initCNet();
     gum::credal::CNLoopyPropagation< double > lp(*cn);

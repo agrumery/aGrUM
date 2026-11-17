@@ -526,6 +526,9 @@
       `CNMonteCarloSampling` recorded the same dummy error (the rate is disabled by default); its defaults (60 seconds,
       periods of 1000 samples) are the new section `CNMontecarlo`. For both, the history has one error per computed
       period and the listeners no longer receive a progress at the start.
+    - `CNLoopyPropagation` with an impossible evidence printed messages (partly in French) on the standard output and
+      returned arbitrary bounds; it now raises `IncompatibleEvidence`. The causal effect estimators
+      (`PStratification`, used by `CausalEffectEstimation`) warn with `warnings.warn` instead of printing.
 
 - Optimizations (aGrUM and pyAgrum)
 
