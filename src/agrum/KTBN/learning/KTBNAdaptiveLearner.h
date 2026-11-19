@@ -276,8 +276,8 @@ namespace gum {
       KTBNAdaptiveLearner< GUM_SCALAR >& useOrderScoreBIC();
 
       /// @brief Select k by AIC: keep the k whose learned model maximises
-      /// @f$\log_2 L - d@f$ (a lighter, sample-size-independent complexity
-      /// penalty than BIC).
+      /// @f$\log_2 L - d\,\log_2 e@f$ (Akaike's @f$\ln L - d@f$, in bits: a
+      /// lighter, sample-size-independent complexity penalty than BIC).
       KTBNAdaptiveLearner< GUM_SCALAR >& useOrderScoreAIC();
 
       /// @brief Select k by fNML (factorized Normalized Maximum Likelihood): keep

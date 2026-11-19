@@ -25869,7 +25869,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "KTBNInference_windowJunctionTree", _wrap_KTBNInference_windowJunctionTree, METH_O, "\n"
 		"\n"
 		"Introspection only: the junction tree of the repeating window, compiled once\n"
-		"from the k-slice template and re-entered at every step from slice k-1 on.\n"
+		"from the k-slice template and re-entered at every step from slice k on.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

@@ -64,7 +64,9 @@
  * @f$I_t@f$ each into a clique, and triangulating. Time-homogeneity means
  * every window from @f$t=k-1@f$ on has the same shape, so @b one junction
  * tree serves the whole repeating part, re-entered each step with fresh
- * potentials; only the @f$k-1@f$ initial windows get their own trees. A
+ * potentials from slice @f$k@f$ on; only the @f$k@f$ windows of slices
+ * @f$0, \dots, k-1@f$ get their own trees (the repeating tree is compiled
+ * apart even if window @f$k-1@f$ has its shape, as needed for @f$k=1@f$). A
  * slice's variables are ring slots @f$(t-\delta) \bmod k@f$, so advancing is
  * a relabelling, never an allocation -- the model is never unrolled.
  *
@@ -409,7 +411,7 @@ namespace gum {
     std::string toString() const;
 
     /// @brief The junction tree of the repeating window -- the one compiled from
-    /// the k-slice template and re-entered at every step from slice @f$k-1@f$ on.
+    /// the k-slice template and re-entered at every step from slice @f$k@f$ on.
     /// Introspection only.
     const JunctionTree& windowJunctionTree() const;
 
@@ -440,8 +442,8 @@ namespace gum {
 
     /// A compiled window: the junction tree of @f$H_t = I_{t-1} \cup V_t@f$,
     /// rooted at the clique holding @f$I_t@f$, plus everything needed to fill
-    /// and message-pass it. Built once; windows 0..k-2 are the initial ones,
-    /// window k-1 is the repeating one, re-entered from slice k-1 on.
+    /// and message-pass it. Built once; windows 0..k-1 are the initial ones,
+    /// window k is the repeating one, re-entered from slice k on.
     struct _Window_ {
       /// template graph NodeId -> slot it stands for
       std::vector< _Slot_ > slotOfNode;
@@ -494,8 +496,8 @@ namespace gum {
     /// Cached marginal series of the last run, keyed by base name.
     std::unordered_map< std::string, _Series_ > _posteriors_;
 
-    /// Temporal / atemporal base names in a deterministic (sorted) order, cached
-    /// once at construction (the KTBN's own sets are unordered).
+    /// Temporal / atemporal base names, copied once at construction into vectors,
+    /// in the sorted order of the KTBN's own std::set.
     std::vector< std::string > _temporalSorted_;
     std::vector< std::string > _atemporalSorted_;
 
@@ -511,8 +513,8 @@ namespace gum {
     /// which is what makes |I| finite and the window template time-invariant.
     std::vector< int > _maxLag_;
 
-    /// The compiled windows: index t for t <= k-2 (initial), index k-1 for the
-    /// repeating window, reused by every slice from k-1 on. Built once.
+    /// The compiled windows: index t for t <= k-1 (initial), index k for the
+    /// repeating window, reused by every slice from k on. Built once.
     std::vector< _Window_ > _windows_;
 
     /// Bases actually folded by the current run: the targets, the observed nodes
@@ -603,7 +605,7 @@ namespace gum {
     /// @brief Parents of @p base at a window whose current slice is @p t, as
     /// slots (lag = t - parentSlice). Uses the initial CPT structure for
     /// @f$t \leq k-2@f$, the transition kernel from @f$k-1@f$ on -- which is
-    /// why the repeating window is compiled from slice k-1's families.
+    /// why every window from slice k-1 on has the same families.
     std::vector< _Slot_ > _familySlots_(int baseIdx, int t) const;
 
     /// @brief The forward interface after slice @p t, as slots relative to

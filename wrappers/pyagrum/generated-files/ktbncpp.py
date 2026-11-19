@@ -1422,7 +1422,7 @@ class KTBNInference(object):
         r"""
 
         Introspection only: the junction tree of the repeating window, compiled once
-        from the k-slice template and re-entered at every step from slice k-1 on.
+        from the k-slice template and re-entered at every step from slice k on.
 
         Returns
         -------
