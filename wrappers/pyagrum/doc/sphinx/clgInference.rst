@@ -1,25 +1,27 @@
 Inference : Variable Elimination
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Exact Inference in Continuous Linear Gaussian)
+Exact inference in Conditional Linear Gaussian
 ----------------------------------------------
 
-Exact inference in the Continuous Linear Gaussian (CLG) model is performed using the Variable Elimination algorithm. The algorithm is implemented in the Inference class.
-Canonical form transformations are used to perform exact inference in the Continuous Linear Gaussian (CLG) model. A junction tree generator is employed to determine the variable elimination order for the sum-product algorithm.
+Exact inference in a Conditional Linear Gaussian (CLG) model is performed by variable elimination, implemented in
+the class `pyagrum.clg.CLGVariableElimination`. The densities of the model are written as canonical forms, and a
+junction tree generator gives the elimination order; the elimination multiplies canonical forms and integrates the
+eliminated variables out.
 
-The inference begins with construction of canonical forms from the CLG parameters. These canonical forms are then subjected to the sum-product variable elimination algorithm to compute posterior densities.
+Evidence (observed values of variables) can be added, updated, tested and erased; it is integrated into the canonical
+forms before the elimination.
 
-The Inference class allows for the handling of evidence - observation data that can influence the probabilities in the model. These are integrated into the inference calculations.
-
-The class provides functionality to update evidence with new observations, check if evidence exists for a particular variable, and erase one or all pieces of evidence from the model.
-
-The core functionality of the Inference class is to calculate the posterior density of specified variables given current evidence in the CLG model. The posterior density is returned as a canonical form.
+The posterior density of one or several variables given the current evidence is returned as a canonical form
+(``canonicalPosterior``), or as a `pyagrum.clg.GaussianVariable` for one variable (``posterior``).
 
 .. pyagrum-class:: pyagrum.clg.CLGVariableElimination
 
 
-Tool for approximated inference in Continuous Linear Gaussian)
---------------------------------------------------------------
-The Forward Sampling algorithm is a tool for approximated inference in Continuous Linear Gaussian (CLG) models. It allows for sampling from the joint distribution of the model, which can be useful for generating synthetic data or for approximating posterior distributions when exact inference is computationally expensive.
+Forward sampling
+----------------
+Forward sampling draws samples from the joint distribution of a CLG model, without evidence: each variable is drawn
+given its parents, in a topological order. The samples can be used to generate synthetic data, or to estimate means,
+variances and covariances of the variables.
 
 .. pyagrum-class:: pyagrum.clg.ForwardSampling

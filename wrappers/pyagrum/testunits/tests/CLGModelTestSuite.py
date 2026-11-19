@@ -38,6 +38,8 @@
 #                                                                          #
 ############################################################################
 
+import csv
+import math
 import os
 import tempfile
 import unittest
@@ -118,6 +120,64 @@ class CLGModelTestCase(pyAgrumTestCase):
         f.write("A,B\n1.0,2.0\n1.0,3.5\n1.0,0.5\n")
       with self.assertRaises(ValueError):
         gclg.CLGLearner(filename)
+
+  # --- logLikelihood ---
+
+  @staticmethod
+  def _logDensity(x, mean, sigma):
+    return -0.5 * math.log(2 * math.pi * sigma**2) - (x - mean) ** 2 / (2 * sigma**2)
+
+  def _logLikelihoodOfRows(self, clg, rows):
+    with tempfile.TemporaryDirectory() as tmp:
+      filename = os.path.join(tmp, "data.csv")
+      with open(filename, "w") as f:
+        f.write(",".join(rows[0]) + "\n")
+        for row in rows[1:]:
+          f.write(",".join(str(v) for v in row) + "\n")
+      return clg.logLikelihood(filename)
+
+  def test_logLikelihood_farValueIsFinite(self):
+    clg = gclg.SEM.toclg("A = 0[0.01]")
+    ll = self._logLikelihoodOfRows(clg, [["A"], [1.0]])
+    self.assertAlmostEqual(ll, self._logDensity(1.0, 0, 0.01), places=6)  # about -4996: density 0 in float
+
+  def test_logLikelihood_manyVariablesDoNotUnderflow(self):
+    n = 400
+    clg = gclg.SEM.toclg("\n".join(f"X{i} = 0[1]" for i in range(n)))
+    ll = self._logLikelihoodOfRows(clg, [[f"X{i}" for i in range(n)], [2.0] * n])
+    self.assertAlmostEqual(ll, n * self._logDensity(2.0, 0, 1), places=6)
+
+  def test_logLikelihood_smallSigmaDoesNotOverflow(self):
+    n = 400
+    clg = gclg.SEM.toclg("\n".join(f"X{i} = 0[0.001]" for i in range(n)))
+    ll = self._logLikelihoodOfRows(clg, [[f"X{i}" for i in range(n)], [0.0] * n])
+    self.assertAlmostEqual(ll, n * self._logDensity(0.0, 0, 0.001), places=6)
+
+  def test_logLikelihood_isTheSumOfTheLogDensities(self):
+    clg = gclg.SEM.toclg(SEM_SIMPLE)
+    with tempfile.TemporaryDirectory() as tmp:
+      filename = os.path.join(tmp, "data.csv")
+      gclg.ForwardSampling(clg).makeSample(50).tocsv(filename)
+      with open(filename) as f:
+        rows = list(csv.DictReader(f))
+      ll = clg.logLikelihood(filename)
+    expected = 0.0
+    for row in rows:
+      a, b, c = float(row["A"]), float(row["B"]), float(row["C"])
+      expected += self._logDensity(a, 4.5, 0.3)
+      expected += self._logDensity(b, 3 + 1.2 * a, 0.5)
+      expected += self._logDensity(c, 9 + 2 * a + 1.5 * b, 0.6)
+    self.assertAlmostEqual(ll, expected, delta=1e-9 * abs(expected))
+
+  def test_logLikelihood_acceptsADataFrame(self):
+    clg = gclg.SEM.toclg(SEM_SIMPLE)
+    sampler = gclg.ForwardSampling(clg)
+    sampler.makeSample(50)
+    with tempfile.TemporaryDirectory() as tmp:
+      filename = os.path.join(tmp, "data.csv")
+      sampler.tocsv(filename)
+      from_file = clg.logLikelihood(filename)
+    self.assertAlmostEqual(clg.logLikelihood(sampler.topandas()), from_file, delta=1e-9 * abs(from_file))
 
   # --- addArc ---
 

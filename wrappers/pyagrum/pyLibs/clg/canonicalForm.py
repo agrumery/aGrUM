@@ -96,7 +96,7 @@ class CanonicalForm:
     mu : float
       The intercept of the linear regression.
     sigma : float
-      The variance of the clg density.
+      The standard deviation of the clg density.
     B : list[float]
       The weights of the linear regression.
 

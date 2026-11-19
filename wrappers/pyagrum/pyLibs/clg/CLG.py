@@ -44,7 +44,6 @@ The purpose of this module is to store a Conditional Linear Gaussian (CLG) in a 
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
@@ -187,14 +186,14 @@ class CLG:
 
   def setMu(self, node: int, mu: float) -> None:
     """
-    Set the mean of a variable.
+    Set the mean of a variable, or the intercept of its equation when the variable has parents.
 
     Parameters
     ----------
     node : int
       The id of the variable.
     mu : float
-      The new mean of the variable.
+      The new mean (or intercept) of the variable.
 
     Raises
     ------
@@ -587,44 +586,33 @@ class CLG:
 
     return C
 
-  def logLikelihood(self, data: str) -> float:
+  def logLikelihood(self, data: str | pd.DataFrame) -> float:
     """
     Return the log-likelihood of the data.
 
     Parameters
     ----------
-    data : csv file
-      The data.
+    data : str | pandas.DataFrame
+      The data: the name of a csv file, or a dataframe, with one column per variable of the CLG.
 
     Returns
     -------
     float
-      The log-likelihood of the data for the CLG.
+      The log-likelihood of the data for the CLG (natural logarithm): the sum, over the records and the variables, of
+      the log-density of each variable given its parents.
     """
-    id2samples = {}
-    log_likelihood = 0
+    df = data if isinstance(data, pd.DataFrame) else pd.read_csv(data)
+    id2samples = {node: df[self.name(node)].to_numpy(dtype=float) for node in self.nodes()}
 
-    # collect the samples to a dict whose keys are NodeID
-    df = pd.read_csv(data)
+    # sum of the log-densities, never their product (which underflows or overflows)
+    log_likelihood = 0.0
     for node in self.nodes():
-      id2samples[node] = df[self.name(node)].tolist()
+      loc = self._id2var[node].mu() + sum(
+        id2samples[parent] * self._arc2coef[(parent, node)] for parent in self.parents(node)
+      )
+      log_likelihood += norm.logpdf(id2samples[node], loc, self._id2var[node].sigma()).sum()
 
-    # for each sample, compute the pdf of each node
-    n_samples = len(next(iter(id2samples.values())))
-    for i in range(n_samples):
-      joint_pdf = 1
-      for node in self.nodes():
-        # compute the real mu of node considering its parents
-        loc_mu = self._id2var[node].mu()
-        for parent in self.parents(node):
-          loc_mu += id2samples[parent][i] * self._arc2coef[(parent, node)]
-
-        # use norm.pdf to compute the pdf of each node
-        joint_pdf *= norm(loc_mu, self._id2var[node].sigma()).pdf(id2samples[node][i])
-
-      log_likelihood += np.log(joint_pdf)
-
-    return log_likelihood
+    return float(log_likelihood)
 
   def structuralFScore(self, other: CLG) -> float:
     """

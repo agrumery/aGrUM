@@ -56,8 +56,8 @@ class SEM:
   Each equation reads ``name = terms [stddev]``: the terms are a constant, a variable or a coefficient times a
   variable (``2.5*A`` or ``2.5A``), separated by ``+`` or ``-``, and the standard deviation of the noise is written
   between brackets at the end. The numbers may use the exponent notation (``1e-05``); in ``2e3A``, the exponent is
-  read first (2000 times ``A``): write ``2*e3`` for 2 times a variable ``e3``. A line without ``=`` continues the
-  previous equation and ``#`` starts a comment.
+  read first (2000 times ``A``): write ``2*e3`` for 2 times a variable ``e3``. ``#`` starts a comment. A line without
+  ``=`` (outside its comment) continues the previous equation and must start with ``+``, ``-`` or ``[``.
 
   Examples
   --------
@@ -69,10 +69,17 @@ class SEM:
   ...
   ... # equations
   ... D = A[.2]  # D is a noisy version of A
-  ... E = 1 + D + 2
-  ...     B[2]
-  ... F = E + C + 3.5*B + E[0.001]
+  ... E = 1 + D
+  ...     + 2*B[2]  # a line without equal sign continues the equation
+  ... F = E + C + 3.5*B + E[0.001]  # the terms of a same variable are summed: 2*E
   ... ''')
+  >>> print(SEM.tosem(sem))
+  C=-2.0[5.0]
+  B=3.0[5.0]
+  A=4.0[5.0]
+  D=A[0.2]
+  E=1.0+2.0*B+D[2.0]
+  F=3.5*B+C+2.0*E[0.001]
   """
 
   NUMBER = r"(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?"
@@ -191,16 +198,17 @@ class SEM:
 
     canonic_form = []
     for line in re.split("\n+", sem):
-      line = line.strip()
+      line = line.split("#")[0].strip()  # comments never decide nor hide anything
       if line == "":
-        continue
-      if line[0] == "#":
         continue
       if "=" in line:  # new equation
         canonic_form.append(line)
       else:
         if len(canonic_form) == 0:
           raise SyntaxError(f"Line '{line}' is not an equation.")
+        # the lines are glued: a number ending a line and a name starting the next one would merge (2 and B: 2B)
+        if line[0] not in "+-[":
+          raise SyntaxError(f"Line '{line}' continues an equation: it must start with '+', '-' or '['.")
         canonic_form[-1] += line
 
     # parsing the canonic_form

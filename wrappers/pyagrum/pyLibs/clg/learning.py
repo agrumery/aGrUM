@@ -70,22 +70,50 @@ class CLGLearner:
   _V: set[int]
   r_XYZ: dict[tuple[frozenset[int], frozenset[int]], list[float]]
 
-  def __init__(self, filename: str, *, n_sample: int = 15, fwer_delta: float = 0.05):
+  def __init__(
+    self,
+    data: str | pd.DataFrame | None = None,
+    *,
+    n_sample: int = 15,
+    fwer_delta: float = 0.05,
+    filename: str | pd.DataFrame | None = None,
+  ):
     """
     Parameters
     ----------
-    filename : str
-      The path of the data file.
+    data : str | pandas.DataFrame
+      The data: the path of a csv file, or a dataframe (copied), with one column per variable.
     n_sample : int
       amount of samples for Monte-Carlo Empirical Rademacher Average
     fwer_delta : float ∈ (0,1]
       Family-Wise Error Rate.
+    filename : str | pandas.DataFrame
+      Former name of ``data``.
+
+    Warnings
+    --------
+    The keyword argument ``filename`` is deprecated after 3.3.2, use ``data`` instead.
+
+    Raises
+    ------
+    pyagrum.ArgumentError
+      If both ``data`` and ``filename`` are given, or none of them.
     """
+    if filename is not None:
+      if data is not None:
+        raise pyagrum.ArgumentError("CLGLearner: give data, not both data and filename")
+      warnings.warn(
+        "CLGLearner: filename is deprecated after 3.3.2, use data instead", DeprecationWarning, stacklevel=2
+      )
+      data = filename
+    if data is None:
+      raise pyagrum.ArgumentError("CLGLearner: no data given")
+
     self._model = CLG()  # the CLG model
     self.id2samples = {}
     self.sepset = {}
 
-    self._df = pd.read_csv(filename)
+    self._df = data.copy() if isinstance(data, pd.DataFrame) else pd.read_csv(data)
     # add all the variables to CLG model
     for name in self._df.columns:
       self._model.add(GaussianVariable(name, np.mean(self._df[name]), np.std(self._df[name])))
@@ -103,11 +131,11 @@ class CLGLearner:
     self._SD = None
 
   def independenceStatistic(self, X: int, Y: int, Z: set[int]) -> None:
-    """
+    r"""
     Compute the terms of the r-centered statistic of X and Y given Z, stored in ``r_XYZ``.
 
     The values of X and Y (their residuals given Z when Z is not empty) are centered; each term is
-    x_i y_i / max(|x_i|, |y_i|)^2, between -1 and 1, and the statistic is their mean.
+    :math:`x_i y_i / \max(|x_i|, |y_i|)^2`, between -1 and 1, and the statistic is their mean.
 
     Parameters
     ----------
@@ -668,9 +696,9 @@ class CLGLearner:
     Returns
     -------
     id2mu : dict[int, float]
-      The estimated mean of each node.
+      The estimated intercept of each node (its mean for a node without parents).
     id2sigma : dict[int, float]
-      The estimated variance of each node.
+      The estimated standard deviation of each node (of the residuals for a node with parents).
     arc2coef : dict[tuple[int, int], float]
       The estimated coefficients of each arc.
     """

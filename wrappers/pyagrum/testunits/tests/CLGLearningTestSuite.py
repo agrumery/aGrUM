@@ -41,16 +41,51 @@
 import unittest
 
 import numpy as np
+import pandas as pd
 
 import pyagrum as gum
+import pyagrum.clg as gclg
 from pyagrum.clg.CLG import CLG
 from pyagrum.clg.GaussianVariable import GaussianVariable
 from pyagrum.clg.learning import CLGLearner
 
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
 
+SEM_FIT = """
+A = 4.5[0.1]
+B = 3[0.1]
+C = 9 + 2A + 1.5B[0.2]
+D = 9 + C[0.2]
+"""
+
 
 class CLGLearningTestCase(pyAgrumTestCase):
+  def test_learnerAcceptsADataFrame(self):
+    filename = self.agrumSrcDir("CLGLearningTestSuite2.csv")
+    df = pd.read_csv(filename)
+    from_file = gclg.SEM.toclg(SEM_FIT)
+    CLGLearner(filename).fitParameters(from_file)
+    from_df = gclg.SEM.toclg(SEM_FIT)
+    CLGLearner(df).fitParameters(from_df)
+    self.assertEqual(gclg.SEM.tosem(from_df), gclg.SEM.tosem(from_file))
+
+  def test_learnerNeedsExactlyOneSourceOfData(self):
+    with self.assertRaises(gum.ArgumentError):
+      CLGLearner()
+
+  def test_learnerFilenameIsDeprecated(self):
+    # transitory: remove with the keyword argument filename (deprecated after 3.3.2)
+    filename = self.agrumSrcDir("CLGLearningTestSuite2.csv")
+    with self.assertWarns(DeprecationWarning):
+      learner = CLGLearner(filename=filename)
+    expected = gclg.SEM.toclg(SEM_FIT)
+    CLGLearner(data=filename).fitParameters(expected)
+    fitted = gclg.SEM.toclg(SEM_FIT)
+    learner.fitParameters(fitted)
+    self.assertEqual(gclg.SEM.tosem(fitted), gclg.SEM.tosem(expected))
+    with self.assertRaises(gum.ArgumentError):
+      CLGLearner(filename, filename=filename)
+
   def test_TestIndep(self):
     # clg is a CLG model
     clg = CLG()
@@ -144,8 +179,10 @@ class CLGLearningTestCase(pyAgrumTestCase):
     # clg is a CLG model
     clg = CLG()
     # 6 variables
+    # F - B is oriented by the variances only (no v-structure, no Meek rule): F -> B needs Var(F) < Var(B), here
+    # 0.25 < 0.8^2 * 0.25 + 0.5^2 = 0.41, far from the sampling noise (CLGLearningTestSuite1.csv: 20000 records)
     A = GaussianVariable(mu=4.5, sigma=0.3, name="A")
-    B = GaussianVariable(mu=3, sigma=0.3, name="B")
+    B = GaussianVariable(mu=3, sigma=0.5, name="B")
     C = GaussianVariable(mu=9, sigma=0.6, name="C")
     D = GaussianVariable(mu=9, sigma=0.7, name="D")
     E = GaussianVariable(mu=9, sigma=0.9, name="E")

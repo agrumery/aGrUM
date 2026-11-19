@@ -173,6 +173,30 @@ B=3+1.2A[0.5]
     self.assertIn("A", model.names())
     self.assertIn("B", model.names())
 
+  # --- continuation lines ---
+
+  def test_continuation_line(self):
+    model = gclg.SEM.toclg("A=0[1]\nB=0[1]\nE = 1 + A\n    + 2*B[2]")
+    self.assertEqual(model.coefArc("A", "E"), 1)
+    self.assertEqual(model.coefArc("B", "E"), 2)
+
+  def test_continuation_comment_with_equal_sign(self):
+    model = gclg.SEM.toclg("A=0[1]\nB=0[1]\nE = 1 + A\n    + 2*B[2]  # E = 1 + A + 2B")
+    self.assertEqual(model.coefArc("B", "E"), 2)
+
+  def test_continuation_after_a_comment(self):
+    model = gclg.SEM.toclg("A=0[1]\nB=0[1]\nE = 1 + A  # first part\n    + 2*B[2]")
+    self.assertEqual(model.coefArc("B", "E"), 2)
+    # the continuation was hidden behind the comment: E = 1 + A[2] without B, and no error
+    with self.assertRaises(SyntaxError):
+      gclg.SEM.toclg("A=0[1]\nB=0[1]\nE = 1 + A[2]  # first part\n    + B")
+
+  def test_continuation_must_start_with_an_operator(self):
+    # '2' at the end of a line and 'B' at the start of the next one would read 2*B
+    for bad_sem in ["A=0[1]\nB=0[1]\nE = 1 + A + 2\n    B[2]", "A=0[1]\nB=0[1]\nE = 1 + 2\n    3*B[2]"]:
+      with self.assertRaises(SyntaxError):
+        gclg.SEM.toclg(bad_sem)
+
 
 ts = unittest.TestSuite()
 addTests(ts, CLGSEMTestCase)

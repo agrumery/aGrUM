@@ -206,10 +206,10 @@ class ForwardSampling:
     """
     Convert the samples to pandas dataframe.
 
-    Parameters
-    ----------
-    sample_name : str
-      Name of the new csv file.
+    Returns
+    -------
+    pandas.DataFrame
+      The samples, one column per variable (named after it), one row per sample.
     """
     return pd.DataFrame({self._model.name(node): self._id2samples[node] for node in self._model.nodes()})
 

@@ -8,10 +8,12 @@ A CLG of pyAgrum is a linear Gaussian Bayesian network: all its variables are co
 
 so that the conditional density of :math:`X` is :math:`\mathcal{N}(\mu_X + \sum_Y \beta_{YX}\, y, \sigma_X^2)`. This
 is the representation of the Gaussian influence diagrams of :cite:`shachter1989gaussian` (a regression coefficient
-per arc, a conditional variance per variable). The joint distribution is multivariate normal: with
-:math:`B = (\beta_{YX})` the matrix of the arc coefficients and :math:`D = \mathrm{diag}(\sigma_X^2)`, the vector of
-the variables is :math:`(I - B^\top)^{-1}(\mu + \varepsilon)`, hence the mean :math:`m = (I - B^\top)^{-1}\mu` and the
-covariance :math:`\Sigma = (I - B^\top)^{-1} D\, (I - B^\top)^{-\top}`.
+per arc, a conditional variance per variable), up to the parametrization of the mean: :cite:`shachter1989gaussian`
+attach to each variable its unconditional mean, while :math:`\mu_X` here is the intercept of its equation. The joint
+distribution is multivariate normal: with :math:`B = (\beta_{YX})` the matrix of the arc coefficients and
+:math:`D = \mathrm{diag}(\sigma_X^2)`, the vector of the variables is :math:`(I - B^\top)^{-1}(\mu + \varepsilon)`,
+hence the mean :math:`m = (I - B^\top)^{-1}\mu` and the covariance
+:math:`\Sigma = (I - B^\top)^{-1} D\, (I - B^\top)^{-\top}`.
 
 **Conventions of pyAgrum.**
 

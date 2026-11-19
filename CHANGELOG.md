@@ -408,10 +408,17 @@
       read back: `B = 1e-05A[1]` gave a parent `e` and a coefficient -5 on `A` (a wrong model without error when a
       variable `e` exists, a `TypeError` otherwise). The exponent is now read; `tosem` writes `b*Y` so that a
       coefficient and a name never merge; an unknown parent or an unrecognized part of a line raises `SyntaxError`.
+      Continuation lines (without `=`): a `=` in a comment made a new equation, and a line following a comment was
+      silently ignored; a continuation line must now start with `+`, `-` or `[` (`... + 2` then `B[2]` read 2*B).
     - `clg.CLG`: a variable with a null standard deviation was accepted, then the inference raised `ZeroDivisionError`
       and `logLikelihood` returned nan. `add`, `setSigma` (also `GaussianVariable.setSigma`) and unpickling raise
       `ValueError` when sigma is not positive (hence `SEM.toclg` with `[0]` and `CLGLearner` on a constant column); the
       posterior of an observed variable keeps a null standard deviation.
+    - `clg.CLG.logLikelihood` took the log of the product of the densities of a record, which underflows (-inf for one
+      far value, or for some hundreds of variables) or overflows (+inf for small standard deviations). It now sums the
+      log-densities, column by column (also much faster), and accepts a pandas dataframe as well as a csv file, as does
+      `clg.CLGLearner` now: its first argument is named `data`, the keyword argument `filename` is deprecated after
+      3.3.2.
     - `clg.ForwardSampling`: `variance_sample` and `stddev_sample` divided by N whereas `covariance_sample` divides by
       N-1, so that the variances were not the diagonal of the covariance matrix; all of them now divide by N-1.
     - `bnmixture.BNMLearner` and `BNMBootstrapLearner.updateState`: as soon as one setting was given, the missing ones

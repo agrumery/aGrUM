@@ -80,12 +80,12 @@ class GaussianVariable:
 
   def mu(self) -> float:
     """
-    Returns the mean of the variable.
+    Returns the mean of the variable, or the intercept of its equation when the variable has parents in a CLG.
 
     Returns
     -------
     float
-      The mean of the variable.
+      The mean (or intercept) of the variable.
     """
     return self._mu
 
@@ -102,12 +102,12 @@ class GaussianVariable:
 
   def setMu(self, mu: float):
     """
-    Set the mean of the variable.
+    Set the mean of the variable, or the intercept of its equation when the variable has parents in a CLG.
 
     Parameters
     ----------
     mu : float
-      The new mean of the variable.
+      The new mean (or intercept) of the variable.
     """
     self._mu = mu
 

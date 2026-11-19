@@ -1,5 +1,5 @@
-CLGVariableElimination computes exact posterior densities in a `pyagrum.clg.CLG` by sum-product variable elimination
-on Gaussian potentials written in canonical form, the canonical characteristics :math:`(g, h, K)` of
+CLGVariableElimination computes exact posterior densities in a `pyagrum.clg.CLG` by variable elimination (product
+and integration) on Gaussian potentials written in canonical form, the canonical characteristics :math:`(g, h, K)` of
 :cite:`lauritzen1992propagation`:
 
 .. math::
@@ -12,18 +12,19 @@ form on :math:`(X, \mathrm{Pa}(X))`
 
 .. math::
 
-   K = \frac{1}{\gamma}\begin{pmatrix} 1 & -\beta^\top \\ -\beta & \beta\beta^\top \end{pmatrix}, \qquad
+   g = -\frac{1}{2}\left(\frac{\mu^2}{\gamma} + \ln(2\pi\gamma)\right), \qquad
    h = \frac{\mu}{\gamma}\begin{pmatrix} 1 \\ -\beta \end{pmatrix}, \qquad
-   g = -\frac{1}{2}\left(\frac{\mu^2}{\gamma} + \ln(2\pi\gamma)\right).
+   K = \frac{1}{\gamma}\begin{pmatrix} 1 & -\beta^\top \\ -\beta & \beta\beta^\top \end{pmatrix}.
 
-**Operations.** A product adds the :math:`(K, h, g)` of the factors (extended by zeros to the union of their
-variables). Observing :math:`Y = y` turns :math:`(K, h, g)` on :math:`(X, Y)` into :math:`K_{XX}`,
-:math:`h_X - K_{XY}\, y` and :math:`g + h_Y^\top y - \frac{1}{2} y^\top K_{YY}\, y`. Integrating :math:`Y` out gives
+**Operations.** A product adds the :math:`(g, h, K)` of the factors (extended by zeros to the union of their
+variables). Observing :math:`Y = y` turns :math:`(g, h, K)` on :math:`(X, Y)` into
+:math:`g + h_Y^\top y - \frac{1}{2} y^\top K_{YY}\, y`, :math:`h_X - K_{XY}\, y` and :math:`K_{XX}`. Integrating
+:math:`Y` out, which needs :math:`K_{YY}` positive definite (otherwise the integral diverges), gives
 
 .. math::
 
-   K_{XX} - K_{XY} K_{YY}^{-1} K_{YX}, \qquad h_X - K_{XY} K_{YY}^{-1} h_Y, \qquad
-   g + \tfrac{1}{2}\left(|Y| \ln(2\pi) - \ln\det K_{YY} + h_Y^\top K_{YY}^{-1} h_Y\right).
+   g + \tfrac{1}{2}\left(|Y| \ln(2\pi) - \ln\det K_{YY} + h_Y^\top K_{YY}^{-1} h_Y\right), \qquad
+   h_X - K_{XY} K_{YY}^{-1} h_Y, \qquad K_{XX} - K_{XY} K_{YY}^{-1} K_{YX}.
 
 **The algorithm.** All the potentials are first reduced by the evidence; the other non-target variables are then
 eliminated (product of the potentials that contain the variable, then integration) in the elimination order given by
@@ -36,4 +37,6 @@ of an observed variable is returned as a Gaussian centred on the observed value,
 canonical posterior of an observed variable is refused.
 
 **Implementation limit.** No junction tree is kept: each query runs a whole elimination. The canonical forms need a
-positive standard deviation :math:`\sigma > 0` for every variable, which `pyagrum.clg.CLG` ensures.
+positive standard deviation :math:`\sigma > 0` for every variable, which `pyagrum.clg.CLG` ensures; then, as a
+variable is eliminated with its own conditional density among the factors (term :math:`1/\gamma > 0` in
+:math:`K_{YY}`, the other factors adding nonnegative terms), every integration is well defined.
