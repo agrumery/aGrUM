@@ -3,6 +3,9 @@
 ## Changelog for next version
 
 - pyAgrum
+    - `fastBN(..., uniform=True)`: every CPT is uniform instead of random. The examples of the sampling inferences
+      with evidence use it: with random CPTs, an improbable evidence made the rejection sampling of some runs last
+      minutes.
 
     - New `randomShuffle` and `randomGamma` (the draws of aGrUM, the same on every platform for a given seed).
     - `initRandom` now reaches the draws of all the modules (`KTBNGenerator`, ...: each module had its own generator,

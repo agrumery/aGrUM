@@ -2,7 +2,7 @@
 import pyagrum as gum
 from pyagrum.qBNSampling import qBNMC, qBNRejection
 
-bn = gum.fastBN("A->B")
+bn = gum.fastBN("A->B", uniform=True)
 qinf = qBNRejection(qBNMC(bn))
 qinf.setEvidence({"B": 1})
 qinf.setMaxIter(10)

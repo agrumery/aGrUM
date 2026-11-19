@@ -1,6 +1,6 @@
 import pyagrum as gum
 
-bn = gum.fastBN("A->B<-C")
+bn = gum.fastBN("A->B<-C", uniform=True)
 ie = gum.LoopyGibbsSampling(bn)
 ie.addEvidence("A", 1)  # hard: not listed
 ie.addEvidence("C", 0)

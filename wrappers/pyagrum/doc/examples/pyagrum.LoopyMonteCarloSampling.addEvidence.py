@@ -1,6 +1,6 @@
 import pyagrum as gum
 
-bn = gum.fastBN("A->B<-C")
+bn = gum.fastBN("A->B<-C", uniform=True)
 ie = gum.LoopyMonteCarloSampling(bn)
 ie.addEvidence("A", 1)  # by index
 ie.addEvidence("C", "0")  # by label

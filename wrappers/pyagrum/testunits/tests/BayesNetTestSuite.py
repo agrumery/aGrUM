@@ -345,6 +345,16 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(bn.minNonZeroParam(), 0.1)
     self.assertEqual(bn.maxNonOneParam(), 0.9)
 
+  def test_fastBN_uniform(self):
+    bn = gum.fastBN("a[3]->b->c;a->c", uniform=True)
+    self.assertEqual(bn.cpt("a").tolist(), [1 / 3] * 3)
+    for name in ["b", "c"]:
+      for value in bn.cpt(name).toarray().flatten():
+        self.assertAlmostEqual(value, 0.5)
+    self.assertEqual(bn.sizeArcs(), 3)
+    with self.assertRaises(TypeError):  # keyword only
+      gum.fastBN("a->b", "[2]", True)
+
   def test_fastBN(self):
     bn = gum.fastBN("a->b->c;a->c")
     self.assertEqual(bn.size(), 3)

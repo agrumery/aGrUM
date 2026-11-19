@@ -48,7 +48,7 @@ from .gumTestOutput import ModuleAwareResult, PrefixStream, Timer, error, notif,
 
 if __name__ == "__main__":
   print(
-    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m all[+nb][-mod1[-mod2…]]|<module>' -t {all|test_suite_name}'",
+    "[pyAgrum] Please use 'act test pyAgrum release {installed|local} -m all[+nb][-mod1[-mod2…]]|<module>' -t {all|test_suite_name|Examples:<glob>}'",
     end="\n",
   )
   sys.exit(0)
@@ -239,6 +239,8 @@ def runTests(test_module: str, test_suite: str, log) -> int:
         _suite_by_name[_key] = _suite
 
   if test_suite != "":
+    # "Suite:pattern": the suite module selects its own tests with select(pattern) (e.g. "Examples:pyagrum.clg.*")
+    test_suite, with_pattern, pattern = test_suite.partition(":")
     _key = test_suite + "TestSuite"
     dependencies = {e[0]: e[1] for entries in SUITE_ENTRIES.values() for e in entries}
     if _key not in dependencies:
@@ -248,6 +250,11 @@ def runTests(test_module: str, test_suite: str, log) -> int:
       error(f"Test suite '{test_suite}' not run: missing {', '.join(missing)}")
       return 1
     suite_mod = _suite_by_name[_key]
+    if with_pattern:
+      if not hasattr(suite_mod, "select"):
+        error(f"Test suite '{test_suite}' takes no pattern ('{test_suite}:{pattern}')")
+        return 1
+      suite_mod.select(pattern)
     mod_name = _suite_to_module.get(_key, "main")
     _reg(suite_mod, mod_name)
   else:

@@ -42,6 +42,7 @@
 and belongs to a documented member, function or class. That every documented member and function has an example is
 checked by `act guideline` (check examples)."""
 
+import fnmatch
 import sys
 import tempfile
 import unittest
@@ -49,6 +50,20 @@ from pathlib import Path
 
 from .examplesRunner import missingRequirements, runExampleFile
 from .pyAgrumTestSuite import addTests, pyAgrumTestCase
+
+_pattern = "*"  # the examples run by testExamples (act test ... -t Examples:<glob>)
+
+
+def select(pattern: str) -> None:
+  """Run only the examples whose name matches the glob ``pattern`` (called by testsOnPython for -t Examples:<glob>)."""
+  global _pattern
+  _pattern = pattern
+
+
+def selected(names, pattern: str) -> list[str]:
+  """The names matching the glob ``pattern``, sorted (case-sensitive, as the names of the examples)."""
+  return sorted(name for name in names if fnmatch.fnmatchcase(name, pattern))
+
 
 _DOC = Path(__file__).resolve().parents[2] / "doc"
 _EXCLUDED = {"_build", "site", "Web"}  # outputs of the documentation builds, inside the Sphinx sources
@@ -105,8 +120,18 @@ class TestExamples(pyAgrumTestCase):
     self.assertEqual(len(inventory.problems), 2)
     self.assertEqual(inventory.functions, {})
 
+  def testSelectedExamples(self):
+    names = ["pyagrum.BayesNet.add", "pyagrum.clg.CLG.add", "pyagrum.clg.SEM.toclg"]
+    self.assertEqual(selected(names, "*"), names)
+    self.assertEqual(selected(names, "pyagrum.clg.*"), ["pyagrum.clg.CLG.add", "pyagrum.clg.SEM.toclg"])
+    self.assertEqual(selected(names, "*.add"), ["pyagrum.BayesNet.add", "pyagrum.clg.CLG.add"])
+    self.assertEqual(selected(names, "pyagrum.CLG.*"), [])
+
   def testExamples(self):
-    for stem, path in sorted(self.files.items()):
+    stems = selected(self.files, _pattern)
+    self.assertTrue(stems, f"no example matches '{_pattern}'")
+    for stem in stems:
+      path = self.files[stem]
       with self.subTest(example=stem):
         if missing := missingRequirements(path.read_text(encoding="utf-8")):
           self.skipTest(f"requires {', '.join(missing)}")  # optional dependency missing here

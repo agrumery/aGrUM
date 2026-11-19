@@ -61,7 +61,7 @@ from pathlib import Path
 
 import pyagrum as gum
 
-os.environ.setdefault("MPLBACKEND", "Agg")  # no window for the examples drawing with matplotlib
+os.environ["MPLBACKEND"] = "Agg"  # no window for the examples drawing with matplotlib (see also runExample)
 
 
 def requirements(source: str) -> list[str]:
@@ -111,8 +111,11 @@ def runExample(source: str, name: str = "<example>") -> None:
   """Execute an example; raise AssertionError if a result differs from the one shown.
 
   The example is isolated: the state of the random generator, the configuration and the figures of matplotlib are
-  restored or closed afterwards (the hooks added to the configuration cannot be removed).
+  restored or closed afterwards (the hooks added to the configuration cannot be removed). Matplotlib is left with the
+  Agg backend: a test run never opens a window.
   """
+  if "matplotlib" in sys.modules:  # imported before MPLBACKEND was set (by another suite): the variable is not read
+    sys.modules["matplotlib"].use("Agg")
   tree = ast.parse(source, name)
   lines = source.splitlines()
   env = {"__name__": "__main__"}

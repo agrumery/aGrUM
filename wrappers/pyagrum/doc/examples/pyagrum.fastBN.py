@@ -17,6 +17,11 @@ print(bn.variable("A"))
 print(bn.variable("E"))
 # E:Discretized(<[1;2.5[,[2.5;3.9]>)
 
+# the CPTs are random, or uniform with uniform=True
+bn = gum.fastBN("A->B<-C", uniform=True)
+bn.cpt("A").tolist()
+# [0.5, 0.5]
+
 # a name between single quotes may contain any character ('' for a quote)
 bn = gum.fastBN("'Visit Asia'{yes|no}->'X-ray'[3]<-'l''eau'")
 sorted(bn.names())

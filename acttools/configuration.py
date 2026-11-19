@@ -416,7 +416,7 @@ def configure_cli_options(current: dict[str, str | bool]) -> None:
   cfg.parser.add_argument(
     "-t",
     "--tests",
-    help="tests management : {show|all|test1+test2+test3}.",
+    help="tests management : {show|all|test1+test2+test3} (pyAgrum: Examples:<glob> runs the matching examples).",
     metavar="TESTS-COMMAND",
     dest="tests",
     default=None,

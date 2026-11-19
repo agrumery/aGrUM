@@ -190,12 +190,14 @@ def saveBN(bn: BayesNet, filename: str, allowModificationWhenSaving: bool | None
     raise InvalidArgument("[pyAgrum] extension " + filename.split('.')
     [-1] + " unknown. Please use among " + availableBNExts())
 
-def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
+def fastBN(structure: str, domain: int | str = "[2]", *, uniform: bool = False) -> BayesNet:
   """
   Create a Bayesian network with a dot-like syntax which specifies:
       - the structure 'a->b->c;b->d<-e;',
       - the type of the variables with different syntax (cf documentation),
       - names possibly between single quotes (``"'Visit Asia'->X"``).
+
+  The conditional probability tables are drawn at random, or uniform with ``uniform=True``.
 
   Parameters
   ----------
@@ -203,13 +205,20 @@ def fastBN(structure: str, domain: int | str = "[2]") -> BayesNet:
           the string containing the specification
   domain : int or str
           the default domain size (int) or domain specification (str) for variables (default is "[2]"
+  uniform : bool
+          if True, every conditional probability table is uniform (no value is improbable, whatever the random
+          generator), instead of random
 
   Returns
   -------
   pyagrum.BayesNet
           the resulting bayesian network
   """
-  return BayesNet.fastPrototype(structure, domain)
+  bn = BayesNet.fastPrototype(structure, domain)
+  if uniform:
+    for node in bn.nodes():
+      bn.cpt(node).fillWith(1).normalizeAsCPT()
+  return bn
 
 
 if typing.TYPE_CHECKING:
