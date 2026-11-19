@@ -32,7 +32,7 @@ Learning the graph
 ------------------
 
 To learn the graph of a CTBN (ie the dependence between variables) we use the CTPC algorithm
-from :cite:t:`bregoli20a` (and using :cite:t:`nodelam2003learningctbn`).
+from :cite:t:`bregoli2020constraint` (and using :cite:t:`nodelman2003learning`).
 The independence test used is based on Fisher and chi2 tests to compare exponential distributions.
 
 .. pyagrum-class:: pyagrum.ctbn.Learner

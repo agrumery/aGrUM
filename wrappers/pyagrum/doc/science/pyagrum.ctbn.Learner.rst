@@ -3,7 +3,7 @@ fully observed trajectories.
 
 **Parameters.** For a variable :math:`X` with parents :math:`U`, the sufficient statistics of the trajectories are the
 time :math:`T[x \mid u]` spent in :math:`x` while :math:`U = u`, and the number :math:`M[x, x' \mid u]` of transitions
-from :math:`x` to :math:`x'` while :math:`U = u`, summed over all the trajectories :cite:`nodelam2003learningctbn`.
+from :math:`x` to :math:`x'` while :math:`U = u`, summed over all the trajectories :cite:`nodelman2003learning`.
 The maximum likelihood estimates are
 
 .. math::
@@ -13,7 +13,7 @@ The maximum likelihood estimates are
 
 (no prior; a configuration never visited keeps rates 0).
 
-**Structure.** The graph is learned by CTPC :cite:`bregoli20a`, a PC-like algorithm: starting from the complete
+**Structure.** The graph is learned by CTPC :cite:`bregoli2020constraint`, a PC-like algorithm: starting from the complete
 directed graph, for each :math:`X` and for growing sizes :math:`b`, the arc :math:`Y \rightarrow X` is removed as soon
 as :math:`X` is found independent of :math:`Y` given a subset :math:`S` of size :math:`b` of the other current parents.
 As the dependence of a continuous-time process is not symmetric and follows time, no orientation step is needed, and

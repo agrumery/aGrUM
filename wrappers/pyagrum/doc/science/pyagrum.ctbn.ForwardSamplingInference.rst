@@ -5,7 +5,8 @@ trajectories.
 :math:`X` draws a waiting time from the exponential law of parameter :math:`q_{x \mid u}` (its current state :math:`x`,
 the current values :math:`u` of its parents, see `pyagrum.ctbn.CIM`); the variable with the shortest time changes,
 to :math:`x'` with probability :math:`q_{xx' \mid u} / q_{x \mid u}`. This is the first-reaction method of
-:cite:`gillespie1976general`: the minimum of independent exponential times has the law of the waiting time of the joint
+:cite:`gillespie1976general` applied to the variables, the new state being then drawn as in his direct method: the
+minimum of independent exponential times has the law of the waiting time of the joint
 process and is reached by each variable in proportion to its rate, so the trajectory is an exact sample of the CTBN.
 All the times are drawn again after each transition, which is exact as the exponential law has no memory.
 
