@@ -544,29 +544,20 @@ def showBootstrapMixtureInference(
 
 def _normalizedArcsWeight(bnm: BNM.BNMixture | BNM.BootstrapMixture):
   """
-  Counts arcs in the BNs of the mixture. The value of an arc is the weight of the BN containing it.
-  Result is normalized.
+  Confidence (`pyagrum.bnmixture.BNMixture.arcConfidence`) of every arc between the variables of the mixture, with
+  its smallest non-zero value and its largest value.
   """
-  countArcs = {nod1: {nod2: 0.0 for nod2 in bnm.refBN.names() if nod2 != nod1} for nod1 in bnm.refBN.names()}
-  sum_weight = sum(bnm.weights().values())
-  if sum_weight == 0:
+  if sum(bnm.weights().values()) == 0:
     raise pyagrum.InvalidArgument("Cannot compute arc weights: all weights are zero.")
+  names = bnm.refBN.names()
+  countArcs = {n1: {n2: bnm.arcConfidence(n1, n2) for n2 in names if n2 != n1} for n1 in names}
 
   mi = 1.0
   ma = 0.0
-  for bn_name in bnm.names():
-    bn = bnm._bns[bn_name]
-    w = bnm._weights[bn_name]
-    for a, b in bn.arcs():
-      tail = bn.variable(a).name()
-      head = bn.variable(b).name()
-      countArcs[tail][head] += w
-
-  for n1 in bnm.refBN.names():
-    for n2 in bnm.refBN.names():
+  for n1 in names:
+    for n2 in names:
       if n1 == n2:
         continue
-      countArcs[n1][n2] = countArcs[n1][n2] / sum_weight
       if 0 != countArcs[n1][n2] < mi:
         mi = countArcs[n1][n2]
       ma = max(ma, countArcs[n1][n2])

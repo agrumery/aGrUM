@@ -38,10 +38,27 @@
 #                                                                          #
 ############################################################################
 
-from numpy import array, quantile
+from numpy import argsort, array, clip, concatenate, cumsum, diff
 
 import pyagrum
 import pyagrum.bnmixture as BNM
+
+
+def _weightedQuantile(values, weights, q: float) -> float:
+  """
+  Weighted quantile of level ``q`` (Akinshin 2023, section 6): definition 7 of Hyndman and Fan where the sample size
+  is Kish's effective size n* = (sum w)^2 / sum w^2, and each sorted value gets n* times the overlap of its interval of
+  cumulated normalized weights with [(h-1)/n*, h/n*], h = (n*-1) q + 1. Equal weights give definition 7; the result
+  does not depend on the scale of the weights; a zero weight changes nothing.
+  """
+  order = argsort(values, kind="stable")
+  sorted_values = values[order]
+  w = weights[order]
+  n_eff = w.sum() ** 2 / (w**2).sum()
+  t = concatenate(([0.0], cumsum(w / w.sum())))
+  h = (n_eff - 1) * q + 1
+  cdf = clip(t * n_eff - h + 1, 0, 1)
+  return float(diff(cdf) @ sorted_values)
 
 
 class IMixtureInference:
@@ -227,15 +244,22 @@ class BootstrapMixtureInference(IMixtureInference):
     -------
     tuple[pyagrum.Tensor, pyagrum.Tensor]
         Two tensors to store the quantile values. Each tensor stores the quantile for each state of the variable.
-        The values considered are those of the BNs in the Mixture (excluding reference BN).
+        The values considered are those of the BNs in the Mixture (excluding reference BN), weighted by the weights
+        of the BNs: weighted quantiles of :cite:`akinshin2023weighted`, equal to the usual (unweighted) quantiles
+        when all the weights are equal, and unchanged when the weights are normalized.
 
     Raises
     ------
     pyagrum.SizeError
         If the mixture doesn't contain any BN.
+    pyagrum.InvalidArgument
+        If all the weights are zero.
     """
     if self._bnm.size() == 0:
       raise pyagrum.SizeError("The mixture doesn't contain any BN, can't compute quantiles")
+    weights = {nam: self._bnm.weight(nam) for nam in self._inferences}
+    if sum(weights.values()) == 0:
+      raise pyagrum.InvalidArgument("Cannot compute quantiles: all weights are zero.")
     q1 = pyagrum.config.typed["bnmixture", "leftQuantile"]
     q2 = pyagrum.config.typed["bnmixture", "rightQuantile"]
     var = self._bnm.variable(name)
@@ -256,13 +280,12 @@ class BootstrapMixtureInference(IMixtureInference):
       posteriors[nam] = posteriors[nam].toVarsIn(self._bnm).normalize()
 
     # set quantile values
+    w = array([weights[nam] for nam in posteriors], dtype=float)
     I.setFirst()
     while not I.end():
-      values = []
-      for nam in posteriors:
-        values.append(posteriors[nam].get(I))
-      v1 = quantile(array(values), q1)
-      v2 = quantile(array(values), q2)
+      values = array([posteriors[nam].get(I) for nam in posteriors])
+      v1 = _weightedQuantile(values, w, q1)
+      v2 = _weightedQuantile(values, w, q2)
       ret1.set(I, v1)
       ret2.set(I, v2)
       I.inc()

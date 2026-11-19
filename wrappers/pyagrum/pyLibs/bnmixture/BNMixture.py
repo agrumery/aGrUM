@@ -302,7 +302,9 @@ class IMixture:
 
   def existsArc(self, a: str | int, b: str | int) -> int:
     """
-    Counts the number of time arc ``a`` -> ``b`` appears among all BNs in the model.
+    Counts the BNs of the model that contain the arc ``a`` -> ``b``, whatever their weights (a BN added several
+    times is stored once, with a larger weight, and counts once). See `pyagrum.bnmixture.BNMixture.arcConfidence`
+    for the weighted frequency of the arc.
 
     Parameters
     ----------
@@ -314,13 +316,40 @@ class IMixture:
     Returns
     -------
     int
-        The number of time arc ``a`` -> ``b`` appears.
+        The number of BNs containing the arc ``a`` -> ``b``.
     """
     count = 0
     for bn in self._bns.values():
       if bn.existsArc(a, b):
         count += 1
     return count
+
+  def arcConfidence(self, a: str | int, b: str | int) -> float:
+    """
+    Weighted frequency of the arc ``a`` -> ``b`` among the BNs of the model (reference BN excluded): the sum of the
+    weights of the BNs containing the arc, divided by the sum of all the weights.
+
+    Parameters
+    ----------
+    a : str | int
+        Tail of the arc.
+    b : str | int
+        Head of the arc.
+
+    Returns
+    -------
+    float
+        The confidence in the arc ``a`` -> ``b``, between 0 and 1.
+
+    Raises
+    ------
+    pyagrum.InvalidArgument
+        If all the weights are zero.
+    """
+    total = sum(self._weights.values())
+    if total == 0:
+      raise pyagrum.InvalidArgument("Cannot compute the confidence of an arc: all weights are zero.")
+    return sum(self._weights[name] for name, bn in self._bns.items() if bn.existsArc(a, b)) / total
 
   def variable(self, name: str) -> pyagrum.DiscreteVariable:
     """

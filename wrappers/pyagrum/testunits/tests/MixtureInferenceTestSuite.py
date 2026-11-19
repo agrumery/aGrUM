@@ -220,6 +220,63 @@ class TestMixtureInference(pyAgrumTestCase):
     with self.assertRaises(gum.SizeError):
       ie.quantiles("A")
 
+  def _priorMixture(self, priors):
+    bn = gum.fastBN("A->B")
+    bn.cpt("A").fillWith([0.5, 0.5])
+    mix = BNM.BootstrapMixture("ref", bn)
+    for i, p in enumerate(priors):
+      other = gum.BayesNet(bn)
+      other.cpt("A").fillWith([p, 1 - p])
+      mix.add(f"bn{i}", other)
+    return mix
+
+  def testBootstrapMixtureInference_quantilesUseTheWeights(self):
+    # 0.4 drawn twice: merged into one BN of weight 2, values [0.4, 0.5, 0.6] with weights [2, 1, 1]
+    mix = self._priorMixture([0.4, 0.4, 0.5, 0.6])
+    self.assertEqual(mix.size(), 3)
+    ie = BNM.BootstrapMixtureInference(mix)
+    ie.makeInference()
+    low, high = ie.quantiles("A")
+    # Akinshin (2023): n* = 16/6 = 8/3, h = (n* - 1) q + 1, mass on [(h-1)/n*, h/n*] of the cumulated weights
+    # P(A=0): t = [0, 1/2, 3/4, 1]; q=0.2: [0, 0.125] -> 0.4; q=0.8: [0.5, 0.875] -> (2 * 0.5 + 0.6) / 3
+    # P(A=1): t = [0, 1/4, 1/2, 1] for [0.4, 0.5, 0.6]; q=0.2: [0.125, 0.5] -> (0.4 + 2 * 0.5) / 3; q=0.8: -> 0.6
+    for got, expected in zip(low.tolist(), [0.4, 1.4 / 3]):
+      self.assertAlmostEqual(got, expected)
+    for got, expected in zip(high.tolist(), [1.6 / 3, 0.6]):
+      self.assertAlmostEqual(got, expected)
+
+  def testBootstrapMixtureInference_quantilesOfEqualWeightsAreTheUsualOnes(self):
+    mix = self._priorMixture([0.4, 0.45, 0.55, 0.6])
+    ie = BNM.BootstrapMixtureInference(mix)
+    ie.makeInference()
+    low, high = ie.quantiles("A")
+    # definition 7 of Hyndman and Fan, h = (4 - 1) q + 1
+    self.assertAlmostEqual(low.tolist()[0], 0.43)
+    self.assertAlmostEqual(high.tolist()[0], 0.57)
+
+  def testBootstrapMixtureInference_quantilesIgnoreZeroWeights(self):
+    mix = self._priorMixture([0.4, 0.5, 0.6, 0.9])
+    mix.setWeight("bn3", 0)
+    ie = BNM.BootstrapMixtureInference(mix)
+    ie.makeInference()
+    low, high = ie.quantiles("A")
+    self.assertAlmostEqual(low.tolist()[0], 0.44)
+    self.assertAlmostEqual(high.tolist()[0], 0.56)
+
+  def testBootstrapMixtureInference_quantilesDoNotDependOnTheScaleOfTheWeights(self):
+    mix = self._priorMixture([0.4, 0.4, 0.5, 0.6])
+    ie = BNM.BootstrapMixtureInference(mix)
+    ie.makeInference()
+    low, high = ie.quantiles("A")
+    mix.normalize()
+    low_n, high_n = ie.quantiles("A")
+    for a, b in zip(low.tolist() + high.tolist(), low_n.tolist() + high_n.tolist()):
+      self.assertAlmostEqual(a, b)
+    for name in mix.names():
+      mix.setWeight(name, 0)
+    with self.assertRaises(gum.InvalidArgument):
+      ie.quantiles("A")
+
   def testBug4_stats_diracVarianceIsZero(self):
     from pyagrum.bnmixture import notebook as bnm_nb
 

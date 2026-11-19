@@ -508,6 +508,27 @@ class TestMixtureModel(pyAgrumTestCase):
     self.assertEqual(bnm.existsArc(id_B, id_C), 1)
     self.assertEqual(bnm.existsArc(id_A, id_B), 0)
 
+  def testIMixture_arcConfidenceIsTheWeightedFrequency(self):
+    bn_ab = gum.fastBN("A->B;C")
+    bn_ba = gum.fastBN("B->A;C")
+    bnm = BNM.BootstrapMixture("ref", bn_ab)
+    bnm.add("s1", bn_ab)
+    bnm.add("s2", bn_ab)  # same BN: merged into s1 with weight 2
+    bnm.add("s3", bn_ba)
+    self.assertEqual(bnm.size(), 2)
+    self.assertEqual(bnm.existsArc("A", "B"), 1)  # structure only: one BN
+    self.assertAlmostEqual(bnm.arcConfidence("A", "B"), 2 / 3)
+    self.assertAlmostEqual(bnm.arcConfidence("B", "A"), 1 / 3)
+    self.assertEqual(bnm.arcConfidence("A", "C"), 0.0)
+    bnm.normalize()
+    self.assertAlmostEqual(bnm.arcConfidence("A", "B"), 2 / 3)
+
+  def testIMixture_arcConfidence_zeroWeightsRaises(self):
+    bnm = BNM.BNMixture()
+    bnm.add("bn0", gum.fastBN("A->B"), w=0.0)
+    with self.assertRaises(gum.InvalidArgument):
+      bnm.arcConfidence("A", "B")
+
   def testNormalizedArcsWeight_zeroWeightsRaises(self):
     from pyagrum.bnmixture import notebook as bnm_nb
 

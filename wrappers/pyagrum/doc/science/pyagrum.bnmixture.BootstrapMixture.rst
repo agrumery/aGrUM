@@ -10,7 +10,8 @@ stability.
 
    \mathrm{conf}(X \to Y) = \frac{\sum_{i \,:\, X \to Y \in G_i} w_i}{\sum_i w_i},
 
-all the weights :math:`w_i` being 1 (a network added twice gets weight 2).
+all the weights :math:`w_i` being 1 (a network given by two copies is stored once with weight 2). It is the value of
+`pyagrum.bnmixture.BootstrapMixture.arcConfidence`; ``existsArc`` counts the stored networks, whatever their weights.
 
 **Quantile intervals.** For each value :math:`x` of a variable :math:`X`, the interval around the posterior
 :math:`P_{\mathrm{ref}}(x \mid e)` of the reference is given by two empirical quantiles of the posteriors
@@ -24,5 +25,9 @@ all the weights :math:`w_i` being 1 (a network added twice gets weight 2).
    Q(q) = v_{(\lfloor h \rfloor)} + (h - \lfloor h \rfloor)\left(v_{(\lfloor h \rfloor + 1)} - v_{(\lfloor h \rfloor)}\right),
    \qquad h = (B-1)\,q + 1.
 
-The posteriors of the copies are not weighted, and the posterior of the reference is not one of them: it may lie
-outside its interval.
+With weights (a network given by two copies has weight 2), the weighted version of :cite:`akinshin2023weighted` is
+used: :math:`B` is replaced by Kish's effective size :math:`B^* = (\sum_i w_i)^2 / \sum_i w_i^2`, and each sorted
+value receives :math:`B^*` times the overlap of its interval of cumulated normalized weights with
+:math:`[(h-1)/B^*,\, h/B^*]`, :math:`h = (B^*-1)\,q + 1`. Equal weights give the formula above; normalizing the weights
+changes nothing; a network of weight 2 is not the same as two networks of weight 1. The posterior of the reference is
+not one of the values: it may lie outside its interval.

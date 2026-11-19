@@ -421,6 +421,11 @@
     - `bnmixture.BNMBootstrapLearner`: the record weights of the bootstrap BNs were drawn from a Dirichlet(1/n)
       distribution, so that each BN rested in effect on about 2 records; they follow the Bayesian bootstrap of Rubin
       (n times a Dirichlet(1, ..., 1) vector, about n/2 records in effect, as resampling with replacement).
+    - `bnmixture.BootstrapMixtureInference.quantiles` ignored the weights: a BN given by two bootstrap copies is
+      stored once with weight 2 and was counted once. The quantiles are now the weighted quantiles of Akinshin (2023):
+      the usual ones for equal weights, unchanged when the weights are normalized. New
+      `BNMixture.arcConfidence` (and `BootstrapMixture`): weighted frequency of an arc, the value shown by the
+      notebook functions; `existsArc` still counts the BNs containing the arc.
     - `CNMonteCarloSampling` computed wrong bounds: the CPTs of the sampled networks are changed in place and the
       inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
       depended on the number of threads (each sample now has its own seed) and the repetitive independence drew
