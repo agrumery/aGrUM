@@ -6,6 +6,5 @@ samples are exact draws of the model, without weights, and follow the random gen
 (`pyagrum.initRandom`). There is no evidence: the samples are those of the prior joint distribution (the exact
 posteriors are given by `pyagrum.clg.CLGVariableElimination`).
 
-**Conventions of the statistics.** The mean of :math:`N` samples is the empirical mean; ``variance_sample`` and
-``covariance_sample`` divide by :math:`N-1` (unbiased estimates), so that the variances are the diagonal of the
-covariance matrix, and ``stddev_sample`` is the square root of ``variance_sample``.
+**Conventions of the statistics.** ``variance_sample``, ``stddev_sample`` and ``covariance_sample`` divide by
+:math:`N-1` (unbiased estimates), so that the variances are the diagonal of the covariance matrix.

@@ -54,10 +54,11 @@ class SEM:
   This class is used to parse a SEM into a CLG model or convert a CLG model into a SEM.
 
   Each equation reads ``name = terms [stddev]``: the terms are a constant, a variable or a coefficient times a
-  variable (``2.5*A`` or ``2.5A``), separated by ``+`` or ``-``, and the standard deviation of the noise is written
-  between brackets at the end. The numbers may use the exponent notation (``1e-05``); in ``2e3A``, the exponent is
-  read first (2000 times ``A``): write ``2*e3`` for 2 times a variable ``e3``. ``#`` starts a comment. A line without
-  ``=`` (outside its comment) continues the previous equation and must start with ``+``, ``-`` or ``[``.
+  variable (``2.5*A``, ``2.5 A`` or ``2.5A``), separated by ``+`` or ``-``, and the standard deviation of the noise is
+  written between brackets at the end. The spaces separate the tokens. The numbers may use the exponent notation
+  (``1e-05``), the exponent being glued to its number: ``2e3A`` is 2000 times ``A``, ``2 e3`` or ``2*e3`` is 2 times a
+  variable ``e3``. ``#`` starts a comment. A line without ``=`` (outside its comment) continues the previous equation
+  and must start with ``+``, ``-`` or ``[``.
 
   Examples
   --------
@@ -90,9 +91,10 @@ class SEM:
   FIND_TERM = rf"^({NUMBER})\*?({ID})$"
 
   _reg_variable = re.compile(FIND_VAR)
-  _reg_stddev = re.compile(rf"\[({NUMBER})\]")
-  # a term: signs, then a number possibly followed by a variable, or a variable alone
-  _reg_term = re.compile(rf"([+-]*)(?:({NUMBER})\*?({ID})?|({ID}))")
+  _reg_stddev = re.compile(rf"\s*\[\s*({NUMBER})\s*\]")
+  # a term: signs, then a number possibly followed by a variable, or a variable alone; the spaces separate the tokens
+  # (an exponent is glued to its number: '2e3' is a number, '2 e3' is 2 times e3)
+  _reg_term = re.compile(rf"\s*((?:[+-]\s*)*)(?:({NUMBER})(?:\s*\*?\s*({ID}))?|({ID}))")
 
   def __init__(self):
     """
@@ -147,10 +149,10 @@ class SEM:
     SyntaxError
       If the line does not follow the syntax of a SEM.
     """
-    ss = "".join(s.split("#")[0].split())
+    ss = s.split("#")[0]
     if "=" not in ss:
       raise SyntaxError("No affectation operator ('=')")
-    variable, rhs = ss.split("=", 1)
+    variable, rhs = (part.strip() for part in ss.split("=", 1))
     if SEM._reg_variable.match(variable) is None:
       raise SyntaxError(f"{variable=} not a variable")
 
@@ -206,10 +208,10 @@ class SEM:
       else:
         if len(canonic_form) == 0:
           raise SyntaxError(f"Line '{line}' is not an equation.")
-        # the lines are glued: a number ending a line and a name starting the next one would merge (2 and B: 2B)
+        # a number ending a line and a name starting the next one would read as a term (2 and B: 2 B)
         if line[0] not in "+-[":
           raise SyntaxError(f"Line '{line}' continues an equation: it must start with '+', '-' or '['.")
-        canonic_form[-1] += line
+        canonic_form[-1] += " " + line
 
     # parsing the canonic_form
     clg = CLG()

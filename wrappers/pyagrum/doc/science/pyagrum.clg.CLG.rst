@@ -20,14 +20,13 @@ hence the mean :math:`m = (I - B^\top)^{-1}\mu` and the covariance
 - The parameter ``mu`` of a variable is the intercept :math:`\mu_X` of its equation: it is the mean of :math:`X` only
   when :math:`X` has no parent (the means of the other variables are given by `pyagrum.clg.CLGVariableElimination`).
 - The parameter ``sigma`` is the standard deviation :math:`\sigma_X` of the noise (the conditional standard
-  deviation of :math:`X` given its parents), not its variance. It must be positive: the densities of the model, and
-  its exact inference, need :math:`\sigma_X > 0`.
+  deviation of :math:`X` given its parents), not its variance.
 - The coefficient of an arc cannot be 0: a variable without influence on another one is not its parent.
-- The log-likelihood of a database is :math:`\sum_{k} \sum_X \ln \varphi(x^{(k)};\, \mu_X + \sum_Y \beta_{YX}
-  y^{(k)}, \sigma_X^2)` (natural logarithm, :math:`\varphi` the normal density), the maximized quantity of the
+- The log-likelihood of a database is :math:`\sum_{i} \sum_X \ln \varphi(x_i;\, \mu_X + \sum_Y \beta_{YX}
+  y_i, \sigma_X^2)` (natural logarithm, :math:`\varphi` the normal density), the maximized quantity of the
   parameter estimation of `pyagrum.clg.learning.CLGLearner`.
 - A CLG is written as text with the syntax of `pyagrum.clg.SEM`.
 
-**Implementation limit.** A deterministic variable (a null standard deviation) cannot be represented: a variable
-added with :math:`\sigma_X = 0`, or a database with a constant column given to `pyagrum.clg.learning.CLGLearner`, is
-refused.
+**Implementation limit.** The standard deviation must be positive, as the densities and the exact inference divide
+by :math:`\sigma_X^2`: a deterministic variable cannot be represented, and a variable added with
+:math:`\sigma_X = 0`, or a database with a constant column given to `pyagrum.clg.learning.CLGLearner`, is refused.

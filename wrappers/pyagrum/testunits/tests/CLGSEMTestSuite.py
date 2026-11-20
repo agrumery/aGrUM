@@ -154,6 +154,15 @@ B=1e-05A - 2E+3*A + 2e[1]
     self.assertEqual(model, model2)
     self.assertEqual(model2.variable("B").mu(), 0)
 
+  def test_a_space_separates_a_number_from_a_name(self):
+    # an exponent is glued to its number: '2e3' is 2000, '2 e3' is 2 times the variable e3
+    model = gclg.SEM.toclg("e3=0[1]\nB = 2 e3[1]\nC = 2e3[1]\nD = - 2 * e3 [ 1 ]")
+    self.assertEqual(model.coefArc("e3", "B"), 2)
+    self.assertEqual(model.variable("B").mu(), 0)
+    self.assertEqual(model.variable("C").mu(), 2000)
+    self.assertEqual(model.coefArc("e3", "D"), -2)
+    self.assertEqual(len(model.arcs()), 2)
+
   def test_unknown_variable_raises(self):
     with self.assertRaises(SyntaxError):
       gclg.SEM.toclg("A=0[1]\nB=2Z[1]")

@@ -9,10 +9,10 @@ More precisely what can be learned is :
 
 **Learning the graph**
 
-To learn the graph of a CLG (ie the dependence between variables) we use a modified PC algorithm
-based on :cite:t:`colombo2014order`.
+To learn the graph of a CLG (ie the dependence between variables) we use the PC algorithm of
+:cite:t:`spirtes2000causation`, as written in :cite:t:`colombo2014order`.
 
-The independence test used is based on :cite:t:`simionato2022bounding`.
+The independence test used is based on :cite:t:`simionato2023bounding`.
 
 .. pyagrum-class:: pyagrum.clg.learning.CLGLearner
 

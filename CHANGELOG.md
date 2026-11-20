@@ -412,6 +412,7 @@
       coefficient and a name never merge; an unknown parent or an unrecognized part of a line raises `SyntaxError`.
       Continuation lines (without `=`): a `=` in a comment made a new equation, and a line following a comment was
       silently ignored; a continuation line must now start with `+`, `-` or `[` (`... + 2` then `B[2]` read 2*B).
+      The spaces separate the tokens: `2 e3` is 2 times a variable `e3` (it was the number 2000, without parent).
     - `clg.CLG`: a variable with a null standard deviation was accepted, then the inference raised `ZeroDivisionError`
       and `logLikelihood` returned nan. `add`, `setSigma` (also `GaussianVariable.setSigma`) and unpickling raise
       `ValueError` when sigma is not positive (hence `SEM.toclg` with `[0]` and `CLGLearner` on a constant column); the

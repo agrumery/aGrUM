@@ -30,13 +30,12 @@ variables). Observing :math:`Y = y` turns :math:`(g, h, K)` on :math:`(X, Y)` in
 eliminated (product of the potentials that contain the variable, then integration) in the elimination order given by
 `pyagrum.JunctionTreeGenerator` for the graph of the model; the remaining potentials are multiplied and the result is
 normalized by its integral. The posterior of the targets is the Gaussian of covariance :math:`K^{-1}` and mean
-:math:`K^{-1} h`: it is exact, not an approximation.
+:math:`K^{-1} h`: it is exact, not an approximation. With :math:`\sigma > 0` for every variable, which
+`pyagrum.clg.CLG` ensures, each :math:`K_{YY}` met is the one of the joint density of the remaining variables,
+positive definite: every integration is well defined.
 
-**Conventions.** Evidence is hard: one observed value per variable (soft evidence is not supported). The posterior
+**Conventions.** Evidence is hard: one observed value per variable. The posterior
 of an observed variable is returned as a Gaussian centred on the observed value, with a null standard deviation; the
 canonical posterior of an observed variable is refused.
 
-**Implementation limit.** No junction tree is kept: each query runs a whole elimination. The canonical forms need a
-positive standard deviation :math:`\sigma > 0` for every variable, which `pyagrum.clg.CLG` ensures; then, as a
-variable is eliminated with its own conditional density among the factors (term :math:`1/\gamma > 0` in
-:math:`K_{YY}`, the other factors adding nonnegative terms), every integration is well defined.
+**Implementation limit.** No junction tree is kept: each query runs a whole elimination.
