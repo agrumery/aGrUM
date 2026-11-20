@@ -1,614 +1,134 @@
 # aGrUM Changelog
 
-## Changelog for next version
+## Changelog for 3.4.0
 
 - pyAgrum
-    - `fastBN(..., uniform=True)`: every CPT is uniform instead of random. The examples of the sampling inferences
-      with evidence use it: with random CPTs, an improbable evidence made the rejection sampling of some runs last
-      minutes.
 
-    - New `randomShuffle` and `randomGamma` (the draws of aGrUM, the same on every platform for a given seed).
-    - `initRandom` now reaches the draws of all the modules (`KTBNGenerator`, ...: each module had its own generator,
-      with a fixed seed). A new `pyagrum.ini` key `core.randomSeed` gives the seed at start (see aGrUM below) and
-      `randomGeneratorSeed()` returns the seed in use. `import pyagrum` no longer calls `initRandom(0)`.
-    - New `randomNumpyGenerator()`: a `numpy.random.Generator` whose seed is drawn from the generator of aGrUM.
-      `pyagrum.clg` (`randomCLG`, `ForwardSampling`, `CLGLearner`), `pyagrum.bnmixture` (bootstrap weights) and the
-      beeswarm plot of `pyagrum.explain` now draw with it, so that `initRandom` makes them reproducible (they used
-      Python `random` or the global generator of numpy). The argument `seed` of `ForwardSampling.makeSample` is
-      deprecated after 3.3.2 (use `initRandom`).
-    - Configuration of pyAgrum reorganized in lowerCamelCase, with sections by subject; the former names are
-      deprecated after 3.3.2 and still work: `notebook.tensor_*` → `tensor.*` (`tensor_visible_digits` →
-      `tensor.visibleDigits`...), `notebook.histogram_*` → `histogram.*`, `notebook.graphdiff_*` → `graphdiff.*`, the
-      other keys of `notebook`, `factorgraph`, `influenceDiagram`, `credalnet`, `causal`, `ROC`, `ctbn` and `bnmixture`
-      in lowerCamelCase (`notebook.graph_format` → `notebook.graphFormat`, `ctbn.graph_size` → `ctbn.graphSize`...).
-      `bnmixture.line_size` and `ctbn.show_latent_names`, `ctbn.latent_bgcolor`, `ctbn.latent_fgcolor`, no longer
-      used, are deprecated after 3.3.2. The arcs of the drawings of `bnmixture` use `bnmixture.arcCmap` (it was read
-      from `notebook.arcCmap`). The color of the upper bounds in the histograms of a credal network is the new key
-      `credalnet.histoMaxColor` (it was fixed; `credalnet.histo_max_color`, never read, now redirects to it).
-    - `showROC_PR(bgcolor=...)` now colors the background of the figure (it was ignored).
-    - The keys of the configuration are displayed as they are declared (`maxNumberOfThreads`, it was `maxnumberofthreads`),
-      in `print(pyagrum.config)`, `grep`, `diff`, `schema()` and in the messages; they are still found whatever their case.
-    - The graphs have `saveGUM`/`saveGUMstring` and are pickled through the GUM format: the isolated nodes, the names
-      and the marks were lost, and `CPDAG`, `MPDAG`, `MAG`, `EssentialGraph` could not be pickled. New
-      `graphFromGUMString`, `loadGraph` and `saveGraph` (format given by the extension, as `loadBN`/`saveBN`: `.jgum`,
-      `.bgum` or `.pkl`, see the new `availableGraphExts`). Reading a graph pickled by pyAgrum 3.3.2 or before is
-      deprecated after 3.3.2.
-    - `MarkedGraph`, `fastMarkedGraph` and `fastPAG`; the marks of a `PAG` are `pyagrum.EdgeMark` values (an `IntEnum`:
-      the constants `EdgeMark_Circle`, `EdgeMark_Tail` and `EdgeMark_Arrowhead` still work).
-    - `saveGUM`/`loadGUM` of `BayesNet`, `InfluenceDiagram`, `MarkovRandomField` and of the graphs: by default
-      (`binary=None`), the format is given by the extension, `.jgum` for the text format, `.bgum` or any other
-      extension for the binary one; an explicit `binary` contradicting `.jgum`/`.bgum` raises `InvalidArgument`.
-    - New module `pyagrum.graph` (`import pyagrum.graph as gg`): the algorithms on graphs, one function per algorithm
-      whatever the kind of graph, each accepting a family of graphs given by what it reads (the arcs, the edges, both,
-      or the marked edges): `topologicalOrder`, `hasDirectedCycle`, `ancestors`, `descendants`, `directedPath`,
-      `hasDirectedPath`, `hasUndirectedCycle`, `isChordal`, `lexBFS`, `maximumCardinalitySearch`,
-      `isPerfectEliminationOrdering`, `undirectedPath`, `hasPartiallyDirectedCycle`, `mixedOrientedPath`,
-      `degeneracyOrdering`, `anteriors`, `isAncestral`, `isMaximal`, `cpdag`, `consistentExtension`, `meekClosure`,
-      `orientAsDAG`, and `separation` (d-, c- or m-separation according to the class of the graph). The immutable
-      graphs (`CPDAG`, `MPDAG`, `EssentialGraph`, `MAG`) are accepted as the other graphs. Nodes by id or by name. New
-      notebook `03-Tutorial_graphs`.
-    - `BayesNet.changeTensor` is removed: use `bn.cpt(node).fillWith(tensor)`.
-    - Names between single quotes in every *fast* syntax (`fastBN`, `fastID`, `fastMRF`, `fastVariable`, `fastGraph`
-      and the typed `fast*Graph`, `fastMarkedGraph`, `fastPAG`, `add`): `fastBN("'Visit Asia'{yes|no}->'X-ray'")`; a
-      doubled quote stands for a quote (`'l''eau'`). A quote opens a quoted name only at the beginning of a name
-      (`O'Brien` and the labels `{l'eau|x}` are unchanged). A circle may touch a quoted name (`fastPAG("'A'o->'B'")`).
-      New `quoteFastName` and `fastNameNeedsQuotes`.
-    - New `checkFastSyntax` (and `FastSyntaxCheck`, `FastSyntax`): the syntaxes for which a fast description is valid
-      (`"A->B"` is a directed graph, a Bayesian network and an influence diagram), with the error for the others; every
-      syntax is checked when the object is built (it is never modified, hence it can be read by several threads). Valid
-      means accepted by the fast function: an arc given twice (`fastBN`, `fastID`, `DuplicateElement`), an empty factor
-      or a factor given twice (`fastMRF`, `InvalidArgument`) are refused by the analysis of the description.
-      `fastGraph` no longer parses the description in Python: it uses `checkFastSyntax`, and returns a `MarkedGraph`
-      for a description with marks (`"A o-> B"`, it raised an error).
-    - Behaviour change: a malformed fast description (an operator without a node, an unclosed quote, a misplaced `<` or
-      `>`, a number which cannot be read, a variable without a name) raises `InvalidArgument` in every fast syntax
-      (`fastBN("A->")` raised `InvalidArc`, `fastVariable("A[x]")` a Python `ValueError`, `fastBN("A<->B")` created a
-      variable `A<`, `fastBN("A->[3]")` a variable without a name). `InvalidArc` and `InvalidEdge` are kept for an arc
-      or an edge that the target does not support.
-    - `toFast()` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField` is computed in C++, in the order of the node
-      ids; `toFast(filename)` writes a Python file which can be run (it lacked `import pyagrum`).
-    - Behaviour change: `toFast()` (of the variables, `BayesNet`, `InfluenceDiagram`, `MarkovRandomField`) quotes a
-      name which would not be read back as is otherwise (`'X-ray'[3]`), so that `fastBN(bn.toFast())` gives back the
-      names. **The files saved by pyAgrum (`.jgum`, `.bgum`, `.bifxml`, pickle...) write such names quoted, and
-      pyAgrum 3.3.2 or older reads them with the quotes in the name** (this includes the variables `X[0]` of a KTBN).
-      The simple names are written as before.
-    - A parameter of an approximation changed after a computation (`setMaxIter`, `setEpsilon`, `setBurnIn`...) is taken
-      into account by the next one: approximate inferences (`GibbsSampling`, `MonteCarloSampling`, `ImportanceSampling`,
-      `WeightedSampling`, `LoopyBeliefPropagation`, `Loopy*Sampling`), `CNLoopyPropagation`, `GibbsBNdistance` and
-      `MCBNDistance` returned the results computed with the former parameters.
-    - `compute(lazy=False)` of `ExactBNdistance`, `GibbsBNdistance` and `MCBNDistance` forces a new computation (the
-      Bayesian networks are only referenced: a change made in place is not detected).
-    - `enableEpsilon`/`disableEpsilon`/`isEnabledEpsilon` (and the same for `MinEpsilonRate`, `MaxIter` and
-      `MaxTime`) for the approximate inferences, the credal inferences and `BNLearner`, as for the distances.
-    - `pyagrum.graph`: a node given by a `bool` or a `float` raises `TypeError` (it was silently converted), the domain
-      sizes of `orientAsDAG` may be given by name, and every function names the accepted classes in its `TypeError`.
-    - `pyagrum.lib.notebook` warns (`warnings.warn`) instead of printing when Graphviz is missing or when the obsolete
-      `title` of `FlowLayout` is used; an invalid dot string raises `ValueError` in `pyagrum.lib.dotstyle`.
-    - `addStructureListener` (`BayesNet`, `InfluenceDiagram`, `MarkovRandomField`) returns the new listener
-      (`PythonBNListener` or `PythonMRFListener`, None without function), on which other functions can be set.
-      `PythonApproximationListener` takes the approximation algorithm itself (an inference, ...). The four listener
-      classes are documented in the reference, with an example for each of their setters.
-    - New `RandomGeneratorGuard`: saves the state of the pseudo-random generator and restores it (`restore()` or at the
-      end of a `with` block, even on an exception), so that a block can call `initRandom` and draw without changing
-      the draws of the rest of the program.
-    - `pyagrum.qBNSampling` no longer depends on `qiskit-ibm-runtime`: `qBNMC.aerSimulation` uses the sampler of
-      `qiskit-aer`.
-    - `counterfactual`: the abduction replaced each parentless variable by its own posterior, losing the dependence
-      created by the profile between them (wrong result for instance when Y = U1 xor U2 xor T). The counterfactual is
-      now a posterior in the twin network of Balke and Pearl (`counterfactualModel(cm, whatif)` builds it, with copies
-      `V*` of the whatif variables and of their descendants), which is exact. A causal model with latent variables is
-      refused (their distributions are unknown; they were ignored). Deprecated after 3.3.2: the argument `profile` of
-      `counterfactualModel` and `Counterfactual.counterFactualModel` (ignored, the twin network does not depend on
-      it) and `Counterfactual.impact`.
-    - `Tensor.randomCPT(varId=0)` takes the position of the conditioned variable. The random CPTs (`fastBN`,
-      `randomBN`, `BNGenerator`, `BayesNet.generateCPTs`) are drawn from a Dirichlet of parameter 1 (see aGrUM).
-    - `skbn.BNClassifier` with `learningMethod="TAN"` learns a selective TAN (Blanco et al., 2005): the features and
-      the edges of the tree are selected by G-tests at the level of the new parameter `TANSignificance` (by default,
-      the new key `skbn.tanSignificance` of `pyagrum.config`, 0.01); `TANSignificance=1` gives the TAN of Friedman et
-      al. (all the features, a spanning tree). Behaviour change: the features independent of the class are no longer
-      used, and the edges are no longer pruned below half of the mean conditional mutual information.
-    - `CausalModel.backDoor` and `CausalModel.frontDoor` (hence `causalImpact`) return a smallest adjustment set, as
-      `DoorCriteria.firstBackdoor`/`firstFrontdoor` (see aGrUM).
-    - New constructor `CausalModel(cm, bn)`: the structure of `cm` (latent variables, spurious arcs) with the
-      parameters of `bn` (see aGrUM).
-    - The AIC score is the criterion of Akaike (see aGrUM): the structures learned with `useScoreAIC` and the order
-      selected by `KTBNAdaptiveLearner.useOrderScoreAIC` may change.
-    - `DiscreteTypeProcessor`: MDLP and CAIM accept a class with any number of values (they required a binary
-      class). Behaviour change: the candidate cut points of NML are the midpoints of consecutive distinct values (bins of
-      the width of the precision around isolated values were favoured), and NML is much faster.
-    - `BNLearner`: the stopping criteria (`setEpsilon`, `setMaxIter`, `setMaxTime`, ...) can be read before learning,
-      follow the selected algorithm and no longer change the ones of EM (see aGrUM). Behaviour change: EM is
-      configured only by `useEM*` and the `EM*` methods (for instance, `setMaxIter` no longer limits EM, and
-      `setVerbosity` no longer fills `EMHistory`).
-    - New `BNLearner.useScorefNML`: the factorized normalized maximum likelihood score (Silander et al., 2008), which
-      existed in aGrUM but was not exposed. "fNML" is also accepted by `skbn.BNClassifier(scoringType=...)` and
-      `bnmixture.BNMLearner` (`score=`), and `bnmixture.BNMBootstrapLearner` gains `useScorefNML`.
-    - **Python 3.11 to 3.15 are supported; Python 3.10 is no longer supported** (`Requires-Python: >=3.11`, stable ABI
-      `cp311`).
-    - The wheels carry the platform they were built for: on macOS, the minimal version given by
-      `MACOSX_DEPLOYMENT_TARGET` (macOS 14.0 for the released wheels; the running version for a local build), on Linux
-      the manylinux tag of the build image (`linux_<arch>` outside of it, instead of a `manylinux2014` tag claimed for
-      any build). The description of the package is declared as reStructuredText.
+    - **Python 3.11 to 3.15 are supported; Python 3.10 is no longer supported** (stable ABI `cp311`). The wheels carry
+      the platform they were built for (macOS 14.0 for the released macOS wheels, manylinux tag of the build image).
+    - **New module `pyagrum.graph`** (`import pyagrum.graph as gg`): one function per graph algorithm whatever the kind
+      of graph (`topologicalOrder`, `ancestors`, `isChordal`, `lexBFS`, `cpdag`, `meekClosure`, `orientAsDAG`,
+      `separation`...), nodes by id or by name. New graph classes `MarkedGraph`, `MAG`, `CPDAG`, `MPDAG` and
+      `ChainGraph` (see aGrUM), with `fastMarkedGraph` and `fastPAG`; the marks of a `PAG` are `pyagrum.EdgeMark`
+      values. New notebook `03-Tutorial_graphs`.
+    - **Graphs saved and pickled in the GUM format**: `saveGUM`/`saveGUMstring` for the graphs, new `loadGraph`,
+      `saveGraph`, `graphFromGUMString` and `availableGraphExts` (the isolated nodes, names and marks are kept;
+      `CPDAG`, `MPDAG`, `MAG`, `EssentialGraph` can be pickled). For the graphs and the models, the format of `saveGUM`/
+      `loadGUM` is given by the extension (`.jgum` text, `.bgum` binary). Reading a graph pickled by pyAgrum 3.3.2 or
+      before is deprecated after 3.3.2.
+    - **Fast syntax**: names between single quotes in every fast syntax (`fastBN("'Visit Asia'{yes|no}->'X-ray'")`),
+      new `checkFastSyntax`, `quoteFastName` and `fastNameNeedsQuotes`; `toFast()` of the models is computed in C++.
+      Behaviour changes: a malformed fast description raises `InvalidArgument` in every fast syntax; `toFast()` quotes
+      the names that need it, **and the files saved by pyAgrum write such names quoted (pyAgrum 3.3.2 or older reads
+      them with the quotes in the name)**.
+    - **Reproducible random draws**: one generator for all the modules, reached by `initRandom`, and the same draws on
+      every platform for a given seed. The seed at start is the new key `core.randomSeed` (by default the clock:
+      `import pyagrum` no longer calls `initRandom(0)`). New `randomGeneratorSeed`, `randomShuffle`, `randomGamma`,
+      `RandomGeneratorGuard` and `randomNumpyGenerator` (now used by `pyagrum.clg`, `pyagrum.bnmixture` and
+      `pyagrum.explain`). The random CPTs are drawn from a Dirichlet of parameter 1; `fastBN(..., uniform=True)` gives
+      uniform CPTs.
+    - **Configuration reorganized** in lowerCamelCase keys with sections by subject (`notebook.tensor_visible_digits`
+      → `tensor.visibleDigits`, `ctbn.graph_size` → `ctbn.graphSize`...); the former names are deprecated after 3.3.2
+      and still work. Keys are displayed as declared.
+    - **Approximation schemes**: a parameter changed after a computation (`setMaxIter`, `setEpsilon`...) is taken into
+      account by the next one (approximate inferences, credal inferences, distances); new `enable*`/`disable*`/
+      `isEnabled*` for the inferences and `BNLearner`; `compute(lazy=False)` for the distances; new
+      `invalidateTensors()` for the inferences when the CPTs are changed in place.
+    - **Learning**: new `BNLearner.useScorefNML` (also in `skbn` and `bnmixture`); the AIC score is Akaike's criterion
+      (learned structures may change); the stopping criteria of `BNLearner` apply to the structure learning only (EM is
+      configured by its `EM*` methods); `skbn.BNClassifier` with `learningMethod="TAN"` learns a selective TAN (new
+      parameter `TANSignificance`); `DiscreteTypeProcessor`: MDLP and CAIM accept non-binary classes, NML is faster.
+    - **Causality**: `counterfactual` computes the exact posterior in the twin network of Balke and Pearl (it lost the
+      dependences between parentless variables; causal models with latent variables are refused);
+      `CausalModel.backDoor`/`frontDoor` return a smallest adjustment set; new constructor `CausalModel(cm, bn)`.
+    - `addStructureListener` returns the new listener; the listener classes are documented.
+    - `pyagrum.qBNSampling` no longer depends on `qiskit-ibm-runtime`.
+    - Removed `BayesNet.changeTensor` (use `bn.cpt(node).fillWith(tensor)`). Deprecated after 3.3.2: the `seed` of
+      `clg.ForwardSampling.makeSample`, the `profile` of `counterfactualModel`, `Counterfactual.impact`,
+      `CLGLearner.Pearson_coeff`, the keyword `filename` of `CLGLearner`, `KTBNInference.logObservationProbability` (use
+      `log2ObservationProbability`).
 
 - aGrUM
 
-    - New `gum::RandomGeneratorGuard`: saves the seed and the state of the generator of aGrUM, restored by `restore()`
-      or by its destructor.
-    - Behaviour change: `ExactBNdistance`, `MCBNDistance` and `GibbsBNdistance` return an infinite `klPQ` (resp.
-      `klQP`) when a configuration has a positive probability in P and a null one in Q (resp. the reverse), instead of
-      the sum over the other configurations, which could even be negative; `errorPQ` (resp. `errorQP`) still counts
-      these configurations.
-    - Behaviour change: `ShaferShenoyLIMIDInference` makes the no-forgetting assumption when the decisions are totally
-      ordered (a classical influence diagram), as with `addNoForgettingAssumption` in this order: the strategy is the
-      optimal one of the influence diagram (the policies may have more parents). For a LIMID, the solubility check
-      compared only the decisions of a same level: some non soluble LIMIDs were accepted, and their strategy was not
-      guaranteed to be optimal; the extremality is now checked against all the remaining decisions.
-    - Behaviour change: the defaults of `GibbsSampling` and `LoopyGibbsSampling` are now those of the other samplers,
-      `gibbs.epsilon` = 0.01 and `gibbs.minEpsilonRate` = 1e-5 (they were exp(-1.6) = 0.2 and exp(-5) = 0.0067, a
-      legacy of a former error: the sampling stopped at the end of the burn-in, with posteriors at about 0.1). The
-      inference is more precise and longer (about 38000 samples instead of 300).
-    - Behaviour change: the random generator is now initialized at start from the new key `core.randomSeed` (default
-      0, the clock): the draws of a program change at each run, unless it calls `initRandom` or sets this key in
-      `agrum.ini`. The key is read once; changing it later only queues a notice saying to use `initRandom()`. There
-      is now one generator for all the shared modules, and `randomGeneratorSeed()` returns the seed in use. The CMake
-      variable `GUM_RANDOMSEED` and the option `act --fixed_seed`, which had no effect on the draws, are removed. The
-      test runs display their seed.
-    - Names between single quotes in every fast syntax (`fastGraph`, `fastMarkedGraph`, `fastVariable`,
-      `fastPrototype` of `BayesNet`, `InfluenceDiagram`, `MarkovRandomField`), shared lexical tools in
-      `base/core/fastSyntax.h` (`quoteFastName`, `fastNameNeedsQuotes`). The three `fastPrototype` share one analysis
-      of the description (`base/graphicalModels/fastModel.h`), used by the new `checkFastSyntax`/`FastSyntaxCheck`
-      (`base/graphicalModels/fastSyntaxCheck.h`). `DiscreteVariable::toFast()` quotes the names which need it (see
-      the warning in the pyAgrum section). New `toFast()` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField`.
-      Behaviour change: a malformed description raises `InvalidArgument` in every fast syntax (see pyAgrum), and a
-      `;` inside `[...]` or `{...}` no longer separates two chains.
-    - Behaviour change: a seed gives the same draws on every platform. `randomValue`, `randomProba` and the shuffles
-      of the database generators used the distributions of `<random>`, whose algorithms depend on the standard
-      library (the same seed gave other values with libc++, libstdc++ or MSVC); the draws are now computed from the
-      outputs of `std::mt19937` only, so the values drawn for a given seed changed once. New `randomShuffle` and
-      `randomGamma` (used by `Dirichlet`); `randomValue` is unbiased up to `max` above 2^32; `randomProba` is in [0, 1).
-      The PRM generators no longer use `std::rand` (they ignored `initRandom`).
-    - New `invalidateTensors()` for the inferences of Bayesian networks, Markov random fields and influence
-      diagrams (also in pyAgrum): it tells the inference that the values of tensors of its model changed in place
-      (`cpt(...).fillWith(...)`), which it is not notified of. `LazyPropagation`, `ShaferShenoyInference` and
-      `ShaferShenoyMRFInference` kept messages computed from the former values, `ImportanceSampling` its proposal.
-    - New `MarkedGraph` (edges with a mark at each end: tail, arrowhead or circle; adding an existing edge updates its
-      marks; directed view `parents`/`children`/`spouses`/`undirectedNeighbours`; `skeleton()`) and
-      `fastMarkedGraph` (an edge described twice with different marks raises `InvalidEdge`); `PAG` derives from it
-      instead of `UndiGraph` (a `PAG` is no longer an `UndiGraph`). New keys `dot.bidirectedEdgeColor` and
-      `dot.circleMarkEdgeColor` for their DOT representation.
-    - New immutable class `MAG` (maximal ancestral graph): `fromDAG` with latent and selected nodes (Richardson and
-      Spirtes 2002), `fromPAG` (representative MAG, Zhang 2008), checked `fromMarkedGraph`, `mSeparation`,
-      `neighbours` (undirected edges, as for the other graphs) and `adjacents` (any edge); new
-      `graph::ancestors`, `graph::anteriors`, `graph::isAncestral`, `graph::isMaximal`, `graph::circleComponent`,
-      `graph::representativeGraph` (Zhang 2008, Theorem 2) and `graph::mSeparation` for
-      marked graphs. Also in pyAgrum.
-    - New constructor `DAG(const DiGraph&)`: the nodes, names and arcs of a directed graph (only the arcs of a mixed
-      graph), the acyclicity being checked once (`InvalidDirectedCycle`). Also in pyAgrum (`pyagrum.DAG(digraph)`).
-    - `graph::cpdag` returns a `CPDAG` (same as `CPDAG::fromDAG`). New `graph::separation` (d-separation for `DAG`,
-      `CPDAG`, `MPDAG`, c-separation for `PDAG`, `ChainGraph`, m-separation for `MAG`), `graph::ancestors` and
-      `graph::descendants` of a set of nodes, `graph::anteriors` for mixed graphs, `graph::descendants` for marked
-      graphs, overloads of `graph::consistentExtension` and `graph::degeneracyOrdering` for `CPDAG`/`MPDAG` and of
-      `graph::ancestors`, `graph::descendants`, `graph::anteriors`, `graph::isAncestral`, `graph::isMaximal` for `MAG`.
-      The ancestors (descendants, anteriors) of nodes are reached by at least one arc (edge): a node of the set belongs
-      to the result only on a cycle or as an ancestor of another one (anteriors: going back and forth through the same
-      edge is not a cycle). New concept `GUM_MarkedGraphable`: the marked graphs (`MarkedGraph`, `PAG`, `MAG`) no longer
-      satisfy `GUM_UndiGraphable`, the undirected algorithms (`isChordal`...) are not defined on them.
-    - FCI: `learnPDAG`/`learnDAG` go through the representative MAG of the learned PAG (Zhang 2008, Theorem 2)
-      instead of applying the Meek rules to the PAG seen as a mixed graph; `PAG::toMixedGraph` is deprecated after
-      3.3.2 (use `MAG::fromPAG`). If the learned PAG is not valid, the former approximation is used, or
-      `InvalidArgument` is raised with the new key `learning.fciErrorOnInvalidPAG` (or `setFCIErrorOnInvalidPAG`).
-    - Configuration reorganized (lowerCamelCase keys, sections by subject); the former names are deprecated after
-      3.3.2 and still work: the look of the graphs moves from `notebook` to `dot` (`notebook.arcColor` →
-      `dot.arcColor`...), the junction trees to `junctionTree` (`notebook.junctionTreeGraphSize` →
-      `junctionTree.graphSize`...), `notebook.markovRandomFieldView` → `markovRandomField.view`. In the ini files,
-      `### deprecated <type>` declares a deprecated key without replacement (still read, no longer used).
-    - The graphs (but `CliqueGraph`) in the native GUM format (jgum/bgum): `graphToGUMString`, `saveGraphGUM`,
-      `graphFromGUMString<G>`, `loadGraphGUM<G>`, `graphGUMType` (class, nodes with names, arcs, edges, marks).
-      The format of a file is given by its extension unless `binary` is given (binary for an extension other than
-      `.jgum`). On reading, the number of absent ids lower than the largest one is at most max(number of nodes, 65536)
-      (a graph stores them: `IOError` otherwise); `NodeGraphPart::addNodeWithId` rejects the largest `NodeId`.
-    - Bug fix: `topologicalOrder` (`DiGraph`, `MixedGraph` and their subclasses) raises `InvalidDirectedCycle` for a
-      cycle separated from the nodes without parent (in release mode, it returned an incomplete order).
-    - `PDAG` follows the literature: only directed cycles and double connections (arc and edge on a same pair) are
-      forbidden. New `ChainGraph` (PDAG without partially directed cycle) with `moralGraph`,
-      `moralizedAncestralGraph` and `cSeparation` (LWF); these methods of `PDAG` are deprecated after 3.3.2.
-      So is `PDAG::hasMixedReallyOrientedPath` (with a partially directed cycle, it finds a walk, not always a
-      path): use `ChainGraph::hasMixedReallyOrientedPath`, exact on a chain graph.
-      New `graph::hasDirectedCycle` and `graph::hasPartiallyDirectedCycle`.
-    - New graph algorithms: `graph::lexBFS`, `graph::maximumCardinalitySearch`, `graph::isPerfectEliminationOrdering`,
-      `graph::isChordal`, `graph::degeneracyOrdering`, `graph::consistentExtension` (extension of a PDAG,
-      Wienöbst et al. 2021) and `graph::cpdag` (CPDAG of a DAG, Chickering 1995).
-    - New immutable graph classes `CPDAG` (Markov equivalence class of DAGs) and `MPDAG` (CPDAG with background
-      knowledge), built from a DAG, by Meek closure or by checked conversion, with `dSeparation` (d-separation of the
-      represented DAGs, computed on a consistent extension kept from the construction), `contains` and
-      `consistentExtension`; also in pyAgrum. `CPDAG`, `MPDAG` and `MAG` share a read-only base (`ImmutableGraph`,
-      `ImmutableMixedGraph`) with, beyond the accessors of their graph, `hasName`, `empty`, `connectedComponents`
-      and `skeleton` (and, in pyAgrum, `connectedComponentsList`, `connectedComponentsCount`, `adjacencyMatrix`).
-    - New `graph::meekClosure` (closure of an extendable PDAG under the Meek rules, Wienöbst et al. 2021, in O(dm)),
-      used by `MeekRules` whenever its input is an extendable PDAG; the former propagation remains for the other inputs.
-    - New `graph::orientAsDAG`: orientation of a PDAG into a DAG looking for small CPTs (a consistent extension if the
-      PDAG is extendable), with a minimal total size of the CPTs for a CPDAG (Clique-Picking recursion of Wienöbst et
-      al. 2021) for its undirected components of at most `graph.orientAsDAGExactMaxSize` nodes (new configuration key,
-      100 by default), a greedy heuristic otherwise. `MeekRules::propagateToDAG` and the constraint-based learners
-      (MIIC, PC, FCI) use it with the domain sizes of the variables: the orientation of the reversible arcs of a learned
-      BN may change.
-    - `EssentialGraph` stores the names of the nodes and no longer depends on the model it was built from (a copy of
-      a learned essential graph kept the model's one instead of the learned PDAG); it is built by `graph::cpdag` in
-      linear time, can be built from a named `PDAG`, and gives its `cpdag()`. `BNLearner::learnEssentialGraph` is
-      written in C++ (in pyAgrum, the errors of the learning are no longer hidden). `EssentialGraph::idFromName`
-      returns `std::optional` (`None` in pyAgrum) instead of raising `NotFound`, as for the other graphs.
-    - `EssentialGraph` is now always a CPDAG, and a subclass of `CPDAG` (all its methods, drawn with the clusters of
-      its chain components): built from a `PDAG` (or read in the GUM format), the PDAG is checked to be a CPDAG
-      (`InvalidArgument`, `IOError`); it can also be built from a `CPDAG`. `BNLearner::learnEssentialGraph` gives the
-      CPDAG of the learned DAG whatever the algorithm (with MIIC, PC or FCI, it gave the learned PDAG, which may not
-      be a CPDAG: this one is still given by `learnPDAG`).
-    - Same look for `PDAG`, `ChainGraph`, `CPDAG`, `MPDAG` and `EssentialGraph` in DOT: clusters for the chain
-      components (of a `ChainGraph` and a `CPDAG`), compelled arcs colored; new keys `dot.chainComponentBgColor` and
-      `dot.compelledArcColor` (formerly hard-coded); `CPDAG.toDot` and `MPDAG.toDot` accept `DotOptions`.
-    - `CredalNet::intervalToCredalWithFiles` (deprecated since 2013, it wrote lrs files in the current directory and
-      could crash) is removed: use `intervalToCredal`, which gives the same credal sets.
-    - `BayesNet::changeTensor` is removed (it deleted the CPT, leaving dangling the references to it): use
-      `cpt(node).fillWith(tensor)`, which changes the parameters and keeps the CPT.
-    - The default threshold `epsilon` of `gibbsKL` and `mcKL` (`GibbsBNdistance`, `MCBNDistance`) is now 1e-5 (it was
-      1e-10, never reached: the computations always ran up to `maxIter`, 10^7 draws, about 20 s even for 3 nodes). The
-      stop now comes after about 2.5e5 draws (relative error about 0.2% for Monte Carlo, 0.6% for Gibbs, measured on a
-      small network).
-    - `dSeparation`/`cSeparation` of two nodes (`DAG`, `PDAG`, `ChainGraph`, `graph::dSeparated`,
-      `graph::cSeparated`) raise `InvalidArgument` when X and Y are the same node, as the versions with sets of
-      nodes do for sets which are not disjoint (pyAgrum already went through the sets).
-    - `prm::ClusteredLayerGenerator::setClusterRatio` is effective (it was ignored: a cluster was always generated):
-      the probability for a generated class to be replaced by a cluster, 1 by default (the former behaviour); a ratio
-      outside [0, 1] raises `OutOfBounds`. The PRMs generated for a given seed change (one more draw by class).
-    - The setters of `ApproximationScheme` call the new protected hook `onApproximationSchemeChanged_()`: the
-      approximate inferences (through `invalidateTensors()`), `CNLoopyPropagation` and the approximate distances
-      outdate their results, so that the next computation takes the new parameters into account.
-    - `BNdistance::compute(bool lazy = true)` (it replaces the protected `process_()`): with `lazy == false`, the
-      computation is always done.
-    - `act guideline`: new check `examples` (in the default checks), an example for every documented member and
-      function of pyAgrum (it was a test of pyAgrum).
-    - **The atemporal names of `KTBN::fromBN`, `KTBNLearner` and `KTBNAdaptiveLearner` are a
-      `std::set<std::string>` (they were a `std::unordered_set<std::string>`)**: the names are checked and reported in
-      the same order on every platform. C++ code naming `std::unordered_set` must name `std::set` (no change in
-      pyAgrum, which still takes a Python `set`).
-    - Behaviour change: the random CPTs (`SimpleCPTGenerator`, hence `BayesNet::generateCPTs`, `fastBN`, the
-      generators of Bayesian networks) draw each conditional distribution uniformly on the probability simplex
-      (Dirichlet of parameter 1, as Ide and Cozman), instead of normalizing uniform draws in [0, 1]. The CPTs generated
-      for a given seed change. `Tensor::randomCPT(varId = 0)` takes the position of the conditioned variable.
-    - The generators of Bayesian networks give the bounds of the number of arcs (n - 1 to n(n - 1)/2) when they refuse
-      it.
-    - Behaviour change: `ScoreAIC` subtracts its penalty q(r - 1) from the log-likelihood in nats before converting to
-      bits, as `ScoreBIC` does: the score is Akaike's criterion divided by ln 2. The penalty was subtracted from the
-      log-likelihood in bits, so that it weighed only ln 2 (0.69) times Akaike's one and the learned structures had too
-      many arcs. Same correction for the AIC order selection score of `KTBNAdaptiveLearner`.
-    - `CausalModel::backDoor` and `CausalModel::frontDoor` return a smallest adjustment set (ties broken by the node
-      ids), the set of `DoorCriteria::firstBackdoor`/`firstFrontdoor`; they returned the first set in the
-      lexicographic order of the ids, minimal but not always smallest ({0, 5} before {2}). They no longer enumerate
-      all the sets.
-    - New constructor `CausalModel(structure, observationalBN)`: the causal DAG of a causal model (latent variables,
-      spurious arcs) with the parameters of another Bayesian network on the same observed DAG.
-    - Behaviour change: the stopping criteria and the verbosity of `IBNLearner` (`setEpsilon`, `setMaxIter`, ...)
-      concern the structure learning only. A setter applies to every structure-learning algorithm (the greedy thick
-      thinning ignored them) and no longer to EM, which has its own `EM*` methods: `setEpsilon(0)` raised
-      `OutOfBounds` (EM refuses 0) and `setEpsilon` switched EM to the criterion on the difference. A getter reads the
-      selected algorithm, also before learning (it raised `FatalError`, and kept the algorithm of the last learning
-      after a `use*`). The extended greedy hill climbing sends its progress and gives its results (`nbrIterations`,
-      `history`, ...): it learned with the scheme of the greedy hill climbing while its own one was listened to (the
-      learned structures do not change). `IBNLearner::setCurrentApproximationScheme` is removed (internal).
-    - `BNLearner::useScorefNML` returns the learner, as the other score setters. `ScoreMDL`, an alias of `ScoreBIC`,
-      and the `useScoreMDL` of `IBNLearner`, `IKTBNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` are deprecated
-      after 3.3.2: use `ScoreBIC` and `useScoreBIC`. The MDL correction of MIIC does not change.
-    - `KTBNInference::log2ObservationProbability` (also in pyAgrum) gives the log2-probability of the observations, as
-      the other log-likelihoods of aGrUM. `logObservationProbability`, a natural logarithm (the pyAgrum docstring said
-      log2), is deprecated after 3.3.2.
-    - CI: redundant pipelines auto-cancelled, jobs started without waiting for the previous stage, retries only on
-      infrastructure failures, a documentation stage, a pip cache; every `act` command of the build scripts is checked
-      (a failing step no longer goes unnoticed), the wheels are tested in a throwaway venv per job, and the macOS jobs
-      compile for the oldest supported macOS (14.0).
+    - **Graph classes**: `PDAG` follows the literature (only directed cycles and double connections forbidden); new
+      `ChainGraph` (LWF c-separation, moralization; these methods of `PDAG` are deprecated after 3.3.2), `MarkedGraph`
+      (edges with marks, base class of `PAG`, which is no longer an `UndiGraph`), and the immutable classes `CPDAG`,
+      `MPDAG` and `MAG` (`fromDAG`, `fromPAG`, m-separation). `EssentialGraph` is a `CPDAG`, keeps the names of its
+      nodes, no longer depends on its model, and `learnEssentialGraph` always gives the CPDAG of the learned DAG;
+      `EssentialGraph::idFromName` returns `std::optional` (`None` in pyAgrum), as for the other graphs. New
+      constructor `DAG(const DiGraph&)`. Same DOT look for all the PDAG-like classes.
+    - **Graph algorithms** (`gum::graph::`): `lexBFS`, `maximumCardinalitySearch`, `isChordal`,
+      `degeneracyOrdering`, `cpdag` (linear time), `consistentExtension`, `meekClosure` (Wienöbst et al. 2021),
+      `orientAsDAG` (small CPTs, exact Clique-Picking up to `graph.orientAsDAGExactMaxSize` nodes), `separation`,
+      `ancestors`/`descendants`/`anteriors`, `isAncestral`, `isMaximal`, `representativeGraph`... New concept
+      `GUM_MarkedGraphable`. FCI orients through the representative MAG of the learned PAG
+      (`PAG::toMixedGraph` deprecated after 3.3.2); MIIC, PC and FCI orient their DAG by `orientAsDAG`.
+    - **GUM format for the graphs** (jgum/bgum): `graphToGUMString`, `saveGraphGUM`, `loadGraphGUM<G>`...
+    - **Random generator**: one generator for all the shared modules, initialized from `core.randomSeed` (clock by
+      default), draws computed from `std::mt19937` only (the same seed gives the same values on every platform; the
+      values drawn for a given seed changed once). New `RandomGeneratorGuard`, `randomShuffle`, `randomGamma`. The
+      random CPTs are drawn from a Dirichlet(1). `GUM_RANDOMSEED` and `act --fixed_seed` are removed.
+    - **Fast syntax**: quoted names and shared analysis of the descriptions (`base/core/fastSyntax.h`,
+      `fastModel.h`, `fastSyntaxCheck.h`); new `toFast()` of the models.
+    - **Behaviour changes**: `ShaferShenoyLIMIDInference` makes the no-forgetting assumption for a totally ordered
+      influence diagram (and checks the solubility of a LIMID against all the remaining decisions); the KL divergences
+      of the distances are infinite when the supports differ; `GibbsSampling` defaults aligned with the other
+      samplers (more precise, longer); `gibbsKL`/`mcKL` stop at epsilon 1e-5 (1e-10 was never reached);
+      `ScoreAIC` applies its penalty in nats; `IBNLearner` stopping criteria concern the structure learning only;
+      `dSeparation`/`cSeparation` of a node with itself raise `InvalidArgument`;
+      `CausalModel::backDoor`/`frontDoor` return a smallest set; the atemporal names of the KTBN learners are a
+      `std::set<std::string>`.
+    - `invalidateTensors()` for the inferences; `ApproximationScheme` setters call the hook
+      `onApproximationSchemeChanged_()`; `BNdistance::compute(bool lazy)`.
+    - New constructor `CausalModel(structure, observationalBN)`; `KTBNInference::log2ObservationProbability`;
+      `prm::ClusteredLayerGenerator::setClusterRatio` is effective. `ScoreMDL` and `useScoreMDL` are deprecated
+      after 3.3.2 (use `ScoreBIC`).
+    - Removed `CredalNet::intervalToCredalWithFiles`, `BayesNet::changeTensor` and
+      `IBNLearner::setCurrentApproximationScheme`.
+    - `act guideline`: new check `examples`. CI: auto-cancelled redundant pipelines, retries only on infrastructure
+      failures, a documentation stage, every `act` step checked, wheels tested in throwaway venvs.
 
 - Bug fixes (aGrUM and pyAgrum), thanks to @ldesreumaux for issues #206 to #210
 
-    - `MeekRules::propagateToDAG` (used by PC to learn a DAG) could create an unshielded collider absent from the
-      CPDAG, hence a DAG outside the learned Markov equivalence class; it is now a consistent extension (#207).
-    - `MeekRules::choices()`, for an input which is not an extendable PDAG: a choice could be the orientation erased by
-      the resolution of the double-headed arcs (hence not an arc of the result), and a pair of nodes could appear
-      several times, in both orientations. Each choice is now an arc of the result of `propagateToCPDAG` or
-      `propagateToDAG`, at most once per pair of nodes, in order of selection. In C++, `choices()` returns a
-      `std::vector<Arc>` by value (it was a const reference).
-    - `graph::dSeparated` (hence `dSeparation` of `DAG`, `CPDAG`, `MPDAG` and of the models) and
-      `graph::mSeparation`: a node of Y which belongs to Z is separated from any node, as a node of X in Z already
-      was (it was reported as not separated, so that exchanging X and Y could change the answer).
-    - `graph::dSeparated`, `graph::cSeparated` and `graph::mSeparation` (hence `dSeparation`, `cSeparation`,
-      `mSeparation` of the graphs and of the models, and `pyagrum.graph.separation`) raise `InvalidNode` for a node of
-      X, Y or Z which is not a node of the graph (such a node was reported as separated from any node).
-    - The constraint-based algorithms (PC, FCI, MIIC) ignored the maximum indegree outside the orientation of the
-      v-structures: `learnDAG`/`learnBN` now raise `OperationNotAllowed` when the learned DAG exceeds it (their
-      independence tests never remove an edge to satisfy it), or return the DAG (with a warning in pyAgrum) with the
-      new key `learning.errorOnExceededMaxIndegree` set to `False` (or `setErrorOnExceededMaxIndegree`);
-      `maxIndegreeExceeded()` tells whether the last learned DAG exceeds it (#208).
-    - `BNLearner::setPCAlpha`, `BNLearner::setFCIAlpha` and `CIBasedLearning::setAlpha` raise `OutOfBounds` for a
-      significance threshold outside ]0,1[ (negative, 0, 1, greater than 1, infinite or NaN), which was silently
-      accepted and changed the learned graph (#209).
-    - A structural constraint compatible with an unshielded collider could hide it: PC, FCI and MIIC now consider an
-      arc into the middle node (e.g. a mandatory arc) as an arm of the collider, and PC and FCI test the pairs
-      forbidden in both directions during the skeleton phase (then remove them), so that they get a separating set
-      (#206).
-    - The chi2 and G2 independence tests (PC, FCI, `BNLearner::chi2` and `BNLearner::G2`) computed their degrees of
-      freedom from the number of skipped cells: they are now computed from the nonempty rows and columns of each
-      nonempty slice, the empty rows, columns and slices having no degree of freedom (#210).
-    - MIIC raised `DuplicateElement` when a mandatory arc had its reverse forbidden (by the user, the slice order or
-      a node without parent).
-    - FCI could remove a mandatory arc during its Possible-D-Sep phase: `learnPAG`, `learnPDAG` and `learnDAG` returned
-      a graph without it, and without any error.
-    - FCI never tested the separating sets of size 1 of its Possible-D-Sep phase (only the neighbours had been tested
-      before): an edge could be kept while a single node of Possible-D-Sep separates its ends.
-    - FCI (rule R5) could orient as undirected the edges of a covered circle path (the triples at both ends of the path
-      were not checked).
-    - `core.randomSeed` is now refused outside [0,4294967295] (it was truncated without a message: 4294967296 gave 0,
-      hence a seed taken from the clock). New type `uint32` for the keys of the configuration (`int[0,4294967295]`).
-    - `fastGraph`, `fastMarkedGraph` and the `fastPrototype` of `BayesNet`, `InfluenceDiagram` and `MarkovRandomField`
-      (`fastBN`, `fastID`, `fastMRF`...): a line break separates two chains, as `;` (it glued the names around it:
-      `"A->B\nC->D"` created a node `BC`); a blank chain (`"; ;"`) is ignored (`fastBN`/`fastID` raised `InvalidArc`,
-      `fastMRF` created a variable with an empty name).
-    - `fastGraph`, `fastMarkedGraph`: a node is given by its id only if its token is written with digits only and fits in
-      an `int`, else all the tokens are names (`"99999999999->1"` created the arc 0->1; `"+5"` and `"5"` were the same
-      node). An unquoted node name contains no blank, `<` nor `>` outside its brackets (`"A<->B"` created a node `A<`,
-      `"A o -B"` a node `A o`): such a token raises `InvalidArgument`. In id mode, an id leaving more
-      than max(number of nodes, 65536) absent ids below it raises `InvalidArgument` (`"0->2000000000"` reserved two
-      billion ids).
-      `isInteger`/`isIntegerWithResult` refuse a sign alone and a value out of the range of an `int` (which was
-      truncated).
-    - The graphs of inferences in pyAgrum (`BNinference2dot`, `CNinference2dot`, `MRFinference2UGdot`,
-      `MRFinference2FactorGraphdot`, `LIMIDinference2dot`, the inferences of CTBN and BNMixture): `nodeColor` keyed by
-      the ids of the nodes raised `KeyError`; the images of the nodes were written beside their temporary directory
-      and never removed (they now live in it and are removed with the graph); the colors of the factors of a factor
-      graph were not quoted (invalid DOT) and its edges were directed.
-    - `CNinference2dot`: the observed nodes (`evs`) have the color of the evidence, as in the other inference graphs.
-    - Binary GUM files (`.bgum`): the announced size is little-endian on any host, as documented; a file whose size does
-      not match it (data after the payload included) is refused; the limit of 256 MB is removed (a larger file could be
-      saved but not read).
-    - `EMHistory()` could have one value less than `EMnbrIterations()` when EM stopped on consecutive decreases of the
-      log-likelihood or on the time limit: plotting one against the other could fail at random.
-    - `CNLoopyPropagation` with modalities (`insertModals`, `insertModalsFile`): `makeInference` could raise `NotFound`
-      (the option of storing the vertices of the credal sets was not initialized) and `dynamicExpMin`/`dynamicExpMax`
-      raised `OperationNotAllowed` (the dynamic expectations were never computed).
-    - Sampling inferences (`MonteCarloSampling`, `WeightedSampling`, `ImportanceSampling`, `GibbsSampling` and their
-      loopy versions): with explicit targets, `makeInference` raised `NotFound`; after a change of the evidence, the
-      sampling still used the former evidence (`ImportanceSampling` never stopped, hence `evidenceImpact` too).
-    - `ctbn.ForwardSamplingInference.makeParallelInference` raised `PicklingError` (and the results of the child
-      processes were lost): it now samples in parallel processes, returns the number of runs of each sampling and gives
-      the same result as `averageInference`. The forward sampling of CTBN and `ctbn.randomCTBN` are reproducible
-      after `initRandom` (their draws did not use the generator of pyAgrum); `randomCTBN` with one variable (the
-      default) raised `ValueError`.
-    - `ctbn.Learner` (CTPC) and `ctbn.FChi2Test`: the transition counts used as degrees of freedom of the F test and in
-      the chi-square statistic were divided by the number of trajectories, so that real dependencies were missed (an
-      arc removed) when learning from several trajectories; they are now the total counts (Bregoli et al. 2020). The F
-      test compared every rate of the matrices instead of the exit rates only, which added spurious arcs for the
-      variables with 3 states or more (the destinations of the transitions are compared by the chi-square test).
-      The significance levels of the two tests are the new keys `ctbn.fSignificance` and `ctbn.chi2Significance`
-      (0.05 each; the F test, two-sided, used 10%). CTPC no longer repeats an independence test when no conditioning
-      set of the current size remains. The learned rates are no longer rounded to 3 decimals (rates below 0.0005
-      became 0, and the F test of CTPC depended on the time unit). A configuration in which no exit of a state is
-      observed no longer makes the F test reject the independence (the quantiles of the Fisher law were NaN), so that
-      an arc is no longer kept without any evidence.
-    - `ctbn.CIM.fromMatrix` accepts a matrix of integers and a list of lists (it raised `TypeError` or
-      `AttributeError`); a matrix of wrong shape raises `ValueError` (it raised `AttributeError`).
-    - `ctbn.ForwardSamplingInference`: the state drawn before the burn-in was counted for one unit of time in the
-      posteriors, and the burn-in never ended in an absorbing state (all the exit rates 0).
-    - `ctbn.Trajectory` (hence `ctbn.Learner`): the duration of the first trajectory was used for all of them, so that
-      the rates learned from trajectories of different durations were wrong, or a `TypeError` was raised.
-    - `bnmixture.BNMixtureInference.posterior` returns the posterior of the mixture: with evidence, the weight of each
-      BN is multiplied by the probability it gives to the evidence (it returned the mean of the posteriors weighted by
-      the prior weights). An engine without `evidenceProbability` (`VariableElimination`) raises `InvalidArgument`
-      when there is evidence, and an evidence impossible in every BN raises `IncompatibleEvidence`.
-    - `clg.CLGLearner`: Meek's rule 3 oriented an edge without checking that the two other parents were not adjacent,
-      hence arcs without justification in the learned graph.
-    - `clg.CLGLearner`: the bound of the independence tests did not satisfy the hypotheses of the theorem (statistic
-      with unbounded terms, range of the means instead of the terms, delta also divided by the number of tests), so
-      that the family-wise error rate was not controlled. The test now uses the r-centered statistic of Simionato and
-      Vandin (2024), whose terms lie in [-1, 1], with the bound of the theorem: the error rate is at most
-      `fwer_delta`, at the price of power (weak dependencies need more records). The terms stored in `r_XYZ` are those
-      of this statistic, no longer of Pearson's correlation: `CLGLearner.Pearson_coeff` is deprecated after 3.3.2, use
-      `independenceStatistic`.
-    - `clg.SEM`: numbers in exponent notation, which `tosem` and `saveCLG` write for small or large values, were not
-      read back: `B = 1e-05A[1]` gave a parent `e` and a coefficient -5 on `A` (a wrong model without error when a
-      variable `e` exists, a `TypeError` otherwise). The exponent is now read; `tosem` writes `b*Y` so that a
-      coefficient and a name never merge; an unknown parent or an unrecognized part of a line raises `SyntaxError`.
-      Continuation lines (without `=`): a `=` in a comment made a new equation, and a line following a comment was
-      silently ignored; a continuation line must now start with `+`, `-` or `[` (`... + 2` then `B[2]` read 2*B).
-      The spaces separate the tokens: `2 e3` is 2 times a variable `e3` (it was the number 2000, without parent).
-    - `clg.CLG`: a variable with a null standard deviation was accepted, then the inference raised `ZeroDivisionError`
-      and `logLikelihood` returned nan. `add`, `setSigma` (also `GaussianVariable.setSigma`) and unpickling raise
-      `ValueError` when sigma is not positive (hence `SEM.toclg` with `[0]` and `CLGLearner` on a constant column); the
-      posterior of an observed variable keeps a null standard deviation.
-    - `clg.CLG.logLikelihood` took the log of the product of the densities of a record, which underflows (-inf for one
-      far value, or for some hundreds of variables) or overflows (+inf for small standard deviations). It now sums the
-      log-densities, column by column (also much faster), and accepts a pandas dataframe as well as a csv file, as does
-      `clg.CLGLearner` now: its first argument is named `data`, the keyword argument `filename` is deprecated after
-      3.3.2.
-    - `clg.ForwardSampling`: `variance_sample` and `stddev_sample` divided by N whereas `covariance_sample` divides by
-      N-1, so that the variances were not the diagonal of the covariance matrix; all of them now divide by N-1.
-    - `bnmixture.BNMLearner` and `BNMBootstrapLearner.updateState`: as soon as one setting was given, the missing ones
-      took fixed values (greedy hill climbing, BDeu, MDL, no prior), so that giving only a score changed the algorithm
-      (MIIC by default). The missing settings are now those of the reference learner (the default settings of
-      `BNLearner` for the reference itself); an unknown setting raises `ArgumentError`.
-    - `bnmixture.BNMBootstrapLearner`: the record weights of the bootstrap BNs were drawn from a Dirichlet(1/n)
-      distribution, so that each BN rested in effect on about 2 records; they follow the Bayesian bootstrap of Rubin
-      (n times a Dirichlet(1, ..., 1) vector, about n/2 records in effect, as resampling with replacement).
-    - `bnmixture.BootstrapMixtureInference.quantiles` ignored the weights: a BN given by two bootstrap copies is
-      stored once with weight 2 and was counted once. The quantiles are now the weighted quantiles of Akinshin (2023):
-      the usual ones for equal weights, unchanged when the weights are normalized. New
-      `BNMixture.arcConfidence` (and `BootstrapMixture`): weighted frequency of an arc, the value shown by the
-      notebook functions; `existsArc` still counts the BNs containing the arc.
-    - `CNMonteCarloSampling` computed wrong bounds: the CPTs of the sampled networks are changed in place and the
-      inference of each thread kept the posteriors of its first sample (now `invalidateTensors()`); its result also
-      depended on the number of threads (each sample now has its own seed) and the repetitive independence drew
-      concurrently with the shared generator.
-    - `CNMonteCarloSampling` ignored the stopping criteria of the user: each `makeInference` set again epsilon,
-      disabled `maxIter` and the rate. These defaults are now set by the constructor and the user may change them;
-      an epsilon below 1000 times the machine epsilon raises `OutOfBounds` (below, the result would depend on the
-      number of threads).
-    - `MCBNDistance` and `GibbsBNdistance` enabled again the rate criterion during the computation (it could not be
-      disabled).
-    - `MCBNDistance` and `GibbsBNdistance` underestimated the Jensen-Shannon divergence when the supports of the two BNs
-      differ: a sample where Q is 0 added nothing (instead of 1), and the mass of Q where P is 0, never drawn, was
-      missing (it is now estimated by 1 - E_P[Q/P] when P has a null parameter).
-    - `GibbsSampling`, `LoopyGibbsSampling` and `GibbsBNdistance` never changed the value of a variable with a
-      deterministic CPT (a function of its parents, e.g. `either` in asia): it kept the value of the first sample, and
-      the posteriors were wrong whatever the number of samples. Such a variable now follows its parents.
-    - `MCBNDistance` and `GibbsBNdistance` underestimated the Hellinger distance when the supports of the two BNs
-      differ (the mass of Q where P is 0, never drawn, was missing): it is now computed as sqrt(2 - 2 rho) from the
-      estimate of the Bhattacharyya coefficient rho.
-    - `InformationTheory` erased the joint targets of the inference given as argument (only X, Y and Z remained): they
-      are now restored.
-    - `InformationTheory.variationOfInformationXY` returned H(X)+H(Y) instead of H(X|Y)+H(Y|X) = H(X)+H(Y)-2I(X;Y)
-      (the test checked the same wrong formula).
-    - FCI, Possible-D-Sep phase: a node adjacent to X or Y through a mandatory arc only was never tested as a
-      singleton separating set (the pair may have been removed by the skeleton phase before the arc was added back).
-    - The sampling inferences (`GibbsSampling`, `MonteCarloSampling`, ...) could stop on epsilon after a few
-      identical samples (e.g. a Gibbs chain with near-deterministic CPTs and a small `burnIn`): their error, the
-      length of a Wald confidence interval, was 0. It is now the length of the Wilson score interval, never 0.
-    - `UndiGraphListener` and `MixedGraphListener` were not exported from the shared libraries (link error of the
-      structure listeners of `MarkovRandomField` with the shared build on Windows).
-    - `MixedGraphListener` takes a `const MixedGraph*`, as `DiGraphListener` and `UndiGraphListener` (it could not
-      listen to the graph of an immutable graph class).
-    - `MarkedGraph::addEdge` sets the marks before emitting `onEdgeAdded`: a listener can read the marks of the new
-      edge (`markAt` raised `NotFound`).
-    - `fastMRF("A---B")` raises `InvalidArgument` (it gave the variables `A` and `-B`): an unquoted name of a fast
-      description of a model neither begins nor ends with `-`. `fastVariable("+[0,1,2]")` raises `InvalidArgument` (it
-      gave a variable with an empty name).
-    - A deprecated key of the configuration must be documented by `deprecated after <last tag with the key>`
-      (`SyntaxError` otherwise): the deprecation message, built from this documentation, is always a sentence.
-    - `bnmixture.BNMBootstrapLearner.updateState` raised `NotImplementedError`: it now behaves as for the other
-      mixture learners (without argument, the learner copies the state set by the `use...` methods).
-    - `lib.notebook.animApproximationScheme` failed outside a notebook (`AttributeError`): the curve is now drawn
-      in the current figure, without live update.
-    - Python listeners (`addStructureListener`, `PythonApproximationListener`, listeners of the database
-      generators and of the loaders): an exception raised by a callback was left set, so that the next calls to
-      Python failed with `SystemError`; it is now reported by `sys.unraisablehook`. A non-callable callback raises
-      `InvalidArgument` (it was stored anyway), the former callback is released when it is replaced, the node ids
-      and the steps are given as 64-bit integers on Windows too, and the results of the callbacks are released.
-      The listeners of `loadBN`/`loadMRF`: a non-callable one raises `InvalidArgument` (all of them were silently
-      ignored) and each listener of the list leaked one reference.
-    - A list of non-strings given where a list of names is expected was read as empty names: `variables([0, 2])`
-      raised `NotFound` with the key `<>`; it now raises `TypeError` (`variables` takes a set of ids).
-    - `ctbn.CTBN.equals` no longer prints why the two CTBNs differ.
-    - `BNDatabaseGenerator.drawSamples` with evidence returned a wrong log2-likelihood: the rejected samples were
-      partly counted (and, at the timeout, the last kept sample was counted but dropped from the database).
-    - Evidence with a null probability given to `MonteCarloSampling`, `WeightedSampling`, `ImportanceSampling` (and
-      their loopy versions) or to `BNDatabaseGenerator.drawSamples`: the rejection of the draws looped forever (with
-      `timeout=0` for the generator; `setMaxTime` was not applied during the rejections). They now raise
-      `IncompatibleEvidence`, before any draw when the removal of impossible values (as for `GibbsSampling`) proves the
-      incompatibility, else when the number of consecutive rejected draws reaches the new key
-      `sampling.maxConsecutiveRejections` (1000000) or when the time limit is reached before any compatible draw (the
-      generator returned an empty database and a log2-likelihood of 0).
-    - `BNDatabaseGenerator`, `ExactBNdistance`, `GibbsBNdistance` and `MCBNDistance` did not keep their Bayesian
-      networks alive in Python: built on a temporary BN (`BNDatabaseGenerator(fastBN(...))`), `drawSamples` or `compute`
-      crashed. They now keep a reference to them, as the inferences do.
-    - The `listeners` argument of `loadBN` and `loadMRF`: a sequence whose length cannot be read raises
-      `InvalidArgument` (a Python error was left pending and the vector of listeners was resized to a huge size).
-    - `loadGraph` and `saveGraph` read the extension of the file name only (a dot in a directory name gave an
-      extension such as `v2/graph` in the error message).
-    - The conversions of C++ results into Python objects check every step: a string which is not valid UTF-8 (e.g. a
-      label read from a latin-1 CSV file) raises `UnicodeDecodeError` (instead of a `SystemError`, or a crash), and no
-      partially built object is returned.
-    - `Tensor.expectedValue` raises the exception of the function (the function is no longer called after it).
-    - Invalid integers given to `BNLearner.setSliceOrder`, `BNLearner.useK2`, the KTBN (base, slice) keys and modality
-      indices, and a malformed `latents` argument of `CausalModel` raise an exception instead of leaving a Python
-      error pending.
-    - `pyagrum.lib.image.export` and `pyagrum.lib.image.exportInference` without file name: the temporary file is
-      closed (`ResourceWarning`) and always removed (it was left on Windows).
-    - `PRMexplorer.load` accepts a file with warnings only (it raised `FatalError`), and `PRMexplorer.getSuperType`
-      returns the name of the super type (it returned the name of an internal variable).
-    - `CredalNet.setCPT` can be called from Python (its vertices, a list of lists of probabilities, could not be
-      converted).
-    - `skbn.BNClassifier`: an unfitted classifier can be pickled, copied and cloned (it failed with scikit-learn 1.8).
-    - `skbn.BNClassifier` with `learningMethod="TAN"` and a single feature: `fit` failed (the network was lost).
-    - `clg.CLG.asDiscreteBN` and the `NoDiscretization` parameters of `DiscreteTypeProcessor` quote the names of the
-      variables (a name such as `X-ray` was misread).
-    - `help(pyagrum.config.typed)` (and `asInt`, `asFloat`, `asBool`) shows the documentation of the accessor.
-    - `MarkovRandomField.toFast(filename)` raised `NameError`.
-    - `variable`, `variableFromName`, `cpt` (`BayesNet`, `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`),
-      `utility` (`InfluenceDiagram`) and `factor` (`MarkovRandomField`) keep their model alive: on a temporary model
-      (`fastBN("A->B").variable("A").domainSize()`), the result referenced a destroyed object (crash).
-    - `GibbsBNdistance` and `MCBNDistance`: the Bhattacharya distance started from an uninitialized value, and the copy
-      of a distance lost its Hellinger, Bhattacharya and Jensen-Shannon values.
-    - `CNMonteCarloSampling` created while aGrUM used 1 or 2 threads kept most of its marginals at their initial bounds
-      (min 1, max 0): the merge of the samples stopped after the first nodes.
-    - `addArc` of `DAG`, `PDAG`, `ChainGraph` and `addEdge` of `PDAG`, `ChainGraph`: a mono-cycle on a missing node raises
-      `InvalidNode`, as for the other graphs (it raised `InvalidDirectedCycle`).
-    - The binary GUM format of the graphs (`.bgum`) accepts a node id stored as a signed integer (msgpack `int8` to
-      `int64`, written by other encoders than aGrUM's): a non-negative id was refused.
-    - The GUM readers (`.jgum`, `.bgum` and the GUM strings, of the graphs, `BayesNet`, `InfluenceDiagram` and
-      `MarkovRandomField`) refuse an object with the same key twice: the last value was kept silently. The node ids of
-      `"names"` in a GUM graph have no leading zero (`"0"` and `"00"` named the same node).
-    - `CNMonteCarloSampling` stopped when a period of samples changed nothing at all in the bounds: a rounding
-      difference of one ulp between the inference engines of the threads gave other periods, hence other bounds
-      (up to 0.014), with 1 or 4 threads for the same seed. A variation below `1000 * epsilon` of the scalar type is
-      now taken as no change: the result no longer depends on the number of threads.
-    - The messages of `Configuration::load` (`pyagrum.config.load`) give the key as written in the file (it was
-      lowercased, so that a message could show two spellings of the same key); the notice "`core.randomSeed` ... has no
-      effect" is no longer given when the seed comes back to the one in use (`reset()`, `pop()`, the end of a
-      `ConfigurationGuard` or of a `with pyagrum.config:` block).
-    - `WeightedSampling` and `ImportanceSampling` (and the loopy versions): the width of the Wilson intervals of the
-      stopping criterion counts the effective size (Kish) of the weighted sample, (sum w)^2 / sum w^2, instead of the
-      number of samples: a sample dominated by a few large weights no longer looks converged too early (the
-      unweighted samplers are unchanged).
-    - `CNLoopyPropagation`: `epsilon` (and the stopping criterion) is the largest change of the marginals of an
-      iteration (it was the largest value of a per-thread maximum initialized to the largest double, so that the
-      iterations never stopped on `epsilon`); with evidence, the interval Λ of a node could collapse to its upper or
-      lower bound (exact bounds are now found on binary polytrees); `CredalNet::approximatedBinarization` decoded the
-      configurations of the parents in the wrong order (the binarized network did not have the original CPTs).
-    - `kNML` (MIIC's correction) with a prior: the pseudo-counts of the prior were added with the ids of the joint
-      counts instead of those of the marginal counts (wrong weights, out-of-bounds access).
-    - `BNLearner`: `learnParameters` (and the initialization of EM) after a structure learning used the score of that
-      learning, not the current one (`useScoreBDeu`... called in between was ignored); MIIC converted its mutual
-      informations (in bits) with `exp` as if they were in nats, which biased the orientation of the triples.
-    - `DiscreteTypeProcessor`: MDLP no longer forces a cut point when none is informative (a `ValueError` says that the
-      variable cannot be discretized by MDLP); the elbow method crashed (1D input to `KBinsDiscretizer`), assigned a
-      point to the wrong center after an empty interval and divided by 0 on a flat curve. NML did not return the
-      histogram minimizing its criterion (the scores of a number of bins overwrote those of the previous one while
-      being computed, and the cut points were not traced back from the optimum), and its criterion was NaN beyond
-      about 1030 samples (overflow of the binomial coefficients, now summed in log space).
-    - `CausalEffectEstimation`: the X-learner combined its two effects with swapped weights (Künzel et al.:
-      e(x) tau0(x) + (1 - e(x)) tau1(x)); TSLS returned the mean of all the coefficients of the second stage instead of
-      the coefficient of the treatment, and misaligned the rows of a conditional estimate; the individual effects of
-      the propensity stratification were not in the order of the rows (the average effect was right).
-    - `CausalEffectEstimation.fitCausalBNEstimator`: the fitted causal model lost its latent variables and its spurious
-      arcs, so that an effect not identifiable (hedge) was estimated with an adjustment set ignoring the confounding.
-    - `CausalShapValues` and `CausalShallValues`: each configuration of the background was weighted by its frequency
-      times its probability in the mutilated network (counted twice; the baseline of `CausalShapValues` was not P(Y)),
-      and a coalition whose values were not in the background got the value 0. The weight is now the probability only,
-      and the coalition is set in every row of the background.
-    - `causalImpact` with `knowing`: the third rule of the do-calculus removed the arcs into all of X instead of
-      X(Z), the variables of X which are not ancestors of Z, and could answer P(Y | Z) for an effect that exists.
-    - `CausalModel.observationalBN`, `CausalModel.variable`, `CausalImpact.cm`, `Counterfactual.originalModel`,
-      `Counterfactual.twinModel` and `Counterfactual.value` keep their object alive, and `CausalImpact`,
-      `Counterfactual` and `causalImpact` keep their causal model alive: on a temporary model
-      (`CausalModel(bn).observationalBN().names()`), the result referenced a destroyed object (wrong names or crash).
-    - `CNLoopyPropagation` stopped after one iteration on a network with evidence, with bounds wrong by up to 0.1: a
-      dummy error of 1 recorded before the first iteration made the rate of the first real error (close to 1) look
-      negligible. Its default criteria are the new section `CNLoopy` of the configuration (epsilon 1e-8, rate 1e-10,
-      100 iterations, as `lbp`); they were the generic ones of `approximation` (epsilon 0.05, rate 0.01), too loose.
-      `CNMonteCarloSampling` recorded the same dummy error (the rate is disabled by default); its defaults (60 seconds,
-      periods of 1000 samples) are the new section `CNMontecarlo`. For both, the history has one error per computed
-      period and the listeners no longer receive a progress at the start.
-    - `CNLoopyPropagation` with an impossible evidence printed messages (partly in French) on the standard output and
-      returned arbitrary bounds; it now raises `IncompatibleEvidence`. The causal effect estimators
-      (`PStratification`, used by `CausalEffectEstimation`) warn with `warnings.warn` instead of printing.
+    - **Structure learning**: `MeekRules::propagateToDAG` could leave the Markov equivalence class (#207) and
+      `MeekRules::choices()` gave inconsistent choices (it now returns a `std::vector<Arc>` by value); the maximum
+      indegree is enforced by PC, FCI and MIIC (#208, new key `learning.errorOnExceededMaxIndegree`); significance
+      thresholds outside ]0,1[ are refused (#209); structural constraints no longer hide unshielded colliders (#206);
+      degrees of freedom of the chi2 and G2 tests (#210); several fixes in FCI (mandatory arcs, Possible-D-Sep, rule
+      R5) and MIIC (reversed mandatory arc, kNML with a prior, orientation of the triples); `learnParameters` used the
+      score of the last structure learning; `EMHistory` could be shorter than `EMnbrIterations`.
+    - **Graphs**: d-, c- and m-separation with nodes of Y in Z or nodes outside the graph; `topologicalOrder` on a
+      cycle separated from the roots; fast descriptions (line breaks, blank chains, ids, invalid names); binary GUM
+      files (endianness, size check, 256 MB limit, signed ids, duplicate keys); listeners of the graphs (exports, marks).
+    - **Sampling inferences**: explicit targets, change of evidence, deterministic CPTs in Gibbs, early stop (Wilson
+      interval, effective size of weighted samples), impossible evidence (infinite loop, now `IncompatibleEvidence`,
+      new key `sampling.maxConsecutiveRejections`); log2-likelihood of `BNDatabaseGenerator.drawSamples` with evidence.
+    - **Distances and information theory**: Jensen-Shannon, Hellinger and Bhattacharya distances when the supports
+      differ, rate criterion; `InformationTheory` kept the joint targets and computed the variation of information
+      correctly.
+    - **Credal networks**: `CNMonteCarloSampling` (wrong bounds, dependence on the number of threads, stopping
+      criteria of the user ignored); `CNLoopyPropagation` (epsilon never reached, early stop with evidence, new
+      sections `CNLoopy` and `CNMontecarlo` of the configuration, impossible evidence, modalities);
+      `approximatedBinarization`.
+    - **pyAgrum libraries**: `ctbn` (CTPC tests, parallel and forward sampling, trajectories, `CIM.fromMatrix`),
+      `clg` (independence test of `CLGLearner` with a controlled error rate, Meek's rule 3, `SEM` parsing, null
+      standard deviations, `logLikelihood` in log space, sample variances), `bnmixture` (posterior with evidence,
+      settings of the learners, Bayesian bootstrap, weighted quantiles, new `arcConfidence`), causal effect estimation
+      (X-learner, TSLS, `fitCausalBNEstimator`), `CausalShapValues`/`CausalShallValues`, `causalImpact` with `knowing`,
+      `skbn.BNClassifier` (pickling unfitted, TAN with one feature), `DiscreteTypeProcessor` (MDLP, elbow, NML), graphs
+      of inferences (`nodeColor`, temporary images, factor graphs), `animApproximationScheme`, `PRMexplorer`,
+      `CredalNet.setCPT`.
+    - **Python bindings**: models, variables, CPTs, distances, `BNDatabaseGenerator` and causal objects keep their
+      owners alive (crashes on temporary objects); exceptions in Python listeners no longer leave Python in a broken
+      state; invalid UTF-8 raises `UnicodeDecodeError`; invalid arguments no longer leave a pending Python error; a
+      list of non-strings where names are expected raises `TypeError` (`variables([0, 2])`); temporary files of
+      `pyagrum.lib.image` are removed.
 
 - Optimizations (aGrUM and pyAgrum)
 
-    - `MPDAG.contains` compares the v-structures instead of building two CPDAGs: 50 to 75 times faster.
-    - The copy of a `MarkovRandomField` updates its graph once instead of once per factor (quadratic time, 27 times
-      faster for 1000 factors); its listeners no longer see the edges erased then added again.
-    - `CNMonteCarloSampling` inserts the evidence once per thread instead of once per sample: 20 to 30 % more samples
-      per second with evidence, same results.
-    - The closures of the graph algorithms (`ancestors`, `descendants`, `anteriors`, hence `isAncestral` and `isMaximal`
-      of the marked graphs) visit the neighbours in place instead of building a set for each node, with a stack as
-      frontier: 1.1 to 1.8 times faster, same results.
-    - `GibbsSampling` with hard evidence prunes the domains by the evidence once per inference instead of twice (the
-      check of the evidence is reused for the first sample of the chain): 30 % faster for a short inference (40 nodes,
-      CPTs with many zeros, 20 iterations), unchanged without evidence, same results.
+    - `MPDAG.contains` 50 to 75 times faster, copy of a `MarkovRandomField` linear in the number of factors, closures
+      of the graph algorithms 1.1 to 1.8 times faster, `CNMonteCarloSampling` with evidence 20 to 30 % faster,
+      `GibbsSampling` with hard evidence up to 30 % faster.
 
 ## Changelog for 3.3.2
 
