@@ -13,5 +13,5 @@ ie.addTarget("X")  # the whole series P(X[t] | ...)
 ie.makeInference(5)  # slices 0..4
 [[round(p, 4) for p in post.tolist()] for post in ie.posteriors("X")]  # X[0] is not revised: do(X[1]) cuts it off
 # [[0.5, 0.5], [0.0, 1.0], [0.0943, 0.9057], [0.1283, 0.8717], [0.2898, 0.7102]]
-round(ie.logObservationProbability(), 4)  # log P(Y[3] = 1 | do(X[1] = 1))
-# -0.6349
+round(ie.log2ObservationProbability(), 4)  # log2 P(Y[3] = 1 | do(X[1] = 1))
+# -0.9159

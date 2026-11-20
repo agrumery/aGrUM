@@ -109,6 +109,8 @@
     });
   }
 
+  // logObservationProbability (deprecated after 3.3.2) is %ignore'd pre-template in ktbnInference.i: it is
+  // rewritten below on top of log2ObservationProbability, emitting the DeprecationWarning.
   %pythoncode {
 def posteriors(self, base: str) -> list:
     """
@@ -125,5 +127,26 @@ def posteriors(self, base: str) -> list:
       one Tensor per slice (a single-element list for an atemporal base)
     """
     return self._posteriorsAsList(base)
+
+def logObservationProbability(self) -> float:
+    """
+    The natural logarithm of the probability of the observations for the last run.
+
+    Warnings
+    --------
+    logObservationProbability is deprecated after 3.3.2, use
+    `pyagrum.ktbn.KTBNInference.log2ObservationProbability` instead (aGrUM uses log2).
+
+    Returns
+    -------
+    float
+      ln P(obs | do(...))
+    """
+    import math
+    import warnings
+
+    warnings.warn("KTBNInference.logObservationProbability is deprecated after 3.3.2, use log2ObservationProbability",
+                  DeprecationWarning, stacklevel=2)
+    return self.log2ObservationProbability() * math.log(2)
   }
 }

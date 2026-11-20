@@ -519,21 +519,21 @@ namespace gum::learning {
                                    const std::vector< std::string >& knowing = {});
 
     /**
-     * Return the loglikelihood of vars in the base, conditioned by knowing for
+     * Return the log2-likelihood of vars in the base, conditioned by knowing for
      * the BNLearner
      * @param vars a vector of NodeIds
      * @param knowing an optional vector of conditioning NodeIds
-     * @return a double
+     * @return the log2-likelihood (base 2, as ScoreLog2Likelihood)
      */
     double logLikelihood(const std::vector< NodeId >& vars,
                          const std::vector< NodeId >& knowing = {});
 
     /**
-     * Return the loglikelihood of vars in the base, conditioned by knowing for
+     * Return the log2-likelihood of vars in the base, conditioned by knowing for
      * the BNLearner
      * @param vars a vector of name of rows
      * @param knowing an optional vector of conditioning rows
-     * @return a double
+     * @return the log2-likelihood (base 2, as ScoreLog2Likelihood)
      */
     double logLikelihood(const std::vector< std::string >& vars,
                          const std::vector< std::string >& knowing = {});

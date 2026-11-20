@@ -52,6 +52,7 @@
 #include <cctype>
 #include <cmath>
 #include <limits>
+#include <numbers>
 #include <sstream>
 
 #include <agrum/KTBN/inference/KTBNInference.h>
@@ -446,8 +447,8 @@ namespace gum {
       for (int s = t; s >= 0 && t - s <= _k_ - 1; --s)
         if (_lastConsumerSlice_(i, s) > t) out.push_back({i, t - s});
     }
-    // an atemporal variable is a parent at every slice, so it never leaves
-    // the interface -- the one thing that couples the whole horizon
+    // an atemporal variable, shared by all the slices, never leaves the
+    // interface -- the one thing that couples the whole horizon
     for (int i = static_cast< int >(_nbTemporal_); i < static_cast< int >(_baseNames_.size()); ++i)
       if (_requisite_[i]) out.push_back({i, ATEMPORAL});
     return out;
@@ -954,9 +955,9 @@ namespace gum {
   void KTBNInference< GUM_SCALAR >::makeInference(Size nbTimeSlices) {
     if (nbTimeSlices == 0) GUM_ERROR(InvalidArgument, "makeInference: nbTimeSlices must be >= 1.")
 
-    const int T      = static_cast< int >(nbTimeSlices);
-    _horizon_        = nbTimeSlices;
-    _logObservation_ = GUM_SCALAR(0);
+    const int T       = static_cast< int >(nbTimeSlices);
+    _horizon_         = nbTimeSlices;
+    _log2Observation_ = GUM_SCALAR(0);
     _posteriors_.clear();
     _kernelCache_.clear();   // CPT values may have been edited since the last run
 
@@ -1060,7 +1061,7 @@ namespace gum {
                   "(impossible at slice "
                       << t << ").")
       m.scale(GUM_SCALAR(1) / mass);
-      _logObservation_ += static_cast< GUM_SCALAR >(std::log(static_cast< double >(mass)));
+      _log2Observation_ += static_cast< GUM_SCALAR >(std::log2(static_cast< double >(mass)));
 
       if (t + 1 < T) {
         if (smoothing) fwd[static_cast< std::size_t >(t)] = m;
@@ -1108,8 +1109,8 @@ namespace gum {
                       "makeInference: the backward message leaving slice "
                           << t
                           << " underflowed to zero. The observations are not impossible -- the "
-                             "forward sweep accepted them (log P(obs) = "
-                          << _logObservation_
+                             "forward sweep accepted them (log2 P(obs) = "
+                          << _log2Observation_
                           << ") -- but the model's probabilities are too extreme for this horizon "
                              "to be resolved in double precision. Soften the near-deterministic "
                              "CPT entries, or shorten the horizon / reduce the observations.")
@@ -1197,18 +1198,25 @@ namespace gum {
   }
 
   template < GUM_Numeric GUM_SCALAR >
-  GUM_SCALAR KTBNInference< GUM_SCALAR >::logObservationProbability() {
+  GUM_SCALAR KTBNInference< GUM_SCALAR >::log2ObservationProbability() {
     if (!_done_) {
       if (_horizon_ == 0)
         GUM_ERROR(OperationNotAllowed, "call makeInference(nbTimeSlices) before querying.")
       makeInference(_horizon_);
     }
-    return _logObservation_;
+    return _log2Observation_;
+  }
+
+  template < GUM_Numeric GUM_SCALAR >
+  GUM_SCALAR KTBNInference< GUM_SCALAR >::logObservationProbability() {
+    return static_cast< GUM_SCALAR >(static_cast< double >(log2ObservationProbability())
+                                     * std::numbers::ln2);
   }
 
   template < GUM_Numeric GUM_SCALAR >
   GUM_SCALAR KTBNInference< GUM_SCALAR >::observationProbability() {
-    return static_cast< GUM_SCALAR >(std::exp(static_cast< double >(logObservationProbability())));
+    return static_cast< GUM_SCALAR >(
+        std::exp2(static_cast< double >(log2ObservationProbability())));
   }
 
   // ===========================================================================

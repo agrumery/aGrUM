@@ -20,7 +20,3 @@ where the parents of :math:`V_t`, for :math:`t \geq k-1`, are those of :math:`V_
 **Atemporal variables** (pyAgrum's extension) are constant through time: they have a single instance, only atemporal
 parents, and may be parents of temporal variables at any slice. Since they are shared by all the slices, they couple
 the whole horizon (see `pyagrum.ktbn.KTBNInference`).
-
-**Unrolling** over :math:`T` slices copies the slices :math:`0, \dots, k-1` of the template and gives every slice
-:math:`t \geq k` the families and the CPTs of the slice :math:`k-1`. The summary graph keeps only the arcs that enter
-the slice :math:`k-1` (the repeated pattern), labelled by their lag.

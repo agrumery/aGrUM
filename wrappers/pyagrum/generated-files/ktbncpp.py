@@ -1310,7 +1310,8 @@ class KTBNInference(object):
         Run the interface algorithm over nbTimeSlices slices (0..nbTimeSlices-1) and
         cache, for every targeted base, its marginal at every slice. Idempotent, and
         called lazily by :func:`posterior`/:func:`posteriors` (with the last horizon)
-        whenever their cache is out of date.
+        whenever their cache is out of date. Observations and interventions at slices
+        nbTimeSlices or later are ignored.
 
         Parameters
         ----------
@@ -1362,10 +1363,10 @@ class KTBNInference(object):
         """
         return _ktbncpp.KTBNInference_posterior(self, *args)
 
-    def logObservationProbability(self) -> float:
+    def log2ObservationProbability(self) -> float:
         r"""
 
-        Return log2 P(obs | do(...)) for the last run: the log-likelihood of the
+        Return log2 P(obs | do(...)) for the last run: the log2-likelihood of the
         recorded observations under the (possibly mutilated) model. 0 when nothing is
         observed. Lazily (re)runs :func:`makeInference` if the cache is out of date.
 
@@ -1380,13 +1381,13 @@ class KTBNInference(object):
             if makeInference has never been run
 
         """
-        return _ktbncpp.KTBNInference_logObservationProbability(self)
+        return _ktbncpp.KTBNInference_log2ObservationProbability(self)
 
     def observationProbability(self) -> float:
         r"""
 
-        Return P(obs | do(...)), i.e. 2 raised to :func:`logObservationProbability`.
-        Prefer the log form on long horizons, where this one underflows to 0.
+        Return P(obs | do(...)), i.e. 2 raised to :func:`log2ObservationProbability`.
+        Prefer the log2 form on long horizons, where this one underflows to 0.
 
         Returns
         -------
@@ -1541,6 +1542,27 @@ class KTBNInference(object):
           one Tensor per slice (a single-element list for an atemporal base)
         """
         return self._posteriorsAsList(base)
+
+    def logObservationProbability(self) -> float:
+        """
+        The natural logarithm of the probability of the observations for the last run.
+
+        Warnings
+        --------
+        logObservationProbability is deprecated after 3.3.2, use
+        `pyagrum.ktbn.KTBNInference.log2ObservationProbability` instead (aGrUM uses log2).
+
+        Returns
+        -------
+        float
+          ln P(obs | do(...))
+        """
+        import math
+        import warnings
+
+        warnings.warn("KTBNInference.logObservationProbability is deprecated after 3.3.2, use log2ObservationProbability",
+                      DeprecationWarning, stacklevel=2)
+        return self.log2ObservationProbability() * math.log(2)
 
 
 # Register KTBNInference in _ktbncpp:

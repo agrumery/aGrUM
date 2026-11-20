@@ -179,6 +179,7 @@ namespace gum_tests {
 
       INFO("P(observation)");
       CHECK(std::fabs(ie.observationProbability() - pe) < 1e-9);
+      if (pe > 0) CHECK(std::fabs(ie.log2ObservationProbability() - std::log2(pe)) < 1e-9);
     }
 
     // -----------------------------------------------------------------------
@@ -639,7 +640,7 @@ namespace gum_tests {
     // an unobserved run has probability 1 by construction
     ie.makeInference(4);
     CHECK(std::fabs(ie.observationProbability() - 1.0) < 1e-9);
-    CHECK(std::fabs(ie.logObservationProbability()) < 1e-9);
+    CHECK(std::fabs(ie.log2ObservationProbability()) < 1e-9);
 
     CHECK_THROWS_AS(ie.addObservation("nope", 0, 0), const gum::NotFound&);
     CHECK_THROWS_AS(ie.addObservation("C", 0, 0), const gum::InvalidArgument&);

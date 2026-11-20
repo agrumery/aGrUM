@@ -11206,7 +11206,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_KTBNInference_logObservationProbability(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_KTBNInference_log2ObservationProbability(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::KTBNInference< double > *arg1 = 0 ;
   void *argp1 = 0 ;
@@ -11219,12 +11219,12 @@ SWIGINTERN PyObject *_wrap_KTBNInference_logObservationProbability(PyObject *sel
   swig_obj[0] = args;
   res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__KTBNInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNInference_logObservationProbability" "', argument " "1"" of type '" "gum::KTBNInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "KTBNInference_log2ObservationProbability" "', argument " "1"" of type '" "gum::KTBNInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::KTBNInference< double > * >(argp1);
   {
     try {
-      result = (double)(arg1)->logObservationProbability();
+      result = (double)(arg1)->log2ObservationProbability();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -25775,7 +25775,8 @@ static PyMethodDef SwigMethods[] = {
 		"Run the interface algorithm over nbTimeSlices slices (0..nbTimeSlices-1) and\n"
 		"cache, for every targeted base, its marginal at every slice. Idempotent, and\n"
 		"called lazily by :func:`posterior`/:func:`posteriors` (with the last horizon)\n"
-		"whenever their cache is out of date.\n"
+		"whenever their cache is out of date. Observations and interventions at slices\n"
+		"nbTimeSlices or later are ignored.\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -25822,9 +25823,9 @@ static PyMethodDef SwigMethods[] = {
 		"    if slice was not computed (>= the horizon)\n"
 		"\n"
 		""},
-	 { "KTBNInference_logObservationProbability", _wrap_KTBNInference_logObservationProbability, METH_O, "\n"
+	 { "KTBNInference_log2ObservationProbability", _wrap_KTBNInference_log2ObservationProbability, METH_O, "\n"
 		"\n"
-		"Return log2 P(obs | do(...)) for the last run: the log-likelihood of the\n"
+		"Return log2 P(obs | do(...)) for the last run: the log2-likelihood of the\n"
 		"recorded observations under the (possibly mutilated) model. 0 when nothing is\n"
 		"observed. Lazily (re)runs :func:`makeInference` if the cache is out of date.\n"
 		"\n"
@@ -25841,8 +25842,8 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "KTBNInference_observationProbability", _wrap_KTBNInference_observationProbability, METH_O, "\n"
 		"\n"
-		"Return P(obs | do(...)), i.e. 2 raised to :func:`logObservationProbability`.\n"
-		"Prefer the log form on long horizons, where this one underflows to 0.\n"
+		"Return P(obs | do(...)), i.e. 2 raised to :func:`log2ObservationProbability`.\n"
+		"Prefer the log2 form on long horizons, where this one underflows to 0.\n"
 		"\n"
 		"Returns\n"
 		"-------\n"

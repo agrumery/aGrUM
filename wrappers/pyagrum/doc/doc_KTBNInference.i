@@ -271,7 +271,8 @@ bool
 Run the interface algorithm over nbTimeSlices slices (0..nbTimeSlices-1) and
 cache, for every targeted base, its marginal at every slice. Idempotent, and
 called lazily by :func:`posterior`/:func:`posteriors` (with the last horizon)
-whenever their cache is out of date.
+whenever their cache is out of date. Observations and interventions at slices
+nbTimeSlices or later are ignored.
 
 Parameters
 ----------
@@ -343,9 +344,9 @@ pyagrum.UndefinedElement
     if base is not a target
 "
 
-%feature("docstring") gum::KTBNInference::logObservationProbability
+%feature("docstring") gum::KTBNInference::log2ObservationProbability
 "
-Return log2 P(obs | do(...)) for the last run: the log-likelihood of the
+Return log2 P(obs | do(...)) for the last run: the log2-likelihood of the
 recorded observations under the (possibly mutilated) model. 0 when nothing is
 observed. Lazily (re)runs :func:`makeInference` if the cache is out of date.
 
@@ -362,8 +363,8 @@ pyagrum.OperationNotAllowed
 
 %feature("docstring") gum::KTBNInference::observationProbability
 "
-Return P(obs | do(...)), i.e. 2 raised to :func:`logObservationProbability`.
-Prefer the log form on long horizons, where this one underflows to 0.
+Return P(obs | do(...)), i.e. 2 raised to :func:`log2ObservationProbability`.
+Prefer the log2 form on long horizons, where this one underflows to 0.
 
 Returns
 -------

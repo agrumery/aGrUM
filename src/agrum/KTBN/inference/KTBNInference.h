@@ -127,7 +127,7 @@ namespace gum {
    *   ie.makeInference(10);                 // compute slices 0..9
    *   const Tensor<double>&              p3 = ie.posterior("X", 3);
    *   const std::vector<Tensor<double>>& px = ie.posteriors("X");
-   *   double logpe = ie.logObservationProbability();
+   *   double log2pe = ie.log2ObservationProbability();
    * @endcode
    *
    * @par Targets (the query)
@@ -387,15 +387,22 @@ namespace gum {
      */
     const std::vector< Tensor< GUM_SCALAR > >& posteriors(std::string_view base);
 
-    /// @brief @f$\log P(\text{obs} \mid do(\cdot))@f$ for the last run: the
-    /// likelihood of the observations under the (possibly mutilated) model.
+    /// @brief @f$\log_2 P(\text{obs} \mid do(\cdot))@f$ for the last run: the
+    /// log2-likelihood of the observations under the (possibly mutilated) model.
     /// 0 when nothing is observed. Lazily (re)runs makeInference() if out of date.
     /// @throw OperationNotAllowed if makeInference() has never been run.
+    GUM_SCALAR log2ObservationProbability();
+
+    /// @brief @f$\ln P(\text{obs} \mid do(\cdot))@f$ (natural logarithm).
+    /// @deprecated deprecated after 3.3.2: aGrUM uses log2, use log2ObservationProbability()
+    /// @throw OperationNotAllowed if makeInference() has never been run.
+    [[deprecated("KTBNInference::logObservationProbability is deprecated after 3.3.2, use "
+                 "log2ObservationProbability")]]
     GUM_SCALAR logObservationProbability();
 
-    /// @brief @f$P(\text{obs} \mid do(\cdot))@f$, i.e. exp of
-    /// logObservationProbability(). Underflows to 0 on long horizons; prefer the
-    /// log form.
+    /// @brief @f$P(\text{obs} \mid do(\cdot))@f$, i.e. 2 raised to
+    /// log2ObservationProbability(). Underflows to 0 on long horizons; prefer the
+    /// log2 form.
     GUM_SCALAR observationProbability();
 
     /// @}
@@ -490,8 +497,8 @@ namespace gum {
     /// Whether the cached posteriors are up to date.
     bool _done_{false};
 
-    /// log P(observation | do) of the last run.
-    GUM_SCALAR _logObservation_{0};
+    /// log2 P(observation | do) of the last run.
+    GUM_SCALAR _log2Observation_{0};
 
     /// Cached marginal series of the last run, keyed by base name.
     std::unordered_map< std::string, _Series_ > _posteriors_;

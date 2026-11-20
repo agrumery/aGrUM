@@ -50,3 +50,7 @@
 // post-template %ignore+%extend convention, which -- empirically, for this
 // method -- does not actually suppress the native wrapper.
 %ignore gum::KTBNInference<double>::posteriors;
+
+// logObservationProbability is deprecated after 3.3.2 (calling it from the generated C++ would emit a deprecation
+// warning): rewritten in Python in ktbnInference_after_templates.i
+%ignore gum::KTBNInference<double>::logObservationProbability;

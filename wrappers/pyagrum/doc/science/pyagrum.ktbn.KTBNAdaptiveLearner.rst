@@ -1,5 +1,5 @@
 KTBNAdaptiveLearner also selects the order :math:`k` of the k-TBN: for every candidate :math:`k \in [k_{min}, k_{max}]`
-(:math:`k_{min} = 2`, raised when a constraint names a slice :math:`s`, to :math:`s+1`), it learns a k-TBN with
+(:math:`k_{min} = 2`, or :math:`s+1` if a constraint names the slice :math:`s`), it learns a k-TBN with
 `pyagrum.ktbn.KTBNLearner` and the recorded configuration, then keeps the candidate with the best *order score*. This
 outer score is distinct from the score used to learn each structure, and it is computed on the whole learned k-TBN, so
 that it can be compared across :math:`k`.
@@ -19,12 +19,12 @@ and :math:`N` the total number of time steps of all the trajectories, the same f
 
 - BIC :cite:`schwarz1978estimating` (default): :math:`\log_2 L_k - \frac{1}{2} d_k \log_2 N`;
 - AIC :cite:`akaike1974new`: :math:`\log_2 L_k - d_k \log_2 e`, i.e. Akaike's :math:`\ln L - d` converted to bits;
-- fNML :cite:`silander2008factorized`: :math:`\log_2 L_k - \sum_X \sum_j \log_2 \mathcal{C}(r_X, N_{Xj})`, the
+- fNML :cite:`silander2008factorized`: :math:`\log_2 L_k - \sum_X \sum_j \log_2 C(r_X, N_{Xj})`, the
   parametric complexity of a multinomial with :math:`r_X` values over the :math:`N_{Xj}` instances of each observed
   parent configuration :math:`j` of each node of the template (as in the fNML score of `pyagrum.BNLearner`).
 
 A larger :math:`k` adds initial slices and lags, hence parameters: the penalty trades them against the gain in
-likelihood. On ties, the smallest :math:`k` is kept. ``scorePerCandidateK`` gives the scores of all the candidates.
+likelihood. On ties, the smallest :math:`k` is kept.
 
 **Implementation limit.** With ``ignoreMissingSymbols``, an instance whose family has a missing value is not scored;
 a larger :math:`k` drops more instances (its families span more time steps) while :math:`N` is not changed, which

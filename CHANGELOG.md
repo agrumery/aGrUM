@@ -297,6 +297,9 @@
     - `BNLearner::useScorefNML` returns the learner, as the other score setters. `ScoreMDL`, an alias of `ScoreBIC`,
       and the `useScoreMDL` of `IBNLearner`, `IKTBNLearner`, `KTBNLearner` and `KTBNAdaptiveLearner` are deprecated
       after 3.3.2: use `ScoreBIC` and `useScoreBIC`. The MDL correction of MIIC does not change.
+    - `KTBNInference::log2ObservationProbability` (also in pyAgrum) gives the log2-probability of the observations, as
+      the other log-likelihoods of aGrUM. `logObservationProbability`, a natural logarithm (the pyAgrum docstring said
+      log2), is deprecated after 3.3.2.
     - CI: redundant pipelines auto-cancelled, jobs started without waiting for the previous stage, retries only on
       infrastructure failures, a documentation stage, a pip cache; every `act` command of the build scripts is checked
       (a failing step no longer goes unnoticed), the wheels are tested in a throwaway venv per job, and the macOS jobs

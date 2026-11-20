@@ -38,7 +38,9 @@
 #                                                                          #
 ############################################################################
 
+import math
 import unittest
+import warnings
 
 import pyagrum.ktbn as gum
 
@@ -114,6 +116,8 @@ def _checkAgainstOracle(tc, ktbn, dos, targets, T, evs=None):
         tc.assertLess(abs(x - y), TOL)
 
   tc.assertLess(abs(ie.observationProbability() - pe), 1e-9)
+  if pe > 0:
+    tc.assertLess(abs(ie.log2ObservationProbability() - math.log2(pe)), 1e-9)
 
 
 class KTBNInferenceTestCase(pyAgrumTestCase):
@@ -432,7 +436,7 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
 
     ie.makeInference(4)
     self.assertLess(abs(ie.observationProbability() - 1.0), 1e-9)
-    self.assertLess(abs(ie.logObservationProbability()), 1e-9)
+    self.assertLess(abs(ie.log2ObservationProbability()), 1e-9)
 
     with self.assertRaises(gum.NotFound):
       ie.addObservation("nope", 0, 0)
@@ -489,6 +493,22 @@ class KTBNInferenceTestCase(pyAgrumTestCase):
     # no Python error is left pending
     ie.addIntervention({("X", 0): 1})
     self.assertTrue(ie.hasIntervention("X", 0))
+
+  def testLogObservationProbabilityIsDeprecated(self):
+    # transitory: to be removed with logObservationProbability (deprecated after 3.3.2)
+    m = gum.KTBN(2)
+    m.addTemporal("X", 2)
+    m.addArc("X", 0, "X", 1)
+    m.cpt("X", 0).fillWith([0.5, 0.5])
+    m.cpt("X", 1).fillWith([0.9, 0.1, 0.2, 0.8])
+    ie = gum.KTBNInference(m)
+    ie.addObservation("X", 1, 1)
+    ie.makeInference(2)
+    self.assertAlmostEqual(ie.log2ObservationProbability(), math.log2(0.45), places=12)
+    with warnings.catch_warnings(record=True) as w:
+      warnings.simplefilter("always")
+      self.assertAlmostEqual(ie.logObservationProbability(), math.log(0.45), places=12)
+    self.assertTrue(any(issubclass(x.category, DeprecationWarning) for x in w))
 
 
 ts = unittest.TestSuite()
