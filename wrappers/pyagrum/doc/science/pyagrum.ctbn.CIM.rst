@@ -4,8 +4,4 @@ entries :math:`q_{xx' \mid u} \geq 0` are the rates of the transitions :math:`x 
 :math:`q_{xx \mid u} = -q_{x \mid u} = -\sum_{x' \neq x} q_{xx' \mid u}`. While its parents keep the values :math:`u`,
 :math:`X` stays in :math:`x` for a time of exponential law of parameter :math:`q_{x \mid u}` (mean
 :math:`1/q_{x \mid u}`), then moves to :math:`x'` with probability :math:`q_{xx' \mid u} / q_{x \mid u}`. A state with
-:math:`q_{x \mid u} = 0` is absorbing.
-
-In pyAgrum, the CIM is a tensor over the parents and two copies of :math:`X`, named ``X#i`` (state before the
-transition, the row) and ``X#j`` (state after, the column). The product ``*`` of two CIMs is their amalgamation
-(see `pyagrum.ctbn.CTBN`).
+:math:`q_{x \mid u} = 0` is absorbing. The product ``*`` of two CIMs is their amalgamation (see `pyagrum.ctbn.CTBN`).

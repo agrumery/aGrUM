@@ -57,8 +57,9 @@ class TestCtbnLearner(pyAgrumTestCase):
     ctbn.add(B)
     ctbn.addArc("cloudy?", "rain?")
     ctbn.addArc("rain?", "cloudy?")
-    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-0.1, 0.1], [1, -1]]
-    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-0.1, 0.1], [1, -1]]
+    # the clouds go away faster when it rains: cloudy? depends on rain?
+    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-1, 1], [0.5, -0.5]]
+    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-1, 1], [10, -10]]
     ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5], [1000, -1000]]
     ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2], [2, -2]]
 

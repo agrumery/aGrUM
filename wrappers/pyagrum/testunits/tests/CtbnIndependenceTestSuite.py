@@ -57,8 +57,9 @@ class TestCtbnIndependence(pyAgrumTestCase):
     ctbn.add(B)
     ctbn.addArc("cloudy?", "rain?")
     ctbn.addArc("rain?", "cloudy?")
-    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-0.1, 0.1], [1, -1]]
-    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-0.1, 0.1], [1, -1]]
+    # the clouds go away faster when it rains: cloudy? depends on rain?
+    ctbn.CIM("cloudy?")[{"rain?": "0"}] = [[-1, 1], [0.5, -0.5]]
+    ctbn.CIM("cloudy?")[{"rain?": "1"}] = [[-1, 1], [10, -10]]
     ctbn.CIM("rain?")[{"cloudy?": "0"}] = [[-0.5, 0.5], [1000, -1000]]
     ctbn.CIM("rain?")[{"cloudy?": "1"}] = [[-2, 2], [2, -2]]
 
@@ -265,6 +266,22 @@ class TestCtbnIndependence(pyAgrumTestCase):
     test.addVariables("X", "Y", [])
     self.assertEqual(test.nullTimeToTransitionHypothesisF("X", "Y", []), FAIL_TO_REJECT)
     self.assertFalse(test.testIndep("X", "Y", []))
+
+  def testFTestIgnoresAConfigurationWithoutTransition(self):
+    # X jumps every time unit whatever Y; Y only moves to 1 at 59.95, and X does not jump while Y=1: no exit of X is
+    # seen given Y=1 (r1 = 0), so this configuration brings no evidence against the independence.
+    ctbn = ct.CTBN()
+    ctbn.add(gum.LabelizedVariable("X", "X", 2))
+    ctbn.add(gum.LabelizedVariable("Y", "Y", 2))
+    ctbn.addArc("Y", "X")
+
+    # a row (t, X, x) is a jump of X out of x at time t; the last rows give the states at the horizon
+    traj = [(0.0, "X", "0"), (0.0, "Y", "0")]
+    traj += [(float(t), "X", str((t - 1) % 2)) for t in range(1, 60)]
+    traj += [(59.95, "Y", "0"), (60.0, "X", str(59 % 2)), (60.0, "Y", "1")]
+
+    test = ct.FChi2Test(ct.Trajectory({0: traj}, ctbn=ctbn))
+    self.assertTrue(test.testIndep("X", "Y", []))
 
   def testSignificanceLevelsComeFromTheConfiguration(self):
     # X jumps every time unit when Y=0 and every 1.44 time units when Y=1 (600 time units each): the F test rejects

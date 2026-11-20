@@ -305,6 +305,9 @@ class FChi2Test(IndepTest):
       # only the exit rates q_x (diagonal), the destinations are tested by the chi2 test
       if i[self.x_from] != i[self.x_to]:
         continue
+      # no exit of x seen given (y, s) or given s: no evidence against the independence (the Fisher law needs r1, r2 > 0)
+      if self.r1.get(i) == 0 or self.r2.get(i) == 0:
+        continue
       min_f = f.ppf(self.fSignificance / 2, self.r1.get(i), self.r2.get(i))
       max_f = f.ppf(1 - self.fSignificance / 2, self.r1.get(i), self.r2.get(i))
       logging.debug("\t%f, %f, %f", F.get(i), min_f, max_f)

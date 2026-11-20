@@ -384,7 +384,9 @@
       The significance levels of the two tests are the new keys `ctbn.fSignificance` and `ctbn.chi2Significance`
       (0.05 each; the F test, two-sided, used 10%). CTPC no longer repeats an independence test when no conditioning
       set of the current size remains. The learned rates are no longer rounded to 3 decimals (rates below 0.0005
-      became 0, and the F test of CTPC depended on the time unit).
+      became 0, and the F test of CTPC depended on the time unit). A configuration in which no exit of a state is
+      observed no longer makes the F test reject the independence (the quantiles of the Fisher law were NaN), so that
+      an arc is no longer kept without any evidence.
     - `ctbn.CIM.fromMatrix` accepts a matrix of integers and a list of lists (it raised `TypeError` or
       `AttributeError`); a matrix of wrong shape raises `ValueError` (it raised `AttributeError`).
     - `ctbn.ForwardSamplingInference`: the state drawn before the burn-in was counted for one unit of time in the
