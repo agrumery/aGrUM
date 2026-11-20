@@ -149,8 +149,9 @@ class IMixture:
 
   def add(self, name: str, bn: pyagrum.BayesNet, w: float = 1) -> None:
     """
-    Adds a BN to the model. If the model doesn't have a reference BN when trying to add an element,
-    the BN (before adding new element) with highest weight becomes the new reference.
+    Adds a BN to the model. If the model has no reference BN yet (an empty `pyagrum.bnmixture.BNMixture`), a copy of
+    the added BN becomes the reference; adding other BNs does not change it (see
+    `pyagrum.bnmixture.BNMixture.updateRef`).
 
     Parameters
     ----------
@@ -370,13 +371,14 @@ class IMixture:
 
 class BNMixture(IMixture):
   """
-  A mixture of Bayesian networks where each network carries a positive weight.
+  A mixture of Bayesian networks where each network carries a non-negative weight.
 
-  The **reference BN** (``refBN``) is the BN with the highest weight; it is
-  recomputed by :meth:`updateRef`.  It serves as the structural template for
-  visualisation and variable look-ups, but plays no special role during inference:
-  :class:`~pyagrum.bnmixture.BNMixtureInference` returns the posterior of the
-  mixture over *all* BNs (each BN weighted by its weight times the probability of the evidence).
+  The **reference BN** (``refBN``) is a copy of the first BN added; `pyagrum.bnmixture.BNMixture.updateRef` replaces
+  it by the BN of highest weight (`pyagrum.bnmixture.loadBNM` calls it; `pyagrum.bnmixture.BNMLearner.learnBNM` adds
+  first the BN learned from the database of highest weight).
+  It serves as the structural template for visualisation and variable look-ups, but plays no special role during
+  inference: `pyagrum.bnmixture.BNMixtureInference` returns the posterior of the mixture over *all* BNs (each BN
+  weighted by its weight times the probability of the evidence).
 
   Notes
   -----
