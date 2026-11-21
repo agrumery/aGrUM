@@ -799,6 +799,66 @@ class InfluenceDiagram(pyagrum.pyagrumcpp.DAGmodel):
       return am
 
 
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _idcpp.InfluenceDiagram_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _idcpp.InfluenceDiagram_idsFromNames(self, names)
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 

@@ -88,15 +88,18 @@ namespace gum_tests {
     CHECK_THROWS(cm.idFromName("NonExistent"));
     CHECK_THROWS(cm.variable("NonExistent"));
     CHECK_THROWS(cm.variable(150u));
+    CHECK_THROWS_AS(cm.nameFromId(150u), gum::NotFound);
 
     // for a latent variable : we can have its id but no (observationnal) variable is associated
     CHECK_NOTHROW(cm.idFromName("Hidden"));
     CHECK_THROWS(cm.variable("Hidden"));
     CHECK_THROWS(cm.variable(cm.idFromName("Hidden")));
+    CHECK_EQ(cm.nameFromId(cm.idFromName("Hidden")), "Hidden");
 
     CHECK_NOTHROW(cm.idFromName("A"));
     CHECK_NOTHROW(cm.variable("A"));
     CHECK_NOTHROW(cm.variable(0));
+    CHECK_EQ(cm.nameFromId(cm.idFromName("B")), "B");
   }
 
   GUM_TEST(Copy) {

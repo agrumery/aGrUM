@@ -52,6 +52,7 @@
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 #include <cstring>
 #include <iterator>
+#include <limits>
 
 #include <agrum/base/core/set.h>
 #include <agrum/base/graphs/graphElements.h>
@@ -504,6 +505,145 @@ namespace PyAgrumHelper {
     } else {
       GUM_ERROR(gum::InvalidArgument, "Argument <seq> is not a list nor a set")
     }
+  }
+
+  // ---- ids <-> names in Python containers (namesFromIds/idsFromNames) ----------------------
+  namespace detail {
+    /// o itself, or PythonErrorAlreadySet if o is nullptr (the Python error is then set)
+    inline PyObject* checkedPyObject(PyObject* o) {
+      if (o == nullptr) throw PythonErrorAlreadySet();
+      return o;
+    }
+
+    [[noreturn]] inline void raisePyTypeError(const std::string& msg) {
+      PyErr_SetString(PyExc_TypeError, msg.c_str());
+      throw PythonErrorAlreadySet();
+    }
+
+    /// the name of the type of o (for the error messages)
+    inline std::string pyTypeName(PyObject* o) {
+      PyOwnedRef type(PyObject_Type(o));
+      PyOwnedRef name(type.get() == nullptr ? nullptr
+                                            : PyObject_GetAttrString(type.get(), "__name__"));
+      PyErr_Clear();
+      return (name.get() == nullptr) ? std::string("?") : stringFromPyObject(name.get());
+    }
+
+    /// the text of o (str(o))
+    inline std::string pyStr(PyObject* o) {
+      PyOwnedRef str(PyObject_Str(o));
+      PyErr_Clear();
+      return (str.get() == nullptr) ? std::string("?") : stringFromPyObject(str.get());
+    }
+
+    /// the name of the node id of g; NotFound if g has no such node. G: a graph class (nameFromId
+    /// does not check the id), a graphical model or a causal model (both throw NotFound)
+    template < typename G >
+    std::string nodeName(const G& g, gum::NodeId id) {
+      if constexpr (requires {
+                      g.existsNode(id);
+                      g.nameFromId(id);
+                    }) {
+        if (!g.existsNode(id)) GUM_ERROR(gum::NotFound, "namesFromIds: no node with id " << id)
+        return g.nameFromId(id);
+      } else {
+        try {
+          if constexpr (requires { g.nameFromId(id); }) return g.nameFromId(id);
+          else return g.variable(id).name();
+        } catch (gum::NotFound&) {
+          GUM_ERROR(gum::NotFound, "namesFromIds: no node with id " << id)
+        }
+      }
+    }
+
+    /// the id of the node named name in g; NotFound if g has no such node
+    template < typename G >
+    gum::NodeId nodeId(const G& g, const std::string& name) {
+      if constexpr (requires { g.idFromName(name).has_value(); }) {   // graph classes: optional
+        const auto id = g.idFromName(name);
+        if (!id) GUM_ERROR(gum::NotFound, "idsFromNames: no node named '" << name << "'")
+        return *id;
+      } else {
+        try {
+          return g.idFromName(name);
+        } catch (gum::NotFound&) {
+          GUM_ERROR(gum::NotFound, "idsFromNames: no node named '" << name << "'")
+        }
+      }
+    }
+
+    /// the node id given by o (an int, bool excluded); NotFound if negative or too large
+    inline gum::NodeId nodeIdFromPyInt(PyObject* o) {
+      if (PyBool_Check(o) || !PyIndex_Check(o) || isStringPyObject(o))
+        raisePyTypeError("namesFromIds: a node id (int) was expected, got " + pyTypeName(o));
+      PyOwnedRef               index(checkedPyObject(PyNumber_Index(o)));
+      const unsigned long long val = PyLong_AsUnsignedLongLong(index.get());
+      if (PyErr_Occurred()) {   // negative or too large: not a node anyway
+        PyErr_Clear();
+        GUM_ERROR(gum::NotFound, "namesFromIds: no node with id " << pyStr(index.get()))
+      }
+      if (val > std::numeric_limits< gum::NodeId >::max())
+        GUM_ERROR(gum::NotFound, "namesFromIds: no node with id " << val)
+      return static_cast< gum::NodeId >(val);
+    }
+
+    /// a copy of x where every node is converted by convertNode (which returns a new reference or
+    /// throws), keeping the type of the containers: list, tuple, set, frozenset (a subclass gives
+    /// its base type) and dict (keys and values converted), recursively
+    template < typename CONVERT >
+    PyObject* convertNodesKeepingContainers(PyObject* x, const CONVERT& convertNode) {
+      const auto convert = [&convertNode](PyObject* item) {
+        return convertNodesKeepingContainers(item, convertNode);
+      };
+      if (PyDict_Check(x)) {
+        PyOwnedRef res(checkedPyObject(PyDict_New()));
+        PyObject*  key;
+        PyObject*  value;
+        Py_ssize_t pos = 0;
+        while (PyDict_Next(x, &pos, &key, &value)) {
+          PyOwnedRef k(convert(key));
+          PyOwnedRef v(convert(value));
+          if (PyDict_SetItem(res.get(), k.get(), v.get()) != 0) throw PythonErrorAlreadySet();
+        }
+        return res.release();
+      }
+      if (PyList_Check(x) || PyTuple_Check(x) || PyAnySet_Check(x)) {
+        PyOwnedRef items(checkedPyObject(PyList_New(0)));
+        PyOwnedRef iter(checkedPyObject(PyObject_GetIter(x)));
+        while (PyObject* next = PyIter_Next(iter.get())) {
+          PyOwnedRef item(next);
+          PyOwnedRef converted(convert(item.get()));
+          if (PyList_Append(items.get(), converted.get()) != 0) throw PythonErrorAlreadySet();
+        }
+        if (PyErr_Occurred()) throw PythonErrorAlreadySet();   // the iteration raised
+        if (PyList_Check(x)) return items.release();
+        if (PyTuple_Check(x)) return checkedPyObject(PySequence_Tuple(items.get()));
+        if (PyFrozenSet_Check(x)) return checkedPyObject(PyFrozenSet_New(items.get()));
+        return checkedPyObject(PySet_New(items.get()));
+      }
+      return convertNode(x);
+    }
+  }   // namespace detail
+
+  /// the names of the nodes of g given by ids (a node id, or a container of node ids, see
+  /// detail::convertNodesKeepingContainers); G: a graph class, a graphical model or a causal model
+  template < typename G >
+  PyObject* namesFromIds(const G& g, PyObject* ids) {
+    return detail::convertNodesKeepingContainers(ids, [&g](PyObject* o) {
+      return detail::checkedPyObject(PyStr(detail::nodeName(g, detail::nodeIdFromPyInt(o))));
+    });
+  }
+
+  /// the ids of the nodes of g given by names (a node name, or a container of node names, see
+  /// detail::convertNodesKeepingContainers); G: a graph class, a graphical model or a causal model
+  template < typename G >
+  PyObject* idsFromNames(const G& g, PyObject* names) {
+    return detail::convertNodesKeepingContainers(names, [&g](PyObject* o) {
+      if (!isStringPyObject(o))
+        detail::raisePyTypeError("idsFromNames: a node name (str) was expected, got "
+                                 + detail::pyTypeName(o));
+      return detail::checkedPyObject(PyIntFromNodeId(detail::nodeId(g, stringFromPyObject(o))));
+    });
   }
 
   PyObject* PyListFromNodeVect(const std::vector< gum::NodeId >& nodevect) {

@@ -5151,6 +5151,8 @@ SWIGINTERN std::string gum_UndiGraph___str__(gum::UndiGraph const *self){ return
 SWIGINTERN gum::NodeGraphPart const &gum_UndiGraph_nodes(gum::UndiGraph const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_UndiGraph_namesFromIds(gum::UndiGraph const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_UndiGraph_idsFromNames(gum::UndiGraph const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_UndiGraph_nameFromId(gum::UndiGraph const *self,gum::NodeId id){ return self->nameFromId(id); }
 SWIGINTERN std::optional< gum::NodeId > gum_UndiGraph_idFromName(gum::UndiGraph const *self,std::string const &name){ return self->idFromName(name); }
 SWIGINTERN void gum_UndiGraph_setName(gum::UndiGraph *self,gum::NodeId id,std::string const &name){ self->setName(id, name); }
@@ -5212,6 +5214,8 @@ SWIGINTERN std::string gum_DiGraph___str__(gum::DiGraph const *self){ return sel
 SWIGINTERN gum::NodeGraphPart const &gum_DiGraph_nodes(gum::DiGraph const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_DiGraph_namesFromIds(gum::DiGraph const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_DiGraph_idsFromNames(gum::DiGraph const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_DiGraph_nameFromId(gum::DiGraph const *self,gum::NodeId id){ return self->nameFromId(id); }
 SWIGINTERN std::optional< gum::NodeId > gum_DiGraph_idFromName(gum::DiGraph const *self,std::string const &name){ return self->idFromName(name); }
 SWIGINTERN void gum_DiGraph_setName(gum::DiGraph *self,gum::NodeId id,std::string const &name){ self->setName(id, name); }
@@ -5581,6 +5585,8 @@ SWIGINTERN bool gum_CPDAG_dSeparation__SWIG_0(gum::CPDAG const *self,PyObject *X
 SWIGINTERN gum::NodeGraphPart const &gum_CPDAG_nodes(gum::CPDAG const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_CPDAG_namesFromIds(gum::CPDAG const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_CPDAG_idsFromNames(gum::CPDAG const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_CPDAG__saveGUMstring__SWIG_0(gum::CPDAG const *self,int indent=gum::defaultJgumIndent()){
     return gum::graphToGUMString(*self, indent);
   }
@@ -5609,6 +5615,8 @@ SWIGINTERN gum::MPDAG gum_MPDAG__fromCPDAGArcs(gum::CPDAG const &cpdag,std::vect
 SWIGINTERN gum::NodeGraphPart const &gum_MPDAG_nodes(gum::MPDAG const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_MPDAG_namesFromIds(gum::MPDAG const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_MPDAG_idsFromNames(gum::MPDAG const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_MPDAG__saveGUMstring__SWIG_0(gum::MPDAG const *self,int indent=gum::defaultJgumIndent()){
     return gum::graphToGUMString(*self, indent);
   }
@@ -5624,6 +5632,8 @@ SWIGINTERN std::string gum_MarkedGraph___str__(gum::MarkedGraph const *self){ re
 SWIGINTERN gum::NodeGraphPart const &gum_MarkedGraph_nodes(gum::MarkedGraph const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_MarkedGraph_namesFromIds(gum::MarkedGraph const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_MarkedGraph_idsFromNames(gum::MarkedGraph const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_MarkedGraph_nameFromId(gum::MarkedGraph const *self,gum::NodeId id){ return self->nameFromId(id); }
 SWIGINTERN std::optional< gum::NodeId > gum_MarkedGraph_idFromName(gum::MarkedGraph const *self,std::string const &name){ return self->idFromName(name); }
 SWIGINTERN void gum_MarkedGraph_setName(gum::MarkedGraph *self,gum::NodeId id,std::string const &name){ self->setName(id, name); }
@@ -5705,6 +5715,8 @@ SWIGINTERN bool gum_MAG_mSeparation__SWIG_0(gum::MAG const *self,PyObject *X,PyO
 SWIGINTERN gum::NodeGraphPart const &gum_MAG_nodes(gum::MAG const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_MAG_namesFromIds(gum::MAG const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_MAG_idsFromNames(gum::MAG const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN std::string gum_MAG__saveGUMstring__SWIG_0(gum::MAG const *self,int indent=gum::defaultJgumIndent()){
     return gum::graphToGUMString(*self, indent);
   }
@@ -6498,6 +6510,8 @@ SWIGINTERN gum::NodeSet gum_MarkovBlanket_descendants__SWIG_1(gum::MarkovBlanket
 SWIGINTERN gum::NodeSet gum_MarkovBlanket_ancestors__SWIG_1(gum::MarkovBlanket const *self,gum::NodeId id){
     return self->ancestors(id);
   }
+SWIGINTERN PyObject *gum_MarkovBlanket_namesFromIds(gum::MarkovBlanket const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(self->dag(), ids); }
+SWIGINTERN PyObject *gum_MarkovBlanket_idsFromNames(gum::MarkovBlanket const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(self->dag(), names); }
 SWIGINTERN void gum_StructuralMetrics_compare__SWIG_3(gum::StructuralMetrics *self,gum::BayesNet< double > const &ref,gum::BayesNet< double > const &test){
     self->compare< double, double >(ref, test);
   }
@@ -6538,6 +6552,8 @@ SWIGINTERN gum::Set< std::string > gum_IBayesNet_Sl_double_Sg__names(gum::IBayes
 SWIGINTERN gum::NodeGraphPart const &gum_IBayesNet_Sl_double_Sg__nodes(gum::IBayesNet< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__namesFromIds(gum::IBayesNet< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__idsFromNames(gum::IBayesNet< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::UndiGraph gum_IBayesNet_Sl_double_Sg__moralizedAncestralGraph(gum::IBayesNet< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -6583,6 +6599,8 @@ SWIGINTERN gum::Set< std::string > gum_BayesNet_Sl_double_Sg__names(gum::BayesNe
 SWIGINTERN gum::NodeGraphPart const &gum_BayesNet_Sl_double_Sg__nodes(gum::BayesNet< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__namesFromIds(gum::BayesNet< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__idsFromNames(gum::BayesNet< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::UndiGraph gum_BayesNet_Sl_double_Sg__moralizedAncestralGraph(gum::BayesNet< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -6834,6 +6852,8 @@ SWIGINTERN gum::Set< std::string > gum_BayesNetFragment_Sl_double_Sg__names(gum:
 SWIGINTERN gum::NodeGraphPart const &gum_BayesNetFragment_Sl_double_Sg__nodes(gum::BayesNetFragment< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_BayesNetFragment_Sl_double_Sg__namesFromIds(gum::BayesNetFragment< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_BayesNetFragment_Sl_double_Sg__idsFromNames(gum::BayesNetFragment< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::UndiGraph gum_BayesNetFragment_Sl_double_Sg__moralizedAncestralGraph(gum::BayesNetFragment< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -34594,6 +34614,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_UndiGraph_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "UndiGraph_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_namesFromIds" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_UndiGraph_namesFromIds((gum::UndiGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_UndiGraph_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::UndiGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "UndiGraph_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_idsFromNames" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_UndiGraph_idsFromNames((gum::UndiGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_UndiGraph_nameFromId(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = 0 ;
@@ -36726,6 +36812,72 @@ SWIGINTERN PyObject *_wrap_DiGraph_nodes(PyObject *self, PyObject *args) {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DiGraph_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DiGraph_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_namesFromIds" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_DiGraph_namesFromIds((gum::DiGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DiGraph_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DiGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DiGraph_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_idsFromNames" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_DiGraph_idsFromNames((gum::DiGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -47941,6 +48093,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CPDAG_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CPDAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CPDAG_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CPDAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPDAG_namesFromIds" "', argument " "1"" of type '" "gum::CPDAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CPDAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_CPDAG_namesFromIds((gum::CPDAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CPDAG_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CPDAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CPDAG_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CPDAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CPDAG_idsFromNames" "', argument " "1"" of type '" "gum::CPDAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CPDAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_CPDAG_idsFromNames((gum::CPDAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CPDAG__saveGUMstring__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   gum::CPDAG *arg1 = 0 ;
@@ -48703,6 +48921,72 @@ SWIGINTERN PyObject *_wrap_MPDAG_nodes(PyObject *self, PyObject *args) {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MPDAG_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MPDAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MPDAG_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MPDAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MPDAG_namesFromIds" "', argument " "1"" of type '" "gum::MPDAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MPDAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MPDAG_namesFromIds((gum::MPDAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MPDAG_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MPDAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MPDAG_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MPDAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MPDAG_idsFromNames" "', argument " "1"" of type '" "gum::MPDAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MPDAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MPDAG_idsFromNames((gum::MPDAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -50506,6 +50790,72 @@ SWIGINTERN PyObject *_wrap_MarkedGraph_nodes(PyObject *self, PyObject *args) {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkedGraph_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkedGraph_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkedGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkedGraph_namesFromIds" "', argument " "1"" of type '" "gum::MarkedGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkedGraph_namesFromIds((gum::MarkedGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkedGraph_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkedGraph *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkedGraph_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkedGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkedGraph_idsFromNames" "', argument " "1"" of type '" "gum::MarkedGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkedGraph * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkedGraph_idsFromNames((gum::MarkedGraph const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -53467,6 +53817,72 @@ SWIGINTERN PyObject *_wrap_MAG_nodes(PyObject *self, PyObject *args) {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MAG_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MAG_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MAG_namesFromIds" "', argument " "1"" of type '" "gum::MAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MAG_namesFromIds((gum::MAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MAG_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MAG *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MAG_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MAG_idsFromNames" "', argument " "1"" of type '" "gum::MAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MAG * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MAG_idsFromNames((gum::MAG const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -84543,6 +84959,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_MarkovBlanket_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkovBlanket *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkovBlanket_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovBlanket, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovBlanket_namesFromIds" "', argument " "1"" of type '" "gum::MarkovBlanket const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovBlanket * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkovBlanket_namesFromIds((gum::MarkovBlanket const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkovBlanket_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkovBlanket *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkovBlanket_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovBlanket, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovBlanket_idsFromNames" "', argument " "1"" of type '" "gum::MarkovBlanket const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovBlanket * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkovBlanket_idsFromNames((gum::MarkovBlanket const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *MarkovBlanket_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
@@ -86613,6 +87095,72 @@ SWIGINTERN PyObject *_wrap_IBayesNet_nodes(PyObject *self, PyObject *args) {
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_namesFromIds" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__namesFromIds((gum::IBayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "IBayesNet_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_idsFromNames" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__idsFromNames((gum::IBayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -91253,6 +91801,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_BayesNet_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BayesNet_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_namesFromIds" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__namesFromIds((gum::BayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BayesNet_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_idsFromNames" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__idsFromNames((gum::BayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_BayesNet_moralizedAncestralGraph(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = 0 ;
@@ -95434,6 +96048,72 @@ SWIGINTERN PyObject *_wrap_BayesNetFragment_nodes(PyObject *self, PyObject *args
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNetFragment_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNetFragment< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_namesFromIds" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_BayesNetFragment_Sl_double_Sg__namesFromIds((gum::BayesNetFragment< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNetFragment_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNetFragment< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "BayesNetFragment_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__BayesNetFragmentT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetFragment_idsFromNames" "', argument " "1"" of type '" "gum::BayesNetFragment< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNetFragment< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_BayesNetFragment_Sl_double_Sg__idsFromNames((gum::BayesNetFragment< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -155918,6 +156598,60 @@ static PyMethodDef SwigMethods[] = {
 		"    the set of ids\n"
 		"\n"
 		""},
+	 { "UndiGraph_namesFromIds", _wrap_UndiGraph_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "UndiGraph_idsFromNames", _wrap_UndiGraph_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "UndiGraph_nameFromId", _wrap_UndiGraph_nameFromId, METH_VARARGS, "\n"
 		"\n"
 		"Return the name of a node, or its id as a string if no name was set.\n"
@@ -156310,6 +157044,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
+		"\n"
+		""},
+	 { "DiGraph_namesFromIds", _wrap_DiGraph_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "DiGraph_idsFromNames", _wrap_DiGraph_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "DiGraph_nameFromId", _wrap_DiGraph_nameFromId, METH_VARARGS, "\n"
@@ -158437,6 +159225,60 @@ static PyMethodDef SwigMethods[] = {
 		"  the set of the node ids of the graph\n"
 		"\n"
 		""},
+	 { "CPDAG_namesFromIds", _wrap_CPDAG_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "CPDAG_idsFromNames", _wrap_CPDAG_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "CPDAG__saveGUMstring", _wrap_CPDAG__saveGUMstring, METH_VARARGS, NULL},
 	 { "CPDAG__saveGUM", _wrap_CPDAG__saveGUM, METH_VARARGS, NULL},
 	 { "CPDAG_swigregister", CPDAG_swigregister, METH_O, NULL},
@@ -158539,6 +159381,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set[int]\n"
 		"  the set of the node ids of the graph\n"
+		"\n"
+		""},
+	 { "MPDAG_namesFromIds", _wrap_MPDAG_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "MPDAG_idsFromNames", _wrap_MPDAG_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "MPDAG__saveGUMstring", _wrap_MPDAG__saveGUMstring, METH_VARARGS, NULL},
@@ -158818,6 +159714,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
+		"\n"
+		""},
+	 { "MarkedGraph_namesFromIds", _wrap_MarkedGraph_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "MarkedGraph_idsFromNames", _wrap_MarkedGraph_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "MarkedGraph_nameFromId", _wrap_MarkedGraph_nameFromId, METH_VARARGS, "\n"
@@ -159426,6 +160376,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set[int]\n"
 		"  the set of the node ids of the graph\n"
+		"\n"
+		""},
+	 { "MAG_namesFromIds", _wrap_MAG_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "MAG_idsFromNames", _wrap_MAG_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "MAG__saveGUMstring", _wrap_MAG__saveGUMstring, METH_VARARGS, NULL},
@@ -163792,6 +164796,60 @@ static PyMethodDef SwigMethods[] = {
 		"  the set of ids of the ancestors of node ``norid``.\n"
 		"\n"
 		""},
+	 { "MarkovBlanket_namesFromIds", _wrap_MarkovBlanket_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "MarkovBlanket_idsFromNames", _wrap_MarkovBlanket_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "MarkovBlanket_swigregister", MarkovBlanket_swigregister, METH_O, NULL},
 	 { "MarkovBlanket_swiginit", MarkovBlanket_swiginit, METH_VARARGS, NULL},
 	 { "new_StructuralMetrics", _wrap_new_StructuralMetrics, METH_NOARGS, NULL},
@@ -164337,6 +165395,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
+		"\n"
+		""},
+	 { "IBayesNet_namesFromIds", _wrap_IBayesNet_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "IBayesNet_idsFromNames", _wrap_IBayesNet_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "IBayesNet_moralizedAncestralGraph", _wrap_IBayesNet_moralizedAncestralGraph, METH_VARARGS, "\n"
@@ -165161,6 +166273,60 @@ static PyMethodDef SwigMethods[] = {
 		"    the set of ids\n"
 		"\n"
 		""},
+	 { "BayesNet_namesFromIds", _wrap_BayesNet_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "BayesNet_idsFromNames", _wrap_BayesNet_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "BayesNet_moralizedAncestralGraph", _wrap_BayesNet_moralizedAncestralGraph, METH_VARARGS, "\n"
 		"\n"
 		"build a UndiGraph by moralizing the Ancestral Graph of a list of nodes\n"
@@ -165857,6 +167023,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
+		"\n"
+		""},
+	 { "BayesNetFragment_namesFromIds", _wrap_BayesNetFragment_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "BayesNetFragment_idsFromNames", _wrap_BayesNetFragment_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "BayesNetFragment_moralizedAncestralGraph", _wrap_BayesNetFragment_moralizedAncestralGraph, METH_VARARGS, "\n"

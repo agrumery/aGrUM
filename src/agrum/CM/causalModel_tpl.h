@@ -543,11 +543,12 @@ namespace gum {
 
   template < GUM_Numeric GUM_SCALAR >
   std::string CausalModel< GUM_SCALAR >::nameFromId(NodeId id) const {
-    if (_ids_names_.existsFirst(id)) {
-      return _ids_names_.second(id);
-    } else {
-      return _observedDAG_.nameFromId(id);
+    if (_ids_names_.existsFirst(id)) { return _ids_names_.second(id); }
+    if (!_observedDAG_.existsNode(id)) {
+      GUM_ERROR(NotFound,
+                "CausalModel::nameFromId: no observed or latent variable with id " << id << ".");
     }
+    return _observedDAG_.nameFromId(id);
   }
 
   template < GUM_Numeric GUM_SCALAR >

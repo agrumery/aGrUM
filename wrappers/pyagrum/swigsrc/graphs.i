@@ -253,8 +253,9 @@ ADD_NODE_ITER(gum::MAG)
     ----------
     cpdag : pyagrum.CPDAG
       the Markov equivalence class
-    arcs : iterable of tuple[int, int]
-      the imposed arcs (tail, head): each one must orient an edge of the CPDAG (or be one of its arcs)
+    arcs : iterable of tuple[int | str, int | str]
+      the imposed arcs (tail, head), each node given by its id or its name: each arc must orient an edge
+      of the CPDAG (or be one of its arcs)
 
     Returns
     -------
@@ -267,8 +268,18 @@ ADD_NODE_ITER(gum::MAG)
       If an arc does not orient an edge of the CPDAG.
     pyagrum.InvalidArgument
       If no DAG of the Markov equivalence class contains these arcs.
+    pyagrum.NotFound
+      If a name is not the name of a node of the CPDAG.
     """
-    arcs = list(arcs)
+    def node(n):
+      if not isinstance(n, str):
+        return n
+      nid = cpdag.idFromName(n)
+      if nid is None:
+        raise NotFound(f"no node named '{n}' in the CPDAG")
+      return nid
+
+    arcs = [(node(t), node(h)) for t, h in arcs]
     return MPDAG._fromCPDAGArcs(cpdag, [t for t, _ in arcs], [h for _, h in arcs])
 }
 }
@@ -317,9 +328,74 @@ ADD_NODE_ITER(gum::MAG)
 };
 %enddef // ADD_NODES_METHODS_TO_GRAPHCLASS
 
+// namesFromIds/idsFromNames: conversions ids <-> names keeping the type of the containers (the logic is
+// PyAgrumHelper::namesFromIds/idsFromNames, extensions/helpers.h); for the graph classes, the graphical models
+// and the causal model. ADD_NODE_NAME_CONVERSIONS_FROM: the names are read in nodesOwner (an expression on self)
+%define ADD_NODE_NAME_CONVERSIONS_FROM(classname, nodesOwner)
+%feature("docstring") classname::namesFromIds "
+The names of nodes given by their ids, in a container of the same type.
+
+Parameters
+----------
+ids : int or list or tuple or set or frozenset or dict
+  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+  possibly nested (e.g. the arcs, a set of tuples)
+
+Returns
+-------
+str or list or tuple or set or frozenset or dict
+  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+Raises
+------
+TypeError
+  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+pyagrum.NotFound
+  if an id is not the id of a node
+
+See Also
+--------
+idsFromNames : the converse conversion
+";
+%feature("docstring") classname::idsFromNames "
+The ids of nodes given by their names, in a container of the same type.
+
+Parameters
+----------
+names : str or list or tuple or set or frozenset or dict
+  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+  possibly nested (e.g. a set of pairs of names)
+
+Returns
+-------
+int or list or tuple or set or frozenset or dict
+  ``names`` where every name is replaced by the id of its node
+
+Raises
+------
+TypeError
+  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+pyagrum.NotFound
+  if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+See Also
+--------
+namesFromIds : the converse conversion
+";
+%extend classname {
+  PyObject* namesFromIds(PyObject* ids) const { return PyAgrumHelper::namesFromIds(nodesOwner, ids); }
+  PyObject* idsFromNames(PyObject* names) const { return PyAgrumHelper::idsFromNames(nodesOwner, names); }
+};
+%enddef // ADD_NODE_NAME_CONVERSIONS_FROM
+%define ADD_NODE_NAME_CONVERSIONS(classname)
+ADD_NODE_NAME_CONVERSIONS_FROM(classname, *self)
+%enddef // ADD_NODE_NAME_CONVERSIONS
+
 // ADD_NODES_METHODS_TO_GRAPHCLASS + connected components (the class must have connectedComponents())
+// + namesFromIds/idsFromNames
 %define ADD_METHODS_FOR_ALL_GUM_GRAPHCLASS(classname)
 ADD_NODES_METHODS_TO_GRAPHCLASS(classname)
+ADD_NODE_NAME_CONVERSIONS(classname)
 %extend classname {
 %pythoncode {
   def connectedComponentsList(self):

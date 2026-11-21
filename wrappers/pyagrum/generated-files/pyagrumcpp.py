@@ -4344,6 +4344,66 @@ class UndiGraph(object):
       return am
 
 
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.UndiGraph_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.UndiGraph_idsFromNames(self, names)
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -4985,6 +5045,66 @@ class DiGraph(object):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.DiGraph_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.DiGraph_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -8323,6 +8443,66 @@ class CPDAG(_ImmutableMixedGraphChainGraph):
       return am
 
 
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.CPDAG_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.CPDAG_idsFromNames(self, names)
+
     def connectedComponentsList(self):
       """ connected components as a dict of sets
 
@@ -8572,8 +8752,9 @@ class MPDAG(_ImmutableMixedGraphPDAG):
       ----------
       cpdag : pyagrum.CPDAG
         the Markov equivalence class
-      arcs : iterable of tuple[int, int]
-        the imposed arcs (tail, head): each one must orient an edge of the CPDAG (or be one of its arcs)
+      arcs : iterable of tuple[int | str, int | str]
+        the imposed arcs (tail, head), each node given by its id or its name: each arc must orient an edge
+        of the CPDAG (or be one of its arcs)
 
       Returns
       -------
@@ -8586,8 +8767,18 @@ class MPDAG(_ImmutableMixedGraphPDAG):
         If an arc does not orient an edge of the CPDAG.
       pyagrum.InvalidArgument
         If no DAG of the Markov equivalence class contains these arcs.
+      pyagrum.NotFound
+        If a name is not the name of a node of the CPDAG.
       """
-      arcs = list(arcs)
+      def node(n):
+        if not isinstance(n, str):
+          return n
+        nid = cpdag.idFromName(n)
+        if nid is None:
+          raise NotFound(f"no node named '{n}' in the CPDAG")
+        return nid
+
+      arcs = [(node(t), node(h)) for t, h in arcs]
       return MPDAG._fromCPDAGArcs(cpdag, [t for t, _ in arcs], [h for _, h in arcs])
 
 
@@ -8635,6 +8826,66 @@ class MPDAG(_ImmutableMixedGraphPDAG):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.MPDAG_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.MPDAG_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -9146,6 +9397,66 @@ class MarkedGraph(object):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.MarkedGraph_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.MarkedGraph_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -10185,6 +10496,66 @@ class MAG(_ImmutableGraphMarkedGraph):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.MAG_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.MAG_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -17180,6 +17551,66 @@ class MarkovBlanket(object):
         """
         return _pyagrumcpp.MarkovBlanket_ancestors(self, *args)
 
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.MarkovBlanket_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.MarkovBlanket_idsFromNames(self, names)
+
 # Register MarkovBlanket in _pyagrumcpp:
 _pyagrumcpp.MarkovBlanket_swigregister(MarkovBlanket)
 class StructuralMetrics(object):
@@ -17938,6 +18369,66 @@ class IBayesNet(DAGmodel):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.IBayesNet_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.IBayesNet_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -19024,6 +19515,66 @@ class BayesNet(IBayesNet):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.BayesNet_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.BayesNet_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets
@@ -20127,6 +20678,66 @@ class BayesNetFragment(IBayesNet, ):
                   am[i, position[neighbour]] = 1
       return am
 
+
+    def namesFromIds(self, ids: object) -> object:
+        r"""
+
+        The names of nodes given by their ids, in a container of the same type.
+
+        Parameters
+        ----------
+        ids : int or list or tuple or set or frozenset or dict
+          a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. the arcs, a set of tuples)
+
+        Returns
+        -------
+        str or list or tuple or set or frozenset or dict
+          ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)
+
+        Raises
+        ------
+        TypeError
+          if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if an id is not the id of a node
+
+        See Also
+        --------
+        idsFromNames : the converse conversion
+
+        """
+        return _pyagrumcpp.BayesNetFragment_namesFromIds(self, ids)
+
+    def idsFromNames(self, names: object) -> object:
+        r"""
+
+        The ids of nodes given by their names, in a container of the same type.
+
+        Parameters
+        ----------
+        names : str or list or tuple or set or frozenset or dict
+          a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),
+          possibly nested (e.g. a set of pairs of names)
+
+        Returns
+        -------
+        int or list or tuple or set or frozenset or dict
+          ``names`` where every name is replaced by the id of its node
+
+        Raises
+        ------
+        TypeError
+          if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict
+        pyagrum.NotFound
+          if a name is not the name of a node (a node without name can not be found by its id written as a string)
+
+        See Also
+        --------
+        namesFromIds : the converse conversion
+
+        """
+        return _pyagrumcpp.BayesNetFragment_idsFromNames(self, names)
 
     def connectedComponentsList(self):
       """ connected components as a dict of sets

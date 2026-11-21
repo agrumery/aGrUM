@@ -441,6 +441,10 @@ class TestGraph(pyAgrumTestCase):
     self.assertEqual(cpdag.sizeEdges(), 2)
     mpdag = gum.MPDAG.fromCPDAG(cpdag, [(0, 1)])
     self.assertEqual(mpdag.arcs(), {(0, 1), (1, 2)})
+    self.assertEqual(gum.MPDAG.fromCPDAG(cpdag, [("A", "B")]), mpdag)  # nodes given by their names
+    self.assertEqual(gum.MPDAG.fromCPDAG(cpdag, [("A", 1)]), mpdag)
+    with self.assertRaises(gum.NotFound):
+      gum.MPDAG.fromCPDAG(cpdag, [("A", "Z")])
     self.assertEqual(mpdag.cpdag(), cpdag)
     self.assertEqual(mpdag.nameFromId(2), "C")
     self.assertEqual(mpdag.idFromName("B"), 1)
@@ -1094,6 +1098,62 @@ class TestGraph(pyAgrumTestCase):
       meek.propagateToDAG(mg, {0: 2, 1: 0, 2: 2})
     with self.assertRaises(TypeError):
       meek.propagateToDAG(mg, [2, 2, 2])
+
+  def testNamesFromIds(self):
+    dag = gum.fastDAG("A->B->C;D->C")
+    unnamed = dag.addNode()
+    self.assertEqual(dag.namesFromIds(2), "C")
+    self.assertEqual(dag.namesFromIds({0, 1}), {"A", "B"})
+    self.assertEqual(dag.namesFromIds([2, 0, 2]), ["C", "A", "C"])  # a list keeps its order
+    self.assertEqual(dag.namesFromIds((3, 1)), ("D", "B"))
+    self.assertEqual(dag.namesFromIds(frozenset({0})), frozenset({"A"}))
+    self.assertEqual(dag.namesFromIds(set()), set())
+    # nested containers, keys of dicts included
+    self.assertEqual(dag.namesFromIds(dag.arcs()), {("A", "B"), ("B", "C"), ("D", "C")})
+    self.assertEqual(dag.namesFromIds({0: [{1}, (2, 3)], (1, 2): 3}), {"A": [{"B"}, ("C", "D")], ("B", "C"): "D"})
+    self.assertEqual(dag.namesFromIds(unnamed), str(unnamed))  # a node without name: its id as a string
+
+    self.assertEqual(dag.idsFromNames("C"), 2)
+    self.assertEqual(dag.idsFromNames(["C", "A"]), [2, 0])
+    self.assertEqual(dag.idsFromNames({"A": ("B", {"C"})}), {0: (1, {2})})
+    self.assertEqual(dag.idsFromNames(dag.namesFromIds(dag.arcs())), dag.arcs())
+
+    for wrong in (99, -1, 10**30):
+      with self.assertRaises(gum.NotFound):
+        dag.namesFromIds(wrong)
+    with self.assertRaises(gum.NotFound):
+      dag.namesFromIds({0, 99})
+    with self.assertRaises(gum.NotFound):
+      dag.idsFromNames("Z")
+    with self.assertRaises(gum.NotFound):
+      dag.idsFromNames(str(unnamed))  # a node without name is not found by its id as a string
+    for wrong in ("A", True, 1.5, iter([0]), [0, "A"]):
+      with self.assertRaises(TypeError):
+        dag.namesFromIds(wrong)
+    for wrong in (0, ["A", 1], 1.5):
+      with self.assertRaises(TypeError):
+        dag.idsFromNames(wrong)
+
+    # every class of graph
+    graphs = [
+      gum.fastDiGraph("A->B->A"),
+      gum.fastUndiGraph("A-B"),
+      gum.fastMixedGraph("A->B-C"),
+      gum.fastPDAG("A->B-C"),
+      gum.fastChainGraph("A->B-C"),
+      gum.fastMarkedGraph("A o-> B"),
+      gum.fastPAG("A o-> B"),
+      gum.CPDAG.fromDAG(gum.fastDAG("A->B")),
+      gum.MPDAG.fromCPDAG(gum.CPDAG.fromDAG(gum.fastDAG("A->B")), {("A", "B")}),
+      gum.MAG.fromDAG(gum.fastDAG("A->B"), set()),
+      gum.EssentialGraph(gum.fastBN("A->B")),
+    ]
+    for g in graphs:
+      with self.subTest(graph=type(g).__name__):
+        self.assertEqual(g.namesFromIds([0, 1]), ["A", "B"])
+        self.assertEqual(g.idsFromNames(("B", "A")), (1, 0))
+        with self.assertRaises(gum.NotFound):
+          g.namesFromIds(7)
 
 
 ts = unittest.TestSuite()

@@ -11,6 +11,11 @@
       `separation`...), nodes by id or by name. New graph classes `MarkedGraph`, `MAG`, `CPDAG`, `MPDAG` and
       `ChainGraph` (see aGrUM), with `fastMarkedGraph` and `fastPAG`; the marks of a `PAG` are `pyagrum.EdgeMark`
       values. New notebook `03-Tutorial_graphs`.
+    - **Ids and names of the nodes**: new `namesFromIds` and `idsFromNames` for the graphs, `BayesNet`,
+      `BayesNetFragment`, `InfluenceDiagram`, `MarkovRandomField`, `CausalModel` and `MarkovBlanket`: a node, or a
+      container of nodes (list, tuple, set, frozenset, dict, nested), converted in a container of the same type
+      (`dag.namesFromIds(dag.arcs())` is a set of pairs of names).
+      `MPDAG.fromCPDAG` accepts the imposed arcs by names. `CausalModel.nameFromId` raises `NotFound` for an unknown id.
     - **Graphs saved and pickled in the GUM format**: `saveGUM`/`saveGUMstring` for the graphs, new `loadGraph`,
       `saveGraph`, `graphFromGUMString` and `availableGraphExts` (the isolated nodes, names and marks are kept;
       `CPDAG`, `MPDAG`, `MAG`, `EssentialGraph` can be pickled). For the graphs and the models, the format of `saveGUM`/

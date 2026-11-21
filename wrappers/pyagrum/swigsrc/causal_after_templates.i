@@ -186,6 +186,9 @@
   }
 }
 
+// CausalModel<double>::namesFromIds / idsFromNames (macro from graphs.i)
+ADD_NODE_NAME_CONVERSIONS(gum::CausalModel<double>)
+
 // ---------------------------------------------------------------------------
 // CausalModel<double>::connectedComponentsList / connectedComponentsCount
 //

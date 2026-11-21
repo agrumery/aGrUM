@@ -282,6 +282,15 @@ class InfluenceDiagramTestCase(pyAgrumTestCase):
     ie = gum.ShaferShenoyLIMIDInference(id_)
     self.assertEqual(ie.reversePartialOrder(), [{id_.idFromName("d2")}, {id_.idFromName("d1")}])
 
+  def testNamesFromIds(self):
+    id_ = gum.fastID("*D->$U<-C")
+    self.assertEqual(id_.namesFromIds(id_.parents("U")), {"D", "C"})
+    self.assertEqual(id_.idsFromNames(["U", "D"]), [1, 0])
+    with self.assertRaises(gum.NotFound):
+      id_.namesFromIds(9)
+    with self.assertRaises(gum.NotFound):
+      id_.idsFromNames("Z")
+
   def testUnknownExtension(self):
     with self.assertRaises(gum.InvalidArgument):
       gum.loadID("model.foo")

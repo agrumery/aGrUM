@@ -168,6 +168,8 @@ PythonApproximationListener.__init__ = _PythonApproximationListener_init
 // before bayesnet.i: its %ignore of MarkovBlanket::nodes would also remove this %extend
 ADD_NODES_METHODS_TO_GRAPHCLASS(gum::MarkovBlanket);
 ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
+// the names of the nodes of a Markov blanket: those of its DAG (the names of the variables of the model)
+ADD_NODE_NAME_CONVERSIONS_FROM(gum::MarkovBlanket, self->dag())
 %ignore gum::MarkovBlanket::arcs const;
 %ignore gum::MarkovBlanket::parents const;
 %ignore gum::MarkovBlanket::children const;

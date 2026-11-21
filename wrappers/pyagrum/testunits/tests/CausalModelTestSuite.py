@@ -372,6 +372,17 @@ class TestCausalModel(pyAgrumTestCase):
     self.assertEqual(counterfactual.value().tolist(), expectedCounterfactual.tolist())
     self.assertEqual(lat.cm().observationalBN().names(), {"A", "B", "C"})
 
+  def testNamesFromIds(self):
+    cm = gum.CausalModel(gum.fastBN("Smoking->Cancer"), [("Genotype", ["Smoking", "Cancer"])])
+    latent = cm.idFromName("Genotype")
+    self.assertEqual(cm.namesFromIds(cm.children("Genotype")), {"Smoking", "Cancer"})
+    self.assertEqual(cm.namesFromIds(cm.parents("Cancer")), {"Genotype"})  # the latent variable has a name
+    self.assertEqual(cm.idsFromNames(["Genotype", "Smoking"]), [latent, cm.idFromName("Smoking")])
+    with self.assertRaises(gum.NotFound):
+      cm.namesFromIds(99)
+    with self.assertRaises(gum.NotFound):
+      cm.idsFromNames("Z")
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestCausalModel)

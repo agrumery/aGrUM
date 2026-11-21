@@ -4376,6 +4376,8 @@ SWIGINTERN gum::CausalModel< double > *new_gum_CausalModel_Sl_double_Sg___SWIG_1
       throw PythonErrorAlreadySet();
     return cm.release();
   }
+SWIGINTERN PyObject *gum_CausalModel_Sl_double_Sg__namesFromIds(gum::CausalModel< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_CausalModel_Sl_double_Sg__idsFromNames(gum::CausalModel< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN PyAgrumDict *gum_CausalImpact_Sl_double_Sg__toDict(gum::CausalImpact< double > const *self){
     if (!self->isIdentified()) Py_RETURN_NONE;
     return PyAgrumHelper::PyDictFromASTtree(self->root());
@@ -10153,6 +10155,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CausalModel_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CausalModel_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_namesFromIds" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_CausalModel_Sl_double_Sg__namesFromIds((gum::CausalModel< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CausalModel_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::CausalModel< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CausalModel_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__CausalModelT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CausalModel_idsFromNames" "', argument " "1"" of type '" "gum::CausalModel< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::CausalModel< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_CausalModel_Sl_double_Sg__idsFromNames((gum::CausalModel< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *CausalModel_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
@@ -13526,6 +13594,60 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { "new_CausalModel", _wrap_new_CausalModel, METH_VARARGS, NULL},
+	 { "CausalModel_namesFromIds", _wrap_CausalModel_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "CausalModel_idsFromNames", _wrap_CausalModel_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "CausalModel_swigregister", CausalModel_swigregister, METH_O, NULL},
 	 { "CausalModel_swiginit", CausalModel_swiginit, METH_VARARGS, NULL},
 	 { "CausalImpact_eval", _wrap_CausalImpact_eval, METH_O, "\n"

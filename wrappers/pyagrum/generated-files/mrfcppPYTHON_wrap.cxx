@@ -4255,6 +4255,8 @@ SWIGINTERN gum::Set< std::string > gum_IMarkovRandomField_Sl_double_Sg__names(gu
 SWIGINTERN gum::NodeGraphPart const &gum_IMarkovRandomField_Sl_double_Sg__nodes(gum::IMarkovRandomField< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_IMarkovRandomField_Sl_double_Sg__namesFromIds(gum::IMarkovRandomField< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_IMarkovRandomField_Sl_double_Sg__idsFromNames(gum::IMarkovRandomField< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::NodeSet gum_IMarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_2(gum::IMarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
@@ -4317,6 +4319,8 @@ SWIGINTERN gum::Set< std::string > gum_MarkovRandomField_Sl_double_Sg__names(gum
 SWIGINTERN gum::NodeGraphPart const &gum_MarkovRandomField_Sl_double_Sg__nodes(gum::MarkovRandomField< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_MarkovRandomField_Sl_double_Sg__namesFromIds(gum::MarkovRandomField< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_MarkovRandomField_Sl_double_Sg__idsFromNames(gum::MarkovRandomField< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::NodeSet gum_MarkovRandomField_Sl_double_Sg__minimalCondSet__SWIG_0(gum::MarkovRandomField< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,self->variableNodeMap());
@@ -5710,6 +5714,72 @@ SWIGINTERN PyObject *_wrap_IMarkovRandomField_nodes(PyObject *self, PyObject *ar
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IMarkovRandomField< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "IMarkovRandomField_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_namesFromIds" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_IMarkovRandomField_Sl_double_Sg__namesFromIds((gum::IMarkovRandomField< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IMarkovRandomField_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IMarkovRandomField< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "IMarkovRandomField_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__IMarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IMarkovRandomField_idsFromNames" "', argument " "1"" of type '" "gum::IMarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IMarkovRandomField< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_IMarkovRandomField_Sl_double_Sg__idsFromNames((gum::IMarkovRandomField< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -8551,6 +8621,72 @@ SWIGINTERN PyObject *_wrap_MarkovRandomField_nodes(PyObject *self, PyObject *arg
     resultobj = PyAgrumHelper::PySetFromNodeSet(*result);
     if (!resultobj) SWIG_fail;
   }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkovRandomField_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkovRandomField< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkovRandomField_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_namesFromIds" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkovRandomField_Sl_double_Sg__namesFromIds((gum::MarkovRandomField< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MarkovRandomField_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MarkovRandomField< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "MarkovRandomField_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__MarkovRandomFieldT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MarkovRandomField_idsFromNames" "', argument " "1"" of type '" "gum::MarkovRandomField< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MarkovRandomField< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_MarkovRandomField_Sl_double_Sg__idsFromNames((gum::MarkovRandomField< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
   return resultobj;
 fail:
   return NULL;
@@ -13276,6 +13412,60 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { "IMarkovRandomField_nodes", _wrap_IMarkovRandomField_nodes, METH_O, NULL},
+	 { "IMarkovRandomField_namesFromIds", _wrap_IMarkovRandomField_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "IMarkovRandomField_idsFromNames", _wrap_IMarkovRandomField_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
+		"\n"
+		""},
 	 { "IMarkovRandomField_minimalCondSet", _wrap_IMarkovRandomField_minimalCondSet, METH_VARARGS, NULL},
 	 { "IMarkovRandomField_factor", _wrap_IMarkovRandomField_factor, METH_VARARGS, NULL},
 	 { "IMarkovRandomField_isIndependent", _wrap_IMarkovRandomField_isIndependent, METH_VARARGS, "\n"
@@ -13627,6 +13817,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set[int]\n"
 		"    the set of node ids\n"
+		"\n"
+		""},
+	 { "MarkovRandomField_namesFromIds", _wrap_MarkovRandomField_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "MarkovRandomField_idsFromNames", _wrap_MarkovRandomField_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "MarkovRandomField_minimalCondSet", _wrap_MarkovRandomField_minimalCondSet, METH_VARARGS, "\n"

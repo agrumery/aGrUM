@@ -997,6 +997,36 @@ class TestGraphicalConcepts(BayesNetTestCase):
     self.assertEqual(len(ccl), 1)
     self.assertEqual(set(list(ccl.values())[0]), set(bn.nodes()))
 
+  def testNamesFromIds(self):
+    bn = gum.fastBN("A->B->C<-D")
+    self.assertEqual(bn.namesFromIds(bn.parents("C")), {"B", "D"})
+    self.assertEqual(bn.namesFromIds([2, 0]), ["C", "A"])
+    self.assertEqual(bn.namesFromIds(bn.arcs()), {("A", "B"), ("B", "C"), ("D", "C")})
+    components = bn.namesFromIds(bn.connectedComponentsList())  # keyed by a node of the component
+    self.assertEqual(list(components.values()), [{"A", "B", "C", "D"}])
+    self.assertIn(next(iter(components)), {"A", "B", "C", "D"})
+    self.assertEqual(bn.idsFromNames(("D", {"A"})), (3, {0}))
+    with self.assertRaises(gum.NotFound):
+      bn.namesFromIds(9)
+    with self.assertRaises(gum.NotFound):
+      bn.idsFromNames("Z")
+    with self.assertRaises(TypeError):
+      bn.namesFromIds("A")
+
+    fragment = gum.BayesNetFragment(bn)
+    fragment.installNode("B")
+    self.assertEqual(fragment.namesFromIds({1}), {"B"})
+    with self.assertRaises(gum.NotFound):
+      fragment.namesFromIds(0)  # in the BN, not in the fragment
+
+    mb = gum.MarkovBlanket(gum.fastBN("A->B->C<-D;C->E"), "B")
+    self.assertEqual(mb.namesFromIds(mb.nodes()), {"A", "B", "C", "D"})
+    self.assertEqual(mb.idsFromNames(["D", "A"]), [3, 0])
+    with self.assertRaises(gum.NotFound):
+      mb.namesFromIds(4)  # E is in the BN, not in the Markov blanket of B
+    with self.assertRaises(gum.NotFound):
+      mb.idsFromNames("E")
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestConstructors)

@@ -4329,6 +4329,8 @@ SWIGINTERN gum::Set< std::string > gum_InfluenceDiagram_Sl_double_Sg__names(gum:
 SWIGINTERN gum::NodeGraphPart const &gum_InfluenceDiagram_Sl_double_Sg__nodes(gum::InfluenceDiagram< double > const *self){
     return self->nodes();
   }
+SWIGINTERN PyObject *gum_InfluenceDiagram_Sl_double_Sg__namesFromIds(gum::InfluenceDiagram< double > const *self,PyObject *ids){ return PyAgrumHelper::namesFromIds(*self, ids); }
+SWIGINTERN PyObject *gum_InfluenceDiagram_Sl_double_Sg__idsFromNames(gum::InfluenceDiagram< double > const *self,PyObject *names){ return PyAgrumHelper::idsFromNames(*self, names); }
 SWIGINTERN gum::UndiGraph gum_InfluenceDiagram_Sl_double_Sg__moralizedAncestralGraph(gum::InfluenceDiagram< double > *self,PyObject *nodes){
      gum::NodeSet sonodes;
      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sonodes,nodes,self->variableNodeMap());
@@ -8863,6 +8865,72 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_InfluenceDiagram_namesFromIds(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::InfluenceDiagram< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_namesFromIds", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_namesFromIds" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_InfluenceDiagram_Sl_double_Sg__namesFromIds((gum::InfluenceDiagram< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_InfluenceDiagram_idsFromNames(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::InfluenceDiagram< double > *arg1 = 0 ;
+  PyObject *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[2] ;
+  PyObject *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "InfluenceDiagram_idsFromNames", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_gum__InfluenceDiagramT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "InfluenceDiagram_idsFromNames" "', argument " "1"" of type '" "gum::InfluenceDiagram< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::InfluenceDiagram< double > * >(argp1);
+  arg2 = swig_obj[1];
+  {
+    try {
+      result = (PyObject *)gum_InfluenceDiagram_Sl_double_Sg__idsFromNames((gum::InfluenceDiagram< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  if (!resultobj) SWIG_fail;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_InfluenceDiagram_moralizedAncestralGraph(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   gum::InfluenceDiagram< double > *arg1 = 0 ;
@@ -12886,6 +12954,60 @@ static PyMethodDef SwigMethods[] = {
 		"-------\n"
 		"set\n"
 		"    the set of ids\n"
+		"\n"
+		""},
+	 { "InfluenceDiagram_namesFromIds", _wrap_InfluenceDiagram_namesFromIds, METH_VARARGS, "\n"
+		"\n"
+		"The names of nodes given by their ids, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"ids : int or list or tuple or set or frozenset or dict\n"
+		"  a node id, or a container of node ids: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. the arcs, a set of tuples)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str or list or tuple or set or frozenset or dict\n"
+		"  ``ids`` where every id is replaced by the name of its node (a node without name gives its id as a string)\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not an int, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if an id is not the id of a node\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"idsFromNames : the converse conversion\n"
+		"\n"
+		""},
+	 { "InfluenceDiagram_idsFromNames", _wrap_InfluenceDiagram_idsFromNames, METH_VARARGS, "\n"
+		"\n"
+		"The ids of nodes given by their names, in a container of the same type.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"names : str or list or tuple or set or frozenset or dict\n"
+		"  a node name, or a container of node names: a list, a tuple, a set, a frozenset or a dict (keys and values),\n"
+		"  possibly nested (e.g. a set of pairs of names)\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int or list or tuple or set or frozenset or dict\n"
+		"  ``names`` where every name is replaced by the id of its node\n"
+		"\n"
+		"Raises\n"
+		"------\n"
+		"TypeError\n"
+		"  if an element is not a str, or a container is not a list, a tuple, a set, a frozenset nor a dict\n"
+		"pyagrum.NotFound\n"
+		"  if a name is not the name of a node (a node without name can not be found by its id written as a string)\n"
+		"\n"
+		"See Also\n"
+		"--------\n"
+		"namesFromIds : the converse conversion\n"
 		"\n"
 		""},
 	 { "InfluenceDiagram_moralizedAncestralGraph", _wrap_InfluenceDiagram_moralizedAncestralGraph, METH_VARARGS, "\n"

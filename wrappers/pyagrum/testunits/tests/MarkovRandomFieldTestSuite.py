@@ -389,6 +389,16 @@ class MarkovRandomFieldTestCase(pyAgrumTestCase):
     self.assertEqual(len(ccl2), 1)
     self.assertEqual(set(list(ccl2.values())[0]), set(mrf2.nodes()))
 
+  def testNamesFromIds(self):
+    mrf = gum.fastMRF("A--B--C;C--D")
+    self.assertEqual(mrf.namesFromIds(mrf.neighbours("C")), {"A", "B", "D"})  # A--B--C is a clique
+    self.assertEqual(mrf.namesFromIds([0, 3]), ["A", "D"])
+    self.assertEqual(mrf.idsFromNames({"A": ("B",)}), {0: (1,)})
+    with self.assertRaises(gum.NotFound):
+      mrf.namesFromIds(9)
+    with self.assertRaises(gum.NotFound):
+      mrf.idsFromNames("Z")
+
   def testUnknownExtension(self):
     with self.assertRaises(gum.InvalidArgument):
       gum.loadMRF("model.foo")

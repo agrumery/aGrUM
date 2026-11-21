@@ -386,6 +386,7 @@ namespace gum {
     NodeId idFromName(std::string_view name) const;
 
     /// @brief Variable name from node id (observed or latent).
+    /// @throws NotFound if no observed or latent variable has this id.
     std::string nameFromId(NodeId id) const;
 
     /// @brief Bidirectional mapping between node ids and variable names
