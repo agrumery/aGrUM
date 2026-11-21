@@ -121,8 +121,8 @@ class SimplePlugIn:
     M: np.matrix | np.ndarray | pd.DataFrame,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -175,7 +175,7 @@ class SimplePlugIn:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
@@ -304,8 +304,8 @@ class GeneralizedPlugIn:
     M: np.matrix | np.ndarray | pd.DataFrame,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -372,7 +372,7 @@ class GeneralizedPlugIn:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters

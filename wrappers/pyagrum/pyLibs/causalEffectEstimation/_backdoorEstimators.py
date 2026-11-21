@@ -100,8 +100,8 @@ class SLearner:
     y: np.ndarray | pd.Series | None = None,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Note: For an S-learner, the ICE is constant and corresponds to the
     Average Causal Effect (ACE) of the fitted groups, due to the
@@ -152,7 +152,7 @@ class SLearner:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
@@ -250,8 +250,8 @@ class TLearner:
     y: np.ndarray | pd.Series | None = None,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -282,7 +282,7 @@ class TLearner:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
@@ -424,8 +424,8 @@ class XLearner:
     y: np.ndarray | pd.Series | None = None,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -458,7 +458,7 @@ class XLearner:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
@@ -545,8 +545,8 @@ class PStratification:
     num_strata: int | None = None,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -558,7 +558,7 @@ class PStratification:
         The vector of outcomes.
     num_strata: int, optional
         The number of strata.
-        Default is the lenght of X over 100.
+        If not provided, the value given at construction or to fit is kept (100 if none).
 
     Returns
     -------
@@ -612,7 +612,7 @@ class PStratification:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
@@ -693,8 +693,8 @@ class IPW:
     y: np.ndarray | pd.Series | None = None,
   ) -> np.ndarray:
     """
-    Predict the Idividual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    Predict the Individual Causal Effect (ICE),
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -725,7 +725,7 @@ class IPW:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters

@@ -215,7 +215,7 @@ class CausalBNEstimator:
   ) -> np.ndarray:
     """
     Predict the Individual Causal Effect (ICE),
-    also referd to as the Individual Treatment Effect (ITE).
+    also referred to as the Individual Treatment Effect (ITE).
 
     Parameters
     ----------
@@ -251,7 +251,7 @@ class CausalBNEstimator:
   ) -> float:
     """
     Predicts the Average Causal Effect (ACE),
-    also refered to as the Average Treatment Effect (ATE).
+    also referred to as the Average Treatment Effect (ATE).
     (The term ATE is used in the method name for compatibility purposes.)
 
     Parameters
