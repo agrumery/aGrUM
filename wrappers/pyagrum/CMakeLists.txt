@@ -520,7 +520,14 @@ macro(gum_add_python_module MODULENAME)
     endif()
   endif()
 
-  install(FILES ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py DESTINATION ${_PYAGRUM_INSTALL_DIR})
+  # The .py proxy is only a BYPRODUCT of the passForPyType command, which the
+  # Makefile generator cannot attribute to a target: name it explicitly for
+  # the install preparation targets (CMake >= 4.5), else CMake warns.
+  set(_PY_INSTALL_BUILD_DEPENDS "")
+  if(SWIG_FOUND AND CMAKE_VERSION VERSION_GREATER_EQUAL 4.5)
+    set(_PY_INSTALL_BUILD_DEPENDS BUILD_DEPENDS ${MODULENAME_LOWER}_swig_generated)
+  endif()
+  install(FILES ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}.py DESTINATION ${_PYAGRUM_INSTALL_DIR} ${_PY_INSTALL_BUILD_DEPENDS})
   install(TARGETS ${_PYAGRUMLIB} DESTINATION ${_PYAGRUM_INSTALL_DIR})
 
   # Copy the Python proxy into the build tree (needed for `act test`, which runs

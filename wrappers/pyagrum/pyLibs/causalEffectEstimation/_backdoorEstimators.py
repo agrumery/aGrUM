@@ -582,7 +582,10 @@ class PStratification:
     def _tauStratum(indices_stratum):
       y_strat = y[indices_stratum]
       T_strat = treatment[indices_stratum]
-      return np.full(len(indices_stratum), y_strat[T_strat == 1].mean() - y_strat[T_strat == 0].mean())
+      treated, control = y_strat[T_strat == 1], y_strat[T_strat == 0]
+      if len(treated) == 0 or len(control) == 0:
+        return np.full(len(indices_stratum), np.nan)  # positivity violated in this stratum: reported below
+      return np.full(len(indices_stratum), treated.mean() - control.mean())
 
     # tau of each row, given back in the order of the rows of X
     tau_list = np.empty(len(order))

@@ -1,23 +1,3 @@
-#pragma once
-
-#include <agrum/BN/BayesNet.h>
-#include <agrum/BN/learning/ConstraintBasedLearning.h>   // to ease IDE parser
-#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
-
-namespace gum {
-
-  namespace learning {
-
-    template < GUM_Numeric GUM_SCALAR, typename PARAM_ESTIMATOR >
-    BayesNet< GUM_SCALAR > ConstraintBasedLearning::learnBN(PARAM_ESTIMATOR& estimator,
-                                                            MixedGraph       graph) {
-      return DAG2BNLearner::createBN< GUM_SCALAR >(estimator, learnDAG(graph));
-    }
-
-  } /* namespace learning */
-
-} /* namespace gum */
-
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
@@ -57,3 +37,23 @@ namespace gum {
  *   gitlab   : https://gitlab.com/agrumery/agrum                           *
  *                                                                          *
  ****************************************************************************/
+
+#pragma once
+
+#include <agrum/BN/BayesNet.h>
+#include <agrum/BN/learning/ConstraintBasedLearning.h>   // to ease IDE parser
+#include <agrum/BN/learning/paramUtils/DAG2BNLearner.h>
+
+namespace gum {
+
+  namespace learning {
+
+    template < GUM_Numeric GUM_SCALAR, typename PARAM_ESTIMATOR >
+    BayesNet< GUM_SCALAR > ConstraintBasedLearning::learnBN(PARAM_ESTIMATOR& estimator,
+                                                            MixedGraph       graph) {
+      return DAG2BNLearner::createBN< GUM_SCALAR >(estimator, learnDAG(graph));
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */

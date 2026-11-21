@@ -289,15 +289,19 @@ def runTests(test_module: str, test_suite: str, log) -> int:
   notif(f"pyAgrum path : {gum.__file__}")
   notif()
 
-  runner = unittest.TextTestRunner(stream=PrefixStream(module_map), verbosity=2)
+  stream = PrefixStream(module_map)
+  try:
+    runner = unittest.TextTestRunner(stream=stream, verbosity=2)
 
-  result = ModuleAwareResult(runner.stream, runner.descriptions, runner.verbosity, module_map)
+    result = ModuleAwareResult(runner.stream, runner.descriptions, runner.verbosity, module_map)
 
-  # what the tests and aGrUM write on the standard output only goes to the log file
-  with Timer() as t, stdoutToFile(log.handlers[0].stream):
-    tests(result)
+    # what the tests and aGrUM write on the standard output only goes to the log file
+    with Timer() as t, stdoutToFile(log.handlers[0].stream):
+      tests(result)
 
-  result.printErrors()
+    result.printErrors()
+  finally:
+    stream.close()  # its own copy of the standard output, not closed by the garbage collector without a warning
   notif(result.separator2)
 
   failed, errored = map(len, (result.failures, result.errors))

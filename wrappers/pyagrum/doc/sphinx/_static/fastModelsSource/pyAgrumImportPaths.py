@@ -1,5 +1,3 @@
-LEAVES = ["markov_random_field", "influence_diagram", "credal_net", "causal_model", "prm", "ktbn"]
-
 ############################################################################
 #   This file is part of the aGrUM/pyAgrum library.                        #
 #                                                                          #
@@ -39,6 +37,8 @@ LEAVES = ["markov_random_field", "influence_diagram", "credal_net", "causal_mode
 #   gitlab   : https://gitlab.com/agrumery/agrum                           #
 #                                                                          #
 ############################################################################
+
+LEAVES = ["markov_random_field", "influence_diagram", "credal_net", "causal_model", "prm", "ktbn"]
 
 CORE_FILL = "#123C69"
 CORE_TEXT = "#FFFFFF"

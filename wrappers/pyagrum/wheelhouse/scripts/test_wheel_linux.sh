@@ -22,7 +22,9 @@ source venv/bin/activate
 # Installation des dépendances
 echo "Installing dependencies..."
 # Le chemin est mis à jour car nous sommes déjà à la racine du dépôt aGrUM
-pip install -r ${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/requirements.txt
+# Wheels only: if PyPI fails to serve a package, pip would otherwise backtrack to an old source
+# distribution and fail later, compiling it, with a misleading error.
+pip install --only-binary=:all: -r ${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/requirements.txt
 
 # Installation de la wheel générée par le job précédent
 echo "Installing wheels from the wheels directory..."

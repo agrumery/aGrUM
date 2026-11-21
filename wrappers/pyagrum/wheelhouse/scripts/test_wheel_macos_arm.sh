@@ -41,7 +41,9 @@ python -m venv "${VENV}"
 
 echo "Installing the test requirements..."
 "${PY}" -m pip install --upgrade pip
-"${PY}" -m pip install -r "${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/requirements.txt"
+# Wheels only: if PyPI fails to serve a package, pip would otherwise backtrack to an old source
+# distribution and fail later, compiling it, with a misleading error.
+"${PY}" -m pip install --only-binary=:all: -r "${CI_PROJECT_DIR}/wrappers/pyagrum/testunits/requirements.txt"
 
 echo "Installing new wheels..."
 "${PY}" -m pip install "${CI_PROJECT_DIR}"/wheels/*.whl

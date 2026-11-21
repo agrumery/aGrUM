@@ -139,7 +139,7 @@ class qBNRejection:
     """
     rotation = ZGate()
     if len(evidence_qbs) > 1:
-      rotation = rotation.control(len(evidence_qbs) - 1)
+      rotation = rotation.control(len(evidence_qbs) - 1, annotated=False)
     circuit.compose(rotation, list(evidence_qbs.keys()), inplace=True)
 
   def addS(self, circuit: QuantumCircuit, evidence_qbs: dict[int, int]) -> None:

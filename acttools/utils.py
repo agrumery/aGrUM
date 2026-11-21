@@ -43,6 +43,7 @@ import os
 import re
 import sys
 from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 
 try:
@@ -124,37 +125,54 @@ def trace(current: dict[str, str | bool], cde: str):
     notif(cde, cfg.prefix_trace)
 
 
+_group_marks: list[str] = []  # marks of the nested output groups opened by notif_group
+
+
+def _line_prefix() -> str:
+  return cfg.prefix_line + "".join(_group_marks)
+
+
+@contextmanager
+def notif_group(mark: str = "│ ") -> Iterator[None]:
+  """Within the block, every line of notif/warn/error/critic without explicit prefix carries mark after the act prefix."""
+  _group_marks.append(mark)
+  try:
+    yield
+  finally:
+    _group_marks.pop()
+
+
 def notif_oneline(s: str, pref: str | None = None):
   if pref is None:
-    pref = cfg.prefix_line
+    pref = _line_prefix()
 
   printutf8(f"\r\033[K{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}", end="\r")
 
 
 def notif(s: str = "", pref: str | None = None):
   if pref is None:
-    pref = cfg.prefix_line
+    pref = _line_prefix()
 
   printutf8(f"\r\033[K{pref}{colFormat(s, cfg.C_MSG)}{cfg.C_END}")
 
 
 def warn(s: str, pref: str | None = None):
   if pref is None:
-    pref = cfg.prefix_line
+    pref = _line_prefix()
 
   printutf8(f"{pref}⚠️  {colFormat(s, cfg.C_WARNING)}{cfg.C_END}")
 
 
 def error(s: str, pref: str | None = None):
   if pref is None:
-    pref = cfg.prefix_line
+    pref = _line_prefix()
 
   printutf8(f"{pref}💥 {colFormat(s, cfg.C_ERROR)}{cfg.C_END}")
 
 
 def critic(s: str, pref: str | None = None, rc: int = 1):
   if pref is None:
-    pref = cfg.prefix_line
+    pref = _line_prefix()
 
   error(s, pref)
   printutf8(f"{pref}{colFormat('Stopped.', cfg.C_MSG)}{cfg.C_END}\n\n")

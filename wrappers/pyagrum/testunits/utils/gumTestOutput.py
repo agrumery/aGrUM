@@ -246,3 +246,9 @@ class PrefixStream:
 
   def flush(self) -> None:
     self._stream.flush()
+
+  def close(self) -> None:
+    """Write the unfinished line, if any, and close the copy of the standard output."""
+    if self._buf:
+      self.write("\n")
+    self._stream.close()

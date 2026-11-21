@@ -62,6 +62,7 @@ from .utils import (
   error,
   filterSources,
   notif,
+  notif_group,
   notif_oneline,
   printutf8,
   recglob,
@@ -554,26 +555,27 @@ def guideline(
   for idx, (key, title, runner) in enumerate(steps, start=1):
     if key not in active:
       skipped.append(key)
-      line("⏭️ ", f"{tag(idx, key)} skipped", dim)
+      # "⏭️" under the "🔎" of "┌─ 🔎", the [xx/nn] tags aligned
+      line("   ⏭️", f"{tag(idx, key)} {title}", dim)
       continue
 
-    printutf8("")
-    line("🔎", f"{tag(idx, key)} {cfg.C_END}{cfg.C_MSG}{title}", cfg.C_VALUE)
-    errs = [(nb, typ) for nb, typ in runner() if nb > 0]
+    # the frame characters are as wide as "┌─ 🔎", so every [xx/nn] tag is aligned
+    line("┌─ 🔎", f"{tag(idx, key)} {cfg.C_END}{cfg.C_MSG}{title}", cfg.C_VALUE)
+    with notif_group():  # every line printed by the check is marked by a vertical bar
+      errs = [(nb, typ) for nb, typ in runner() if nb > 0]
     nb_errors = sum(nb for nb, _ in errs)
     results.append((idx, key, nb_errors))
     if nb_errors == 0:
-      line("✅", f"{tag(idx, key)} OK", cfg.C_VALUE)
+      line("└────", f"{tag(idx, key)} ✅", cfg.C_VALUE)
     else:
       detail = ", ".join(f"{nb} {typ} error{'s' if nb > 1 else ''}" for nb, typ in errs)
-      line("❌", f"{tag(idx, key)} {detail}", cfg.C_ERROR)
+      line("└────", f"{tag(idx, key)} ❌ {detail}", cfg.C_ERROR)
 
   if source and source_filter_match_count() == 0:
     warn(f"--source pattern '{source}' matched no file: no check actually inspected anything.")
 
   nbrError = sum(nb for _, _, nb in results)
   failed = [(idx, key, nb) for idx, key, nb in results if nb > 0]
-  printutf8("")
   line("", bar, cfg.C_MSG)
   line("📋", "guideline summary", cfg.C_MSG)
   for idx, key, nb in results:
@@ -582,7 +584,9 @@ def guideline(
     else:
       line("  ❌", f"{tag(idx, key)} {nb} error{'s' if nb > 1 else ''}", cfg.C_ERROR)
   if skipped:
-    line("  ⏭️ ", f"skipped: {', '.join(dict.fromkeys(skipped))}", dim)
+    skipped_keys = list(dict.fromkeys(skipped))
+    line("  ⏭️", f"skipped: {', '.join(skipped_keys)}", dim)
+    line("  💡", f"to run them: act guideline --check {'+'.join(skipped_keys)}  (or --check all)", dim)
   if failed:
     line(
       "💥",
@@ -902,6 +906,11 @@ def _LGPL_MIT_atTop_CPP(filename: str, details: bool, correction: bool) -> int:
         res = f"{res} [[(✓)]]"
       if details or correction:
         notif(res)
+    elif in_error:
+      # the license is not at the top of the file: no automatic correction (what precedes it is code to move below)
+      err = 1
+      if details or correction:
+        notif(f"[[{filename:.<80}]] LGPL+MIT license not at the top of the file")
 
   return err
 
@@ -926,7 +935,9 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
           moved += line
           if details:
             notif(f"[[{filename}]] imports before the license.")
-        elif line[0] != "#" or line.startswith("#!"):
+        elif line.startswith("#!") and before == "":
+          before += line  # a shebang has to stay on the first line
+        elif line[0] != "#":
           if not in_error:
             in_error = True
             if details:
@@ -965,6 +976,10 @@ def _LGPL_MIT_atTop_py(filename: str, details: bool, correction: bool) -> int:
           dest.write("\n\n".join(body) + "\n")
       res = f"{res} [[(✓)]]"
     notif(res)
+  elif in_error:
+    # the license is not at the top of the file: no automatic correction (what precedes it is code to move below)
+    err = 1
+    notif(f"[[{filename:.<80}]] LGPL+MIT license not at the top of the file")
 
   return err
 
@@ -1137,8 +1152,27 @@ def _check_pyrefly(details: bool, correction: bool, dry_run: bool = False) -> in
   suppressed = int(suppressed_match.group(1)) if suppressed_match else 0
 
   if nbrError == 0:
-    if suppressed:
-      notif(f"    [[{suppressed}]] suppressed")
+    # suppressed errors are deliberately silenced by ignore comments: only shown on request
+    if suppressed and details:
+      # pyrefly cannot list the suppressed errors: check again honouring only the (unused) pyright ignore
+      # comments, so that the errors silenced by the `type`/`pyrefly` ignore comments are reported
+      unsuppressed = subprocess_run(
+        f"{pyrefly_cmd} {cfg.pymodulesPath} --enabled-ignores pyright --output-format min-text --summary=none",
+        shell=True,
+        check=False,
+        capture_output=True,
+        text=True,
+      )
+      errors = [
+        line.removeprefix("ERROR ")
+        for line in unsuppressed.stdout.splitlines() + unsuppressed.stderr.splitlines()
+        if line.startswith("ERROR ")
+      ]
+      # pyrefly counts some suppressed errors twice (e.g. an unknown name in an assignment) but reports them
+      # once: the number of distinct errors listed is the meaningful one
+      notif(f"    [[{len(errors) or suppressed}]] suppressed")
+      for error_line in errors:
+        notif(f"      {error_line}")
   elif details:
     for line in result.stdout.splitlines():
       notif(line)

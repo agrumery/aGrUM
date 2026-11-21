@@ -1,4 +1,3 @@
-%define ADD_GENERIC_INFERENCE_DOC(classname...)
 /****************************************************************************
  *   This file is part of the aGrUM/pyAgrum library.                        *
  *                                                                          *
@@ -39,11 +38,7 @@
  *                                                                          *
  ****************************************************************************/
 
-
-
-
-
-
+%define ADD_GENERIC_INFERENCE_DOC(classname...)
 
 %feature("docstring") gum::classname::BN
 "

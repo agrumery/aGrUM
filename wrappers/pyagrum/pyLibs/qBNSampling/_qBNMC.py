@@ -339,12 +339,12 @@ class qBNMC:
 
     if len(target_copy) == 1:
       if len(param_qbs) + len(control_qbs) > 0:
-        RY = RY.control(len(param_qbs) + len(control_qbs))
+        RY = RY.control(len(param_qbs) + len(control_qbs), annotated=False)
       circuit.append(RY, qargs=control_qbs + params_qb_list + [target_copy[0]])
     else:
       if len(param_qbs) + len(control_qbs) > 0:
-        RY = RY.control(len(param_qbs) + len(control_qbs))
-        X = X.control(len(param_qbs) + len(control_qbs))
+        RY = RY.control(len(param_qbs) + len(control_qbs), annotated=False)
+        X = X.control(len(param_qbs) + len(control_qbs), annotated=False)
 
       circuit.append(RY, qargs=control_qbs + params_qb_list + [target_copy[0]])
 
