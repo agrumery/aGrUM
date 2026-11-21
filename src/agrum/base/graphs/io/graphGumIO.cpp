@@ -83,7 +83,7 @@ namespace gum {
     ordered_json toJson(const graph::detail::GumGraphContent& content) {
       ordered_json j;
       j["type"]           = content.type;
-      j["GumJsonVersion"] = "1.0";
+      j["GumJsonVersion"] = gum::detail::GUM_JSON_VERSION;
       j["nodes"]          = content.nodes;
       j["names"]          = ordered_json::object();
       for (const auto& [node, name]: content.names)
@@ -166,11 +166,10 @@ namespace gum {
         graph::detail::GumGraphContent content;
         if (!j.is_object() || !j.contains("type") || !j.contains("nodes"))
           GUM_ERROR(IOError, "GUM graph: the content is not a graph in the GUM format")
-        if (j.contains("GumJsonVersion")) {
-          const auto version = j.at("GumJsonVersion").get< std::string >();
-          if (version.substr(0, version.find('.')) != "1")
-            GUM_ERROR(IOError, "GUM graph: unsupported GumJsonVersion '" << version << "'")
-        }
+        if (!gum::detail::isReadableGumJsonVersion(j))
+          GUM_ERROR(IOError,
+                    "GUM graph: unsupported GumJsonVersion '" << gum::detail::gumJsonVersionOf(j)
+                                                              << "'")
         content.type = j.at("type").get< std::string >();
         for (const auto& node: arrayAt(j, "nodes"))
           content.nodes.push_back(nodeOf(node));

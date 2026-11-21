@@ -129,9 +129,9 @@ namespace gum {
    * gum::isBinaryGUMFile). An explicit format which contradicts the extension .jgum or .bgum raises
    * InvalidArgument.
    *
-   * Format (GumJsonVersion 1.0):
+   * Format (GumJsonVersion 1.1):
    * @code
-   * {"type": "PAG", "GumJsonVersion": "1.0", "nodes": [0, 1, 2, 5], "names": {"0": "A"},
+   * {"type": "PAG", "GumJsonVersion": "1.1", "nodes": [0, 1, 2, 5], "names": {"0": "A"},
    *  "arcs": [], "edges": [], "markedEdges": [[1, 2, "circle", "arrowhead"]]}
    * @endcode
    * Only "type" and "nodes" are required on read: "GumJsonVersion" (whose major version must be 1

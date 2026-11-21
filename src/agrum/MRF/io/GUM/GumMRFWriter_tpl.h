@@ -46,6 +46,7 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/io/GumJson.h>
 #  include <agrum/MRF/io/GUM/GumMRFWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
@@ -76,7 +77,7 @@ namespace gum {
 
     ordered_json content;
     content["type"]           = "MRF";
-    content["GumJsonVersion"] = "1.0";
+    content["GumJsonVersion"] = detail::GUM_JSON_VERSION;
 
     // nodes (always written, even if empty)
     content["nodes"] = ordered_json::array();

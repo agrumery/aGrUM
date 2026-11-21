@@ -46,6 +46,7 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/io/GumJson.h>
 #  include <agrum/base/multidim/aggregators/multiDimAggregator.h>
 #  include <agrum/base/multidim/ICIModels/multiDimICIModel.h>
 #  include <agrum/BN/io/GUM/GumBNWriter.h>
@@ -85,7 +86,7 @@ namespace gum {
 
     ordered_json content;
     content["type"]           = "BN";
-    content["GumJsonVersion"] = "1.0";
+    content["GumJsonVersion"] = detail::GUM_JSON_VERSION;
 
     // add variables (always written, even empty, so the section always exists)
     content["nodes"] = ordered_json::array();

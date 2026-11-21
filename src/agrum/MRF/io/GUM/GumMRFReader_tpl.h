@@ -92,6 +92,13 @@ namespace gum {
                0);
       return ++nberrors;
     }
+    if (!detail::isReadableGumJsonVersion(content)) {
+      addError("Unsupported GumJsonVersion '" + detail::gumJsonVersionOf(content) + "'",
+               _streamName_,
+               0,
+               0);
+      return ++nberrors;
+    }
 
     if (!content.contains("nodes") || !content.contains("factors")) {
       addError("Invalid GUM file format: missing 'nodes' or 'factors' sections",

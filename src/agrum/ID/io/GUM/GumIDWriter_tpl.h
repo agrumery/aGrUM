@@ -46,6 +46,7 @@
 
 // to ease parsing in IDE
 #  include <agrum/base/io/GumBinaryIO.h>
+#  include <agrum/base/io/GumJson.h>
 #  include <agrum/ID/io/GUM/GumIDWriter.h>
 
 #  include <agrum/base/external/json/json.hpp>
@@ -75,7 +76,7 @@ namespace gum {
 
     ordered_json content;
     content["type"]           = "ID";
-    content["GumJsonVersion"] = "1.0";
+    content["GumJsonVersion"] = detail::GUM_JSON_VERSION;
 
     // classify nodes by type (always write all three arrays, even if empty)
     content["chance"]   = ordered_json::array();

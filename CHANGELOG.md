@@ -63,7 +63,10 @@
       `ancestors`/`descendants`/`anteriors`, `isAncestral`, `isMaximal`, `representativeGraph`... New concept
       `GUM_MarkedGraphable`. FCI orients through the representative MAG of the learned PAG
       (`PAG::toMixedGraph` deprecated after 3.3.2); MIIC, PC and FCI orient their DAG by `orientAsDAG`.
-    - **GUM format for the graphs** (jgum/bgum): `graphToGUMString`, `saveGraphGUM`, `loadGraphGUM<G>`...
+    - **GUM format for the graphs** (jgum/bgum): `graphToGUMString`, `saveGraphGUM`, `loadGraphGUM<G>`... The GUM
+      format is version 1.1 (`GumJsonVersion`, one constant for all the writers): the variables of the models are
+      written in the fast syntax with quoted names when needed (a file of version 1.0 is read as before); the readers
+      of the graphs, BN, ID and MRF refuse a file of another major version.
     - **Random generator**: one generator for all the shared modules, initialized from `core.randomSeed` (clock by
       default), draws computed from `std::mt19937` only (the same seed gives the same values on every platform; the
       values drawn for a given seed changed once). New `RandomGeneratorGuard`, `randomShuffle`, `randomGamma`. The

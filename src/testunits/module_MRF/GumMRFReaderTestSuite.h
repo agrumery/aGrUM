@@ -128,6 +128,30 @@ namespace gum_tests {
     CHECK_NE(reader.error(0).msg.find("got 'ID'"), std::string::npos);
   }
 
+  GUM_TEST(GumJsonVersion) {
+    // the same major version is read (whatever the minor one), another major version is refused
+    const auto                  mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");
+    gum::GumMRFWriter< double > writer(false, 2);
+    const std::string           str         = writer.toString(mrf);
+    const auto                  withVersion = [&str](const std::string& version) {
+      std::string s     = str;
+      const auto  key   = s.find("\"GumJsonVersion\"");
+      const auto  start = s.find('"', s.find(':', key)) + 1;
+      return s.replace(start, s.find('"', start) - start, version);
+    };
+    REQUIRE_NE(str.find("\"GumJsonVersion\""), std::string::npos);
+    for (const auto& version: {"1.0", "1.9", "1"}) {
+      gum::MarkovRandomField< double > model;
+      gum::GumMRFReader< double >      reader(&model);
+      CHECK_EQ(reader.proceedFromString(withVersion(version)), 0u);
+    }
+    gum::MarkovRandomField< double > model;
+    gum::GumMRFReader< double >      reader(&model);
+    CHECK_NE(reader.proceedFromString(withVersion("2.0")), 0u);
+    REQUIRE_EQ(reader.count(), 1u);
+    CHECK_NE(reader.error(0).msg.find("Unsupported GumJsonVersion '2.0'"), std::string::npos);
+  }
+
   GUM_TEST(KeyWrittenTwiceIsRefused) {
     // the JSON library keeps the last value of a key written twice: the reader refuses it
     auto                        mrf = gum::MarkovRandomField< double >::fastPrototype("A--B;B--C");

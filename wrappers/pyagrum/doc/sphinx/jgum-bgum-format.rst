@@ -10,6 +10,8 @@ The **jgum** (JSON) and **bgum** (binary) formats are the native serialization f
 
 All three model types — :class:`~pyagrum.BayesNet`, :class:`~pyagrum.InfluenceDiagram`, and :class:`~pyagrum.MarkovRandomField` — are supported. The format is identified by a ``"type"`` field in the JSON root (``"BN"``, ``"ID"``, or ``"MRF"``), so attempting to load a file with a mismatched type raises an error.
 
+The ``"GumJsonVersion"`` field gives the version of the format (``"1.1"``). A file of the same major version (or without this field) is read; a file of another major version is refused.
+
 .. note::
    The ``"properties"`` section carries metadata automatically managed by pyAgrum:
    ``software`` (library version), ``creation`` (ISO timestamp of first write),
@@ -30,7 +32,7 @@ Structure
 
    {
      "type": "BN",
-     "GumJsonVersion": "1.0",
+     "GumJsonVersion": "1.1",
      "nodes": [
        "A{Yes|Maybe|No}",
        "B[1,5,10,100]",
@@ -175,7 +177,7 @@ ID Structure
 
    {
      "type": "ID",
-     "GumJsonVersion": "1.0",
+     "GumJsonVersion": "1.1",
      "chance":   ["A[2]", "C[2]"],
      "utility":  ["U[1]"],
      "decision": ["D[2]"],
@@ -243,7 +245,7 @@ MRF Structure
 
    {
      "type": "MRF",
-     "GumJsonVersion": "1.0",
+     "GumJsonVersion": "1.1",
      "nodes": ["A[2]", "B[2]", "C[2]"],
      "factors": [
        {"vars": ["A", "B"], "values": [0.5, 0.2, 0.3, 0.8]},

@@ -55,6 +55,7 @@
 
 #include <cstdint>
 #include <istream>
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -63,6 +64,29 @@
 #include <agrum/base/external/json/json.hpp>
 
 namespace gum::detail {
+  /**
+   * The version of the GUM format, written in every GUM file (key "GumJsonVersion"). A reader
+   * accepts the files of the same major version, and the files without this key.
+   */
+  inline constexpr const char* GUM_JSON_VERSION = "1.1";
+
+  /**
+   * Whether a GUM content has a version that can be read (see gum::detail::GUM_JSON_VERSION).
+   *
+   * @param content The GUM content (a JSON object).
+   * @return        true if @p content has no key "GumJsonVersion", or a string whose major version
+   *                (the part before the first '.') is the one of gum::detail::GUM_JSON_VERSION.
+   */
+  GUM_SHARED_PUBLIC bool isReadableGumJsonVersion(const nlohmann::json& content);
+
+  /**
+   * The value of the key "GumJsonVersion" of a GUM content, for the error messages.
+   *
+   * @param content The GUM content (a JSON object).
+   * @return        the version as written in @p content (its JSON text if it is not a string).
+   */
+  GUM_SHARED_PUBLIC std::string gumJsonVersionOf(const nlohmann::json& content);
+
   /**
    * Parses a GUM text (JSON).
    *

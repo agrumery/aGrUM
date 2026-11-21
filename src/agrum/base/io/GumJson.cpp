@@ -139,4 +139,23 @@ namespace gum::detail {
   json parseGumBinary(const std::vector< uint8_t >& payload) {
     return parse(payload, json::input_format_t::msgpack, "msgpack content");
   }
+
+  namespace {
+    /// the major version of a version string: the part before the first '.'
+    std::string_view majorVersion(std::string_view version) {
+      return version.substr(0, version.find('.'));
+    }
+  }   // namespace
+
+  bool isReadableGumJsonVersion(const json& content) {
+    if (!content.is_object() || !content.contains("GumJsonVersion")) return true;
+    const auto& version = content.at("GumJsonVersion");
+    return version.is_string()
+        && majorVersion(version.get_ref< const std::string& >()) == majorVersion(GUM_JSON_VERSION);
+  }
+
+  std::string gumJsonVersionOf(const json& content) {
+    const auto& version = content.at("GumJsonVersion");
+    return version.is_string() ? version.get< std::string >() : version.dump();
+  }
 }   // namespace gum::detail
