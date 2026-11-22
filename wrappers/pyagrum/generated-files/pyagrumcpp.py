@@ -1386,7 +1386,9 @@ class _Configuration(object):
         Returns
         -------
         str
-          the properties, in the format of ``pyagrum.ini``
+          the properties by section as in ``pyagrum.ini``, cut in 3 aligned columns read one after the other (a column
+          never ends with a section header). This display is not the format of ``pyagrum.ini``: see ``diff()`` and
+          ``save()``.
 
         """
         return _pyagrumcpp._Configuration_toString(self)
@@ -1400,7 +1402,8 @@ class _Configuration(object):
         Returns
         -------
         str
-          the description, in the format of ``pyagrum.ini``
+          the properties which differ from the defaults in the format of ``pyagrum.ini``, otherwise all the properties
+          displayed as by ``toString()``
 
         """
         return _pyagrumcpp._Configuration_describe(self)

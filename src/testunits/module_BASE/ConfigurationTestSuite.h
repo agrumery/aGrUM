@@ -438,9 +438,11 @@ Color = #FF7F64
     gum::Configuration c(ConfigurationTestSuite::defaults());
 
     CHECK_EQ(c.diff(), "");
+    // the 9 lines of the ini format in 3 columns of 3 lines
     CHECK_EQ(c.toString(),
-             "[main]\n  number = 4\n  real = 1e-6\n  Flag = False\n  mode = auto\n"
-             "  text = \\text{do}(\n  undocumented = whatever\n[other]\n  Color = #FF7F64");
+             "[main]            Flag = False          undocumented = whatever\n"
+             "  number = 4      mode = auto         [other]\n"
+             "  real = 1e-6     text = \\text{do}(     Color = #FF7F64");
 
     c.set("main", "number", "9");
     c.set("other", "color", "red");
@@ -450,6 +452,45 @@ Color = #FF7F64
     CHECK_EQ(c.grep("OTHER"), "[other]\n  Color = red");
     CHECK_EQ(c.grep("num"), "[main]\n  number = 9");
     CHECK_EQ(c.grep("nothing like that"), "");
+  }
+
+  GUM_TEST(ConfigurationDisplayInColumns) {
+    // an ini text with the given keys (all of value 1) by section
+    const auto ini =
+        [](std::initializer_list< std::pair< const char*, std::vector< const char* > > > sections) {
+          std::string res;
+          for (const auto& [section, keys]: sections) {
+            res += std::string("[") + section + "]\n";
+            for (const auto* key: keys)
+              res += std::string("### int :: key ") + key + "\n" + key + " = 1\n";
+          }
+          return res;
+        };
+
+    // the 9 lines of the ini format in 3 columns read one after the other: a section may go on at
+    // the top of the next column; a column is as wide as its longest line + 3, no trailing space
+    gum::Configuration c{
+        {ini({{"s", {"a", "bb", "c"}}, {"t", {"k"}}, {"u", {"m", "n"}}}), "columns.ini"}};
+    CHECK_EQ(c.toString(),
+             "[s]          c = 1   [u]\n"
+             "  a = 1    [t]         m = 1\n"
+             "  bb = 1     k = 1     n = 1");
+
+    // diff and grep keep the format of the ini files (one key per line), used by save()
+    c.set("s", "a", "2");
+    c.set("s", "bb", "3");
+    CHECK_EQ(c.diff(), "[s]\n  a = 2\n  bb = 3");
+    CHECK_EQ(c.describe(), c.diff());
+    CHECK_EQ(c.grep("s"), "[s]\n  a = 2\n  bb = 3\n  c = 1");
+
+    // 7 lines: with 3 lines per column, the second column would end with the header [t]; with 4,
+    // [t] and its key go on at the top of the second column (the third one is empty)
+    gum::Configuration orphan{{ini({{"s", {"a", "bb", "c", "d"}}, {"t", {"k"}}}), "orphan.ini"}};
+    CHECK_EQ(orphan.toString(),
+             "[s]          d = 1\n"
+             "  a = 1    [t]\n"
+             "  bb = 1     k = 1\n"
+             "  c = 1");
   }
 
   GUM_TEST(ConfigurationResetPushPopAndHooks) {
@@ -842,7 +883,12 @@ Color = #FF7F64
     for (const auto& entry: c.schema())
       keys.push_back(entry.section + "." + entry.key);
     CHECK_EQ(keys, std::vector< std::string >({"a.one", "a.two", "b.x", "c.z"}));
-    CHECK_EQ(c.toString(), "[a]\n  one = 1\n  two = 2\n[b]\n  x = y\n[c]\n  z = 3");
+    CHECK_EQ(c.toString(),
+             "[a]         [c]\n"
+             "  one = 1     z = 3\n"
+             "  two = 2\n"
+             "[b]\n"
+             "  x = y");
 
     // a key of the second source is a key like any other
     c.set("a", "two", "5");
@@ -891,7 +937,7 @@ Color = #FF7F64
     CHECK_EQ(keys, std::vector< std::string >({"newname", "olderfirst", "oldname", "latekey"}));
     CHECK_EQ(aliases, std::vector< std::string >({"olderfirst", "oldname"}));
     // while the rendering of the configuration only shows the keys carrying a value
-    CHECK_EQ(c.toString(), "[a]\n  newname = 4\n  latekey = 7");
+    CHECK_EQ(c.toString(), "[a]               latekey = 7\n  newname = 4");
   }
 
   GUM_TEST(ConfigurationSourcesErrorsNameTheirOrigin) {

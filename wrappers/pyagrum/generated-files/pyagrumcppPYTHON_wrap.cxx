@@ -154983,7 +154983,9 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"  the properties, in the format of ``pyagrum.ini``\n"
+		"  the properties by section as in ``pyagrum.ini``, cut in 3 aligned columns read one after the other (a column\n"
+		"  never ends with a section header). This display is not the format of ``pyagrum.ini``: see ``diff()`` and\n"
+		"  ``save()``.\n"
 		"\n"
 		""},
 	 { "_Configuration_describe", _wrap__Configuration_describe, METH_O, "\n"
@@ -154994,7 +154996,8 @@ static PyMethodDef SwigMethods[] = {
 		"Returns\n"
 		"-------\n"
 		"str\n"
-		"  the description, in the format of ``pyagrum.ini``\n"
+		"  the properties which differ from the defaults in the format of ``pyagrum.ini``, otherwise all the properties\n"
+		"  displayed as by ``toString()``\n"
 		"\n"
 		""},
 	 { "_Configuration__runHooks", _wrap__Configuration__runHooks, METH_O, NULL},

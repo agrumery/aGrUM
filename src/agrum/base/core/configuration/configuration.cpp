@@ -850,36 +850,68 @@ namespace gum {
     if (!f) { GUM_ERROR(IOError, "Cannot write file '" << filename << "'.") }
   }
 
-  std::string Configuration::_render_(const std::function< bool(const Item&) >& keep) const {
+  std::string Configuration::_render_(const std::function< bool(const Item&) >& keep,
+                                      std::size_t                               columns) const {
     std::shared_lock lock(_mutex_);
-    std::string      res;
-    // the keys of a section are contiguous in _items_ (a duplicate section is refused by _parse_)
-    const std::string* current = nullptr;   // section of the last rendered key
+    // the lines of the document in the format of the ini files: a header per section, then its
+    // keys. The keys of a section are contiguous in _items_ (a duplicate section is refused by
+    // _parse_)
+    std::vector< std::string > lines;
+    std::vector< bool >        isHeader;
+    const std::string*         current = nullptr;   // section of the last rendered key
     for (const auto& item: _items_) {
       if (item.meta.kind == Kind::DEPRECATED || item.meta.deprecated || !keep(item)) continue;
       if (current == nullptr || *current != item.section) {
-        if (current != nullptr) res += '\n';
-        res += "[" + item.section + "]";
+        lines.push_back("[" + item.section + "]");
+        isHeader.push_back(true);
         current = &item.section;
       }
-      res += "\n  " + item.key + " = " + item.value;
+      lines.push_back("  " + item.key + " = " + item.value);
+      isHeader.push_back(false);
+    }
+
+    // the whole document is cut in columns read one after the other: line i goes to row i % rows
+    // and column i / rows. A column never ends with a header (its keys would start the next one)
+    const auto  n              = lines.size();
+    std::size_t rows           = (n + columns - 1) / columns;
+    const auto  endsWithHeader = [&]() {
+      for (std::size_t end = rows; end < n; end += rows)
+        if (isHeader[end - 1]) return true;
+      return false;
+    };
+    while (endsWithHeader())
+      ++rows;
+    std::vector< std::size_t > widths(columns, 0);
+    for (std::size_t i = 0; i < n; ++i)
+      widths[i / rows] = std::max(widths[i / rows], lines[i].size());
+
+    std::string res;
+    for (std::size_t row = 0; row < rows; ++row) {
+      if (row > 0) res += '\n';
+      for (std::size_t i = row; i < n; i += rows) {
+        res += lines[i];
+        // no padding after the last line of the row
+        if (i + rows < n) res += std::string(widths[i / rows] - lines[i].size() + 3, ' ');
+      }
     }
     return res;
   }
 
   std::string Configuration::grep(std::string_view search) const {
     const auto low = toLower(search);
-    return _render_([&](const Item& item) {
-      return contains(toLower(item.section), low) || contains(toLower(item.key), low);
-    });
+    return _render_(
+        [&](const Item& item) {
+          return contains(toLower(item.section), low) || contains(toLower(item.key), low);
+        },
+        1);
   }
 
   std::string Configuration::diff() const {
-    return _render_([](const Item& item) { return item.value != item.defaultValue; });
+    return _render_([](const Item& item) { return item.value != item.defaultValue; }, 1);
   }
 
   std::string Configuration::toString() const {
-    return _render_([](const Item&) { return true; });
+    return _render_([](const Item&) { return true; }, _displayColumns_);
   }
 
   std::string Configuration::describe() const {

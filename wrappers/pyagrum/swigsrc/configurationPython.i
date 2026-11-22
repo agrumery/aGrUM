@@ -101,7 +101,8 @@ Describe the configuration: the properties which differ from the defaults if any
 Returns
 -------
 str
-  the description, in the format of ``pyagrum.ini``
+  the properties which differ from the defaults in the format of ``pyagrum.ini``, otherwise all the properties
+  displayed as by ``toString()``
 "
 
 %feature("docstring") gum::Configuration::toString
@@ -111,7 +112,9 @@ All the properties (except the deprecated ones). This is what ``print(pyagrum.co
 Returns
 -------
 str
-  the properties, in the format of ``pyagrum.ini``
+  the properties by section as in ``pyagrum.ini``, cut in 3 aligned columns read one after the other (a column
+  never ends with a section header). This display is not the format of ``pyagrum.ini``: see ``diff()`` and
+  ``save()``.
 "
 
 %feature("docstring") gum::Configuration::has

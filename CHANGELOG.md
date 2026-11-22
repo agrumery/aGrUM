@@ -34,7 +34,9 @@
       uniform CPTs.
     - **Configuration reorganized** in lowerCamelCase keys with sections by subject (`notebook.tensor_visible_digits`
       → `tensor.visibleDigits`, `ctbn.graph_size` → `ctbn.graphSize`...); the former names are deprecated after 3.3.2
-      and still work. Keys are displayed as declared.
+      and still work. Keys are displayed as declared; `print(pyagrum.config)` shows the configuration in 3 columns
+      read one after the other (`repr` of a customized configuration and the files written by `save()` keep one key
+      per line).
     - **Approximation schemes**: a parameter changed after a computation (`setMaxIter`, `setEpsilon`...) is taken into
       account by the next one (approximate inferences, credal inferences, distances); new `enable*`/`disable*`/
       `isEnabled*` for the inferences and `BNLearner`; `compute(lazy=False)` for the distances; new

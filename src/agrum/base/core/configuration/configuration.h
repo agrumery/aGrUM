@@ -327,14 +327,17 @@ namespace gum {
     /// section; a matching section name selects the whole section.
     std::string grep(std::string_view search) const;
 
-    /// @return the visible keys whose value differs from the default.
+    /// @return the visible keys whose value differs from the default, in the format of the ini
+    /// files (see save()).
     std::string diff() const;
 
-    /// @return all the visible keys.
+    /// @return all the visible keys, by section, as in the ini files but cut in 3 aligned columns
+    /// read one after the other (a column never ends with a section header). This is a display,
+    /// not the format of the ini files (see diff()).
     std::string toString() const;
 
     /// @return diff() if the configuration differs from the defaults, otherwise a comment
-    /// saying so followed by toString().
+    /// saying so followed by toString() (in columns).
     std::string describe() const;
 
     /// @}
@@ -435,10 +438,14 @@ namespace gum {
     // type
     void _setAt_(std::size_t pos, std::string_view value);
     // loads the user file of instance(), never throws
-    void        _loadUserFile_();
-    std::string _render_(const std::function< bool(const Item&) >& keep) const;
-    Snapshot    _snapshot_() const;
-    void        _restore_(const Snapshot& snapshot);
+    void _loadUserFile_();
+    // the visible keys kept by keep, by section, in the format of the ini files; columns > 1 cuts
+    // this document in this number of aligned columns, read one after the other
+    std::string _render_(const std::function< bool(const Item&) >& keep, std::size_t columns) const;
+    // number of columns of toString()
+    static constexpr std::size_t _displayColumns_ = 3;
+    Snapshot                     _snapshot_() const;
+    void                         _restore_(const Snapshot& snapshot);
     // copies the values of the numerical tolerances in their atomics (needs the exclusive lock)
     void _refreshEpsilons_();
     void _queue_(Notice::Kind kind, std::string message) const;
