@@ -572,11 +572,11 @@ class TestCausalEffectEstimation(pyAgrumTestCase):
       ice = ps.predict(X, T, Y)
     self.assertTrue(np.isnan(ice).any())
     # estimate_ate goes through predict: both warnings are expected
-    with (
-      self.assertWarnsRegex(UserWarning, "Positivity"),
-      self.assertWarnsRegex(UserWarning, "excluding the NaN values"),
-    ):
+    with self.assertWarns(UserWarning) as cm:
       ace = ps.estimate_ate(X, T, Y)
+    warning_messages = [str(w.message) for w in cm.warnings]
+    self.assertTrue(any("Positivity" in msg for msg in warning_messages))
+    self.assertTrue(any("excluding the NaN values" in msg for msg in warning_messages))
     self.assertFalse(np.isnan(ace))
 
   def test_TSLS_with_covariates(self):
