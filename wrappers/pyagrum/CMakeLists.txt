@@ -300,7 +300,10 @@ macro(gum_add_python_module MODULENAME)
     set_target_properties(${_PYAGRUMLIB} PROPERTIES SUFFIX ".so")
   endif()
 
-  set_target_properties(${_PYAGRUMLIB} PROPERTIES NO_SONAME ON)
+  # Core is SHARED and linked by leaves, so it needs a SONAME.
+  if(NOT MODULENAME_LOWER STREQUAL "pyagrum")
+    set_target_properties(${_PYAGRUMLIB} PROPERTIES NO_SONAME ON)
+  endif()
 
   # BASE/BN are embedded once into core pyagrum (SHARED) so every submodule
   # links against that single instance instead of re-embedding its own copy --
