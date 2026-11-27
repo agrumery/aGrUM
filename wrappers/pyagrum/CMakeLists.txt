@@ -218,7 +218,8 @@ macro(gum_add_python_module MODULENAME)
   # Core "pyagrum" is SHARED, not MODULE: every split submodule (_mrf.so,
   # _id.so, ...) links against it directly to reach BASE/BN, so it must be a
   # real linkable shared library, not a Python-only loadable bundle. Submodules
-  # stay MODULE -- nothing links against them.
+  # stay MODULE -- nothing links against them. The core must keep its SONAME
+  # (no NO_SONAME) because the modules link against it.
   if(MODULENAME_LOWER STREQUAL "pyagrum")
     add_library(${_PYAGRUMLIB} SHARED ${GENERATED_PYTHON}/${_PYAGRUM_SWIGMOD}PYTHON_wrap.cxx)
   else()
@@ -721,7 +722,7 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
                 -Wl,-force_load,$<TARGET_FILE:agrumBASE> -Wl,-force_load,$<TARGET_FILE:agrumBN>
                 -Xlinker -undefined -Xlinker dynamic_lookup
                 -Wl,-dead_strip -Wl,-exported_symbols_list,${_PYAGRUM_EXPORTS_FILE}
-                -install_name $<TARGET_FILE_NAME:_pyagrum>
+                -install_name @rpath/$<TARGET_FILE_NAME:_pyagrum>
                 -o $<TARGET_FILE:_pyagrum>
                 ${_PYAGRUM_CORE_WRAP_OBJ}
         COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_RELINK_STAMP}
@@ -766,7 +767,7 @@ if(PYAGRUM_TRIM_CORE_EXPORTS AND NOT MINGW AND NOT BUILD_SHARED_LIBS)
                 ${_PYAGRUM_THREADS_LINK_LIBS}
                 ${_PYAGRUM_THREADS_LINK_OPTS}
                 -Wl,--gc-sections -Wl,--version-script=${_PYAGRUM_EXPORTS_FILE}
-                -Wl,-rpath,$ORIGIN
+                -Wl,-rpath,$ORIGIN -Wl,-soname,$<TARGET_FILE_NAME:_pyagrum>
                 -o $<TARGET_FILE:_pyagrum>
                 ${_PYAGRUM_CORE_WRAP_OBJ}
         COMMAND ${CMAKE_COMMAND} -E touch ${_PYAGRUM_RELINK_STAMP}
